@@ -1,0 +1,25 @@
+{
+  "name": "smolblog/smolblog-core",
+  "description": "Core features for Smolblog independent of other frameworks",
+  "type": "library",
+  "license": "AGPL-3.0-only",
+  "autoload": {
+    "psr-4": {
+      "Smolblog\\Core\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Smolblog",
+      "email": "code@smolblog.org"
+    },
+    {
+      "name": "Evan Hildreth",
+      "email": "me@eph.me"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*"
+  }
+}

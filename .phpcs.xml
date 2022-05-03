@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ruleset name="Smolblog Core Standards" namespace="Smolblog\Core">
+ <description>Coding standards for the Smolblog core library.</description>
+
+ <file>./src</file>
+
+ <exclude-pattern>*/tests/*</exclude-pattern>
+
+ <arg name="extensions" value="php" />
+ <arg name="colors"/>
+
+ <ini name="memory_limit" value="64M"/>
+
+ <autoload>./vendor/autoload.php</autoload>
+
+ <rule ref="Squiz"/>
+</ruleset>
