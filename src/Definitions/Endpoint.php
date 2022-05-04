@@ -2,6 +2,9 @@
 
 namespace Smolblog\Core\Definitions;
 
+use Smolblog\Core\Definitions\HttpVerb;
+use Smolblog\Core\Definitions\SecurityLevel;
+
 /**
  * Interface for declaring a REST API endpoint.
  */
@@ -25,9 +28,11 @@ interface Endpoint {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 	 * @see Smolblog\Core\Definitions\HttpVerb
 	 *
-	 * @return array
+	 * @return HttpVerb[]
 	 */
 	public function verbs(): array;
+
+	public function security(): SecurityLevel;
 
 	public function params(): array;
 
