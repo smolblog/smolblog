@@ -1,17 +1,49 @@
 <?xml version="1.0"?>
 <ruleset name="Smolblog Core Standards" namespace="Smolblog\Core">
- <description>Coding standards for the Smolblog core library.</description>
+	<description>Coding standards for the Smolblog core library.</description>
 
- <file>./src</file>
+	<file>./src</file>
 
- <exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
 
- <arg name="extensions" value="php" />
- <arg name="colors"/>
+	<arg name="extensions" value="php"/>
+	<arg name="tab-width" value="2"/>
+	<arg name="colors"/>
 
- <ini name="memory_limit" value="64M"/>
+	<ini name="memory_limit" value="64M"/>
 
- <autoload>./vendor/autoload.php</autoload>
+	<autoload>./vendor/autoload.php</autoload>
 
- <rule ref="Squiz"/>
+	<!-- Use PSR-12 as our base -->
+	<rule ref="PSR12">
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+		<exclude name="Generic.WhiteSpace.ScopeIndent"/>
+		<exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine"/>
+		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+	</rule>
+
+	<!-- Use tabs, please. Please. Seriously. -->
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="indent" value="2"/>
+			<property name="tabIndent" value="true"/>
+			<property name="ignoreIndentationTokens" type="array">
+				<element value="T_COMMENT"/>
+				<element value="T_DOC_COMMENT_OPEN_TAG"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Add Squiz commenting rules -->
+	<rule ref="Squiz.Commenting">
+		<!-- Functions and classes already have comments -->
+		<exclude name="Squiz.Commenting.FileComment"/>
+		<!-- Contradicted by PSR-12. -->
+		<exclude name="Squiz.Commenting.ClosingDeclarationComment"/>
+	</rule>
+
+	<!-- Make structures look nicer -->
+	<rule ref="Generic.Classes.OpeningBraceSameLine"/>
+	<rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
 </ruleset>
