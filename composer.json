@@ -18,9 +18,8 @@
       "email": "me@eph.me"
     }
   ],
-  "require": {},
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
-    "phpcompatibility/php-compatibility": "^9.3"
+    "phpunit/phpunit": "^9"
   }
 }
