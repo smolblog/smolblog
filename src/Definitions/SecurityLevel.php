@@ -7,15 +7,17 @@ namespace Smolblog\Core\Definitions;
  *
  * - Anonymous: General internet-level requests
  * - Registered: Request is attached to a logged-in user
- * - Admin: Can post to the blog
- * - Owner: Can manage Admins and change sensitive blog settings
+ * - Contributor: Can post to the blog
+ * - Moderator: Can modify all posts on the blog
+ * - Admin: Can manage other users and change sensitive blog settings
  * - Root: Site-wide administrators
  */
 
 enum SecurityLevel: int {
 	case Anonymous = 0;
 	case Registered = 1;
-	case Admin = 5;
-	case Owner = 10;
+	case Contributor = 5;
+	case Moderator = 10;
+	case Admin = 20;
 	case Root = 100;
 }
