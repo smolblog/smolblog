@@ -23,7 +23,6 @@ interface Endpoint {
 	 * enum instances.
 	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
-	 * @see Smolblog\Core\Definitions\HttpVerb
 	 *
 	 * @return HttpVerb[]
 	 */
@@ -48,10 +47,11 @@ interface Endpoint {
 	public function params(): array;
 
 	/**
-	 * Undocumented function
+	 * Perform the action associated with this endpoint and return the response.
 	 *
-	 * @param array $requestInfo
-	 * @return array
+	 * @param HttpRequest $requestInfo Full information of the HTTP request.
+	 * @param array       $params      Parsed and validated parameters.
+	 * @return HttpResponse Response to give
 	 */
-	public function run(HttpRequest $requestInfo): array;
+	public function run(HttpRequest $requestInfo, array $params): HttpResponse;
 }
