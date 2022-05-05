@@ -2,9 +2,6 @@
 
 namespace Smolblog\Core\Definitions;
 
-use Smolblog\Core\Definitions\HttpVerb;
-use Smolblog\Core\Definitions\SecurityLevel;
-
 /**
  * Interface for declaring a REST API endpoint.
  */
@@ -32,9 +29,29 @@ interface Endpoint {
 	 */
 	public function verbs(): array;
 
+	/**
+	 * Security level for this endpoint. The user making the request will need to
+	 * have permissions at or above this level or a 401 or 403 response will be
+	 * given.
+	 *
+	 * @return SecurityLevel
+	 */
 	public function security(): SecurityLevel;
 
+	/**
+	 * Parameters for this endpoint in an array of EndpointParameters.
+	 *
+	 * Parameters given in this array will be proviced to run()
+	 *
+	 * @return EndpointParameter[]
+	 */
 	public function params(): array;
 
-	public function run(array $requestInfo): array;
+	/**
+	 * Undocumented function
+	 *
+	 * @param array $requestInfo
+	 * @return array
+	 */
+	public function run(HttpRequest $requestInfo): array;
 }
