@@ -49,9 +49,8 @@ interface Endpoint {
 	/**
 	 * Perform the action associated with this endpoint and return the response.
 	 *
-	 * @param HttpRequest $requestInfo Full information of the HTTP request.
-	 * @param array       $params      Parsed and validated parameters.
+	 * @param EndpointRequest $request Full information of the HTTP request.
 	 * @return HttpResponse Response to give
 	 */
-	public function run(HttpRequest $requestInfo, array $params): HttpResponse;
+	public function run(EndpointRequest $request): HttpResponse;
 }
