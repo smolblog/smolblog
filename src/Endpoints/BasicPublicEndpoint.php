@@ -121,7 +121,7 @@ abstract class BasicPublicEndpoint implements Endpoint {
 	 * Hook function for the child class to supply the response. Should be
 	 * provided unserialized; parent class will serialize and package.
 	 *
-	 * @return JsonSerializable Unserialized body of the response.
+	 * @return array|JsonSerializable Unserialized body of the response.
 	 */
-	abstract protected function responseBody(): JsonSerializable;
+	abstract protected function responseBody(): array|JsonSerializable;
 }

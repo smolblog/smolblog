@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Definitions;
+namespace Smolblog\Core\Definitions;
 
 interface EndpointRequest extends HttpRequest {
 	/**
