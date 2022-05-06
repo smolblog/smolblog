@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Endpoints;
 
+use JsonSerializable;
 use Smolblog\Core\Definitions\Endpoint;
 use Smolblog\Core\Definitions\HttpVerb;
 use Smolblog\Core\Definitions\SecurityLevel;
