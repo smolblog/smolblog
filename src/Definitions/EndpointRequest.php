@@ -19,7 +19,7 @@ interface EndpointRequest {
 	public function json(): array|false;
 
 	/**
-	 * Information about the current running environment
+	 * Information about the current running environment (blog, user, etc)
 	 * 
 	 * @return array
 	 */

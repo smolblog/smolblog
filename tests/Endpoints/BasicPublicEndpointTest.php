@@ -48,19 +48,15 @@ final class BasicPublicEndpointTest extends TestCase {
 	public function testItSuccessfullyResponds(): void {
 		$endpoint = new ConcreteBasicPublicEndpoint();
 		$response = $endpoint->run(new class implements EndpointRequest {
-			public function verb(): HttpVerb { return HttpVerb::GET; }
-			public function url(): string { return ''; }
-			public function headers(): array { return []; }
-			public function body(): string { return ''; }
 			public function params(): array { return []; }
 			public function json(): array|false { return false; }
+			public function environment(): array { return []; }
 		});
 
 		$this->assertEquals(200, $response->statusCode());
-		$this->assertEmpty($response->headers());
 		$this->assertEquals(
 			'{"test":"pass"}',
-			$response->body()
+			json_encode($response->body())
 		);
 	}
 }

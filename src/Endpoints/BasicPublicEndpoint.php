@@ -8,7 +8,7 @@ use Smolblog\Core\Definitions\HttpVerb;
 use Smolblog\Core\Definitions\SecurityLevel;
 use Smolblog\Core\Definitions\EndpointParameter;
 use Smolblog\Core\Definitions\EndpointRequest;
-use Smolblog\Core\Definitions\HttpResponse;
+use Smolblog\Core\Definitions\EndpointResponse;
 
 /**
  * An abastract Endpoint class that takes care of most of the basics. Provides
@@ -63,28 +63,28 @@ abstract class BasicPublicEndpoint implements Endpoint {
 	}
 
 	/**
-	 * Returns a 200 HttpResponse with the JSON-encoded result of responseBody().
+	 * Returns a 200 EndpointResponse with the JSON-encoded result of responseBody().
 	 *
 	 * @param EndpointRequest $request Full information of the HTTP request.
-	 * @return HttpResponse Response to give
+	 * @return EndpointResponse Response to give
 	 */
-	public function run(EndpointRequest $request): HttpResponse {
-		$body = json_encode($this->responseBody());
+	public function run(EndpointRequest $request): EndpointResponse {
+		$body = $this->responseBody();
 
-		return new class ($body) implements HttpResponse {
+		return new class ($body) implements EndpointResponse {
 			/**
 			 * Store the body response
 			 *
-			 * @var string
+			 * @var array|JsonSerializable
 			 */
-			private string $body;
+			private array|JsonSerializable $body;
 
 			/**
 			 * Store the given body in the instance
 			 *
-			 * @param string $body Body of the response.
+			 * @param array|JsonSerializable $body Body of the response.
 			 */
-			public function __construct(string $body) {
+			public function __construct(array|JsonSerializable $body) {
 				$this->body = $body;
 			}
 
@@ -98,28 +98,18 @@ abstract class BasicPublicEndpoint implements Endpoint {
 			}
 
 			/**
-			 * No special headers
-			 *
-			 * @return array
-			 */
-			public function headers(): array {
-				return [];
-			}
-
-			/**
 			 * The given body
 			 *
-			 * @return string
+			 * @return array|JsonSerializable
 			 */
-			public function body(): string {
+			public function body(): array|JsonSerializable {
 				return $this->body;
 			}
 		};
 	}
 
 	/**
-	 * Hook function for the child class to supply the response. Should be
-	 * provided unserialized; parent class will serialize and package.
+	 * Hook function for the child class to supply the response.
 	 *
 	 * @return array|JsonSerializable Unserialized body of the response.
 	 */
