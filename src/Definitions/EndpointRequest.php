@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Definitions;
 
-interface EndpointRequest extends HttpRequest {
+interface EndpointRequest {
 	/**
 	 * Parsed params as defined by the Endpoint
 	 *
@@ -17,4 +17,11 @@ interface EndpointRequest extends HttpRequest {
 	 * @return array|false
 	 */
 	public function json(): array|false;
+
+	/**
+	 * Information about the current running environment (blog, user, etc)
+	 * 
+	 * @return array
+	 */
+	public function environment(): array;
 }

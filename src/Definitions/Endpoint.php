@@ -50,7 +50,7 @@ interface Endpoint {
 	 * Perform the action associated with this endpoint and return the response.
 	 *
 	 * @param EndpointRequest $request Full information of the HTTP request.
-	 * @return HttpResponse Response to give
+	 * @return EndpointResponse Response to give
 	 */
-	public function run(EndpointRequest $request): HttpResponse;
+	public function run(EndpointRequest $request): EndpointResponse;
 }
