@@ -2,7 +2,9 @@
 
 namespace Smolblog\Core\Definitions;
 
-interface HttpResponse {
+use JsonSerializable;
+
+interface EndpointResponse {
 	/**
 	 * HTTP response code for this response
 	 *
@@ -13,16 +15,9 @@ interface HttpResponse {
 	public function statusCode(): int;
 
 	/**
-	 * Headers to use in the response
-	 *
-	 * @return array
-	 */
-	public function headers(): array;
-
-	/**
-	 * Body of the response
+	 * Body of the response to be converted to JSON
 	 *
 	 * @return string
 	 */
-	public function body(): string;
+	public function body(): JsonSerializable|array;
 }
