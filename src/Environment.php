@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core;
 
+use Smolblog\Exceptions\EnvironmentException;
+
 /**
  * A singleton class for handling interactions between the Smolblog libraries
  * and the broader platform/framework/environment it is running on.
@@ -30,13 +32,15 @@ abstract class Environment {
 	 * Load the given Environment as the current Environment.
 	 *
 	 * @param Environment $withEnvironment Environment for this implementation.
-	 * @throws Exception When this function is called multiple times.
+	 * @throws EnvironmentException When this function is called multiple times.
 	 * @return void
 	 */
 	public static function bootstrap(Environment $withEnvironment): void {
 		if (self::$singleton) {
-			// TODO Create a custom exception that can surface info about the current Env.
-			throw new Exception('Smolblog\\Core\\Environment::bootstrap should only be called ONCE.');
+			throw new EnvironmentException(
+				environment: self::$singleton,
+				message: 'Smolblog\\Core\\Environment::bootstrap should only be called ONCE.'
+			);
 		}
 
 		self::$singleton = $withEnvironment;
@@ -45,13 +49,15 @@ abstract class Environment {
 	/**
 	 * Get the environment instance.
 	 *
-	 * @throws Exception When `bootstrap` has not been called.
+	 * @throws EnvironmentException When `bootstrap` has not been called.
 	 * @return Environment Environment for this implementation.
 	 */
 	public static function get(): Environment {
 		if (!self::$singleton) {
-			// TODO Create a custom exception.
-			throw new Exception('Smolblog environment has not been bootstrapped yet.');
+			throw new EnvironmentException(
+				environment: self::$singleton,
+				message: 'Smolblog environment has not been bootstrapped yet.'
+			);
 		}
 
 		return self::$singleton;
@@ -64,10 +70,13 @@ abstract class Environment {
 	 * requests.
 	 *
 	 * @param Endpoint $endpoint Endpoint to register.
-	 * @throws Exception When this function is called without being implemented.
+	 * @throws EnvironmentException When this function is called without being implemented.
 	 * @return void
 	 */
 	public function registerEndpoint(Endpoint $endpoint): void {
-		throw new Exception('registerEndpoint was not implemented.');
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'registerEndpoint was called without being implemented.'
+		);
 	}
 }
