@@ -79,4 +79,14 @@ abstract class Environment {
 			message: 'registerEndpoint was called without being implemented.'
 		);
 	}
+
+	/**
+	 * Get environment variable. Wrapper around `getenv`.
+	 *
+	 * @param string $name Name of the environment variable.
+	 * @return mixed
+	 */
+	public function envVar(string $name): mixed {
+		return getenv($name);
+	}
 }
