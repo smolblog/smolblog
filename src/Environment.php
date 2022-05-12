@@ -2,7 +2,8 @@
 
 namespace Smolblog\Core;
 
-use Smolblog\Exceptions\EnvironmentException;
+use Smolblog\Core\Definitions\Endpoint;
+use Smolblog\Core\Exceptions\EnvironmentException;
 
 /**
  * A singleton class for handling interactions between the Smolblog libraries
@@ -18,7 +19,7 @@ use Smolblog\Exceptions\EnvironmentException;
  * illogical, throw an exception. Avoid abstract functions as not all
  * environments will make use of all features.
  */
-abstract class Environment {
+class Environment {
 	// Static methods.
 
 	/**
@@ -26,7 +27,7 @@ abstract class Environment {
 	 *
 	 * @var Environment
 	 */
-	private static Environment $singleton;
+	private static ?Environment $singleton = null;
 
 	/**
 	 * Load the given Environment as the current Environment.
@@ -55,7 +56,7 @@ abstract class Environment {
 	public static function get(): Environment {
 		if (!self::$singleton) {
 			throw new EnvironmentException(
-				environment: self::$singleton,
+				environment: null,
 				message: 'Smolblog environment has not been bootstrapped yet.'
 			);
 		}

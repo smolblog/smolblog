@@ -24,7 +24,7 @@ class EnvironmentException extends SmolblogException {
 	 * @param Throwable|null $previous    The previous Exception.
 	 */
 	public function __construct(
-		Environment $environment,
+		?Environment $environment,
 		string $message = '',
 		int $code = 0,
 		Throwable $previous = null
