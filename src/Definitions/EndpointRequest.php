@@ -20,7 +20,7 @@ interface EndpointRequest {
 
 	/**
 	 * Information about the current running environment (blog, user, etc)
-	 * 
+	 *
 	 * @return array
 	 */
 	public function environment(): array;
