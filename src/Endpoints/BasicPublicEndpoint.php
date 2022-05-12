@@ -73,11 +73,12 @@ abstract class BasicPublicEndpoint implements Endpoint {
 
 		return new class ($body) implements EndpointResponse {
 			/**
-			 * Store the body response
+			 * Store the body response.
 			 *
-			 * @var array|JsonSerializable
+			 * @var JsonSerializable|array
 			 */
-			private array|JsonSerializable $body;
+			private JsonSerializable|array $body; //phpcs:ignore
+			// Ignored because PHPCS doesn't recognize JsonSerializable|array.
 
 			/**
 			 * Store the given body in the instance
