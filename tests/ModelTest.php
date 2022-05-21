@@ -1,33 +1,31 @@
 <?php
 
-namespace Smolblog\Core\Models;
+namespace Smolblog\Core;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Definitions\ModelHelper;
 use Smolblog\Core\Exceptions\ModelException;
-use Smolblog\Core\Models\BaseModel;
 
-final class BaseModelTestHelper implements ModelHelper {
-	public function getData(BaseModel $forModel = null, array $withProperties = []): ?array {
+final class ModelTestHelper implements ModelHelper {
+	public function getData(Model $forModel = null, array $withProperties = []): ?array {
 		if (empty($withProperties)) return null;
 
 		return $withProperties;
 	}
 
-	public function save(BaseModel $model = null, array $withData = []): bool {
+	public function save(Model $model = null, array $withData = []): bool {
 		return true;
 	}
 }
 
-final class BaseModelTest extends TestCase {
+final class ModelTest extends TestCase {
 	public function testItThrowsAnExceptionWhenNoHelperIsSupplied() {
 		$this->expectException(ModelException::class);
 
-		$model = new BaseModel();
+		$model = new Model();
 	}
 
 	public function testItCanBeInitializedWithNoData() {
-		$model = new BaseModel(withHelper: new BaseModelTestHelper());
+		$model = new Model(withHelper: new ModelTestHelper());
 
 		$this->assertTrue($model->needsSave());
 	}
@@ -39,9 +37,9 @@ final class BaseModelTest extends TestCase {
 		];
 
 		$model = new class(
-			withHelper: new BaseModelTestHelper(),
+			withHelper: new ModelTestHelper(),
 			withData: $props
-		) extends BaseModel {
+		) extends Model {
 			protected array $fields = ['id', 'name'];
 		};
 
@@ -54,9 +52,9 @@ final class BaseModelTest extends TestCase {
 
 	public function testItsDataCanBeChangedAndSaved() {
 		$model = new class(
-			withHelper: new BaseModelTestHelper(),
+			withHelper: new ModelTestHelper(),
 			withData: [ 'id' => 3 ],
-		) extends BaseModel {
+		) extends Model {
 			protected array $fields = ['id', 'name'];
 		};
 

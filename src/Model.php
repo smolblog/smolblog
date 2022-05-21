@@ -1,14 +1,13 @@
 <?php
 
-namespace Smolblog\Core\Models;
+namespace Smolblog\Core;
 
-use Smolblog\Core\Definitions\ModelHelper;
 use Smolblog\Core\Exceptions\ModelException;
 
 /**
  * An object backed by a persistant data store of some kind.
  */
-class BaseModel {
+class Model {
 	/**
 	 * Store the ModelHelper for this instance.
 	 *
