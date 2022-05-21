@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Definitions;
 
+use Smolblog\Core\Models\BaseModel;
+
 /**
  * Used to handle interactions between a Model and a persistant data store.
  */

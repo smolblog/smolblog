@@ -41,15 +41,12 @@ class BaseModel {
 	 * Construct a new Model with the given ModelHelper.
 	 *
 	 * @throws ModelException If the Model requires a helper but does not get one.
-	 * @param ModelHelper|null $withModel Helper for this instance.
-	 * @param array            $withData  Data to initialize/find model with.
+	 * @param ModelHelper|null $withHelper Helper for this instance.
+	 * @param array            $withData   Data to initialize/find model with.
 	 */
-	public function __construct(?ModelHelper $withModel = null, array $withData = []) {
-		if (!$withModel) {
-			throw new ModelException('A ModelHelper is required for this model.');
-		}
-
-		$this->helper = $withModel;
+	public function __construct(?ModelHelper $withHelper = null, array $withData = []) {
+		$this->helper = $withHelper;
+		$this->data = $withData;
 		$this->loadInitData();
 	}
 
@@ -110,11 +107,25 @@ class BaseModel {
 	}
 
 	/**
+	 * Returns true if this Model is out-of-sync with the persistent store.
+	 *
+	 * @return boolean
+	 */
+	public function needsSave(): bool {
+		return $this->isDirty;
+	}
+
+	/**
 	 * Called during construction. Loads data from helper by default.
 	 *
+	 * @throws ModelException If the Model requires a helper but does not have one.
 	 * @return void
 	 */
 	protected function loadInitData(): void {
+		if (!$this->helper) {
+			throw new ModelException('A ModelHelper is required for this model.');
+		}
+
 		$dataFromHelper = $this->helper->getData(forModel: $this, withProperties: $this->data);
 		if ($dataFromHelper) {
 			$this->data = $dataFromHelper;
