@@ -6,9 +6,16 @@ use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Exceptions\ModelException;
 
 final class ModelTestHelper implements ModelHelper {
+	public function findAll(string $forModelClass, array $withProperties = []): array {
+		return [
+			new $forModelClass(withHelper: $this, withData: ['id' => 1, ...$withProperties]),
+			new $forModelClass(withHelper: $this, withData: ['id' => 2, ...$withProperties]),
+			new $forModelClass(withHelper: $this, withData: ['id' => 3, ...$withProperties]),
+		];
+	}
+
 	public function getData(Model $forModel = null, array $withProperties = []): ?array {
 		if (empty($withProperties)) return null;
-
 		return $withProperties;
 	}
 
