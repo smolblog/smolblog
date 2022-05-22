@@ -9,6 +9,15 @@ use Smolblog\Core\Model;
  */
 interface ModelHelper {
 	/**
+	 * Get all Models that match the given properties.
+	 *
+	 * @param string $forModelClass  Model to get data for.
+	 * @param array  $withProperties Properties to search for in the persistent store; default none.
+	 * @return array Array of Models that match the properties.
+	 */
+	public function findAll(string $forModelClass, array $withProperties = []): array;
+
+	/**
 	 * Get data from the persistent store for the given model.
 	 *
 	 * @param Model|null $forModel       Model to get data for.

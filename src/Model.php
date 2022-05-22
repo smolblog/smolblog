@@ -2,12 +2,39 @@
 
 namespace Smolblog\Core;
 
+use Smolblog\Core\Environment;
 use Smolblog\Core\Exceptions\ModelException;
 
 /**
  * An object backed by a persistant data store of some kind.
  */
 class Model {
+	/**
+	 * Create a new Model instance. If data is provided, the model will attempt
+	 * to find an existing instance and will load its data if it exists. If it
+	 * does not exist, a new Model will be initialized with the given data.
+	 *
+	 * @param array $withData Data to find or initialize with.
+	 * @return static New Model instance with given data and appropriate helper
+	 */
+	public static function create(array $withData = []): static {
+		$helper = Environment::get()->getHelperForModel(static::class);
+		return new static(withHelper: $helper, withData: $withData);
+	}
+
+	/**
+	 * Find all instances with the given properties. If no properties are given,
+	 * returns an array of all instances.
+	 *
+	 * @param array $withProperties Properties to search for.
+	 * @return static[] Array of Model instances that match the properties
+	 */
+	public static function find(array $withProperties = []): array {
+		$helper = Environment::get()->getHelperForModel(static::class);
+		return $helper->findAll(forModelClass: static::class, withProperties: $withProperties);
+	}
+
+
 	/**
 	 * Store the ModelHelper for this instance.
 	 *
