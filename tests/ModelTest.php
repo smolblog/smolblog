@@ -24,6 +24,15 @@ final class ModelTestHelper implements ModelHelper {
 	}
 }
 
+final class ModelTestEnvironment extends Environment {
+	public function getHelperForModel(string $modelClass): ModelHelper {
+		return new ModelTestHelper();
+	}
+}
+
+final class ModelTestChild extends Model {}
+
+/** @backupStaticAttributes enabled */
 final class ModelTest extends TestCase {
 	public function testItThrowsAnExceptionWhenNoHelperIsSupplied() {
 		$this->expectException(ModelException::class);
@@ -77,5 +86,28 @@ final class ModelTest extends TestCase {
 
 		$model->save();
 		$this->assertFalse($model->needsSave());
+	}
+
+	public function testUndefinedFieldsThrowAnError() {
+		$this->expectNotice();
+		$model = new Model(withHelper: new ModelTestHelper());
+
+		$model->undefinedField = 'nope';
+	}
+
+	public function testStaticCreateMethodReturnsCallingModel() {
+		Environment::bootstrap(new ModelTestEnvironment());
+
+		$this->assertInstanceOf(ModelTestChild::class, ModelTestChild::create());
+	}
+
+	public function testStaticFindMethodReturnsArrayOfCallingModels() {
+		Environment::bootstrap(new ModelTestEnvironment());
+
+		$multiple = ModelTestChild::find(['prop' => 'erty']);
+		$this->assertIsArray($multiple);
+		foreach($multiple as $single) {
+			$this->assertInstanceOf(ModelTestChild::class, $single);
+		}
 	}
 }
