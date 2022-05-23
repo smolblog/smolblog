@@ -70,8 +70,8 @@ class Environment {
 	 * Register the given Endpoint with the system to allow it to receive
 	 * requests.
 	 *
-	 * @param Endpoint $endpoint Endpoint to register.
 	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @param Endpoint $endpoint Endpoint to register.
 	 * @return void
 	 */
 	public function registerEndpoint(Endpoint $endpoint): void {
@@ -79,6 +79,22 @@ class Environment {
 			environment: self::$singleton,
 			message: 'registerEndpoint was called without being implemented.'
 		);
+	}
+
+	/**
+	 * Get a ModelHelper appropriate for the given class.
+	 *
+	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @param string $modelClass Fully-qualified class name of the model to help.
+	 * @return ModelHelper An instantiated ModelHelper for this class.
+	 */
+	public function getHelperForModel(string $modelClass): ModelHelper {
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'getHelperForModel was called without being implemented.'
+		);
+
+		return new stdClass();
 	}
 
 	/**
