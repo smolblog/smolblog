@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core\Models;
 
-use Smolblog\Core\Environment;
 use Smolblog\Core\Model;
 
 /**

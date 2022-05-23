@@ -8,7 +8,7 @@ use Smolblog\Core\Model;
 use Smolblog\Core\ModelHelper;
 use Smolblog\Core\Exceptions\ModelException;
 
-final class SocialAccountTestHelper implements ModelHelper {
+final class SocialAccountBlogLinkTestHelper implements ModelHelper {
 	public function findAll(string $forModelClass, array $withProperties = []): array {
 		return [
 			new $forModelClass(withHelper: $this, withData: ['id' => 1, ...$withProperties]),
@@ -27,24 +27,23 @@ final class SocialAccountTestHelper implements ModelHelper {
 	}
 }
 
-final class SocialAccountTestEnvironment extends Environment {
+final class SocialAccountBlogLinkTestEnvironment extends Environment {
 	public function getHelperForModel(string $modelClass): ModelHelper {
-		return new SocialAccountTestHelper();
+		return new SocialAccountBlogLinkTestHelper();
 	}
 }
 
 /** @backupStaticAttributes enabled */
-final class SocialAccountTest extends TestCase {
+final class SocialAccountBlogLinkTest extends TestCase {
 	public function testAllDefinedFieldsCanBeAccessed() {
-		$model = new SocialAccount(withHelper: new SocialAccountTestHelper());
+		$model = new SocialAccountBlogLink(withHelper: new SocialAccountBlogLinkTestHelper());
 
 		$testData = [
-			'id' => 5,
-			'user_id' => 3,
-			'social_type' => 'smolblog',
-			'social_username' => 'ronyo',
-			'oauth_token' => '1234567890abcdef',
-			'oauth_secret' => '1234567890abcdef',
+			'blog_id' => 5,
+			'social_id' => 5,
+			'additional_info' => 'plausible',
+			'can_push' => true,
+			'can_pull' => true,
 		];
 
 		foreach ($testData as $field => $value) {
@@ -57,20 +56,20 @@ final class SocialAccountTest extends TestCase {
 
 	public function testUndefinedFieldsThrowAnError() {
 		$this->expectNotice();
-		$model = new SocialAccount(withHelper: new SocialAccountTestHelper());
+		$model = new SocialAccountBlogLink(withHelper: new SocialAccountBlogLinkTestHelper());
 
 		$model->undefinedField = 'nope';
 	}
 
-	public function testStaticFactoryMethodsReturnSocialAccountModels() {
-		Environment::bootstrap(new SocialAccountTestEnvironment());
+	public function testStaticFactoryMethodsReturnSocialAccountBlogLinkModels() {
+		Environment::bootstrap(new SocialAccountBlogLinkTestEnvironment());
 
-		$this->assertInstanceOf(SocialAccount::class, SocialAccount::create());
+		$this->assertInstanceOf(SocialAccountBlogLink::class, SocialAccountBlogLink::create());
 
-		$multiple = SocialAccount::find(['prop' => 'erty']);
+		$multiple = SocialAccountBlogLink::find(['prop' => 'erty']);
 		$this->assertIsArray($multiple);
 		foreach($multiple as $single) {
-			$this->assertInstanceOf(SocialAccount::class, $single);
+			$this->assertInstanceOf(SocialAccountBlogLink::class, $single);
 		}
 	}
 }
