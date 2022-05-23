@@ -36,4 +36,11 @@ final class EnvironmentTest extends TestCase {
 		Environment::bootstrap(new Environment());
 		Environment::get()->registerEndpoint($stubEndpoint);
 	}
+
+	public function testItThrowsAnExceptionWhenGetHelperForModelIsNotImplemented(): void {
+		$this->expectException(EnvironmentException::class);
+
+		Environment::bootstrap(new Environment());
+		Environment::get()->getHelperForModel('Model\\Class');
+	}
 }

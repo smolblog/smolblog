@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Models;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Environment;
 use Smolblog\Core\Model;
 use Smolblog\Core\ModelHelper;
 use Smolblog\Core\Exceptions\ModelException;
@@ -23,6 +24,12 @@ final class SocialAccountTestHelper implements ModelHelper {
 
 	public function save(Model $model = null, array $withData = []): bool {
 		return true;
+	}
+}
+
+final class SocialAccountTestEnvironment extends Environment {
+	public function getHelperForModel(string $modelClass): ModelHelper {
+		return new SocialAccountTestHelper();
 	}
 }
 
@@ -52,5 +59,17 @@ final class SocialAccountTest extends TestCase {
 		$model = new SocialAccount(withHelper: new SocialAccountTestHelper());
 
 		$model->undefinedField = 'nope';
+	}
+
+	public function testStaticFactoryMethodsReturnSocialAccountModels() {
+		Environment::bootstrap(new SocialAccountTestEnvironment());
+
+		$this->assertInstanceOf(SocialAccount::class, SocialAccount::create());
+
+		$multiple = SocialAccount::find(['prop' => 'erty']);
+		$this->assertIsArray($multiple);
+		foreach($multiple as $single) {
+			$this->assertInstanceOf(SocialAccount::class, $single);
+		}
 	}
 }
