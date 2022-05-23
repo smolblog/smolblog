@@ -30,7 +30,9 @@ final class ModelTestEnvironment extends Environment {
 	}
 }
 
-final class ModelTestChild extends Model {}
+final class ModelTestChild extends Model {
+	protected array $fields = ['id'];
+}
 
 /** @backupStaticAttributes enabled */
 final class ModelTest extends TestCase {
@@ -110,4 +112,30 @@ final class ModelTest extends TestCase {
 			$this->assertInstanceOf(ModelTestChild::class, $single);
 		}
 	}
+
+	/*
+		Keeping this around in case we decide to do this, but for right now it's
+		just gold-plating to avoid a little boilerplate.
+
+	public function testItCanCreateRelatedModels() {
+		$props = [
+			'id' => 5,
+			'child_id' => 3,
+		];
+
+		$model = new class(
+			withHelper: new ModelTestHelper(),
+			withData: $props
+		) extends Model {
+			protected array $fields = [
+				'id',
+				'child_id' => ModelTestChild::class,
+			];
+		};
+
+		$childModel = $model->child;
+		$this->assertInstanceOf(ModelTestChild::class, $childModel);
+		$this->assertEquals($childModel->id, 3);
+	}
+	*/
 }
