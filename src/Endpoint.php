@@ -71,7 +71,7 @@ abstract class Endpoint {
 		SecurityLevel $security = SecurityLevel::Anonymous,
 		array $params = []
 	) {
-		$this->route = $route ?? getRouteFromName();
+		$this->route = $route ?? $this->getRouteFromName();
 		$this->verbs = $verbs;
 		$this->security = $security;
 		$this->params = $params;

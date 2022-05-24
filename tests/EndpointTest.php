@@ -1,62 +1,56 @@
 <?php
 
-namespace Smolblog\Core\Endpoints;
+namespace Smolblog\Core;
 
 use \JsonSerializable;
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Definitions\EndpointRequest;
 use Smolblog\Core\Definitions\HttpVerb;
 use Smolblog\Core\Definitions\SecurityLevel;
-use Smolblog\Core\Endpoints\BasicPublicEndpoint;
 
-final class ConcreteBasicPublicEndpoint extends BasicPublicEndpoint {
-	protected function responseBody(): array|JsonSerializable {
-		return [ 'test' => 'pass' ];
+final class EndpointTestImplemented extends Endpoint {
+	public function run(EndpointRequest $request): EndpointResponse {
+		return new EndpointResponse( [ 'test' => 'pass' ] );
 	}
 }
 
-final class BasicPublicEndpointTest extends TestCase {
+final class EndpointTest extends TestCase {
 	public function testItsRouteIsItsFullyQualifiedClassName(): void {
-		$endpoint = new ConcreteBasicPublicEndpoint();
+		$endpoint = new EndpointTestImplemented();
 		$this->assertEquals(
-			'smolblog/core/endpoints/concretebasicpublicendpoint',
-			$endpoint->route()
+			'smolblog/core/endpointtestimplemented',
+			$endpoint->route
 		);
 	}
 
 	public function testItRespondsToGet(): void {
-		$endpoint = new ConcreteBasicPublicEndpoint();
+		$endpoint = new EndpointTestImplemented();
 		$this->assertEquals(
 			[ HttpVerb::GET ],
-			$endpoint->verbs()
+			$endpoint->verbs
 		);
 	}
 
 	public function testItIsPublicallyAccessible(): void {
-		$endpoint = new ConcreteBasicPublicEndpoint();
+		$endpoint = new EndpointTestImplemented();
 		$this->assertEquals(
 			SecurityLevel::Anonymous,
-			$endpoint->security()
+			$endpoint->security
 		);
 	}
 
 	public function testItHasNoParameters(): void {
-		$endpoint = new ConcreteBasicPublicEndpoint();
-		$this->assertEmpty($endpoint->params());
+		$endpoint = new EndpointTestImplemented();
+		$this->assertEmpty($endpoint->params);
 	}
 
 	public function testItSuccessfullyResponds(): void {
-		$endpoint = new ConcreteBasicPublicEndpoint();
-		$response = $endpoint->run(new class implements EndpointRequest {
-			public function params(): array { return []; }
-			public function json(): array|false { return false; }
-			public function environment(): array { return []; }
-		});
+		$endpoint = new EndpointTestImplemented();
+		$response = $endpoint->run(new EndpointRequest());
 
-		$this->assertEquals(200, $response->statusCode());
+		$this->assertEquals(200, $response->statusCode);
 		$this->assertEquals(
 			'{"test":"pass"}',
-			json_encode($response->body())
+			json_encode($response->body)
 		);
 	}
 }
