@@ -1,19 +1,20 @@
 <?php
 
-namespace Smolblog\Core\Definitions;
+namespace Smolblog\Core;
+
+// This sniff apparently does not support `readonly`.
+//phpcs:disable Squiz.Commenting.VariableComment.Missing
 
 /**
  * Defines a parameter used by an Endpoint
- *
- * @see Smolblog\Core\Definitions\Endpoint
  */
-interface EndpointParameter {
+abstract class EndpointParameter {
 	/**
 	 * Name for this parameter.
 	 *
-	 * @return string
+	 * @var string
 	 */
-	public function name(): string;
+	public readonly string $name;
 
 	/**
 	 * Validate the parameter. Given the passed value, the function should return
@@ -26,7 +27,7 @@ interface EndpointParameter {
 	 * @param mixed $given_value Value of this parameter as given in the request.
 	 * @return boolean true if this is a valid value.
 	 */
-	public function validate(mixed $given_value): bool;
+	abstract public function validate(mixed $given_value): bool;
 
 	/**
 	 * Parse the paramter. This could involve converting a string to integer, an
@@ -35,5 +36,14 @@ interface EndpointParameter {
 	 * @param mixed $given_value Value of this parameter as given in the request.
 	 * @return mixed Parsed value of the parameter.
 	 */
-	public function parse(mixed $given_value): mixed;
+	abstract public function parse(mixed $given_value): mixed;
+
+	/**
+	 * Build this EndpointParameter
+	 *
+	 * @param string $name Name of the parameter.
+	 */
+	public function __construct(string $name) {
+		$this->name = $name;
+	}
 }
