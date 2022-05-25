@@ -41,7 +41,7 @@ class EndpointParameter {
 	 * @param mixed $given_value Value of this parameter as given in the request.
 	 * @return boolean true if this is a valid value.
 	 */
-	public function validate(mixed $given_value): bool {
+	public function validate(mixed $given_value = null): bool {
 		if (!isset($given_value) && $this->isRequired) {
 			return false;
 		}
@@ -55,7 +55,7 @@ class EndpointParameter {
 	 * @param mixed $given_value Value of this parameter as given in the request.
 	 * @return boolean true if this is a valid value.
 	 */
-	protected function extendedValidation(mixed $given_value): bool {
+	protected function extendedValidation(mixed $given_value = null): bool {
 		return true;
 	}
 
@@ -66,7 +66,7 @@ class EndpointParameter {
 	 * @param mixed $given_value Value of this parameter as given in the request.
 	 * @return mixed Parsed value of the parameter.
 	 */
-	public function parse(mixed $given_value): mixed {
+	public function parse(mixed $given_value = null): mixed {
 		if (!isset($given_value) && isset($this->defaultValue)) {
 			return $this->defaultValue;
 		}
@@ -80,7 +80,7 @@ class EndpointParameter {
 	 * @param mixed $given_value Value of this parameter as given in the request.
 	 * @return mixed Parsed value of the parameter.
 	 */
-	protected function extendedParsing(mixed $given_value): mixed {
+	protected function extendedParsing(mixed $given_value = null): mixed {
 		return $given_value;
 	}
 
