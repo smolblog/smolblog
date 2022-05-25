@@ -42,11 +42,11 @@ class EndpointParameter {
 	 * @return boolean true if this is a valid value.
 	 */
 	public function validate(mixed $given_value = null): bool {
-		if (!isset($given_value) && $this->isRequired) {
-			return false;
+		if (!isset($given_value)) {
+			return !$this->isRequired;
 		}
 
-		return $this->extendedValidation();
+		return $this->extendedValidation($given_value);
 	}
 
 	/**
@@ -67,7 +67,7 @@ class EndpointParameter {
 	 * @return mixed Parsed value of the parameter.
 	 */
 	public function parse(mixed $given_value = null): mixed {
-		if (!isset($given_value) && isset($this->defaultValue)) {
+		if (!isset($given_value)) {
 			return $this->defaultValue;
 		}
 
