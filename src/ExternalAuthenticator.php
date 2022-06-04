@@ -3,6 +3,7 @@
 namespace Smolblog\Core;
 
 use Smolblog\Core\Definitions\HttpVerb;
+use Smolblog\Core\Models\ExternalCredential;
 
 /**
  * Class to handle authenticating against an external OAuth provider.
@@ -36,23 +37,23 @@ abstract class ExternalAuthenticator {
 	 * Handle the OAuth callback from the provider and create the credential
 	 *
 	 * @param EndpointRequest $request Information sent from the provider.
-	 * @return object Created credentials
+	 * @return ExternalCredential Created credentials
 	 */
-	abstract public function handleCallback(EndpointRequest $request): object;
+	abstract public function handleCallback(EndpointRequest $request): ExternalCredential;
 
 	/**
 	 * Make a request to the external API with the given information.
 	 *
-	 * @param string      $againstEndpoint Endpoint of the external API to hit.
-	 * @param HttpVerb    $withVerb        HTTP method to use; defaults to GET.
-	 * @param object|null $withAccount     Account to use to authorize the request if needed.
-	 * @param string|null $withBody        Body of the request if needed.
+	 * @param string                  $againstEndpoint Endpoint of the external API to hit.
+	 * @param HttpVerb                $withVerb        HTTP method to use; defaults to GET.
+	 * @param ExternalCredential|null $withAccount     Account to use to authorize the request if needed.
+	 * @param string|null             $withBody        Body of the request if needed.
 	 * @return EndpointResponse Response from the external API.
 	 */
 	abstract public function makeAuthenticatedRequest(
 		string $againstEndpoint,
 		HttpVerb $withVerb = HttpVerb::GET,
-		object $withAccount = null,
+		ExternalCredential $withAccount = null,
 		string $withBody = null
 	): EndpointResponse;
 }
