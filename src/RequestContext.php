@@ -15,14 +15,14 @@ class RequestContext {
 	 *
 	 * @var User|null
 	 */
-	public ?User $user;
+	public readonly ?User $user;
 
 	/**
 	 * Site the request was made against.
 	 *
 	 * @var Site|null
 	 */
-	public ?Site $site;
+	public readonly ?Site $site;
 
 	/**
 	 * Create the context with the given info.
