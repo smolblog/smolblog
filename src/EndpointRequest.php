@@ -41,7 +41,7 @@ class EndpointRequest {
 	 * @param array|false    $json    Body of the request as an associative array (false if empty).
 	 */
 	public function __construct(
-		RequestContext $context,
+		RequestContext $context = new RequestContext(),
 		array $params = [],
 		array|false $json = false
 	) {

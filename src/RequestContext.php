@@ -5,6 +5,9 @@ namespace Smolblog\Core;
 use Smolblog\Core\Models\User;
 use Smolblog\Core\Models\Site;
 
+// This sniff apparently does not support `readonly`.
+//phpcs:disable Squiz.Commenting.VariableComment.Missing
+
 /**
  * Context for the current web request, including authenticated user and
  * attached site if present.
