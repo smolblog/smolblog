@@ -122,4 +122,36 @@ class Environment {
 	public function envVar(string $name): mixed {
 		return getenv($name);
 	}
+
+	/**
+	 * Store a temporary value that needs to persist between requests.
+	 *
+	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @param string  $name                   Name to recall this value by.
+	 * @param mixed   $value                  Value to store.
+	 * @param integer $secondsUntilExpiration Keep the value for up to this many seconds.
+	 * @return void
+	 */
+	public function setTransient(string $name, mixed $value, int $secondsUntilExpiration): void {
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'setTransient was called without being implemented.'
+		);
+	}
+
+	/**
+	 * Get a transient value if it exists.
+	 *
+	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @param string $name Name of the transient.
+	 * @return mixed Stored value; null if not found or expired.
+	 */
+	public function getTransientValue(string $name): mixed {
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'getTransientValue was called without being implemented.'
+		);
+
+		return null;
+	}
 }

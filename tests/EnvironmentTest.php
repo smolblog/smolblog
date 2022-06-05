@@ -68,4 +68,22 @@ final class EnvironmentTest extends TestCase {
 
 		$this->assertTrue($called, 'Callback should be called');
 	}
+
+	public function testItThrowsAnExceptionWhenSetTransientIsNotImplemented(): void {
+		$this->expectException(EnvironmentException::class);
+
+		Environment::bootstrap(new Environment());
+		Environment::get()->setTransient(
+			name: 'tempTransient',
+			value: 'tempValue',
+			secondsUntilExpiration: 1,
+		);
+	}
+
+	public function testItThrowsAnExceptionWhenGetTransientValueIsNotImplemented(): void {
+		$this->expectException(EnvironmentException::class);
+
+		Environment::bootstrap(new Environment());
+		Environment::get()->getTransientValue('tempTransient');
+	}
 }
