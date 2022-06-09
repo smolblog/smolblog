@@ -29,8 +29,21 @@ class Environment {
 	 */
 	private static ?Environment $singleton = null;
 
+	/**
+	 * Callbacks to call after the environment is bootstrapped.
+	 *
+	 * @var array
+	 */
 	private static $callAfterBootstrap = [];
 
+	/**
+	 * Queue $callback for calling after the Environment is bootstrapped.
+	 * 
+	 * If the environment is already bootstrapped, $callback is called immediately.
+	 *
+	 * @param callable $callback
+	 * @return void
+	 */
 	public static function addBootstrapCallback(callable $callback): void {
 		if (!self::$singleton) {
 			self::$callAfterBootstrap[] = $callback;
