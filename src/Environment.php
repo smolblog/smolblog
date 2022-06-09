@@ -38,10 +38,10 @@ class Environment {
 
 	/**
 	 * Queue $callback for calling after the Environment is bootstrapped.
-	 * 
+	 *
 	 * If the environment is already bootstrapped, $callback is called immediately.
 	 *
-	 * @param callable $callback
+	 * @param callable $callback Callable to run after bootstrapping.
 	 * @return void
 	 */
 	public static function addBootstrapCallback(callable $callback): void {
