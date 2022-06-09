@@ -43,4 +43,47 @@ final class EnvironmentTest extends TestCase {
 		Environment::bootstrap(new Environment());
 		Environment::get()->getHelperForModel('Model\\Class');
 	}
+
+	// https://stackoverflow.com/questions/9296529/phpunit-how-to-test-if-callback-gets-called
+	public function testItCanBeGivenACallbackBeforeBootstrapping(): void {
+		$called = false;
+		Environment::addBootstrapCallback(function() use (&$called) {
+			$called = true;
+		});
+
+		$this->assertFalse($called, 'Callback should not be called yet.');
+
+		Environment::bootstrap(new Environment());
+
+		$this->assertTrue($called, 'Callback should be called');
+	}
+
+	public function testItWillRunACallbackImmediatelyIfAlreadyBootstrapped(): void {
+		Environment::bootstrap(new Environment());
+
+		$called = false;
+		Environment::addBootstrapCallback(function() use (&$called) {
+			$called = true;
+		});
+
+		$this->assertTrue($called, 'Callback should be called');
+	}
+
+	public function testItThrowsAnExceptionWhenSetTransientIsNotImplemented(): void {
+		$this->expectException(EnvironmentException::class);
+
+		Environment::bootstrap(new Environment());
+		Environment::get()->setTransient(
+			name: 'tempTransient',
+			value: 'tempValue',
+			secondsUntilExpiration: 1,
+		);
+	}
+
+	public function testItThrowsAnExceptionWhenGetTransientValueIsNotImplemented(): void {
+		$this->expectException(EnvironmentException::class);
+
+		Environment::bootstrap(new Environment());
+		Environment::get()->getTransientValue('tempTransient');
+	}
 }

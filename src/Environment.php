@@ -30,6 +30,31 @@ class Environment {
 	private static ?Environment $singleton = null;
 
 	/**
+	 * Callbacks to call after the environment is bootstrapped.
+	 *
+	 * @var array
+	 */
+	private static $callAfterBootstrap = [];
+
+	/**
+	 * Queue $callback for calling after the Environment is bootstrapped.
+	 *
+	 * If the environment is already bootstrapped, $callback is called immediately.
+	 *
+	 * @param callable $callback Callable to run after bootstrapping.
+	 * @return void
+	 */
+	public static function addBootstrapCallback(callable $callback): void {
+		if (!self::$singleton) {
+			self::$callAfterBootstrap[] = $callback;
+			return;
+		}
+
+		// If we are already bootstrapped, then just run the function.
+		$callback();
+	}
+
+	/**
 	 * Load the given Environment as the current Environment.
 	 *
 	 * @param Environment $withEnvironment Environment for this implementation.
@@ -45,6 +70,10 @@ class Environment {
 		}
 
 		self::$singleton = $withEnvironment;
+
+		foreach (self::$callAfterBootstrap as $callback) {
+			$callback();
+		}
 	}
 
 	/**
@@ -105,5 +134,37 @@ class Environment {
 	 */
 	public function envVar(string $name): mixed {
 		return getenv($name);
+	}
+
+	/**
+	 * Store a temporary value that needs to persist between requests.
+	 *
+	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @param string  $name                   Name to recall this value by.
+	 * @param mixed   $value                  Value to store.
+	 * @param integer $secondsUntilExpiration Keep the value for up to this many seconds.
+	 * @return void
+	 */
+	public function setTransient(string $name, mixed $value, int $secondsUntilExpiration): void {
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'setTransient was called without being implemented.'
+		);
+	}
+
+	/**
+	 * Get a transient value if it exists.
+	 *
+	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @param string $name Name of the transient.
+	 * @return mixed Stored value; null if not found or expired.
+	 */
+	public function getTransientValue(string $name): mixed {
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'getTransientValue was called without being implemented.'
+		);
+
+		return null;
 	}
 }
