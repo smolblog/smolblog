@@ -29,6 +29,18 @@ class Environment {
 	 */
 	private static ?Environment $singleton = null;
 
+	private static $callAfterBootstrap = [];
+
+	public static function addBootstrapCallback(callable $callback): void {
+		if (!self::$singleton) {
+			self::$callAfterBootstrap[] = $callback;
+			return;
+		}
+
+		// If we are already bootstrapped, then just run the function.
+		$callback();
+	}
+
 	/**
 	 * Load the given Environment as the current Environment.
 	 *
@@ -45,6 +57,10 @@ class Environment {
 		}
 
 		self::$singleton = $withEnvironment;
+
+		foreach (self::$callAfterBootstrap as $callback) {
+			$callback();
+		}
 	}
 
 	/**
