@@ -8,7 +8,7 @@ use Smolblog\Core\Models\ExternalCredential;
 /**
  * Class to handle authenticating against an external OAuth provider.
  */
-abstract class ExternalAuthenticator {
+abstract class Connector {
 	/**
 	 * Identifier for the provider.
 	 *
@@ -16,13 +16,16 @@ abstract class ExternalAuthenticator {
 	 */
 	public string $slug;
 
+	protected ConnectionProvider $provider;
+
 	/**
 	 * Create the Authenticator
 	 *
 	 * @param string $slug Identifier for the provider.
 	 */
-	public function __construct(string $slug) {
-		$this->slug = $slug;
+	public function __construct(ConnectionProvider $provider, string $slug = null) {
+		$this->slug = $slug ?? $provider->slug();
+		$this->provider = $provider;
 	}
 
 	/**
