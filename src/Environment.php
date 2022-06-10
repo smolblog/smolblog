@@ -96,21 +96,6 @@ class Environment {
 	// Instance methods.
 
 	/**
-	 * Register the given Endpoint with the system to allow it to receive
-	 * requests.
-	 *
-	 * @throws EnvironmentException When this function is called without being implemented.
-	 * @param Endpoint $endpoint Endpoint to register.
-	 * @return void
-	 */
-	public function registerEndpoint(Endpoint $endpoint): void {
-		throw new EnvironmentException(
-			environment: self::$singleton,
-			message: 'registerEndpoint was called without being implemented.'
-		);
-	}
-
-	/**
 	 * Get a ModelHelper appropriate for the given class.
 	 *
 	 * @throws EnvironmentException When this function is called without being implemented.

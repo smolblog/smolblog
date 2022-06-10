@@ -28,15 +28,6 @@ final class EnvironmentTest extends TestCase {
 		$this->assertInstanceOf(Environment::class, Environment::get());
 	}
 
-	public function testItThrowsAnExceptionWhenRegisterEndpointIsNotImplemented(): void {
-		$this->expectException(EnvironmentException::class);
-
-		$stubEndpoint = $this->getMockBuilder(Endpoint::class)->getMock();
-
-		Environment::bootstrap(new Environment());
-		Environment::get()->registerEndpoint($stubEndpoint);
-	}
-
 	public function testItThrowsAnExceptionWhenGetHelperForModelIsNotImplemented(): void {
 		$this->expectException(EnvironmentException::class);
 
