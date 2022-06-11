@@ -28,7 +28,6 @@ final class RegistrarTestChildInt {
 	}
 }
 
-/** @backupStaticAttributes enabled */
 final class RegistrarTest extends TestCase {
 	public function testSpecificRegistrarCanBeCreated() {
 		$test = 'It\'s only a model.';

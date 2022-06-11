@@ -5,7 +5,6 @@ namespace Smolblog\Core\Registrars;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Connector;
 
-/** @backupStaticAttributes enabled */
 final class ConnectorRegistrarTest extends TestCase {
 	public function testConnectorCanBeRegisteredAndRetrieved() {
 		$expected = $this->getMockForAbstractClass(Connector::class);

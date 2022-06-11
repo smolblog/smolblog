@@ -5,7 +5,6 @@ namespace Smolblog\Core\Registrars;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Endpoint;
 
-/** @backupStaticAttributes enabled */
 final class EndpointRegistrarTest extends TestCase {
 	public function testEndpointCanBeRegisteredAndRetrieved() {
 		$expected = $this->getMockBuilder(Endpoint::class)->setConstructorArgs([])->getMock();

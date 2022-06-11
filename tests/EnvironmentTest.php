@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Definitions\Endpoint;
 use Smolblog\Core\Exceptions\EnvironmentException;
 
-/** @backupStaticAttributes enabled */
 final class EnvironmentTest extends TestCase {
 	public function testItThrowsAnExceptionWhenItIsNotBootstrapped(): void {
 		$this->expectException(EnvironmentException::class);
