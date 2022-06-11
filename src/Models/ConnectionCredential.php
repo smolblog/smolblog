@@ -17,6 +17,7 @@ class ConnectionCredential extends Model {
 	protected array $fields = [
 		'user_id',
 		'provider',
+		'provider_key',
 		'display_name',
 		'details',
 	];

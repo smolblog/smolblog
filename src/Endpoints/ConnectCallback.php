@@ -29,6 +29,13 @@ class ConnectInit extends Endpoint {
 		$connector = ConnectorRegistrar::retrieve($request->params['slug']);
 		$info = Environment::get()->getTransientValue(name: $request->params['state']);
 
+		if (!isset($info)) {
+			return new EndpointResponse(
+				statusCode: 400,
+				body: ['error' => 'An matching request was not found; please try again.'],
+			);
+		}
+
 		$credential = $connector->createCredential(code: $request->params['code'], info: $info);
 
 		return new EndpointResponse(statusCode: 200, body: ['credentialId' => $credential->id]);

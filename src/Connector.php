@@ -19,9 +19,10 @@ interface Connector {
 	/**
 	 * Get the information needed to start an OAuth session with the provider
 	 *
-	 * @return array
+	 * @param string $callbackUrl URL of the callback endpoint
+	 * @return ConnectorInitData
 	 */
-	public function getInitializationData(): array;
+	public function getInitializationData(string $callbackUrl): ConnectorInitData;
 
 	/**
 	 * Handle the OAuth callback from the provider and create the credential

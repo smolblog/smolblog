@@ -152,4 +152,13 @@ class Environment {
 
 		return null;
 	}
+
+	public function getFullRestUrl(string $route): string {
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'getFullRestUrl was called without being implemented.'
+		);
+
+		return $route;
+	}
 }

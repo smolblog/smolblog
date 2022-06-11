@@ -22,15 +22,18 @@ class ConnectInit extends Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
-		$connector = ConnectorRegistrar::retrieve($request->params['slug']);
-		$data = $connector->getInitializationData();
+		$env = Environment::get();
+		$providerSlug = $request->params['slug'];
+
+		$connector = ConnectorRegistrar::retrieve($providerSlug);
+		$data = $connector->getInitializationData($env->getFullRestUrl("connect/callback/$providerSlug"));
 
 		$info = [
-			...$data['info'],
-			'user' => $request->user->id,
+			...$data->info,
+			'user_id' => $request->user->id,
 		];
-		Environment::get()->setTransient(name: $data['key'], value: $info, secondsUntilExpiration: 300);
+		$env->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
 
-		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $info['url']]);
+		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $data->url]);
 	}
 }
