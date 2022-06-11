@@ -3,7 +3,7 @@
 namespace Smolblog\Core;
 
 use Smolblog\Core\Definitions\HttpVerb;
-use Smolblog\Core\Models\ExternalCredential;
+use Smolblog\Core\Models\ConnectionCredential;
 
 /**
  * Class to handle authenticating against an external provider.
@@ -28,7 +28,7 @@ interface Connector {
 	 *
 	 * @param string $code Code given to the OAuth callback.
 	 * @param array $info Info from the original request.
-	 * @return null|ExternalCredential Created credential, null on failure
+	 * @return null|ConnectionCredential Created credential, null on failure
 	 */
-	public function createCredential(string $code, array $info = []): ?ExternalCredential;
+	public function createCredential(string $code, array $info = []): ?ConnectionCredential;
 }

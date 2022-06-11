@@ -8,9 +8,9 @@ use Smolblog\Core\Model;
  * Stores information about credentials needed to authenticate against an
  * exteral API as a particular user.
  */
-class ExternalCredential extends Model {
+class ConnectionCredential extends Model {
 	/**
-	 * Fields available for an ExternalCredential.
+	 * Fields available for an ConnectionCredential.
 	 *
 	 * @var array
 	 */
