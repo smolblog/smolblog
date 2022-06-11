@@ -5,6 +5,7 @@ namespace Smolblog\Core\Endpoints;
 use Smolblog\Core\{Endpoint, EndpointRequest, EndpointResponse, Environment};
 use Smolblog\Core\Definitions\{HttpVerb, SecurityLevel};
 use Smolblog\Core\EndpointParameters\StringParameter;
+use Smolblog\Core\Registrars\ConnectorRegistrar;
 
 class ConnectInit extends Endpoint {
 	protected function initValues(): void {
@@ -21,6 +22,18 @@ class ConnectInit extends Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
+		$connector = ConnectorRegistrar::retrieve($request->params['slug']);
+		if (!$connector) {
+			return new EndpointResponse(
+				statusCode: 404,
+				body: ['error' => 'The given connector was not found', 'given' => $request->params['slug']]
+			);
+		}
 
+		$data = $connector->getInitializationData();
+		$info = [...$data['info'], 'user' => $request->user->id];
+		Environment::get()->setTransient(name: $data['key'], value: $info, secondsUntilExpiration: 300);
+
+		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $info['url']]);
 	}
 }
