@@ -4,6 +4,10 @@ namespace Smolblog\Core\Registrars;
 
 use Smolblog\Core\{Endpoint, Registrar};
 
+/**
+ * Registrar for Endpoints. Any endpoint registered here is assumed to be ready
+ * and able to accept requests.
+ */
 class EndpointRegistrar {
 	use Registrar;
 
