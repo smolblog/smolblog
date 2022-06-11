@@ -26,8 +26,9 @@ interface Connector {
 	/**
 	 * Handle the OAuth callback from the provider and create the credential
 	 *
-	 * @param EndpointRequest $request Information sent from the provider.
-	 * @return ExternalCredential Created credentials
+	 * @param string $code Code given to the OAuth callback.
+	 * @param array $info Info from the original request.
+	 * @return ExternalCredential Created credential
 	 */
-	public function handleCallback(EndpointRequest $request): ExternalCredential;
+	public function createCredential(string $code, array $info = []): ExternalCredential;
 }
