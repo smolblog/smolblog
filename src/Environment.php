@@ -153,10 +153,16 @@ class Environment {
 		return null;
 	}
 
-	public function getFullRestUrl(string $route): string {
+	/**
+	 * Get the base URL for the REST API endpoints. Includes a trailing slash.
+	 *
+	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @return string
+	 */
+	public function getBaseRestUrl(): string {
 		throw new EnvironmentException(
 			environment: self::$singleton,
-			message: 'getFullRestUrl was called without being implemented.'
+			message: 'getBaseRestUrl was called without being implemented.'
 		);
 
 		return $route;

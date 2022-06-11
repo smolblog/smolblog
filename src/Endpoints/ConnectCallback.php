@@ -7,7 +7,15 @@ use Smolblog\Core\Definitions\{HttpVerb, SecurityLevel};
 use Smolblog\Core\EndpointParameters\{ConnectorSlug, StringParameter};
 use Smolblog\Core\Registrars\ConnectorRegistrar;
 
-class ConnectInit extends Endpoint {
+/**
+ * Endpoint to handle an OAuth2 callback from a Connector's provider
+ */
+class ConnectCallback extends Endpoint {
+	/**
+	 * Set properties for this endpoint.
+	 *
+	 * @return void
+	 */
 	protected function initValues(): void {
 		$this->route = 'connect/callback/[slug]';
 		$this->verbs = [HttpVerb::GET];

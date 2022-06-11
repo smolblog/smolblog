@@ -4,6 +4,10 @@ namespace Smolblog\Core\EndpointParameters;
 
 use Smolblog\Core\Registrars\ConnectorRegistrar;
 
+/**
+ * Specialized parameter for requiring a slug that resolves to a valid
+ * Connector.
+ */
 class ConnectorSlug extends StringParameter {
 	/**
 	 * Validate that a Connector exists for the given parameter
@@ -25,7 +29,7 @@ class ConnectorSlug extends StringParameter {
 	/**
 	 * Redefine the constructor with all defaults.
 	 *
-	 * @param string  $name         Name of the parameter. Default 'slug'
+	 * @param string  $name         Name of the parameter. Default 'slug'.
 	 * @param boolean $isRequired   True if this parameter is required. Default true.
 	 * @param mixed   $defaultValue Default value if none is provided.
 	 */

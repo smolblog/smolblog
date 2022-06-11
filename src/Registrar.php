@@ -23,19 +23,49 @@ namespace Smolblog\Core;
  * ```
  */
 trait Registrar {
+	/**
+	 * Array to store the registered objects for later retrieval.
+	 *
+	 * @var array
+	 */
 	private static array $registry = [];
 
+	/**
+	 * Internal function to add an object to the registry. Will only work if both
+	 * $object and $slug are truthy.
+	 *
+	 * @param mixed  $object Object to store.
+	 * @param string $slug   Unique identifier for the object.
+	 * @return void
+	 */
 	protected static function addToRegistry(mixed $object = null, string $slug = ''): void {
 		if ($object && $slug) {
 			static::$registry[$slug] = $object;
 		}
 	}
 
+	/**
+	 * Get the object from the registry identified by $slug. Returns null if an
+	 * object is not found.
+	 *
+	 * @param string $slug Unique identifier for object.
+	 * @return mixed
+	 */
 	protected static function getFromRegistry(string $slug): mixed {
 		return static::$registry[$slug] ?? null;
 	}
 
+	/**
+	 * Required function for implementing classes to allow registration.
+	 *
+	 * @return void
+	 */
 	abstract public static function register();
 
+	/**
+	 * Required function for implementing classes to allow retrieval.
+	 *
+	 * @return void
+	 */
 	abstract public static function retrieve();
 }
