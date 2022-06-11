@@ -3,42 +3,23 @@
 namespace Smolblog\Core\EndpointParameters;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Connector;
+use Smolblog\Core\Registrars\ConnectorRegistrar;
 
 final class ConnectorSlugTest extends TestCase {
-	public function testItValidatesAnInteger() {
-		$param = new IntegerParameter(name: 'id');
+	public function testItAcceptsAKnownSlug(): void {
+		$connector = $this->getMockForAbstractClass(Connector::class);
+		$connector->expects($this->any())
+		          ->method('slug')
+		          ->will($this->returnValue('camelot'));
+		ConnectorRegistrar::register($connector);
 
-		$this->assertTrue($param->validate(5));
+		$parameter = new ConnectorSlug();
+		$this->assertTrue($parameter->validate($connector->slug()));
 	}
 
-	public function testItValidatesANumericString() {
-		$param = new IntegerParameter(name: 'id');
-
-		$this->assertTrue($param->validate('5'));
-	}
-
-	public function testItDoesNotValidateAnAlphanumericString() {
-		$param = new IntegerParameter(name: 'id');
-
-		$this->assertFalse($param->validate('Twenty'));
-	}
-
-	public function testItParsesANumericString() {
-		$param = new IntegerParameter(name: 'id');
-
-		$this->assertEquals(5, $param->parse('5'));
-	}
-
-	public function testItParsesAnInt() {
-		$param = new IntegerParameter(name: 'id');
-
-		$this->assertEquals(5, $param->parse(5));
-	}
-
-	public function testItParsesADecimalIntoAnInteger() {
-		$param = new IntegerParameter(name: 'id');
-
-		$this->assertEquals(intval(3.14), $param->parse('3.14'));
-		$this->assertEquals(intval(3.14), $param->parse(3.14));
+	public function testItRejectsAnUnknownSlug(): void {
+		$parameter = new ConnectorSlug();
+		$this->assertFalse($parameter->validate('nope'));
 	}
 }

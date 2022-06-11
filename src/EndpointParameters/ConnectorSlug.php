@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\EndpointParameters;
 
+use Smolblog\Core\Registrars\ConnectorRegistrar;
+
 class ConnectorSlug extends StringParameter {
 	/**
 	 * Validate that a Connector exists for the given parameter
@@ -18,5 +20,16 @@ class ConnectorSlug extends StringParameter {
 		}
 
 		return null !== ConnectorRegistrar::retrieve(slug: $given_value);
+	}
+
+	/**
+	 * Redefine the constructor with all defaults.
+	 *
+	 * @param string  $name         Name of the parameter. Default 'slug'
+	 * @param boolean $isRequired   True if this parameter is required. Default true.
+	 * @param mixed   $defaultValue Default value if none is provided.
+	 */
+	public function __construct(string $name = 'slug', bool $isRequired = true, mixed $defaultValue = null) {
+		parent::__construct(name: $name, isRequired: $isRequired, defaultValue: $defaultValue);
 	}
 }
