@@ -7,8 +7,8 @@ use Smolblog\Core\{Endpoint, Registrar};
 class EndpointRegistrar {
 	use Registrar;
 
-	public static function register(Endpoint $object = null, string $withSlug = ''): void {
-		static::addToRegistry(object: $object, slug: $withSlug);
+	public static function register(Endpoint $endpoint = null, string $withSlug = ''): void {
+		static::addToRegistry(object: $endpoint, slug: $withSlug);
 	}
 
 	public static function retrieve(string $slug = ''): ?Endpoint {

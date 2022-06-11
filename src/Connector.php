@@ -28,7 +28,7 @@ interface Connector {
 	 *
 	 * @param string $code Code given to the OAuth callback.
 	 * @param array $info Info from the original request.
-	 * @return ExternalCredential Created credential
+	 * @return null|ExternalCredential Created credential, null on failure
 	 */
-	public function createCredential(string $code, array $info = []): ExternalCredential;
+	public function createCredential(string $code, array $info = []): ?ExternalCredential;
 }

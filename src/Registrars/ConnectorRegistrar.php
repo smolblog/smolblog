@@ -2,13 +2,14 @@
 
 namespace Smolblog\Core\Registrars;
 
-use Smolblog\Core\{ConnectionProvider, Registrar};
+use Smolblog\Core\{Connector, Registrar};
 
 class ConnectorRegistrar {
 	use Registrar;
 
-	public static function register(Connector $object = null, string $withSlug = ''): void {
-		static::addToRegistry(object: $object, slug: $withSlug);
+	public static function register(Connector $connector = null, ?string $withSlug = null): void {
+		$slug = $withSlug ?? $connector->slug();
+		static::addToRegistry(object: $connector, slug: $slug);
 	}
 
 	public static function retrieve(string $slug = ''): ?Connector {
