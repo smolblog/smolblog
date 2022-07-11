@@ -94,7 +94,7 @@ class Model {
 			return null;
 		}
 
-		return $this->data[ $name ];
+		return $this->data[ $name ] ?? null;
 	}
 
 	/**
