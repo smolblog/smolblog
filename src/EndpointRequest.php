@@ -12,18 +12,11 @@ use Smolblog\Core\Definitions\HttpVerb;
  */
 class EndpointRequest {
 	/**
-	 * ID of authenticated user making the request; 0 if anonymous.
+	 * Context of the request (user and site)
 	 *
-	 * @var integer
+	 * @var RequestContext
 	 */
-	public readonly int $userId;
-
-	/**
-	 * ID of the site this request was made to.
-	 *
-	 * @var integer
-	 */
-	public readonly int $siteId;
+	public readonly RequestContext $context;
 
 	/**
 	 * Parsed params as defined by the Endpoint
@@ -43,19 +36,16 @@ class EndpointRequest {
 	/**
 	 * Build the EndpointRequest
 	 *
-	 * @param integer     $userId ID of authenticated user making the request; 0 if anonymous.
-	 * @param integer     $siteId ID of the site this request was made to.
-	 * @param array       $params Parsed params as defined by the Endpoint.
-	 * @param array|false $json   Body of the request as an associative array (false if empty).
+	 * @param RequestContext $context Context for the request.
+	 * @param array          $params  Parsed params as defined by the Endpoint.
+	 * @param array|false    $json    Body of the request as an associative array (false if empty).
 	 */
 	public function __construct(
-		int $userId = 0,
-		int $siteId = 0,
+		RequestContext $context = new RequestContext(),
 		array $params = [],
 		array|false $json = false
 	) {
-		$this->userId = $userId;
-		$this->siteId = $siteId;
+		$this->context = $context;
 		$this->params = $params;
 		$this->json = $json;
 	}

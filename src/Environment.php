@@ -96,21 +96,6 @@ class Environment {
 	// Instance methods.
 
 	/**
-	 * Register the given Endpoint with the system to allow it to receive
-	 * requests.
-	 *
-	 * @throws EnvironmentException When this function is called without being implemented.
-	 * @param Endpoint $endpoint Endpoint to register.
-	 * @return void
-	 */
-	public function registerEndpoint(Endpoint $endpoint): void {
-		throw new EnvironmentException(
-			environment: self::$singleton,
-			message: 'registerEndpoint was called without being implemented.'
-		);
-	}
-
-	/**
 	 * Get a ModelHelper appropriate for the given class.
 	 *
 	 * @throws EnvironmentException When this function is called without being implemented.
@@ -166,5 +151,20 @@ class Environment {
 		);
 
 		return null;
+	}
+
+	/**
+	 * Get the base URL for the REST API endpoints. Includes a trailing slash.
+	 *
+	 * @throws EnvironmentException When this function is called without being implemented.
+	 * @return string
+	 */
+	public function getBaseRestUrl(): string {
+		throw new EnvironmentException(
+			environment: self::$singleton,
+			message: 'getBaseRestUrl was called without being implemented.'
+		);
+
+		return $route;
 	}
 }

@@ -71,10 +71,12 @@ abstract class Endpoint {
 		SecurityLevel $security = SecurityLevel::Anonymous,
 		array $params = []
 	) {
-		$this->route = $route ?? $this->getRouteFromName();
-		$this->verbs = $verbs;
-		$this->security = $security;
-		$this->params = $params;
+		$this->initValues();
+
+		$this->route ??= $route ?? $this->getRouteFromName();
+		$this->verbs ??= $verbs;
+		$this->security ??= $security;
+		$this->params ??= $params;
 
 		$this->setup();
 	}
@@ -95,6 +97,15 @@ abstract class Endpoint {
 	protected function getRouteFromName(): string {
 		$lowercase_name = strtolower(get_class($this));
 		return str_replace('\\', '/', $lowercase_name);
+	}
+
+	/**
+	 * Called before member variables are assigned. Any values set here will
+	 * not be overridden in the constructor.
+	 *
+	 * @return void
+	 */
+	protected function initValues(): void {
 	}
 
 	/**

@@ -1,0 +1,12 @@
+<phpunit
+	bootstrap="vendor/autoload.php"
+	backupStaticAttributes="true"
+	colors="true"
+	testdox="true"
+>
+	<testsuites>
+		<testsuite name="core">
+			<directory>tests</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
