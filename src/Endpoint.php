@@ -17,8 +17,6 @@ abstract class Endpoint {
 	 * To declare URL parameters, like `/blog/57/info`, use a regular expression:
 	 * `/blog/(?P<id>[0-9]+)/info`.
 	 *
-	 * Ignore PHPCS until it supports readonly.
-	 *
 	 * @var string
 	 */
 	public readonly string $route;

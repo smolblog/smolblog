@@ -70,14 +70,14 @@ class App {
 	 * @return void
 	 */
 	public function startup(): void {
-		// Load models into container.
-		foreach ($models as $model) {
+		// Load classes into container.
+		foreach ([...$models, ...$endpoints] as $model) {
 			$this->container->add($model);
 		}
 
 		// Register endpoints with external system.
 		foreach ($endpoints as $endpoint) {
-			$this->endpointRegistrar->registerEndpoint($endpoint);
+			$this->endpointRegistrar->registerEndpoint(new $endpoint());
 		}
 
 		// We're done with our part; fire the event!
