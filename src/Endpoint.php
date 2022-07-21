@@ -2,9 +2,6 @@
 
 namespace Smolblog\Core;
 
-// This sniff apparently does not support `readonly`.
-//phpcs:disable Squiz.Commenting.VariableComment.Missing
-
 use Smolblog\Core\Definitions\HttpVerb;
 use Smolblog\Core\Definitions\SecurityLevel;
 
@@ -30,9 +27,8 @@ abstract class Endpoint {
 	 * HTTP verbs this endpoint will respond to. Given as an array of HttpVerb
 	 * enum instances.
 	 *
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
-	 *
 	 * @var HttpVerb[]
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 	 */
 	public readonly array $verbs;
 
