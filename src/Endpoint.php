@@ -62,12 +62,11 @@ abstract class Endpoint {
 	 */
 	public function __construct(App $app) {
 		$this->app = $app;
-		$this->initValues();
 
-		$this->route ??= $this->getRouteFromName();
-		$this->verbs ??= [HttpVerb::GET];
-		$this->security ??= SecurityLevel::Anonymous;
-		$this->params ??= [];
+		$this->route = $this->initRoute();
+		$this->verbs = $this->initVerbs();
+		$this->security = $this->initSecurity();
+		$this->params = $this->initParams();
 
 		$this->setup();
 	}
@@ -90,13 +89,17 @@ abstract class Endpoint {
 		return str_replace('\\', '/', $lowercase_name);
 	}
 
-	/**
-	 * Called before member variables are assigned. Any values set here will
-	 * not be overridden in the constructor.
-	 *
-	 * @return void
-	 */
-	protected function initValues(): void {
+	protected function initRoute(): string {
+		return $this->getRouteFromName();
+	}
+	protected function initVerbs(): array {
+		return [HttpVerb::GET];
+	}
+	protected function initSecurity(): SecurityLevel {
+		return SecurityLevel::Anonymous;
+	}
+	protected function initParams(): array {
+		return [];
 	}
 
 	/**

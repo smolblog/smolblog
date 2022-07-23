@@ -25,7 +25,7 @@ class App {
 	 *
 	 * @var EndpointRegistrar
 	 */
-	public readonly EndpointRegistrar $endpointRegistrar;
+	public readonly EndpointRegistrar $endpoints;
 
 	/**
 	 * Construct a new App. Requires a dependency injection container and event dispatcher.
@@ -41,27 +41,23 @@ class App {
 	) {
 		$this->container = $withContainer;
 		$this->dispatcher = $withDispatcher;
-		$this->endpointRegistrar = $withEndpointRegistrar;
+		$this->endpoints = $withEndpointRegistrar;
 	}
 
 	/**
-	 * Models that will need dependencies defined
+	 * Classes to register with the container
 	 *
 	 * @var array
 	 */
-	protected $models = [
-		Models\ConnectionCredential::class,
-		Models\User::class,
-	];
-
-	/**
-	 * REST endpoints that need to be registered to the framework
-	 *
-	 * @var array
-	 */
-	protected $endpoints = [
-		Endpoints\ConnectCallback::class,
-		Endpoints\ConnectInit::class,
+	protected $classes = [
+		'Models' => [
+			Models\ConnectionCredential::class,
+			Models\User::class,
+		],
+		'Endpoints' => [
+			Endpoints\ConnectCallback::class,
+			Endpoints\ConnectInit::class,
+		]
 	];
 
 	/**
@@ -71,13 +67,13 @@ class App {
 	 */
 	public function startup(): void {
 		// Load classes into container.
-		foreach ([...$models, ...$endpoints] as $model) {
-			$this->container->add($model);
-		}
+		array_walk_recursive($this->classes, function ($class) {
+			$this->container->add($class);
+		});
 
 		// Register endpoints with external system.
-		foreach ($endpoints as $endpoint) {
-			$this->endpointRegistrar->registerEndpoint(new $endpoint($this));
+		foreach ($this->classes['Endpoints'] as $endpoint) {
+			$this->endpoints->registerEndpoint(new $endpoint($this));
 		}
 
 		// We're done with our part; fire the event!

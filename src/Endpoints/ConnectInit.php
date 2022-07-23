@@ -12,16 +12,18 @@ use Smolblog\Core\Registrars\ConnectorRegistrar;
  * redirected to it or shown the URL in some way.
  */
 class ConnectInit extends Endpoint {
-	/**
-	 * Set up the properties for this Endpoint.
-	 *
-	 * @return void
-	 */
-	protected function initValues(): void {
-		$this->route = 'connect/init/[slug]';
-		$this->verbs = [HttpVerb::GET];
-		$this->security = SecurityLevel::Registered;
-		$this->params = [new ConnectorSlug(name: 'slug', isRequired: true)];
+	protected function initRoute(): string {
+		return 'connect/init/[slug]';
+	}
+
+	protected function initSecurity(): SecurityLevel {
+		return SecurityLevel::Registered;
+	}
+
+	protected function initParams(): array {
+		return [
+			new ConnectorSlug(name: 'slug', isRequired: true),
+		];
 	}
 
 	/**

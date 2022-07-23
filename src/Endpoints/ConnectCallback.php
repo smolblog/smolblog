@@ -11,6 +11,18 @@ use Smolblog\Core\Registrars\ConnectorRegistrar;
  * Endpoint to handle an OAuth2 callback from a Connector's provider
  */
 class ConnectCallback extends Endpoint {
+	protected function initRoute(): string {
+		return 'connect/callback/[slug]';
+	}
+
+	protected function initParams(): array {
+		return [
+			new ConnectorSlug(name: 'slug', isRequired: true),
+			new StringParameter(name: 'state', isRequired: true),
+			new StringParameter(name: 'code', isRequired: true),
+		];
+	}
+
 	/**
 	 * Set properties for this endpoint.
 	 *
