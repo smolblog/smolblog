@@ -77,7 +77,7 @@ class App {
 
 		// Register endpoints with external system.
 		foreach ($endpoints as $endpoint) {
-			$this->endpointRegistrar->registerEndpoint(new $endpoint());
+			$this->endpointRegistrar->registerEndpoint(new $endpoint($this));
 		}
 
 		// We're done with our part; fire the event!

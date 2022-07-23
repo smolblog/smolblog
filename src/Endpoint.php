@@ -10,6 +10,13 @@ use Smolblog\Core\Definitions\SecurityLevel;
  */
 abstract class Endpoint {
 	/**
+	 * Application instance this endpoint belongs to.
+	 *
+	 * @var App
+	 */
+	private App $app;
+
+	/**
 	 * The given route for this endpoint. If the endpoint is
 	 * `smolblog.com/api/blog/info`, then this function should return
 	 * `/blog/info` or `blog/info` (the opening slash will be inferred).
@@ -51,26 +58,16 @@ abstract class Endpoint {
 	/**
 	 * Create the Endpoint.
 	 *
-	 * Subclasses are encouraged to use the `setup()` function instead of
-	 * overriding this constructor.
-	 *
-	 * @param string              $route    Route for the endpoint. Will use fully-qualified class name if none given.
-	 * @param HttpVerb[]          $verbs    HTTP verbs the endpoint responds to. Defaults to GET.
-	 * @param SecurityLevel       $security Security level for the endpoint. Defaults to Anonymous.
-	 * @param EndpointParameter[] $params   Array of parameters the endpoint accepts. Defaults to none.
+	 * @param App $app Application instance.
 	 */
-	public function __construct(
-		string $route = null,
-		array $verbs = [HttpVerb::GET],
-		SecurityLevel $security = SecurityLevel::Anonymous,
-		array $params = []
-	) {
+	public function __construct(App $app) {
+		$this->app = $app;
 		$this->initValues();
 
-		$this->route ??= $route ?? $this->getRouteFromName();
-		$this->verbs ??= $verbs;
-		$this->security ??= $security;
-		$this->params ??= $params;
+		$this->route ??= $this->getRouteFromName();
+		$this->verbs ??= [HttpVerb::GET];
+		$this->security ??= SecurityLevel::Anonymous;
+		$this->params ??= [];
 
 		$this->setup();
 	}

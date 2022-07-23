@@ -14,8 +14,13 @@ final class EndpointTestImplemented extends Endpoint {
 }
 
 final class EndpointTest extends TestCase {
+	private $appDouble;
+	public function setUp(): void {
+		$this->appDouble = $this->createStub(App::class);
+	}
+
 	public function testItsRouteIsItsFullyQualifiedClassName(): void {
-		$endpoint = new EndpointTestImplemented();
+		$endpoint = new EndpointTestImplemented($this->appDouble);
 		$this->assertEquals(
 			'smolblog/core/endpointtestimplemented',
 			$endpoint->route
@@ -23,7 +28,7 @@ final class EndpointTest extends TestCase {
 	}
 
 	public function testItRespondsToGet(): void {
-		$endpoint = new EndpointTestImplemented();
+		$endpoint = new EndpointTestImplemented($this->appDouble);
 		$this->assertEquals(
 			[ HttpVerb::GET ],
 			$endpoint->verbs
@@ -31,7 +36,7 @@ final class EndpointTest extends TestCase {
 	}
 
 	public function testItIsPublicallyAccessible(): void {
-		$endpoint = new EndpointTestImplemented();
+		$endpoint = new EndpointTestImplemented($this->appDouble);
 		$this->assertEquals(
 			SecurityLevel::Anonymous,
 			$endpoint->security
@@ -39,12 +44,12 @@ final class EndpointTest extends TestCase {
 	}
 
 	public function testItHasNoParameters(): void {
-		$endpoint = new EndpointTestImplemented();
+		$endpoint = new EndpointTestImplemented($this->appDouble);
 		$this->assertEmpty($endpoint->params);
 	}
 
 	public function testItSuccessfullyResponds(): void {
-		$endpoint = new EndpointTestImplemented();
+		$endpoint = new EndpointTestImplemented($this->appDouble);
 		$response = $endpoint->run(new EndpointRequest());
 
 		$this->assertEquals(200, $response->statusCode);
