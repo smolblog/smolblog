@@ -7,7 +7,16 @@ use Smolblog\Core\EndpointParameter;
 /**
  * EndpointParameter that accepts and validates an integer
  */
-class IntegerParameter extends EndpointParameter {
+class IntegerParameter extends BasicParameter {
+	/**
+	 * A regular expression to validate the parameter. Often required by URL params.
+	 *
+	 * @return string
+	 */
+	public function regex(): string {
+		return $this->isRequired ? '[0-9]+' : '[0-9]*';
+	}
+
 	/**
 	 * Validate that the given value _can_ be an integer
 	 *

@@ -8,7 +8,7 @@ use Smolblog\Core\EndpointParameter;
 /**
  * EndpointParameter that parses the value as a string
  */
-class StringParameter extends EndpointParameter {
+class StringParameter extends BasicParameter {
 	/**
 	 * Validate that the given value _can_ be a string
 	 *

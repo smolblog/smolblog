@@ -8,7 +8,21 @@ use Smolblog\Core\Registrars\ConnectorRegistrar;
  * Specialized parameter for requiring a slug that resolves to a valid
  * Connector.
  */
-class ConnectorSlug extends StringParameter {
+class ConnectorSlug extends BasicParameter {
+	/**
+	 * Name for this parameter.
+	 *
+	 * @var string
+	 */
+	protected string $name = 'slug';
+
+	/**
+	 * True if this is a required parameter.
+	 *
+	 * @var boolean
+	 */
+	protected bool $isRequired = true;
+
 	/**
 	 * Validate that a Connector exists for the given parameter
 	 *

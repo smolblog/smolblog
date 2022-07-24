@@ -21,8 +21,8 @@ abstract class Endpoint {
 	 * `smolblog.com/api/blog/info`, then this function should return
 	 * `/blog/info` or `blog/info` (the opening slash will be inferred).
 	 *
-	 * To declare URL parameters, like `/blog/57/info`, use a regular expression:
-	 * `/blog/(?P<id>[0-9]+)/info`.
+	 * To declare URL parameters, add the parameter's slug within brackets
+	 * (e.g. `post/[id]/comments`).
 	 *
 	 * @var string
 	 */
@@ -89,15 +89,38 @@ abstract class Endpoint {
 		return str_replace('\\', '/', $lowercase_name);
 	}
 
+	/**
+	 * Sets the route for this endpoint. Default is fully qualified class name; override as needed.
+	 *
+	 * @return string
+	 */
 	protected function initRoute(): string {
 		return $this->getRouteFromName();
 	}
+
+	/**
+	 * Sets the HTTP verbs this endpoint responds to. Default is GET.
+	 *
+	 * @return array
+	 */
 	protected function initVerbs(): array {
 		return [HttpVerb::GET];
 	}
+
+	/**
+	 * Sets the security level for this endpoint. Default is Anonymous (no security).
+	 *
+	 * @return SecurityLevel
+	 */
 	protected function initSecurity(): SecurityLevel {
 		return SecurityLevel::Anonymous;
 	}
+
+	/**
+	 * Sets the parameters for this endpoint. Default is none.
+	 *
+	 * @return array
+	 */
 	protected function initParams(): array {
 		return [];
 	}
