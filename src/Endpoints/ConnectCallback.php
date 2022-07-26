@@ -24,22 +24,6 @@ class ConnectCallback extends Endpoint {
 	}
 
 	/**
-	 * Set properties for this endpoint.
-	 *
-	 * @return void
-	 */
-	protected function initValues(): void {
-		$this->route = 'connect/callback/[slug]';
-		$this->verbs = [HttpVerb::GET];
-		$this->security = SecurityLevel::Anonymous;
-		$this->params = [
-			new ConnectorSlug(name: 'slug', isRequired: true),
-			new StringParameter(name: 'state', isRequired: true),
-			new StringParameter(name: 'code', isRequired: true),
-		];
-	}
-
-	/**
 	 * Perform the action associated with this endpoint and return the response.
 	 *
 	 * @param EndpointRequest $request Full information of the HTTP request.
@@ -52,7 +36,7 @@ class ConnectCallback extends Endpoint {
 		if (!isset($info)) {
 			return new EndpointResponse(
 				statusCode: 400,
-				body: ['error' => 'An matching request was not found; please try again.'],
+				body: ['error' => 'A matching request was not found; please try again.'],
 			);
 		}
 

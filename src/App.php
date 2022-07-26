@@ -28,20 +28,30 @@ class App {
 	public readonly EndpointRegistrar $endpoints;
 
 	/**
+	 * Environment information
+	 *
+	 * @var Environment
+	 */
+	public readonly Environment $environment;
+
+	/**
 	 * Construct a new App. Requires a dependency injection container and event dispatcher.
 	 *
 	 * @param Container         $withContainer         Dependency Injection container.
 	 * @param EventDispatcher   $withDispatcher        Event dispatcher.
 	 * @param EndpointRegistrar $withEndpointRegistrar Endpoint registrar.
+	 * @param Environment       $withEnvironment       Environment information.
 	 */
 	public function __construct(
 		Container $withContainer,
 		EventDispatcher $withDispatcher,
-		EndpointRegistrar $withEndpointRegistrar
+		EndpointRegistrar $withEndpointRegistrar,
+		Environment $withEnvironment
 	) {
 		$this->container = $withContainer;
 		$this->dispatcher = $withDispatcher;
 		$this->endpoints = $withEndpointRegistrar;
+		$this->environment = $withEnvironment;
 	}
 
 	/**
