@@ -5,19 +5,19 @@ namespace Smolblog\Core;
 /**
  * Trait to handle linking classes to their particular context
  *
- * Classes with this trait are required to implement `register` and `retrieve`
- * functions as their public interface. An example:
+ * It is recommended that implmenting classes have `register` and `retrieve` functions
+ * with type hinting.
  *
  * ```php
  * final class StringRegistrar {
  *   use Registrar;
  *
- *   public static function register(string $value = null, string $withSlug = ''): void {
- *     static::addToRegistry(object: $value, slug: $withSlug);
+ *   public function register(string $value = null, string $withSlug = ''): void {
+ *     $this->addToRegistry(object: $value, slug: $withSlug);
  *   }
  *
- *   public static function retrieve(string $slug = ''): ?string {
- *     return static::getFromRegistry(slug: $slug);
+ *   public function retrieve(string $slug = ''): ?string {
+ *     return $this->getFromRegistry(slug: $slug);
  *   }
  * }
  * ```
@@ -28,7 +28,7 @@ trait Registrar {
 	 *
 	 * @var array
 	 */
-	private static array $registry = [];
+	private array $registry = [];
 
 	/**
 	 * Internal function to add an object to the registry. Will only work if both
@@ -38,9 +38,9 @@ trait Registrar {
 	 * @param string $slug   Unique identifier for the object.
 	 * @return void
 	 */
-	protected static function addToRegistry(mixed $object = null, string $slug = ''): void {
+	protected function addToRegistry(mixed $object, string $slug): void {
 		if ($object && $slug) {
-			static::$registry[$slug] = $object;
+			$this->registry[$slug] = $object;
 		}
 	}
 
@@ -51,21 +51,7 @@ trait Registrar {
 	 * @param string $slug Unique identifier for object.
 	 * @return mixed
 	 */
-	protected static function getFromRegistry(string $slug): mixed {
-		return static::$registry[$slug] ?? null;
+	protected function getFromRegistry(string $slug): mixed {
+		return $this->registry[$slug] ?? null;
 	}
-
-	/**
-	 * Required function for implementing classes to allow registration.
-	 *
-	 * @return void
-	 */
-	abstract public static function register();
-
-	/**
-	 * Required function for implementing classes to allow retrieval.
-	 *
-	 * @return void
-	 */
-	abstract public static function retrieve();
 }

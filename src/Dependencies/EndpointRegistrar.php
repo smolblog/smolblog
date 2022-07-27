@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Dependencies;
 
 /**
  * Interface for a class that can take a Smolblog\Core\Endpoint and register it correctly with the external system.

@@ -2,6 +2,9 @@
 
 namespace Smolblog\Core;
 
+use Smolblog\Core\Dependencies\{Container, ContainerDefinition, EndpointRegistrar, Environment, EventDispatcher};
+use Smolblog\Core\Registrars\ConnectorRegistrar;
+
 /**
  * The core app class.
  */
@@ -25,7 +28,7 @@ class App {
 	 *
 	 * @var EndpointRegistrar
 	 */
-	public readonly EndpointRegistrar $endpoints;
+	private EndpointRegistrar $endpoints;
 
 	/**
 	 * Environment information
@@ -33,6 +36,13 @@ class App {
 	 * @var Environment
 	 */
 	public readonly Environment $environment;
+
+	/**
+	 * Registrar for Connector objects (for social media connections)
+	 *
+	 * @var ConnectorRegistrar
+	 */
+	public readonly ConnectorRegistrar $connectors;
 
 	/**
 	 * Construct a new App. Requires a dependency injection container and event dispatcher.
@@ -52,6 +62,8 @@ class App {
 		$this->dispatcher = $withDispatcher;
 		$this->endpoints = $withEndpointRegistrar;
 		$this->environment = $withEnvironment;
+
+		$this->connectors = new ConnectorRegistrar();
 	}
 
 	/**
@@ -80,6 +92,7 @@ class App {
 		array_walk_recursive($this->classes, function ($class) {
 			$this->container->add($class);
 		});
+		$this->dispatcher->dispatch(new Events\CoreClassesLoaded($this->container));
 
 		// Register endpoints with external system.
 		foreach ($this->classes['Endpoints'] as $endpoint) {

@@ -14,11 +14,11 @@ class ConnectorRegistrar {
 	 * Add a Connector instance to the registry. A slug can be provided, or it
 	 * can default to the Connector's slug() method.
 	 *
-	 * @param Connector|null $connector Connector object to store.
-	 * @param string|null    $withSlug  Short string to uniquely identify the object.
+	 * @param Connector   $connector Connector object to store.
+	 * @param string|null $withSlug  Short string to uniquely identify the object.
 	 * @return void
 	 */
-	public static function register(Connector $connector = null, ?string $withSlug = null): void {
+	public static function register(Connector $connector, ?string $withSlug = null): void {
 		$slug = $withSlug ?? $connector->slug();
 		static::addToRegistry(object: $connector, slug: $slug);
 	}
@@ -30,7 +30,7 @@ class ConnectorRegistrar {
 	 * @param string $slug Identifier for the Connector to retrieve.
 	 * @return Connector|null
 	 */
-	public static function retrieve(string $slug = ''): ?Connector {
+	public static function retrieve(string $slug): ?Connector {
 		return static::getFromRegistry(slug: $slug);
 	}
 }
