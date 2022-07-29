@@ -8,39 +8,13 @@ use Smolblog\Core\Exceptions\ModelException;
 /**
  * An object backed by a persistant data store of some kind.
  */
-class Model {
-	/**
-	 * Create a new Model instance. If data is provided, the model will attempt
-	 * to find an existing instance and will load its data if it exists. If it
-	 * does not exist, a new Model will be initialized with the given data.
-	 *
-	 * @param array $withData Data to find or initialize with.
-	 * @return static New Model instance with given data and appropriate helper
-	 */
-	public static function create(array $withData = []): static {
-		$helper = Environment::get()->getHelperForModel(static::class);
-		return new static(withHelper: $helper, withData: $withData);
-	}
-
-	/**
-	 * Find all instances with the given properties. If no properties are given,
-	 * returns an array of all instances.
-	 *
-	 * @param array $withProperties Properties to search for.
-	 * @return static[] Array of Model instances that match the properties
-	 */
-	public static function find(array $withProperties = []): array {
-		$helper = Environment::get()->getHelperForModel(static::class);
-		return $helper->findAll(forModelClass: static::class, withProperties: $withProperties);
-	}
-
-
+abstract class Model {
 	/**
 	 * Store the ModelHelper for this instance.
 	 *
-	 * @var ModelHelper|null
+	 * @var ModelHelper
 	 */
-	protected ?ModelHelper $helper;
+	protected ModelHelper $helper;
 
 	/**
 	 * Store the data for this Model.
@@ -66,14 +40,10 @@ class Model {
 	/**
 	 * Construct a new Model with the given ModelHelper.
 	 *
-	 * @throws ModelException If the Model requires a helper but does not get one.
 	 * @param ModelHelper|null $withHelper Helper for this instance.
-	 * @param array            $withData   Data to initialize/find model with.
 	 */
-	public function __construct(?ModelHelper $withHelper = null, array $withData = []) {
+	public function __construct(ModelHelper $withHelper) {
 		$this->helper = $withHelper;
-		$this->data = $withData;
-		$this->loadInitData();
 	}
 
 	/**
@@ -106,12 +76,15 @@ class Model {
 	 * @return void
 	 */
 	public function __set(string $name, mixed $value): void {
-		if (!in_array($name, $this->fields)) {
+		$error = $this->fieldValidationErrorMessage($name, $value);
+		if (isset($error)) {
 			$trace = debug_backtrace();
 			trigger_error(
-				'Undefined property ' . $name .
+				'Invalid value ' . $value .
+				' for field ' . $name .
 				' set in ' . $trace[0]['file'] .
-				' on line ' . $trace[0]['line'],
+				' on line ' . $trace[0]['line'] .
+				'; ' . $error,
 				E_USER_NOTICE
 			);
 			return;
@@ -120,6 +93,15 @@ class Model {
 		$this->data[ $name ] = $value;
 		$this->isDirty       = true;
 	}
+
+	/**
+	 * Required method for subclasses to validate incoming data.
+	 *
+	 * @param string $name  Property to set.
+	 * @param mixed  $value Value to set.
+	 * @return string|null null if valid, error message if not
+	 */
+	abstract protected function fieldValidationErrorMessage(string $name, mixed $value): string;
 
 	/**
 	 * Instruct the Model's helper to save the current data state.
@@ -144,18 +126,18 @@ class Model {
 	/**
 	 * Called during construction. Loads data from helper by default.
 	 *
-	 * @throws ModelException If the Model requires a helper but does not have one.
-	 * @return void
+	 * @param mixed $id Primary key for this model.
+	 * @return boolean False if ID is not found
 	 */
-	protected function loadInitData(): void {
-		if (!$this->helper) {
-			throw new ModelException('A ModelHelper is required for this model.');
-		}
+	public function loadWithId(mixed $id): bool {
+		$dataFromHelper = $this->helper->getData(forModel: $this, withId: $id);
 
-		$dataFromHelper = $this->helper->getData(forModel: $this, withProperties: $this->data);
 		if ($dataFromHelper) {
 			$this->data = $dataFromHelper;
 			$this->isDirty = false;
+			return true;
 		}
+
+		return false;
 	}
 }

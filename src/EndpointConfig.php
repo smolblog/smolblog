@@ -2,17 +2,23 @@
 
 namespace Smolblog\Core;
 
+use Smolblog\Core\Definitions\HttpVerb;
+use Smolblog\Core\Definitions\SecurityLevel;
+
+/**
+ * Configuration data for an Endpoint used to register it with the outside router.
+ */
 class EndpointConfig {
-		/**
-		 * The given route for this endpoint. If the endpoint is
-		 * `smolblog.com/api/blog/info`, then this function should return
-		 * `/blog/info` or `blog/info` (the opening slash will be inferred).
-		 *
-		 * To declare URL parameters, add the parameter's slug within brackets
-		 * (e.g. `post/[id]/comments`).
-		 *
-		 * @var string
-		 */
+	/**
+	 * The given route for this endpoint. If the endpoint is
+	 * `smolblog.com/api/blog/info`, then this function should return
+	 * `/blog/info` or `blog/info` (the opening slash will be inferred).
+	 *
+	 * To declare URL parameters, add the parameter's slug within brackets
+	 * (e.g. `post/[id]/comments`).
+	 *
+	 * @var string
+	 */
 	public readonly string $route;
 
 	/**
@@ -34,21 +40,30 @@ class EndpointConfig {
 	public readonly SecurityLevel $security;
 
 	/**
-	 * Parameters for this endpoint in an array of EndpointParameters.
+	 * Parameters for this endpoint's URL in an array of strings:
+	 *   $parameterSlug => $regularExpressionToValidate
 	 *
-	 * Parameters given in this array will be proviced to run()
-	 *
-	 * @var EndpointParameter[]
+	 * @var string[]
 	 */
 	public readonly array $params;
 
 	/**
-	 * Load the information in
+	 * Load the data
 	 *
-	 * @param string $apiBase Base URL (including scheme) for the REST API.
+	 * @param string        $route    Route for the endpoint. Required.
+	 * @param HttpVerb[]    $verbs    HTTP verbs the endpoint responds to. Defaults to GET.
+	 * @param SecurityLevel $security Security level for the endpoint. Defaults to Anonymous.
+	 * @param string[]      $params   Array of parameters used in the route. Key is the slug, value is the RegEx.
 	 */
 	public function __construct(
-		public readonly string $apiBase
+		string $route,
+		array $verbs = [HttpVerb::GET],
+		SecurityLevel $security = SecurityLevel::Anonymous,
+		array $params = []
 	) {
+		$this->route = $route;
+		$this->verbs = $verbs;
+		$this->security = $security;
+		$this->params = $params;
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Dependencies;
+namespace Smolblog\Core;
 
 interface ContainerDefinition {
 	/**

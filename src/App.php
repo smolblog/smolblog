@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core;
 
-use Smolblog\Core\Dependencies\{Container, ContainerDefinition, EndpointRegistrar, Environment, EventDispatcher};
 use Smolblog\Core\Registrars\ConnectorRegistrar;
 
 /**

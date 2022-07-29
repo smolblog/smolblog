@@ -2,28 +2,41 @@
 
 namespace Smolblog\Core\Endpoints;
 
-use Smolblog\Core\{Endpoint, EndpointRequest, EndpointResponse, Environment};
+use Smolblog\Core\{Endpoint, EndpointConfig, Environment};
 use Smolblog\Core\Definitions\{HttpVerb, SecurityLevel};
-use Smolblog\Core\EndpointParameters\ConnectorSlug;
 use Smolblog\Core\Registrars\ConnectorRegistrar;
+use Smolblog\Core\Toolkits\EndpointToolkit;
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be
  * redirected to it or shown the URL in some way.
  */
 class ConnectInit extends Endpoint {
-	protected function initRoute(): string {
-		return 'connect/init/[slug]';
+	use EndpointToolkit;
+
+	/**
+	 * Initialize this endpoint with its dependencies
+	 *
+	 * @param Environment        $env        Environment data.
+	 * @param ConnectorRegistrar $connectors Connector registry.
+	 */
+	public function __construct(
+		private Environment $env,
+		private ConnectorRegistrar $connectors
+	) {
 	}
 
-	protected function initSecurity(): SecurityLevel {
-		return SecurityLevel::Registered;
-	}
-
-	protected function initParams(): array {
-		return [
-			new ConnectorSlug(name: 'slug', isRequired: true),
-		];
+	/**
+	 * Configuration for this endpoint
+	 *
+	 * @return EndpointConfig
+	 */
+	public function getConfig(): EndpointConfig {
+		return new EndpointConfig(
+			route: 'connect/init/[slug]',
+			security: SecurityLevel::Registered,
+			params: ['slug' => '[a-z0-9-]+']
+		);
 	}
 
 	/**
