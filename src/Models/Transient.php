@@ -16,6 +16,7 @@ class Transient extends Model {
 	protected array $fields = [
 		'key',
 		'value',
+		'expires'
 	];
 
 	/**
@@ -36,6 +37,11 @@ class Transient extends Model {
 				}
 				return null;
 			case 'value':
+				return null;
+			case 'expires':
+				if (!is_int($value)) {
+					return "$name is an integer (timestamp).";
+				}
 				return null;
 		}
 		return "$name is not a field.";

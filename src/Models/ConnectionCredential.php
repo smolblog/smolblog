@@ -32,7 +32,6 @@ class ConnectionCredential extends Model {
 	 */
 	protected function fieldValidationErrorMessage(string $name, mixed $value): string {
 		switch ($name) {
-			case 'id':
 			case 'user_id':
 				if (!is_int($value)) {
 					return "$name is an integer.";
