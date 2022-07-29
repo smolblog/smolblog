@@ -3,6 +3,7 @@
 namespace Smolblog\Core;
 
 use Smolblog\Core\Registrars\ConnectorRegistrar;
+use League\Container\Container as LeagueContainer;
 
 /**
  * The core app class.
@@ -46,23 +47,26 @@ class App {
 	/**
 	 * Construct a new App. Requires a dependency injection container and event dispatcher.
 	 *
-	 * @param Container         $withContainer         Dependency Injection container.
 	 * @param EventDispatcher   $withDispatcher        Event dispatcher.
 	 * @param EndpointRegistrar $withEndpointRegistrar Endpoint registrar.
 	 * @param Environment       $withEnvironment       Environment information.
 	 */
 	public function __construct(
-		Container $withContainer,
 		EventDispatcher $withDispatcher,
 		EndpointRegistrar $withEndpointRegistrar,
 		Environment $withEnvironment
 	) {
-		$this->container = $withContainer;
 		$this->dispatcher = $withDispatcher;
 		$this->endpoints = $withEndpointRegistrar;
 		$this->environment = $withEnvironment;
 
 		$this->connectors = new ConnectorRegistrar();
+
+		$leagueContainer = new LeagueContainer();
+		$leagueContainer->addShared(Environment::class, function () use ($withEnvironment) {
+			return $withEnvironment;
+		});
+		$this->container = $leagueContainer;
 	}
 
 	/**
@@ -71,14 +75,14 @@ class App {
 	 * @var array
 	 */
 	protected $classes = [
-		'Models' => [
-			Models\ConnectionCredential::class,
-			Models\User::class,
+		'Factories' => [
+			Factories\ConnectionCredentialFactory::class,
+			Factories\TransientFactory::class,
 		],
 		'Endpoints' => [
 			Endpoints\ConnectCallback::class,
 			Endpoints\ConnectInit::class,
-		]
+		],
 	];
 
 	/**
@@ -91,11 +95,22 @@ class App {
 		array_walk_recursive($this->classes, function ($class) {
 			$this->container->add($class);
 		});
+
+		// Set up what we know
+		$this->container->extend(Endpoints\ConnectCallback::class)->
+			addArgument(Registrars\ConnectorRegistrar::class)->
+			addArgument(Factories\TransientFactory::class);
+		$this->container->extend(Endpoints\ConnectInit::class)->
+			addArgument(Environment::class)->
+			addArgument(Registrars\ConnectorRegistrar::class)->
+			addArgument(Factories\TransientFactory::class);
+
+		// Done with container setup
 		$this->dispatcher->dispatch(new Events\CoreClassesLoaded($this->container));
 
 		// Register endpoints with external system.
 		foreach ($this->classes['Endpoints'] as $endpoint) {
-			$this->endpoints->registerEndpoint(new $endpoint($this));
+			$this->endpoints->registerEndpoint($container->get($endpoint));
 		}
 
 		// We're done with our part; fire the event!

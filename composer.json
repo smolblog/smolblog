@@ -30,6 +30,6 @@
   "require": {
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
-    "psr/http-message": "^1.0"
+    "league/container": "^4.2"
   }
 }
