@@ -2,25 +2,36 @@
 
 namespace Smolblog\Core\Endpoints;
 
-use Smolblog\Core\{Endpoint, EndpointRequest, EndpointResponse, Environment};
-use Smolblog\Core\Definitions\{HttpVerb, SecurityLevel};
-use Smolblog\Core\EndpointParameters\{ConnectorSlug, StringParameter};
+use Smolblog\Core\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, Environment};
+use Smolblog\Core\Factories\TransientFactory;
 use Smolblog\Core\Registrars\ConnectorRegistrar;
 
 /**
  * Endpoint to handle an OAuth2 callback from a Connector's provider
  */
 class ConnectCallback extends Endpoint {
-	protected function initRoute(): string {
-		return 'connect/callback/[slug]';
+	/**
+	 * Create the endpoint
+	 *
+	 * @param ConnectorRegistrar $connectors Connector Registrar.
+	 * @param TransientFactory   $transients Transient factory.
+	 */
+	public function __construct(
+		private ConnectorRegistrar $connectors,
+		private TransientFactory $transients,
+	) {
 	}
 
-	protected function initParams(): array {
-		return [
-			new ConnectorSlug(name: 'slug', isRequired: true),
-			new StringParameter(name: 'state', isRequired: true),
-			new StringParameter(name: 'code', isRequired: true),
-		];
+	/**
+	 * Configuration for this endpoint
+	 *
+	 * @return EndpointConfig
+	 */
+	public function getConfig(): EndpointConfig {
+		return new EndpointConfig(
+			route: 'connect/callback/[slug]',
+			params: ['slug' => '[a-z0-9-]+']
+		);
 	}
 
 	/**
@@ -30,9 +41,15 @@ class ConnectCallback extends Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
-		$connector = ConnectorRegistrar::retrieve($request->params['slug']);
-		$info = Environment::get()->getTransientValue(name: $request->params['state']);
+		$connector = $connectors->retrieve($request->params['slug']);
+		if (!isset($connector)) {
+			return new EndpointResponse(
+				statusCode: 404,
+				body: ['error' => 'The given provider has not been registered.'],
+			);
+		}
 
+		$info = $transients->getTransient(name: $request->params['state']);
 		if (!isset($info)) {
 			return new EndpointResponse(
 				statusCode: 400,

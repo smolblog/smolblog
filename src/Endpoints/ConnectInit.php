@@ -2,27 +2,27 @@
 
 namespace Smolblog\Core\Endpoints;
 
-use Smolblog\Core\{Endpoint, EndpointConfig, Environment};
-use Smolblog\Core\Definitions\{HttpVerb, SecurityLevel};
+use Smolblog\Core\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, Environment};
+use Smolblog\Core\Definitions\SecurityLevel;
+use Smolblog\Core\Factories\TransientFactory;
 use Smolblog\Core\Registrars\ConnectorRegistrar;
-use Smolblog\Core\Toolkits\EndpointToolkit;
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be
  * redirected to it or shown the URL in some way.
  */
 class ConnectInit extends Endpoint {
-	use EndpointToolkit;
-
 	/**
 	 * Initialize this endpoint with its dependencies
 	 *
 	 * @param Environment        $env        Environment data.
 	 * @param ConnectorRegistrar $connectors Connector registry.
+	 * @param TransientFactory   $transients Transient factory instance.
 	 */
 	public function __construct(
 		private Environment $env,
-		private ConnectorRegistrar $connectors
+		private ConnectorRegistrar $connectors,
+		private TransientFactory $transients,
 	) {
 	}
 
@@ -46,17 +46,23 @@ class ConnectInit extends Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
-		$env = Environment::get();
 		$providerSlug = $request->params['slug'];
 
-		$connector = ConnectorRegistrar::retrieve($providerSlug);
-		$data = $connector->getInitializationData($env->getBaseRestUrl() . "connect/callback/$providerSlug");
+		$connector = $connectors->retrieve($providerSlug);
+		if (!isset($connector)) {
+			return new EndpointResponse(
+				statusCode: 404,
+				body: ['error' => 'The given provider has not been registered.'],
+			);
+		}
+
+		$data = $connector->getInitializationData("{$env->apiBase}connect/callback/$providerSlug");
 
 		$info = [
 			...$data->info,
 			'user_id' => $request->user->id,
 		];
-		$env->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
+		$transients->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
 
 		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $data->url]);
 	}
