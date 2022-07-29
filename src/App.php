@@ -4,6 +4,7 @@ namespace Smolblog\Core;
 
 use Smolblog\Core\Registrars\ConnectorRegistrar;
 use League\Container\Container as LeagueContainer;
+use League\Event\EventDispatcher as LeagueEventDispatcher;
 
 /**
  * The core app class.
@@ -45,18 +46,19 @@ class App {
 	public readonly ConnectorRegistrar $connectors;
 
 	/**
-	 * Construct a new App. Requires a dependency injection container and event dispatcher.
+	 * Construct a new App. Requires an EndpointRegistrar and a loaded Environment object. Loads the
+	 * dependency injection container (`$app->container`) with core classes and dependencies.
 	 *
-	 * @param EventDispatcher   $withDispatcher        Event dispatcher.
+	 * Once this object is constructed, it is the responsibility of the bootstrapper to add any further
+	 * dependencies to the container before calling `startup()`.
+	 *
 	 * @param EndpointRegistrar $withEndpointRegistrar Endpoint registrar.
 	 * @param Environment       $withEnvironment       Environment information.
 	 */
 	public function __construct(
-		EventDispatcher $withDispatcher,
 		EndpointRegistrar $withEndpointRegistrar,
 		Environment $withEnvironment
 	) {
-		$this->dispatcher = $withDispatcher;
 		$this->endpoints = $withEndpointRegistrar;
 		$this->environment = $withEnvironment;
 
@@ -66,7 +68,13 @@ class App {
 		$leagueContainer->addShared(Environment::class, function () use ($withEnvironment) {
 			return $withEnvironment;
 		});
+		$leagueContainer->addShared(EndpointRegistrar::class, function () use ($withEndpointRegistrar) {
+			return $withEndpointRegistrar;
+		});
 		$this->container = $leagueContainer;
+
+		$leagueEvent = new LeagueEventDispatcher();
+		$this->dispatcher = $leagueEvent;
 	}
 
 	/**
@@ -100,10 +108,10 @@ class App {
 		});
 
 		// Set up what we know.
-		$this->container->extend(Endpoints\ConnectCallback::class)->
+		$this->container->add(Endpoints\ConnectCallback::class)->
 			addArgument(Registrars\ConnectorRegistrar::class)->
 			addArgument(Factories\TransientFactory::class);
-		$this->container->extend(Endpoints\ConnectInit::class)->
+		$this->container->add(Endpoints\ConnectInit::class)->
 			addArgument(Environment::class)->
 			addArgument(Registrars\ConnectorRegistrar::class)->
 			addArgument(Factories\TransientFactory::class);

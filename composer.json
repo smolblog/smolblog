@@ -30,6 +30,7 @@
   "require": {
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
-    "league/container": "^4.2"
+    "league/container": "^4.2",
+    "league/event": "^3.0"
   }
 }

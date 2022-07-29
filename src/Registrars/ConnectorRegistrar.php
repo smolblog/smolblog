@@ -2,13 +2,14 @@
 
 namespace Smolblog\Core\Registrars;
 
-use Smolblog\Core\{Connector, Registrar};
+use Smolblog\Core\Connector;
+use Smolblog\Core\Toolkits\RegistrarToolkit;
 
 /**
  * Class to handle storing Connectors for use later.
  */
 class ConnectorRegistrar {
-	use Registrar;
+	use RegistrarToolkit;
 
 	/**
 	 * Add a Connector instance to the registry. A slug can be provided, or it
