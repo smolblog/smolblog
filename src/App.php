@@ -75,14 +75,17 @@ class App {
 	 * @var array
 	 */
 	protected $classes = [
-		'Factories' => [
-			Factories\ConnectionCredentialFactory::class,
-			Factories\TransientFactory::class,
-		],
 		'Endpoints' => [
 			Endpoints\ConnectCallback::class,
 			Endpoints\ConnectInit::class,
 		],
+		'Factories' => [
+			Factories\ConnectionCredentialFactory::class,
+			Factories\TransientFactory::class,
+		],
+		'Registrars' => [
+			Registrars\ConnectorRegistrar::class,
+		]
 	];
 
 	/**
@@ -96,7 +99,7 @@ class App {
 			$this->container->add($class);
 		});
 
-		// Set up what we know
+		// Set up what we know.
 		$this->container->extend(Endpoints\ConnectCallback::class)->
 			addArgument(Registrars\ConnectorRegistrar::class)->
 			addArgument(Factories\TransientFactory::class);
@@ -105,7 +108,7 @@ class App {
 			addArgument(Registrars\ConnectorRegistrar::class)->
 			addArgument(Factories\TransientFactory::class);
 
-		// Done with container setup
+		// Done with container setup.
 		$this->dispatcher->dispatch(new Events\CoreClassesLoaded($this->container));
 
 		// Register endpoints with external system.
