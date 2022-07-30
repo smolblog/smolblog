@@ -6,15 +6,18 @@ use Smolblog\Core\Events\Startup;
 use PHPUnit\Framework\TestCase;
 
 final class AppTest extends TestCase {
-	public function testItCanBeInstantiated(): void {
+	private $app;
+	public function setUp(): void {
 		$endpointDouble = $this->createStub(EndpointRegistrar::class);
 		$environment = new Environment(apiBase: 'https://smol.blog/api/');
 
-		$app = new App(
+		$this->app = new App(
 			withEndpointRegistrar: $endpointDouble,
 			withEnvironment: $environment
 		);
+	}
 
-		$this->assertInstanceOf(Container::class, $app->container);
+	public function testItCanBeInstantiated(): void {
+		$this->assertInstanceOf(App::class, $this->app);
 	}
 }
