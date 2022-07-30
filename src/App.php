@@ -61,11 +61,18 @@ class App {
 	 */
 	public function startup(): void {
 		// Register endpoints with external system.
-		foreach ($this->classes['Endpoints'] as $endpoint) {
-			$this->endpoints->registerEndpoint($container->get($endpoint));
+		$endpointRegistrar = $this->container->get(EndpointRegistrar::class);
+		foreach (
+			[
+				Endpoints\ConnectCallback::class,
+				Endpoints\ConnectInit::class,
+			] as $endpoint
+		) {
+			$endpointRegistrar->registerEndpoint($this->container->get($endpoint));
 		}
 
 		// We're done with our part; fire the event!
-		$this->dispatcher->dispatch(new Events\Startup($this));
+		$dispatcher = $this->container->get(EventDispatcher::class);
+		$dispatcher->dispatch(new Events\Startup($this));
 	}
 }

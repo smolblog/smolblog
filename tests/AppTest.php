@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core;
 
-use Smolblog\Core\Events\Startup;
 use PHPUnit\Framework\TestCase;
 
 final class AppTest extends TestCase {

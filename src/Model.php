@@ -90,8 +90,8 @@ abstract class Model {
 			return;
 		}
 
-		$this->data[ $name ] = $value;
-		$this->isDirty       = true;
+		$this->data[$name] = $value;
+		$this->isDirty = true;
 	}
 
 	/**
@@ -109,7 +109,7 @@ abstract class Model {
 	 * @return void
 	 */
 	public function save(): void {
-		if ($this->helper->save(model: $this, withData: $this->data)) {
+		if ($this->helper->save(forModel: $this, withData: $this->data)) {
 			$this->isDirty = false;
 		}
 	}
