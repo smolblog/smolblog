@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Models;
 
 use Smolblog\Core\Model;
+use Smolblog\Core\Definitions\ModelField;
 
 /**
  * Stores information about credentials needed to authenticate against an
@@ -14,13 +15,12 @@ class ConnectionCredential extends Model {
 	 *
 	 * @var array
 	 */
-	protected array $fields = [
-		'id',
-		'user_id',
-		'provider',
-		'provider_key',
-		'display_name',
-		'details',
+	public const FIELDS = [
+		'userId' => ModelField::int,
+		'provider' => ModelField::string,
+		'providerKey' => ModelField::string,
+		'displayName' => ModelField::string,
+		'details' => ModelField::string,
 	];
 
 	/**
@@ -30,16 +30,16 @@ class ConnectionCredential extends Model {
 	 * @param mixed  $value Value to set.
 	 * @return string|null null if valid, error message if not
 	 */
-	protected function fieldValidationErrorMessage(string $name, mixed $value): string {
+	protected function fieldValidationErrorMessage(string $name, mixed $value): ?string {
 		switch ($name) {
-			case 'user_id':
+			case 'userId':
 				if (!is_int($value)) {
 					return "$name is an integer.";
 				}
 				return null;
 			case 'provider':
-			case 'provider_key':
-			case 'display_name':
+			case 'providerKey':
+			case 'displayName':
 				try {
 					strval($value);
 				} catch (Throwable $e) {

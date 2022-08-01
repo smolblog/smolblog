@@ -44,7 +44,7 @@ class TransientFactory {
 		$transient = new Transient(withHelper: $this->helper);
 		$transient->loadWithId($name);
 
-		if ($transient?->expires ?? 0 < time()) {
+		if (($transient?->expires ?? 0) < time()) {
 			return null;
 		}
 

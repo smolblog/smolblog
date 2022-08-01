@@ -3,6 +3,7 @@
 namespace Smolblog\Core;
 
 use Smolblog\Core\Environment;
+use Smolblog\Core\Definitions\ModelField;
 use Smolblog\Core\Exceptions\ModelException;
 
 /**
@@ -24,11 +25,12 @@ abstract class Model {
 	protected array $data = [];
 
 	/**
-	 * List of valid fields for the model. Used to verify get/set method.
+	 * List of valid fields for the model. Used to verify get/set method. Name of
+	 * the field should be the key, value should be a ModelField.
 	 *
-	 * @var array
+	 * @var ModelField[]
 	 */
-	protected array $fields = [];
+	public const FIELDS = [];
 
 	/**
 	 * True if the values in $data have been modified since the last save()
@@ -53,7 +55,7 @@ abstract class Model {
 	 * @return mixed|null Value of $data[$name] or null
 	 */
 	public function __get(string $name) {
-		if (!in_array($name, $this->fields)) {
+		if (!in_array($name, array_keys(static::FIELDS))) {
 			$trace = debug_backtrace();
 			trigger_error(
 				'Undefined property ' . $name .
@@ -101,7 +103,7 @@ abstract class Model {
 	 * @param mixed  $value Value to set.
 	 * @return string|null null if valid, error message if not
 	 */
-	abstract protected function fieldValidationErrorMessage(string $name, mixed $value): string;
+	abstract protected function fieldValidationErrorMessage(string $name, mixed $value): ?string;
 
 	/**
 	 * Instruct the Model's helper to save the current data state.
@@ -109,7 +111,7 @@ abstract class Model {
 	 * @return void
 	 */
 	public function save(): void {
-		if ($this->helper->save(forModel: $this, withData: $this->data)) {
+		if ($this->helper->save(model: $this, withData: $this->data)) {
 			$this->isDirty = false;
 		}
 	}

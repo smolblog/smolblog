@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Models;
 
 use Smolblog\Core\Model;
+use Smolblog\Core\Definitions\ModelField;
 
 /**
  * An object that needs to persist between pageloads but is not permanent.
@@ -13,10 +14,10 @@ class Transient extends Model {
 	 *
 	 * @var array
 	 */
-	protected array $fields = [
-		'key',
-		'value',
-		'expires'
+	public const FIELDS = [
+		'key' => ModelField::string,
+		'value' => ModelField::string,
+		'expires' => ModelField::int,
 	];
 
 	/**
@@ -26,7 +27,7 @@ class Transient extends Model {
 	 * @param mixed  $value Value to set.
 	 * @return string|null null if valid, error message if not
 	 */
-	protected function fieldValidationErrorMessage(string $name, mixed $value): string {
+	protected function fieldValidationErrorMessage(string $name, mixed $value): ?string {
 		switch ($name) {
 			case 'key':
 				try {
