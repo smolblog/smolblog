@@ -6,21 +6,18 @@ use Smolblog\Core\Model;
 use Smolblog\Core\Definitions\ModelField;
 
 /**
- * Stores information about credentials needed to authenticate against an
- * exteral API as a particular user.
+ * An object that needs to persist between pageloads but is not permanent.
  */
-class ConnectionCredential extends Model {
+class Transient extends Model {
 	/**
-	 * Fields available for an ConnectionCredential.
+	 * Fields available for a Transient.
 	 *
 	 * @var array
 	 */
 	public const FIELDS = [
-		'userId' => ModelField::int,
-		'provider' => ModelField::string,
-		'providerKey' => ModelField::string,
-		'displayName' => ModelField::string,
-		'details' => ModelField::string,
+		'key' => ModelField::string,
+		'value' => ModelField::string,
+		'expires' => ModelField::int,
 	];
 
 	/**
@@ -32,21 +29,20 @@ class ConnectionCredential extends Model {
 	 */
 	protected function fieldValidationErrorMessage(string $name, mixed $value): ?string {
 		switch ($name) {
-			case 'userId':
-				if (!is_int($value)) {
-					return "$name is an integer.";
-				}
-				return null;
-			case 'provider':
-			case 'providerKey':
-			case 'displayName':
+			case 'key':
 				try {
 					strval($value);
 				} catch (Throwable $e) {
+					// If there is an exception raised during `strval`, then it won't convert.
 					return "$name must be stringable.";
 				}
 				return null;
-			case 'details':
+			case 'value':
+				return null;
+			case 'expires':
+				if (!is_int($value)) {
+					return "$name is an integer (timestamp).";
+				}
 				return null;
 		}
 		return "$name is not a field.";

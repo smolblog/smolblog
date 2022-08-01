@@ -12,8 +12,9 @@ final class ConnectorRegistrarTest extends TestCase {
              ->method('slug')
              ->will($this->returnValue('camelot'));
 
-		ConnectorRegistrar::register(connector: $expected);
-		$actual = ConnectorRegistrar::retrieve('camelot');
+		$connectors = new ConnectorRegistrar();
+		$connectors->register(connector: $expected);
+		$actual = $connectors->retrieve('camelot');
 
 		$this->assertEquals(
 			$expected->slug(),
@@ -22,6 +23,7 @@ final class ConnectorRegistrarTest extends TestCase {
 	}
 
 	public function testRegistrarGivesNullWhenNotFound() {
-		$this->assertNull(ConnectorRegistrar::retrieve('nope'));
+		$connectors = new ConnectorRegistrar();
+		$this->assertNull($connectors->retrieve('nope'));
 	}
 }

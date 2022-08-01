@@ -14,9 +14,8 @@ class EndpointResponse {
 	/**
 	 * HTTP response code for this response
 	 *
-	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses
-	 *
 	 * @var integer Status code for this response
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses
 	 */
 	public readonly int $statusCode;
 

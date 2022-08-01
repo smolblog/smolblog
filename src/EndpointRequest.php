@@ -12,11 +12,18 @@ use Smolblog\Core\Definitions\HttpVerb;
  */
 class EndpointRequest {
 	/**
-	 * Context of the request (user and site)
+	 * User ID if this is an authenticated request
 	 *
-	 * @var RequestContext
+	 * @var ?int
 	 */
-	public readonly RequestContext $context;
+	public readonly ?int $userId;
+
+	/**
+	 * Site ID if this is an attached request
+	 *
+	 * @var ?int
+	 */
+	public readonly ?int $siteId;
 
 	/**
 	 * Parsed params as defined by the Endpoint
@@ -34,18 +41,21 @@ class EndpointRequest {
 	public readonly array | false $json;
 
 	/**
-	 * Build the EndpointRequest
+	 * Construct the object
 	 *
-	 * @param RequestContext $context Context for the request.
-	 * @param array          $params  Parsed params as defined by the Endpoint.
-	 * @param array|false    $json    Body of the request as an associative array (false if empty).
+	 * @param integer|null $userId ID of the user making the request if applicable.
+	 * @param integer|null $siteId ID of the site request is attached to if applicable.
+	 * @param array        $params Parsed params as defined by the Endpoint.
+	 * @param array|false  $json   Body of the request as an associative array (false if empty).
 	 */
 	public function __construct(
-		RequestContext $context = new RequestContext(),
+		?int $userId = null,
+		?int $siteId = null,
 		array $params = [],
 		array|false $json = false
 	) {
-		$this->context = $context;
+		$this->userId = $userId;
+		$this->siteId = $siteId;
 		$this->params = $params;
 		$this->json = $json;
 	}

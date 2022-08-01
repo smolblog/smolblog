@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Endpoints;
 
-use Smolblog\Core\{Endpoint, EndpointRequest, EndpointResponse, Environment};
-use Smolblog\Core\Definitions\{HttpVerb, SecurityLevel};
-use Smolblog\Core\EndpointParameters\ConnectorSlug;
+use Smolblog\Core\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, Environment};
+use Smolblog\Core\Definitions\SecurityLevel;
+use Smolblog\Core\Factories\TransientFactory;
 use Smolblog\Core\Registrars\ConnectorRegistrar;
 
 /**
@@ -13,15 +13,30 @@ use Smolblog\Core\Registrars\ConnectorRegistrar;
  */
 class ConnectInit extends Endpoint {
 	/**
-	 * Set up the properties for this Endpoint.
+	 * Initialize this endpoint with its dependencies
 	 *
-	 * @return void
+	 * @param Environment        $env        Environment data.
+	 * @param ConnectorRegistrar $connectors Connector registry.
+	 * @param TransientFactory   $transients Transient factory instance.
 	 */
-	protected function initValues(): void {
-		$this->route = 'connect/init/[slug]';
-		$this->verbs = [HttpVerb::GET];
-		$this->security = SecurityLevel::Registered;
-		$this->params = [new ConnectorSlug(name: 'slug', isRequired: true)];
+	public function __construct(
+		private Environment $env,
+		private ConnectorRegistrar $connectors,
+		private TransientFactory $transients,
+	) {
+	}
+
+	/**
+	 * Configuration for this endpoint
+	 *
+	 * @return EndpointConfig
+	 */
+	public function getConfig(): EndpointConfig {
+		return new EndpointConfig(
+			route: 'connect/init/[slug]',
+			security: SecurityLevel::Registered,
+			params: ['slug' => '[a-z0-9-]+']
+		);
 	}
 
 	/**
@@ -31,17 +46,23 @@ class ConnectInit extends Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
-		$env = Environment::get();
 		$providerSlug = $request->params['slug'];
 
-		$connector = ConnectorRegistrar::retrieve($providerSlug);
-		$data = $connector->getInitializationData($env->getBaseRestUrl() . "connect/callback/$providerSlug");
+		$connector = $connectors->retrieve($providerSlug);
+		if (!isset($connector)) {
+			return new EndpointResponse(
+				statusCode: 404,
+				body: ['error' => 'The given provider has not been registered.'],
+			);
+		}
+
+		$data = $connector->getInitializationData("{$env->apiBase}connect/callback/$providerSlug");
 
 		$info = [
 			...$data->info,
 			'user_id' => $request->user->id,
 		];
-		$env->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
+		$transients->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
 
 		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $data->url]);
 	}
