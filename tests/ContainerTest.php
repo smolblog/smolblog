@@ -69,9 +69,7 @@ final class ContainerTest extends TestCase {
 		$instance->setTestString(uniqid());
 
 		$container = new Container();
-		$container->addShared(ContainerTestStandaloneClass::class, function() use($instance) {
-			return $instance;
-		});
+		$container->addShared(ContainerTestStandaloneClass::class, fn() => $instance);
 
 		$retrieved = $container->get(ContainerTestStandaloneClass::class);
 		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved);

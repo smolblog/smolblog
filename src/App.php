@@ -32,12 +32,8 @@ class App {
 
 		$this->container = new Container();
 
-		$this->container->addShared(Environment::class, function () use ($withEnvironment) {
-			return $withEnvironment;
-		});
-		$this->container->addShared(EndpointRegistrar::class, function () use ($withEndpointRegistrar) {
-			return $withEndpointRegistrar;
-		});
+		$this->container->addShared(Environment::class, fn() => $withEnvironment);
+		$this->container->addShared(EndpointRegistrar::class, fn() => $withEndpointRegistrar);
 		$this->container->addShared(EventDispatcher::class);
 
 		$this->container->addShared(Registrars\ConnectorRegistrar::class);
