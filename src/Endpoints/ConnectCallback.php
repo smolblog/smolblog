@@ -9,7 +9,7 @@ use Smolblog\Core\Registrars\ConnectorRegistrar;
 /**
  * Endpoint to handle an OAuth2 callback from a Connector's provider
  */
-class ConnectCallback extends Endpoint {
+class ConnectCallback implements Endpoint {
 	/**
 	 * Create the endpoint
 	 *

@@ -11,7 +11,7 @@ use Smolblog\Core\Registrars\ConnectorRegistrar;
  * Get an Authentication URL for a Connector's provider. The end-user should be
  * redirected to it or shown the URL in some way.
  */
-class ConnectInit extends Endpoint {
+class ConnectInit implements Endpoint {
 	/**
 	 * Initialize this endpoint with its dependencies
 	 *
