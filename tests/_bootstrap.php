@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test;
 
-use Smolblog\Core\{Model, ModelHelper};
+use Smolblog\Core\{Endpoint, EndpointRequest, EndpointResponse, Model, ModelHelper};
 use Smolblog\Core\Definitions\ModelField;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -19,18 +19,14 @@ final class TestModelHelper implements ModelHelper {
 }
 
 trait ModelTestToolkit {
-	private abstract function createModel();
+	protected $model;
 
 	public function testItCanBeInitializedWithNoData() {
-		$model = $this->createModel();
-
-		$this->assertTrue($model->needsSave());
+		$this->assertTrue($this->model->needsSave());
 	}
 
 	public function testAllDefinedFieldsCanBeAccessedAndSaved() {
-		$model = $this->createModel();
-
-		foreach ($model::FIELDS as $field => $type) {
+		foreach ($this->model::FIELDS as $field => $type) {
 			$sampleValue = '';
 			switch ($type) {
 				case ModelField::int:
@@ -43,17 +39,29 @@ trait ModelTestToolkit {
 					$sampleValue = 'Fhqwhgads';
 					break;
 			}
-			$model->$field = $sampleValue;
-			$this->assertEquals($sampleValue, $model->$field);
+			$this->model->$field = $sampleValue;
+			$this->assertEquals($sampleValue, $this->model->$field);
 		}
 	}
 
 	public function testUndefinedFieldsThrowAnError() {
 		$this->expectNotice();
-		$model = $this->createModel();
 
 		$undefinedField = uniqid();
 
-		$model->$undefinedField = 'nope';
+		$this->model->$undefinedField = 'nope';
+	}
+}
+
+trait EndpointTestToolkit {
+	protected $endpoint;
+
+	public function testItCanBeInstantiated(): void {
+		$this->assertInstanceOf(Endpoint::class, $this->endpoint);
+	}
+
+	public function testItCanBeCalled(): void {
+		$response = $this->endpoint->run(new EndpointRequest());
+		$this->assertInstanceOf(EndpointResponse::class, $response);
 	}
 }

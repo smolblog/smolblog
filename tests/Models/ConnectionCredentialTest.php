@@ -8,7 +8,7 @@ use Smolblog\Test\{TestModelHelper, ModelTestToolkit};
 final class ConnectionCredentialTest extends TestCase {
 	use ModelTestToolkit;
 
-	private function createModel() {
-		return new ConnectionCredential(new TestModelHelper);
+	public function setUp(): void {
+		$this->model = new ConnectionCredential(new TestModelHelper);
 	}
 }
