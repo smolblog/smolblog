@@ -46,7 +46,13 @@ class ConnectInit implements Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
-		$providerSlug = $request->params['slug'];
+		$providerSlug = $request->params['slug'] ?? null;
+		if (!isset($providerSlug)) {
+			return new EndpointResponse(
+				statusCode: 400,
+				body: ['error' => 'A required parameter was not provided.'],
+			);
+		}
 
 		$connector = $connectors->retrieve($providerSlug);
 		if (!isset($connector)) {

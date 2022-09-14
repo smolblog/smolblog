@@ -41,7 +41,14 @@ class ConnectCallback implements Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
-		$connector = $connectors->retrieve($request->params['slug']);
+		if (!isset($request->params['slug']) || !isset($request->params['state']) || !isset($request->params['code'])) {
+			return new EndpointResponse(
+				statusCode: 400,
+				body: ['error' => 'A required parameter was not provided.'],
+			);
+		}
+
+		$connector = $this->connectors->retrieve($request->params['slug']);
 		if (!isset($connector)) {
 			return new EndpointResponse(
 				statusCode: 404,
