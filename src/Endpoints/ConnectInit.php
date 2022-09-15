@@ -54,7 +54,7 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$connector = $connectors->retrieve($providerSlug);
+		$connector = $this->connectors->retrieve($providerSlug);
 		if (!isset($connector)) {
 			return new EndpointResponse(
 				statusCode: 404,
@@ -62,13 +62,20 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$data = $connector->getInitializationData("{$env->apiBase}connect/callback/$providerSlug");
+		if (!isset($request->userId)) {
+			return new EndpointResponse(
+				statusCode: 400,
+				body: ['error' => 'An authenticated user was not provided.'],
+			);
+		}
+
+		$data = $connector->getInitializationData("{$this->env->apiBase}connect/callback/$providerSlug");
 
 		$info = [
 			...$data->info,
-			'user_id' => $request->user->id,
+			'user_id' => $request->userId,
 		];
-		$transients->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
+		$this->transients->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
 
 		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $data->url]);
 	}
