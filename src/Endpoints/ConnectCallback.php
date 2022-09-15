@@ -56,7 +56,7 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		$info = $transients->getTransient(name: $request->params['state']);
+		$info = $this->transients->getTransient(name: $request->params['state']);
 		if (!isset($info)) {
 			return new EndpointResponse(
 				statusCode: 400,
@@ -66,6 +66,13 @@ class ConnectCallback implements Endpoint {
 
 		$credential = $connector->createCredential(code: $request->params['code'], info: $info);
 
-		return new EndpointResponse(statusCode: 200, body: ['credentialId' => $credential->id]);
+		return new EndpointResponse(statusCode: 200, body: [
+			'credential' => [
+				'userId' => $credential->userId,
+				'provider' => $credential->provider,
+				'providerKey' => $credential->providerKey,
+				'displayName' => $credential->displayName,
+			]
+		]);
 	}
 }
