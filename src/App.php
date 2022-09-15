@@ -14,6 +14,13 @@ class App {
 	public readonly Container $container;
 
 	/**
+	 * Event dispatcher
+	 *
+	 * @var Container
+	 */
+	public readonly EventDispatcher $events;
+
+	/**
 	 * Construct a new App. Requires an EndpointRegistrar and a loaded Environment object. Loads the
 	 * dependency injection container (`$app->container`) with core classes and dependencies.
 	 *
@@ -31,10 +38,11 @@ class App {
 		$this->environment = $withEnvironment;
 
 		$this->container = new Container();
+		$this->events = new EventDispatcher();
 
 		$this->container->addShared(Environment::class, fn() => $withEnvironment);
 		$this->container->addShared(EndpointRegistrar::class, fn() => $withEndpointRegistrar);
-		$this->container->addShared(EventDispatcher::class);
+		$this->container->addShared(EventDispatcher::class, fn() => $this->events);
 
 		$this->container->addShared(Registrars\ConnectorRegistrar::class);
 
@@ -57,13 +65,13 @@ class App {
 	 */
 	public function startup(): void {
 		// Register endpoints with external system.
+		$coreEndpoints = [
+			Endpoints\ConnectCallback::class,
+			Endpoints\ConnectInit::class,
+		];
+		$allEndpoints = $this->events->dispatch(new Events\CollectingEndpoints($coreEndpoints))->endpoints;
 		$endpointRegistrar = $this->container->get(EndpointRegistrar::class);
-		foreach (
-			[
-				Endpoints\ConnectCallback::class,
-				Endpoints\ConnectInit::class,
-			] as $endpoint
-		) {
+		foreach ($allEndpoints as $endpoint) {
 			$endpointRegistrar->registerEndpoint($this->container->get($endpoint));
 		}
 

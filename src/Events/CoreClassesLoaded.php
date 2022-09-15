@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Events;
 
-use Smolblog\Core\Dependencies\Container;
+use Smolblog\Core\Container;
 
 /**
  * Fired after the Smolblog core system has registered its classes into the given DI container.
