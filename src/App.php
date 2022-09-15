@@ -58,6 +58,11 @@ class App {
 			addArgument(Factories\TransientFactory::class);
 	}
 
+	public function loadPlugins(): void {
+		$plugins = \Composer\InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
+		error_log("\n\n*** Plugins found: ***\n" . print_r($plugins, true) . "\n**********************");
+	}
+
 	/**
 	 * Start the app!
 	 *
