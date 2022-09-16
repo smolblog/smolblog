@@ -65,6 +65,8 @@ class App {
 			addArgument(Environment::class)->
 			addArgument(Registrars\ConnectorRegistrar::class)->
 			addArgument(Factories\TransientFactory::class);
+
+		$this->loadPlugins();
 	}
 
 	/**
@@ -104,6 +106,13 @@ class App {
 		$endpointRegistrar = $this->container->get(EndpointRegistrar::class);
 		foreach ($allEndpoints as $endpoint) {
 			$endpointRegistrar->registerEndpoint($this->container->get($endpoint));
+		}
+
+		// Collect and register Connectors.
+		$allConnectors = $this->events->dispatch(new Events\CollectingConnectors([]))->connectors;
+		$connectorRegistrar = $this->container->get(Registrars\ConnectorRegistrar::class);
+		foreach ($allConnectors as $connector) {
+			$connectorRegistrar->register($this->container->get($connector));
 		}
 
 		// We're done with our part; fire the event!
