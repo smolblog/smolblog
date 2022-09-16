@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core;
 
+use Composer\InstalledVersions;
+
 /**
  * The core app class.
  */
@@ -19,6 +21,13 @@ class App {
 	 * @var Container
 	 */
 	public readonly EventDispatcher $events;
+
+	/**
+	 * Array of Plugins that are installed (not necessarily active)
+	 *
+	 * @var Plugin[]
+	 */
+	private array $installedPlugins;
 
 	/**
 	 * Construct a new App. Requires an EndpointRegistrar and a loaded Environment object. Loads the
@@ -59,8 +68,17 @@ class App {
 	}
 
 	public function loadPlugins(): void {
-		$plugins = \Composer\InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
-		error_log("\n\n*** Plugins found: ***\n" . print_r($plugins, true) . "\n**********************");
+		$plugins = InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
+		foreach ($plugins as $packageName) {
+			$packagePath = realpath(InstalledVersions::getInstallPath($packageName));
+			if ($packagePath === false) {
+				continue;
+			}
+			$composerJsonPath = $packagePath . DIRECTORY_SEPARATOR . 'composer.json';
+			$this->installedPlugins[] = Plugin::createFromComposer(file_get_contents($composerJsonPath));
+		}
+
+		print_r($this->installedPlugins);
 	}
 
 	/**
