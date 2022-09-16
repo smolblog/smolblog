@@ -30,15 +30,12 @@ class Plugin {
 		if (!isset($composer->extra?->smolblog?->title)) {
 			$errors[] = 'Plugin title is required. (Set "extra: smolblog: title:")';
 		}
+
 		if (!isset($composer->extra?->smolblog?->entrypoint)) {
 			$errors[] = 'Plugin entrypoint is required. (Set "extra: smolblog: entrypoint:")';
-		}
-
-		$entrypoint = null;
-		try {
-			$entrypoint = Closure::fromCallable($composer->extra?->smolblog?->entrypoint);
-		} catch (TypeError $exception) {
-			$errors[] = 'Could not create entrypoint: ' . $exception->getMessage();
+		} elseif (!is_callable($composer->extra->smolblog->entrypoint)) {
+			$given = $composer->extra->smolblog->entrypoint;
+			$errors[] = "Given entrypoint `$given` is not callable.";
 		}
 
 		return new Plugin(
@@ -48,22 +45,22 @@ class Plugin {
 			authors: $composer->authors ?? [],
 			title: $composer->extra?->smolblog?->title ?? '',
 			errors: $errors,
-			active: !empty($errors),
-			entrypoint: $entrypoint,
+			active: empty($errors),
+			entrypoint: $composer->extra?->smolblog?->entrypoint ?? '',
 		);
 	}
 
 	/**
 	 * Create the Plugin object.
 	 *
-	 * @param string       $package     Composer package name.
-	 * @param string       $version     Currently installed version.
-	 * @param string       $title       Friendly name for the plugin.
-	 * @param string       $description Brief description for the plugin.
-	 * @param array        $authors     Authors of the plugin; see composer.json for format.
-	 * @param array        $errors      Any errors found in creating the plugin; must be empty to be active.
-	 * @param boolean      $active      True if plugin is ready and available to be used.
-	 * @param Closure|null $entrypoint  Closure function that loads the plugin.
+	 * @param string  $package     Composer package name.
+	 * @param string  $version     Currently installed version.
+	 * @param string  $title       Friendly name for the plugin.
+	 * @param string  $description Brief description for the plugin.
+	 * @param array   $authors     Authors of the plugin; see composer.json for format.
+	 * @param array   $errors      Any errors found in creating the plugin; must be empty to be active.
+	 * @param boolean $active      True if plugin is ready and available to be used.
+	 * @param string  $entrypoint  Closure function that loads the plugin.
 	 */
 	public function __construct(
 		public readonly string $package,
@@ -73,7 +70,7 @@ class Plugin {
 		public readonly array $authors,
 		public readonly array $errors,
 		public readonly bool $active,
-		protected ?Closure $entrypoint,
+		protected string $entrypoint,
 	) {
 	}
 
@@ -85,6 +82,10 @@ class Plugin {
 	 * @return void
 	 */
 	public function load(App $app): void {
-		$this->$entrypoint($app);
+		if (!$this->active) {
+			return;
+		}
+
+		call_user_func($this->entrypoint, $app);
 	}
 }
