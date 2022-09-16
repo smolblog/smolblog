@@ -67,18 +67,26 @@ class App {
 			addArgument(Factories\TransientFactory::class);
 	}
 
+	/**
+	 * Find the plugins from composer and load them
+	 *
+	 * @return void
+	 */
 	public function loadPlugins(): void {
 		$plugins = InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
-		foreach ($plugins as $packageName) {
+		foreach (array_unique($plugins) as $packageName) {
 			$packagePath = realpath(InstalledVersions::getInstallPath($packageName));
 			if ($packagePath === false) {
 				continue;
 			}
 			$composerJsonPath = $packagePath . DIRECTORY_SEPARATOR . 'composer.json';
-			$this->installedPlugins[] = Plugin::createFromComposer(file_get_contents($composerJsonPath));
-		}
+			$plugin = Plugin::createFromComposer(file_get_contents($composerJsonPath));
+			$this->installedPlugins[] = $plugin;
 
-		print_r($this->installedPlugins);
+			if ($plugin->active) {
+				$plugin->load(app: $this);
+			}
+		}
 	}
 
 	/**
