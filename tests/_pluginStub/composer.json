@@ -1,0 +1,25 @@
+{
+  "name": "smoltest/plugin-stub",
+  "description": "Test Plugin",
+  "type": "smolblog-plugin",
+  "version": "1.2.3",
+  "license": "AGPL-3.0-only",
+  "autoload": {
+    "psr-4": {
+      "Smoltest\\PluginStub\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Smolblog Tester",
+      "email": "dev@smolblog.org"
+    }
+  ],
+  "require": {},
+  "extra": {
+    "smolblog": {
+      "title": "Plugin Stub",
+      "pluginClass": "Smoltest\\PluginStub\\Plugin"
+    }
+  }
+}
