@@ -72,6 +72,13 @@ class App {
 			addArgument(Environment::class)->
 			addArgument(Registrars\ConnectorRegistrar::class)->
 			addArgument(Factories\TransientFactory::class);
+		$this->container->add(
+			Endpoints\InstalledPlugins::class,
+			fn() => new Endpoints\InstalledPlugins(
+				installedPackages: $this->installedPackages,
+				activePlugins: $this->activePlugins
+			)
+		);
 	}
 
 	/**
@@ -87,6 +94,7 @@ class App {
 		$coreEndpoints = [
 			Endpoints\ConnectCallback::class,
 			Endpoints\ConnectInit::class,
+			Endpoints\InstalledPlugins::class,
 		];
 		$allEndpoints = $this->events->dispatch(new Events\CollectingEndpoints($coreEndpoints))->endpoints;
 		$endpointRegistrar = $this->container->get(EndpointRegistrar::class);
