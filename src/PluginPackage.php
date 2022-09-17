@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core;
 
+use OutOfBoundsException;
 use Composer\InstalledVersions;
 
 /**
@@ -14,11 +15,17 @@ class PluginPackage {
 	 * @param string $packageName Composer package name to load.
 	 * @return ?PluginPackage
 	 */
-	public static function createFromComposer(string $packageName): ?PluginPackage {
-		$packagePath = realpath(InstalledVersions::getInstallPath($packageName));
-		if ($packagePath === false) {
-			return null;
+	public static function createFromComposer(string $packageName): PluginPackage {
+		$packagePath = false;
+		try {
+			$packagePath = realpath(InstalledVersions::getInstallPath($packageName));
+		} catch (OutOfBoundsException $e) {
+			$packagePath = false;
 		}
+		if ($packagePath === false) {
+			return self::getEmptyPackage($packageName);
+		}
+
 		$composerJsonPath = $packagePath . DIRECTORY_SEPARATOR . 'composer.json';
 		$composerJson = file_get_contents($composerJsonPath);
 		$composer = json_decode($composerJson);
@@ -57,6 +64,24 @@ class PluginPackage {
 			title: $composer->extra?->smolblog?->title ?? '',
 			errors: $errors,
 			pluginClass: $pluginClass,
+		);
+	}
+
+	/**
+	 * Create an empty PluginPackage
+	 *
+	 * @param string $packageName Given composer package name.
+	 * @return PluginPackage
+	 */
+	private static function getEmptyPackage(string $packageName): PluginPackage {
+		return new PluginPackage(
+			package: $packageName,
+			version: '0',
+			description: '',
+			authors: [],
+			title: $packageName,
+			errors: ["Package `$packageName` could not be processed."],
+			pluginClass: '',
 		);
 	}
 

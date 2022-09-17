@@ -18,9 +18,19 @@
       "email": "me@eph.me"
     }
   ],
+  "repositories": [
+    {
+      "type": "path",
+      "url": "tests/_pluginStub",
+      "options": {
+        "reference": "none"
+      }
+    }
+  ],
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
-    "phpunit/phpunit": "^9"
+    "phpunit/phpunit": "^9",
+    "smoltest/plugin-stub": "*"
   },
   "scripts": {
     "test": "phpunit --testsuite core",

@@ -121,7 +121,7 @@ class App {
 			if (empty($package->errors)) {
 				$plugin = $package->createPlugin(app: $this);
 				if ($plugin) {
-					$this->activePlugins[] = $plugin;
+					$this->activePlugins[$packageName] = $plugin;
 				}
 			}
 		}
