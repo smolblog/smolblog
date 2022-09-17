@@ -23,11 +23,18 @@ class App {
 	public readonly EventDispatcher $events;
 
 	/**
-	 * Array of Plugins that are installed (not necessarily active)
+	 * Array of PluginPackages that are installed (not necessarily active)
+	 *
+	 * @var PluginPackage[]
+	 */
+	private array $installedPackages = [];
+
+	/**
+	 * Array of Plugins that are currently active
 	 *
 	 * @var Plugin[]
 	 */
-	private array $installedPlugins;
+	private array $activePlugins = [];
 
 	/**
 	 * Construct a new App. Requires an EndpointRegistrar and a loaded Environment object. Loads the
@@ -65,30 +72,6 @@ class App {
 			addArgument(Environment::class)->
 			addArgument(Registrars\ConnectorRegistrar::class)->
 			addArgument(Factories\TransientFactory::class);
-
-		$this->loadPlugins();
-	}
-
-	/**
-	 * Find the plugins from composer and load them
-	 *
-	 * @return void
-	 */
-	public function loadPlugins(): void {
-		$plugins = InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
-		foreach (array_unique($plugins) as $packageName) {
-			$packagePath = realpath(InstalledVersions::getInstallPath($packageName));
-			if ($packagePath === false) {
-				continue;
-			}
-			$composerJsonPath = $packagePath . DIRECTORY_SEPARATOR . 'composer.json';
-			$plugin = Plugin::createFromComposer(file_get_contents($composerJsonPath));
-			$this->installedPlugins[] = $plugin;
-
-			if ($plugin->active) {
-				$plugin->load(app: $this);
-			}
-		}
 	}
 
 	/**
@@ -97,6 +80,9 @@ class App {
 	 * @return void
 	 */
 	public function startup(): void {
+		// Load any plugins in the system.
+		$this->loadPlugins();
+
 		// Register endpoints with external system.
 		$coreEndpoints = [
 			Endpoints\ConnectCallback::class,
@@ -118,5 +104,26 @@ class App {
 		// We're done with our part; fire the event!
 		$dispatcher = $this->container->get(EventDispatcher::class);
 		$dispatcher->dispatch(new Events\Startup($this));
+	}
+
+	/**
+	 * Find the plugins from composer and load them
+	 *
+	 * @return void
+	 */
+	private function loadPlugins(): void {
+		$plugins = InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
+		foreach (array_unique($plugins) as $packageName) {
+			$package = PluginPackage::createFromComposer($packageName);
+			$this->installedPackages[] = $package;
+
+			// In the future, we should check against a list of "activated" plugins.
+			if (empty($package->errors)) {
+				$plugin = $package->createPlugin(app: $this);
+				if ($plugin) {
+					$this->activePlugins[] = $plugin;
+				}
+			}
+		}
 	}
 }
