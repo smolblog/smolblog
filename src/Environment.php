@@ -22,9 +22,9 @@ class Environment {
 	 * Quick access for any added environment variables.
 	 *
 	 * @param string $name Environment variable to get.
-	 * @return string
+	 * @return ?string
 	 */
-	public function __get(string $name): string {
+	public function __get(string $name): ?string {
 		return $this->envVars[$name] ?? null;
 	}
 }
