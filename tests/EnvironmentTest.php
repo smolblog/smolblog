@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 final class EnvironmentTest extends TestCase {
 	public function testArbitraryEnvionmentVariablesCanBeAddedAndRetrieved() {
-		$env = new Environment(apiBase: '//localhost', envVars: ['someKey' => 'someValue']);
+		$env = new Environment(apiBase: '//localhost', someKey: 'someValue');
 
 		$this->assertEquals('someValue', $env->someKey);
 	}

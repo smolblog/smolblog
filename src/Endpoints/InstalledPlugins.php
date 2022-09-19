@@ -44,12 +44,7 @@ class InstalledPlugins implements Endpoint {
 			statusCode: 200,
 			body: array_map(
 				fn($package) => [
-					'package' => $package->package,
-					'version' => $package->version,
-					'description' => $package->description,
-					'authors' => $package->authors,
-					'title' => $package->title,
-					'errors' => $package->errors,
+					...get_object_vars($package),
 					'active' => array_key_exists($package->package, $this->activePlugins),
 				],
 				$this->installedPackages
