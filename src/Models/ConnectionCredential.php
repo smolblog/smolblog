@@ -22,33 +22,4 @@ class ConnectionCredential extends Model {
 		'displayName' => ModelField::string,
 		'details' => ModelField::string,
 	];
-
-	/**
-	 * Validate incoming data.
-	 *
-	 * @param string $name  Property to set.
-	 * @param mixed  $value Value to set.
-	 * @return string|null null if valid, error message if not
-	 */
-	protected function fieldValidationErrorMessage(string $name, mixed $value): ?string {
-		switch ($name) {
-			case 'userId':
-				if (!is_int($value)) {
-					return "$name is an integer.";
-				}
-				return null;
-			case 'provider':
-			case 'providerKey':
-			case 'displayName':
-				try {
-					strval($value);
-				} catch (Throwable $e) {
-					return "$name must be stringable.";
-				}
-				return null;
-			case 'details':
-				return null;
-		}
-		return "$name is not a field.";
-	}
 }
