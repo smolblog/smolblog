@@ -110,8 +110,7 @@ class App {
 		}
 
 		// We're done with our part; fire the event!
-		$dispatcher = $this->container->get(Events\EventDispatcher::class);
-		$dispatcher->dispatch(new Events\Startup($this));
+		$this->events->dispatch(new Events\Startup($this));
 	}
 
 	/**
