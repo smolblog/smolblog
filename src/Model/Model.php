@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Model;
 
+use DateTimeInterface;
 use Smolblog\Core\Environment;
 
 /**
@@ -108,25 +109,45 @@ abstract class Model {
 			return "$name is not a field.";
 		}
 
-		switch ($fieldType) {
-			case ModelField::int:
-				if (!is_int($value)) {
+		if (is_a($fieldType, ModelField::class)) {
+			switch ($fieldType) {
+				case ModelField::int:
+					if (is_int($value)) {
+						return null;
+					}
 					return "$name must be an integer.";
-				}
-				return null;
-			case ModelField::string:
-				try {
-					strval($value);
-				} catch (Throwable $e) {
-					return "$name must be stringable.";
-				}
-				return null;
-			case ModelField::float:
-				if (!is_float($value)) {
+				case ModelField::string:
+					try {
+						strval($value);
+					} catch (Throwable $e) {
+						return "$name must be stringable.";
+					}
+					return null;
+				case ModelField::float:
+					if (is_float($value)) {
+						return null;
+					}
 					return "$name must be a real number.";
-				}
+				case ModelField::date:
+					if (
+						false !== date_create($value) ||
+						(is_object($value) && in_array(DateTimeInterface::class, class_implements($value)))
+					) {
+						return null;
+					}
+					return "$name must be a DateTime object or valid date string.";
+				default:
+					return "Field $name has an undefined ModelField.";
+			}//end switch
+		}//end if
+
+		if (class_exists($fieldType)) {
+			if (is_a($value, $fieldType)) {
 				return null;
+			}
+			return "Field $name should be an instance of $fieldType.";
 		}
+		return "Field $name is not properly defined. Given ";
 	}
 
 	/**

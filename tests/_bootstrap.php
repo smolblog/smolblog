@@ -28,16 +28,29 @@ trait ModelTestToolkit {
 	public function testAllDefinedFieldsCanBeAccessedAndSaved() {
 		foreach ($this->model::FIELDS as $field => $type) {
 			$sampleValue = '';
-			switch ($type) {
-				case ModelField::int:
-					$sampleValue = 543;
-					break;
-				case ModelField::float:
-					$sampleValue = 5.43;
-					break;
-				case ModelField::string:
-					$sampleValue = 'Fhqwhgads';
-					break;
+
+			if (is_a($type, ModelField::class)) {
+				switch ($type) {
+					case ModelField::int:
+						$sampleValue = 543;
+						break;
+					case ModelField::float:
+						$sampleValue = 5.43;
+						break;
+					case ModelField::string:
+						$sampleValue = 'Fhqwhgads';
+						break;
+				}
+			} elseif (class_exists($type)) {
+				switch ($type) {
+					// Add any enums that are used here since they are "final" classes
+					case PostStatus::class:
+						$sampleValue = PostStatus::Published;
+						break;
+					default:
+						$sampleValue = $this->createStub($type);
+						break;
+				}
 			}
 			$this->model->$field = $sampleValue;
 			$this->assertEquals($sampleValue, $this->model->$field);

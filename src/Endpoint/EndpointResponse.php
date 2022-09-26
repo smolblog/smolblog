@@ -2,11 +2,6 @@
 
 namespace Smolblog\Core\Endpoint;
 
-// This sniff apparently does not support `readonly`.
-//phpcs:disable Squiz.Commenting.VariableComment.Missing
-
-use JsonSerializable;
-
 /**
  * Object to store a response for an Endpoint.
  */
@@ -22,17 +17,17 @@ class EndpointResponse {
 	/**
 	 * Body of the response to be converted to JSON
 	 *
-	 * @var JsonSerializable|array
+	 * @var array
 	 */
-	public readonly JsonSerializable | array $body;
+	public readonly array $body;
 
 	/**
 	 * Create the EndpointResponse
 	 *
-	 * @param JsonSerializable|array $body       Body of the response.
-	 * @param integer                $statusCode HTTP code for the response; default 200 (OK).
+	 * @param array   $body       Body of the response.
+	 * @param integer $statusCode HTTP code for the response; default 200 (OK).
 	 */
-	public function __construct(JsonSerializable | array $body, int $statusCode = 200) {
+	public function __construct(array $body, int $statusCode = 200) {
 		$this->body = $body;
 		$this->statusCode = $statusCode;
 	}
