@@ -7,10 +7,26 @@ use Smolblog\Core\Model\{Model, ModelHelper, ModelField};
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+/**
+ * Model helper that returns provided data (success).
+ */
 final class TestModelHelper implements ModelHelper {
 	public function getData(Model $forModel = null, mixed $withId = null): ?array {
 		if (is_array($withId)) { return $withId; }
 		return ['id' => $withId];
+	}
+
+	public function save(Model $model = null, array $withData = []): bool {
+		return true;
+	}
+}
+
+/**
+ * Model helper that returns null (failure).
+ */
+final class TestModelEmptyHelper implements ModelHelper {
+	public function getData(Model $forModel = null, mixed $withId = null): ?array {
+		return null;
 	}
 
 	public function save(Model $model = null, array $withData = []): bool {
