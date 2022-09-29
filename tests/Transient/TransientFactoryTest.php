@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Factories;
+namespace Smolblog\Core\Transient;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\{Model, ModelHelper};
+use Smolblog\Core\Model\{Model, ModelHelper};
 
 final class TestTransientModelHelper implements ModelHelper {
 	private $store = [];

@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Endpoints;
+namespace Smolblog\Core\Plugin;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\{EndpointRequest, EndpointResponse, Plugin, PluginPackage};
+use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Test\EndpointTestToolkit;
 
 final class InstalledPluginsTest extends TestCase {

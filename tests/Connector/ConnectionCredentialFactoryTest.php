@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Factories;
+namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Test\TestModelHelper;

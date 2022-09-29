@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Registrars;
+namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Connector;
 
 final class ConnectorRegistrarTest extends TestCase {
 	public function testConnectorCanBeRegisteredAndRetrieved() {

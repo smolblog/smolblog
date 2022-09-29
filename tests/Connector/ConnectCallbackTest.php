@@ -1,12 +1,10 @@
 <?php
 
-namespace Smolblog\Core\Endpoints;
+namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\{Connector, EndpointRequest, EndpointResponse};
-use Smolblog\Core\Factories\TransientFactory;
-use Smolblog\Core\Models\ConnectionCredential;
-use Smolblog\Core\Registrars\ConnectorRegistrar;
+use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
+use Smolblog\Core\Transient\TransientFactory;
 use Smolblog\Test\EndpointTestToolkit;
 
 final class ConnectCallbackTest extends TestCase {

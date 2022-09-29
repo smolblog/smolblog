@@ -2,8 +2,8 @@
 
 namespace Smolblog\Test;
 
-use Smolblog\Core\{Endpoint, EndpointRequest, EndpointResponse, Model, ModelHelper};
-use Smolblog\Core\Definitions\ModelField;
+use Smolblog\Core\Endpoint\{Endpoint, EndpointRequest, EndpointResponse};
+use Smolblog\Core\Model\{Model, ModelHelper, ModelField};
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

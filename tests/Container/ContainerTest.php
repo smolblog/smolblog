@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Container;
 
 use PHPUnit\Framework\TestCase;
 
@@ -55,6 +55,16 @@ final class ContainerTest extends TestCase {
 
 	public function testDependenciesCanBeDeclaredOutOfOrder() {
 		$container = new Container();
+		$container->add(ContainerTestComposedClass::class)->addArgument(ContainerTestStandaloneClass::class);
+		$container->add(ContainerTestStandaloneClass::class);
+
+		$retrieved = $container->get(ContainerTestComposedClass::class);
+		$this->assertInstanceOf(ContainerTestComposedClass::class, $retrieved);
+		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved->getInternalClass());
+	}
+
+	public function testDependenciesCanBeDeclaredAfterTheFact() {
+		$container = new Container();
 		$container->add(ContainerTestComposedClass::class);
 		$container->add(ContainerTestStandaloneClass::class);
 		$container->extend(ContainerTestComposedClass::class)->addArgument(ContainerTestStandaloneClass::class);
@@ -64,7 +74,21 @@ final class ContainerTest extends TestCase {
 		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved->getInternalClass());
 	}
 
-	public function testAnInstanceCanBePassedViaFactory() {
+	public function testAClassCanBeInstantiatedViaFactory() {
+		$container = new Container();
+		$container->add(ContainerTestStandaloneClass::class, fn() => new ContainerTestStandaloneClass());
+
+		$retrieved_first = $container->get(ContainerTestStandaloneClass::class);
+		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved_first);
+		$retrieved_second = $container->get(ContainerTestStandaloneClass::class);
+		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved_second);
+
+		$retrieved_first->setTestString('one');
+		$retrieved_second->setTestString('two');
+		$this->assertNotEquals($retrieved_first->getTestString(), $retrieved_second->getTestString());
+	}
+
+	public function testASharedInstanceCanBePassedViaFactory() {
 		$instance = new ContainerTestStandaloneClass();
 		$instance->setTestString(uniqid());
 

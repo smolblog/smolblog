@@ -1,8 +1,9 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Plugin;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\App;
 use Smoltest\PluginStub\Plugin as TestPlugin;
 
 final class PluginPackageTest extends TestCase {
