@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 final class AppTest extends TestCase {
 	private $app;
 	public function setUp(): void {
-		$endpointDouble = $this->createStub(EndpointRegistrar::class);
+		$endpointDouble = $this->createStub(Endpoint\EndpointRegistrar::class);
 		$environment = new Environment(apiBase: 'https://smol.blog/api/');
 
 		$this->app = new App(

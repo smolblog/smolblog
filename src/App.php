@@ -11,28 +11,28 @@ class App {
 	/**
 	 * Dependency Injection container
 	 *
-	 * @var Container
+	 * @var Container\Container
 	 */
-	public readonly Container $container;
+	public readonly Container\Container $container;
 
 	/**
 	 * Event dispatcher
 	 *
-	 * @var Container
+	 * @var Container\Container
 	 */
-	public readonly EventDispatcher $events;
+	public readonly Events\EventDispatcher $events;
 
 	/**
 	 * Array of PluginPackages that are installed (not necessarily active)
 	 *
-	 * @var PluginPackage[]
+	 * @var Plugin\PluginPackage[]
 	 */
 	private array $installedPackages = [];
 
 	/**
 	 * Array of Plugins that are currently active
 	 *
-	 * @var Plugin[]
+	 * @var Plugin\Plugin[]
 	 */
 	private array $activePlugins = [];
 
@@ -43,38 +43,38 @@ class App {
 	 * Once this object is constructed, it is the responsibility of the bootstrapper to add any further
 	 * dependencies to the container before calling `startup()`.
 	 *
-	 * @param EndpointRegistrar $withEndpointRegistrar Endpoint registrar.
-	 * @param Environment       $withEnvironment       Environment information.
+	 * @param Endpoint\EndpointRegistrar $withEndpointRegistrar Endpoint registrar.
+	 * @param Environment                $withEnvironment       Environment information.
 	 */
 	public function __construct(
-		EndpointRegistrar $withEndpointRegistrar,
+		Endpoint\EndpointRegistrar $withEndpointRegistrar,
 		Environment $withEnvironment
 	) {
 		$this->endpoints = $withEndpointRegistrar;
 		$this->environment = $withEnvironment;
 
-		$this->container = new Container();
-		$this->events = new EventDispatcher();
+		$this->container = new Container\Container();
+		$this->events = new Events\EventDispatcher();
 
 		$this->container->addShared(Environment::class, fn() => $withEnvironment);
-		$this->container->addShared(EndpointRegistrar::class, fn() => $withEndpointRegistrar);
-		$this->container->addShared(EventDispatcher::class, fn() => $this->events);
+		$this->container->addShared(Endpoint\EndpointRegistrar::class, fn() => $withEndpointRegistrar);
+		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
 
-		$this->container->addShared(Registrars\ConnectorRegistrar::class);
+		$this->container->addShared(Connector\ConnectorRegistrar::class);
 
-		$this->container->addShared(Factories\ConnectionCredentialFactory::class);
-		$this->container->addShared(Factories\TransientFactory::class);
+		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
+		$this->container->addShared(Transient\TransientFactory::class);
 
 		$this->container->add(Endpoints\ConnectCallback::class)->
-			addArgument(Registrars\ConnectorRegistrar::class)->
-			addArgument(Factories\TransientFactory::class);
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Transient\TransientFactory::class);
 		$this->container->add(Endpoints\ConnectInit::class)->
 			addArgument(Environment::class)->
-			addArgument(Registrars\ConnectorRegistrar::class)->
-			addArgument(Factories\TransientFactory::class);
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Transient\TransientFactory::class);
 		$this->container->add(
-			Endpoints\InstalledPlugins::class,
-			fn() => new Endpoints\InstalledPlugins(
+			Plugin\InstalledPlugins::class,
+			fn() => new Plugin\InstalledPlugins(
 				installedPackages: $this->installedPackages,
 				activePlugins: $this->activePlugins
 			)
@@ -92,25 +92,25 @@ class App {
 
 		// Register endpoints with external system.
 		$coreEndpoints = [
-			Endpoints\ConnectCallback::class,
-			Endpoints\ConnectInit::class,
-			Endpoints\InstalledPlugins::class,
+			Connector\ConnectCallback::class,
+			Connector\ConnectInit::class,
+			Plugin\InstalledPlugins::class,
 		];
 		$allEndpoints = $this->events->dispatch(new Events\CollectingEndpoints($coreEndpoints))->endpoints;
-		$endpointRegistrar = $this->container->get(EndpointRegistrar::class);
+		$endpointRegistrar = $this->container->get(Endpoint\EndpointRegistrar::class);
 		foreach ($allEndpoints as $endpoint) {
 			$endpointRegistrar->registerEndpoint($this->container->get($endpoint));
 		}
 
 		// Collect and register Connectors.
 		$allConnectors = $this->events->dispatch(new Events\CollectingConnectors([]))->connectors;
-		$connectorRegistrar = $this->container->get(Registrars\ConnectorRegistrar::class);
+		$connectorRegistrar = $this->container->get(Connector\ConnectorRegistrar::class);
 		foreach ($allConnectors as $connector) {
 			$connectorRegistrar->register($this->container->get($connector));
 		}
 
 		// We're done with our part; fire the event!
-		$dispatcher = $this->container->get(EventDispatcher::class);
+		$dispatcher = $this->container->get(Events\EventDispatcher::class);
 		$dispatcher->dispatch(new Events\Startup($this));
 	}
 
@@ -122,7 +122,7 @@ class App {
 	private function loadPlugins(): void {
 		$plugins = InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
 		foreach (array_unique($plugins) as $packageName) {
-			$package = PluginPackage::createFromComposer($packageName);
+			$package = Plugin\PluginPackage::createFromComposer($packageName);
 			$this->installedPackages[] = $package;
 
 			// In the future, we should check against a list of "activated" plugins.
