@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Container;
 
 interface ContainerDefinition {
 	/**
@@ -9,5 +9,5 @@ interface ContainerDefinition {
 	 * @param string|callable $arg Class or factory to add to the definition.
 	 * @return ContainerDefinition
 	 */
-	public function addArgument(string $arg): ContainerDefinition;
+	public function addArgument(string|callable $arg): ContainerDefinition;
 }

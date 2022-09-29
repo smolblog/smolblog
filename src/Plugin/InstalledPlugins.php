@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Endpoints;
+namespace Smolblog\Core\Plugin;
 
-use Smolblog\Core\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, Plugin, PluginPackage};
-use Smolblog\Core\Definitions\SecurityLevel;
+use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
 
 /**
  * Endpoint to show currently installed plugins and whether they are active.

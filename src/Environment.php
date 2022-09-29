@@ -44,6 +44,17 @@ class Environment implements JsonSerializable {
 	}
 
 	/**
+	 * Override `__set` to do nothing.
+	 *
+	 * @param string $name  Variable to set.
+	 * @param mixed  $value Value to provide.
+	 * @return void
+	 */
+	public function __set(string $name, mixed $value): void {
+		// Do nothing.
+	}
+
+	/**
 	 * Get all defined fields as a single array.
 	 *
 	 * @return array

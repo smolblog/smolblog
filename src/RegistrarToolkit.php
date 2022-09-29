@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Toolkits;
+namespace Smolblog\Core;
 
 /**
  * Trait to handle linking classes to their particular context

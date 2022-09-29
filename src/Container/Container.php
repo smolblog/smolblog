@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Container;
 
 use Psr\Container\ContainerInterface;
 use League\Container\Container as LeagueContainer;

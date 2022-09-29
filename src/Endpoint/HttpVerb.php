@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Definitions;
+namespace Smolblog\Core\Endpoint;
 
 enum HttpVerb: string {
 	case GET = 'GET';

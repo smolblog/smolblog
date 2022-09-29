@@ -1,10 +1,8 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Model;
 
 use Smolblog\Core\Environment;
-use Smolblog\Core\Definitions\ModelField;
-use Smolblog\Core\Exceptions\ModelException;
 
 /**
  * An object backed by a persistant data store of some kind.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Exceptions;
+namespace Smolblog\Core;
 
 use Exception;
 

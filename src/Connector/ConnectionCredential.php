@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Models;
+namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Model;
-use Smolblog\Core\Definitions\ModelField;
+use Smolblog\Core\Model\{Model, ModelField};
 
 /**
  * Stores information about credentials needed to authenticate against an

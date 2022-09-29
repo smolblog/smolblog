@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Events;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use League\Event\EventDispatcher as LeagueEventDispatcher;

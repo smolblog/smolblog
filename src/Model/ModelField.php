@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Definitions;
+namespace Smolblog\Core\Model;
 
 enum ModelField {
 	case int;

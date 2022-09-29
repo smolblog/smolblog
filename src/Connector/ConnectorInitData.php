@@ -1,9 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
-
-// This sniff apparently does not support `readonly`.
-//phpcs:disable Squiz.Commenting.VariableComment.Missing
+namespace Smolblog\Core\Connector;
 
 /**
  * Data required from a Connector to initialize an OAuth2 request.

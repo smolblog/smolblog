@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Models;
+namespace Smolblog\Core\Transient;
 
-use Smolblog\Core\Model;
-use Smolblog\Core\Definitions\ModelField;
+use Smolblog\Core\Model\{Model, ModelField};
 
 /**
  * An object that needs to persist between pageloads but is not permanent.

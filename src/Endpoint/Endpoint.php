@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Endpoint;
 
 /**
  * Interface for defining and running code for a REST API endpoint.

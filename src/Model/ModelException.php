@@ -1,6 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Exceptions;
+namespace Smolblog\Core\Model;
+
+use Smolblog\Core\SmolblogException;
 
 /**
  * Exception for errors in a Model.

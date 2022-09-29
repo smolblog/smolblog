@@ -1,11 +1,9 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Endpoint;
 
 // This sniff apparently does not support `readonly`.
 //phpcs:disable Squiz.Commenting.VariableComment.Missing
-
-use Smolblog\Core\Definitions\HttpVerb;
 
 /**
  * Represents a request made to an endpoint.

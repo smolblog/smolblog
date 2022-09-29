@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Factories;
+namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\ModelHelper;
-use Smolblog\Core\Models\ConnectionCredential;
+use Smolblog\Core\Model\ModelHelper;
 
 /**
  * Object for making ConnectionCredential models.

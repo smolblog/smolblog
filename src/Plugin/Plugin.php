@@ -1,6 +1,8 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Plugin;
+
+use Smolblog\Core\App;
 
 interface Plugin {
 	/**

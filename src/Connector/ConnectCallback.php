@@ -1,10 +1,11 @@
 <?php
 
-namespace Smolblog\Core\Endpoints;
+namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, Environment};
-use Smolblog\Core\Factories\TransientFactory;
-use Smolblog\Core\Registrars\ConnectorRegistrar;
+use Smolblog\Core\Environment;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
+use Smolblog\Core\Transient\TransientFactory;
 
 /**
  * Endpoint to handle an OAuth2 callback from a Connector's provider

@@ -1,9 +1,10 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Plugin;
 
 use OutOfBoundsException;
 use Composer\InstalledVersions;
+use Smolblog\Core\App;
 
 /**
  * Represents a Composer package that can be loaded into the system.

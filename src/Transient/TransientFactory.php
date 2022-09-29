@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Factories;
+namespace Smolblog\Core\Transient;
 
-use Smolblog\Core\ModelHelper;
-use Smolblog\Core\Models\Transient;
+use Smolblog\Core\Model\ModelHelper;
 
 /**
  * Object for making Transient models.

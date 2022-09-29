@@ -1,9 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
-
-use Smolblog\Core\Definitions\HttpVerb;
-use Smolblog\Core\Models\ConnectionCredential;
+namespace Smolblog\Core\Connector;
 
 /**
  * Class to handle authenticating against an external provider.

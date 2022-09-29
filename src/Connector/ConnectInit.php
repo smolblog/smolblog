@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\Core\Endpoints;
+namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, Environment};
-use Smolblog\Core\Definitions\SecurityLevel;
-use Smolblog\Core\Factories\TransientFactory;
-use Smolblog\Core\Registrars\ConnectorRegistrar;
+use Smolblog\Core\Environment;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
+use Smolblog\Core\Transient\TransientFactory;
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be

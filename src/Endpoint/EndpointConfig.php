@@ -1,9 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
-
-use Smolblog\Core\Definitions\HttpVerb;
-use Smolblog\Core\Definitions\SecurityLevel;
+namespace Smolblog\Core\Endpoint;
 
 /**
  * Configuration data for an Endpoint used to register it with the outside router.

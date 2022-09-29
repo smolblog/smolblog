@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Registrars;
+namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Connector;
-use Smolblog\Core\Toolkits\RegistrarToolkit;
+use Smolblog\Core\RegistrarToolkit;
 
 /**
  * Class to handle storing Connectors for use later.

@@ -1,8 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
-
-use Smolblog\Core\Model;
+namespace Smolblog\Core\Model;
 
 /**
  * Used to handle interactions between a Model and a persistant data store.
