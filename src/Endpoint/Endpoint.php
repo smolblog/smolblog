@@ -2,16 +2,18 @@
 
 namespace Smolblog\Core\Endpoint;
 
+use Smolblog\Core\Registrar\Registerable;
+
 /**
  * Interface for defining and running code for a REST API endpoint.
  */
-interface Endpoint {
+interface Endpoint extends Registerable {
 	/**
 	 * Get the configuration needed to register this Endpoint with the outside router.
 	 *
 	 * @return EndpointConfig
 	 */
-	public function getConfig(): EndpointConfig;
+	public static function config(): EndpointConfig;
 
 	/**
 	 * Perform the action associated with this endpoint and return the response.

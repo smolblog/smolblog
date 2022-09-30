@@ -99,19 +99,18 @@ class App {
 		$allEndpoints = $this->events->dispatch(new Events\CollectingEndpoints($coreEndpoints))->endpoints;
 		$endpointRegistrar = $this->container->get(Endpoint\EndpointRegistrar::class);
 		foreach ($allEndpoints as $endpoint) {
-			$endpointRegistrar->registerEndpoint($this->container->get($endpoint));
+			$endpointRegistrar->register(class: $endpoint, factory: fn() => $this->container->get($endpoint));
 		}
 
 		// Collect and register Connectors.
 		$allConnectors = $this->events->dispatch(new Events\CollectingConnectors([]))->connectors;
 		$connectorRegistrar = $this->container->get(Connector\ConnectorRegistrar::class);
 		foreach ($allConnectors as $connector) {
-			$connectorRegistrar->register($this->container->get($connector));
+			$connectorRegistrar->register(class: $connector, factory: fn() => $this->container->get($connector));
 		}
 
 		// We're done with our part; fire the event!
-		$dispatcher = $this->container->get(Events\EventDispatcher::class);
-		$dispatcher->dispatch(new Events\Startup($this));
+		$this->events->dispatch(new Events\Startup($this));
 	}
 
 	/**

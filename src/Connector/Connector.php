@@ -2,16 +2,18 @@
 
 namespace Smolblog\Core\Connector;
 
+use Smolblog\Core\Registrar\Registerable;
+
 /**
  * Class to handle authenticating against an external provider.
  */
-interface Connector {
+interface Connector extends Registerable {
 	/**
-	 * Identifier for the provider.
+	 * Configuration for the provider.
 	 *
-	 * @return string
+	 * @return ConnectorConfig
 	 */
-	public function slug(): string;
+	public static function config(): ConnectorConfig;
 
 	/**
 	 * Get the information needed to start an OAuth session with the provider

@@ -28,7 +28,7 @@ class ConnectCallback implements Endpoint {
 	 *
 	 * @return EndpointConfig
 	 */
-	public function getConfig(): EndpointConfig {
+	public static function config(): EndpointConfig {
 		return new EndpointConfig(
 			route: 'connect/callback/[slug]',
 			params: ['slug' => '[a-z0-9-]+']
