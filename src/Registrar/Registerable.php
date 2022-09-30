@@ -4,8 +4,10 @@ namespace Smolblog\Core\Registrar;
 
 interface Registerable {
 	/**
-	 * Store the configuration for the object as a static array. This will let the Registrar
+	 * Get the configuration for the object. This will let the Registrar
 	 * get the information it needs without having to instantiate.
+	 *
+	 * @return mixed
 	 */
-	public const CONFIG = [];
+	public static function config(): mixed;
 }

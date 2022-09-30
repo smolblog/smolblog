@@ -26,7 +26,7 @@ abstract class Registrar {
 			throw new RegistrationException("Class $class does not implement Registerable.");
 		}
 
-		$key = $this->processConfig($class::CONFIG);
+		$key = $this->processConfig($class::config());
 
 		$this->library[$key] = $factory;
 	}
@@ -34,10 +34,10 @@ abstract class Registrar {
 	/**
 	 * Handle the configuration of the class. Should return the string key used to retrieve the class.
 	 *
-	 * @param array $config Configuration array from the class.
+	 * @param mixed $config Configuration array from the class.
 	 * @return string Key to retrieve the class with.
 	 */
-	abstract protected function processConfig(array $config): string;
+	abstract protected function processConfig(mixed $config): string;
 
 	/**
 	 * Get an instance of the class indicated by the given key.

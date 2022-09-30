@@ -9,9 +9,11 @@ use Smolblog\Core\Registrar\Registerable;
  */
 interface Connector extends Registerable {
 	/**
-	 * Configuration for the provider. Expects 'slug'.
+	 * Configuration for the provider.
+	 *
+	 * @return ConnectorConfig
 	 */
-	public const CONFIG = [];
+	public static function config(): ConnectorConfig;
 
 	/**
 	 * Get the information needed to start an OAuth session with the provider

@@ -11,15 +11,10 @@ class ConnectorRegistrar extends Registrar {
 	/**
 	 * Handle the configuration of the Connector.
 	 *
-	 * @throws RegistrationException Throws if required keys are not in $config.
-	 * @param array $config Configuration array from the class.
+	 * @param mixed $config Configuration array from the class.
 	 * @return string Key to retrieve the class with.
 	 */
-	protected function processConfig(array $config): string {
-		if (!isset($config['slug'])) {
-			throw new RegistrationException('Connector config must include "slug".');
-		}
-
-		return $config['slug'];
+	protected function processConfig(mixed $config): string {
+		return $config->slug;
 	}
 }

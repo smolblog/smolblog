@@ -5,7 +5,7 @@ namespace Smolblog\Core\Connector;
 use PHPUnit\Framework\TestCase;
 
 abstract class ConnectorMock implements Connector {
-	public const CONFIG = ['slug' => 'camelot'];
+	public static function config(): ConnectorConfig { return new ConnectorConfig(slug: 'camelot'); }
 	public readonly string $id;
 
 	public function __construct() {
