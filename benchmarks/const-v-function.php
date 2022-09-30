@@ -1,4 +1,15 @@
 <?php
+/**
+ * This is a benchmark set up to test the efficiency of a static constant versus
+ * a static function returning a new object. While the constant is consistently
+ * about 1/3rd faster than the function, the function allows the use of value
+ * objects and therefore includes type and null checking by virtue of allowing
+ * the config schema to be stored _in code_. If this becomes a long-term issue
+ * we can come back to this, or maybe PHP will have evolved another way to
+ * accomplish it that is more performant.
+ * 
+ * TL;DR: Constants are faster, but we're using functions because type checking.
+ */
 
 namespace Smolblog\Test\Benchmarks;
 
