@@ -4,20 +4,26 @@ namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
 
+abstract class ConnectorMock implements Connector {
+	public const CONFIG = ['slug' => 'camelot'];
+	public readonly string $id;
+
+	public function __construct() {
+		$this->id = uniqid();
+	}
+}
+
 final class ConnectorRegistrarTest extends TestCase {
 	public function testConnectorCanBeRegisteredAndRetrieved() {
-		$expected = $this->getMockForAbstractClass(Connector::class);
-		$expected->expects($this->any())
-             ->method('slug')
-             ->will($this->returnValue('camelot'));
+		$expected = $this->getMockForAbstractClass(ConnectorMock::class);
 
 		$connectors = new ConnectorRegistrar();
-		$connectors->register(connector: $expected);
+		$connectors->register(class: ConnectorMock::class, factory: fn() => $expected);
 		$actual = $connectors->retrieve('camelot');
 
 		$this->assertEquals(
-			$expected->slug(),
-			$actual->slug()
+			$expected->id,
+			$actual->id
 		);
 	}
 

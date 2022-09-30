@@ -53,7 +53,7 @@ final class ContainerTest extends TestCase {
 		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved->getInternalClass());
 	}
 
-	public function testDependenciesCanBeDeclaredOutOfOrder() {
+	public function testDependenciesCanBeAddedBeforeBeingDeclared() {
 		$container = new Container();
 		$container->add(ContainerTestComposedClass::class)->addArgument(ContainerTestStandaloneClass::class);
 		$container->add(ContainerTestStandaloneClass::class);
@@ -63,7 +63,7 @@ final class ContainerTest extends TestCase {
 		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved->getInternalClass());
 	}
 
-	public function testDependenciesCanBeDeclaredAfterTheFact() {
+	public function testDependenciesCanBeAddedLater() {
 		$container = new Container();
 		$container->add(ContainerTestComposedClass::class);
 		$container->add(ContainerTestStandaloneClass::class);

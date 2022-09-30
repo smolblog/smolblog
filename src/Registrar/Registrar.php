@@ -11,7 +11,7 @@ abstract class Registrar {
 	 *
 	 * @var array
 	 */
-	private $library = [];
+	protected $library = [];
 
 	/**
 	 * Register a class with this Registrar
@@ -37,7 +37,7 @@ abstract class Registrar {
 	 * @param array $config Configuration array from the class.
 	 * @return string Key to retrieve the class with.
 	 */
-	abstract public function processConfig(array $config): string;
+	abstract protected function processConfig(array $config): string;
 
 	/**
 	 * Get an instance of the class indicated by the given key.
@@ -46,9 +46,9 @@ abstract class Registrar {
 	 * @return mixed Instance of the requested class.
 	 */
 	public function retrieve(string $key): mixed {
-		if (!array_key_exists($library[$key])) {
+		if (!array_key_exists($key, $this->library)) {
 			return null;
 		}
-		return call_user_func($library[$key]);
+		return call_user_func($this->library[$key]);
 	}
 }
