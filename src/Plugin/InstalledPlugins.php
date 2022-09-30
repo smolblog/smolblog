@@ -25,7 +25,7 @@ class InstalledPlugins implements Endpoint {
 	 *
 	 * @return EndpointConfig
 	 */
-	public function getConfig(): EndpointConfig {
+	public static function config(): EndpointConfig {
 		return new EndpointConfig(
 			route: 'admin/plugins',
 			security: SecurityLevel::Admin

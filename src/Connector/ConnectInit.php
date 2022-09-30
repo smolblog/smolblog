@@ -31,7 +31,7 @@ class ConnectInit implements Endpoint {
 	 *
 	 * @return EndpointConfig
 	 */
-	public function getConfig(): EndpointConfig {
+	public static function config(): EndpointConfig {
 		return new EndpointConfig(
 			route: 'connect/init/[slug]',
 			security: SecurityLevel::Registered,
