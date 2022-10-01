@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Models;
+namespace Smolblog\Core\Post;
 
-use Smolblog\Core\Model;
-use Smolblog\Core\Definitions\{ModelField, PostStatus};
+use Smolblog\Core\Model\{Model, ModelField};
 
 /**
  * Represents a blog post.

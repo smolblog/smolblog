@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Models;
+namespace Smolblog\Core\Post;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Test\{TestModelHelper, ModelTestToolkit};

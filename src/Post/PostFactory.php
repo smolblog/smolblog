@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Factories;
+namespace Smolblog\Core\Post;
 
-use Smolblog\Core\ModelHelper;
-use Smolblog\Core\Models\Post;
+use Smolblog\Core\Model\ModelHelper;
 
 /**
  * Object for making ConnectionCredential models.
