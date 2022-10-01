@@ -49,7 +49,7 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		$connector = $this->connectors->retrieve($request->params['slug']);
+		$connector = $this->connectors->get($request->params['slug']);
 		if (!isset($connector)) {
 			return new EndpointResponse(
 				statusCode: 404,

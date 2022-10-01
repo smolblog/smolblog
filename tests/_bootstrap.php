@@ -4,6 +4,7 @@ namespace Smolblog\Test;
 
 use Smolblog\Core\Endpoint\{Endpoint, EndpointRequest, EndpointResponse};
 use Smolblog\Core\Model\{Model, ModelHelper, ModelField};
+use Smolblog\Core\Post\PostStatus;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

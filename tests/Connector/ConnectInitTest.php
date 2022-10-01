@@ -18,7 +18,7 @@ final class ConnectInitTest extends TestCase {
 		$connector->method('getInitializationData')->willReturn(new ConnectorInitData(url: '//', state: 'bob', info: []));
 
 		$connectors = $this->createStub(ConnectorRegistrar::class);
-		$connectors->method('retrieve')->willReturn($connector);
+		$connectors->method('get')->willReturn($connector);
 
 		$transients = $this->createStub(TransientFactory::class);
 		$transients->method('getTransient')->willReturn(['thing'=>'one']);

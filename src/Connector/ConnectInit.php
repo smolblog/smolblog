@@ -54,7 +54,7 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$connector = $this->connectors->retrieve($providerSlug);
+		$connector = $this->connectors->get($providerSlug);
 		if (!isset($connector)) {
 			return new EndpointResponse(
 				statusCode: 404,

@@ -15,7 +15,7 @@ final class ConnectCallbackTest extends TestCase {
 		$connector->method('createCredential')->willReturn($this->createStub(ConnectionCredential::class));
 
 		$connectors = $this->createStub(ConnectorRegistrar::class);
-		$connectors->method('retrieve')->willReturn($connector);
+		$connectors->method('get')->willReturn($connector);
 
 		$transients = $this->createStub(TransientFactory::class);
 		$transients->method('getTransient')->willReturn(['thing'=>'one']);
