@@ -19,7 +19,7 @@ interface Repository {
 	 * Get the indicated object from the repository. Should return null if not found.
 	 *
 	 * @param string|integer $id Unique identifier for the object.
-	 * @return mixed Object identified by $id; null if it does not exist.
+	 * @return Entity Object identified by $id; null if it does not exist.
 	 */
-	public function get(string|int $id): mixed;
+	public function get(string|int $id): Entity;
 }
