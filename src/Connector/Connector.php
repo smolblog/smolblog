@@ -28,7 +28,7 @@ interface Connector extends Registerable {
 	 *
 	 * @param string $code Code given to the OAuth callback.
 	 * @param array  $info Info from the original request.
-	 * @return null|ConnectionCredential Created credential, null on failure
+	 * @return null|Connection Created credential, null on failure
 	 */
-	public function createCredential(string $code, array $info = []): ?ConnectionCredential;
+	public function createCredential(string $code, array $info = []): ?Connection;
 }
