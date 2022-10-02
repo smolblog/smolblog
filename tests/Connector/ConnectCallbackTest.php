@@ -22,8 +22,8 @@ final class ConnectCallbackTest extends TestCase {
 		$connectors = $this->createStub(ConnectorRegistrar::class);
 		$connectors->method('get')->willReturn($connector);
 
-		$stateRepo = $this->createStub(ConnectionCreationStateRepository::class);
-		$stateRepo->method('get')->willReturn(new ConnectionCreationState(
+		$stateRepo = $this->createStub(AuthRequestStateRepository::class);
+		$stateRepo->method('get')->willReturn(new AuthRequestState(
 			id: 'two',
 			userId: 5,
 			info: ['six' => 'eight'],

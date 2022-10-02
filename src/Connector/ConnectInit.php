@@ -13,14 +13,14 @@ class ConnectInit implements Endpoint {
 	/**
 	 * Initialize this endpoint with its dependencies
 	 *
-	 * @param Environment                       $env        Environment data.
-	 * @param ConnectorRegistrar                $connectors Connector registry.
-	 * @param ConnectionCreationStateRepository $stateRepo  Connection state repository.
+	 * @param Environment                $env        Environment data.
+	 * @param ConnectorRegistrar         $connectors Connector registry.
+	 * @param AuthRequestStateRepository $stateRepo  Connection state repository.
 	 */
 	public function __construct(
 		private Environment $env,
 		private ConnectorRegistrar $connectors,
-		private ConnectionCreationStateRepository $stateRepo,
+		private AuthRequestStateRepository $stateRepo,
 	) {
 	}
 
@@ -69,7 +69,7 @@ class ConnectInit implements Endpoint {
 
 		$data = $connector->getInitializationData(callbackUrl: "{$this->env->apiBase}connect/callback/$providerSlug");
 
-		$this->stateRepo->save(new ConnectionCreationState(
+		$this->stateRepo->save(new AuthRequestState(
 			id: $data->state,
 			userId: $request->userId,
 			info: $data->info,
