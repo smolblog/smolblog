@@ -36,6 +36,6 @@ class Connection extends Entity {
 		public readonly string $displayName,
 		public readonly array $details,
 	) {
-		$this->id = self::BuildId(provider: $provider, providerKey: $providerKey);
+		parent::__construct(self::BuildId(provider: $provider, providerKey: $providerKey));
 	}
 }

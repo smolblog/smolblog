@@ -4,7 +4,6 @@ namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
-use Smolblog\Core\Transient\TransientFactory;
 use Smolblog\Test\EndpointTestToolkit;
 
 final class ConnectCallbackTest extends TestCase {
@@ -12,17 +11,30 @@ final class ConnectCallbackTest extends TestCase {
 
 	public function setUp(): void {
 		$connector = $this->createStub(Connector::class);
-		$connector->method('createCredential')->willReturn($this->createStub(ConnectionCredential::class));
+		$connector->method('createConnection')->willReturn(new Connection(
+			userId: 5,
+			provider: 'something',
+			providerKey: 'something',
+			displayName: 'something',
+			details: ['something'=>'else'],
+		));
 
 		$connectors = $this->createStub(ConnectorRegistrar::class);
 		$connectors->method('get')->willReturn($connector);
 
-		$transients = $this->createStub(TransientFactory::class);
-		$transients->method('getTransient')->willReturn(['thing'=>'one']);
+		$stateRepo = $this->createStub(ConnectionCreationStateRepository::class);
+		$stateRepo->method('get')->willReturn(new ConnectionCreationState(
+			id: 'two',
+			userId: 5,
+			info: ['six' => 'eight'],
+		));
+
+		$connectionRepo = $this->createStub(ConnectionRepository::class);
 
 		$this->endpoint = new ConnectCallback(
 			connectors: $connectors,
-			transients: $transients,
+			stateRepo: $stateRepo,
+			connectionRepo: $connectionRepo,
 		);
 	}
 

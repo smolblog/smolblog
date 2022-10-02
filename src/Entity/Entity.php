@@ -7,9 +7,10 @@ namespace Smolblog\Core\Entity;
  */
 abstract class Entity {
 	/**
-	 * Unique identification for this object.
+	 * Create the Entity. This constructor exists mostly for use by subclasses.
 	 *
-	 * @var integer|string
+	 * @param integer|string $id Unique identification for this object.
 	 */
-	public readonly int|string $id; //phpcs:ignore
+	public function __construct(public readonly int|string $id) {
+	}
 }

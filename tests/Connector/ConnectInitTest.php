@@ -5,7 +5,6 @@ namespace Smolblog\Core\Connector;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Environment;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
-use Smolblog\Core\Transient\TransientFactory;
 use Smolblog\Test\EndpointTestToolkit;
 
 final class ConnectInitTest extends TestCase {
@@ -20,13 +19,12 @@ final class ConnectInitTest extends TestCase {
 		$connectors = $this->createStub(ConnectorRegistrar::class);
 		$connectors->method('get')->willReturn($connector);
 
-		$transients = $this->createStub(TransientFactory::class);
-		$transients->method('getTransient')->willReturn(['thing'=>'one']);
+		$stateRepo = $this->createStub(ConnectionCreationStateRepository::class);
 
 		$this->endpoint = new ConnectInit(
 			env: $environment,
 			connectors: $connectors,
-			transients: $transients,
+			stateRepo: $stateRepo,
 		);
 	}
 
