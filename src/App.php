@@ -18,9 +18,23 @@ class App {
 	/**
 	 * Event dispatcher
 	 *
-	 * @var Container\Container
+	 * @var Events\EventDispatcher
 	 */
 	public readonly Events\EventDispatcher $events;
+
+	/**
+	 * Command bus
+	 *
+	 * @var Command\CommandBus
+	 */
+	public readonly Command\CommandBus $commands;
+
+	/**
+	 * Environment information
+	 *
+	 * @var Environment
+	 */
+	public readonly Environment $env;
 
 	/**
 	 * Array of PluginPackages that are installed (not necessarily active)
@@ -43,41 +57,21 @@ class App {
 	 * Once this object is constructed, it is the responsibility of the bootstrapper to add any further
 	 * dependencies to the container before calling `startup()`.
 	 *
-	 * @param Endpoint\EndpointRegistrar $withEndpointRegistrar Endpoint registrar.
-	 * @param Environment                $withEnvironment       Environment information.
+	 * @param Environment $withEnvironment Environment information.
 	 */
 	public function __construct(
-		Endpoint\EndpointRegistrar $withEndpointRegistrar,
 		Environment $withEnvironment
 	) {
-		$this->endpoints = $withEndpointRegistrar;
-		$this->environment = $withEnvironment;
+		$this->env = $withEnvironment;
 
 		$this->container = new Container\Container();
 		$this->events = new Events\EventDispatcher();
 
-		$this->container->addShared(Environment::class, fn() => $withEnvironment);
-		$this->container->addShared(Endpoint\EndpointRegistrar::class, fn() => $withEndpointRegistrar);
-		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
+		$this->loadContainerWithCoreClasses();
 
-		$this->container->addShared(Connector\ConnectorRegistrar::class);
-
-		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
-		$this->container->addShared(Transient\TransientFactory::class);
-
-		$this->container->add(Endpoints\ConnectCallback::class)->
-			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Transient\TransientFactory::class);
-		$this->container->add(Endpoints\ConnectInit::class)->
-			addArgument(Environment::class)->
-			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Transient\TransientFactory::class);
-		$this->container->add(
-			Plugin\InstalledPlugins::class,
-			fn() => new Plugin\InstalledPlugins(
-				installedPackages: $this->installedPackages,
-				activePlugins: $this->activePlugins
-			)
+		$this->commands = new Command\CommandBus(
+			map: $this->createCommandMap(),
+			container: $this->container,
 		);
 	}
 
@@ -111,6 +105,46 @@ class App {
 
 		// We're done with our part; fire the event!
 		$this->events->dispatch(new Events\Startup($this));
+	}
+
+	/**
+	 * Load classes from this library into the DI container.
+	 *
+	 * @return void
+	 */
+	private function loadContainerWithCoreClasses(): void {
+		$this->container->addShared(Environment::class, fn() => $this->env);
+		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
+
+		$this->container->addShared(Connector\ConnectorRegistrar::class);
+
+		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
+		$this->container->addShared(Transient\TransientFactory::class);
+
+		$this->container->add(Endpoints\ConnectCallback::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Transient\TransientFactory::class);
+		$this->container->add(Endpoints\ConnectInit::class)->
+			addArgument(Environment::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Transient\TransientFactory::class);
+		$this->container->add(
+			Plugin\InstalledPlugins::class,
+			fn() => new Plugin\InstalledPlugins(
+				installedPackages: $this->installedPackages,
+				activePlugins: $this->activePlugins
+			)
+		);
+	}
+
+	/**
+	 * Create a map of command classes to handlers.
+	 *
+	 * @return array
+	 */
+	private function createCommandMap(): array {
+		$map = [];
+		return $map;
 	}
 
 	/**

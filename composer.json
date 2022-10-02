@@ -41,6 +41,8 @@
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
     "league/container": "^4.2",
-    "league/event": "^3.0"
+    "league/event": "^3.0",
+    "league/tactician": "^1.1",
+    "league/tactician-container": "^3.0"
   }
 }
