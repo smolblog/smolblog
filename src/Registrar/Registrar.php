@@ -45,7 +45,7 @@ abstract class Registrar {
 	 * @param string $key Key for class to instantiate and get.
 	 * @return mixed Instance of the requested class.
 	 */
-	public function retrieve(string $key): mixed {
+	public function get(string $key): mixed {
 		if (!array_key_exists($key, $this->library)) {
 			return null;
 		}

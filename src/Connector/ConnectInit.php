@@ -3,9 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use Smolblog\Core\Environment;
-use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
-use Smolblog\Core\Transient\TransientFactory;
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be
@@ -15,14 +13,14 @@ class ConnectInit implements Endpoint {
 	/**
 	 * Initialize this endpoint with its dependencies
 	 *
-	 * @param Environment        $env        Environment data.
-	 * @param ConnectorRegistrar $connectors Connector registry.
-	 * @param TransientFactory   $transients Transient factory instance.
+	 * @param Environment            $env        Environment data.
+	 * @param ConnectorRegistrar     $connectors Connector registry.
+	 * @param AuthRequestStateWriter $stateRepo  Connection state repository.
 	 */
 	public function __construct(
 		private Environment $env,
 		private ConnectorRegistrar $connectors,
-		private TransientFactory $transients,
+		private AuthRequestStateWriter $stateRepo,
 	) {
 	}
 
@@ -54,7 +52,7 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$connector = $this->connectors->retrieve($providerSlug);
+		$connector = $this->connectors->get($providerSlug);
 		if (!isset($connector)) {
 			return new EndpointResponse(
 				statusCode: 404,
@@ -69,13 +67,13 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$data = $connector->getInitializationData("{$this->env->apiBase}connect/callback/$providerSlug");
+		$data = $connector->getInitializationData(callbackUrl: "{$this->env->apiBase}connect/callback/$providerSlug");
 
-		$info = [
-			...$data->info,
-			'user_id' => $request->userId,
-		];
-		$this->transients->setTransient(name: $data->state, value: $info, secondsUntilExpiration: 300);
+		$this->stateRepo->save(new AuthRequestState(
+			id: $data->state,
+			userId: $request->userId,
+			info: $data->info,
+		));
 
 		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $data->url]);
 	}

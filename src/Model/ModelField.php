@@ -6,4 +6,5 @@ enum ModelField {
 	case int;
 	case float;
 	case string;
+	case date;
 }

@@ -3,9 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use Smolblog\Core\Environment;
-use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
-use Smolblog\Core\Transient\TransientFactory;
 
 /**
  * Endpoint to handle an OAuth2 callback from a Connector's provider
@@ -14,12 +12,14 @@ class ConnectCallback implements Endpoint {
 	/**
 	 * Create the endpoint
 	 *
-	 * @param ConnectorRegistrar $connectors Connector Registrar.
-	 * @param TransientFactory   $transients Transient factory.
+	 * @param ConnectorRegistrar     $connectors     Connector Registrar.
+	 * @param AuthRequestStateReader $stateRepo      State repository.
+	 * @param ConnectionWriter       $connectionRepo Connection repository.
 	 */
 	public function __construct(
 		private ConnectorRegistrar $connectors,
-		private TransientFactory $transients,
+		private AuthRequestStateReader $stateRepo,
+		private ConnectionWriter $connectionRepo,
 	) {
 	}
 
@@ -49,7 +49,7 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		$connector = $this->connectors->retrieve($request->params['slug']);
+		$connector = $this->connectors->get($request->params['slug']);
 		if (!isset($connector)) {
 			return new EndpointResponse(
 				statusCode: 404,
@@ -57,7 +57,7 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		$info = $this->transients->getTransient(name: $request->params['state']);
+		$info = $this->stateRepo->get(id: $request->params['state']);
 		if (!isset($info)) {
 			return new EndpointResponse(
 				statusCode: 400,
@@ -65,14 +65,15 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		$credential = $connector->createCredential(code: $request->params['code'], info: $info);
+		$connection = $connector->createConnection(code: $request->params['code'], info: $info);
+		$this->connectionRepo->save(connection: $connection);
 
 		return new EndpointResponse(statusCode: 200, body: [
-			'credential' => [
-				'userId' => $credential->userId,
-				'provider' => $credential->provider,
-				'providerKey' => $credential->providerKey,
-				'displayName' => $credential->displayName,
+			'connection' => [
+				'userId' => $connection->userId,
+				'provider' => $connection->provider,
+				'providerKey' => $connection->providerKey,
+				'displayName' => $connection->displayName,
 			]
 		]);
 	}

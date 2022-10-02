@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "990e6f1f484f7601f5c7929a3d8f0d62",
+    "content-hash": "42d1d43f2a1b232b1b65479ad56a8164",
     "packages": [
         {
             "name": "league/container",
@@ -146,6 +146,116 @@
                 "source": "https://github.com/thephpleague/event/tree/3.0.0"
             },
             "time": "2020-09-29T17:42:28+00:00"
+        },
+        {
+            "name": "league/tactician",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/tactician.git",
+                "reference": "e79f763170f3d5922ec29e85cffca0bac5cd8975"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/tactician/zipball/e79f763170f3d5922ec29e85cffca0bac5cd8975",
+                "reference": "e79f763170f3d5922ec29e85cffca0bac5cd8975",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3",
+                "phpunit/phpunit": "^7.5.20 || ^9.3.8",
+                "squizlabs/php_codesniffer": "^3.5.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Tactician\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ross Tuck",
+                    "homepage": "http://tactician.thephpleague.com"
+                }
+            ],
+            "description": "A small, flexible command bus. Handy for building service layers.",
+            "keywords": [
+                "command",
+                "command bus",
+                "service layer"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/tactician/issues",
+                "source": "https://github.com/thephpleague/tactician/tree/v1.1.0"
+            },
+            "time": "2021-02-14T15:29:04+00:00"
+        },
+        {
+            "name": "league/tactician-container",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/tactician-container.git",
+                "reference": "5150cbf861a51b1b27eba28449b46deee18cc423"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/tactician-container/zipball/5150cbf861a51b1b27eba28449b46deee18cc423",
+                "reference": "5150cbf861a51b1b27eba28449b46deee18cc423",
+                "shasum": ""
+            },
+            "require": {
+                "league/tactician": "^1.0",
+                "php": ">=7.4",
+                "psr/container": "~2.0"
+            },
+            "require-dev": {
+                "league/container": "~4.0",
+                "phpunit/phpunit": "~6.0",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Tactician\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nigel Greenway",
+                    "homepage": "http://futurepixels.co.uk"
+                }
+            ],
+            "description": "Tactician integration for any container implementing PSR-11",
+            "keywords": [
+                "container",
+                "container-interop",
+                "di",
+                "interoperable",
+                "league",
+                "tactician"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/tactician-container/issues",
+                "source": "https://github.com/thephpleague/tactician-container/tree/v3.0.0"
+            },
+            "time": "2021-12-16T20:15:05+00:00"
         },
         {
             "name": "psr/container",
