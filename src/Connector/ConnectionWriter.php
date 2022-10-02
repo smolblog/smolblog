@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Repository;
+use Smolblog\Core\Entity\Writer;
 
-interface ConnectionRepository extends Repository {
+interface ConnectionWriter extends Writer {
 	/**
 	 * Save the given Connection to the repository.
 	 *

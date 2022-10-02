@@ -13,14 +13,14 @@ class ConnectInit implements Endpoint {
 	/**
 	 * Initialize this endpoint with its dependencies
 	 *
-	 * @param Environment                $env        Environment data.
-	 * @param ConnectorRegistrar         $connectors Connector registry.
-	 * @param AuthRequestStateRepository $stateRepo  Connection state repository.
+	 * @param Environment            $env        Environment data.
+	 * @param ConnectorRegistrar     $connectors Connector registry.
+	 * @param AuthRequestStateWriter $stateRepo  Connection state repository.
 	 */
 	public function __construct(
 		private Environment $env,
 		private ConnectorRegistrar $connectors,
-		private AuthRequestStateRepository $stateRepo,
+		private AuthRequestStateWriter $stateRepo,
 	) {
 	}
 

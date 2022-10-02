@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Entity;
 
 /**
- * An object that can retrieve objects based on identifiers. Named consistently with
- * Container and Registrar, but not related.
+ * An object that can retrieve objects from a repository based on identifiers.
+ * Named consistently with Container and Registrar, but not related.
  */
-interface Repository {
+interface Reader {
 	/**
 	 * Check the repository for the object identified by $id.
 	 *

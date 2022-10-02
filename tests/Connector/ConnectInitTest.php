@@ -19,7 +19,7 @@ final class ConnectInitTest extends TestCase {
 		$connectors = $this->createStub(ConnectorRegistrar::class);
 		$connectors->method('get')->willReturn($connector);
 
-		$stateRepo = $this->createStub(AuthRequestStateRepository::class);
+		$stateRepo = $this->createStub(AuthRequestStateWriter::class);
 
 		$this->endpoint = new ConnectInit(
 			env: $environment,

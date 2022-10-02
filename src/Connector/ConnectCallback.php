@@ -12,14 +12,14 @@ class ConnectCallback implements Endpoint {
 	/**
 	 * Create the endpoint
 	 *
-	 * @param ConnectorRegistrar         $connectors     Connector Registrar.
-	 * @param AuthRequestStateRepository $stateRepo      State repository.
-	 * @param ConnectionRepository       $connectionRepo Connection repository.
+	 * @param ConnectorRegistrar     $connectors     Connector Registrar.
+	 * @param AuthRequestStateReader $stateRepo      State repository.
+	 * @param ConnectionWriter       $connectionRepo Connection repository.
 	 */
 	public function __construct(
 		private ConnectorRegistrar $connectors,
-		private AuthRequestStateRepository $stateRepo,
-		private ConnectionRepository $connectionRepo,
+		private AuthRequestStateReader $stateRepo,
+		private ConnectionWriter $connectionRepo,
 	) {
 	}
 

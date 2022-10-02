@@ -22,14 +22,14 @@ final class ConnectCallbackTest extends TestCase {
 		$connectors = $this->createStub(ConnectorRegistrar::class);
 		$connectors->method('get')->willReturn($connector);
 
-		$stateRepo = $this->createStub(AuthRequestStateRepository::class);
+		$stateRepo = $this->createStub(AuthRequestStateReader::class);
 		$stateRepo->method('get')->willReturn(new AuthRequestState(
 			id: 'two',
 			userId: 5,
 			info: ['six' => 'eight'],
 		));
 
-		$connectionRepo = $this->createStub(ConnectionRepository::class);
+		$connectionRepo = $this->createStub(ConnectionWriter::class);
 
 		$this->endpoint = new ConnectCallback(
 			connectors: $connectors,

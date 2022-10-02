@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Repository;
+use Smolblog\Core\Entity\Writer;
 
-interface AuthRequestStateRepository extends Repository {
+interface AuthRequestStateWriter extends Writer {
 	/**
 	 * Save the given AuthRequestState
 	 *
