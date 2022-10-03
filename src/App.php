@@ -121,11 +121,15 @@ class App {
 		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
 		$this->container->addShared(Transient\TransientFactory::class);
 
-		$this->container->add(Endpoints\ConnectCallback::class)->
+		$this->container->add(Connector\AuthRequestService::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Transient\TransientFactory::class);
-		$this->container->add(Endpoints\ConnectInit::class)->
 			addArgument(Environment::class)->
+			addArgument(Connector\AuthRequestStateWriter::class);
+		$this->container->add(Connector\ConnectInit::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Command\CommandBus::class);
+
+		$this->container->add(Endpoints\ConnectCallback::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
 			addArgument(Transient\TransientFactory::class);
 		$this->container->add(

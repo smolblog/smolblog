@@ -40,6 +40,16 @@ abstract class Registrar {
 	abstract protected function processConfig(mixed $config): string;
 
 	/**
+	 * Check if this Registrar has a class registered to the given key.
+	 *
+	 * @param string $key Key for class to check for.
+	 * @return boolean false if $this->get will return null.
+	 */
+	public function has(string $key): bool {
+		return array_key_exists($key, $this->library);
+	}
+
+	/**
 	 * Get an instance of the class indicated by the given key.
 	 *
 	 * @param string $key Key for class to instantiate and get.

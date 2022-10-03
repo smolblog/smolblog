@@ -4,6 +4,7 @@ namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Environment;
+use Smolblog\Core\Command\CommandBus;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Test\EndpointTestToolkit;
 
@@ -11,20 +12,16 @@ final class ConnectInitTest extends TestCase {
 	use EndpointTestToolkit;
 
 	public function setUp(): void {
-		$environment = new Environment(apiBase: 'https://smol.blog/api');
-
-		$connector = $this->createStub(Connector::class);
-		$connector->method('getInitializationData')->willReturn(new ConnectorInitData(url: '//', state: 'bob', info: []));
-
 		$connectors = $this->createStub(ConnectorRegistrar::class);
-		$connectors->method('get')->willReturn($connector);
+		$connectors->method('has')->willReturn(true);
 
-		$stateRepo = $this->createStub(AuthRequestStateWriter::class);
+		$commands = $this->createStub(CommandBus::class);
+		$commands->method('handle')->willReturn('//smol.blog');
 
 		$this->endpoint = new ConnectInit(
-			env: $environment,
+			env: new Environment(apiBase: '//smol.blog'),
 			connectors: $connectors,
-			stateRepo: $stateRepo,
+			commands: $commands,
 		);
 	}
 
