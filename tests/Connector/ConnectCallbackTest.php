@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Command\CommandBus;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Test\EndpointTestToolkit;
 
@@ -10,31 +11,18 @@ final class ConnectCallbackTest extends TestCase {
 	use EndpointTestToolkit;
 
 	public function setUp(): void {
-		$connector = $this->createStub(Connector::class);
-		$connector->method('createConnection')->willReturn(new Connection(
-			userId: 5,
-			provider: 'something',
-			providerKey: 'something',
-			displayName: 'something',
-			details: ['something'=>'else'],
-		));
-
 		$connectors = $this->createStub(ConnectorRegistrar::class);
-		$connectors->method('get')->willReturn($connector);
+		$connectors->method('has')->willReturn(true);
 
 		$stateRepo = $this->createStub(AuthRequestStateReader::class);
-		$stateRepo->method('get')->willReturn(new AuthRequestState(
-			id: 'two',
-			userId: 5,
-			info: ['six' => 'eight'],
-		));
+		$stateRepo->method('has')->willReturn(true);
 
-		$connectionRepo = $this->createStub(ConnectionWriter::class);
+		$commands = $this->createStub(CommandBus::class);
 
 		$this->endpoint = new ConnectCallback(
 			connectors: $connectors,
 			stateRepo: $stateRepo,
-			connectionRepo: $connectionRepo,
+			commands: $commands,
 		);
 	}
 

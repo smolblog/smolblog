@@ -2,8 +2,6 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Environment;
-
 /**
  * Service to begin an OAuth request with an external provider.
  */
