@@ -16,4 +16,27 @@ final class EnvironmentTest extends TestCase {
 
 		$this->assertNull($env->undefinedValue);
 	}
+
+	public function testSettingStandardPropertyGivesError() {
+		$this->expectError();
+		$env = new Environment(apiBase: '//localhost');
+
+		$env->apiBase = 'nope';
+	}
+
+	public function testSettingRuntimePropertyGivesError() {
+		$this->expectError();
+		$env = new Environment(apiBase: '//localhost', someKey: 'someValue');
+
+		$env->someKey = 'nope';
+	}
+
+	public function testSerializesToJson() {
+		$env = new Environment(apiBase: '//localhost', someKey: 'someValue');
+
+		$this->assertEquals(
+			'{"apiBase":"\/\/localhost","someKey":"someValue"}',
+			json_encode($env)
+		);
+	}
 }

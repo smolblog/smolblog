@@ -33,7 +33,7 @@
     "smoltest/plugin-stub": "*"
   },
   "scripts": {
-    "test": "phpunit --testsuite core",
+    "test": "export XDEBUG_MODE=coverage; phpunit --testsuite core; cat coverage.txt",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },

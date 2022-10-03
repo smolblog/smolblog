@@ -51,7 +51,13 @@ class Environment implements JsonSerializable {
 	 * @return void
 	 */
 	public function __set(string $name, mixed $value): void {
-		// Do nothing.
+		$trace = debug_backtrace();
+		trigger_error(
+			'Attempt to set readonly property ' . $name .
+			' in ' . $trace[0]['file'] .
+			' on line ' . $trace[0]['line'],
+			E_USER_ERROR
+		);
 	}
 
 	/**
@@ -60,7 +66,7 @@ class Environment implements JsonSerializable {
 	 * @return array
 	 */
 	public function toArray(): array {
-		return ['apiBase' => $apiBase, ...$envVars];
+		return ['apiBase' => $this->apiBase, ...$this->envVars];
 	}
 
 	/**
