@@ -37,18 +37,11 @@ class App {
 	public readonly Environment $env;
 
 	/**
-	 * Array of PluginPackages that are installed (not necessarily active)
-	 *
-	 * @var Plugin\PluginPackage[]
-	 */
-	private array $installedPackages = [];
-
-	/**
 	 * Array of Plugins that are currently active
 	 *
-	 * @var Plugin\Plugin[]
+	 * @var string[]
 	 */
-	private array $activePlugins = [];
+	private array $plugins = [];
 
 	/**
 	 * Construct a new App. Requires an EndpointRegistrar and a loaded Environment object. Loads the
@@ -58,11 +51,14 @@ class App {
 	 * dependencies to the container before calling `startup()`.
 	 *
 	 * @param Environment $withEnvironment Environment information.
+	 * @param string[]    $pluginClasses   Plugin classes to load.
 	 */
 	public function __construct(
-		Environment $withEnvironment
+		Environment $withEnvironment,
+		array $pluginClasses
 	) {
 		$this->env = $withEnvironment;
+		$this->plugins = $pluginClasses;
 
 		$this->container = new Container\Container();
 		$this->events = new Events\EventDispatcher();
@@ -73,6 +69,10 @@ class App {
 			map: $this->createCommandMap(),
 			container: $this->container,
 		);
+
+		foreach ($this->plugins as $plugin) {
+			$plugin::setup(app: $this);
+		}
 	}
 
 	/**
@@ -141,8 +141,7 @@ class App {
 		$this->container->add(
 			Plugin\InstalledPlugins::class,
 			fn() => new Plugin\InstalledPlugins(
-				installedPackages: $this->installedPackages,
-				activePlugins: $this->activePlugins
+				installedPlugins: $this->plugins,
 			)
 		);
 	}
@@ -158,26 +157,5 @@ class App {
 			Connector\FinishAuthRequest::class => Connector\AuthRequestFinalizer::class,
 		];
 		return $map;
-	}
-
-	/**
-	 * Find the plugins from composer and load them
-	 *
-	 * @return void
-	 */
-	private function loadPlugins(): void {
-		$plugins = InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
-		foreach (array_unique($plugins) as $packageName) {
-			$package = Plugin\PluginPackage::createFromComposer($packageName);
-			$this->installedPackages[] = $package;
-
-			// In the future, we should check against a list of "activated" plugins.
-			if (empty($package->errors)) {
-				$plugin = $package->createPlugin(app: $this);
-				if ($plugin) {
-					$this->activePlugins[$packageName] = $plugin;
-				}
-			}
-		}
 	}
 }

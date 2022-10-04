@@ -11,12 +11,10 @@ class InstalledPlugins implements Endpoint {
 	/**
 	 * Construct the endpoint with the arrays from App
 	 *
-	 * @param PluginPackage[] $installedPackages All packages returned by Composer.
-	 * @param Plugin[]        $activePlugins     All currently-active plugins.
+	 * @param string[] $installedPlugins All plugins loaded into the App.
 	 */
 	public function __construct(
-		private array $installedPackages,
-		private array $activePlugins,
+		private array $installedPlugins,
 	) {
 	}
 
@@ -42,11 +40,8 @@ class InstalledPlugins implements Endpoint {
 		return new EndpointResponse(
 			statusCode: 200,
 			body: array_map(
-				fn($package) => [
-					...get_object_vars($package),
-					'active' => array_key_exists($package->package, $this->activePlugins),
-				],
-				$this->installedPackages
+				fn($pluginClass) => $pluginClass::config(),
+				$this->installedPlugins
 			)
 		);
 	}
