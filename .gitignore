@@ -1,2 +1,5 @@
 /vendor/
 .phpunit.result.cache
+.phpunit-cache
+coverage.txt
+test-coverage

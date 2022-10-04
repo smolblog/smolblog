@@ -19,16 +19,11 @@ final class ConnectorRegistrarTest extends TestCase {
 
 		$connectors = new ConnectorRegistrar();
 		$connectors->register(class: ConnectorMock::class, factory: fn() => $expected);
-		$actual = $connectors->retrieve('camelot');
+		$actual = $connectors->get('camelot');
 
 		$this->assertEquals(
 			$expected->id,
 			$actual->id
 		);
-	}
-
-	public function testRegistrarGivesNullWhenNotFound() {
-		$connectors = new ConnectorRegistrar();
-		$this->assertNull($connectors->retrieve('nope'));
 	}
 }

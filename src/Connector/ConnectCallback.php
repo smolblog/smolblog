@@ -3,9 +3,8 @@
 namespace Smolblog\Core\Connector;
 
 use Smolblog\Core\Environment;
-use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Command\CommandBus;
 use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
-use Smolblog\Core\Transient\TransientFactory;
 
 /**
  * Endpoint to handle an OAuth2 callback from a Connector's provider
@@ -14,12 +13,14 @@ class ConnectCallback implements Endpoint {
 	/**
 	 * Create the endpoint
 	 *
-	 * @param ConnectorRegistrar $connectors Connector Registrar.
-	 * @param TransientFactory   $transients Transient factory.
+	 * @param ConnectorRegistrar     $connectors Connector Registrar.
+	 * @param AuthRequestStateReader $stateRepo  State repository.
+	 * @param CommandBus             $commands   Command bus.
 	 */
 	public function __construct(
 		private ConnectorRegistrar $connectors,
-		private TransientFactory $transients,
+		private AuthRequestStateReader $stateRepo,
+		private CommandBus $commands,
 	) {
 	}
 
@@ -49,31 +50,26 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		$connector = $this->connectors->retrieve($request->params['slug']);
-		if (!isset($connector)) {
+		if (!$this->connectors->has($request->params['slug'])) {
 			return new EndpointResponse(
 				statusCode: 404,
 				body: ['error' => 'The given provider has not been registered.'],
 			);
 		}
 
-		$info = $this->transients->getTransient(name: $request->params['state']);
-		if (!isset($info)) {
+		if (!$this->stateRepo->has(id: $request->params['state'])) {
 			return new EndpointResponse(
 				statusCode: 400,
 				body: ['error' => 'A matching request was not found; please try again.'],
 			);
 		}
 
-		$credential = $connector->createCredential(code: $request->params['code'], info: $info);
+		$this->commands->handle(new FinishAuthRequest(
+			provider: $request->params['slug'],
+			stateKey: $request->params['state'],
+			code: $request->params['code'],
+		));
 
-		return new EndpointResponse(statusCode: 200, body: [
-			'credential' => [
-				'userId' => $credential->userId,
-				'provider' => $credential->provider,
-				'providerKey' => $credential->providerKey,
-				'displayName' => $credential->displayName,
-			]
-		]);
+		return new EndpointResponse(statusCode: 200, body: ['success' => 'true']);
 	}
 }

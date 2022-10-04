@@ -33,6 +33,7 @@
     "smoltest/plugin-stub": "*"
   },
   "scripts": {
+    "coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite core; cat coverage.txt",
     "test": "phpunit --testsuite core",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
@@ -41,6 +42,8 @@
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
     "league/container": "^4.2",
-    "league/event": "^3.0"
+    "league/event": "^3.0",
+    "league/tactician": "^1.1",
+    "league/tactician-container": "^3.0"
   }
 }

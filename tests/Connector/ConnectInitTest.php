@@ -4,30 +4,40 @@ namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Environment;
+use Smolblog\Core\Command\CommandBus;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
-use Smolblog\Core\Transient\TransientFactory;
 use Smolblog\Test\EndpointTestToolkit;
 
 final class ConnectInitTest extends TestCase {
 	use EndpointTestToolkit;
 
 	public function setUp(): void {
-		$environment = new Environment(apiBase: 'https://smol.blog/api');
-
-		$connector = $this->createStub(Connector::class);
-		$connector->method('getInitializationData')->willReturn(new ConnectorInitData(url: '//', state: 'bob', info: []));
-
 		$connectors = $this->createStub(ConnectorRegistrar::class);
-		$connectors->method('retrieve')->willReturn($connector);
+		$connectors->method('has')->willReturnCallback(fn($slug) => $slug !== 'nope');
 
-		$transients = $this->createStub(TransientFactory::class);
-		$transients->method('getTransient')->willReturn(['thing'=>'one']);
+		$commands = $this->createStub(CommandBus::class);
+		$commands->method('handle')->willReturn('//smol.blog');
 
 		$this->endpoint = new ConnectInit(
-			env: $environment,
+			env: new Environment(apiBase: '//smol.blog'),
 			connectors: $connectors,
-			transients: $transients,
+			commands: $commands,
 		);
+	}
+
+	public function testItSendsBadRequestWhenSlugIsMissing(): void {
+		$response = $this->endpoint->run(new EndpointRequest(userId: 1));
+		$this->assertEquals(400, $response->statusCode);
+	}
+
+	public function testItSendsBadRequestWhenUnauthenticated(): void {
+		$response = $this->endpoint->run(new EndpointRequest(params: ['slug' => 'one']));
+		$this->assertEquals(400, $response->statusCode);
+	}
+
+	public function testItSendsNotFoundWhenSlugIsNotRegistered(): void {
+		$response = $this->endpoint->run(new EndpointRequest(userId: 1, params: ['slug' => 'nope']));
+		$this->assertEquals(404, $response->statusCode);
 	}
 
 	public function testItSucceedsWithAllRequiredParameters(): void {

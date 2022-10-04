@@ -3,20 +3,28 @@
 namespace Smolblog\Core\Plugin;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\App;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Test\EndpointTestToolkit;
+
+class TestPlugin implements Plugin {
+	public static function config(): PluginPackage {
+		return new PluginPackage(
+			package: 'smolblog/test',
+			version: '1.0.0',
+			title: 'Smolblog Test Plugin',
+			description: 'A test plugin for a test system.',
+		);
+	}
+
+	public static function setup(App $app) {}
+}
 
 final class InstalledPluginsTest extends TestCase {
 	use EndpointTestToolkit;
 
 	public function setUp(): void {
-		$this->endpoint = new InstalledPlugins(
-			installedPackages: [
-				PluginPackage::createFromComposer('smoltest/plugin-stub'),
-				PluginPackage::createFromComposer('notfound'),
-			],
-			activePlugins: ['smoltest/plugin-stub' => $this->createStub(\Smoltest\PluginStub\Plugin::class)],
-		);
+		$this->endpoint = new InstalledPlugins(installedPlugins: [TestPlugin::class]);
 	}
 
 	public function testItSucceedsWithAllRequiredParameters(): void {

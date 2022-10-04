@@ -18,23 +18,30 @@ class App {
 	/**
 	 * Event dispatcher
 	 *
-	 * @var Container\Container
+	 * @var Events\EventDispatcher
 	 */
 	public readonly Events\EventDispatcher $events;
 
 	/**
-	 * Array of PluginPackages that are installed (not necessarily active)
+	 * Command bus
 	 *
-	 * @var Plugin\PluginPackage[]
+	 * @var Command\CommandBus
 	 */
-	private array $installedPackages = [];
+	public readonly Command\CommandBus $commands;
+
+	/**
+	 * Environment information
+	 *
+	 * @var Environment
+	 */
+	public readonly Environment $env;
 
 	/**
 	 * Array of Plugins that are currently active
 	 *
-	 * @var Plugin\Plugin[]
+	 * @var string[]
 	 */
-	private array $activePlugins = [];
+	private array $plugins = [];
 
 	/**
 	 * Construct a new App. Requires an EndpointRegistrar and a loaded Environment object. Loads the
@@ -43,42 +50,29 @@ class App {
 	 * Once this object is constructed, it is the responsibility of the bootstrapper to add any further
 	 * dependencies to the container before calling `startup()`.
 	 *
-	 * @param Endpoint\EndpointRegistrar $withEndpointRegistrar Endpoint registrar.
-	 * @param Environment                $withEnvironment       Environment information.
+	 * @param Environment $withEnvironment Environment information.
+	 * @param string[]    $pluginClasses   Plugin classes to load.
 	 */
 	public function __construct(
-		Endpoint\EndpointRegistrar $withEndpointRegistrar,
-		Environment $withEnvironment
+		Environment $withEnvironment,
+		array $pluginClasses
 	) {
-		$this->endpoints = $withEndpointRegistrar;
-		$this->environment = $withEnvironment;
+		$this->env = $withEnvironment;
+		$this->plugins = $pluginClasses;
 
 		$this->container = new Container\Container();
 		$this->events = new Events\EventDispatcher();
 
-		$this->container->addShared(Environment::class, fn() => $withEnvironment);
-		$this->container->addShared(Endpoint\EndpointRegistrar::class, fn() => $withEndpointRegistrar);
-		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
+		$this->loadContainerWithCoreClasses();
 
-		$this->container->addShared(Connector\ConnectorRegistrar::class);
-
-		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
-		$this->container->addShared(Transient\TransientFactory::class);
-
-		$this->container->add(Endpoints\ConnectCallback::class)->
-			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Transient\TransientFactory::class);
-		$this->container->add(Endpoints\ConnectInit::class)->
-			addArgument(Environment::class)->
-			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Transient\TransientFactory::class);
-		$this->container->add(
-			Plugin\InstalledPlugins::class,
-			fn() => new Plugin\InstalledPlugins(
-				installedPackages: $this->installedPackages,
-				activePlugins: $this->activePlugins
-			)
+		$this->commands = new Command\CommandBus(
+			map: $this->createCommandMap(),
+			container: $this->container,
 		);
+
+		foreach ($this->plugins as $plugin) {
+			$plugin::setup(app: $this);
+		}
 	}
 
 	/**
@@ -87,9 +81,6 @@ class App {
 	 * @return void
 	 */
 	public function startup(): void {
-		// Load any plugins in the system.
-		$this->loadPlugins();
-
 		// Register endpoints with external system.
 		$coreEndpoints = [
 			Connector\ConnectCallback::class,
@@ -114,23 +105,54 @@ class App {
 	}
 
 	/**
-	 * Find the plugins from composer and load them
+	 * Load classes from this library into the DI container.
 	 *
 	 * @return void
 	 */
-	private function loadPlugins(): void {
-		$plugins = InstalledVersions::getInstalledPackagesByType('smolblog-plugin');
-		foreach (array_unique($plugins) as $packageName) {
-			$package = Plugin\PluginPackage::createFromComposer($packageName);
-			$this->installedPackages[] = $package;
+	private function loadContainerWithCoreClasses(): void {
+		$this->container->addShared(Environment::class, fn() => $this->env);
+		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
 
-			// In the future, we should check against a list of "activated" plugins.
-			if (empty($package->errors)) {
-				$plugin = $package->createPlugin(app: $this);
-				if ($plugin) {
-					$this->activePlugins[$packageName] = $plugin;
-				}
-			}
-		}
+		$this->container->addShared(Connector\ConnectorRegistrar::class);
+
+		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
+		$this->container->addShared(Transient\TransientFactory::class);
+
+		$this->container->add(Connector\AuthRequestInitializer::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Connector\AuthRequestStateWriter::class);
+		$this->container->add(Connector\ConnectInit::class)->
+			addArgument(Environment::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Command\CommandBus::class);
+
+		$this->container->add(Connector\AuthRequestFinalizer::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Connector\AuthRequestStateReader::class)->
+			addArgument(Connector\ConnectionWriter::class);
+		$this->container->add(Connector\ConnectCallback::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Connector\AuthRequestStateReader::class)->
+			addArgument(Command\CommandBus::class);
+
+		$this->container->add(
+			Plugin\InstalledPlugins::class,
+			fn() => new Plugin\InstalledPlugins(
+				installedPlugins: $this->plugins,
+			)
+		);
+	}
+
+	/**
+	 * Create a map of command classes to handlers.
+	 *
+	 * @return array
+	 */
+	private function createCommandMap(): array {
+		$map = [
+			Connector\BeginAuthRequest::class => Connector\AuthRequestInitializer::class,
+			Connector\FinishAuthRequest::class => Connector\AuthRequestFinalizer::class,
+		];
+		return $map;
 	}
 }
