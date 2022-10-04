@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test;
 
-use Smolblog\Core\Endpoint\{Endpoint, EndpointRequest, EndpointResponse};
+use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
 use Smolblog\Core\Model\{Model, ModelHelper, ModelField};
 use Smolblog\Core\Post\PostStatus;
 
@@ -85,6 +85,11 @@ trait ModelTestToolkit {
 
 trait EndpointTestToolkit {
 	protected $endpoint;
+
+	public function testItGivesAValidConfiguration(): void {
+		$config = get_class($this->endpoint)::config();
+		$this->assertInstanceOf(EndpointConfig::class, $config);
+	}
 
 	public function testItCanBeInstantiated(): void {
 		$this->assertInstanceOf(Endpoint::class, $this->endpoint);

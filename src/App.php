@@ -121,13 +121,23 @@ class App {
 		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
 		$this->container->addShared(Transient\TransientFactory::class);
 
-		$this->container->add(Endpoints\ConnectCallback::class)->
+		$this->container->add(Connector\AuthRequestInitializer::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Transient\TransientFactory::class);
-		$this->container->add(Endpoints\ConnectInit::class)->
+			addArgument(Connector\AuthRequestStateWriter::class);
+		$this->container->add(Connector\ConnectInit::class)->
 			addArgument(Environment::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Transient\TransientFactory::class);
+			addArgument(Command\CommandBus::class);
+
+		$this->container->add(Connector\AuthRequestFinalizer::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Connector\AuthRequestStateReader::class)->
+			addArgument(Connector\ConnectionWriter::class);
+		$this->container->add(Connector\ConnectCallback::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Connector\AuthRequestStateReader::class)->
+			addArgument(Command\CommandBus::class);
+
 		$this->container->add(
 			Plugin\InstalledPlugins::class,
 			fn() => new Plugin\InstalledPlugins(
@@ -143,7 +153,10 @@ class App {
 	 * @return array
 	 */
 	private function createCommandMap(): array {
-		$map = [];
+		$map = [
+			Connector\BeginAuthRequest::class => Connector\AuthRequestInitializer::class,
+			Connector\FinishAuthRequest::class => Connector\AuthRequestFinalizer::class,
+		];
 		return $map;
 	}
 

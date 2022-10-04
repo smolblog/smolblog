@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use Smolblog\Core\Environment;
+use Smolblog\Core\Command\CommandBus;
 use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
 
 /**
@@ -11,16 +12,16 @@ use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointR
  */
 class ConnectInit implements Endpoint {
 	/**
-	 * Initialize this endpoint with its dependencies
+	 * Create the endpoint
 	 *
-	 * @param Environment            $env        Environment data.
-	 * @param ConnectorRegistrar     $connectors Connector registry.
-	 * @param AuthRequestStateWriter $stateRepo  Connection state repository.
+	 * @param Environment        $env        Application Environment.
+	 * @param ConnectorRegistrar $connectors ConnectorRegistrar to check for provider.
+	 * @param CommandBus         $commands   Command handler to kick off the process.
 	 */
 	public function __construct(
 		private Environment $env,
 		private ConnectorRegistrar $connectors,
-		private AuthRequestStateWriter $stateRepo,
+		private CommandBus $commands
 	) {
 	}
 
@@ -52,8 +53,7 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$connector = $this->connectors->get($providerSlug);
-		if (!isset($connector)) {
+		if (!$this->connectors->has($providerSlug)) {
 			return new EndpointResponse(
 				statusCode: 404,
 				body: ['error' => 'The given provider has not been registered.'],
@@ -67,14 +67,12 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$data = $connector->getInitializationData(callbackUrl: "{$this->env->apiBase}connect/callback/$providerSlug");
-
-		$this->stateRepo->save(new AuthRequestState(
-			id: $data->state,
+		$authUrl = $this->commands->handle(new BeginAuthRequest(
+			provider: $providerSlug,
 			userId: $request->userId,
-			info: $data->info,
+			callbackUrl: "{$this->env->apiBase}connect/callback/{$providerSlug}",
 		));
 
-		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $data->url]);
+		return new EndpointResponse(statusCode: 200, body: ['authUrl' => $authUrl]);
 	}
 }

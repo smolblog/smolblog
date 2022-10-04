@@ -70,4 +70,21 @@ final class CommandBusTest extends TestCase {
 		$response = $bus->handle(new RunCommandTest(return: true, payload: 'ignore this'));
 		$this->assertEquals($testString, $response);
 	}
+
+	public function testHandlersCanBeMappedAfterInstantiation() {
+		$testString = uniqid();
+		$handler = new CommandTestHandler(callback: fn() => $testString);
+
+		$container = $this->createMock(Container::class);
+		$container->expects($this->once())
+		          ->method('get')
+							->with($this->equalTo(CommandTestHandler::class))
+							->willReturn($handler);
+
+		$bus = new CommandBus(container: $container);
+		$bus->map(command: RunCommandTest::class, handler: CommandTestHandler::class);
+
+		$response = $bus->handle(new RunCommandTest(return: true, payload: 'ignore this'));
+		$this->assertEquals($testString, $response);
+	}
 }
