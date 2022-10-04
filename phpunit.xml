@@ -17,6 +17,7 @@
 		</include>
 		<report>
 			<text outputFile="coverage.txt" />
+			<html outputDirectory="test-coverage" />
 		</report>
 	</coverage>
 	<php>

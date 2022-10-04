@@ -34,7 +34,7 @@ final class EnvironmentTest extends TestCase {
 	public function testSerializesToJson() {
 		$env = new Environment(apiBase: '//localhost', someKey: 'someValue');
 
-		$this->assertEquals(
+		$this->assertJsonStringEqualsJsonString(
 			'{"apiBase":"\/\/localhost","someKey":"someValue"}',
 			json_encode($env)
 		);

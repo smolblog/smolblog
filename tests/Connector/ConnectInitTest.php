@@ -13,7 +13,7 @@ final class ConnectInitTest extends TestCase {
 
 	public function setUp(): void {
 		$connectors = $this->createStub(ConnectorRegistrar::class);
-		$connectors->method('has')->willReturn(true);
+		$connectors->method('has')->willReturnCallback(fn($slug) => $slug !== 'nope');
 
 		$commands = $this->createStub(CommandBus::class);
 		$commands->method('handle')->willReturn('//smol.blog');
@@ -23,6 +23,21 @@ final class ConnectInitTest extends TestCase {
 			connectors: $connectors,
 			commands: $commands,
 		);
+	}
+
+	public function testItSendsBadRequestWhenSlugIsMissing(): void {
+		$response = $this->endpoint->run(new EndpointRequest(userId: 1));
+		$this->assertEquals(400, $response->statusCode);
+	}
+
+	public function testItSendsBadRequestWhenUnauthenticated(): void {
+		$response = $this->endpoint->run(new EndpointRequest(params: ['slug' => 'one']));
+		$this->assertEquals(400, $response->statusCode);
+	}
+
+	public function testItSendsNotFoundWhenSlugIsNotRegistered(): void {
+		$response = $this->endpoint->run(new EndpointRequest(userId: 1, params: ['slug' => 'nope']));
+		$this->assertEquals(404, $response->statusCode);
 	}
 
 	public function testItSucceedsWithAllRequiredParameters(): void {

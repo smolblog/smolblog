@@ -26,9 +26,4 @@ final class ConnectorRegistrarTest extends TestCase {
 			$actual->id
 		);
 	}
-
-	public function testRegistrarGivesNullWhenNotFound() {
-		$connectors = new ConnectorRegistrar();
-		$this->assertNull($connectors->get('nope'));
-	}
 }
