@@ -4,7 +4,6 @@ namespace Smolblog\Core\Model;
 
 /**
  * Used to handle interactions between a Model and a persistant data store.
- * @deprecated 2022-10
  */
 interface ModelHelper {
 	/**

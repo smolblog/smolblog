@@ -7,7 +7,6 @@ use Smolblog\Core\Environment;
 
 /**
  * An object backed by a persistant data store of some kind.
- * @deprecated 2022-10
  */
 abstract class Model {
 	/**
