@@ -81,9 +81,6 @@ class App {
 	 * @return void
 	 */
 	public function startup(): void {
-		// Load any plugins in the system.
-		$this->loadPlugins();
-
 		// Register endpoints with external system.
 		$coreEndpoints = [
 			Connector\ConnectCallback::class,
