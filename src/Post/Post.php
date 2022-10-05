@@ -2,25 +2,33 @@
 
 namespace Smolblog\Core\Post;
 
-use Smolblog\Core\Model\{Model, ModelField};
+use DateTime;
+use Smolblog\Core\Entity\Entity;
 
 /**
  * Represents a blog post.
  */
-class Post extends Model {
+class Post extends Entity {
 	/**
-	 * List of valid fields for the model. Used to verify get/set method. Name of
-	 * the field should be the key, value should be a ModelField.
+	 * Create the Post object
 	 *
-	 * @var ModelField[]
+	 * @param integer    $id        Unique ID of the post in the blog.
+	 * @param integer    $user_id   ID of the Post's author.
+	 * @param DateTime   $timestamp Time and Date for post: time last saved if draft, time published if not.
+	 * @param string     $slug      URL-friendly identifier for the post.
+	 * @param string     $title     Title of the post.
+	 * @param string     $content   HTML content of the post.
+	 * @param PostStatus $status    Status of the post.
 	 */
-	public const FIELDS = [
-		'id' => ModelField::int,
-		'user_id' => ModelField::int,
-		'title' => ModelField::string,
-		'content' => ModelField::string,
-		'status' => PostStatus::class,
-		'slug' => ModelField::string,
-		'timestamp' => ModelField::date,
-	];
+	public function __construct(
+		int $id,
+		public readonly int $user_id,
+		public readonly DateTime $timestamp,
+		public readonly string $slug,
+		public readonly ?string $title = null,
+		public readonly string $content = '',
+		public readonly PostStatus $status = PostStatus::Draft,
+	) {
+		parent::__construct(id: $id);
+	}
 }
