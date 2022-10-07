@@ -112,6 +112,7 @@ class App {
 	private function loadContainerWithCoreClasses(): void {
 		$this->container->addShared(Environment::class, fn() => $this->env);
 		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
+		$this->container->addShared(Command\CommandBus::class, fn() => $this->commands);
 
 		$this->container->addShared(Connector\ConnectorRegistrar::class);
 
