@@ -29,7 +29,7 @@ class Environment implements JsonSerializable {
 	 * @param mixed  ...$envVars Arbitrary environment variables.
 	 */
 	public function __construct(string $apiBase, mixed ...$envVars) {
-		$this->apiBase = $apiBase;
+		$this->apiBase = rtrim($apiBase, '/') . '/';
 		$this->envVars = $envVars;
 	}
 
