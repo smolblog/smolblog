@@ -32,11 +32,19 @@ final class EnvironmentTest extends TestCase {
 	}
 
 	public function testSerializesToJson() {
-		$env = new Environment(apiBase: '//localhost', someKey: 'someValue');
+		$env = new Environment(apiBase: '//localhost/', someKey: 'someValue');
 
 		$this->assertJsonStringEqualsJsonString(
-			'{"apiBase":"\/\/localhost","someKey":"someValue"}',
+			'{"apiBase":"\/\/localhost/","someKey":"someValue"}',
 			json_encode($env)
 		);
+	}
+
+	public function testAddsTrailingSlashToApiBase() {
+		$envNoSlash = new Environment(apiBase: '//localhost');
+		$this->assertEquals('//localhost/', $envNoSlash->apiBase);
+
+		$envWithSlash = new Environment(apiBase: '//localhost/');
+		$this->assertEquals('//localhost/', $envWithSlash->apiBase);
 	}
 }
