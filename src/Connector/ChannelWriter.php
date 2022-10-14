@@ -15,4 +15,12 @@ interface ChannelWriter extends Writer {
 	 * @return void
 	 */
 	public function save(Channel $channel): void;
+
+	/**
+	 * Delete the indicated Channel from the repository.
+	 *
+	 * @param string $id ID of Channel to delete.
+	 * @return void
+	 */
+	public function delete(string $id): void;
 }
