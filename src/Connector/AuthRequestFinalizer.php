@@ -14,6 +14,7 @@ class AuthRequestFinalizer {
 	 * @param ConnectorRegistrar     $connectors     Connector Registrar.
 	 * @param AuthRequestStateReader $stateRepo      State repository.
 	 * @param ConnectionWriter       $connectionRepo Connection repository.
+	 * @param CommandBus             $commands       Command Bus.
 	 */
 	public function __construct(
 		private ConnectorRegistrar $connectors,

@@ -9,6 +9,12 @@ use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointR
  * redirected to it or shown the URL in some way.
  */
 class UserConnections implements Endpoint {
+	/**
+	 * Create the Endpoint
+	 *
+	 * @param ConnectionReader $connectionRepo Used to retrieve Connections for the user.
+	 * @param ChannelReader    $channelRepo    Used to retrieve Channels for the Connections.
+	 */
 	public function __construct(
 		private ConnectionReader $connectionRepo,
 		private ChannelReader $channelRepo,
