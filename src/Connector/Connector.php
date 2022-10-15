@@ -31,4 +31,12 @@ interface Connector extends Registerable {
 	 * @return null|Connection Created credential, null on failure
 	 */
 	public function createConnection(string $code, AuthRequestState $info): ?Connection;
+
+	/**
+	 * Get the channels enabled by the Connection.
+	 *
+	 * @param Connection $connection Account to get Channels for.
+	 * @return Channel[] Array of Channels this Connection can use
+	 */
+	public function getChannels(Connection $connection): array;
 }

@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Connector;
 
+use Smolblog\Core\Command\CommandBus;
+
 /**
  * Service to finish an OAuth request with an external provider.
  */
@@ -12,11 +14,13 @@ class AuthRequestFinalizer {
 	 * @param ConnectorRegistrar     $connectors     Connector Registrar.
 	 * @param AuthRequestStateReader $stateRepo      State repository.
 	 * @param ConnectionWriter       $connectionRepo Connection repository.
+	 * @param CommandBus             $commands       Command Bus.
 	 */
 	public function __construct(
 		private ConnectorRegistrar $connectors,
 		private AuthRequestStateReader $stateRepo,
 		private ConnectionWriter $connectionRepo,
+		private CommandBus $commands,
 	) {
 	}
 
@@ -32,5 +36,7 @@ class AuthRequestFinalizer {
 
 		$connection = $connector->createConnection(code: $request->code, info: $info);
 		$this->connectionRepo->save(connection: $connection);
+
+		$this->commands->handle(new RefreshChannels($connection->id));
 	}
 }
