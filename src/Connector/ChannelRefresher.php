@@ -32,7 +32,7 @@ class ChannelRefresher {
 		$connection = $this->connections->get($command->connectionId);
 		$connector = $this->connectors->get($connection->provider);
 
-		$currentChannels = $this->channelReader->getChannelsFor(connection: $connection);
+		$currentChannels = $this->channelReader->getChannelsForConnection(connectionId: $connection->id);
 		$newChannels = $connector->getChannels(connection: $connection);
 
 		$toDeactivate = array_diff($currentChannels, $newChannels);

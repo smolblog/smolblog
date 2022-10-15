@@ -83,6 +83,7 @@ class App {
 		$coreEndpoints = [
 			Connector\ConnectCallback::class,
 			Connector\ConnectInit::class,
+			Connector\UserConnections::class,
 			Plugin\InstalledPlugins::class,
 		];
 		$allEndpoints = $this->events->dispatch(new Events\CollectingEndpoints($coreEndpoints))->endpoints;
@@ -140,6 +141,10 @@ class App {
 			addArgument(Connector\ConnectorRegistrar::class)->
 			addArgument(Connector\ChannelReader::class)->
 			addArgument(Connector\ChannelWriter::class);
+
+		$this->container->add(Connector\UserConnections::class)->
+			addArgument(Connector\ConnectionReader::class)->
+			addArgument(Connector\ChannelReader::class);
 
 		$this->container->add(
 			Plugin\InstalledPlugins::class,

@@ -15,4 +15,12 @@ interface ConnectionReader extends Reader {
 	 * @return Connection Object identified by $id; null if it does not exist.
 	 */
 	public function get(string|int $id): Connection;
+
+	/**
+	 * Get the Connections that belong to the given User.
+	 *
+	 * @param string|integer $userId ID of the User to search on.
+	 * @return array
+	 */
+	public function getConnectionsForUser(string|int $userId): array;
 }

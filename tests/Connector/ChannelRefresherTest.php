@@ -32,7 +32,7 @@ final class ChannelRefresherTest extends TestCase {
 		$connections->method('get')->willReturn($connection);
 
 		$channelReader = $this->createMock(ChannelReader::class);
-		$channelReader->expects($this->once())->method('getChannelsFor')->willReturn($oldChannels);
+		$channelReader->expects($this->once())->method('getChannelsForConnection')->willReturn($oldChannels);
 
 		$channelWriter = $this->createMock(ChannelWriter::class);
 		$channelWriter->expects($this->once())->method('delete')->with($this->equalTo($alt->id));

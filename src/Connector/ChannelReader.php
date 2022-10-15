@@ -19,8 +19,16 @@ interface ChannelReader extends Reader {
 	/**
 	 * Get all channels for the given Connection.
 	 *
-	 * @param Connection $connection Connection to search by.
+	 * @param string $connectionId Connection to search by.
 	 * @return Channel[] Array of Channels attached to this Connection.
 	 */
-	public function getChannelsFor(Connection $connection): array;
+	public function getChannelsForConnection(string $connectionId): array;
+
+	/**
+	 * Get all channels for all the given Connections.
+	 *
+	 * @param string[] $connectionIds Connections to search by.
+	 * @return array[] Associative array of arrays of Channels keyed to their Connection.
+	 */
+	public function getChannelsForConnections(array $connectionIds): array;
 }
