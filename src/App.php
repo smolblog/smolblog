@@ -2,8 +2,6 @@
 
 namespace Smolblog\Core;
 
-use Composer\InstalledVersions;
-
 /**
  * The core app class.
  */
@@ -130,11 +128,18 @@ class App {
 		$this->container->add(Connector\AuthRequestFinalizer::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
 			addArgument(Connector\AuthRequestStateReader::class)->
-			addArgument(Connector\ConnectionWriter::class);
+			addArgument(Connector\ConnectionWriter::class)->
+			addArgument(Command\CommandBus::class);
 		$this->container->add(Connector\ConnectCallback::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
 			addArgument(Connector\AuthRequestStateReader::class)->
 			addArgument(Command\CommandBus::class);
+
+		$this->container->add(Connector\ChannelRefresher::class)->
+			addArgument(Connector\ConnectionReader::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Connector\ChannelReader::class)->
+			addArgument(Connector\ChannelWriter::class);
 
 		$this->container->add(
 			Plugin\InstalledPlugins::class,
@@ -153,6 +158,7 @@ class App {
 		$map = [
 			Connector\BeginAuthRequest::class => Connector\AuthRequestInitializer::class,
 			Connector\FinishAuthRequest::class => Connector\AuthRequestFinalizer::class,
+			Connector\RefreshChannels::class => Connector\ChannelRefresher::class,
 		];
 		return $map;
 	}
