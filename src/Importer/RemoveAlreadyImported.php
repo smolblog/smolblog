@@ -1,6 +1,6 @@
 <?php
 
-namespace Smoolblog\Core\Importer;
+namespace Smolblog\Core\Importer;
 
 use Smolblog\Core\Post\PostReader;
 
@@ -25,7 +25,8 @@ class RemoveAlreadyImported {
 	 * @return ImportablePost[] Posts that have not been imported.
 	 */
 	public function __invoke(array $posts): array {
-		$checkedIds = $this->postReader->checkImportIds(array_map(fn($p) => $p->importId, $posts));
-		return array_filter($posts, fn($p) => false !== array_search($p->importId, $checkedIds));
+		$checkedIds = $this->postReader->checkImportIds(array_map(fn($p) => $p->importKey, $posts));
+		$filtered = array_filter($posts, fn($p) => false === array_search($p->importKey, $checkedIds));
+		return array_values($filtered);
 	}
 }
