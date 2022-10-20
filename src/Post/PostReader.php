@@ -19,7 +19,7 @@ interface PostReader extends Reader {
 	/**
 	 * Check the given ImportIds and return any that have not been imported.
 	 *
-	 * @param array $ids ImportIds to check
+	 * @param array $ids ImportIds to check.
 	 * @return array ImportIds that have not been imported.
 	 */
 	public function checkImportIds(array $ids): array;
