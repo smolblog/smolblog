@@ -4,7 +4,6 @@ namespace Smolblog\Core\Importer;
 
 use Smolblog\Core\Connector\{Channel, Connection};
 use Smolblog\Core\Registrar\Registerable;
-use Smolblog\Core\Post\Post;
 
 interface Importer extends Registerable {
 	/**
@@ -21,7 +20,7 @@ interface Importer extends Registerable {
 	 * @param Connection $connection Authenticated connection to use.
 	 * @param Channel    $channel    Channel to pull posts from.
 	 * @param array      $options    Options to use, such as types or pagination.
-	 * @return ImportablePost[] Array of Posts ready to insert.
+	 * @return ImportResults Array of Posts ready to insert and optional command to fetch next page.
 	 */
-	public function getPostsFromChannel(Connection $connection, Channel $channel, array $options): array;
+	public function getPostsFromChannel(Connection $connection, Channel $channel, array $options): ImportResults;
 }

@@ -17,4 +17,14 @@ class ImporterRegistrar extends Registrar {
 	protected function processConfig(mixed $config): string {
 		return $config->slug;
 	}
+
+	/**
+	 * Get an Importer indicated by the given key.
+	 *
+	 * @param string $key Key for class to instantiate and get.
+	 * @return Importer Importer instance requested.
+	 */
+	public function get(string $key): Importer {
+		return parent::get(key: $key);
+	}
 }
