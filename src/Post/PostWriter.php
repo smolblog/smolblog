@@ -15,4 +15,12 @@ interface PostWriter extends Writer {
 	 * @return void
 	 */
 	public function save(Post $post): void;
+
+	/**
+	 * Save the given Posts to the repository.
+	 *
+	 * @param Post[] $posts Post objects to save.
+	 * @return void
+	 */
+	public function saveMany(array $posts): void;
 }
