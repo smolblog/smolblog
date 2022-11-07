@@ -17,7 +17,7 @@ class Post extends Entity {
 	 * @param DateTime   $timestamp Time and Date for post: time last saved if draft, time published if not.
 	 * @param string     $slug      URL-friendly identifier for the post.
 	 * @param string     $title     Title of the post.
-	 * @param string     $content   HTML content of the post.
+	 * @param Block[]    $content   Post's content as an ordered array of blocks.
 	 * @param PostStatus $status    Status of the post.
 	 */
 	public function __construct(
@@ -26,7 +26,7 @@ class Post extends Entity {
 		public readonly DateTime $timestamp,
 		public readonly string $slug,
 		public readonly ?string $title = null,
-		public readonly string $content = '',
+		public readonly array $content = [],
 		public readonly PostStatus $status = PostStatus::Draft,
 	) {
 		parent::__construct(id: $id);
