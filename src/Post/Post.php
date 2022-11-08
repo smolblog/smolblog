@@ -21,7 +21,7 @@ class Post extends Entity {
 	 * @param PostStatus $status    Status of the post.
 	 */
 	public function __construct(
-		int $id,
+		?int $id = null,
 		public readonly int $user_id,
 		public readonly DateTime $timestamp,
 		public readonly string $slug,
@@ -29,6 +29,6 @@ class Post extends Entity {
 		public readonly array $content = [],
 		public readonly PostStatus $status = PostStatus::Draft,
 	) {
-		parent::__construct(id: $id);
+		parent::__construct(id: $id ?? 0);
 	}
 }
