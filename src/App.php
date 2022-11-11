@@ -99,6 +99,13 @@ class App {
 			$connectorRegistrar->register(class: $connector, factory: fn() => $this->container->get($connector));
 		}
 
+		// Collect and register Importers.
+		$allImporters = $this->events->dispatch(new Events\CollectingImporters([]))->importers;
+		$importerRegistrar = $this->container->get(Importer\ImporterRegistrar::class);
+		foreach ($allImporters as $importer) {
+			$importerRegistrar->register(class: $importer, factory: fn() => $this->container->get($importer));
+		}
+
 		// We're done with our part; fire the event!
 		$this->events->dispatch(new Events\Startup($this));
 	}
@@ -114,9 +121,6 @@ class App {
 		$this->container->addShared(Command\CommandBus::class, fn() => $this->commands);
 
 		$this->container->addShared(Connector\ConnectorRegistrar::class);
-
-		$this->container->addShared(Connector\ConnectionCredentialFactory::class);
-		$this->container->addShared(Transient\TransientFactory::class);
 
 		$this->container->add(Connector\AuthRequestInitializer::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
@@ -146,6 +150,23 @@ class App {
 			addArgument(Connector\ConnectionReader::class)->
 			addArgument(Connector\ChannelReader::class);
 
+		$this->container->add(Connector\RefreshConnectionToken::class)->
+			addArgument(Connector\ConnectorRegistrar::class)->
+			addArgument(Connector\ConnectionWriter::class);
+
+		$this->container->addShared(Importer\ImporterRegistrar::class);
+
+		$this->container->add(Importer\ImportStarter::class)->
+			addArgument(Connector\ChannelReader::class)->
+			addArgument(Connector\ConnectionReader::class)->
+			addArgument(Connector\RefreshConnectionToken::class)->
+			addArgument(Importer\ImporterRegistrar::class)->
+			addArgument(Post\PostWriter::class)->
+			addArgument(Command\CommandBus::class);
+
+		$this->container->add(Importer\RemoveAlreadyImported::class)->
+			addArgument(Post\PostReader::class);
+
 		$this->container->add(
 			Plugin\InstalledPlugins::class,
 			fn() => new Plugin\InstalledPlugins(
@@ -164,6 +185,7 @@ class App {
 			Connector\BeginAuthRequest::class => Connector\AuthRequestInitializer::class,
 			Connector\FinishAuthRequest::class => Connector\AuthRequestFinalizer::class,
 			Connector\RefreshChannels::class => Connector\ChannelRefresher::class,
+			Importer\PullFromChannel::class => Importer\ImporterStarter::class,
 		];
 		return $map;
 	}

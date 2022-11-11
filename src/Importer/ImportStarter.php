@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Importer;
 
 use Smolblog\Core\Command\CommandBus;
-use Smolblog\Core\Connector\{ChannelReader, ConnectionReader};
+use Smolblog\Core\Connector\{ChannelReader, ConnectionReader, RefreshConnectionToken};
 use Smolblog\Core\Post\PostWriter;
 
 /**
@@ -13,15 +13,17 @@ class ImportStarter {
 	/**
 	 * Construct the service
 	 *
-	 * @param ChannelReader     $channelRepo    For fetching the supplied channel.
-	 * @param ConnectionReader  $connectionRepo For fetching the Channel's Connection.
-	 * @param ImporterRegistrar $importerRepo   For fetching the Connection's Importer.
-	 * @param PostWriter        $postWriter     For saving posts.
-	 * @param CommandBus        $commandBus     For firing off the next page command, if any.
+	 * @param ChannelReader          $channelRepo            For fetching the supplied channel.
+	 * @param ConnectionReader       $connectionRepo         For fetching the Channel's Connection.
+	 * @param RefreshConnectionToken $refreshConnectionToken Check for token validity.
+	 * @param ImporterRegistrar      $importerRepo           For fetching the Connection's Importer.
+	 * @param PostWriter             $postWriter             For saving posts.
+	 * @param CommandBus             $commandBus             For firing off the next page command, if any.
 	 */
 	public function __construct(
 		private ChannelReader $channelRepo,
 		private ConnectionReader $connectionRepo,
+		private RefreshConnectionToken $refreshConnectionToken,
 		private ImporterRegistrar $importerRepo,
 		private PostWriter $postWriter,
 		private CommandBus $commandBus,
@@ -39,8 +41,10 @@ class ImportStarter {
 		$connection = $this->connectionRepo->get(id: $channel->connectionId);
 		$importer = $this->importerRepo->get(key: $connection->provider);
 
+		$readyConnection = $this->refreshConnectionToken->run(connection: $connection);
+
 		$results = $importer->getPostsFromChannel(
-			connection: $connection,
+			connection: $readyConnection,
 			channel: $channel,
 			options: $command->options
 		);
