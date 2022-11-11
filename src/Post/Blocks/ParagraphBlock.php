@@ -16,7 +16,7 @@ class ParagraphBlock extends Block {
 	 */
 	public function __construct(
 		public readonly string $content,
-		public readonly array $styles
+		public readonly array $styles = []
 	) {
 	}
 }

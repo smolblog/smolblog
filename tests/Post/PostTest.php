@@ -4,6 +4,7 @@ namespace Smolblog\Core\Post;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Post\Blocks\ParagraphBlock;
 
 final class PostTest extends TestCase {
 	public function testItCanBeCreatedWithMinimalData() {
@@ -27,7 +28,9 @@ final class PostTest extends TestCase {
 				timestamp: new DateTime(),
 				slug: 'test',
 				title: 'Test Post',
-				content: '<p>Hello!</p>',
+				content: [
+					new ParagraphBlock(content: 'Hello!')
+				],
 				status: PostStatus::Published,
 			),
 		);
