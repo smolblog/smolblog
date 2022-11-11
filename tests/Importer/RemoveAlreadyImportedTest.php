@@ -26,7 +26,7 @@ final class RemoveAlreadyImportedTest extends TestCase {
 		$postReader = $this->createStub(PostReader::class);
 		$postReader->method('checkImportIds')->willReturn($found);
 
-		$results = (new RemoveAlreadyImported(postReader: $postReader))(posts: $fullList);
+		$results = (new RemoveAlreadyImported(postReader: $postReader))->run(posts: $fullList);
 		$this->assertEquals($newList, $results);
 	}
 }
