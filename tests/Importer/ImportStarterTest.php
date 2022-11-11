@@ -8,6 +8,7 @@ use Smolblog\Core\Connector\Channel;
 use Smolblog\Core\Connector\ChannelReader;
 use Smolblog\Core\Connector\Connection;
 use Smolblog\Core\Connector\ConnectionReader;
+use Smolblog\Core\Connector\RefreshConnectionToken;
 use Smolblog\Core\Post\PostWriter;
 
 final class ImportStarterTest extends TestCase {
@@ -27,6 +28,9 @@ final class ImportStarterTest extends TestCase {
 		$importerRepo = $this->createStub(ImporterRegistrar::class);
 		$importerRepo->method('get')->willReturn($importer);
 
+		$refresher = $this->createStub(RefreshConnectionToken::class);
+		$refresher->method('run')->willReturnArgument(0);
+
 		$postWriter = $this->createMock(PostWriter::class);
 		$postWriter->expects($this->once())->method('saveMany');
 
@@ -39,6 +43,7 @@ final class ImportStarterTest extends TestCase {
 			importerRepo: $importerRepo,
 			postWriter: $postWriter,
 			commandBus: $commandBus,
+			refreshConnectionToken: $refresher,
 		))->handlePullFromChannel(command: $command);
 	}
 }
