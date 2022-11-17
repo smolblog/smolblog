@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+	configVersion="3"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="https://www.phpdoc.org"
+	xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
+>
+	<version number="dev">
+		<folder>dev</folder>
+		<api>
+			<source dsn=".">
+				<path>src</path>
+				<default-package-name>smolblog-core</default-package-name>
+				<include-source>true</include-source>
+			</source>
+		</api>
+	</version>
+</phpdocumentor>
