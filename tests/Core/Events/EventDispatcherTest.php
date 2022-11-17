@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Events;
+namespace Smolblog\App\Hooks;
 
 use PHPUnit\Framework\TestCase;
 

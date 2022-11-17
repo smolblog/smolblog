@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Events;
+namespace Smolblog\App\Hooks;
 
 /**
  * Fired when the Smolblog core system is registering Connectors. Event consumers can add

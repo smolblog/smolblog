@@ -3,7 +3,7 @@
 namespace Smolblog\App;
 
 use Smolblog\Core\{Plugin, Connector, Importer, Events};
-use Smolblog\Core\Events\Startup;
+use Smolblog\App\Hooks\Startup;
 use PHPUnit\Framework\TestCase;
 
 class TestPlugin implements Plugin\Plugin {

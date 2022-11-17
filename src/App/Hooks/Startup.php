@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Events;
+namespace Smolblog\App\Hooks;
 
 use Smolblog\App\Smolblog;
 

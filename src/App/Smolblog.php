@@ -3,7 +3,7 @@
 namespace Smolblog\App;
 
 use Psr\Container\ContainerInterface;
-use Smolblog\Core\{Events, Plugin, Connector, Importer};
+use Smolblog\Core\{Plugin, Connector, Importer};
 
 /**
  * The core app class.
@@ -19,9 +19,9 @@ class Smolblog {
 	/**
 	 * Event dispatcher
 	 *
-	 * @var Events\EventDispatcher
+	 * @var Hooks\EventDispatcher
 	 */
-	public readonly Events\EventDispatcher $events;
+	public readonly Hooks\EventDispatcher $events;
 
 	/**
 	 * Command bus
@@ -62,7 +62,7 @@ class Smolblog {
 		$this->plugins = $pluginClasses;
 
 		$this->container = new Container\Container();
-		$this->events = new Events\EventDispatcher();
+		$this->events = new Hooks\EventDispatcher();
 
 		$this->loadContainerWithCoreClasses();
 
@@ -89,28 +89,28 @@ class Smolblog {
 			Connector\UserConnections::class,
 			Plugin\InstalledPlugins::class,
 		];
-		$allEndpoints = $this->events->dispatch(new Events\CollectingEndpoints($coreEndpoints))->endpoints;
+		$allEndpoints = $this->events->dispatch(new Hooks\CollectingEndpoints($coreEndpoints))->endpoints;
 		$endpointRegistrar = $this->container->get(Endpoint\EndpointRegistrar::class);
 		foreach ($allEndpoints as $endpoint) {
 			$endpointRegistrar->register(class: $endpoint, factory: fn() => $this->container->get($endpoint));
 		}
 
 		// Collect and register Connectors.
-		$allConnectors = $this->events->dispatch(new Events\CollectingConnectors([]))->connectors;
+		$allConnectors = $this->events->dispatch(new Hooks\CollectingConnectors([]))->connectors;
 		$connectorRegistrar = $this->container->get(Connector\ConnectorRegistrar::class);
 		foreach ($allConnectors as $connector) {
 			$connectorRegistrar->register(class: $connector, factory: fn() => $this->container->get($connector));
 		}
 
 		// Collect and register Importers.
-		$allImporters = $this->events->dispatch(new Events\CollectingImporters([]))->importers;
+		$allImporters = $this->events->dispatch(new Hooks\CollectingImporters([]))->importers;
 		$importerRegistrar = $this->container->get(Importer\ImporterRegistrar::class);
 		foreach ($allImporters as $importer) {
 			$importerRegistrar->register(class: $importer, factory: fn() => $this->container->get($importer));
 		}
 
 		// We're done with our part; fire the event!
-		$this->events->dispatch(new Events\Startup($this));
+		$this->events->dispatch(new Hooks\Startup($this));
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Smolblog {
 	 */
 	private function loadContainerWithCoreClasses(): void {
 		$this->container->addShared(Environment::class, fn() => $this->env);
-		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
+		$this->container->addShared(Hooks\EventDispatcher::class, fn() => $this->events);
 		$this->container->addShared(CommandBus::class, fn() => $this->commands);
 
 		$this->container->add(Connector\ConnectorRegistrar::class);
