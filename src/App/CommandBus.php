@@ -8,7 +8,7 @@ use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleClassNameInflector;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Plugins\LockingMiddleware;
-use Smolblog\Core\Container\Container;
+use Smolblog\App\Container\Container;
 use Smolblog\Framework\Command;
 
 /**

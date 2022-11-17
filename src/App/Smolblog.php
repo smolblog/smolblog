@@ -3,7 +3,7 @@
 namespace Smolblog\App;
 
 use Psr\Container\ContainerInterface;
-use Smolblog\Core\{Container, Events, Plugin, Connector, Importer};
+use Smolblog\Core\{Events, Plugin, Connector, Importer};
 
 /**
  * The core app class.

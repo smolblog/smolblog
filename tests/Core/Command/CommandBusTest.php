@@ -3,7 +3,7 @@
 namespace Smolblog\App;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Container\Container;
+use Smolblog\App\Container\Container;
 use Smolblog\Framework\Command;
 
 final class RunCommandTest implements Command {
