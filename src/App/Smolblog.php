@@ -3,7 +3,7 @@
 namespace Smolblog\App;
 
 use Psr\Container\ContainerInterface;
-use Smolblog\Core\{Container, Events, Command, Plugin, Connector, Importer};
+use Smolblog\Core\{Container, Events, Plugin, Connector, Importer};
 
 /**
  * The core app class.
@@ -26,9 +26,9 @@ class Smolblog {
 	/**
 	 * Command bus
 	 *
-	 * @var Command\CommandBus
+	 * @var CommandBus
 	 */
-	public readonly Command\CommandBus $commands;
+	public readonly CommandBus $commands;
 
 	/**
 	 * Environment information
@@ -66,7 +66,7 @@ class Smolblog {
 
 		$this->loadContainerWithCoreClasses();
 
-		$this->commands = new Command\CommandBus(
+		$this->commands = new CommandBus(
 			map: $this->createCommandMap(),
 			container: $this->container,
 		);
@@ -121,7 +121,7 @@ class Smolblog {
 	private function loadContainerWithCoreClasses(): void {
 		$this->container->addShared(Environment::class, fn() => $this->env);
 		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
-		$this->container->addShared(Command\CommandBus::class, fn() => $this->commands);
+		$this->container->addShared(CommandBus::class, fn() => $this->commands);
 
 		$this->container->add(Connector\ConnectorRegistrar::class);
 		$this->container->addShared(Registrars\ConnectorRegistrar::class)->addArgument(ContainerInterface::class);
@@ -136,17 +136,17 @@ class Smolblog {
 		$this->container->add(Connector\ConnectInit::class)->
 			addArgument(Environment::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
-			addArgument(Command\CommandBus::class);
+			addArgument(CommandBus::class);
 
 		$this->container->add(Connector\AuthRequestFinalizer::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
 			addArgument(Connector\AuthRequestStateReader::class)->
 			addArgument(Connector\ConnectionWriter::class)->
-			addArgument(Command\CommandBus::class);
+			addArgument(CommandBus::class);
 		$this->container->add(Connector\ConnectCallback::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
 			addArgument(Connector\AuthRequestStateReader::class)->
-			addArgument(Command\CommandBus::class);
+			addArgument(CommandBus::class);
 
 		$this->container->add(Connector\ChannelRefresher::class)->
 			addArgument(Connector\ConnectionReader::class)->
@@ -175,7 +175,7 @@ class Smolblog {
 			addArgument(Connector\RefreshConnectionToken::class)->
 			addArgument(Importer\ImporterRegistrar::class)->
 			addArgument(Post\PostWriter::class)->
-			addArgument(Command\CommandBus::class);
+			addArgument(CommandBus::class);
 
 		$this->container->add(Importer\RemoveAlreadyImported::class)->
 			addArgument(Post\PostReader::class);

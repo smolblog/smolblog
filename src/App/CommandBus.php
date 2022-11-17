@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Command;
+namespace Smolblog\App;
 
 use League\Tactician\CommandBus as LeagueCommander;
 use League\Tactician\Container\ContainerLocator;

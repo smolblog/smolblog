@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Core\Command\CommandBus;
+use Smolblog\App\CommandBus;
 use Smolblog\Core\Connector\{ChannelReader, ConnectionReader, RefreshConnectionToken};
 use Smolblog\Core\Post\PostWriter;
 

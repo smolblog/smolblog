@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Command;
+namespace Smolblog\App;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Container\Container;

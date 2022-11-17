@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Command\CommandBus;
+use Smolblog\App\CommandBus;
 
 /**
  * Service to finish an OAuth request with an external provider.

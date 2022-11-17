@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Importer;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Command\CommandBus;
+use Smolblog\App\CommandBus;
 use Smolblog\Core\Connector\Channel;
 use Smolblog\Core\Connector\ChannelReader;
 use Smolblog\Core\Connector\Connection;

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use Smolblog\App\Environment;
-use Smolblog\Core\Command\CommandBus;
+use Smolblog\App\CommandBus;
 use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
 
 /**
