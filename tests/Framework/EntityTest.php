@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Entity;
+namespace Smolblog\Framework;
 
 use PHPUnit\Framework\TestCase;
 

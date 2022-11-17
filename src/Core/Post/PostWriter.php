@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
-use Smolblog\Core\Entity\Writer;
+use Smolblog\Framework\Writer;
 
 /**
  * Object for saving Posts to the repository.

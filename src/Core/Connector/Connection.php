@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Entity;
+use Smolblog\Framework\Entity;
 
 /**
  * Information about credentials needed to authenticate against an

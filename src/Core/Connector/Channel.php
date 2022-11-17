@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Entity;
+use Smolblog\Framework\Entity;
 
 /**
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media

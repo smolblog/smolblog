@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Writer;
+use Smolblog\Framework\Writer;
 
 /**
  * Object for saving Channels to the repository.

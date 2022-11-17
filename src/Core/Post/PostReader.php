@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
-use Smolblog\Core\Entity\Reader;
+use Smolblog\Framework\Reader;
 
 /**
  * Object to retrieve Posts from the repository.

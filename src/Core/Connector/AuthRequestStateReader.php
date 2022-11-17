@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Reader;
+use Smolblog\Framework\Reader;
 
 /**
  * An object that can retrieve an AuthRequestState from a repository.

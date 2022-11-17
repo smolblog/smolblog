@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Post;
 
 use DateTime;
-use Smolblog\Core\Entity\Entity;
+use Smolblog\Framework\Entity;
 
 /**
  * Represents a blog post.

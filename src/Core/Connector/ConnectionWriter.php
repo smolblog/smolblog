@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Writer;
+use Smolblog\Framework\Writer;
 
 interface ConnectionWriter extends Writer {
 	/**

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
-use Smolblog\Core\Entity\Entity;
+use Smolblog\Framework\Entity;
 
 /**
  * A piece of media (image, video, etc) that can be included in a Post.

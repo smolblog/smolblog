@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Entity;
+namespace Smolblog\Framework;
 
 /**
  * An object that can retrieve objects from a repository based on identifiers.

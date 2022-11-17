@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Entity;
+use Smolblog\Framework\Entity;
 
 /**
  * State for an OAuth request. Needs to be persistent between requests, so

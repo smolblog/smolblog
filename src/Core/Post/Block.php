@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
-use Smolblog\Core\Entity\Entity;
+use Smolblog\Framework\Entity;
 
 /**
  * A unit of content for a Post. Just an empty Entity class because the only

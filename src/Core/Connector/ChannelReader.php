@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Entity\Reader;
+use Smolblog\Framework\Reader;
 
 /**
  * Object to retrieve Channels from the repository.

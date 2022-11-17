@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Entity;
+namespace Smolblog\Framework;
 
 /**
  * Interface for an object that writes objects to a repository.
