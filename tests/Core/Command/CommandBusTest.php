@@ -4,6 +4,7 @@ namespace Smolblog\Core\Command;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Container\Container;
+use Smolblog\Framework\Command;
 
 final class RunCommandTest implements Command {
 	public function __construct(

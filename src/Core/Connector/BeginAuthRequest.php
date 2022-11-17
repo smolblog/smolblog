@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Command\Command;
+use Smolblog\Framework\Command;
 
 /**
  * The indicated user is starting an OAuth request with the indicated provider.

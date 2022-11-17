@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Command\Command;
+use Smolblog\Framework\Command;
 
 /**
  * Command to kick off saving data from an OAuth callback.

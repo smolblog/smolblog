@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Core\Command\Command;
+use Smolblog\Framework\Command;
 use Smolblog\Core\Post\Post;
 
 /**

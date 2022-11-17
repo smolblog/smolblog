@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Command;
+namespace Smolblog\Framework;
 
 /**
  * Declarative interface for Command objects.

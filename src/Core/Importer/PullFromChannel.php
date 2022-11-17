@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Core\Command\Command;
+use Smolblog\Framework\Command;
 
 /**
  * Pull posts from the indicated channel. Optionally provide pagination info.

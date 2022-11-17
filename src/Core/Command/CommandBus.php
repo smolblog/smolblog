@@ -9,6 +9,7 @@ use League\Tactician\Handler\MethodNameInflector\HandleClassNameInflector;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Plugins\LockingMiddleware;
 use Smolblog\Core\Container\Container;
+use Smolblog\Framework\Command;
 
 /**
  * Handles taking command classes and sending them to their handlers.
