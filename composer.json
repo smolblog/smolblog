@@ -5,7 +5,7 @@
   "license": "AGPL-3.0-only",
   "autoload": {
     "psr-4": {
-      "Smolblog\\Core\\": "src/"
+      "Smolblog\\": "src/"
     }
   },
   "authors": [
