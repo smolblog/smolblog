@@ -10,9 +10,16 @@
 		<api>
 			<source dsn=".">
 				<path>src</path>
-				<default-package-name>smolblog-core</default-package-name>
-				<include-source>true</include-source>
 			</source>
+			<default-package-name>smolblog-core</default-package-name>
+			<include-source>true</include-source>
 		</api>
+		<guide>
+			<source dsn=".">
+				<path>docs</path>
+			</source>
+			<output>guide</output>
+		</guide>
 	</version>
+	<setting name="guides.enabled" value="true"/>
 </phpdocumentor>

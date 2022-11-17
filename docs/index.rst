@@ -1,4 +1,5 @@
-# Smolblog\Core
+Smolblog\Core
+=============
 
 This is the core domain model for Smolblog. It's built with nods toward Domain Driven Design and uses as many SOLID principles as were feasable. Particular tenants:
 
