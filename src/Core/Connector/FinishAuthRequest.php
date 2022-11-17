@@ -7,7 +7,7 @@ use Smolblog\Framework\Command;
 /**
  * Command to kick off saving data from an OAuth callback.
  */
-class FinishAuthRequest implements Command {
+class FinishAuthRequest extends Command {
 	/**
 	 * Create the command
 	 *

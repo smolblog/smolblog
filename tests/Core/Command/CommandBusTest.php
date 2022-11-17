@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Smolblog\App\Container\Container;
 use Smolblog\Framework\Command;
 
-final class RunCommandTest implements Command {
+final class RunCommandTest extends Command {
 	public function __construct(
 		public readonly bool $return,
 		public readonly string $payload

@@ -7,7 +7,7 @@ use Smolblog\Framework\Command;
 /**
  * The indicated user is starting an OAuth request with the indicated provider.
  */
-class BeginAuthRequest implements Command {
+class BeginAuthRequest extends Command {
 	/**
 	 * Create the command
 	 *

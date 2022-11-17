@@ -2,7 +2,7 @@
 
 namespace Smolblog\App;
 
-use Smolblog\Core\{Plugin, Connector, Importer, Events};
+use Smolblog\Core\{Connector, Importer};
 use Smolblog\App\Hooks\Startup;
 use PHPUnit\Framework\TestCase;
 

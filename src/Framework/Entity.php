@@ -7,7 +7,7 @@ use Stringable;
 /**
  * Represents an object that can be uniquely identified.
  */
-abstract class Entity implements Stringable {
+abstract class Entity extends Value implements Stringable {
 	/**
 	 * Create the Entity. This constructor exists mostly for use by subclasses.
 	 *

@@ -97,14 +97,14 @@ class Smolblog {
 
 		// Collect and register Connectors.
 		$allConnectors = $this->events->dispatch(new Hooks\CollectingConnectors([]))->connectors;
-		$connectorRegistrar = $this->container->get(Connector\ConnectorRegistrar::class);
+		$connectorRegistrar = $this->container->get(Registrars\ConnectorRegistrar::class);
 		foreach ($allConnectors as $connector) {
 			$connectorRegistrar->register(class: $connector, factory: fn() => $this->container->get($connector));
 		}
 
 		// Collect and register Importers.
 		$allImporters = $this->events->dispatch(new Hooks\CollectingImporters([]))->importers;
-		$importerRegistrar = $this->container->get(Importer\ImporterRegistrar::class);
+		$importerRegistrar = $this->container->get(Registrars\ImporterRegistrar::class);
 		foreach ($allImporters as $importer) {
 			$importerRegistrar->register(class: $importer, factory: fn() => $this->container->get($importer));
 		}
@@ -180,7 +180,7 @@ class Smolblog {
 		$this->container->add(Importer\RemoveAlreadyImported::class)->
 			addArgument(Post\PostReader::class);
 
-		$this->container->addShared(Container\Container::class);
+		$this->container->addShared(Container\Container::class, fn() => $this->container);
 		$this->container->setImplementation(
 			interface: ContainerInterface::class,
 			class: Container\Container::class
