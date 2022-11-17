@@ -82,6 +82,17 @@ class Container implements ContainerInterface {
 	}
 
 	/**
+	 * Set the concrete implementation for a given interface.
+	 *
+	 * @param string $interface Fully-qualified name for the interface.
+	 * @param string $class Fully-qualified name for the concrete implementation.
+	 * @return void
+	 */
+	public function setImplementation(string $interface, string $class): void {
+		$this->internal->add($interface, $class);
+	}
+
+	/**
 	 * Add to a definition already in the Container
 	 *
 	 * @param string $id Fully qualiifed class name.

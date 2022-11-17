@@ -2,10 +2,9 @@
 
 namespace Smolblog\Core\Plugin;
 
-use Smolblog\Core\App;
-use Smolblog\Core\Registrar\Registerable;
+use Smolblog\App\Smolblog;
 
-interface Plugin extends Registerable {
+interface Plugin {
 	/**
 	 * Get the information about this Plugin
 	 *
@@ -16,8 +15,8 @@ interface Plugin extends Registerable {
 	/**
 	 * Plugin bootstrapping function called by the App
 	 *
-	 * @param App $app Smolblog App instance being intiialized.
+	 * @param Smolblog $app Smolblog App instance being intiialized.
 	 * @return void
 	 */
-	public static function setup(App $app);
+	public static function setup(Smolblog $app);
 }

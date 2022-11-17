@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Environment;
+use Smolblog\App\Environment;
 use Smolblog\Core\Command\CommandBus;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Test\EndpointTestToolkit;

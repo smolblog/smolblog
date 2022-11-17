@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Environment;
+use Smolblog\App\Environment;
 
 final class AuthRequestInitializerTest extends TestCase {
 

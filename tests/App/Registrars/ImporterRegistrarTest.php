@@ -1,11 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Importer;
+namespace Smolblog\App\Registrars;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use Smolblog\Core\Importer\Importer;
 
 abstract class ImporterMock implements Importer {
-	public static function config(): ImporterConfig { return new ImporterConfig(slug: 'camelot'); }
 	public readonly string $id;
 
 	public function __construct() {
@@ -17,8 +18,12 @@ final class ImporterRegistrarTest extends TestCase {
 	public function testImporterCanBeRegisteredAndRetrieved() {
 		$expected = $this->getMockForAbstractClass(ImporterMock::class);
 
-		$importers = new ImporterRegistrar();
-		$importers->register(class: ImporterMock::class, factory: fn() => $expected);
+		$container = $this->createStub(ContainerInterface::class);
+		$container->method('has')->willReturn(true);
+		$container->method('get')->willReturn($expected);
+
+		$importers = new ImporterRegistrar(container: $container);
+		$importers->register(key: 'camelot', class: ImporterMock::class);
 		$actual = $importers->get('camelot');
 
 		$this->assertEquals(

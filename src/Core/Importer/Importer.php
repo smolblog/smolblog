@@ -3,17 +3,8 @@
 namespace Smolblog\Core\Importer;
 
 use Smolblog\Core\Connector\{Channel, Connection};
-use Smolblog\Core\Registrar\Registerable;
 
-interface Importer extends Registerable {
-	/**
-	 * Get the configuration for the object. This will let the Registrar
-	 * get the information it needs without having to instantiate.
-	 *
-	 * @return ImporterConfig
-	 */
-	public static function config(): ImporterConfig;
-
+interface Importer {
 	/**
 	 * Get posts from the given Channel/Connection according to the given options.
 	 *

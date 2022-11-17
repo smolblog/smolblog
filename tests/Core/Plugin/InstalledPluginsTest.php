@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Plugin;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\App;
+use Smolblog\App\Smolblog;
 use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Test\EndpointTestToolkit;
 
@@ -17,7 +17,7 @@ class TestPlugin implements Plugin {
 		);
 	}
 
-	public static function setup(App $app) {}
+	public static function setup(Smolblog $app) {}
 }
 
 final class InstalledPluginsTest extends TestCase {

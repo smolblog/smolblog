@@ -1,11 +1,14 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\App;
+
+use Psr\Container\ContainerInterface;
+use Smolblog\Core\{Container, Endpoint, Events, Command, Plugin, Connector, Importer};
 
 /**
  * The core app class.
  */
-class App {
+class Smolblog {
 	/**
 	 * Dependency Injection container
 	 *
@@ -120,7 +123,12 @@ class App {
 		$this->container->addShared(Events\EventDispatcher::class, fn() => $this->events);
 		$this->container->addShared(Command\CommandBus::class, fn() => $this->commands);
 
-		$this->container->addShared(Connector\ConnectorRegistrar::class);
+		$this->container->add(Connector\ConnectorRegistrar::class);
+		$this->container->addShared(Registrars\ConnectorRegistrar::class)->addArgument(ContainerInterface::class);
+		$this->container->setImplementation(
+			interface: Connector\ConnectorRegistrar::class,
+			class: Registrars\ConnectorRegistrar::class
+		);
 
 		$this->container->add(Connector\AuthRequestInitializer::class)->
 			addArgument(Connector\ConnectorRegistrar::class)->
@@ -155,6 +163,11 @@ class App {
 			addArgument(Connector\ConnectionWriter::class);
 
 		$this->container->addShared(Importer\ImporterRegistrar::class);
+		$this->container->addShared(Registrars\ImporterRegistrar::class)->addArgument(ContainerInterface::class);
+		$this->container->setImplementation(
+			interface: Importer\ImporterRegistrar::class,
+			class: Registrars\ImporterRegistrar::class
+		);
 
 		$this->container->add(Importer\ImportStarter::class)->
 			addArgument(Connector\ChannelReader::class)->
@@ -166,6 +179,12 @@ class App {
 
 		$this->container->add(Importer\RemoveAlreadyImported::class)->
 			addArgument(Post\PostReader::class);
+
+		$this->container->addShared(Container\Container::class);
+		$this->container->setImplementation(
+			interface: ContainerInterface::class,
+			class: Container\Container::class
+		);
 
 		$this->container->add(
 			Plugin\InstalledPlugins::class,

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Environment;
+use Smolblog\App\Environment;
 use Smolblog\Core\Command\CommandBus;
 use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\App;
 
 use JsonSerializable;
 

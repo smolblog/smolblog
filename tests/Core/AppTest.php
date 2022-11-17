@@ -1,7 +1,8 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\App;
 
+use Smolblog\Core\{Plugin, Connector, Importer, Endpoint, Events};
 use Smolblog\Core\Events\Startup;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +16,7 @@ class TestPlugin implements Plugin\Plugin {
 		);
 	}
 
-	public static function setup(App $app) {}
+	public static function setup(Smolblog $app) {}
 }
 
 abstract class TestConnector implements Connector\Connector {
@@ -30,21 +31,21 @@ abstract class TestImporter implements Importer\Importer {
 	}
 }
 
-final class AppTest extends TestCase {
+final class SmolblogTest extends TestCase {
 	public function testItCanBeInstantiated(): void {
 		$environment = new Environment(apiBase: 'https://smol.blog/api/');
 
-		$app = new App(
+		$app = new Smolblog(
 			withEnvironment: $environment,
 			pluginClasses: [],
 		);
-		$this->assertInstanceOf(App::class, $app);
+		$this->assertInstanceOf(Smolblog::class, $app);
 	}
 
 	public function testItCanBeStartedWithMinimalConfig(): void {
 		$environment = new Environment(apiBase: 'https://smol.blog/api/');
 
-		$app = new App(
+		$app = new Smolblog(
 			withEnvironment: $environment,
 			pluginClasses: [],
 		);
@@ -67,7 +68,7 @@ final class AppTest extends TestCase {
 	public function testItCanBeStartedWithAllClassesConfigured(): void {
 		$environment = new Environment(apiBase: 'https://smol.blog/api/');
 
-		$app = new App(
+		$app = new Smolblog(
 			withEnvironment: $environment,
 			pluginClasses: [TestPlugin::class],
 		);

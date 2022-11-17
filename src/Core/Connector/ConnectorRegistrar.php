@@ -2,19 +2,17 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Registrar\{Registrar, RegistrationException};
+use Smolblog\Framework\Registrar;
 
 /**
  * Class to handle storing Connectors for use later.
  */
-class ConnectorRegistrar extends Registrar {
+interface ConnectorRegistrar extends Registrar {
 	/**
-	 * Handle the configuration of the Connector.
+	 * Get the Connector indicated by the given key.
 	 *
-	 * @param mixed $config Configuration array from the class.
-	 * @return string Key to retrieve the class with.
+	 * @param string $key Key for class to instantiate and get.
+	 * @return mixed Instance of the requested class.
 	 */
-	protected function processConfig(mixed $config): string {
-		return $config->slug;
-	}
+	public function get(string $key): Connector;
 }
