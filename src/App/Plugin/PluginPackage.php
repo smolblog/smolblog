@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Plugin;
+namespace Smolblog\App\Plugin;
 
 /**
  * Represents a Composer package that can be loaded into the system.

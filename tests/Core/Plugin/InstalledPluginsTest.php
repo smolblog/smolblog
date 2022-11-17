@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Plugin;
+namespace Smolblog\App\Plugin;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\App\Smolblog;
