@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Endpoint;
+namespace Smolblog\App\Endpoint;
 
 /*
  * Levels of security:

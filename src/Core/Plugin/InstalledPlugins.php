@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Plugin;
 
-use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
+use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
 
 /**
  * Endpoint to show currently installed plugins and whether they are active.

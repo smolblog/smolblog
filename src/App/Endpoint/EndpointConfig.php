@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Endpoint;
+namespace Smolblog\App\Endpoint;
 
 /**
  * Configuration data for an Endpoint used to register it with the outside router.

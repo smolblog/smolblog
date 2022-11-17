@@ -4,7 +4,7 @@ namespace Smolblog\Core\Connector;
 
 use Smolblog\App\Environment;
 use Smolblog\Core\Command\CommandBus;
-use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
+use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be

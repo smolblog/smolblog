@@ -4,7 +4,7 @@ namespace Smolblog\Core\Connector;
 
 use Smolblog\App\Environment;
 use Smolblog\Core\Command\CommandBus;
-use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
+use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
 
 /**
  * Endpoint to handle an OAuth2 callback from a Connector's provider

@@ -4,7 +4,7 @@ namespace Smolblog\Core\Plugin;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\App\Smolblog;
-use Smolblog\Core\Endpoint\{EndpointRequest, EndpointResponse};
+use Smolblog\App\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Test\EndpointTestToolkit;
 
 class TestPlugin implements Plugin {

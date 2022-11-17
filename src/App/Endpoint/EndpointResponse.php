@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Endpoint;
+namespace Smolblog\App\Endpoint;
 
 /**
  * Object to store a response for an Endpoint.

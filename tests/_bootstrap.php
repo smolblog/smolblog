@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test;
 
-use Smolblog\Core\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
+use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
