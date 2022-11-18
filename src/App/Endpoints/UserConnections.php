@@ -1,8 +1,10 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\App\Endpoints;
 
 use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
+use Smolblog\Core\Connector\ChannelReader;
+use Smolblog\Core\Connector\ConnectionReader;
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be

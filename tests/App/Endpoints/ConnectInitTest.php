@@ -1,11 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\App\Endpoints;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\App\Environment;
-use Smolblog\App\CommandBus;
 use Smolblog\App\Endpoint\{EndpointRequest, EndpointResponse};
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Framework\Executor;
 use Smolblog\Test\EndpointTestToolkit;
 
 final class ConnectInitTest extends TestCase {
@@ -15,8 +16,8 @@ final class ConnectInitTest extends TestCase {
 		$connectors = $this->createStub(ConnectorRegistrar::class);
 		$connectors->method('has')->willReturnCallback(fn($slug) => $slug !== 'nope');
 
-		$commands = $this->createStub(CommandBus::class);
-		$commands->method('handle')->willReturn('//smol.blog');
+		$commands = $this->createStub(Executor::class);
+		$commands->method('exec')->willReturn('//smol.blog');
 
 		$this->endpoint = new ConnectInit(
 			env: new Environment(apiBase: '//smol.blog'),

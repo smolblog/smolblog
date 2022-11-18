@@ -5,8 +5,8 @@ namespace Smolblog\App;
 use League\Tactician\CommandBus as LeagueCommander;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleClassNameInflector;
 use League\Tactician\Handler\CommandHandlerMiddleware;
+use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use League\Tactician\Plugins\LockingMiddleware;
 use Smolblog\App\Container\Container;
 use Smolblog\Framework\Command;
@@ -38,10 +38,17 @@ class CommandBus {
 	public function __construct(Container $container, array $map = []) {
 		$this->locator = new ContainerLocator($container, $map);
 
+		// Commander requires an inflector to know what method to call in the service. Convention for Smolblog is `run`.
+		$runMethodInflector = new class implements MethodNameInflector {
+			public function inflect($command, $commandHandler) {
+				return 'run';
+			}
+		};
+
 		$commandHandlerMiddleware = new CommandHandlerMiddleware(
 			new ClassNameExtractor(),
 			$this->locator,
-			new HandleClassNameInflector(),
+			$runMethodInflector,
 		);
 
 		$this->internal = new LeagueCommander([

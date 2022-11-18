@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\App\CommandBus;
+use Smolblog\Framework\Executor;
 
 final class AuthRequestFinalizerTest extends TestCase {
 
@@ -30,8 +30,8 @@ final class AuthRequestFinalizerTest extends TestCase {
 		$connectionRepo = $this->createMock(ConnectionWriter::class);
 		$connectionRepo->expects($this->once())->method('save');
 
-		$commandBus = $this->createStub(CommandBus::class);
-		$commandBus->expects($this->once())->method('handle');
+		$commandBus = $this->createStub(Executor::class);
+		$commandBus->expects($this->once())->method('exec');
 
 		$service = new AuthRequestFinalizer(
 			connectors: $connectors,
@@ -40,7 +40,7 @@ final class AuthRequestFinalizerTest extends TestCase {
 			commands: $commandBus,
 		);
 
-		$service->handleFinishAuthRequest(new FinishAuthRequest(
+		$service->run(new FinishAuthRequest(
 			provider: 'smol',
 			stateKey: 'two',
 			code: 'abc123',

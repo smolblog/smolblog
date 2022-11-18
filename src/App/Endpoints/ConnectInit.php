@@ -1,10 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\App\Endpoints;
 
 use Smolblog\App\Environment;
-use Smolblog\App\CommandBus;
 use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
+use Smolblog\Core\Connector\BeginAuthRequest;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Framework\Executor;
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be
@@ -16,12 +18,12 @@ class ConnectInit implements Endpoint {
 	 *
 	 * @param Environment        $env        Application Environment.
 	 * @param ConnectorRegistrar $connectors ConnectorRegistrar to check for provider.
-	 * @param CommandBus         $commands   Command handler to kick off the process.
+	 * @param Executor           $commands   Command handler to kick off the process.
 	 */
 	public function __construct(
 		private Environment $env,
 		private ConnectorRegistrar $connectors,
-		private CommandBus $commands
+		private Executor $commands
 	) {
 	}
 
@@ -67,7 +69,7 @@ class ConnectInit implements Endpoint {
 			);
 		}
 
-		$authUrl = $this->commands->handle(new BeginAuthRequest(
+		$authUrl = $this->commands->exec(new BeginAuthRequest(
 			provider: $providerSlug,
 			userId: $request->userId,
 			callbackUrl: "{$this->env->apiBase}connect/callback/{$providerSlug}",

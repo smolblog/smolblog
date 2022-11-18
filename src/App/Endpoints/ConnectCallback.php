@@ -1,10 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\App\Endpoints;
 
-use Smolblog\App\Environment;
-use Smolblog\App\CommandBus;
 use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
+use Smolblog\Core\Connector\AuthRequestStateReader;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\FinishAuthRequest;
+use Smolblog\Framework\Executor;
 
 /**
  * Endpoint to handle an OAuth2 callback from a Connector's provider
@@ -15,12 +17,12 @@ class ConnectCallback implements Endpoint {
 	 *
 	 * @param ConnectorRegistrar     $connectors Connector Registrar.
 	 * @param AuthRequestStateReader $stateRepo  State repository.
-	 * @param CommandBus             $commands   Command bus.
+	 * @param Executor               $commands   Command bus.
 	 */
 	public function __construct(
 		private ConnectorRegistrar $connectors,
 		private AuthRequestStateReader $stateRepo,
-		private CommandBus $commands,
+		private Executor $commands,
 	) {
 	}
 
@@ -64,7 +66,7 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		$this->commands->handle(new FinishAuthRequest(
+		$this->commands->exec(new FinishAuthRequest(
 			provider: $request->params['slug'],
 			stateKey: $request->params['state'],
 			code: $request->params['code'],

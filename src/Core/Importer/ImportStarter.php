@@ -2,14 +2,14 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\App\CommandBus;
 use Smolblog\Core\Connector\{ChannelReader, ConnectionReader, RefreshConnectionToken};
 use Smolblog\Core\Post\PostWriter;
+use Smolblog\Framework\{Executor, Service};
 
 /**
  * Handle the PullFromChannel command and send it to the appropriate Importer.
  */
-class ImportStarter {
+class ImportStarter implements Service {
 	/**
 	 * Construct the service
 	 *
@@ -18,7 +18,7 @@ class ImportStarter {
 	 * @param RefreshConnectionToken $refreshConnectionToken Check for token validity.
 	 * @param ImporterRegistrar      $importerRepo           For fetching the Connection's Importer.
 	 * @param PostWriter             $postWriter             For saving posts.
-	 * @param CommandBus             $commandBus             For firing off the next page command, if any.
+	 * @param Executor               $commandBus             For firing off the next page command, if any.
 	 */
 	public function __construct(
 		private ChannelReader $channelRepo,
@@ -26,7 +26,7 @@ class ImportStarter {
 		private RefreshConnectionToken $refreshConnectionToken,
 		private ImporterRegistrar $importerRepo,
 		private PostWriter $postWriter,
-		private CommandBus $commandBus,
+		private Executor $commandBus,
 	) {
 	}
 
@@ -36,7 +36,7 @@ class ImportStarter {
 	 * @param PullFromChannel $command Command to execute.
 	 * @return void
 	 */
-	public function handlePullFromChannel(PullFromChannel $command): void {
+	public function run(PullFromChannel $command): void {
 		$channel = $this->channelRepo->get(id: $command->channelId);
 		$connection = $this->connectionRepo->get(id: $channel->connectionId);
 		$importer = $this->importerRepo->get(key: $connection->provider);
@@ -51,7 +51,7 @@ class ImportStarter {
 		$this->postWriter->saveMany(posts: $results->posts);
 
 		if (isset($results->nextPageCommand)) {
-			$this->commandBus->handle(command: $results->nextPageCommand);
+			$this->commandBus->exec(command: $results->nextPageCommand);
 		}
 	}
 }

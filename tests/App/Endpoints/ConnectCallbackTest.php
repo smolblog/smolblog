@@ -1,10 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\App\Endpoints;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\App\CommandBus;
 use Smolblog\App\Endpoint\{EndpointRequest, EndpointResponse};
+use Smolblog\Core\Connector\AuthRequestStateReader;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Framework\Executor;
 use Smolblog\Test\EndpointTestToolkit;
 
 final class ConnectCallbackTest extends TestCase {
@@ -17,7 +19,7 @@ final class ConnectCallbackTest extends TestCase {
 		$stateRepo = $this->createStub(AuthRequestStateReader::class);
 		$stateRepo->method('has')->willReturnCallback(fn($id) => $id !== 'nope');
 
-		$commands = $this->createStub(CommandBus::class);
+		$commands = $this->createStub(Executor::class);
 
 		$this->endpoint = new ConnectCallback(
 			connectors: $connectors,

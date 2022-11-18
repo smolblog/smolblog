@@ -10,6 +10,7 @@ use Smolblog\Core\Connector\Connection;
 use Smolblog\Core\Connector\ConnectionReader;
 use Smolblog\Core\Connector\RefreshConnectionToken;
 use Smolblog\Core\Post\PostWriter;
+use Smolblog\Framework\Executor;
 
 final class ImportStarterTest extends TestCase {
 	public function testItHandlesThePullFromChannelCommand() {
@@ -34,8 +35,8 @@ final class ImportStarterTest extends TestCase {
 		$postWriter = $this->createMock(PostWriter::class);
 		$postWriter->expects($this->once())->method('saveMany');
 
-		$commandBus = $this->createMock(CommandBus::class);
-		$commandBus->expects($this->once())->method('handle');
+		$commandBus = $this->createMock(Executor::class);
+		$commandBus->expects($this->once())->method('exec');
 
 		(new ImportStarter(
 			channelRepo: $channelRepo,
@@ -44,6 +45,6 @@ final class ImportStarterTest extends TestCase {
 			postWriter: $postWriter,
 			commandBus: $commandBus,
 			refreshConnectionToken: $refresher,
-		))->handlePullFromChannel(command: $command);
+		))->run(command: $command);
 	}
 }

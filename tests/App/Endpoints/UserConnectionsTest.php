@@ -1,9 +1,13 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\App\Endpoints;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\App\Endpoint\{EndpointRequest, EndpointResponse};
+use Smolblog\Core\Connector\Channel;
+use Smolblog\Core\Connector\ChannelReader;
+use Smolblog\Core\Connector\Connection;
+use Smolblog\Core\Connector\ConnectionReader;
 use Smolblog\Test\EndpointTestToolkit;
 
 final class UserConnectionsTest extends TestCase {
