@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Core\Connector\{Channel, Connection};
+use Smolblog\Core\Connector\Entities\{Channel, Connection};
 
 interface Importer {
 	/**

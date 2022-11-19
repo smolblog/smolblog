@@ -1,8 +1,13 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Connector\Connector;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\ConnectorWithRefresh;
+use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connector\Entities\ConnectionWriter;
 
 final class RefreshConnectionTokenTest extends TestCase {
 	public function testItReturnsTheConnectionIfTheConnectionDoesNotRefresh() {

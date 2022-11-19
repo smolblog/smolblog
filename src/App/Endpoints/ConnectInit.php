@@ -4,7 +4,7 @@ namespace Smolblog\App\Endpoints;
 
 use Smolblog\App\Environment;
 use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
-use Smolblog\Core\Connector\BeginAuthRequest;
+use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Framework\Executor;
 

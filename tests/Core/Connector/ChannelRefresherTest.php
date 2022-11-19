@@ -1,8 +1,16 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Connector\Commands\RefreshChannels;
+use Smolblog\Core\Connector\Connector;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\Channel;
+use Smolblog\Core\Connector\Entities\ChannelReader;
+use Smolblog\Core\Connector\Entities\ChannelWriter;
+use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connector\Entities\ConnectionReader;
 
 final class ChannelRefresherTest extends TestCase {
 	public function testItHandlesTheRefreshChannelsCommand(): void {
@@ -45,6 +53,6 @@ final class ChannelRefresherTest extends TestCase {
 			channelWriter: $channelWriter,
 		);
 
-		$service->handleRefreshChannels(new RefreshChannels(connectionId: $connection->id));
+		$service->run(new RefreshChannels(connectionId: $connection->id));
 	}
 }

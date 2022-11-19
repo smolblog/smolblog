@@ -3,12 +3,11 @@
 namespace Smolblog\Core\Importer;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\App\CommandBus;
-use Smolblog\Core\Connector\Channel;
-use Smolblog\Core\Connector\ChannelReader;
-use Smolblog\Core\Connector\Connection;
-use Smolblog\Core\Connector\ConnectionReader;
-use Smolblog\Core\Connector\RefreshConnectionToken;
+use Smolblog\Core\Connector\Entities\Channel;
+use Smolblog\Core\Connector\Entities\ChannelReader;
+use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connector\Entities\ConnectionReader;
+use Smolblog\Core\Connector\Services\RefreshConnectionToken;
 use Smolblog\Core\Post\PostWriter;
 use Smolblog\Framework\Executor;
 

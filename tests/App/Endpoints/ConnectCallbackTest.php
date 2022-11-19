@@ -4,7 +4,7 @@ namespace Smolblog\App\Endpoints;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\App\Endpoint\{EndpointRequest, EndpointResponse};
-use Smolblog\Core\Connector\AuthRequestStateReader;
+use Smolblog\Core\Connector\Entities\AuthRequestStateReader;
 use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Framework\Executor;
 use Smolblog\Test\EndpointTestToolkit;

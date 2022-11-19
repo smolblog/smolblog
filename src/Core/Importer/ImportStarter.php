@@ -2,7 +2,8 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Core\Connector\{ChannelReader, ConnectionReader, RefreshConnectionToken};
+use Smolblog\Core\Connector\Entities\{ChannelReader, ConnectionReader};
+use Smolblog\Core\Connector\Services\RefreshConnectionToken;
 use Smolblog\Core\Post\PostWriter;
 use Smolblog\Framework\{Executor, Service};
 

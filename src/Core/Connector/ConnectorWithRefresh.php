@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Connector;
 
+use Smolblog\Core\Connector\Entities\Connection;
+
 /**
  * Class to use a refresh token to get a new authorization token. Extension to Connector.
  */

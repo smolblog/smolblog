@@ -3,9 +3,9 @@
 namespace Smolblog\App\Endpoints;
 
 use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
-use Smolblog\Core\Connector\AuthRequestStateReader;
+use Smolblog\Core\Connector\Entities\AuthRequestStateReader;
 use Smolblog\Core\Connector\ConnectorRegistrar;
-use Smolblog\Core\Connector\FinishAuthRequest;
+use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Framework\Executor;
 
 /**

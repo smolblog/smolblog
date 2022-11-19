@@ -1,8 +1,15 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Connector\Commands\FinishAuthRequest;
+use Smolblog\Core\Connector\Connector;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\AuthRequestState;
+use Smolblog\Core\Connector\Entities\AuthRequestStateReader;
+use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connector\Entities\ConnectionWriter;
 use Smolblog\Framework\Executor;
 
 final class AuthRequestFinalizerTest extends TestCase {

@@ -3,8 +3,8 @@
 namespace Smolblog\App\Endpoints;
 
 use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse, SecurityLevel};
-use Smolblog\Core\Connector\ChannelReader;
-use Smolblog\Core\Connector\ConnectionReader;
+use Smolblog\Core\Connector\Entities\ChannelReader;
+use Smolblog\Core\Connector\Entities\ConnectionReader;
 
 /**
  * Get an Authentication URL for a Connector's provider. The end-user should be

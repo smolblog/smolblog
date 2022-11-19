@@ -16,7 +16,7 @@ final class RunCommandTest extends Command {
 final class CommandTestHandler {
 	public function __construct(private $callback) {}
 
-	public function handleRunCommandTest(RunCommandTest $command) {
+	public function run(RunCommandTest $command) {
 		$retval = call_user_func($this->callback, $command);
 		if ($command->return) {
 			return $retval;

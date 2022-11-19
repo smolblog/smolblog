@@ -1,9 +1,13 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\App\Environment;
+use Smolblog\Core\Connector\Commands\BeginAuthRequest;
+use Smolblog\Core\Connector\ConnectorInitData;
+use Smolblog\Core\Connector\Connector;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\AuthRequestStateWriter;
 
 final class AuthRequestInitializerTest extends TestCase {
 
@@ -29,7 +33,7 @@ final class AuthRequestInitializerTest extends TestCase {
 		);
 
 		$command = new BeginAuthRequest(userId: 1, provider: 'smol', callbackUrl: '//smol.blog');
-		$response = $this->service->handleBeginAuthRequest($command);
+		$response = $this->service->run($command);
 
 		$this->assertEquals($authUrl, $response);
 	}
