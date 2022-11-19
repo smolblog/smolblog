@@ -38,9 +38,15 @@ class CommandBus {
 	public function __construct(Container $container, array $map = []) {
 		$this->locator = new ContainerLocator($container, $map);
 
-		// Commander requires an inflector to know what method to call in the service. Convention for Smolblog is `run`.
 		$runMethodInflector = new class implements MethodNameInflector {
-			public function inflect($command, $commandHandler) {
+			/**
+			 * Provide the method name to call.
+			 *
+			 * @param mixed $command        Ignored.
+			 * @param mixed $commandHandler Ignored.
+			 * @return string always returns 'run'.
+			 */
+			public function inflect(mixed $command, mixed $commandHandler) {
 				return 'run';
 			}
 		};

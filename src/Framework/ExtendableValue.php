@@ -16,7 +16,7 @@ class ExtendableValue extends Value {
 	/**
 	 * Load the information in
 	 *
-	 * @param mixed ...$envVars Arbitrary variables.
+	 * @param mixed ...$extended Arbitrary variables.
 	 */
 	public function __construct(mixed ...$extended) {
 		$this->extendedFields = $extended;

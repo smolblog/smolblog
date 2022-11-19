@@ -5,6 +5,9 @@ namespace Smolblog\App\Registrars;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Registrar;
 
+/**
+ * Base behavior for Registrar implementations
+ */
 abstract class GenericRegistrar implements Registrar {
 	/**
 	 * Store the object factories.
@@ -34,7 +37,7 @@ abstract class GenericRegistrar implements Registrar {
 	 * Register a class with this Registrar
 	 *
 	 * @throws RegistrationException Thrown if $class does not implment $this->interface.
-	 * @param string $key   Known key to reference this class by
+	 * @param string $key   Known key to reference this class by.
 	 * @param string $class Fully-qualified class name of a Runnable class.
 	 * @return void
 	 */

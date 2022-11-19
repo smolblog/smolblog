@@ -3,7 +3,7 @@
 namespace Smolblog\App\Endpoint;
 
 use Smolblog\Framework\Registrar;
-use Smolblog\Core\SmolblogException;
+use Smolblog\App\Registrars\RegistrationException;
 
 /**
  * Template for a class that can take a Smolblog\Core\Endpoint and register it correctly with the external system.
@@ -26,7 +26,7 @@ abstract class EndpointRegistrar implements Registrar {
 	 */
 	public function register(string $class, callable $factory): void {
 		if (!in_array(Endpoint::class, class_implements($class))) {
-			throw new SmolblogException("Class $class does not implement Registerable.");
+			throw new RegistrationException("Class $class does not implement Endpoint.");
 		}
 
 		$key = $this->processConfig($class::config());
