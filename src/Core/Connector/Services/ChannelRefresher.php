@@ -1,11 +1,18 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
+
+use Smolblog\Core\Connector\Commands\RefreshChannels;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\ChannelReader;
+use Smolblog\Core\Connector\Entities\ChannelWriter;
+use Smolblog\Core\Connector\Entities\ConnectionReader;
+use Smolblog\Framework\Service;
 
 /**
  * Service to update Channels for a Connection based on a provider.
  */
-class ChannelRefresher {
+class ChannelRefresher implements Service {
 	/**
 	 * Construct the service.
 	 *
@@ -28,7 +35,7 @@ class ChannelRefresher {
 	 * @param RefreshChannels $command Command with ID of Connection to refresh.
 	 * @return void
 	 */
-	public function handleRefreshChannels(RefreshChannels $command): void {
+	public function run(RefreshChannels $command): void {
 		$connection = $this->connections->get($command->connectionId);
 		$connector = $this->connectors->get($connection->provider);
 

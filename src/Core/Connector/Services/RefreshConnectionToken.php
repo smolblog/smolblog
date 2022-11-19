@@ -1,11 +1,17 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
+
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\ConnectorWithRefresh;
+use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connector\Entities\ConnectionWriter;
+use Smolblog\Framework\Service;
 
 /**
  * Service to check if a Connection needs a refresh and save the refreshed Connection if so.
  */
-class RefreshConnectionToken {
+class RefreshConnectionToken implements Service {
 	/**
 	 * Construct the service
 	 *

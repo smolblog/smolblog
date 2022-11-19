@@ -1,7 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
 
+use Smolblog\Core\Connector\Commands\FinishAuthRequest;
+use Smolblog\Core\Connector\Commands\RefreshChannels;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\AuthRequestStateReader;
+use Smolblog\Core\Connector\Entities\ConnectionWriter;
 use Smolblog\Framework\{Executor, Service};
 
 /**

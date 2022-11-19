@@ -1,11 +1,17 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Services;
+
+use Smolblog\Core\Connector\Commands\BeginAuthRequest;
+use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\AuthRequestState;
+use Smolblog\Core\Connector\Entities\AuthRequestStateWriter;
+use Smolblog\Framework\Service;
 
 /**
  * Service to begin an OAuth request with an external provider.
  */
-class AuthRequestInitializer {
+class AuthRequestInitializer implements Service {
 	/**
 	 * Construct the service
 	 *
@@ -24,7 +30,7 @@ class AuthRequestInitializer {
 	 * @param BeginAuthRequest $request Command to execute.
 	 * @return string URL to redirect the user to.
 	 */
-	public function handleBeginAuthRequest(BeginAuthRequest $request): string {
+	public function run(BeginAuthRequest $request): string {
 		$connector = $this->connectors->get($request->provider);
 
 		$data = $connector->getInitializationData(callbackUrl: $request->callbackUrl);

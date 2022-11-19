@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Framework\Entity;
 
