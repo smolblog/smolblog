@@ -5,7 +5,7 @@ namespace Smolblog\Framework;
 /**
  * Value object that can take extra variables at runtime.
  */
-class ExtendableValue extends Value {
+abstract class ExtendableValue extends Value {
 	/**
 	 * Additional variables defined at construction.
 	 *

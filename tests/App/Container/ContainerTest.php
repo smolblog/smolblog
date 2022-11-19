@@ -18,6 +18,14 @@ final class ContainerTestComposedClass {
 	public function getInternalClass() { return $this->internalInstance; }
 }
 
+interface ContainerTestInterface {
+	public function getTestString();
+}
+
+final class ContainerTestInterfaceImplemented implements ContainerTestInterface {
+	public function getTestString() { return 'camelot'; }
+}
+
 final class ContainerTest extends TestCase {
 	public function testAClassCanBeAddedAndRetrieved() {
 		$container = new Container();
@@ -98,5 +106,18 @@ final class ContainerTest extends TestCase {
 		$retrieved = $container->get(ContainerTestStandaloneClass::class);
 		$this->assertInstanceOf(ContainerTestStandaloneClass::class, $retrieved);
 		$this->assertEquals($instance->getTestString(), $retrieved->getTestString());
+	}
+
+	public function testAnInterfaceCanBeADependency() {
+		$container = new Container();
+		$container->add(ContainerTestInterfaceImplemented::class);
+		$container->setImplementation(
+			interface: ContainerTestInterface::class,
+			class: ContainerTestInterfaceImplemented::class
+		);
+
+		$retrieved = $container->get(ContainerTestInterface::class);
+		$this->assertInstanceOf(ContainerTestInterfaceImplemented::class, $retrieved);
+		$this->assertEquals('camelot', $retrieved->getTestString());
 	}
 }
