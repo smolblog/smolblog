@@ -59,7 +59,7 @@ class UserConnections implements Endpoint {
 			'channels' => array_map(fn($cha) => [
 				'id' => $cha->id,
 				'displayName' => $cha->displayName,
-			], $channels[$con->id]),
+			], $channels[$con->id->toString()]),
 		], $connections);
 
 		return new EndpointResponse(statusCode: 200, body: ['connections' => $response]);

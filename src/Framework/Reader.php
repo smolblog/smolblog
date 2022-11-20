@@ -10,16 +10,16 @@ interface Reader {
 	/**
 	 * Check the repository for the object identified by $id.
 	 *
-	 * @param string|integer $id Unique identifier for the object.
+	 * @param Identifier $id Unique identifier for the object.
 	 * @return boolean True if the repository contains an object with the given $id.
 	 */
-	public function has(string|int $id): bool;
+	public function has(Identifier $id): bool;
 
 	/**
 	 * Get the indicated object from the repository. Should return null if not found.
 	 *
-	 * @param string|integer $id Unique identifier for the object.
+	 * @param Identifier $id Unique identifier for the object.
 	 * @return Entity Object identified by $id; null if it does not exist.
 	 */
-	public function get(string|int $id): Entity;
+	public function get(Identifier $id): Entity;
 }

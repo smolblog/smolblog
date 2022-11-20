@@ -5,6 +5,7 @@ namespace Smolblog\Core\Connector\Services;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
 use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\AuthRequestStateReader;
 use Smolblog\Core\Connector\Entities\ConnectionWriter;
 use Smolblog\Framework\{Executor, Service};
@@ -37,7 +38,7 @@ class AuthRequestFinalizer implements Service {
 	 */
 	public function run(FinishAuthRequest $request): void {
 		$connector = $this->connectors->get($request->provider);
-		$info = $this->stateRepo->get(id: $request->stateKey);
+		$info = $this->stateRepo->get(id: AuthRequestState::buildId(key: $request->stateKey));
 
 		$connection = $connector->createConnection(code: $request->code, info: $info);
 		$this->connectionRepo->save(connection: $connection);

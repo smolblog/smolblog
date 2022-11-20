@@ -15,24 +15,24 @@ class Channel extends Entity {
 	/**
 	 * Consistently build a unique identifier out of the provider and key.
 	 *
-	 * @param string $connectionId ID for the Connecton this is tied to.
+	 * @param Identifier $connectionId ID for the Connecton this is tied to.
 	 * @param string $channelKey   Unique identifier for this channel within this connection.
 	 * @return Identifier ID constructed from connection and key.
 	 */
-	public static function buildId(string $connectionId, string $channelKey): Identifier {
+	public static function buildId(Identifier $connectionId, string $channelKey): Identifier {
 		return Identifier::createFromName(namespace: self::NAMESPACE, name: "$connectionId|$channelKey");
 	}
 
 	/**
 	 * Construct the channel
 	 *
-	 * @param string $connectionId ID of the Connection this Channel belongs to.
+	 * @param Identifier $connectionId ID of the Connection this Channel belongs to.
 	 * @param string $channelKey   Unique identifier for this Channel within the Connection.
 	 * @param string $displayName  Recognizable name for the channel.
 	 * @param array  $details      Any specific information needed to use the channel.
 	 */
 	public function __construct(
-		public readonly string $connectionId,
+		public readonly Identifier $connectionId,
 		public readonly string $channelKey,
 		public readonly string $displayName,
 		public readonly array $details,

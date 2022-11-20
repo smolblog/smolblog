@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Smolblog\App\Endpoint\{EndpointRequest, EndpointResponse};
 use Smolblog\Core\Connector\Entities\AuthRequestStateReader;
 use Smolblog\Core\Connector\ConnectorRegistrar;
+use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Framework\Executor;
 use Smolblog\Test\EndpointTestToolkit;
 
@@ -17,7 +18,7 @@ final class ConnectCallbackTest extends TestCase {
 		$connectors->method('has')->willReturnCallback(fn($slug) => $slug !== 'nope');
 
 		$stateRepo = $this->createStub(AuthRequestStateReader::class);
-		$stateRepo->method('has')->willReturnCallback(fn($id) => $id !== 'nope');
+		$stateRepo->method('has')->willReturnCallback(fn($id) => strval($id) !== strval(AuthRequestState::buildId(key: 'nope')));
 
 		$commands = $this->createStub(Executor::class);
 
