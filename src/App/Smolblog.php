@@ -92,21 +92,21 @@ class Smolblog {
 		$allEndpoints = $this->events->dispatch(new Hooks\CollectingEndpoints($coreEndpoints))->endpoints;
 		$endpointRegistrar = $this->container->get(Endpoint\EndpointRegistrar::class);
 		foreach ($allEndpoints as $endpoint) {
-			$endpointRegistrar->register(class: $endpoint, factory: fn() => $this->container->get($endpoint));
+			$endpointRegistrar->register(class: $endpoint);
 		}
 
 		// Collect and register Connectors.
 		$allConnectors = $this->events->dispatch(new Hooks\CollectingConnectors([]))->connectors;
 		$connectorRegistrar = $this->container->get(Registrars\ConnectorRegistrar::class);
-		foreach ($allConnectors as $connector) {
-			$connectorRegistrar->register(class: $connector, factory: fn() => $this->container->get($connector));
+		foreach ($allConnectors as $slug => $connector) {
+			$connectorRegistrar->register(key: $slug, class: $connector);
 		}
 
 		// Collect and register Importers.
 		$allImporters = $this->events->dispatch(new Hooks\CollectingImporters([]))->importers;
 		$importerRegistrar = $this->container->get(Registrars\ImporterRegistrar::class);
-		foreach ($allImporters as $importer) {
-			$importerRegistrar->register(class: $importer, factory: fn() => $this->container->get($importer));
+		foreach ($allImporters as $slug => $importer) {
+			$importerRegistrar->register(key: $slug, class: $importer);
 		}
 
 		// We're done with our part; fire the event!
@@ -201,9 +201,9 @@ class Smolblog {
 	 */
 	private function createCommandMap(): array {
 		$map = [
-			Connector\BeginAuthRequest::class => Connector\AuthRequestInitializer::class,
-			Connector\FinishAuthRequest::class => Connector\AuthRequestFinalizer::class,
-			Connector\RefreshChannels::class => Connector\ChannelRefresher::class,
+			Connector\Commands\BeginAuthRequest::class => Connector\Services\AuthRequestInitializer::class,
+			Connector\Commands\FinishAuthRequest::class => Connector\Services\AuthRequestFinalizer::class,
+			Connector\Commands\RefreshChannels::class => Connector\Services\ChannelRefresher::class,
 			Importer\PullFromChannel::class => Importer\ImporterStarter::class,
 		];
 		return $map;

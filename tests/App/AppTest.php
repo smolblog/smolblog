@@ -77,11 +77,11 @@ final class SmolblogTest extends TestCase {
 
 		$mockConnector = $this->createStub(TestConnector::class);
 		$app->container->addShared(TestConnector::class, fn() => $mockConnector);
-		$app->events->subscribeTo(Events\CollectingConnectors::class, fn($event) => $event->connectors[] = TestConnector::class);
+		$app->events->subscribeTo(Hooks\CollectingConnectors::class, fn($event) => $event->connectors[] = TestConnector::class);
 
 		$mockImporter = $this->createStub(TestImporter::class);
 		$app->container->addShared(TestImporter::class, fn() => $mockImporter);
-		$app->events->subscribeTo(Events\CollectingImporters::class, fn($event) => $event->importers[] = TestImporter::class);
+		$app->events->subscribeTo(Hooks\CollectingImporters::class, fn($event) => $event->importers[] = TestImporter::class);
 
 		$callbackHit = false;
 		$app->events->subscribeTo(
