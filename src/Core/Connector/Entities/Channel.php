@@ -3,21 +3,24 @@
 namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Framework\Entity;
+use Smolblog\Framework\Identifier;
 
 /**
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media
  * providers allow multiple profiles/blogs/channels/etc. per account, this is its own Entity.
  */
 class Channel extends Entity {
+	public const NAMESPACE = '144af6d4-b4fb-4500-bb28-8e729cc7f585';
+
 	/**
 	 * Consistently build a unique identifier out of the provider and key.
 	 *
 	 * @param string $connectionId ID for the Connecton this is tied to.
 	 * @param string $channelKey   Unique identifier for this channel within this connection.
-	 * @return string ID constructed from connection and key.
+	 * @return Identifier ID constructed from connection and key.
 	 */
-	public static function buildId(string $connectionId, string $channelKey): string {
-		return "$connectionId|$channelKey";
+	public static function buildId(string $connectionId, string $channelKey): Identifier {
+		return Identifier::createFromName(namespace: self::NAMESPACE, name: "$connectionId|$channelKey");
 	}
 
 	/**

@@ -4,6 +4,7 @@ namespace Smolblog\Core\Post;
 
 use DateTime;
 use Smolblog\Framework\Entity;
+use Smolblog\Framework\Identifier;
 
 /**
  * Represents a blog post.
@@ -15,7 +16,7 @@ class Post extends Entity {
 	 * @param integer    $user_id   ID of the Post's author.
 	 * @param DateTime   $timestamp Time and Date for post: time last saved if draft, time published if not.
 	 * @param string     $slug      URL-friendly identifier for the post.
-	 * @param integer    $id        Unique ID of the post in the blog.
+	 * @param Identifier $id        Unique ID of the post in the blog. Creates date-based ID if not provided.
 	 * @param string     $title     Title of the post.
 	 * @param Block[]    $content   Post's content as an ordered array of blocks.
 	 * @param PostStatus $status    Status of the post.
@@ -24,11 +25,11 @@ class Post extends Entity {
 		public readonly int $user_id,
 		public readonly DateTime $timestamp,
 		public readonly string $slug,
-		?int $id = null,
+		Identifier $id = null,
 		public readonly ?string $title = null,
 		public readonly array $content = [],
 		public readonly PostStatus $status = PostStatus::Draft,
 	) {
-		parent::__construct(id: $id ?? 0);
+		parent::__construct(id: $id ?? Identifier::createFromDate());
 	}
 }

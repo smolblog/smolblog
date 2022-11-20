@@ -11,9 +11,9 @@ abstract class Entity extends Value implements Stringable {
 	/**
 	 * Create the Entity. This constructor exists mostly for use by subclasses.
 	 *
-	 * @param integer|string $id Unique identification for this object.
+	 * @param Identifier $id Unique identification for this object.
 	 */
-	public function __construct(public readonly int|string $id) {
+	public function __construct(public readonly Identifier $id) {
 	}
 
 	/**
