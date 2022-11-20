@@ -2,10 +2,12 @@
 
 namespace Smolblog\App\Endpoint;
 
+use Smolblog\Framework\Value;
+
 /**
  * Configuration data for an Endpoint used to register it with the outside router.
  */
-class EndpointConfig {
+class EndpointConfig extends Value {
 	/**
 	 * The given route for this endpoint. If the endpoint is
 	 * `smolblog.com/api/blog/info`, then this function should return

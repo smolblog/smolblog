@@ -21,7 +21,7 @@ abstract class EndpointRegistrar extends GenericRegistrar {
 	 *
 	 * @throws RegistrationException Thrown if $class does not implment $this->interface.
 	 * @param string $class Fully-qualified class name of an Endpoint class.
-	 * @param string $key   Ignored; pulled from config
+	 * @param string $key   Ignored; pulled from config.
 	 * @return void
 	 */
 	public function register(string $class, string $key = null): void {

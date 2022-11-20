@@ -2,10 +2,12 @@
 
 namespace Smolblog\Core\Connector;
 
+use Smolblog\Framework\Value;
+
 /**
  * Data required from a Connector to initialize an OAuth2 request.
  */
-class ConnectorInitData {
+class ConnectorInitData extends Value {
 	/**
 	 * URL to show the user/redirect the user to.
 	 *

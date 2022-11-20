@@ -4,11 +4,12 @@ namespace Smolblog\Core\Importer;
 
 use Smolblog\Framework\Command;
 use Smolblog\Core\Post\Post;
+use Smolblog\Framework\Value;
 
 /**
  * The results of an import process.
  */
-class ImportResults {
+class ImportResults extends Value {
 	/**
 	 * Construct the object.
 	 *

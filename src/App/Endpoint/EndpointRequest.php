@@ -2,10 +2,12 @@
 
 namespace Smolblog\App\Endpoint;
 
+use Smolblog\Framework\Value;
+
 /**
  * Represents a request made to an endpoint.
  */
-class EndpointRequest {
+class EndpointRequest extends Value {
 	/**
 	 * User ID if this is an authenticated request
 	 *

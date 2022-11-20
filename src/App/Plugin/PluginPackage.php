@@ -2,10 +2,12 @@
 
 namespace Smolblog\App\Plugin;
 
+use Smolblog\Framework\Value;
+
 /**
  * Represents a Composer package that can be loaded into the system.
  */
-class PluginPackage {
+class PluginPackage extends Value {
 	/**
 	 * Create the PluginPackage object.
 	 *

@@ -2,10 +2,12 @@
 
 namespace Smolblog\App\Endpoint;
 
+use Smolblog\Framework\Value;
+
 /**
  * Object to store a response for an Endpoint.
  */
-class EndpointResponse {
+class EndpointResponse extends Value {
 	/**
 	 * HTTP response code for this response
 	 *

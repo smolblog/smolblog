@@ -2,10 +2,12 @@
 
 namespace Smolblog\Core\Importer;
 
+use Smolblog\Framework\Value;
+
 /**
  * Payload of a post that can be imported.
  */
-class ImportablePost {
+class ImportablePost extends Value {
 	/**
 	 * Create the object
 	 *
