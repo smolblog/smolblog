@@ -29,7 +29,7 @@ final class AuthRequestFinalizerTest extends TestCase {
 
 		$stateRepo = $this->createStub(AuthRequestStateReader::class);
 		$stateRepo->method('get')->willReturn(new AuthRequestState(
-			id: 'two',
+			key: 'two',
 			userId: 5,
 			info: ['six' => 'eight'],
 		));

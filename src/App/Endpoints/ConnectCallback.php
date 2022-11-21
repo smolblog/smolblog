@@ -6,6 +6,7 @@ use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointRe
 use Smolblog\Core\Connector\Entities\AuthRequestStateReader;
 use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
+use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Framework\Executor;
 
 /**
@@ -59,7 +60,7 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		if (!$this->stateRepo->has(id: $request->params['state'])) {
+		if (!$this->stateRepo->has(id: AuthRequestState::buildId(key: $request->params['state']))) {
 			return new EndpointResponse(
 				statusCode: 400,
 				body: ['error' => 'A matching request was not found; please try again.'],

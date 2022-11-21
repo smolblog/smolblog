@@ -36,7 +36,7 @@ class AuthRequestInitializer implements Service {
 		$data = $connector->getInitializationData(callbackUrl: $request->callbackUrl);
 
 		$this->stateSaver->save(new AuthRequestState(
-			id: $data->state,
+			key: $data->state,
 			userId: $request->userId,
 			info: $data->info,
 		));

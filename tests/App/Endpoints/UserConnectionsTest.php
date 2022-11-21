@@ -19,10 +19,10 @@ final class UserConnectionsTest extends TestCase {
 		$connections = [$conn1, $conn2];
 
 		$channels = [
-			$conn1->id => [
+			$conn1->id->toString() => [
 				new Channel(connectionId: $conn1->id, channelKey: 'x', displayName: '@smolbirb', details: []),
 			],
-			$conn2->id => [
+			$conn2->id->toString() => [
 				new Channel(connectionId: $conn2->id, channelKey: '88794', displayName: 'smolbirbs', details: []),
 				new Channel(connectionId: $conn2->id, channelKey: '88795', displayName: 'effyeahsmols', details: []),
 				new Channel(connectionId: $conn2->id, channelKey: '88796', displayName: 'notsmol', details: []),

@@ -10,10 +10,13 @@ use Smolblog\Core\Connector\Entities\ConnectionReader;
 use Smolblog\Core\Connector\Services\RefreshConnectionToken;
 use Smolblog\Core\Post\PostWriter;
 use Smolblog\Framework\Executor;
+use Smolblog\Framework\Identifier;
 
 final class ImportStarterTest extends TestCase {
 	public function testItHandlesThePullFromChannelCommand() {
-		$command = new PullFromChannel(channelId: '12|34|56', options: []);
+		$connection = new Connection(5, 'provider', 'key', 'name', []);
+		$channel = new Channel($connection->id, 'key', 'name', []);
+		$command = new PullFromChannel(channelId: $channel->id, options: []);
 
 		$importer = $this->createMock(Importer::class);
 		$importer->expects($this->once())->method('getPostsFromChannel')->willReturn(new ImportResults(
@@ -22,9 +25,9 @@ final class ImportStarterTest extends TestCase {
 		));
 
 		$channelRepo = $this->createStub(ChannelReader::class);
-		$channelRepo->method('get')->willReturn(new Channel('id', 'key', 'name', []));
+		$channelRepo->method('get')->willReturn($channel);
 		$connectionRepo = $this->createStub(ConnectionReader::class);
-		$connectionRepo->method('get')->willReturn(new Connection(5, 'provider', 'key', 'name', []));
+		$connectionRepo->method('get')->willReturn($connection);
 		$importerRepo = $this->createStub(ImporterRegistrar::class);
 		$importerRepo->method('get')->willReturn($importer);
 

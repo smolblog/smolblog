@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
+use Smolblog\Framework\Identifier;
 use Smolblog\Framework\Reader;
 
 /**
@@ -11,10 +12,10 @@ interface PostReader extends Reader {
 	/**
 	 * Get the indicated Post from the repository. Should return null if not found.
 	 *
-	 * @param string|integer $id Unique identifier for the post.
+	 * @param Identifier $id Unique identifier for the post.
 	 * @return Post Post identified by $id; null if it does not exist.
 	 */
-	public function get(string|int $id): Post;
+	public function get(Identifier $id): Post;
 
 	/**
 	 * Check the given ImportIds and return any that have not been imported.
