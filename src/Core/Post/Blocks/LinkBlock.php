@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Post\Blocks;
 
 use Smolblog\Core\Post\Block;
+use Smolblog\Framework\Identifier;
 
 /**
  * A link and some supporting markup. Designed to either show an opengraph-like summary or a Daring Fireball-like
@@ -18,6 +19,7 @@ class LinkBlock extends Block {
 	 * @param string|null $thumbnailUrl     Optional; thumbnail or featured image for the page.
 	 * @param string|null $pullQuote        Optional; relevant quoted text. HTML OK.
 	 * @param string|null $pullQuoteCaption Optional; caption or attribution for quoted text.
+	 * @param Identifier  $id               ID for block if it exists.
 	 */
 	public function __construct(
 		public readonly string $url,
@@ -25,7 +27,9 @@ class LinkBlock extends Block {
 		public readonly ?string $summary = null,
 		public readonly ?string $thumbnailUrl = null,
 		public readonly ?string $pullQuote = null,
-		public readonly ?string $pullQuoteCaption = null
+		public readonly ?string $pullQuoteCaption = null,
+		Identifier $id = null,
 	) {
+		parent::__construct(id: $id);
 	}
 }

@@ -30,4 +30,25 @@ final class IdentifierTest extends TestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	public function testAnIdentifierCanBeMadeFromAString() {
+		$expected = '1c1795ad-0581-4ee0-937a-3a7a36e7df74';
+		$actual = Identifier::fromString($expected);
+
+		$this->assertEquals($expected, $actual->toString());
+	}
+
+	public function testAnIdentifierCanBecomeABinaryString() {
+		$createFrom = 'b6520d39-66e5-4ff7-b799-5a9674b17502';
+		$actual = Identifier::fromString($createFrom);
+
+		$this->assertEquals(hex2bin('b6520d3966e54ff7b7995a9674b17502'), $actual->toByteString());
+	}
+
+	public function testAnIdentifierCanBeMadeFromABinaryString() {
+		$createFrom = hex2bin('1d1413ca33d84c2d8029ea41e38654cf');
+		$actual = Identifier::fromByteString($createFrom);
+
+		$this->assertEquals('1d1413ca-33d8-4c2d-8029-ea41e38654cf', $actual->toString());
+	}
 }
