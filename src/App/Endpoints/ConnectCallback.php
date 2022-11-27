@@ -46,7 +46,11 @@ class ConnectCallback implements Endpoint {
 	 * @return EndpointResponse Response to give
 	 */
 	public function run(EndpointRequest $request): EndpointResponse {
-		if (!isset($request->params['slug']) || !isset($request->params['state']) || !isset($request->params['code'])) {
+		// Add compatability with OAuth 1 callbacks.
+		$state = $request->params['state'] ?? $request->params['oauth_token'] ?? null;
+		$code = $request->params['code'] ?? $request->params['oauth_verifier'] ?? null;
+
+		if (!isset($request->params['slug']) || !isset($state) || !isset($code)) {
 			return new EndpointResponse(
 				statusCode: 400,
 				body: ['error' => 'A required parameter was not provided.'],
@@ -60,7 +64,7 @@ class ConnectCallback implements Endpoint {
 			);
 		}
 
-		if (!$this->stateRepo->has(id: AuthRequestState::buildId(key: $request->params['state']))) {
+		if (!$this->stateRepo->has(id: AuthRequestState::buildId(key: $state))) {
 			return new EndpointResponse(
 				statusCode: 400,
 				body: ['error' => 'A matching request was not found; please try again.'],
@@ -69,8 +73,8 @@ class ConnectCallback implements Endpoint {
 
 		$this->commands->exec(new FinishAuthRequest(
 			provider: $request->params['slug'],
-			stateKey: $request->params['state'],
-			code: $request->params['code'],
+			stateKey: $state,
+			code: $code,
 		));
 
 		return new EndpointResponse(statusCode: 200, body: ['success' => 'true']);

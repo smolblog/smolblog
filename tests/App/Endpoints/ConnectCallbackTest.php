@@ -66,4 +66,12 @@ final class ConnectCallbackTest extends TestCase {
 		$this->assertInstanceOf(EndpointResponse::class, $response);
 		$this->assertEquals(200, $response->statusCode);
 	}
+
+	public function testItSucceedsWithOauth1Parameters(): void {
+		$request = new EndpointRequest(params: ['slug' => 'one', 'oauth_token' => 'two', 'oauth_verifier' => 'three']);
+		$response = $this->endpoint->run($request);
+
+		$this->assertInstanceOf(EndpointResponse::class, $response);
+		$this->assertEquals(200, $response->statusCode);
+	}
 }
