@@ -85,10 +85,7 @@ final class BlockTest extends TestCase {
 		$this->assertInstanceOf(
 			Blocks\ReblogBlock::class,
 			new Blocks\ReblogBlock(
-				url: 'https://www.youtube.com/watch?v=90X5NJleYJQ',
-				embed: new Blocks\EmbedBlock(
-					url: 'https://www.youtube.com/watch?v=90X5NJleYJQ'
-				)
+				url: 'https://www.youtube.com/watch?v=90X5NJleYJQ'
 			)
 		);
 	}
