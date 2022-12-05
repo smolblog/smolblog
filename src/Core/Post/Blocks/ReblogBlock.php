@@ -34,7 +34,7 @@ class ReblogBlock extends Block {
 	 * @param boolean         $showEmbed True to show embed block; false to show link block.
 	 * @param EmbedBlock|null $embed     Embed block Uses URL if not provided.
 	 * @param LinkBlock|null  $link      Link block.
-	 * @param Identifier      $id        ID for block if it exists.
+	 * @param Identifier|null $id        ID for block if it exists.
 	 */
 	public function __construct(
 		public readonly string $url,
@@ -44,7 +44,7 @@ class ReblogBlock extends Block {
 		Identifier $id = null,
 	) {
 		$this->embed = $embed ?? new EmbedBlock(url: $url);
-		$this->showEmbed = $showEmbed && isset($this->linkBlock);
+		$this->showEmbed = $showEmbed || !isset($this->link);
 		parent::__construct(id: $id);
 	}
 }
