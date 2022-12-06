@@ -29,4 +29,16 @@ final class ReblogBlockTest extends TestCase {
 		$this->assertInstanceOf(LinkBlock::class, $block->link);
 		$this->assertFalse($block->showEmbed);
 	}
+
+	public function testReblogBlockWillShowEmbedIfNoLink() {
+		$block = new ReblogBlock(
+			url: 'https://www.youtube.com/watch?v=90X5NJleYJQ',
+			showEmbed: false,
+		);
+
+		$this->assertInstanceOf(ReblogBlock::class, $block);
+		$this->assertInstanceOf(EmbedBlock::class, $block->embed);
+		$this->assertNull($block->link);
+		$this->assertTrue($block->showEmbed);
+	}
 }
