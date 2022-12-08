@@ -18,10 +18,10 @@ interface PostReader extends Reader {
 	public function get(Identifier $id): Post;
 
 	/**
-	 * Check the given ImportIds and return any that have not been imported.
+	 * Check the given URLs and return any that match a post's syndication URLs.
 	 *
-	 * @param array $ids ImportIds to check.
-	 * @return array ImportIds that have not been imported.
+	 * @param array $urls Urls to check.
+	 * @return array URLs that have matching posts.
 	 */
-	public function checkImportIds(array $ids): array;
+	public function checkSyndicatedUrls(array $urls): array;
 }

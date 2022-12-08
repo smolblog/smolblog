@@ -11,12 +11,11 @@ class ImportablePost extends Value {
 	/**
 	 * Create the object
 	 *
-	 * @param string $importKey String that uniquely identifies this post for this provider to determine if post has
-	 *                          already been imported.
-	 * @param mixed  $postData  Unparsed data from the service.
+	 * @param string $url      URL of the post to import.
+	 * @param mixed  $postData Unparsed data from the service.
 	 */
 	public function __construct(
-		public readonly string $importKey,
+		public readonly string $url,
 		public readonly mixed $postData
 	) {
 	}

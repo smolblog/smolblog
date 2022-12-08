@@ -25,8 +25,8 @@ class RemoveAlreadyImported {
 	 * @return ImportablePost[] Posts that have not been imported.
 	 */
 	public function run(array $posts): array {
-		$checkedIds = $this->postReader->checkImportIds(array_map(fn($p) => $p->importKey, $posts));
-		$filtered = array_filter($posts, fn($p) => false === array_search($p->importKey, $checkedIds));
+		$checkedUrls = $this->postReader->checkSyndicatedUrls(array_map(fn($p) => $p->url, $posts));
+		$filtered = array_filter($posts, fn($p) => false === array_search($p->url, $checkedUrls));
 		return array_values($filtered);
 	}
 }
