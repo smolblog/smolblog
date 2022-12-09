@@ -29,6 +29,7 @@
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },
   "require": {
+    "php": "^8.2",
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
     "league/container": "^4.2",
