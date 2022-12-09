@@ -4,14 +4,14 @@ namespace Smolblog\Framework;
 
 use PHPUnit\Framework\TestCase;
 
-final class EntityTestConstructor extends Entity {
+final readonly class EntityTestConstructor extends Entity {
 	public function __construct(
 		public readonly Identifier $id,
 		public readonly string $name
 	) {}
 }
 
-final class EntityTestHidden extends Entity {
+final readonly class EntityTestHidden extends Entity {
 	const NAMESPACE = '23e83a58-c771-48f8-8b79-017b8d218af8';
 	public function __construct(
 		public readonly string $name

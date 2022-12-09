@@ -9,7 +9,7 @@ use Smolblog\Framework\Value;
 /**
  * The results of an import process.
  */
-class ImportResults extends Value {
+readonly class ImportResults extends Value {
 	/**
 	 * Construct the object.
 	 *

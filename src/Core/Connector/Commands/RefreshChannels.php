@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Command to fetch and save an updated list of channels for a given Connection.
  */
-class RefreshChannels extends Command {
+readonly class RefreshChannels extends Command {
 	/**
 	 * Construct the command
 	 *

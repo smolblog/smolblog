@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Display a single video in a Post
  */
-class VideoBlock extends Block {
+readonly class VideoBlock extends Block {
 	use MediaBlockSerializationToolkit;
 
 	/**

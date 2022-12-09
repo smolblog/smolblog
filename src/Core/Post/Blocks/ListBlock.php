@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Block to represent an HTML list
  */
-class ListBlock extends Block {
+readonly class ListBlock extends Block {
 	/**
 	 * Construct the block
 	 *

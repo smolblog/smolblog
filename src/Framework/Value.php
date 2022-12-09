@@ -13,7 +13,7 @@ use JsonSerializable;
  * Declaring `readonly` properties in a defined object allows PHP to typecheck the object instead of relying on arrays
  * with specific keys.
  */
-abstract class Value implements JsonSerializable {
+abstract readonly class Value implements JsonSerializable {
 	/**
 	 * Create an instance of this class from a JSON string.
 	 *
@@ -46,23 +46,6 @@ abstract class Value implements JsonSerializable {
 	public function newWith(mixed ...$newValues): static {
 		$merged = [...get_object_vars($this), ...$newValues];
 		return new static(...$merged);
-	}
-
-	/**
-	 * Override `__set` to do nothing.
-	 *
-	 * @param string $name  Variable to set.
-	 * @param mixed  $value Value to provide.
-	 * @return void
-	 */
-	public function __set(string $name, mixed $value): void {
-		$trace = debug_backtrace();
-		trigger_error(
-			'Attempt to set readonly property ' . $name .
-			' in ' . $trace[0]['file'] .
-			' on line ' . $trace[0]['line'],
-			E_USER_ERROR
-		);
 	}
 
 	/**

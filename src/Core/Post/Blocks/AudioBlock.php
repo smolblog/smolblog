@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Include a single audio file in a Post
  */
-class AudioBlock extends Block {
+readonly class AudioBlock extends Block {
 	use MediaBlockSerializationToolkit;
 
 	/**

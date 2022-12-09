@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Block to embed some external content through oEmbed
  */
-class EmbedBlock extends Block {
+readonly class EmbedBlock extends Block {
 	/**
 	 * Construct the block
 	 *

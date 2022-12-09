@@ -11,7 +11,7 @@ use Smolblog\Framework\Identifier;
  * common piece is an ID. Every Block's data could look different, and parsing
  * that data into another format is another class' job.
  */
-abstract class Block extends Entity {
+readonly abstract class Block extends Entity {
 	/**
 	 * Create with the given ID. Creates a date-based ID if not provided.
 	 *

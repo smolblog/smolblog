@@ -9,7 +9,7 @@ use Smolblog\Framework\Identifier;
  * State for an OAuth request. Needs to be persistent between requests, so
  * it's an Entity.
  */
-class AuthRequestState extends Entity {
+readonly class AuthRequestState extends Entity {
 	public const NAMESPACE = 'ff5fc3f5-d807-4bc8-b3a9-58efdbc4bd8e';
 
 	/**

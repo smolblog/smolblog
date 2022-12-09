@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * A singular pull quote with an optional caption.
  */
-class QuoteBlock extends Block {
+readonly class QuoteBlock extends Block {
 	/**
 	 * Construct the block
 	 *

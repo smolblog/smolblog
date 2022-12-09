@@ -9,7 +9,7 @@ use Smolblog\Framework\Identifier;
  * A link and some supporting markup. Designed to either show an opengraph-like summary or a Daring Fireball-like
  * caption-and-quote.
  */
-class LinkBlock extends Block {
+readonly class LinkBlock extends Block {
 	/**
 	 * Create the block.
 	 *

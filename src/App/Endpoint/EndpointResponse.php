@@ -7,7 +7,7 @@ use Smolblog\Framework\Value;
 /**
  * Object to store a response for an Endpoint.
  */
-class EndpointResponse extends Value {
+readonly class EndpointResponse extends Value {
 	/**
 	 * HTTP response code for this response
 	 *

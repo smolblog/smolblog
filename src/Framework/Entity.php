@@ -7,7 +7,7 @@ use Stringable;
 /**
  * Represents an object that can be uniquely identified.
  */
-abstract class Entity extends Value implements Stringable {
+abstract readonly class Entity extends Value implements Stringable {
 	/**
 	 * Create an instance of this class from an associative array. Assumes array keys map correctly to object
 	 * properties.

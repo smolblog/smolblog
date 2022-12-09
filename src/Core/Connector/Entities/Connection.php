@@ -9,7 +9,7 @@ use Smolblog\Framework\Identifier;
  * Information about credentials needed to authenticate against an
  * exteral API as a particular user.
  */
-class Connection extends Entity {
+readonly class Connection extends Entity {
 	public const NAMESPACE = '3c7d4546-2086-44a0-aec8-85e64c6d2166';
 
 	/**

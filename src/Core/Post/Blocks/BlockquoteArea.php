@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Parent block that encloses the given blocks in a blockquote.
  */
-class BlockquoteArea extends Block {
+readonly class BlockquoteArea extends Block {
 	/**
 	 * Construct the block
 	 *

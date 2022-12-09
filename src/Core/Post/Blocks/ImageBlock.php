@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Display a single image in a Post
  */
-class ImageBlock extends Block {
+readonly class ImageBlock extends Block {
 	use MediaBlockSerializationToolkit;
 
 	/**

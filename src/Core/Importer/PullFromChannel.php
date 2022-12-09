@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Pull posts from the indicated channel. Optionally provide pagination info.
  */
-class PullFromChannel extends Command {
+readonly class PullFromChannel extends Command {
 	/**
 	 * Construct the command.
 	 *

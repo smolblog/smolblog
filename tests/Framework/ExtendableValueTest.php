@@ -4,7 +4,7 @@ namespace Smolblog\Framework;
 
 use PHPUnit\Framework\TestCase;
 
-final class ConcreteExtendableValue extends ExtendableValue {
+final readonly class ConcreteExtendableValue extends ExtendableValue {
 	public function __construct(
 		public readonly string $definedKey,
 		mixed ...$extended

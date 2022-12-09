@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * A piece of media (image, video, etc) that can be included in a Post.
  */
-class Media extends Entity {
+readonly class Media extends Entity {
 	/**
 	 * Create the media object
 	 *

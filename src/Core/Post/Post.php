@@ -10,7 +10,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Represents a blog post.
  */
-class Post extends Entity {
+readonly class Post extends Entity {
 	/**
 	 * Create the Post object
 	 *

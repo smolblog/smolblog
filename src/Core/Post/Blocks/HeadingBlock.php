@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * Describes a heading tag (<h2> through <h6>)
  */
-class HeadingBlock extends Block {
+readonly class HeadingBlock extends Block {
 	/**
 	 * Construct the block
 	 *

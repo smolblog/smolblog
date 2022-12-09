@@ -9,7 +9,7 @@ use Smolblog\Framework\Identifier;
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media
  * providers allow multiple profiles/blogs/channels/etc. per account, this is its own Entity.
  */
-class Channel extends Entity {
+readonly class Channel extends Entity {
 	public const NAMESPACE = '144af6d4-b4fb-4500-bb28-8e729cc7f585';
 
 	/**

@@ -8,7 +8,7 @@ use Smolblog\Framework\ExtendableValue;
 /**
  * Environment information for the App
  */
-class Environment extends ExtendableValue {
+readonly class Environment extends ExtendableValue {
 	/**
 	 * Base URL (including scheme and trailing slash) for the REST API.
 	 *

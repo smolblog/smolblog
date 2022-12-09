@@ -7,7 +7,7 @@ use Smolblog\Framework\Value;
 /**
  * Payload of a post that can be imported.
  */
-class ImportablePost extends Value {
+readonly class ImportablePost extends Value {
 	/**
 	 * Create the object
 	 *

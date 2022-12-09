@@ -5,13 +5,13 @@ namespace Smolblog\Framework;
 /**
  * Value object that can take extra variables at runtime.
  */
-abstract class ExtendableValue extends Value {
+abstract readonly class ExtendableValue extends Value {
 	/**
 	 * Additional variables defined at construction.
 	 *
 	 * @var array
 	 */
-	protected array $extendedFields = [];
+	protected array $extendedFields;
 
 	/**
 	 * Load the information in
@@ -19,7 +19,7 @@ abstract class ExtendableValue extends Value {
 	 * @param mixed ...$extended Arbitrary variables.
 	 */
 	public function __construct(mixed ...$extended) {
-		$this->extendedFields = $extended;
+		$this->extendedFields = $extended ?? [];
 	}
 
 	/**

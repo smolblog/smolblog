@@ -4,7 +4,7 @@ namespace Smolblog\Framework;
 
 use PHPUnit\Framework\TestCase;
 
-final class ConcreteValue extends Value {
+final readonly class ConcreteValue extends Value {
 	public function __construct(
 		public readonly string $key
 	) {

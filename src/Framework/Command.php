@@ -11,5 +11,5 @@ namespace Smolblog\Framework;
  * This is analagous to sending commands to a REST API, except using native PHP objects. It is the preferred
  * method of talking to the Domain Model.
  */
-abstract class Command extends Value {
+abstract readonly class Command extends Value {
 }

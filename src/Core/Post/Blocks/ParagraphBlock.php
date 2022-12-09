@@ -8,7 +8,7 @@ use Smolblog\Framework\Identifier;
 /**
  * A basic paragraph block.
  */
-class ParagraphBlock extends Block {
+readonly class ParagraphBlock extends Block {
 	/**
 	 * Construct the block
 	 *
