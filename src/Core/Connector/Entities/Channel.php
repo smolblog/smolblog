@@ -32,10 +32,10 @@ readonly class Channel extends Entity {
 	 * @param array      $details      Any specific information needed to use the channel.
 	 */
 	public function __construct(
-		public readonly Identifier $connectionId,
-		public readonly string $channelKey,
-		public readonly string $displayName,
-		public readonly array $details,
+		public Identifier $connectionId,
+		public string $channelKey,
+		public string $displayName,
+		public array $details,
 	) {
 		parent::__construct(id: self::buildId(connectionId: $connectionId, channelKey: $channelKey));
 	}

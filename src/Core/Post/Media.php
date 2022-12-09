@@ -18,9 +18,9 @@ readonly class Media extends Entity {
 	 * @param Identifier|null $id              ID of the media; null if not loaded into DB yet.
 	 */
 	public function __construct(
-		public readonly string $url,
-		public readonly string $descriptiveText,
-		public readonly array $attributes,
+		public string $url,
+		public string $descriptiveText,
+		public array $attributes,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id ?? Identifier::createFromDate());

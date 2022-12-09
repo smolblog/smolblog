@@ -13,21 +13,21 @@ readonly class EndpointRequest extends Value {
 	 *
 	 * @var ?int
 	 */
-	public readonly ?int $userId;
+	public ?int $userId;
 
 	/**
 	 * Site ID if this is an attached request
 	 *
 	 * @var ?int
 	 */
-	public readonly ?int $siteId;
+	public ?int $siteId;
 
 	/**
 	 * Parsed params as defined by the Endpoint
 	 *
 	 * @var array
 	 */
-	public readonly array $params;
+	public array $params;
 
 	/**
 	 * Body of the request as an associative array; false if the
@@ -35,7 +35,7 @@ readonly class EndpointRequest extends Value {
 	 *
 	 * @var ?array
 	 */
-	public readonly ?array $json;
+	public ?array $json;
 
 	/**
 	 * Construct the object

@@ -6,15 +6,15 @@ use PHPUnit\Framework\TestCase;
 
 final readonly class EntityTestConstructor extends Entity {
 	public function __construct(
-		public readonly Identifier $id,
-		public readonly string $name
+		public Identifier $id,
+		public string $name
 	) {}
 }
 
 final readonly class EntityTestHidden extends Entity {
 	const NAMESPACE = '23e83a58-c771-48f8-8b79-017b8d218af8';
 	public function __construct(
-		public readonly string $name
+		public string $name
 	) {
 		parent::__construct(id: Identifier::createFromName(
 			namespace: self::NAMESPACE,

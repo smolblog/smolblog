@@ -17,8 +17,8 @@ readonly class ParagraphBlock extends Block {
 	 * @param Identifier $id      ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly string $content,
-		public readonly array $styles = [],
+		public string $content,
+		public array $styles = [],
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

@@ -17,8 +17,8 @@ readonly class ImportResults extends Value {
 	 * @param Command|null $nextPageCommand Optional command to call to fetch the next page of results.
 	 */
 	public function __construct(
-		public readonly array $posts,
-		public readonly ?Command $nextPageCommand = null
+		public array $posts,
+		public ?Command $nextPageCommand = null
 	) {
 	}
 }

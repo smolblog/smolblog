@@ -22,12 +22,12 @@ readonly class LinkBlock extends Block {
 	 * @param Identifier  $id               ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly string $url,
-		public readonly string $title,
-		public readonly ?string $summary = null,
-		public readonly ?string $thumbnailUrl = null,
-		public readonly ?string $pullQuote = null,
-		public readonly ?string $pullQuoteCaption = null,
+		public string $url,
+		public string $title,
+		public ?string $summary = null,
+		public ?string $thumbnailUrl = null,
+		public ?string $pullQuote = null,
+		public ?string $pullQuoteCaption = null,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

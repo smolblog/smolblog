@@ -16,9 +16,9 @@ readonly class BeginAuthRequest extends Command {
 	 * @param string  $callbackUrl Callback URL to give to the provider.
 	 */
 	public function __construct(
-		public readonly string $provider,
-		public readonly int $userId,
-		public readonly string $callbackUrl,
+		public string $provider,
+		public int $userId,
+		public string $callbackUrl,
 	) {
 	}
 }

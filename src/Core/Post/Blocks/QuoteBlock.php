@@ -17,8 +17,8 @@ readonly class QuoteBlock extends Block {
 	 * @param Identifier  $id       ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly string $content,
-		public readonly ?string $citation = null,
+		public string $content,
+		public ?string $citation = null,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

@@ -16,8 +16,8 @@ readonly class PullFromChannel extends Command {
 	 * @param array      $options   Optional info, such as page size or exclusions.
 	 */
 	public function __construct(
-		public readonly Identifier $channelId,
-		public readonly array $options = []
+		public Identifier $channelId,
+		public array $options = []
 	) {
 	}
 }

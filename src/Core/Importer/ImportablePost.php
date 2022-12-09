@@ -15,8 +15,8 @@ readonly class ImportablePost extends Value {
 	 * @param mixed  $postData Unparsed data from the service.
 	 */
 	public function __construct(
-		public readonly string $url,
-		public readonly mixed $postData
+		public string $url,
+		public mixed $postData
 	) {
 	}
 }

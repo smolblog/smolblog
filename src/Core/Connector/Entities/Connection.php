@@ -33,11 +33,11 @@ readonly class Connection extends Entity {
 	 * @param array   $details     Information to store.
 	 */
 	public function __construct(
-		public readonly int $userId,
-		public readonly string $provider,
-		public readonly string $providerKey,
-		public readonly string $displayName,
-		public readonly array $details,
+		public int $userId,
+		public string $provider,
+		public string $providerKey,
+		public string $displayName,
+		public array $details,
 	) {
 		parent::__construct(self::BuildId(provider: $provider, providerKey: $providerKey));
 	}

@@ -30,9 +30,9 @@ readonly class AuthRequestState extends Entity {
 	 * @param array   $info   Information to store with this request.
 	 */
 	public function __construct(
-		public readonly string $key,
-		public readonly int $userId,
-		public readonly array $info,
+		public string $key,
+		public int $userId,
+		public array $info,
 	) {
 		parent::__construct(id: self::buildId(key: $key));
 	}

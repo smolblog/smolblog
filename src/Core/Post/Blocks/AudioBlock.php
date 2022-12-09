@@ -18,7 +18,7 @@ readonly class AudioBlock extends Block {
 	 * @param Identifier $id    ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly Media $media,
+		public Media $media,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

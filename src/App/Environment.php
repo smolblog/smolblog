@@ -14,7 +14,7 @@ readonly class Environment extends ExtendableValue {
 	 *
 	 * @var string
 	 */
-	public readonly string $apiBase;
+	public string $apiBase;
 
 	/**
 	 * Load the information in

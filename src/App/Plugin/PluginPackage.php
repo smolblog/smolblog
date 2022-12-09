@@ -19,12 +19,12 @@ readonly class PluginPackage extends Value {
 	 * @param array  $websites    Websites for the plugin in 'name' => 'url' format.
 	 */
 	public function __construct(
-		public readonly string $package,
-		public readonly string $version,
-		public readonly string $title,
-		public readonly string $description,
-		public readonly array $authors = [],
-		public readonly array $websites = [],
+		public string $package,
+		public string $version,
+		public string $title,
+		public string $description,
+		public array $authors = [],
+		public array $websites = [],
 	) {
 	}
 }

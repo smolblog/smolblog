@@ -27,17 +27,17 @@ readonly class Post extends Entity {
 	 * @param mixed[]           $meta            Unstructured metadata.
 	 */
 	public function __construct(
-		public readonly int $user_id,
-		public readonly DateTimeInterface $timestamp,
-		public readonly string $slug,
+		public int $user_id,
+		public DateTimeInterface $timestamp,
+		public string $slug,
 		Identifier $id = null,
-		public readonly ?string $title = null,
-		public readonly array $content = [],
-		public readonly PostStatus $status = PostStatus::Draft,
-		public readonly array $tags = [],
-		public readonly ?string $reblog = null,
-		public readonly array $syndicationUrls = [],
-		public readonly array $meta = [],
+		public ?string $title = null,
+		public array $content = [],
+		public PostStatus $status = PostStatus::Draft,
+		public array $tags = [],
+		public ?string $reblog = null,
+		public array $syndicationUrls = [],
+		public array $meta = [],
 	) {
 		parent::__construct(id: $id ?? Identifier::createFromDate());
 	}

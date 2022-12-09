@@ -17,8 +17,8 @@ readonly class HeadingBlock extends Block {
 	 * @param Identifier $id      ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly string $content,
-		public readonly int $level = 2,
+		public string $content,
+		public int $level = 2,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

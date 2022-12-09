@@ -16,9 +16,9 @@ readonly class FinishAuthRequest extends Command {
 	 * @param string $code     Key for the OAuth request.
 	 */
 	public function __construct(
-		public readonly string $provider,
-		public readonly string $stateKey,
-		public readonly string $code,
+		public string $provider,
+		public string $stateKey,
+		public string $code,
 	) {
 	}
 }

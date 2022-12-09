@@ -14,14 +14,14 @@ readonly class EndpointResponse extends Value {
 	 * @var integer Status code for this response
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses
 	 */
-	public readonly int $statusCode;
+	public int $statusCode;
 
 	/**
 	 * Body of the response to be converted to JSON
 	 *
 	 * @var array
 	 */
-	public readonly array $body;
+	public array $body;
 
 	/**
 	 * Create the EndpointResponse

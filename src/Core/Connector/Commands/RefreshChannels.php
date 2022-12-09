@@ -15,7 +15,7 @@ readonly class RefreshChannels extends Command {
 	 * @param Identifier $connectionId ID of the Connection to get channels for.
 	 */
 	public function __construct(
-		public readonly Identifier $connectionId
+		public Identifier $connectionId
 	) {
 	}
 }

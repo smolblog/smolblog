@@ -8,8 +8,8 @@ use Smolblog\Framework\Command;
 
 final readonly class RunCommandTest extends Command {
 	public function __construct(
-		public readonly bool $return,
-		public readonly string $payload
+		public bool $return,
+		public string $payload
 	) {}
 }
 

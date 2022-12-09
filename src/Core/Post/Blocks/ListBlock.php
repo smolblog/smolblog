@@ -17,8 +17,8 @@ readonly class ListBlock extends Block {
 	 * @param Identifier $id      ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly string $content,
-		public readonly bool $ordered = false,
+		public string $content,
+		public bool $ordered = false,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

@@ -18,7 +18,7 @@ readonly class EndpointConfig extends Value {
 	 *
 	 * @var string
 	 */
-	public readonly string $route;
+	public string $route;
 
 	/**
 	 * HTTP verbs this endpoint will respond to. Given as an array of HttpVerb
@@ -27,7 +27,7 @@ readonly class EndpointConfig extends Value {
 	 * @var HttpVerb[]
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 	 */
-	public readonly array $verbs;
+	public array $verbs;
 
 	/**
 	 * Security level for this endpoint. The user making the request will need to
@@ -36,7 +36,7 @@ readonly class EndpointConfig extends Value {
 	 *
 	 * @var SecurityLevel
 	 */
-	public readonly SecurityLevel $security;
+	public SecurityLevel $security;
 
 	/**
 	 * Parameters for this endpoint's URL in an array of strings:
@@ -44,7 +44,7 @@ readonly class EndpointConfig extends Value {
 	 *
 	 * @var string[]
 	 */
-	public readonly array $params;
+	public array $params;
 
 	/**
 	 * Load the data

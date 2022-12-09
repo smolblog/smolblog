@@ -16,7 +16,7 @@ readonly class BlockquoteArea extends Block {
 	 * @param Identifier $id      ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly array $content,
+		public array $content,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

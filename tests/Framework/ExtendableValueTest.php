@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 final readonly class ConcreteExtendableValue extends ExtendableValue {
 	public function __construct(
-		public readonly string $definedKey,
+		public string $definedKey,
 		mixed ...$extended
 	) {
 		parent::__construct(...$extended);

@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 final readonly class ConcreteValue extends Value {
 	public function __construct(
-		public readonly string $key
+		public string $key
 	) {
 	}
 }

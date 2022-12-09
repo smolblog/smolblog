@@ -13,7 +13,7 @@ readonly class ConnectorInitData extends Value {
 	 *
 	 * @var string
 	 */
-	public readonly string $url;
+	public string $url;
 
 	/**
 	 * OAuth2 State, a random string that will be given back to identify the
@@ -21,14 +21,14 @@ readonly class ConnectorInitData extends Value {
 	 *
 	 * @var string
 	 */
-	public readonly string $state;
+	public string $state;
 
 	/**
 	 * Any additional information needed by the callback function.
 	 *
 	 * @var array
 	 */
-	public readonly array $info;
+	public array $info;
 
 	/**
 	 * Create the data object.

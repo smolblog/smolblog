@@ -17,8 +17,8 @@ readonly class EmbedBlock extends Block {
 	 * @param Identifier  $id       ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly string $url,
-		public readonly ?string $response = null,
+		public string $url,
+		public ?string $response = null,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);
