@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Post;
 
-enum PostStatus {
-	case Draft;
-	case Scheduled;
-	case Personal;
-	case Published;
+enum PostStatus: string {
+	case Draft = 'draft';
+	case Scheduled = 'scheduled';
+	case Personal = 'personal';
+	case Published = 'published';
 }
