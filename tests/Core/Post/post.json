@@ -1,0 +1,32 @@
+{
+  "id": "3467abac-b52b-486a-b4b3-ae033d2d05ed",
+  "user_id": 5,
+  "timestamp": "2022-02-02T02:22:22.000+00:00",
+  "slug": "test",
+  "title": "Test Post",
+  "content": [
+    {
+      "type": "Smolblog\\Core\\Post\\Blocks\\ParagraphBlock",
+      "id": "2fcc2802-3952-4d6d-8f9e-f694cdc27d13",
+      "content": "The fish was delish, and it made quite a dish.",
+      "styles": []
+    },
+    {
+      "type": "Smolblog\\Core\\Post\\Blocks\\ImageBlock",
+      "id": "f7752834-1246-48cc-812e-4e8f188323cb",
+      "media": {
+        "id": "dab72efb-235a-4294-be06-ecacbecfa17f",
+        "url": "/art/151.jpg",
+        "descriptiveText": "An image of the pokémon mew",
+        "attributes": []
+      }
+    },
+    {
+      "type": "Smolblog\\Core\\Post\\Blocks\\QuoteBlock",
+      "id": "2fcc2802-3952-4d6d-8f9e-f694cdc27d13",
+      "content": "What is this? Did the quadratic formula explode?",
+      "citation": "Strong Bad, sbemail 118"
+    }
+  ],
+  "status": "draft"
+}

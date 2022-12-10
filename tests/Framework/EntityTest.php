@@ -64,4 +64,19 @@ final class EntityTest extends TestCase {
 
 		$this->assertNotEquals(strval($test1), strval($test2));
 	}
+
+	public function testWillSerializeIdAsString() {
+		$test = new EntityTestHidden(name: 'Luke');
+		$expected = '{"id": "2e44ffaf-a8b2-550f-bf4b-71a137009a6a", "name": "Luke"}';
+
+		$this->assertJsonStringEqualsJsonString($expected, json_encode($test));
+	}
+
+	public function testWillUnserializeFromJsonWithIdAsString() {
+		$json = '{"id": "2e44ffaf-a8b2-550f-bf4b-71a137009a6a", "name": "Luke"}';
+		$result = EntityTestConstructor::jsonDeserialize($json);
+
+		$this->assertEquals('2e44ffaf-a8b2-550f-bf4b-71a137009a6a', $result->id);
+		$this->assertEquals('Luke', $result->name);
+	}
 }

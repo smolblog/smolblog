@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
+use Exception;
 use Smolblog\Framework\Entity;
 use Smolblog\Framework\Identifier;
 
@@ -18,5 +19,35 @@ abstract class Block extends Entity {
 	 */
 	public function __construct(Identifier $id = null) {
 		parent::__construct(id: $id ?? Identifier::createFromDate());
+	}
+
+	/**
+	 * Add the block type to the serialized value
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$arr = parent::toArray();
+		$arr['type'] = static::class;
+
+		return $arr;
+	}
+
+	/**
+	 * Take in an array with a `type` key that corresponds to the block it represents.
+	 *
+	 * @throws Exception When given class does not exist.
+	 *
+	 * @param array $data Associative array representing a block.
+	 * @return Block
+	 */
+	public static function fromTypedArray(array $data): Block {
+		$class = $data['type'];
+		if (!class_exists($class)) {
+			throw new Exception("Class $class not found");
+		}
+
+		unset($data['type']);
+		return $class::fromArray($data);
 	}
 }

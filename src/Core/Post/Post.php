@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
+use DateTimeImmutable;
 use DateTimeInterface;
 use Smolblog\Framework\Entity;
 use Smolblog\Framework\Identifier;
@@ -31,5 +32,36 @@ class Post extends Entity {
 		public readonly PostStatus $status = PostStatus::Draft,
 	) {
 		parent::__construct(id: $id ?? Identifier::createFromDate());
+	}
+
+	/**
+	 * Make sure blocks are recursively serialized.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$arr = parent::toArray();
+		$arr['timestamp'] = $this->timestamp->format(DateTimeInterface::RFC3339_EXTENDED);
+		$arr['content'] = array_map(fn($block) => $block->toArray(), $this->content);
+
+		return $arr;
+	}
+
+	/**
+	 * Create a Post from an associative array.
+	 *
+	 * Used in tandem with JSON parsing.
+	 *
+	 * @param array $data Associative array.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		$dataWithObjects = [
+			...$data,
+			'timestamp' => new DateTimeImmutable($data['timestamp']),
+			'content' => array_map(fn($blockArray) => Block::fromTypedArray($blockArray), $data['content']),
+			'status' => PostStatus::from($data['status']),
+		];
+		return parent::fromArray($dataWithObjects);
 	}
 }
