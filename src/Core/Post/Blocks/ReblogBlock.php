@@ -7,6 +7,8 @@ use Smolblog\Framework\Identifier;
 
 /**
  * Block to represent that this is a Reblog-style post. Contains either a link or embed block for markup.
+ *
+ * @deprecated 0.1
  */
 class ReblogBlock extends Block {
 	/**
@@ -43,6 +45,8 @@ class ReblogBlock extends Block {
 		public readonly ?LinkBlock $link = null,
 		Identifier $id = null,
 	) {
+		trigger_error(self::class . ' is deprecated; please remove the code.', E_USER_WARNING);
+
 		$this->embed = $embed ?? new EmbedBlock(url: $url);
 		$this->showEmbed = $showEmbed || !isset($this->link);
 		parent::__construct(id: $id);

@@ -81,15 +81,6 @@ final class BlockTest extends TestCase {
 		);
 	}
 
-	public function testReblogBlockCanBeCreated() {
-		$this->assertInstanceOf(
-			Blocks\ReblogBlock::class,
-			new Blocks\ReblogBlock(
-				url: 'https://www.youtube.com/watch?v=90X5NJleYJQ'
-			)
-		);
-	}
-
 	public function testVideoBlockCanBeCreated() {
 		$this->assertInstanceOf(
 			Blocks\VideoBlock::class,

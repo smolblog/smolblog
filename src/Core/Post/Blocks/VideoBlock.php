@@ -9,6 +9,8 @@ use Smolblog\Framework\Identifier;
  * Display a single video in a Post
  */
 class VideoBlock extends Block {
+	use MediaBlockSerializationToolkit;
+
 	/**
 	 * Construct the block
 	 *
