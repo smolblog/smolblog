@@ -24,4 +24,14 @@ interface PostReader extends Reader {
 	 * @return array URLs that have matching posts.
 	 */
 	public function checkSyndicatedUrls(array $urls): array;
+
+	/**
+	 * Find any posts matching the given parameters.
+	 *
+	 * Parameters are considered to be joined with AND; posts returned will match ALL given parameters.
+	 *
+	 * @param mixed ...$params Parameters to search by.
+	 * @return Post[]
+	 */
+	public function findBy(mixed ...$params): array;
 }
