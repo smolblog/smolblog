@@ -10,6 +10,7 @@ use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Core\Connector\Entities\AuthRequestStateWriter;
 
 final class AuthRequestInitializerTest extends TestCase {
+	private AuthRequestInitializer $service;
 
 	public function testItHandlesTheBeginAuthRequestCommand(): void {
 		$authUrl = 'https://something.com/';

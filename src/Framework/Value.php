@@ -38,6 +38,17 @@ abstract class Value implements JsonSerializable {
 	}
 
 	/**
+	 * Create a new Value object from this one with the given properties changed.
+	 *
+	 * @param mixed ...$newValues Propertes to replace.
+	 * @return static
+	 */
+	public function newWith(mixed ...$newValues): static {
+		$merged = [...get_object_vars($this), ...$newValues];
+		return new static(...$merged);
+	}
+
+	/**
 	 * Override `__set` to do nothing.
 	 *
 	 * @param string $name  Variable to set.
