@@ -11,7 +11,7 @@ final readonly class ConcreteValue extends Value {
 	}
 }
 
-final class ComplexValue extends Value {
+final readonly class ComplexValue extends Value {
 	public function __construct(
 		public readonly string $key,
 		public readonly ConcreteValue $other,
