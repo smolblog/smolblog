@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework;
+namespace Smolblog\Framework\Messages;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 

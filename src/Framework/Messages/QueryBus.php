@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework;
+namespace Smolblog\Framework\Messages;
 
 /**
  * Object that can pass a Query to its handling service.

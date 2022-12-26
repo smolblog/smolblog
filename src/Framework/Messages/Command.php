@@ -1,6 +1,8 @@
 <?php
 
-namespace Smolblog\Framework;
+namespace Smolblog\Framework\Messages;
+
+use Smolblog\Framework\Objects\Value;
 
 /**
  * An object that tells the Domain Model to do a thing.
@@ -15,12 +17,10 @@ namespace Smolblog\Framework;
  */
 abstract class Command extends Value implements Authorizable {
 	/**
-	 * Provide a Query object that will provide a truthy value if this Command can be run, or null if no authorization
-	 * is required.
+	 * Provide a Query object that will provide a truthy value if this Command can be run; null if no authorization is
+	 * required.
 	 *
-	 * @return Query|null
+	 * @return Query
 	 */
-	public function getAuthorizationQuery(): ?Query {
-		return null;
-	}
+	abstract public function getAuthorizationQuery(): ?Query;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework;
+namespace Smolblog\Framework\Objects;
 
 use Stringable;
 

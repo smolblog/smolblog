@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework;
+namespace Smolblog\Framework\Objects;
 
 /**
  * Allow a Value object to take extra variables at runtime.
