@@ -3,15 +3,15 @@
 namespace Smolblog\Framework;
 
 /**
- * Value object that can take extra variables at runtime.
+ * Allow a Value object to take extra variables at runtime.
  */
-abstract class ExtendableValue extends Value {
+trait ExtendableValueKit {
 	/**
 	 * Additional variables defined at construction.
 	 *
 	 * @var array
 	 */
-	protected array $extendedFields = [];
+	private array $extendedFields = [];
 
 	/**
 	 * Load the information in
@@ -38,7 +38,7 @@ abstract class ExtendableValue extends Value {
 	 * @return array
 	 */
 	public function toArray(): array {
-		$publicFields = parent::toArray();
+		$publicFields = get_object_vars($this);
 		unset($publicFields['extendedFields']);
 		return [...$publicFields, ...$this->extendedFields];
 	}

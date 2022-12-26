@@ -6,11 +6,9 @@ namespace Smolblog\Framework;
  * Object that can pass a Command to its handling service.
  *
  * A Command object passed to either of the `exec` methods should be routed to the appropriate service and passed to
- * its `run` method.
- *
- * This is infrastructure instead of in App because sometimes the Domain Model needs to tell itself to do something.
+ * its `handle$commandName` method.
  */
-interface Executor {
+interface CommandBus {
 	/**
 	 * Execute the given Command by passing it to its service.
 	 *
