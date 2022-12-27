@@ -23,8 +23,8 @@
     "phpunit/phpunit": "^9"
   },
   "scripts": {
-    "coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite core; cat coverage.txt",
-    "test": "phpunit --testsuite core",
+    "coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite framework; cat coverage.txt",
+    "test": "phpunit --testsuite framework",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },

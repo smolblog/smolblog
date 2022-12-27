@@ -1,19 +1,21 @@
 <?php
 
-namespace Smolblog\Framework;
+namespace Smolblog\Framework\Objects;
 
 use PHPUnit\Framework\TestCase;
 
-final class ConcreteExtendableValue extends ExtendableValue {
+final class ConcreteExtendableValue extends Value {
+	use ExtendableValueKit;
+
 	public function __construct(
 		public readonly string $definedKey,
 		mixed ...$extended
 	) {
-		parent::__construct(...$extended);
+		$this->extendedFields = $extended;
 	}
 }
 
-final class ExtendableValueTest extends TestCase {
+final class ExtendableValueKitTest extends TestCase {
 	public function testSettingDefinedPropertyGivesError() {
 		$this->expectError();
 		$cev = new ConcreteExtendableValue(definedKey: 'dictionary', someKey: 'someValue');

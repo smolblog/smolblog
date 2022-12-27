@@ -6,21 +6,14 @@ namespace Smolblog\Framework\Objects;
  * Allow a Value object to take extra variables at runtime.
  */
 trait ExtendableValueKit {
+	use ValueKit;
+
 	/**
 	 * Additional variables defined at construction.
 	 *
 	 * @var array
 	 */
 	private array $extendedFields = [];
-
-	/**
-	 * Load the information in
-	 *
-	 * @param mixed ...$extended Arbitrary variables.
-	 */
-	public function __construct(mixed ...$extended) {
-		$this->extendedFields = $extended;
-	}
 
 	/**
 	 * Quick access for any added variables.
@@ -30,6 +23,23 @@ trait ExtendableValueKit {
 	 */
 	public function __get(string $name): mixed {
 		return $this->extendedFields[$name] ?? null;
+	}
+
+	/**
+	 * Override `__set` to do nothing. Will remove when PHP 8.2 is required.
+	 *
+	 * @param string $name  Variable to set.
+	 * @param mixed  $value Value to provide.
+	 * @return void
+	 */
+	public function __set(string $name, mixed $value): void {
+		$trace = debug_backtrace();
+		trigger_error(
+			'Attempt to set readonly property ' . $name .
+			' in ' . $trace[0]['file'] .
+			' on line ' . $trace[0]['line'],
+			E_USER_ERROR
+		);
 	}
 
 	/**

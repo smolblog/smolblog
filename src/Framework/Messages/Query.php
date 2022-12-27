@@ -2,8 +2,6 @@
 
 namespace Smolblog\Framework\Messages;
 
-use Smolblog\Framework\Objects\Value;
-
 /**
  * An object that asks the domain model a thing.
  *
@@ -11,5 +9,5 @@ use Smolblog\Framework\Objects\Value;
  * creating objects and sending them through a central orchestrator, we can more easily cache queries or send
  * complex queries to specialized handlers.
  */
-abstract class Query extends Value {
+abstract class Query {
 }

@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Messages;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Framework\Objects\EntityKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -18,7 +18,9 @@ use Smolblog\Framework\Objects\Identifier;
  * themselves._ This can allow old data to be interpreted in new ways, making migrations more reliable. It provides a
  * comprehensive audit trail that can more easily roll back unwanted changes.
  */
-abstract class Event extends Entity {
+abstract class Event {
+	use EntityKit;
+
 	/**
 	 * Time this Event took place.
 	 *
@@ -37,7 +39,6 @@ abstract class Event extends Entity {
 		DateTimeInterface $timestamp = null,
 	) {
 		$this->timestamp = $timestamp ?? new DateTimeImmutable();
-
-		parent::__construct(id: $id ?? Identifier::createFromDate($this->timestamp));
+		$this->id = $id ?? Identifier::createFromDate($this->timestamp);
 	}
 }

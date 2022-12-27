@@ -2,8 +2,6 @@
 
 namespace Smolblog\Framework\Messages;
 
-use Smolblog\Framework\Objects\Value;
-
 /**
  * An object that tells the Domain Model to do a thing.
  *
@@ -15,5 +13,5 @@ use Smolblog\Framework\Objects\Value;
  *
  * Comamnds can provide a Query object that will return a truthy or falsy value in order to authorize the command.
  */
-abstract class Command extends Value {
+abstract class Command {
 }

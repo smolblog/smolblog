@@ -7,13 +7,16 @@
 		<testsuite name="core">
 			<directory>tests</directory>
 		</testsuite>
+		<testsuite name="framework">
+			<directory>tests/Framework</directory>
+		</testsuite>
 	</testsuites>
 	<coverage
 		cacheDirectory=".phpunit-cache"
 		ignoreDeprecatedCodeUnits="true"
 	>
     <include>
-			<directory>src</directory>
+			<directory>src/Framework</directory>
 		</include>
 		<report>
 			<text outputFile="coverage.txt" />

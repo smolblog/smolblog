@@ -3,9 +3,7 @@
 namespace Smolblog\Framework\Messages;
 
 /**
- * Indicates that an object provides a Query to check whether it can be executed.
- *
- * Also includes the StoppableEventInterface
+ * Trait to help events easily implement AuthorizableMessage and/or StoppableEventInterface
  */
 trait StoppableMessageKit {
 	/**
@@ -23,7 +21,7 @@ trait StoppableMessageKit {
 	 *
 	 * @return void
 	 */
-	public function interruptExecution(): void {
+	public function stopMessage(): void {
 		$this->messageStopped = true;
 	}
 
