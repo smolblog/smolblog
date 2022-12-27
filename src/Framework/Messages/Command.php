@@ -15,12 +15,5 @@ use Smolblog\Framework\Objects\Value;
  *
  * Comamnds can provide a Query object that will return a truthy or falsy value in order to authorize the command.
  */
-abstract class Command extends Value implements Authorizable {
-	/**
-	 * Provide a Query object that will provide a truthy value if this Command can be run; null if no authorization is
-	 * required.
-	 *
-	 * @return Query
-	 */
-	abstract public function getAuthorizationQuery(): ?Query;
+abstract class Command extends Value {
 }

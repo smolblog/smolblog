@@ -11,12 +11,5 @@ use Smolblog\Framework\Objects\Value;
  * creating objects and sending them through a central orchestrator, we can more easily cache queries or send
  * complex queries to specialized handlers.
  */
-abstract class Query extends Value implements Authorizable {
-	/**
-	 * Provide a Query object that will provide a truthy value if this Query can be run; null if no authorization is
-	 * required.
-	 *
-	 * @return Query|null
-	 */
-	abstract public function getAuthorizationQuery(): ?Query;
+abstract class Query extends Value {
 }

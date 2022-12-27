@@ -35,6 +35,7 @@
     "league/event": "^3.0",
     "league/tactician": "^1.1",
     "league/tactician-container": "^3.0",
-    "ramsey/uuid": "^4.6"
+    "ramsey/uuid": "^4.6",
+    "crell/tukio": "^1.4"
   }
 }
