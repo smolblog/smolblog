@@ -3,13 +3,13 @@
 namespace Smolblog\Framework\Objects;
 
 /**
- * Provides an Identifier property and extends ValueKit to work with it.
+ * Provides an Identifier property and extends SerializableKit to work with it.
  *
  * Entities are defined by their Identifier. This trait provides the readonly $id property and also extends the
  * fromArray and toArray functions to serialize the identifier to and from a standard UUID string.
  */
 trait EntityKit {
-	use ValueKit;
+	use SerializableKit;
 
 	/**
 	 * Unique identifier (UUID) for this particular entity.

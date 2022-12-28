@@ -63,22 +63,4 @@ final class ValueTest extends TestCase {
 
 		$this->assertEquals('Jason', $actual->key);
 	}
-
-	public function testCanBeModifiedByCopying() {
-		$first = new ConcreteValue(key: 'old');
-		$second = $first->newWith(key: 'new');
-
-		$this->assertEquals('old', $first->key);
-		$this->assertEquals('new', $second->key);
-	}
-
-	public function testAComplexValueCanBeModifiedByCopying() {
-		$first = new ComplexValue(key: 'old', other: new ConcreteValue(key: 'other'));
-		$second = $first->newWith(key: 'new');
-
-		$this->assertEquals('old', $first->key);
-		$this->assertEquals('new', $second->key);
-		$this->assertEquals('other', $first->other->key);
-		$this->assertEquals('other', $second->other->key);
-	}
 }

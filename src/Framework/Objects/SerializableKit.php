@@ -3,12 +3,11 @@
 namespace Smolblog\Framework\Objects;
 
 /**
- * Useful methods for Value-style objects.
+ * Provide simple array serialization functions to objects.
  *
- * Serialization and deserialization methods for Value and Value-like objects (objects largely consisting of public
- * properties).
+ * Client classes will implement JsonSerializable and ArraySerializable.
  */
-trait ValueKit {
+trait SerializableKit {
 	/**
 	 * Create an instance of this class from a JSON string.
 	 *
@@ -30,17 +29,6 @@ trait ValueKit {
 	 */
 	public static function fromArray(array $data): static {
 		return new static(...$data);
-	}
-
-	/**
-	 * Create a new Value object from this one with the given properties changed.
-	 *
-	 * @param mixed ...$newValues Propertes to replace.
-	 * @return static
-	 */
-	public function newWith(mixed ...$newValues): static {
-		$merged = [...get_object_vars($this), ...$newValues];
-		return new static(...$merged);
 	}
 
 	/**

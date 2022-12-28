@@ -6,7 +6,7 @@ namespace Smolblog\Framework\Objects;
  * Allow a Value object to take extra variables at runtime.
  */
 trait ExtendableValueKit {
-	use ValueKit;
+	use SerializableKit;
 
 	/**
 	 * Additional variables defined at construction.
