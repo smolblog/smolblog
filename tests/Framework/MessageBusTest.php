@@ -2,9 +2,7 @@
 
 namespace Smolblog\Framework\Exploration;
 
-use Attribute;
 use Crell\Tukio\Dispatcher;
-use Crell\Tukio\ListenerPriority;
 use PHPUnit\Framework\TestCase;
 use Crell\Tukio\OrderedListenerProvider;
 use JsonSerializable;
@@ -19,6 +17,10 @@ use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Messages\MemoizableQueryKit;
 use Smolblog\Framework\Objects\SerializableKit;
+use Smolblog\Framework\MessageBus\Attributes\SecurityLayerListener;
+use Smolblog\Framework\MessageBus\Attributes\CheckMemoLayerListener;
+use Smolblog\Framework\MessageBus\Attributes\EventStoreLayerListener;
+use Smolblog\Framework\MessageBus\Attributes\SaveMemoLayerListener;
 
 function currentTrace(string $add = null) {
 	static $trace;
@@ -31,31 +33,6 @@ function currentTrace(string $add = null) {
 	$trace ??= [];
 	$trace[] = $add;
 	return $trace;
-}
-
-#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
-class SecurityLayerListener extends ListenerPriority {
-	public function __construct(int $shift = 0) {
-		parent::__construct(priority: 100 + $shift);
-	}
-}
-#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
-class CheckMemoLayerListener extends ListenerPriority {
-	public function __construct(int $shift = 0) {
-		parent::__construct(priority: 75 + $shift);
-	}
-}
-#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
-class EventStoreLayerListener extends ListenerPriority {
-	public function __construct(int $shift = 0) {
-		parent::__construct(priority: 50 + $shift);
-	}
-}
-#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
-class SaveMemoLayerListener extends ListenerPriority {
-	public function __construct(int $shift = 0) {
-		parent::__construct(priority: -50 + $shift);
-	}
 }
 
 class IsUserAuthorized extends Query {
