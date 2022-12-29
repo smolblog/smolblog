@@ -6,13 +6,18 @@ use Crell\Tukio\Dispatcher;
 use Crell\Tukio\ListenerPriority;
 use PHPUnit\Framework\TestCase;
 use Crell\Tukio\OrderedListenerProvider;
+use JsonSerializable;
 use Smolblog\App\Container\Container;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\Hook;
+use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Messages\StoppableMessageKit;
+use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Messages\MemoizableQueryKit;
+use Smolblog\Framework\Objects\SerializableKit;
 
 function currentTrace(string $add = null) {
 	static $trace;
@@ -33,6 +38,13 @@ class IsUserAuthorized extends Query {
 		public readonly bool $blog,
 	) {
 	}
+}
+
+class PostsForBlog extends Query implements MemoizableQuery, JsonSerializable {
+	use MemoizableQueryKit;
+	use SerializableKit;
+
+	function __construct(public readonly string $blogId) {}
 }
 
 class PostPost extends Command implements AuthorizableMessage {
@@ -82,6 +94,28 @@ class SecurityService {
 	}
 }
 
+class MemoizeService {
+	private array $memos = [];
+
+	#[ListenerPriority(priority: 75)]
+	public function checkMemo(MemoizableQuery $query) {
+		currentTrace(self::class . '::' . get_class($query));
+		$key = $query->getMemoKey();
+		if (!array_key_exists($key, $this->memos)) { return; }
+
+		$query->results = $this->memos[$key];
+		$query->stopMessage();
+	}
+
+	#[ListenerPriority(priority: -100)]
+	public function setMemo(MemoizableQuery $query) {
+		currentTrace(self::class . '::' . get_class($query));
+		$key = $query->getMemoKey();
+
+		$this->memos[$key] = $query->results;
+	}
+}
+
 class PostService {
 	public function __construct(private Dispatcher $messageBus) {}
 
@@ -119,6 +153,14 @@ class PostProjection {
 
 		$this->messageBus->dispatch(new StandardContentDeleted(original: $event));
 	}
+
+	public function onPostsForBlog(PostsForBlog $query): void {
+		currentTrace(self::class . '::' . get_class($query));
+		$query->results = [
+			$query->blogId,
+			strval(Identifier::createRandom()),
+		];
+	}
 }
 
 class StandardContentProjection {
@@ -139,6 +181,7 @@ final class MessageBusTest extends TestCase {
 	public function setUp(): void {
 		$this->container = new Container();
 		$this->container->addShared(SecurityService::class)->addArgument(Dispatcher::class);
+		$this->container->addShared(MemoizeService::class);
 		$this->container->addShared(PostService::class)->addArgument(Dispatcher::class);
 		$this->container->addShared(EventStream::class);
 		$this->container->addShared(PostProjection::class)->addArgument(Dispatcher::class);
@@ -151,6 +194,7 @@ final class MessageBusTest extends TestCase {
 		$this->provider->addSubscriber(EventStream::class, EventStream::class);
 		$this->provider->addSubscriber(PostProjection::class, PostProjection::class);
 		$this->provider->addSubscriber(StandardContentProjection::class, StandardContentProjection::class);
+		$this->provider->addSubscriber(MemoizeService::class, MemoizeService::class);
 
 		$this->dispatcher = $this->container->get(Dispatcher::class);
 	}
@@ -205,5 +249,32 @@ final class MessageBusTest extends TestCase {
 		];
 
 		$this->assertEquals($expectedTrace, currentTrace());
+	}
+
+	public function testMemoizableQueriesCanBeMemoized() {
+		$query = new PostsForBlog(blogId: '9107f050-6715-47ef-a8f3-2fff24bbd573');
+		$queryKey = $query->getMemoKey();
+		$this->dispatcher->dispatch($query);
+
+		$expectedTrace = [
+			MemoizeService::class . '::' . PostsForBlog::class,
+			PostProjection::class . '::' . PostsForBlog::class,
+			MemoizeService::class . '::' . PostsForBlog::class,
+		];
+
+		$this->assertEquals($expectedTrace, currentTrace());
+
+		$anotherQuery = new PostsForBlog(blogId: '9107f050-6715-47ef-a8f3-2fff24bbd573');
+		$this->assertEquals($queryKey, $anotherQuery->getMemoKey());
+		$this->dispatcher->dispatch($anotherQuery);
+
+		$anotherExpectedTrace = [
+			MemoizeService::class . '::' . PostsForBlog::class,
+		];
+
+		$this->assertEquals($anotherExpectedTrace, currentTrace());
+		// The results contain a random value. If the memoization was correct, the results should
+		// be the same...
+		$this->assertEquals($query->results, $anotherQuery->results);
 	}
 }

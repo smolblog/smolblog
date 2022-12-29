@@ -1,15 +1,16 @@
 <?php
 
-namespace Smolblog\Framework\Objects;
+namespace Smolblog\Framework\Messages;
 
 use Smolblog\Framework\Messages\StoppableMessageKit;
+use Smolblog\Framework\Objects\SerializableKit;
 
 /**
- * Easy implementation for a MemoizableQuery. It's recommended to pair this with SerializableKit if the object is
- * unusually complex.
+ * Easy implementation for a MemoizableQuery.
  */
 trait MemoizableQueryKit {
 	use StoppableMessageKit;
+	use SerializableKit;
 
 	/**
 	 * Create a memo key for this object by hashing the class name and its JSON-encoded properties.
@@ -17,6 +18,8 @@ trait MemoizableQueryKit {
 	 * @return string
 	 */
 	public function getMemoKey(): string {
-		return md5(static::class . json_encode($this));
+		$values = $this->toArray();
+		unset($values['results']);
+		return static::class . ':' . md5(json_encode($values));
 	}
 }
