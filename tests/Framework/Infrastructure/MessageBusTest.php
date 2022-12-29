@@ -1,10 +1,8 @@
 <?php
 
-namespace Smolblog\Framework\Exploration;
+namespace Smolblog\Framework\Infrastructure;
 
-use Crell\Tukio\Dispatcher;
 use PHPUnit\Framework\TestCase;
-use Crell\Tukio\OrderedListenerProvider;
 use JsonSerializable;
 use Smolblog\App\Container\Container;
 use Smolblog\Framework\Messages\AuthorizableMessage;
@@ -20,6 +18,7 @@ use Smolblog\Framework\Objects\SerializableKit;
 use Smolblog\Framework\Infrastructure\Attributes\SecurityLayerListener;
 use Smolblog\Framework\Infrastructure\Attributes\CheckMemoLayerListener;
 use Smolblog\Framework\Infrastructure\Attributes\EventStoreLayerListener;
+use Smolblog\Framework\Infrastructure\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Infrastructure\Attributes\SaveMemoLayerListener;
 
 function currentTrace(string $add = null) {
@@ -43,9 +42,8 @@ class IsUserAuthorized extends Query {
 	}
 }
 
-class PostsForBlog extends Query implements MemoizableQuery, JsonSerializable {
+class PostsForBlog extends Query implements MemoizableQuery {
 	use MemoizableQueryKit;
-	use SerializableKit;
 
 	function __construct(public readonly string $blogId) {}
 }
@@ -76,16 +74,14 @@ class StandardContentDeleted extends Hook {
 }
 
 class SecurityService {
-	public function __construct(private Dispatcher $messageBus) {}
+	public function __construct(private MessageBus $messageBus) {}
 
 	#[SecurityLayerListener]
 	public function onAuthorizableMessage(AuthorizableMessage $event): void {
 		currentTrace(self::class . '::' . get_class($event));
 
 		$securityQuery = $event->getAuthorizationQuery();
-		$this->messageBus->dispatch($securityQuery);
-
-		if (!$securityQuery->results) {
+		if (!$this->messageBus->fetch($securityQuery)) {
 			$event->stopMessage();
 		}
 	}
@@ -120,7 +116,7 @@ class MemoizeService {
 }
 
 class PostService {
-	public function __construct(private Dispatcher $messageBus) {}
+	public function __construct(private MessageBus $messageBus) {}
 
 	public function onPostPost(PostPost $command): void {
 		currentTrace(self::class . '::' . get_class($command));
@@ -143,7 +139,7 @@ class EventStream {
 }
 
 class PostProjection {
-	public function __construct(private Dispatcher $messageBus) {}
+	public function __construct(private MessageBus $messageBus) {}
 
 	public function onPostPosted(PostPosted $event): void {
 		currentTrace(self::class . '::' . get_class($event));
@@ -176,30 +172,86 @@ class StandardContentProjection {
 	}
 }
 
+class TimingService {
+	// This will add a lot of noise if we don't turn it off!
+	public bool $active = false;
+
+	#[SecurityLayerListener(earlier: 1)]
+	public function beforeSecurity(AuthorizableMessage $message): void {
+		if ($this->active) currentTrace('beforeSecurity' . '::' . get_class($message));
+	}
+	#[SecurityLayerListener(later: 1)]
+	public function afterSecurity(AuthorizableMessage $message): void {
+		if ($this->active) currentTrace('afterSecurity' . '::' . get_class($message));
+	}
+
+	#[CheckMemoLayerListener(earlier: 1)]
+	public function beforeCheckMemo(MemoizableQuery $message) {
+		if ($this->active) currentTrace('beforeCheckMemo' . '::' . get_class($message));
+	}
+	#[CheckMemoLayerListener(later: 1)]
+	public function afterCheckMemo(MemoizableQuery $message) {
+		if ($this->active) currentTrace('afterCheckMemo' . '::' . get_class($message));
+	}
+
+	#[EventStoreLayerListener(earlier: 1)]
+	public function beforeEventStore(Event $message) {
+		if ($this->active) currentTrace('beforeEventStore' . '::' . get_class($message));
+	}
+	#[EventStoreLayerListener(later: 1)]
+	public function afterEventStore(Event $message) {
+		if ($this->active) currentTrace('afterEventStore' . '::' . get_class($message));
+	}
+
+	#[ExecutionLayerListener(earlier: 1)]
+	public function beforeExecution(Hook $message) {
+		if ($this->active) currentTrace('beforeExecution' . '::' . get_class($message));
+	}
+	#[ExecutionLayerListener(later: 1)]
+	public function afterExecution(Hook $message) {
+		if ($this->active) currentTrace('afterExecution' . '::' . get_class($message));
+	}
+
+	#[SaveMemoLayerListener(earlier: 1)]
+	public function beforeSaveMemo(MemoizableQuery $message) {
+		if ($this->active) currentTrace('beforeSaveMemo' . '::' . get_class($message));
+	}
+	#[SaveMemoLayerListener(later: 1)]
+	public function afterSaveMemo(MemoizableQuery $message) {
+		if ($this->active) currentTrace('afterSaveMemo' . '::' . get_class($message));
+	}
+}
+
 final class MessageBusTest extends TestCase {
-	private OrderedListenerProvider $provider;
-	private Dispatcher $dispatcher;
+	private ListenerRegistrar $provider;
+	private MessageBus $dispatcher;
 	private Container $container;
+
+	private function loadRegistrar(ListenerRegistrar $registrar) {
+		$registrar->registerService(SecurityService::class);
+		$registrar->registerService(PostService::class);
+		$registrar->registerService(EventStream::class);
+		$registrar->registerService(PostProjection::class);
+		$registrar->registerService(StandardContentProjection::class);
+		$registrar->registerService(MemoizeService::class);
+		$registrar->registerService(TimingService::class);
+	}
 
 	public function setUp(): void {
 		$this->container = new Container();
-		$this->container->addShared(SecurityService::class)->addArgument(Dispatcher::class);
+		$this->container->addShared(SecurityService::class)->addArgument(MessageBus::class);
 		$this->container->addShared(MemoizeService::class);
-		$this->container->addShared(PostService::class)->addArgument(Dispatcher::class);
+		$this->container->addShared(PostService::class)->addArgument(MessageBus::class);
 		$this->container->addShared(EventStream::class);
-		$this->container->addShared(PostProjection::class)->addArgument(Dispatcher::class);
+		$this->container->addShared(PostProjection::class)->addArgument(MessageBus::class);
 		$this->container->addShared(StandardContentProjection::class);
-		$this->container->addShared(Dispatcher::class, fn() => new Dispatcher(provider: $this->provider));
+		$this->container->addShared(TimingService::class);
+		$this->container->addShared(MessageBus::class, fn() => new MessageBus(provider: $this->provider));
 
-		$this->provider = new OrderedListenerProvider(container: $this->container);
-		$this->provider->addSubscriber(SecurityService::class, SecurityService::class);
-		$this->provider->addSubscriber(PostService::class, PostService::class);
-		$this->provider->addSubscriber(EventStream::class, EventStream::class);
-		$this->provider->addSubscriber(PostProjection::class, PostProjection::class);
-		$this->provider->addSubscriber(StandardContentProjection::class, StandardContentProjection::class);
-		$this->provider->addSubscriber(MemoizeService::class, MemoizeService::class);
+		$this->provider = new ListenerRegistrar(container: $this->container);
+		$this->loadRegistrar($this->provider);
 
-		$this->dispatcher = $this->container->get(Dispatcher::class);
+		$this->dispatcher = $this->container->get(MessageBus::class);
 	}
 
 	public function testAMessageWillBeStoppedIfNotAuthorized() {
@@ -279,5 +331,29 @@ final class MessageBusTest extends TestCase {
 		// The results contain a random value. If the memoization was correct, the results should
 		// be the same...
 		$this->assertEquals($query->results, $anotherQuery->results);
+	}
+
+	public function testTimingAttributesCanBeSetCorrectly() {
+		$this->container->get(TimingService::class)->active = true;
+		$command = new PostPost(id: '5e52fb73-ba30-42c6-84a0-c6f4438c4ae4', allow: true);
+		$this->dispatcher->dispatch($command);
+		$this->container->get(TimingService::class)->active = false;
+
+		$expectedTrace = [
+			'beforeSecurity' . '::' . PostPost::class,
+			SecurityService::class . '::' . PostPost::class,
+			SecurityService::class . '::' . IsUserAuthorized::class,
+			'afterSecurity' . '::' . PostPost::class,
+			PostService::class . '::' . PostPost::class,
+			'beforeEventStore' . '::' . PostPosted::class,
+			EventStream::class . '::' . PostPosted::class,
+			'afterEventStore' . '::' . PostPosted::class,
+			PostProjection::class . '::' . PostPosted::class,
+			'beforeExecution' . '::' . StandardContentPosted::class,
+			StandardContentProjection::class . '::' . StandardContentPosted::class,
+			'afterExecution' . '::' . StandardContentPosted::class,
+		];
+
+		$this->assertEquals($expectedTrace, currentTrace());
 	}
 }

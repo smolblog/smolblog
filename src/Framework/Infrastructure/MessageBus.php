@@ -2,22 +2,32 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
+use Crell\Tukio\Dispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\ListenerProviderInterface;
 use Smolblog\Framework\Messages\Query;
 
 /**
  * Handles the sending of messages to the appropriate objects.
  *
  * A simple wrapper around a PSR-14 Event Dispatcher. Adds one convenience method for queries to automatically
- * unpack and return the results.
+ * unpack and return the results. Takes a PSR-14-compliant Listener Provider in construction.
  */
 class MessageBus implements EventDispatcherInterface {
 	/**
-	 * Create the MessageBus with a given dispatcher
+	 * Internal PSR-14-compliant dispatcher.
 	 *
-	 * @param EventDispatcherInterface $internal PSR-14-compliant dispatcher.
+	 * @var EventDispatcherInterface
 	 */
-	public function __construct(private EventDispatcherInterface $internal) {
+	private EventDispatcherInterface $internal;
+
+	/**
+	 * Create the MessageBus with a given listener provider.
+	 *
+	 * @param ListenerProviderInterface $provider PSR-14-compliant dispatcher.
+	 */
+	public function __construct(ListenerProviderInterface $provider = null) {
+		$this->internal = new Dispatcher($provider);
 	}
 
 	/**
