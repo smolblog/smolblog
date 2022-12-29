@@ -2,6 +2,7 @@
 
 namespace Smolblog\Framework\Exploration;
 
+use Attribute;
 use Crell\Tukio\Dispatcher;
 use Crell\Tukio\ListenerPriority;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +31,31 @@ function currentTrace(string $add = null) {
 	$trace ??= [];
 	$trace[] = $add;
 	return $trace;
+}
+
+#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
+class SecurityLayerListener extends ListenerPriority {
+	public function __construct(int $shift = 0) {
+		parent::__construct(priority: 100 + $shift);
+	}
+}
+#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
+class CheckMemoLayerListener extends ListenerPriority {
+	public function __construct(int $shift = 0) {
+		parent::__construct(priority: 75 + $shift);
+	}
+}
+#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
+class EventStoreLayerListener extends ListenerPriority {
+	public function __construct(int $shift = 0) {
+		parent::__construct(priority: 50 + $shift);
+	}
+}
+#[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
+class SaveMemoLayerListener extends ListenerPriority {
+	public function __construct(int $shift = 0) {
+		parent::__construct(priority: -50 + $shift);
+	}
 }
 
 class IsUserAuthorized extends Query {
@@ -75,7 +101,7 @@ class StandardContentDeleted extends Hook {
 class SecurityService {
 	public function __construct(private Dispatcher $messageBus) {}
 
-	#[ListenerPriority(priority: 100)]
+	#[SecurityLayerListener]
 	public function onAuthorizableMessage(AuthorizableMessage $event): void {
 		currentTrace(self::class . '::' . get_class($event));
 
@@ -97,7 +123,7 @@ class SecurityService {
 class MemoizeService {
 	private array $memos = [];
 
-	#[ListenerPriority(priority: 75)]
+	#[CheckMemoLayerListener]
 	public function checkMemo(MemoizableQuery $query) {
 		currentTrace(self::class . '::' . get_class($query));
 		$key = $query->getMemoKey();
@@ -107,7 +133,7 @@ class MemoizeService {
 		$query->stopMessage();
 	}
 
-	#[ListenerPriority(priority: -100)]
+	#[SaveMemoLayerListener]
 	public function setMemo(MemoizableQuery $query) {
 		currentTrace(self::class . '::' . get_class($query));
 		$key = $query->getMemoKey();
@@ -133,7 +159,7 @@ class PostService {
 }
 
 class EventStream {
-	#[ListenerPriority(priority: 50)]
+	#[EventStoreLayerListener]
 	public function onEvent(Event $event): void {
 		currentTrace(self::class . '::' . get_class($event));
 	}
