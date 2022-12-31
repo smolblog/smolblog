@@ -9,7 +9,7 @@ namespace Smolblog\Framework\Messages;
  * creating objects and sending them through a central orchestrator, we can more easily cache queries or send
  * complex queries to specialized handlers.
  *
- * All Queries that can be cached should implement the CachableQuery interface.
+ * All Queries that can be memoized should implement the MemoizableQuery interface.
  */
 abstract class Query {
 	/**
