@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Framework\Value;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * Data required from a Connector to initialize an OAuth2 request.

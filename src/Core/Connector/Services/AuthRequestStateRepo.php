@@ -2,9 +2,7 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use Smolblog\Framework\Writer;
-
-interface AuthRequestStateWriter extends Writer {
+interface AuthRequestStateRepo {
 	/**
 	 * Save the given AuthRequestState
 	 *
@@ -12,4 +10,12 @@ interface AuthRequestStateWriter extends Writer {
 	 * @return void
 	 */
 	public function save(AuthRequestState $state): void;
+
+	/**
+	 * Get the given AuthRequestState
+	 *
+	 * @param string $key Key of the state to retrieve.
+	 * @return AuthRequestState
+	 */
+	public function get(string $key): AuthRequestState;
 }

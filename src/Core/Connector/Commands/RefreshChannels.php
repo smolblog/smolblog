@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Connector\Commands;
 
-use Smolblog\Framework\Command;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Messages\Command;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Command to fetch and save an updated list of channels for a given Connection.

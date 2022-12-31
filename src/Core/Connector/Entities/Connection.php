@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use Smolblog\Framework\Entity;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Entity;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Information about credentials needed to authenticate against an

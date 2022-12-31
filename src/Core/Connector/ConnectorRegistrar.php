@@ -2,17 +2,34 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Framework\Registrar;
+use Psr\Container\ContainerInterface;
+use Smolblog\Framework\Objects\RegistrarKit;
 
 /**
  * Class to handle storing Connectors for use later.
  */
-interface ConnectorRegistrar extends Registrar {
+class ConnectorRegistrar {
+	use RegistrarKit {
+		get as baseGet;
+	}
+
 	/**
-	 * Get the Connector indicated by the given key.
+	 * Construct the Registrar with a DI container
 	 *
-	 * @param string $key Key for class to instantiate and get.
-	 * @return mixed Instance of the requested class.
+	 * @param ContainerInterface $container Containter which contains the needed classes.
 	 */
-	public function get(string $key): Connector;
+	public function __construct(ContainerInterface $container) {
+		$this->container = $container;
+		$this->interface = Connector::class;
+	}
+
+	/**
+	 * Get the given Connector from the Registrar
+	 *
+	 * @param string $key Key for the Connector.
+	 * @return Connector
+	 */
+	public function get(string $key): Connector {
+		return $this->baseGet($key);
+	}
 }
