@@ -1,10 +1,8 @@
 <?php
 
-namespace Smolblog\Framework\Infrastructure;
+namespace Smolblog\Framework\Messages;
 
-use Crell\Tukio\Dispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\EventDispatcher\ListenerProviderInterface;
 use Smolblog\Framework\Messages\Query;
 
 /**
