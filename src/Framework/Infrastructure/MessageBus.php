@@ -11,34 +11,16 @@ use Smolblog\Framework\Messages\Query;
  * Handles the sending of messages to the appropriate objects.
  *
  * A simple wrapper around a PSR-14 Event Dispatcher. Adds one convenience method for queries to automatically
- * unpack and return the results. Takes a PSR-14-compliant Listener Provider in construction.
+ * unpack and return the results.
  */
-class MessageBus implements EventDispatcherInterface {
-	/**
-	 * Internal PSR-14-compliant dispatcher.
-	 *
-	 * @var EventDispatcherInterface
-	 */
-	private EventDispatcherInterface $internal;
-
-	/**
-	 * Create the MessageBus with a given listener provider.
-	 *
-	 * @param ListenerProviderInterface $provider PSR-14-compliant dispatcher.
-	 */
-	public function __construct(ListenerProviderInterface $provider = null) {
-		$this->internal = new Dispatcher($provider);
-	}
-
+interface MessageBus extends EventDispatcherInterface {
 	/**
 	 * Dispatch the given message to its listeners.
 	 *
 	 * @param mixed $message Message to send.
 	 * @return mixed Message potentially modified by listeners.
 	 */
-	public function dispatch(mixed $message): mixed {
-		return $this->internal->dispatch($message);
-	}
+	public function dispatch(mixed $message): mixed;
 
 	/**
 	 * Convenience method for sending Query messages that will return the results.
@@ -46,7 +28,5 @@ class MessageBus implements EventDispatcherInterface {
 	 * @param Query $query Query to execute.
 	 * @return mixed Results of the query.
 	 */
-	public function fetch(Query $query): mixed {
-		return $this->internal->dispatch($query)->results;
-	}
+	public function fetch(Query $query): mixed;
 }

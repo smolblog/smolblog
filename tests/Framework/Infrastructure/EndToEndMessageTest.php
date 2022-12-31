@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Framework\Infrastructure;
+namespace Smolblog\Framework\Infrastructure\EndToEndTest;
 
 use PHPUnit\Framework\TestCase;
-use JsonSerializable;
 use Smolblog\App\Container\Container;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
@@ -14,12 +13,13 @@ use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Messages\MemoizableQueryKit;
-use Smolblog\Framework\Objects\SerializableKit;
 use Smolblog\Framework\Infrastructure\Attributes\SecurityLayerListener;
 use Smolblog\Framework\Infrastructure\Attributes\CheckMemoLayerListener;
 use Smolblog\Framework\Infrastructure\Attributes\EventStoreLayerListener;
 use Smolblog\Framework\Infrastructure\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Infrastructure\Attributes\SaveMemoLayerListener;
+use Smolblog\Framework\Infrastructure\DefaultMessageBus;
+use Smolblog\Framework\Infrastructure\ListenerRegistrar;
 
 function currentTrace(string $add = null) {
 	static $trace;
@@ -74,7 +74,7 @@ class StandardContentDeleted extends Hook {
 }
 
 class SecurityService {
-	public function __construct(private MessageBus $messageBus) {}
+	public function __construct(private DefaultMessageBus $messageBus) {}
 
 	#[SecurityLayerListener]
 	public function onAuthorizableMessage(AuthorizableMessage $event): void {
@@ -116,7 +116,7 @@ class MemoizeService {
 }
 
 class PostService {
-	public function __construct(private MessageBus $messageBus) {}
+	public function __construct(private DefaultMessageBus $messageBus) {}
 
 	public function onPostPost(PostPost $command): void {
 		currentTrace(self::class . '::' . get_class($command));
@@ -139,7 +139,7 @@ class EventStream {
 }
 
 class PostProjection {
-	public function __construct(private MessageBus $messageBus) {}
+	public function __construct(private DefaultMessageBus $messageBus) {}
 
 	public function onPostPosted(PostPosted $event): void {
 		currentTrace(self::class . '::' . get_class($event));
@@ -222,9 +222,9 @@ class TimingService {
 	}
 }
 
-final class MessageBusTest extends TestCase {
+final class EndToEndMessageTest extends TestCase {
 	private ListenerRegistrar $provider;
-	private MessageBus $dispatcher;
+	private DefaultMessageBus $dispatcher;
 	private Container $container;
 
 	private function loadRegistrar(ListenerRegistrar $registrar) {
@@ -239,19 +239,19 @@ final class MessageBusTest extends TestCase {
 
 	public function setUp(): void {
 		$this->container = new Container();
-		$this->container->addShared(SecurityService::class)->addArgument(MessageBus::class);
+		$this->container->addShared(SecurityService::class)->addArgument(DefaultMessageBus::class);
 		$this->container->addShared(MemoizeService::class);
-		$this->container->addShared(PostService::class)->addArgument(MessageBus::class);
+		$this->container->addShared(PostService::class)->addArgument(DefaultMessageBus::class);
 		$this->container->addShared(EventStream::class);
-		$this->container->addShared(PostProjection::class)->addArgument(MessageBus::class);
+		$this->container->addShared(PostProjection::class)->addArgument(DefaultMessageBus::class);
 		$this->container->addShared(StandardContentProjection::class);
 		$this->container->addShared(TimingService::class);
-		$this->container->addShared(MessageBus::class, fn() => new MessageBus(provider: $this->provider));
+		$this->container->addShared(DefaultMessageBus::class, fn() => new DefaultMessageBus(provider: $this->provider));
 
 		$this->provider = new ListenerRegistrar(container: $this->container);
 		$this->loadRegistrar($this->provider);
 
-		$this->dispatcher = $this->container->get(MessageBus::class);
+		$this->dispatcher = $this->container->get(DefaultMessageBus::class);
 	}
 
 	public function testAMessageWillBeStoppedIfNotAuthorized() {
