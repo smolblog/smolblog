@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
+use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 
 /**
@@ -12,13 +13,13 @@ class AuthRequestState extends Value {
 	/**
 	 * Create the state
 	 *
-	 * @param string  $key    String used by both parties to identify the request.
-	 * @param integer $userId User this request is attached to.
-	 * @param array   $info   Information to store with this request.
+	 * @param string     $key    String used by both parties to identify the request.
+	 * @param Identifier $userId User this request is attached to.
+	 * @param array      $info   Information to store with this request.
 	 */
 	public function __construct(
 		public readonly string $key,
-		public readonly int $userId,
+		public readonly Identifier $userId,
 		public readonly array $info,
 	) {
 	}

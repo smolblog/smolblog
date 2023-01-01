@@ -1,6 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Connector\Entities;
+namespace Smolblog\Core\Connector\Services;
+
+use Smolblog\Core\Connector\Entities\AuthRequestState;
 
 interface AuthRequestStateRepo {
 	/**

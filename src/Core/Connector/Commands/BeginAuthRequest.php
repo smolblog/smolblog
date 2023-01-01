@@ -10,6 +10,13 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class BeginAuthRequest extends Command {
 	/**
+	 * URL to Redirect the user to.
+	 *
+	 * @var string|null
+	 */
+	public ?string $redirectUrl = null;
+
+	/**
 	 * Create the command
 	 *
 	 * @param string     $provider    Identifier for a registered Connector.

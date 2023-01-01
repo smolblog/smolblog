@@ -26,14 +26,14 @@ class Connection extends Entity {
 	/**
 	 * Create the Connection.
 	 *
-	 * @param integer $userId      ID of the user this Connection belongs to.
-	 * @param string  $provider    Slug for the Connector this is tied to.
-	 * @param string  $providerKey Unique identifier for this account at this provider.
-	 * @param string  $displayName Recognizable name for the account (username or email?).
-	 * @param array   $details     Information to store.
+	 * @param Identifier $userId      ID of the user this Connection belongs to.
+	 * @param string     $provider    Slug for the Connector this is tied to.
+	 * @param string     $providerKey Unique identifier for this account at this provider.
+	 * @param string     $displayName Recognizable name for the account (username or email?).
+	 * @param array      $details     Information to store.
 	 */
 	public function __construct(
-		public readonly int $userId,
+		public readonly Identifier $userId,
 		public readonly string $provider,
 		public readonly string $providerKey,
 		public readonly string $displayName,
