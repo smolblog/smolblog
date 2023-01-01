@@ -3,8 +3,8 @@
 namespace Smolblog\Core\Post;
 
 use Exception;
-use Smolblog\Framework\Entity;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Entity;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * A unit of content for a Post. Just an empty Entity class because the only

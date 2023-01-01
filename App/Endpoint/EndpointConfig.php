@@ -2,7 +2,7 @@
 
 namespace Smolblog\App\Endpoint;
 
-use Smolblog\Framework\Value;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * Configuration data for an Endpoint used to register it with the outside router.

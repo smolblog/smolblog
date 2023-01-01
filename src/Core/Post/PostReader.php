@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Post;
 
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Reader;
 
 /**

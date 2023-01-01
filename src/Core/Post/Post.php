@@ -4,8 +4,8 @@ namespace Smolblog\Core\Post;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Smolblog\Framework\Entity;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Entity;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Represents a blog post.

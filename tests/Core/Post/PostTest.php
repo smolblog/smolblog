@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Post\Blocks\ImageBlock;
 use Smolblog\Core\Post\Blocks\ParagraphBlock;
 use Smolblog\Core\Post\Blocks\QuoteBlock;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Identifier;
 
 final class PostTest extends TestCase {
 	public function testItCanBeCreatedWithMinimalData() {

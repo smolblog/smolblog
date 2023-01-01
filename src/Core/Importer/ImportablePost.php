@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Framework\Value;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * Payload of a post that can be imported.

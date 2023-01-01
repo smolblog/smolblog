@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Post\Blocks;
 
 use Smolblog\Core\Post\Block;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Parent block that encloses the given blocks in a blockquote.

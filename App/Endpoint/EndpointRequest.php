@@ -2,7 +2,7 @@
 
 namespace Smolblog\App\Endpoint;
 
-use Smolblog\Framework\Value;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * Represents a request made to an endpoint.

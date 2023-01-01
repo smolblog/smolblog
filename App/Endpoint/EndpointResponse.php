@@ -2,7 +2,7 @@
 
 namespace Smolblog\App\Endpoint;
 
-use Smolblog\Framework\Value;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * Object to store a response for an Endpoint.

@@ -2,7 +2,7 @@
 
 namespace Smolblog\App\Plugin;
 
-use Smolblog\Framework\Value;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * Represents a Composer package that can be loaded into the system.

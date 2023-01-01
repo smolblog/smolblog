@@ -4,7 +4,7 @@ namespace Smolblog\Core\Importer;
 
 use Smolblog\Framework\Command;
 use Smolblog\Core\Post\Post;
-use Smolblog\Framework\Value;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * The results of an import process.

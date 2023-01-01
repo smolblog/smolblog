@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Post\Blocks;
 
 use Smolblog\Core\Post\{Block, Media};
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Include a single audio file in a Post

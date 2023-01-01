@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Post\Blocks;
 
 use Smolblog\Core\Post\Block;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Describes a heading tag (<h2> through <h6>)

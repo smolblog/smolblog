@@ -10,7 +10,7 @@ use Smolblog\Core\Connector\Entities\ConnectionReader;
 use Smolblog\Core\Connector\Services\RefreshConnectionToken;
 use Smolblog\Core\Post\PostWriter;
 use Smolblog\Framework\Executor;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Identifier;
 
 final class ImportStarterTest extends TestCase {
 	public function testItHandlesThePullFromChannelCommand() {

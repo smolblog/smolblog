@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Importer;
 
 use Smolblog\Framework\Command;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Pull posts from the indicated channel. Optionally provide pagination info.
