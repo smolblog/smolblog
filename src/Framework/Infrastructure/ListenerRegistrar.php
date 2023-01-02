@@ -60,8 +60,11 @@ class ListenerRegistrar implements ListenerProviderInterface {
 	/**
 	 * Register the given class as a listener service.
 	 *
-	 * A listener service contains methods beginning with `on` that take a message object as its single parameter. The
-	 * registry will note the parameter type and wire things up accordingly.
+	 * A listener service contains methods either
+	 *   1. beginning with `on` or
+	 *   2. containing a timing attribute from the Smolblog\Framework\Messages\Attributes namespace
+	 * that take a message object as its single parameter. The registry will note the parameter type and wire things up
+	 * accordingly.
 	 *
 	 * @param string $className Class registered in the container.
 	 * @return void
