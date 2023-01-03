@@ -25,7 +25,7 @@ class DefaultMessageBus implements MessageBus {
 	/**
 	 * Create the MessageBus with a given listener provider.
 	 *
-	 * @param ListenerProviderInterface $provider PSR-14-compliant dispatcher.
+	 * @param ListenerProviderInterface $provider PSR-14-compliant provider.
 	 */
 	public function __construct(ListenerProviderInterface $provider = null) {
 		$this->internal = new Dispatcher($provider);

@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;

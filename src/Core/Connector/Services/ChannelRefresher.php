@@ -3,7 +3,6 @@
 namespace Smolblog\Core\Connector\Services;
 
 use Smolblog\Core\Connector\Commands\RefreshChannels;
-use Smolblog\Core\Connector\ConnectorRegistrar;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ChannelDeleted;
 use Smolblog\Core\Connector\Events\ChannelSaved;
