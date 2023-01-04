@@ -39,8 +39,6 @@ abstract class ConnectorEvent extends Event {
 		return [
 			'connectionId' => $this->connectionId->toString(),
 			'userId' => $this->userId->toString(),
-			'id' => $this->id->toString(),
-			'timestamp' => $this->timestamp->format(DateTimeInterface::RFC3339_EXTENDED),
 		];
 	}
 }

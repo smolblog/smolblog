@@ -83,6 +83,15 @@ final class ServiceRegistrarTest extends TestCase {
 		$this->assertInstanceOf(TestBasicDependency::class, $container->get(TestBasicInterface::class));
 	}
 
+	public function testAConfigCanBeACallable() {
+		$container = new ServiceRegistrar([
+			TestBasicDependency::class => fn() => new TestBasicDependency(),
+		]);
+
+		$this->assertTrue($container->has(TestBasicDependency::class));
+		$this->assertInstanceOf(TestBasicDependency::class, $container->get(TestBasicDependency::class));
+	}
+
 	public function testADependencyCanComeFromACallable() {
 		$container = new ServiceRegistrar([
 			TestBasicService::class => ['helper' => fn() => new TestBasicDependency()],

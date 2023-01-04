@@ -2,6 +2,9 @@
 
 namespace Smolblog\Framework\Objects;
 
+use DateTimeImmutable;
+use Throwable;
+
 /**
  * Provide simple array serialization functions to objects.
  *
@@ -47,5 +50,45 @@ trait SerializableKit {
 	 */
 	public function jsonSerialize(): mixed {
 		return $this->toArray();
+	}
+
+	// Utility functions.
+
+	/**
+	 * Attempt to create an Identifier from a string; gives null on failure.
+	 *
+	 * @param string $idString String to deserialize.
+	 * @return Identifier|null
+	 */
+	public static function safeDeserializeIdentifier(string $idString): ?Identifier {
+		if (empty($idString)) {
+			return null;
+		}
+		$id = null;
+		try {
+			$id = Identifier::fromString($idString);
+		} catch (Throwable $e) {
+			// Do nothing; we knew this could fail.
+		}
+		return $id;
+	}
+
+	/**
+	 * Attempt to create a DateTimeImmutable object from a date string; returns null on failure.
+	 *
+	 * @param string $dateString String to deserialize.
+	 * @return DateTimeImmutable|null
+	 */
+	public static function safeDeserializeDate(string $dateString): ?DateTimeImmutable {
+		if (empty($dateString)) {
+			return null;
+		}
+		$date = null;
+		try {
+			$date = new DateTimeImmutable($dateString);
+		} catch (Throwable $e) {
+			// Do nothing; we knew this could fail.
+		}
+		return $date;
 	}
 }

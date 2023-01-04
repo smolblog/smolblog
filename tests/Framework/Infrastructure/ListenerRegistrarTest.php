@@ -2,9 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use Generator;
 use PHPUnit\Framework\TestCase;
-use Smolblog\App\Container\Container;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\Hook;

@@ -10,8 +10,7 @@ use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
  * Simple class to memoize a query for the duration of a web request.
  *
  * This assumes that this is a standard PHP app that only lasts for the duration of a web request. If another
- * framework is being used that persists the application, then the reset() method should be called to remove the
- * existing memos.
+ * framework is being used that persists the application, then this service will need to be replaced.
  */
 class QueryMemoizationService {
 	/**
@@ -49,17 +48,5 @@ class QueryMemoizationService {
 		$key = $query->getMemoKey();
 
 		$this->memos[$key] = $query->results;
-	}
-
-	/**
-	 * Delete the current memos.
-	 *
-	 * In the case where the memos need to be removed manually, such as when an external framework persists the
-	 * application between web requests.
-	 *
-	 * @return void
-	 */
-	public function reset(): void {
-		$this->memos = [];
 	}
 }
