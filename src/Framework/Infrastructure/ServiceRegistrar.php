@@ -5,7 +5,6 @@ namespace Smolblog\Framework\Infrastructure;
 use Exception;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Exceptions\ServiceNotFoundException;
-use Smolblog\Framework\Exceptions\ServiceNotImplementedException;
 use Smolblog\Framework\Exceptions\ServiceRegistrarConfigurationException;
 
 /**
@@ -20,11 +19,11 @@ use Smolblog\Framework\Exceptions\ServiceRegistrarConfigurationException;
  * - If the key is an interface, the value should be the fully-qualified class name of an implementing class that is
  *   also registered in the container.
  *   Ex: '\Smolblog\MessageBus' => 'Smolblog\Framework\Infrastructure\DefaultMessageBus'
- * - If the key is a service class, the value should either be an array of fully-qualified class names that are also
- *   registered in the container. The parameters should be given in order or with appropriate names; passing the
- *   array as the constructor's arguments should be successful.
+ * - If the key is a service class, the value should be an array of (a) fully-qualified class names that are also
+ *   registered in the container or (b) callables. The parameters should be given in order or with appropriate names;
+ *   passing the spreaded array as the constructor's arguments should be successful.
  *   Ex: '\oddEvan\Vanity\NameService' => ['\Smolblog\MessageBus', '\Smolblog\Post\Media']
- *   Ex: '\Some\Other\Service' => ['messageBus' => '\Smolblog\MessageBus']
+ *   Ex: '\Some\Other\Service' => ['messageBus' => '\Smolblog\MessageBus', 'configArray' => fn() => [1, 2, 3]]
  *
  * ServiceRegistrar will register itself so it can be used as a dependency for other services.
  */
@@ -117,12 +116,14 @@ class ServiceRegistrar implements ContainerInterface {
 
 		if (!class_exists($service)) {
 			// A class was registered but not actually implemented.
-			throw new ServiceNotImplementedException(service: $service);
-			return null;
+			throw new Exception(message: "Class $service not found.");
 		}
 
 		// Get the listed dependencies from the container.
-		$args = array_map(fn($dependency) => $this->get($dependency), $config);
+		$args = array_map(
+			fn($dependency) => is_callable($dependency) ? call_user_func($dependency) : $this->get($dependency),
+			$config
+		);
 
 		return new $service(...$args);
 	}

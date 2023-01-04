@@ -13,13 +13,14 @@ use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Messages\MemoizableQueryKit;
-use Smolblog\Framework\Infrastructure\Attributes\SecurityLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\CheckMemoLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\EventStoreLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\SaveMemoLayerListener;
+use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
+use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
+use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Infrastructure\ListenerRegistrar;
+use Smolblog\Framework\Infrastructure\ServiceRegistrar;
 
 function currentTrace(string $add = null) {
 	static $trace;
@@ -225,7 +226,7 @@ class TimingService {
 final class EndToEndMessageTest extends TestCase {
 	private ListenerRegistrar $provider;
 	private DefaultMessageBus $dispatcher;
-	private Container $container;
+	private ServiceRegistrar $container;
 
 	private function loadRegistrar(ListenerRegistrar $registrar) {
 		$registrar->registerService(SecurityService::class);
@@ -238,15 +239,16 @@ final class EndToEndMessageTest extends TestCase {
 	}
 
 	public function setUp(): void {
-		$this->container = new Container();
-		$this->container->addShared(SecurityService::class)->addArgument(DefaultMessageBus::class);
-		$this->container->addShared(MemoizeService::class);
-		$this->container->addShared(PostService::class)->addArgument(DefaultMessageBus::class);
-		$this->container->addShared(EventStream::class);
-		$this->container->addShared(PostProjection::class)->addArgument(DefaultMessageBus::class);
-		$this->container->addShared(StandardContentProjection::class);
-		$this->container->addShared(TimingService::class);
-		$this->container->addShared(DefaultMessageBus::class, fn() => new DefaultMessageBus(provider: $this->provider));
+		$this->container = new ServiceRegistrar(configuration: [
+			SecurityService::class => ['messageBus' => DefaultMessageBus::class],
+			MemoizeService::class => [],
+			PostService::class => ['messageBus' => DefaultMessageBus::class],
+			EventStream::class => [],
+			PostProjection::class => ['messageBus' => DefaultMessageBus::class],
+			StandardContentProjection::class => [],
+			TimingService::class => [],
+			DefaultMessageBus::class => fn() => new DefaultMessageBus(provider: $this->provider),
+		]);
 
 		$this->provider = new ListenerRegistrar(container: $this->container);
 		$this->loadRegistrar($this->provider);

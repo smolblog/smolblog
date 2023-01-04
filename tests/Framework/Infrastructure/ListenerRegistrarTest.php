@@ -11,11 +11,11 @@ use Smolblog\Framework\Messages\Hook;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Messages\StoppableMessageKit;
-use Smolblog\Framework\Infrastructure\Attributes\SecurityLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\CheckMemoLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\EventStoreLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Infrastructure\Attributes\SaveMemoLayerListener;
+use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
+use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
+use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
 
 function listenerTestTrace($add = '', $reset = false) {
 	static $trace;
@@ -101,12 +101,13 @@ final class ListenerTestTimingService {
 
 final class ListenerRegistrarTest extends TestCase {
 	private ListenerRegistrar $provider;
-	private Container $container;
+	private ServiceRegistrar $container;
 
 	public function setUp(): void {
-		$this->container = new Container();
-		$this->container->addShared(ListenerTestMainService::class);
-		$this->container->addShared(ListenerTestTimingService::class);
+		$this->container = new ServiceRegistrar([
+			ListenerTestMainService::class => [],
+			ListenerTestTimingService::class => [],
+		]);
 
 		$this->provider = new ListenerRegistrar(container: $this->container);
 	}
