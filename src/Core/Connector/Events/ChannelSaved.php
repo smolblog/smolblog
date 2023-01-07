@@ -47,17 +47,4 @@ class ChannelSaved extends ConnectorEvent {
 			'details' => $this->details,
 		];
 	}
-
-	/**
-	 * Gets unserizlized parameters from a serialized payload.
-	 *
-	 * So that subclasses can unserizalize individual pararameters within a payload (for example, turning UUID strings
-	 * back into Identifier objects).
-	 *
-	 * @param array $payload Array to deserialize.
-	 * @return array
-	 */
-	protected static function payloadFromArray(array $payload): array {
-		return $payload;
-	}
 }

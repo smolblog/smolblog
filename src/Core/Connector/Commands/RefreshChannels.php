@@ -5,7 +5,6 @@ namespace Smolblog\Core\Connector\Commands;
 use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -30,9 +29,9 @@ class RefreshChannels extends Command implements AuthorizableMessage {
 	/**
 	 * Check if the given User has permission to execute this Command.
 	 *
-	 * @return Query
+	 * @return ConnectionBelongsToUser
 	 */
-	public function getAuthorizationQuery(): Query {
+	public function getAuthorizationQuery(): ConnectionBelongsToUser {
 		return new ConnectionBelongsToUser(connectionId: $this->connectionId, userId: $this->userId);
 	}
 }
