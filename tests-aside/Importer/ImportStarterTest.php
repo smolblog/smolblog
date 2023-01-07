@@ -14,7 +14,7 @@ use Smolblog\Framework\Objects\Identifier;
 
 final class ImportStarterTest extends TestCase {
 	public function testItHandlesThePullFromChannelCommand() {
-		$connection = new Connection(5, 'provider', 'key', 'name', []);
+		$connection = new Connection(Identifier::createRandom(), 'provider', 'key', 'name', []);
 		$channel = new Channel($connection->id, 'key', 'name', []);
 		$command = new PullFromChannel(channelId: $channel->id, options: []);
 

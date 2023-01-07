@@ -16,7 +16,7 @@
 		ignoreDeprecatedCodeUnits="true"
 	>
     <include>
-			<directory>src/Framework</directory>
+			<directory>src</directory>
 		</include>
 		<report>
 			<text outputFile="coverage.txt" />

@@ -8,7 +8,7 @@ use Smolblog\Framework\Reader;
 /**
  * Object to retrieve Posts from the repository.
  */
-interface PostReader extends Reader {
+interface PostReader {
 	/**
 	 * Get the indicated Post from the repository. Should return null if not found.
 	 *

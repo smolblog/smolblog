@@ -9,8 +9,8 @@ use Smolblog\Core\Connector\Events\ChannelSaved;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionById;
-use Smolblog\Framework\MessageBus\MessageBus;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Framework\Command;
+use Smolblog\Framework\Messages\Command;
 use Smolblog\Core\Post\Post;
 use Smolblog\Framework\Objects\Value;
 

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Importer;
 
-use Smolblog\Framework\Command;
+use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Objects\Identifier;
 
 /**

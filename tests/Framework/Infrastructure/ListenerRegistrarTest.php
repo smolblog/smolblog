@@ -130,8 +130,8 @@ final class ListenerRegistrarTest extends TestCase {
 	}
 
 	public function testTimingLayerCanBeSetWithAttributes() {
-		$this->provider->registerService(ListenerTestMainService::class);
 		$this->provider->registerCallable(fn(Event $event) => listenerTestTrace(add: 'Callable'));
+		$this->provider->registerService(ListenerTestMainService::class);
 		$event = new class() extends Event implements AuthorizableMessage {
 			use StoppableMessageKit;
 			public function getAuthorizationQuery(): Query { return new class() extends Query {}; }

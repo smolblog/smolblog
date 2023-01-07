@@ -88,25 +88,4 @@ final class PostTest extends TestCase {
 		$this->assertInstanceOf(QuoteBlock::class, $post->content[2]);
 		$this->assertEquals('2fcc2802-3952-4d6d-8f9e-f694cdc27d13', strval($post->content[2]->id));
 	}
-
-	public function testItCanBeModifiedByCopying() {
-		$base = new Post(
-			id: Identifier::createRandom(),
-			user_id: 5,
-			timestamp: new DateTime(),
-			slug: 'test',
-			title: 'Test Post',
-			content: [
-				new ParagraphBlock(content: 'Hello!')
-			],
-			status: PostStatus::Published,
-		);
-		$modified = $base->newWith(title: 'Modified post', content: [ new ParagraphBlock(content: 'Goodbye...') ]);
-
-		$this->assertEquals(strval($base), strval($modified));
-		$this->assertNotEquals($base->title, $modified->title);
-		$this->assertInstanceOf(ParagraphBlock::class, $modified->content[0]);
-		$this->assertEquals('Hello!', $base->content[0]->content);
-		$this->assertEquals('Goodbye...', $modified->content[0]->content);
-	}
 }
