@@ -5,8 +5,8 @@ namespace Smolblog\Core\Connector\Services;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;
-use Smolblog\Framework\MessageBus\MessageBus;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**

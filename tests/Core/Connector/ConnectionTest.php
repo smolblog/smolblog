@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Connector\Entities;
 
 use PHPUnit\Framework\TestCase;
+use Smolblog\Framework\Objects\Identifier;
 
 final class ConnectionTest extends TestCase {
 	public function testAnIdIsKnowableFromProviderAndKey() {
@@ -10,7 +11,7 @@ final class ConnectionTest extends TestCase {
 		$key = 543;
 
 		$connection = new Connection(
-			userId: 5,
+			userId: Identifier::createRandom(),
 			provider: $provider,
 			providerKey: $key,
 			displayName: 'smol_bean',
