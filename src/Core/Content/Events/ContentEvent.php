@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Events;
 
+use DateTimeInterface;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentNotProjectedException;
 use Smolblog\Framework\Messages\Event;
@@ -35,6 +36,13 @@ abstract class ContentEvent extends Event {
 	public readonly Identifier $userId;
 
 	/**
+	 * Identifier for the site this content belongs to.
+	 *
+	 * @var Identifier
+	 */
+	public readonly Identifier $siteId;
+
+	/**
 	 * The state of the content as of this event in its native format
 	 *
 	 * @var mixed
@@ -47,6 +55,28 @@ abstract class ContentEvent extends Event {
 	 * @var mixed
 	 */
 	protected Content $standardContent = null;
+
+	/**
+	 * Construct the event
+	 *
+	 * @param Identifier             $contentId Identifier for the content this event is about.
+	 * @param Identifier             $userId    User responsible for this event.
+	 * @param Identifier             $siteId    Site this content belongs to.
+	 * @param Identifier|null        $id        Optional identifier for this event.
+	 * @param DateTimeInterface|null $timestamp Optional timestamp for this event.
+	 */
+	public function __construct(
+		Identifier $contentId,
+		Identifier $userId,
+		Identifier $siteId,
+		?Identifier $id = null,
+		?DateTimeInterface $timestamp = null
+	) {
+		$this->contentId = $contentId;
+		$this->userId = $userId;
+		$this->siteId = $siteId;
+		parent::__construct(id: $id, timestamp: $timestamp);
+	}
 
 	/**
 	 * Get the state of the content as of this event in its native format.

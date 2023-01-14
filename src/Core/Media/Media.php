@@ -1,12 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Post;
+namespace Smolblog\Core\Media;
 
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * A piece of media (image, video, etc) that can be included in a Post.
+ * A piece of media (image, video, etc) that can be included in content.
  */
 class Media extends Entity {
 	/**

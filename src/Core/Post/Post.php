@@ -8,7 +8,12 @@ use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Represents a blog post.
+ * A post is a longer piece of content created with blocks.
+ *
+ * Everybody's using a block editor these days. Or rather, it's Tumblr and WordPress mostly. Come to think of it, they
+ * might even both be using the *same* block editor at this point? Or will int the future.
+ *
+ * Anyway, a block-based editor seems to be what people are using these days for medium- and long-form content.
  */
 class Post extends Entity {
 	/**
