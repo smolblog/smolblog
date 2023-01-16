@@ -5,7 +5,6 @@ namespace Smolblog\Core\Connector\Services;
 use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Connector;
 use Smolblog\Core\Connector\Hooks\CollectingConnectors;
-use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\RegistrarKit;
 
 /**
@@ -20,14 +19,13 @@ class ConnectorRegistrar {
 	 * Construct the Registrar with a DI container
 	 *
 	 * @param ContainerInterface $container  Containter which contains the needed classes.
-	 * @param MessageBus         $messageBus MessageBus for dispatching the hook.
+	 * @param array         $configuration Array of key => service class to configure the registrar.
 	 */
-	public function __construct(ContainerInterface $container, MessageBus $messageBus) {
+	public function __construct(ContainerInterface $container, array $configuration) {
 		$this->container = $container;
 		$this->interface = Connector::class;
 
-		$connectors = $messageBus->dispatch(new CollectingConnectors())->connectors;
-		foreach ($connectors as $provider => $className) {
+		foreach ($configuration as $provider => $className) {
 			$this->register(key: $provider, class: $className);
 		}
 	}

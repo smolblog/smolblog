@@ -3,7 +3,7 @@
 namespace Smolblog\Core;
 
 use Psr\Container\ContainerInterface;
-use Smolblog\Framework\MessageBus\MessageBus;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 
 /**
@@ -26,7 +26,7 @@ class Model extends DomainModel {
 		],
 		Connector\Services\ConnectorRegistrar::class => [
 			'container' => ContainerInterface::class,
-			'messageBus' => MessageBus::class,
+			'configuration' => null,
 		],
 	];
 

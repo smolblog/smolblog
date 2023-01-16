@@ -28,7 +28,8 @@ class ServiceRegistrarConfigurationException extends Exception implements
 		int $code = 0,
 		?Throwable $previous = null
 	) {
-		$message ??= "Configuration error for $service in ClassRegistrar.";
+		$message ??= "Configuration error for $service in ServiceRegistrar" .
+			($previous ? ': ' . $previous->getMessage() : '.');
 		parent::__construct($message, $code, $previous);
 	}
 }

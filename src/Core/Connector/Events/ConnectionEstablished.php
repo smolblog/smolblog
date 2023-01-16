@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Connector\Events;
 
 use DateTimeInterface;
+use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -16,8 +17,8 @@ class ConnectionEstablished extends ConnectorEvent {
 	 * @param string                 $providerKey  Unique identifier for this connection for this provider.
 	 * @param string                 $displayName  Human-readable name for this connection.
 	 * @param array                  $details      Additional information needed to connect to this provider.
-	 * @param Identifier             $connectionId ID of the connection this event belongs to.
 	 * @param Identifier             $userId       ID of the user initiating this change.
+	 * @param Identifier|null        $connectionId ID of the connection this event belongs to.
 	 * @param Identifier|null        $id           Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp    Optional timestamp for the event (default now).
 	 */
@@ -26,12 +27,13 @@ class ConnectionEstablished extends ConnectorEvent {
 		public readonly string $providerKey,
 		public readonly string $displayName,
 		public readonly array $details,
-		Identifier $connectionId,
 		Identifier $userId,
+		Identifier $connectionId = null,
 		Identifier $id = null,
 		DateTimeInterface $timestamp = null,
 	) {
-		parent::__construct(connectionId: $connectionId, userId: $userId, id: $id, timestamp: $timestamp);
+		$calculatedId = $connectionId ?? Connection::buildId(provider: $provider, providerKey: $providerKey);
+		parent::__construct(connectionId: $calculatedId, userId: $userId, id: $id, timestamp: $timestamp);
 	}
 
 	/**
