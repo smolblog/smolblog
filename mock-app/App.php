@@ -32,6 +32,8 @@ final class App {
 	public readonly MessageBus $bus;
 
 	private function __construct() {
+		$pdo = $this->makeDatabase();
+
 		$models = [
 			Model::class,
 			MockModel::class,
@@ -42,7 +44,7 @@ final class App {
 			DefaultMessageBus::class => fn() => $this->bus,
 			ContainerInterface::class => ServiceRegistrar::class,
 			Connector::class => [],
-			PDO::class => fn() => new PDO(__DIR__ . '/app.sqlite'),
+			PDO::class => fn() => $pdo,
 		];
 
 		$services = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::SERVICES), []);
@@ -50,7 +52,7 @@ final class App {
 		$services[ConnectorRegistrar::class]['configuration'] = fn() => ['smolblog' => Connector::class];
 
 		echo "Services:\n";
-		print_r($services);
+		// print_r($services);
 		$container = new ServiceRegistrar(configuration: $services);
 		$registry = new ListenerRegistrar(container: $container);
 
@@ -58,5 +60,24 @@ final class App {
 		array_walk($listeners, fn($className) => $registry->registerService($className));
 
 		$this->bus = new DefaultMessageBus($registry);
+	}
+
+	private function makeDatabase(): PDO {
+		$db = new PDO('sqlite:' . __DIR__ . '/app.sqlite');
+
+		$setupSql = <<<EOF
+		DROP TABLE IF EXISTS "channels";
+		CREATE TABLE "channels" ("id" integer,"channel_id" text,"connection_id" text,"channel_key" text,"display_name" text,"details" text, PRIMARY KEY (id));
+
+		DROP TABLE IF EXISTS "connections";
+		CREATE TABLE "connections" ("id" integer,"connection_id" text,"user_id" text,"provider" text,"provider_key" text,"display_name" text,"details" text, PRIMARY KEY (id));
+
+		DROP TABLE IF EXISTS "connector_events";
+		CREATE TABLE "connector_events" ("id" integer,"event_id" text NOT NULL,"event_time" text NOT NULL,"connection_id" text NOT NULL,"user_id" text NOT NULL,"payload" text,"event_type" text NOT NULL, PRIMARY KEY (id));
+		EOF;
+
+		$db->exec($setupSql);
+
+		return $db;
 	}
 }

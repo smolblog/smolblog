@@ -22,7 +22,7 @@ final class ConnectorTest extends TestCase {
 		App::dispatch($connectionAdded);
 
 		$result = App::fetch(new ConnectionById(
-			Connection::buildId(provider: 'smolblog', providerKey: '66515b1e-5990-46f3-83aa-1f6b6f98aa1b')
+			Connection::buildId(provider: 'smolblog', providerKey: 'woohoo543')
 		));
 
 		$this->assertInstanceOf(Connection::class, $result);

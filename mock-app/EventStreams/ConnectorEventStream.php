@@ -26,8 +26,8 @@ class ConnectorEventStream {
 	 */
 	public function __construct(private PDO $db) {
 		$this->addEvent = $this->db->prepare(
-			'INSERT INTO connector_events (event_id, event_time, connection_id, user_id, payload) ' .
-			'VALUES (:id, :timestamp, :connectionId, :userId, :payload)'
+			'INSERT INTO connector_events (event_id, event_time, event_type, connection_id, user_id, payload) ' .
+			'VALUES (:id, :timestamp, :type, :connectionId, :userId, :payload)'
 		);
 	}
 
@@ -41,7 +41,7 @@ class ConnectorEventStream {
 	public function onConnectorEvent(ConnectorEvent $event) {
 		$this->addEvent->execute([
 			'id' => $event->id->toByteString(),
-			'timestamp' => $event->timestamp->format(DateTimeInterface::ISO8601_EXPANDED),
+			'timestamp' => $event->timestamp->format(DateTimeInterface::RFC3339_EXTENDED),
 			'type' => get_class($event),
 			'connectionId' => $event->connectionId->toByteString(),
 			'userId' => $event->userId->toByteString(),
