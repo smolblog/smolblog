@@ -4,7 +4,6 @@ namespace Smolblog\Mock\Projections;
 
 use PDO;
 use Smolblog\Core\Connector\Entities\Channel;
-use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ChannelSaved;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 
@@ -16,7 +15,7 @@ class ChannelProjection {
 			(channel_id, connection_id, channel_key, display_name, details)
 			VALUES (:id, :connectionId, :channelKey, :displayName, :details)');
 		$prepared->execute([
-			'id' => Channel::buildId(connectionId: $event->connectionId, channelKey: $event->channelKey),
+			'id' => Channel::buildId(connectionId: $event->connectionId, channelKey: $event->channelKey)->toByteString(),
 			'connectionId' => $event->connectionId->toByteString(),
 			'channelKey' => $event->channelKey,
 			'displayName' => $event->displayName,
