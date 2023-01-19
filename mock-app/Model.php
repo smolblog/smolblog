@@ -3,6 +3,7 @@
 namespace Smolblog\Mock;
 
 use PDO;
+use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Framework\Objects\DomainModel;
 
 /**
@@ -13,6 +14,9 @@ class Model extends DomainModel {
 		EventStreams\ConnectorEventStream::class => ['db' => PDO::class],
 		Projections\ConnectionProjection::class => ['db' => PDO::class],
 		Projections\ChannelProjection::class => ['db' => PDO::class],
+		Transients::class => ['db' => PDO::class],
+
+		AuthRequestStateRepo::class => Transients::class,
 	];
 
 	public const LISTENERS = [

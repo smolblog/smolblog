@@ -74,6 +74,9 @@ final class App {
 
 		DROP TABLE IF EXISTS "connector_events";
 		CREATE TABLE "connector_events" ("id" integer,"event_id" text NOT NULL,"event_time" text NOT NULL,"connection_id" text NOT NULL,"user_id" text NOT NULL,"payload" text,"event_type" text NOT NULL, PRIMARY KEY (id));
+
+		DROP TABLE IF EXISTS "temp_options";
+		CREATE TABLE "temp_options" ("id" integer,"key" text NOT NULL,"value" text NOT NULL,"expires" text NOT NULL, PRIMARY KEY (id));
 		EOF;
 
 		$db->exec($setupSql);

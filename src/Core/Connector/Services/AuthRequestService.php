@@ -40,7 +40,7 @@ class AuthRequestService {
 
 		$data = $connector->getInitializationData(callbackUrl: $request->callbackUrl);
 
-		$this->stateRepo->save(new AuthRequestState(
+		$this->stateRepo->saveAuthRequestState(new AuthRequestState(
 			key: $data->state,
 			userId: $request->userId,
 			info: $data->info,
@@ -57,7 +57,7 @@ class AuthRequestService {
 	 */
 	public function onFinishAuthRequest(FinishAuthRequest $request): void {
 		$connector = $this->connectors->get($request->provider);
-		$info = $this->stateRepo->get(key: $request->stateKey);
+		$info = $this->stateRepo->getAuthRequestState(key: $request->stateKey);
 
 		$connection = $connector->createConnection(code: $request->code, info: $info);
 		$this->messageBus->dispatch(new ConnectionEstablished(
@@ -68,7 +68,5 @@ class AuthRequestService {
 			connectionId: $connection->id,
 			userId: $info->userId
 		));
-
-		$this->messageBus->dispatch(new RefreshChannels(connectionId: $connection->id, userId: $info->userId));
 	}
 }

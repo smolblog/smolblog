@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\SerializableKit;
 use Smolblog\Framework\Objects\Value;
 
 /**
@@ -10,6 +11,8 @@ use Smolblog\Framework\Objects\Value;
  * requirements of being an Entity. It can be persisted in any key-value store.
  */
 class AuthRequestState extends Value {
+	use SerializableKit;
+
 	/**
 	 * Create the state
 	 *
@@ -22,5 +25,28 @@ class AuthRequestState extends Value {
 		public readonly Identifier $userId,
 		public readonly array $info,
 	) {
+	}
+
+	/**
+	 * Create an instance of this class from an associative array. Assumes array keys map correctly to object
+	 * properties.
+	 *
+	 * @param array $data Data to initialize class with.
+	 * @return static New instancce of this object
+	 */
+	public static function fromArray(array $data): static {
+		$data['userId'] = Identifier::fromString($data['userId']);
+		return new static(...$data);
+	}
+
+	/**
+	 * Get all defined fields as a single array.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$data = get_object_vars($this);
+		$data['userId'] = $this->userId->toString();
+		return $data;
 	}
 }
