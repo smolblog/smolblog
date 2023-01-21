@@ -11,13 +11,13 @@ interface AuthRequestStateRepo {
 	 * @param AuthRequestState $state State to save.
 	 * @return void
 	 */
-	public function save(AuthRequestState $state): void;
+	public function saveAuthRequestState(AuthRequestState $state): void;
 
 	/**
 	 * Get the given AuthRequestState
 	 *
 	 * @param string $key Key of the state to retrieve.
-	 * @return AuthRequestState
+	 * @return AuthRequestState|null
 	 */
-	public function get(string $key): AuthRequestState;
+	public function getAuthRequestState(string $key): ?AuthRequestState;
 }

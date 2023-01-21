@@ -33,7 +33,9 @@ class ConnectionRefresher {
 	 */
 	#[ExecutionLayerListener(later: 1)]
 	public function checkOnConnectionById(ConnectionById $query) {
-		$query->results = $this->refresh($query->results);
+		if ($query->results) {
+			$query->results = $this->refresh($query->results);
+		}
 	}
 
 	/**
