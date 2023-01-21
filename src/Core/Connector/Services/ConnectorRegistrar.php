@@ -18,8 +18,8 @@ class ConnectorRegistrar {
 	/**
 	 * Construct the Registrar with a DI container
 	 *
-	 * @param ContainerInterface $container  Containter which contains the needed classes.
-	 * @param array         $configuration Array of key => service class to configure the registrar.
+	 * @param ContainerInterface $container     Containter which contains the needed classes.
+	 * @param array              $configuration Array of key => service class to configure the registrar.
 	 */
 	public function __construct(ContainerInterface $container, array $configuration) {
 		$this->container = $container;

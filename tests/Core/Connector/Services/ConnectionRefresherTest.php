@@ -8,6 +8,7 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Entities\ConnectionWriter;
 use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;
+use Smolblog\Core\User\User;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EventComparisonTestKit;
@@ -59,8 +60,7 @@ final class ConnectionRefresherTest extends TestCase {
 			new ConnectionRefreshed(
 				details: ['access' => '456'],
 				connectionId: $this->refreshedConnection->id,
-				// TODO: replace with system account ID.
-				userId: Identifier::fromString('e3f38a3e-eb0f-48f2-8803-6892a87ed20c'),
+				userId: User::internalSystemUser()->id,
 			)
 		));
 	}
@@ -68,13 +68,19 @@ final class ConnectionRefresherTest extends TestCase {
 	public function testItReturnsTheConnectionIfTheConnectionDoesNotNeedARefresh() {
 		$this->connector->method('connectionNeedsRefresh')->willReturn(false);
 
-		$this->assertEquals($this->connection, $this->service->refresh(connection: $this->connection));
+		$this->assertEquals($this->connection, $this->service->refresh(
+			connection: $this->connection,
+			userId: User::internalSystemUser()->id
+		));
 	}
 
 	public function testItRefreshesAndSavesTheConnectionIfNecessary() {
 		$this->setUpForRefresh();
 
-		$response = $this->service->refresh(connection: $this->connection);
+		$response = $this->service->refresh(
+			connection: $this->connection,
+			userId: User::internalSystemUser()->id
+		);
 		$this->assertEquals($this->refreshedConnection, $response);
 	}
 

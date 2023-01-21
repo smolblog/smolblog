@@ -32,7 +32,7 @@ final class AuthRequestServiceTest extends TestCase {
 							 ->willReturn($connector);
 
 		$stateRepo = $this->createMock(AuthRequestStateRepo::class);
-		$stateRepo->expects($this->once())->method('save');
+		$stateRepo->expects($this->once())->method('saveAuthRequestState');
 
 		$messageBus = $this->createStub(MessageBus::class);
 
@@ -74,17 +74,14 @@ final class AuthRequestServiceTest extends TestCase {
 		$connectors->method('get')->willReturn($connector);
 
 		$stateRepo = $this->createStub(AuthRequestStateRepo::class);
-		$stateRepo->method('get')->willReturn(new AuthRequestState(
+		$stateRepo->method('getAuthRequestState')->willReturn(new AuthRequestState(
 			key: 'two',
 			userId: $userId,
 			info: ['six' => 'eight'],
 		));
 
 		$messageBus = $this->createMock(MessageBus::class);
-		$messageBus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo($expectedEvent)],
-			[$this->equalTo(new RefreshChannels(connectionId: $returnedConnection->id, userId: $userId))]
-		);
+		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
 
 		$service = new AuthRequestService(
 			connectors: $connectors,

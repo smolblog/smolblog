@@ -5,6 +5,7 @@ namespace Smolblog\Core\Connector\Services;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;
+use Smolblog\Core\User\User;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
@@ -34,7 +35,7 @@ class ConnectionRefresher {
 	#[ExecutionLayerListener(later: 1)]
 	public function checkOnConnectionById(ConnectionById $query) {
 		if ($query->results) {
-			$query->results = $this->refresh($query->results);
+			$query->results = $this->refresh($query->results, userId: User::internalSystemUser()->id);
 		}
 	}
 
@@ -42,9 +43,10 @@ class ConnectionRefresher {
 	 * Check the given Connection to see if it needs to be refreshed. If it does, refresh it and save the result.
 	 *
 	 * @param Connection $connection Connection object to check.
+	 * @param Identifier $userId     User initiating the check.
 	 * @return Connection Connection object ready to be used.
 	 */
-	public function refresh(Connection $connection): Connection {
+	public function refresh(Connection $connection, Identifier $userId): Connection {
 		$connector = $this->connectorRepo->get($connection->provider);
 		if (!$connector->connectionNeedsRefresh($connection)) {
 			return $connection;
@@ -54,8 +56,7 @@ class ConnectionRefresher {
 		$this->messageBus->dispatch(new ConnectionRefreshed(
 			details: $refreshed->details,
 			connectionId: $refreshed->id,
-			// TODO: replace with system account ID.
-			userId: Identifier::fromString('e3f38a3e-eb0f-48f2-8803-6892a87ed20c'),
+			userId: $userId,
 		));
 		return $refreshed;
 	}
