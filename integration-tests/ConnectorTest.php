@@ -5,9 +5,11 @@ namespace Smolblog\Test;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
+use Smolblog\Core\Connector\Commands\RefreshChannels;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
 use Smolblog\Core\Connector\Queries\ConnectionById;
+use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Mock\App;
 
@@ -41,5 +43,13 @@ final class ConnectorTest extends TestCase {
 			displayName: 'snek.smol.blog',
 			details: ['token' => '14me24you'],
 		), $result);
+	}
+
+	public function testRefreshChannelsSecurity() {
+		$this->expectException(MessageNotAuthorizedException::class);
+		App::dispatch(new RefreshChannels(
+			connectionId: Connection::buildId(provider: 'smolblog', providerKey: 'woohoo543'),
+			userId: Identifier::fromString('f8991dd9-a867-49e8-a232-4f7e54ec9850'),
+		));
 	}
 }

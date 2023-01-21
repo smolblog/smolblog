@@ -8,6 +8,8 @@ use Smolblog\Core\Connector\Services\ConnectorRegistrar;
 use Smolblog\Core\Model;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Infrastructure\ListenerRegistrar;
+use Smolblog\Framework\Infrastructure\QueryMemoizationService;
+use Smolblog\Framework\Infrastructure\SecurityCheckService;
 use Smolblog\Framework\Infrastructure\ServiceRegistrar;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query;
@@ -45,19 +47,21 @@ final class App {
 			ContainerInterface::class => ServiceRegistrar::class,
 			Connector::class => [],
 			PDO::class => fn() => $pdo,
+			QueryMemoizationService::class => [],
+			SecurityCheckService::class => [MessageBus::class],
 		];
 
 		$services = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::SERVICES), []);
 		$services = array_merge($services, $appServices);
 		$services[ConnectorRegistrar::class]['configuration'] = fn() => ['smolblog' => Connector::class];
 
-		echo "Services:\n";
-		// print_r($services);
 		$container = new ServiceRegistrar(configuration: $services);
 		$registry = new ListenerRegistrar(container: $container);
 
 		$listeners = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::LISTENERS), []);
 		array_walk($listeners, fn($className) => $registry->registerService($className));
+		$registry->registerService(QueryMemoizationService::class);
+		$registry->registerService(SecurityCheckService::class);
 
 		$this->bus = new DefaultMessageBus($registry);
 	}
