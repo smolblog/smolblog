@@ -6,8 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
+use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
-use Smolblog\Core\Connector\Events\ConnectionEstablished;
+use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Objects\Identifier;
@@ -45,11 +46,32 @@ final class ConnectorTest extends TestCase {
 		), $result);
 	}
 
-	public function testRefreshChannelsSecurity() {
+	/** @depends testAuthRequest */
+	public function testRefreshChannelsSuccess() {
+		$connectionId = Connection::buildId(provider: 'smolblog', providerKey: 'woohoo543');
+
+		App::dispatch(new RefreshChannels(
+			connectionId: $connectionId,
+			userId: Identifier::fromString('f7d1d707-bcf1-46bf-94d5-0c7942d51ca3'),
+		));
+
+		$expected = new Channel(
+			connectionId: $connectionId,
+			channelKey: 'snek.smol.blog',
+			displayName: 'snek.smol.blog',
+			details: [],
+		);
+		$results = App::fetch(new ChannelsForConnection($connectionId));
+		$this->assertEquals($expected, $results[0]);
+	}
+
+	/** @depends testAuthRequest */
+	public function testRefreshChannelsFailure() {
 		$this->expectException(MessageNotAuthorizedException::class);
+
 		App::dispatch(new RefreshChannels(
 			connectionId: Connection::buildId(provider: 'smolblog', providerKey: 'woohoo543'),
-			userId: Identifier::fromString('f8991dd9-a867-49e8-a232-4f7e54ec9850'),
+			userId: Identifier::fromString('d1701e97-3175-42d5-b6dd-f49df167e2a5'),
 		));
 	}
 }
