@@ -41,4 +41,14 @@ abstract class ConnectorEvent extends Event {
 			'userId' => $this->userId->toString(),
 		];
 	}
+
+	/**
+	 * Unserialize the standard properties for these events
+	 *
+	 * @param array $properties Array of serialized properties.
+	 * @return array
+	 */
+	protected static function standardPropertiesFromArray(array $properties): array {
+		return array_map(fn($str) => Identifier::fromString($str), $properties);
+	}
 }

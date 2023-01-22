@@ -30,6 +30,6 @@ final class ConnectorRegistrarTest extends TestCase {
 		$container = $this->createStub(ContainerInterface::class);
 		$config = ['test' => self::class];
 
-		$reg = new ConnectorRegistrar(container: $container, configuration: $config);
+		new ConnectorRegistrar(container: $container, configuration: $config);
 	}
 }
