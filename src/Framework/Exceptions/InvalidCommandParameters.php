@@ -24,7 +24,7 @@ class InvalidCommandParameters extends Exception implements SmolblogException {
 		int $code = 0,
 		?Throwable $previous = null
 	) {
-		$message ??= "Invalid parameters given to command " . get_class($command);
+		$message ??= 'Invalid parameters given to command ' . get_class($command);
 		parent::__construct($message, $code, $previous);
 	}
 }
