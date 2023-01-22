@@ -3,6 +3,7 @@
 namespace Smolblog\Framework\Objects;
 
 use Psr\Container\ContainerInterface;
+use Smolblog\Framework\Exceptions\RegistrationException;
 
 trait RegistrarKit {
 	/**
@@ -35,8 +36,8 @@ trait RegistrarKit {
 	 * @return void
 	 */
 	public function register(string $key, string $class): void {
-		if (!in_array($this->interface, class_implements($class))) {
-			return;
+		if (isset($this->interface) && !in_array($this->interface, class_implements($class))) {
+			throw new RegistrationException(message: "$class does not implment $this->interface.");
 		}
 
 		$this->library[$key] = $class;

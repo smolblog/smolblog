@@ -36,9 +36,9 @@ class LinkChannelToSite extends Command implements AuthorizableMessage {
 	/**
 	 * Get the Query to check if this Command can execute.
 	 *
-	 * @return Query
+	 * @return UserCanLinkChannelAndSite
 	 */
-	public function getAuthorizationQuery(): Query {
+	public function getAuthorizationQuery(): UserCanLinkChannelAndSite {
 		return new UserCanLinkChannelAndSite(
 			userId: $this->userId,
 			channelId: $this->channelId,

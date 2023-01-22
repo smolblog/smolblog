@@ -4,6 +4,7 @@ namespace Smolblog\Framework\Objects;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Smolblog\Framework\Exceptions\RegistrationException;
 
 interface MockRegisterable {}
 
@@ -45,10 +46,10 @@ final class RegistrarKitTest extends TestCase {
 	}
 
 	public function testWillNotSaveWhenClassNotRegisterable() {
+		$this->expectException(RegistrationException::class);
+
 		$registrar = new ConcreteRegistrar(container: $this->createStub(ContainerInterface::class));
 		$registrar->register(key: 'nope', class: self::class);
-
-		$this->assertFalse($registrar->has('nope'));
 	}
 
 	public function testRegistrarGivesNullWhenNotRegistered() {

@@ -4,7 +4,6 @@ namespace Smolblog\Core\Connector\Services;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Connector;
-use Smolblog\Core\Connector\Hooks\CollectingConnectors;
 use Smolblog\Framework\Objects\RegistrarKit;
 
 /**

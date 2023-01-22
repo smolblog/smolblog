@@ -8,9 +8,9 @@ use Smolblog\Framework\Objects\Identifier;
 
 final class TestInvalidCommand extends Command {}
 
-final class InvalidCommandParametersTest extends TestCase {
+final class InvalidCommandParametersExceptionTest extends TestCase {
 	public function testItHasADefaultMessage() {
-		$ex = new InvalidCommandParameters(new TestInvalidCommand());
+		$ex = new InvalidCommandParametersException(new TestInvalidCommand());
 		$expected = 'Invalid parameters given to command ' . TestInvalidCommand::class;
 
 		$this->assertEquals($expected, $ex->getMessage());
@@ -18,7 +18,7 @@ final class InvalidCommandParametersTest extends TestCase {
 
 	public function testTheDefaultMessageCanBeOverridden() {
 		$message = Identifier::createRandom()->toString();
-		$ex = new InvalidCommandParameters(new TestInvalidCommand(), message: $message);
+		$ex = new InvalidCommandParametersException(new TestInvalidCommand(), message: $message);
 
 		$this->assertEquals($message, $ex->getMessage());
 	}
