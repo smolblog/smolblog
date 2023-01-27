@@ -75,7 +75,7 @@ abstract class BaseContent extends Entity {
 	 *
 	 * @return string
 	 */
-	abstract public function getHtmlContent(): string;
+	abstract public function getBodyContent(): string;
 
 	/**
 	 * Add information from a ContentExtension
@@ -94,6 +94,9 @@ abstract class BaseContent extends Entity {
 	 * @return ContentExtension
 	 */
 	public function getExtension(string $class): ContentExtension {
+		if (is_array($this->extensions[$class])) {
+			$this->extensions[$class] = new $class(...$this->extensions[$class]);
+		}
 		return $this->extensions[$class];
 	}
 }

@@ -3,8 +3,6 @@
 namespace Smolblog\Core\Content\Events;
 
 use DateTimeInterface;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentNotProjectedException;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\PayloadKit;
 use Smolblog\Framework\Objects\Identifier;
@@ -43,20 +41,6 @@ abstract class ContentEvent extends Event {
 	public readonly Identifier $siteId;
 
 	/**
-	 * The state of the content as of this event in its native format
-	 *
-	 * @var mixed
-	 */
-	protected mixed $nativeContent = null;
-
-	/**
-	 * The state of the content as of this event in the standard format
-	 *
-	 * @var mixed
-	 */
-	protected Content $standardContent = null;
-
-	/**
 	 * Construct the event
 	 *
 	 * @param Identifier             $contentId Identifier for the content this event is about.
@@ -79,33 +63,13 @@ abstract class ContentEvent extends Event {
 	}
 
 	/**
-	 * Get the state of the content as of this event in its native format.
+	 * Deserialize the standarnd properties
 	 *
-	 * @throws ContentNotProjectedException Thrown if the content is not yet projected.
-	 *
-	 * @return mixed
+	 * @param array $properties Associative array of standard properties.
+	 * @return array
 	 */
-	public function getNativeContent(): mixed {
-		if (!isset($this->nativeContent)) {
-			throw new ContentNotProjectedException(event: $this);
-		}
-
-		return $this->nativeContent;
-	}
-
-	/**
-	 * Get the state of the content as of this event in the standard format.
-	 *
-	 * @throws ContentNotProjectedException Thrown if the content is not yet projected.
-	 *
-	 * @return mixed
-	 */
-	public function getStandardContent(): Content {
-		if (!isset($this->standardContent)) {
-			throw new ContentNotProjectedException(event: $this);
-		}
-
-		return $this->standardContent;
+	protected static function standardPropertiesFromArray(array $properties): array {
+		return array_map(fn($item) => Identifier::fromString($item), $properties);
 	}
 
 	/**
@@ -117,6 +81,7 @@ abstract class ContentEvent extends Event {
 		return [
 			'contentId' => $this->contentId->toString(),
 			'userId' => $this->userId->toString(),
+			'siteId' => $this->siteId->toString(),
 		];
 	}
 }
