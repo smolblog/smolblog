@@ -77,6 +77,24 @@ abstract class BaseContent extends Entity {
 	 */
 	abstract public function getBodyContent(): string;
 
+	public function __construct(
+		string $permalink,
+		DateTimeInterface $timestamp,
+		ContentVisibility $visibility,
+		Identifier $siteId,
+		Identifier $userId,
+		?Identifier $id = null,
+		mixed ...$extensions = [],
+	) {
+		$this->permalink = $permalink;
+		$this->timestamp = $timestamp;
+		$this->visibility = $visibility;
+		$this->siteId = $siteId;
+		$this->userId = $userId;
+		$this->extensions = $extensions;
+		parent::__construct(id: $id ?? Identifier::createFromDate());
+	}
+
 	/**
 	 * Add information from a ContentExtension
 	 *
@@ -95,7 +113,7 @@ abstract class BaseContent extends Entity {
 	 */
 	public function getExtension(string $class): ContentExtension {
 		if (is_array($this->extensions[$class])) {
-			$this->extensions[$class] = new $class(...$this->extensions[$class]);
+			$this->extensions[$class] = $class::fromArray($this->extensions[$class]);
 		}
 		return $this->extensions[$class];
 	}

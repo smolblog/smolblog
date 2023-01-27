@@ -41,4 +41,16 @@ class Status extends BaseContent {
 	public function getBodyContent(): string {
 		return $this->text;
 	}
+
+	/**
+	 * Construct this content object
+	 *
+	 * @param string $text Markdown-formatted text of the content.
+	 * @param mixed ...$props Parent properties.
+	 */
+	public function __construct(string $text, mixed ...$props) {
+		$this->text = $text;
+		//TODO: replace with actual properties.
+		parent::__construct(...$props);
+	}
 }
