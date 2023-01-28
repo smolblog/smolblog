@@ -81,7 +81,8 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	public function getPayload(): array {
 		return [
 			'permalink' => $this->permalink,
-			'contentTimestamp' => $this->contentTimestamp->format(DateTimeInterface::RFC3339_EXTENDED),
+			'contentTimestamp' => $this->contentTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
+			'authorId' => $this->authorId?->toString(),
 		];
 	}
 
@@ -95,6 +96,7 @@ class ContentBaseAttributeEdited extends ContentEvent {
 		return [
 			...$payload,
 			'contentTimestamp' => self::safeDeserializeDate($payload['contentTimestamp']),
+			'authorId' => Identifier::fromString($payload['authorId']),
 		];
 	}
 }

@@ -41,7 +41,7 @@ class ContentVisibilityChanged extends ContentEvent {
 	 */
 	public function getPayload(): array {
 		return [
-			'visibility' => strval($this->visibility),
+			'visibility' => $this->visibility->value,
 		];
 	}
 

@@ -24,14 +24,14 @@ abstract class BaseContent extends Entity {
 	 *
 	 * @var string
 	 */
-	public readonly string $permalink;
+	public readonly ?string $permalink;
 
 	/**
 	 * Date and time this content was first published.
 	 *
 	 * @var DateTimeInterface
 	 */
-	public readonly DateTimeInterface $publishTimestamp;
+	public readonly ?DateTimeInterface $publishTimestamp;
 
 	/**
 	 * Visiblity of the content.
@@ -80,30 +80,37 @@ abstract class BaseContent extends Entity {
 	/**
 	 * Construct the content
 	 *
+	 * @throws InvalidContentException Thrown if an invalid state is given.
+	 *
+	 * @param Identifier        $siteId           ID of the site this content belongs to.
+	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
 	 * @param string            $permalink        Relative URL for this content.
 	 * @param DateTimeInterface $publishTimestamp Date and time this content was first published.
 	 * @param ContentVisibility $visibility       Visiblity of the content.
-	 * @param Identifier        $siteId           ID of the site this content belongs to.
-	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier|null   $id               ID of this content.
-	 * @param mixed             ...$extensions    Extensions attached to this content.
+	 * @param array             $extensions       Extensions attached to this content.
 	 */
 	public function __construct(
-		string $permalink,
-		DateTimeInterface $publishTimestamp,
-		ContentVisibility $visibility,
 		Identifier $siteId,
 		Identifier $authorId,
+		?string $permalink = null,
+		?DateTimeInterface $publishTimestamp = null,
+		ContentVisibility $visibility = ContentVisibility::Draft,
 		?Identifier $id = null,
-		mixed ...$extensions,
+		array $extensions = [],
 	) {
+		if ($visibility === ContentVisibility::Published && (!isset($permalink) || !isset($publishTimestamp))) {
+			throw new InvalidContentException('Permalink and timestamp are required if content is published.');
+		}
+
 		$this->permalink = $permalink;
 		$this->publishTimestamp = $publishTimestamp;
 		$this->visibility = $visibility;
 		$this->siteId = $siteId;
 		$this->authorId = $authorId;
-		$this->extensions = $extensions;
 		parent::__construct(id: $id ?? Identifier::createFromDate());
+
+		array_walk($extensions, fn($ext) => $this->attachExtension($ext));
 	}
 
 	/**
@@ -123,9 +130,6 @@ abstract class BaseContent extends Entity {
 	 * @return ContentExtension
 	 */
 	public function getExtension(string $class): ContentExtension {
-		if (is_array($this->extensions[$class])) {
-			$this->extensions[$class] = $class::fromArray($this->extensions[$class]);
-		}
 		return $this->extensions[$class];
 	}
 }

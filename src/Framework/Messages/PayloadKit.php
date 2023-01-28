@@ -108,11 +108,11 @@ trait PayloadKit {
 			'id' => $this->id?->toString() ?? null,
 			'timestamp' => $this->timestamp?->format(DateTimeInterface::RFC3339_EXTENDED) ?? null,
 		];
-		return [
+		return array_filter([
 			'type' => static::class,
-			...array_filter($defaultEventProperties),
+			...$defaultEventProperties,
 			...$this->getStandardProperties(),
-			'payload' => $this->getPayload(),
-		];
+			'payload' => array_filter($this->getPayload()),
+		]);
 	}
 }
