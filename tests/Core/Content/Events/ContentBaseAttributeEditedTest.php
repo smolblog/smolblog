@@ -17,7 +17,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 				siteId: Identifier::createRandom(),
 				permalink: '/new/permalink.html',
 				authorId: Identifier::createRandom(),
-				contentTimestamp: new DateTimeImmutable(),
+				publishTimestamp: new DateTimeImmutable(),
 			)
 		);
 
@@ -47,7 +47,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 				contentId: Identifier::createRandom(),
 				userId: Identifier::createRandom(),
 				siteId: Identifier::createRandom(),
-				contentTimestamp: new DateTimeImmutable(),
+				publishTimestamp: new DateTimeImmutable(),
 			)
 		);
 
@@ -58,7 +58,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 				userId: Identifier::createRandom(),
 				siteId: Identifier::createRandom(),
 				authorId: Identifier::createRandom(),
-				contentTimestamp: new DateTimeImmutable(),
+				publishTimestamp: new DateTimeImmutable(),
 			)
 		);
 
@@ -69,7 +69,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 				userId: Identifier::createRandom(),
 				siteId: Identifier::createRandom(),
 				permalink: '/new/permalink.html',
-				contentTimestamp: new DateTimeImmutable(),
+				publishTimestamp: new DateTimeImmutable(),
 			)
 		);
 
@@ -102,7 +102,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 			siteId: Identifier::fromString('bd991aac-bd81-4ee7-b77c-793d4bc55796'),
 			permalink: '/new/permalink.html',
 			authorId: Identifier::fromString('376ee1ba-4544-4e9e-827f-2792b0c67c76'),
-			contentTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
+			publishTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
 			id: Identifier::fromString('20366a42-2839-41c7-83a9-3a00cb411c7d'),
 			timestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
 		);
@@ -117,7 +117,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 			'payload' => [
 				'permalink' => '/new/permalink.html',
 				'authorId' => '376ee1ba-4544-4e9e-827f-2792b0c67c76',
-				'contentTimestamp' => '2022-02-22T22:22:22',
+				'publishTimestamp' => '2022-02-22T22:22:22',
 			]
 		]);
 
@@ -135,7 +135,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 			'payload' => [
 				'permalink' => '/new/permalink.html',
 				'authorId' => '376ee1ba-4544-4e9e-827f-2792b0c67c76',
-				'contentTimestamp' => '2022-02-22T22:22:22.000+00:00',
+				'publishTimestamp' => '2022-02-22T22:22:22.000+00:00',
 			]
 		];
 
@@ -145,7 +145,7 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 			siteId: Identifier::fromString('bd991aac-bd81-4ee7-b77c-793d4bc55796'),
 			permalink: '/new/permalink.html',
 			authorId: Identifier::fromString('376ee1ba-4544-4e9e-827f-2792b0c67c76'),
-			contentTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
+			publishTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
 			id: Identifier::fromString('20366a42-2839-41c7-83a9-3a00cb411c7d'),
 			timestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
 		))->toArray();

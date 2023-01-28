@@ -10,7 +10,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Indicates a status' text has been edited.
  */
-class StatusBodyEdited extends ContentEvent implements ContentBodyEdited {
+class StatusBodyEdited extends ContentBodyEdited {
 	/**
 	 * Internal Status object to assist with processing.
 	 *

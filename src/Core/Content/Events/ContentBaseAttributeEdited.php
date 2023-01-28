@@ -28,7 +28,7 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	 *
 	 * @var DateTimeInterface
 	 */
-	public readonly ?DateTimeInterface $contentTimestamp;
+	public readonly ?DateTimeInterface $publishTimestamp;
 
 	/**
 	 * ID of the user that authored/owns this content.
@@ -38,7 +38,7 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	public readonly ?Identifier $authorId;
 
 	/**
-	 * Construct the event. Requires either $permalink or $contentTimestamp
+	 * Construct the event. Requires either $permalink or $publishTimestamp
 	 *
 	 * @throws InvalidMessageAttributesException Thrown if no updated attributes provided.
 	 *
@@ -46,7 +46,7 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	 * @param Identifier             $userId           User responsible for this event.
 	 * @param Identifier             $siteId           Site this content belongs to.
 	 * @param string|null            $permalink        Updated permalink; null indicates no change.
-	 * @param DateTimeInterface|null $contentTimestamp Date/Time content published; null indicates no change.
+	 * @param DateTimeInterface|null $publishTimestamp Date/Time content published; null indicates no change.
 	 * @param Identifier|null        $authorId         Identifier for the user that authored/owns this content.
 	 * @param Identifier|null        $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
@@ -56,19 +56,19 @@ class ContentBaseAttributeEdited extends ContentEvent {
 		Identifier $userId,
 		Identifier $siteId,
 		?string $permalink = null,
-		?DateTimeInterface $contentTimestamp = null,
+		?DateTimeInterface $publishTimestamp = null,
 		?Identifier $authorId = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
-		if (!isset($permalink) && !isset($contentTimestamp) && !isset($authorId)) {
+		if (!isset($permalink) && !isset($publishTimestamp) && !isset($authorId)) {
 			throw new InvalidMessageAttributesException(
-				message: "ContentBaseAttributeEdited requires either permalink or contentTimestamp."
+				message: "ContentBaseAttributeEdited requires either permalink or publishTimestamp."
 			);
 		}
 
 		$this->permalink = $permalink;
-		$this->contentTimestamp = $contentTimestamp;
+		$this->publishTimestamp = $publishTimestamp;
 		$this->authorId = $authorId;
 		parent::__construct(contentId: $contentId, userId: $userId, siteId: $siteId, id: $id, timestamp: $timestamp);
 	}
@@ -81,7 +81,7 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	public function getPayload(): array {
 		return [
 			'permalink' => $this->permalink,
-			'contentTimestamp' => $this->contentTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
+			'publishTimestamp' => $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
 			'authorId' => $this->authorId?->toString(),
 		];
 	}
@@ -95,7 +95,7 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	protected static function payloadFromArray(array $payload): array {
 		return [
 			...$payload,
-			'contentTimestamp' => self::safeDeserializeDate($payload['contentTimestamp']),
+			'publishTimestamp' => self::safeDeserializeDate($payload['publishTimestamp']),
 			'authorId' => Identifier::fromString($payload['authorId']),
 		];
 	}

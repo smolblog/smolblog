@@ -7,18 +7,18 @@ namespace Smolblog\Core\Content\Events;
  *
  * This should be implemented by any ContentEvents that result in a content's body changing.
  */
-interface ContentBodyEdited {
+abstract class ContentBodyEdited extends ContentEvent {
 	/**
 	 * Get the updated HTML-formatted body text.
 	 *
 	 * @return array
 	 */
-	public function getNewBody(): string;
+	abstract public function getNewBody(): string;
 
 	/**
 	 * Get the updated title.
 	 *
 	 * @return array
 	 */
-	public function getNewTitle(): string;
+	abstract public function getNewTitle(): string;
 }
