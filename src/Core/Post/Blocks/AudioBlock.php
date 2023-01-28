@@ -2,7 +2,8 @@
 
 namespace Smolblog\Core\Post\Blocks;
 
-use Smolblog\Core\Post\{Block, Media};
+use Smolblog\Core\Content\Media;
+use Smolblog\Core\Post\{Block};
 use Smolblog\Framework\Objects\Identifier;
 
 /**

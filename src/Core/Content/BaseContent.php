@@ -95,7 +95,7 @@ abstract class BaseContent extends Entity {
 		Identifier $siteId,
 		Identifier $authorId,
 		?Identifier $id = null,
-		mixed ...$extensions = [],
+		mixed ...$extensions,
 	) {
 		$this->permalink = $permalink;
 		$this->publishTimestamp = $publishTimestamp;

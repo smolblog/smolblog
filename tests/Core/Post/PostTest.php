@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
+use Smolblog\Core\Content\Media;
 use Smolblog\Core\Post\Blocks\ImageBlock;
 use Smolblog\Core\Post\Blocks\ParagraphBlock;
 use Smolblog\Core\Post\Blocks\QuoteBlock;

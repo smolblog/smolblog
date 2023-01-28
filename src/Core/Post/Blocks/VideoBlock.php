@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Post\Blocks;
 
+use Smolblog\Core\Content\Media as ContentMedia;
 use Smolblog\Core\Post\{Block, Media};
 use Smolblog\Framework\Objects\Identifier;
 
@@ -14,11 +15,11 @@ class VideoBlock extends Block {
 	/**
 	 * Construct the block
 	 *
-	 * @param Media      $media Media object for video to display.
-	 * @param Identifier $id    ID for block if it exists.
+	 * @param ContentMedia $media Media object for video to display.
+	 * @param Identifier   $id    ID for block if it exists.
 	 */
 	public function __construct(
-		public readonly Media $media,
+		public readonly ContentMedia $media,
 		Identifier $id = null,
 	) {
 		parent::__construct(id: $id);

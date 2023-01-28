@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Post;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Post\Media;
+use Smolblog\Core\Content\Media;
 
 final class BlockTest extends TestCase {
 	public function testAudioBlockCanBeCreated() {
