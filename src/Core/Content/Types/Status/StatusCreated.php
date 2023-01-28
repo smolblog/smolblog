@@ -22,25 +22,25 @@ class StatusCreated extends ContentCreated {
 	 * Create the Event.
 	 *
 	 * @param string                 $text             Markdown-formatted text of the status.
-	 * @param string                 $permalink        Relative URL for this content.
-	 * @param DateTimeInterface      $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility      $visibility       Visiblity of the content.
 	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
 	 * @param Identifier             $siteId           Site this content belongs to.
+	 * @param string|null            $permalink        Relative URL for this content.
+	 * @param DateTimeInterface|null $publishTimestamp Date and time this content was first published.
+	 * @param ContentVisibility|null $visibility       Visiblity of the content.
 	 * @param Identifier|null        $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
 	 */
 	public function __construct(
 		public readonly string $text,
-		string $permalink,
-		DateTimeInterface $publishTimestamp,
-		ContentVisibility $visibility,
 		Identifier $authorId,
 		Identifier $contentId,
 		Identifier $userId,
 		Identifier $siteId,
+		?string $permalink = null,
+		?DateTimeInterface $publishTimestamp = null,
+		?ContentVisibility $visibility = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
@@ -81,7 +81,7 @@ class StatusCreated extends ContentCreated {
 	 *
 	 * @return array
 	 */
-	public function getPayload(): array {
+	public function getContentPayload(): array {
 		return ['text' => $this->text];
 	}
 }
