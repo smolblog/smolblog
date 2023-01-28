@@ -31,7 +31,7 @@ abstract class BaseContent extends Entity {
 	 *
 	 * @var DateTimeInterface
 	 */
-	public readonly DateTimeInterface $timestamp;
+	public readonly DateTimeInterface $publishTimestamp;
 
 	/**
 	 * Visiblity of the content.
@@ -52,7 +52,7 @@ abstract class BaseContent extends Entity {
 	 *
 	 * @var Identifier
 	 */
-	public readonly Identifier $userId;
+	public readonly Identifier $authorId;
 
 	/**
 	 * Extensions attached to this content.
@@ -77,20 +77,31 @@ abstract class BaseContent extends Entity {
 	 */
 	abstract public function getBodyContent(): string;
 
+	/**
+	 * Construct the content
+	 *
+	 * @param string            $permalink        Relative URL for this content.
+	 * @param DateTimeInterface $publishTimestamp Date and time this content was first published.
+	 * @param ContentVisibility $visibility       Visiblity of the content.
+	 * @param Identifier        $siteId           ID of the site this content belongs to.
+	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
+	 * @param Identifier|null   $id               ID of this content.
+	 * @param mixed             ...$extensions    Extensions attached to this content.
+	 */
 	public function __construct(
 		string $permalink,
-		DateTimeInterface $timestamp,
+		DateTimeInterface $publishTimestamp,
 		ContentVisibility $visibility,
 		Identifier $siteId,
-		Identifier $userId,
+		Identifier $authorId,
 		?Identifier $id = null,
 		mixed ...$extensions = [],
 	) {
 		$this->permalink = $permalink;
-		$this->timestamp = $timestamp;
+		$this->publishTimestamp = $publishTimestamp;
 		$this->visibility = $visibility;
 		$this->siteId = $siteId;
-		$this->userId = $userId;
+		$this->authorId = $authorId;
 		$this->extensions = $extensions;
 		parent::__construct(id: $id ?? Identifier::createFromDate());
 	}
