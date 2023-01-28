@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Content;
 
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;

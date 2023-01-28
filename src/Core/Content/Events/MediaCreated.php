@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Media\Events;
+namespace Smolblog\Core\Content\Events;
 
 use DateTimeInterface;
 use Smolblog\Framework\Objects\Identifier;
@@ -8,7 +8,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Indicates a piece of media has been added to the media library.
  */
-class MediaCreated extends MediaEvent {
+class MediaCreated extends ContentEvent {
 	/**
 	 * Final URL of the media file referenced.
 	 *
@@ -33,7 +33,7 @@ class MediaCreated extends MediaEvent {
 	/**
 	 * Create the event
 	 *
-	 * @param Identifier             $mediaId         Identifier for the media this event is about.
+	 * @param Identifier             $contentId       Identifier for the media this event is about.
 	 * @param Identifier             $userId          User responsible for this event.
 	 * @param Identifier             $siteId          Site this media belongs to.
 	 * @param string                 $url             Final URL of the media file referenced.
@@ -43,7 +43,7 @@ class MediaCreated extends MediaEvent {
 	 * @param DateTimeInterface|null $timestamp       Optional timestamp for this event.
 	 */
 	public function __construct(
-		Identifier $mediaId,
+		Identifier $contentId,
 		Identifier $userId,
 		Identifier $siteId,
 		string $url,
@@ -56,7 +56,7 @@ class MediaCreated extends MediaEvent {
 		$this->descriptiveText = $descriptiveText;
 		$this->attributes = $attributes;
 		parent::__construct(
-			mediaId: $mediaId,
+			contentId: $contentId,
 			userId: $userId,
 			siteId: $siteId,
 			id: $id,
