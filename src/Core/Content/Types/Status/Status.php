@@ -12,13 +12,11 @@ use Smolblog\Core\Content\BaseContent;
  */
 class Status extends BaseContent {
 	/**
-	 * Markdown-formatted body text of the status.
+	 * Internal body representation.
 	 *
-	 * And that's it. Say what you want and get out. Maybe post a link. Maybe.
-	 *
-	 * @var string
+	 * @var InternalStatusBody
 	 */
-	public readonly string $text;
+	private InternalStatusBody $internal;
 
 	/**
 	 * Get a title-appropriate truncation of the content.
@@ -26,11 +24,7 @@ class Status extends BaseContent {
 	 * @return string
 	 */
 	public function getTitle(): string {
-		$truncated = substr($this->text, 0, strpos(wordwrap($this->text, 100) . "\n", "\n"));
-		if (strlen($this->text) > 100) {
-			$truncated .= '...';
-		}
-		return $truncated;
+		return $this->internal->getTruncated(100);
 	}
 
 	/**
@@ -39,18 +33,19 @@ class Status extends BaseContent {
 	 * @return string
 	 */
 	public function getBodyContent(): string {
-		return $this->text;
+		return $this->internal->text;
 	}
 
 	/**
 	 * Construct this content object
 	 *
-	 * @param string $text Markdown-formatted text of the content.
-	 * @param mixed ...$props Parent properties.
+	 * @param string $text     Markdown-formatted text of the content.
+	 * @param mixed  ...$props Parent properties.
 	 */
 	public function __construct(string $text, mixed ...$props) {
-		$this->text = $text;
-		//TODO: replace with actual properties.
+		$this->internal = new InternalStatusBody(text: $text);
+
+		// TODO: replace with actual properties.
 		parent::__construct(...$props);
 	}
 }
