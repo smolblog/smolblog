@@ -12,8 +12,10 @@ use Smolblog\Framework\Objects\DomainModel;
 class Model extends DomainModel {
 	public const SERVICES = [
 		EventStreams\ConnectorEventStream::class => ['db' => PDO::class],
+		EventStreams\ContentEventStream::class => ['db' => PDO::class],
 		Projections\ConnectionProjection::class => ['db' => PDO::class],
 		Projections\ChannelProjection::class => ['db' => PDO::class],
+		Projections\StandardContentProjection::class => ['db' => PDO::class],
 		Transients::class => ['db' => PDO::class],
 
 		AuthRequestStateRepo::class => Transients::class,
@@ -21,7 +23,9 @@ class Model extends DomainModel {
 
 	public const LISTENERS = [
 		EventStreams\ConnectorEventStream::class,
+		EventStreams\ContentEventStream::class,
 		Projections\ConnectionProjection::class,
 		Projections\ChannelProjection::class,
+		Projections\StandardContentProjection::class,
 	];
 }

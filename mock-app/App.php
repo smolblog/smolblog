@@ -79,8 +79,15 @@ final class App {
 		DROP TABLE IF EXISTS "connector_events";
 		CREATE TABLE "connector_events" ("id" integer,"event_id" text NOT NULL,"event_time" text NOT NULL,"connection_id" text NOT NULL,"user_id" text NOT NULL,"payload" text,"event_type" text NOT NULL, PRIMARY KEY (id));
 
+		DROP TABLE IF EXISTS "content_events";
+		CREATE TABLE "content_events" ("id" integer,"event_id" text NOT NULL,"event_time" text NOT NULL,"content_id" text NOT NULL,"site_id" text NOT NULL,"user_id" text NOT NULL,"payload" text,"event_type" text NOT NULL, PRIMARY KEY (id));
+
 		DROP TABLE IF EXISTS "temp_options";
 		CREATE TABLE "temp_options" ("id" integer,"key" text NOT NULL,"value" text NOT NULL,"expires" text NOT NULL, PRIMARY KEY (id));
+
+		DROP TABLE IF EXISTS "standard_content";
+		CREATE TABLE "standard_content" ("id" integer, "content_id" TEXT NOT NULL, "title" TEXT NOT NULL, "body" TEXT NOT NULL, "permalink" TEXT, "publish_timestamp" TEXT, "visibility" TEXT NOT NULL, "author_id" TEXT NOT NULL, "site_id" TEXT NOT NULL, "extensions" TEXT NOT NULL, PRIMARY KEY (id));
+
 		EOF;
 
 		$db->exec($setupSql);
