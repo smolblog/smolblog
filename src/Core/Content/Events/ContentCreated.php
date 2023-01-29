@@ -16,6 +16,7 @@ abstract class ContentCreated extends ContentEvent {
 	 *
 	 * @throws InvalidContentException Thrown if an invalid state is given.
 	 *
+	 * @param string                 $contentType      Fully-qualified class name of the content type.
 	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
@@ -27,6 +28,7 @@ abstract class ContentCreated extends ContentEvent {
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
 	 */
 	public function __construct(
+		public readonly string $contentType,
 		public readonly Identifier $authorId,
 		Identifier $contentId,
 		Identifier $userId,
@@ -75,6 +77,7 @@ abstract class ContentCreated extends ContentEvent {
 	 */
 	public function getPayload(): array {
 		return [
+			'contentType' => $this->contentType,
 			'authorId' => $this->authorId->toString(),
 			'permalink' => $this->permalink ?? null,
 			'publishTimestamp' => $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
@@ -102,10 +105,11 @@ abstract class ContentCreated extends ContentEvent {
 	protected static function payloadFromArray(array $payload): array {
 		$contentPayload = array_diff_key(
 			$payload,
-			array_flip(['authorId', 'permalink', 'publishTimestamp', 'visibility'])
+			array_flip(['authorId', 'permalink', 'publishTimestamp', 'visibility', 'contentType'])
 		);
 
 		return [
+			'contentType' => $payload['contentType'],
 			'authorId' => self::safeDeserializeIdentifier($payload['authorId'] ?? null),
 			'permalink' => $payload['permalink'] ?? null,
 			'publishTimestamp' => self::safeDeserializeDate($payload['publishTimestamp'] ?? ''),

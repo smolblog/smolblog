@@ -2,7 +2,10 @@
 
 namespace Smolblog\Core\Content\Types\Status;
 
+use DateTimeInterface;
 use Smolblog\Core\Content\BaseContent;
+use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * A short, title-less post.
@@ -39,13 +42,35 @@ class Status extends BaseContent {
 	/**
 	 * Construct this content object
 	 *
-	 * @param string $text     Markdown-formatted text of the content.
-	 * @param mixed  ...$props Parent properties.
+	 * @param string            $text             Markdown-formatted text of the content.
+	 * @param Identifier        $siteId           ID of the site this content belongs to.
+	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
+	 * @param string            $permalink        Relative URL for this content.
+	 * @param DateTimeInterface $publishTimestamp Date and time this content was first published.
+	 * @param ContentVisibility $visibility       Visiblity of the content.
+	 * @param Identifier|null   $id               ID of this content.
+	 * @param array             $extensions       Extensions attached to this content.
 	 */
-	public function __construct(string $text, mixed ...$props) {
+	public function __construct(
+		string $text,
+		Identifier $siteId,
+		Identifier $authorId,
+		?string $permalink = null,
+		?DateTimeInterface $publishTimestamp = null,
+		?ContentVisibility $visibility = null,
+		?Identifier $id = null,
+		?array $extensions = null,
+	) {
 		$this->internal = new InternalStatusBody(text: $text);
 
-		// TODO: replace with actual properties.
-		parent::__construct(...$props);
+		parent::__construct(
+			siteId: $siteId,
+			authorId: $authorId,
+			permalink: $permalink,
+			publishTimestamp: $publishTimestamp,
+			visibility: $visibility,
+			id: $id,
+			extensions: $extensions,
+		);
 	}
 }

@@ -46,6 +46,7 @@ class StatusCreated extends ContentCreated {
 	) {
 		$this->internal = new InternalStatusBody(text: $text);
 		parent::__construct(
+			contentType: Status::class,
 			permalink: $permalink,
 			publishTimestamp: $publishTimestamp,
 			visibility: $visibility,

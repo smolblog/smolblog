@@ -26,7 +26,7 @@ class ContentEventStream {
 	 */
 	public function __construct(private PDO $db) {
 		$this->addEvent = $this->db->prepare(
-			'INSERT INTO connector_events (event_id, event_time, event_type, content_id, site_id, user_id, payload) ' .
+			'INSERT INTO content_events (event_id, event_time, event_type, content_id, site_id, user_id, payload) ' .
 			'VALUES (:id, :timestamp, :type, :contentId, :siteId, :userId, :payload)'
 		);
 	}

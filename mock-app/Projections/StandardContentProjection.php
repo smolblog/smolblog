@@ -27,7 +27,7 @@ class StandardContentProjection {
 			'body' => $event->getNewBody(),
 			'permalink' => $event->permalink,
 			'publishTimestamp' => $event->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
-			'visibility' => $event->visibility?->value,
+			'visibility' => $event->visibility?->value ?? 'draft',
 			'authorId' => $event->authorId->toByteString(),
 			'siteId' => $event->siteId->toByteString(),
 			'extensions' => '{}',
