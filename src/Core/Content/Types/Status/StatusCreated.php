@@ -5,6 +5,7 @@ namespace Smolblog\Core\Content\Types\Status;
 use DateTimeInterface;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentCreated;
+use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -21,6 +22,8 @@ class StatusCreated extends ContentCreated {
 	/**
 	 * Create the Event.
 	 *
+	 * @throws InvalidContentException When contentType is not Static::class.
+	 *
 	 * @param string                 $text             Markdown-formatted text of the status.
 	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
@@ -31,6 +34,7 @@ class StatusCreated extends ContentCreated {
 	 * @param ContentVisibility|null $visibility       Visiblity of the content.
 	 * @param Identifier|null        $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
+	 * @param string|null            $contentType      For deserialization; must be Static::class if provided.
 	 */
 	public function __construct(
 		public readonly string $text,
@@ -42,8 +46,14 @@ class StatusCreated extends ContentCreated {
 		?DateTimeInterface $publishTimestamp = null,
 		?ContentVisibility $visibility = null,
 		?Identifier $id = null,
-		?DateTimeInterface $timestamp = null
+		?DateTimeInterface $timestamp = null,
+		?string $contentType = null,
 	) {
+		if (isset($contentType) && $contentType !== Status::class) {
+			// Something has gone very wrong somewhere!
+			throw new InvalidContentException("StatusCreated initialized with non-Status content type: $contentType");
+		}
+
 		$this->internal = new InternalStatusBody(text: $text);
 		parent::__construct(
 			contentType: Status::class,

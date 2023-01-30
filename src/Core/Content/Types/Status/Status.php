@@ -70,7 +70,7 @@ class Status extends Content {
 			publishTimestamp: $publishTimestamp,
 			visibility: $visibility,
 			id: $id,
-			extensions: $extensions,
+			extensions: $extensions ?? [],
 		);
 	}
 }
