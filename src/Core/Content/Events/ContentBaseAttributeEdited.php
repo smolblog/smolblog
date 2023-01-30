@@ -2,17 +2,14 @@
 
 namespace Smolblog\Core\Content\Events;
 
-use DateTimeImmutable;
 use DateTimeInterface;
-use InvalidArgumentException;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Framework\Exceptions\SmolblogException;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a base attribute has been edited.
  *
- * A "base" attribute is an attribute on the BaseContent class, like permalink and timestamp. These attributes
+ * A "base" attribute is an attribute on the Content class, like permalink and timestamp. These attributes
  * are common across all content types and are not extensions.
  */
 class ContentBaseAttributeEdited extends ContentEvent {

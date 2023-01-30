@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
-final class TestContent extends BaseContent {
+final class TestContent extends Content {
 	public function getTitle(): string { return 'Title'; }
 	public function getBodyContent(): string { return '<p>Hullo</p>'; }
 }
@@ -17,14 +17,14 @@ final class TestContentExtension implements ContentExtension {
 	public function __construct(public readonly string $tagline) {}
 }
 
-final class BaseContentTest extends TestCase {
+final class ContentTest extends TestCase {
 	public function testItCanBeInstantiatedWithMinimalFields() {
 		$actual = new TestContent(
 			siteId: Identifier::createRandom(),
 			authorId: Identifier::createRandom(),
 		);
 
-		$this->assertInstanceOf(BaseContent::class, $actual);
+		$this->assertInstanceOf(Content::class, $actual);
 		$this->assertEquals(ContentVisibility::Draft, $actual->visibility);
 		$this->assertNull($actual->publishTimestamp);
 		$this->assertNull($actual->permalink);
@@ -42,7 +42,7 @@ final class BaseContentTest extends TestCase {
 			extensions: [new TestContentExtension(tagline: 'So it goes.')],
 		);
 
-		$this->assertInstanceOf(BaseContent::class, $actual);
+		$this->assertInstanceOf(Content::class, $actual);
 		$this->assertInstanceOf(TestContentExtension::class, $actual->getExtension(TestContentExtension::class));
 	}
 

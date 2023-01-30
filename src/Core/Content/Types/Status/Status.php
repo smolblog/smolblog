@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeInterface;
-use Smolblog\Core\Content\BaseContent;
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -13,7 +13,7 @@ use Smolblog\Framework\Objects\Identifier;
  * While a comparison could be drawn to what the Iconfactory first called a "tweet", this is closer to a
  * Mastodon "toot" or a Micro.blog post in that it allows some basic formatting.
  */
-class Status extends BaseContent {
+class Status extends Content {
 	/**
 	 * Internal body representation.
 	 *

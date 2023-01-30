@@ -15,10 +15,10 @@ use Smolblog\Framework\Objects\Identifier;
  *    through the getTitle and getHtmlContent functions.
  * 2) Content extensions can attach extra data to the content through the attachExtension function.
  *
- * Remember, the canonical store for all data is the event stream! The BaseContent class is intented to provide a
+ * Remember, the canonical store for all data is the event stream! The Content class is intented to provide a
  * view into the data, but there may be other data accessable in other ways.
  */
-abstract class BaseContent extends Entity {
+abstract class Content extends Entity {
 	/**
 	 * Relative URL for this content.
 	 *
