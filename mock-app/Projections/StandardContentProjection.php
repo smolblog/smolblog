@@ -17,12 +17,13 @@ class StandardContentProjection {
 	#[ExecutionLayerListener(later: 5)]
 	public function onContentCreated(ContentCreated $event) {
 		$prepared = $this->db->prepare('INSERT INTO standard_content
-		("content_id", "title", "body", "permalink", "publish_timestamp",
+		("content_id", "content_type", "title", "body", "permalink", "publish_timestamp",
 		 "visibility", "author_id", "site_id", "extensions") VALUES
-		(:id, :title, :body, :permalink, :publishTimestamp, :visibility, :authorId, :siteId, :extensions)');
+		(:id, :contentType, :title, :body, :permalink, :publishTimestamp, :visibility, :authorId, :siteId, :extensions)');
 
 		$prepared->execute([
-			'id' => $event->id->toByteString(),
+			'id' => $event->contentId->toByteString(),
+			'contentType' => $event->contentType,
 			'title' => $event->getNewTitle(),
 			'body' => $event->getNewBody(),
 			'permalink' => $event->permalink,

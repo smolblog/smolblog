@@ -86,7 +86,10 @@ final class App {
 		CREATE TABLE "temp_options" ("id" integer,"key" text NOT NULL,"value" text NOT NULL,"expires" text NOT NULL, PRIMARY KEY (id));
 
 		DROP TABLE IF EXISTS "standard_content";
-		CREATE TABLE "standard_content" ("id" integer, "content_id" TEXT NOT NULL, "title" TEXT NOT NULL, "body" TEXT NOT NULL, "permalink" TEXT, "publish_timestamp" TEXT, "visibility" TEXT NOT NULL, "author_id" TEXT NOT NULL, "site_id" TEXT NOT NULL, "extensions" TEXT NOT NULL, PRIMARY KEY (id));
+		CREATE TABLE "standard_content" ("id" integer, "content_id" TEXT NOT NULL, "content_type" TEXT NOT NULL, "title" TEXT NOT NULL, "body" TEXT NOT NULL, "permalink" TEXT, "publish_timestamp" TEXT, "visibility" TEXT NOT NULL, "author_id" TEXT NOT NULL, "site_id" TEXT NOT NULL, "extensions" TEXT NOT NULL, PRIMARY KEY (id));
+
+		DROP TABLE IF EXISTS "statuses";
+		CREATE TABLE "statuses" ("id" integer, "content_id" TEXT NOT NULL, "body" TEXT NOT NULL, PRIMARY KEY (id));
 
 		EOF;
 
