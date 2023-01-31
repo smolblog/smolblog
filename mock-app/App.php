@@ -31,7 +31,12 @@ final class App {
 		return self::getApp()->bus->fetch($message);
 	}
 
+	public static function getService(string $service): mixed {
+		return self::getApp()->container->get($service);
+	}
+
 	public readonly MessageBus $bus;
+	public readonly ServiceRegistrar $container;
 
 	private function __construct() {
 		$pdo = $this->makeDatabase();
@@ -55,8 +60,8 @@ final class App {
 		$services = array_merge($services, $appServices);
 		$services[ConnectorRegistrar::class]['configuration'] = fn() => ['smolblog' => Connector::class];
 
-		$container = new ServiceRegistrar(configuration: $services);
-		$registry = new ListenerRegistrar(container: $container);
+		$this->container = new ServiceRegistrar(configuration: $services);
+		$registry = new ListenerRegistrar(container: $this->container);
 
 		$listeners = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::LISTENERS), []);
 		array_walk($listeners, fn($className) => $registry->registerService($className));

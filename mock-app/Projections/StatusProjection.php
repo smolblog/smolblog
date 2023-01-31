@@ -5,6 +5,7 @@ namespace Smolblog\Mock\Projections;
 use DateTimeImmutable;
 use PDO;
 use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Core\Content\Events\ContentDeleted;
 use Smolblog\Core\Content\Types\Status\Status;
 use Smolblog\Core\Content\Types\Status\StatusBodyEdited;
 use Smolblog\Core\Content\Types\Status\StatusById;
@@ -25,8 +26,7 @@ class StatusProjection {
 	}
 
 	public function onStatusById(StatusById $query) {
-		$prepared = $this->db->prepare(<<<EOF
-			SELECT
+		$prepared = $this->db->prepare('SELECT
 				statuses.body AS "text",
 				standard_content.site_id AS "siteId",
 				standard_content.author_id AS "authorId",
@@ -38,9 +38,8 @@ class StatusProjection {
 				statuses
 				INNER JOIN standard_content ON statuses.content_id = standard_content.content_id
 			WHERE
-				statuses.content_id = ?
-			EOF
-		);
+				statuses.content_id = ?');
+		$prepared->execute([$query->id->toByteString()]);
 		$results = $prepared->fetch(mode: PDO::FETCH_ASSOC);
 		if (empty($results)) {
 			$query->results = null;
@@ -53,7 +52,7 @@ class StatusProjection {
 			$extParsed[$class] = $class::fromArray($data);
 		}
 
-		return new Status(
+		$query->results = new Status(
 			text: $results['text'],
 			siteId: Identifier::fromByteString($results['siteId']),
 			authorId: Identifier::fromByteString($results['authorId']),
@@ -63,5 +62,10 @@ class StatusProjection {
 			id: $query->id,
 			extensions: $extParsed,
 		);
+	}
+
+	public function onContentDeleted(ContentDeleted $event): void {
+		$prepared = $this->db->prepare('DELETE FROM statuses WHERE content_id = ?');
+		$prepared->execute([$event->contentId->toByteString()]);
 	}
 }

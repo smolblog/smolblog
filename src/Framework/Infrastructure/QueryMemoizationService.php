@@ -49,4 +49,15 @@ class QueryMemoizationService {
 
 		$this->memos[$key] = $query->results;
 	}
+
+	/**
+	 * Remove all memos from the service. For testing.
+	 *
+	 * No seriously, just for testing.
+	 *
+	 * @return void
+	 */
+	public function reset(): void {
+		$this->memos = [];
+	}
 }
