@@ -3,14 +3,13 @@
 namespace Smolblog\Markdown;
 
 use PHPUnit\Framework\TestCase;
-use Embed\Embed;
 
 final class SmolblogMarkdownTest extends TestCase {
-	private Embed $embed;
+	private EmbedProvider $embed;
 	private SmolblogMarkdown $md;
 
 	public function setUp(): void {
-		$this->embed = $this->createStub(Embed::class);
+		$this->embed = $this->createStub(EmbedProvider::class);
 		$this->md = new SmolblogMarkdown(embed: $this->embed);
 	}
 
@@ -82,11 +81,7 @@ final class SmolblogMarkdownTest extends TestCase {
 		Rather unexpected, innit?
 		EOD;
 
-		$code = $this->createStub(\Embed\Detectors\Code::class);
-		$code->method('__get')->willReturn('<iframe src="https://embed.youtube.com/watch?v=rTga41r3a4s"></iframe>');
-		$extractor = $this->createStub(\Embed\Extractor::class);
-		$extractor->method('__get')->willReturn($code);
-		$this->embed->method('get')->willReturn($extractor);
+		$this->embed->method('getEmbedCodeFor')->willReturn('<iframe src="https://embed.youtube.com/watch?v=rTga41r3a4s"></iframe>');
 
 		$expected = <<<EOD
 		<h1>Embed test</h1>

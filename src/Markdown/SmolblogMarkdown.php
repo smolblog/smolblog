@@ -3,20 +3,21 @@
 namespace Smolblog\Markdown;
 
 use cebe\markdown\GithubMarkdown;
-use Embed\Embed;
-use Exception;
 
 /**
  * Markdown parser with some extra Smolblog flair.
  */
 class SmolblogMarkdown extends GithubMarkdown {
-	private $pattern = '/^:\[(.+)\]\((.+)\)$/';
+	public const PATTERN = '/^:\[(.+)\]\((.+)\)$/';
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param EmbedProvider $embed EmbedProvider to provide embed codes.
+	 */
 	public function __construct(
-		private Embed $embed
-	)
-	{
-
+		private EmbedProvider $embed
+	) {
 	}
 
 	/**
@@ -25,13 +26,20 @@ class SmolblogMarkdown extends GithubMarkdown {
 	 * @param string $line Current line being parsed.
 	 * @return boolean
 	 */
-	protected function identifyEmbed($line) {
-		return preg_match($this->pattern, $line) === 1;
+	protected function identifyEmbed(string $line) {
+		return preg_match(static::PATTERN, $line) === 1;
 	}
 
-	protected function consumeEmbed($lines, $current) {
+	/**
+	 * Parse an embed directive.
+	 *
+	 * @param array   $lines   Array of lines of the Markdown document.
+	 * @param integer $current Current line.
+	 * @return array Parsing information.
+	 */
+	protected function consumeEmbed(array $lines, int $current) {
 		$matches = array();
-		preg_match($this->pattern, $lines[$current], $matches);
+		preg_match(static::PATTERN, $lines[$current], $matches);
 
 		return [
 			[
@@ -43,14 +51,16 @@ class SmolblogMarkdown extends GithubMarkdown {
 		];
 	}
 
-	protected function renderEmbed($block) {
-		try {
-			$embedcode = $this->embed->get($block['url'])->code;
-			if (!empty($embedcode->html)) {
-				return $embedcode->html . "\n";
-			}
-		} catch (Exception $e) {
-			// Ignore the exception and use the backup code below.
+	/**
+	 * Render the embed code.
+	 *
+	 * @param array $block Block data.
+	 * @return string
+	 */
+	protected function renderEmbed(array $block) {
+		$code = $this->embed->getEmbedCodeFor($block['url']);
+		if (isset($code)) {
+			return $code . "\n";
 		}
 		return '<p><a href="' . $block['url'] . '" target="_blank">' . $block['alt'] . "</a></p>\n";
 	}
