@@ -10,7 +10,7 @@ final class SmolblogMarkdownTest extends TestCase {
 
 	public function setUp(): void {
 		$this->embed = $this->createStub(EmbedProvider::class);
-		$this->md = new SmolblogMarkdown(embed: $this->embed);
+		$this->md = new SmolblogMarkdown(embedProvider: $this->embed);
 	}
 
 	public function testItParsesNormalMarkdown() {
@@ -31,6 +31,14 @@ final class SmolblogMarkdownTest extends TestCase {
 
 		_wait wait_ this thing has **other colors**?
 
+		### Images
+
+		![An inline image](https://cdn.smolblog.com/inline.jpg)
+
+		![A reference image][img]
+
+		[img]: https://cdn.smolblog.com/ref.jpg
+
 		I love you.
 		EOD;
 
@@ -41,6 +49,9 @@ final class SmolblogMarkdownTest extends TestCase {
 		<p>There are <a href="https://inline.smol.blog/">inline</a> links and <a href="https://ref.smol.blog/">reference</a> links.</p>
 		<p>There may even be a way to <a href="https://directly.smol.blog/">directly</a> say something?</p>
 		<p><em>wait wait</em> this thing has <strong>other colors</strong>?</p>
+		<h3>Images</h3>
+		<p><img src="https://cdn.smolblog.com/inline.jpg" alt="An inline image"></p>
+		<p><img src="https://cdn.smolblog.com/ref.jpg" alt="A reference image"></p>
 		<p>I love you.</p>
 
 		EOD;
