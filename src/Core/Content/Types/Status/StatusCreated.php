@@ -75,7 +75,7 @@ class StatusCreated extends ContentCreated {
 	 * @return string
 	 */
 	public function getNewTitle(): string {
-		return $this->internal->getTruncated(100);
+		return Status::truncateText($this->text);
 	}
 
 	/**
