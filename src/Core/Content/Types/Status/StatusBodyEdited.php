@@ -12,13 +12,6 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class StatusBodyEdited extends ContentBodyEdited {
 	/**
-	 * Internal Status object to assist with processing.
-	 *
-	 * @var InternalStatusBody
-	 */
-	private InternalStatusBody $internal;
-
-	/**
 	 * Create the event.
 	 *
 	 * @param string                 $text      Updated text.
