@@ -2,6 +2,8 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Exception;
+
 /**
  * Allow a Value object to take extra variables at runtime.
  */
@@ -28,17 +30,18 @@ trait ExtendableValueKit {
 	/**
 	 * Override `__set` to do nothing. Will remove when PHP 8.2 is required.
 	 *
+	 * @throws Exception Thrown when a value is attempted.
+	 *
 	 * @param string $name  Variable to set.
 	 * @param mixed  $value Value to provide.
 	 * @return void
 	 */
 	public function __set(string $name, mixed $value): void {
 		$trace = debug_backtrace();
-		trigger_error(
+		throw new Exception(
 			'Attempt to set readonly property ' . $name .
 			' in ' . $trace[0]['file'] .
-			' on line ' . $trace[0]['line'],
-			E_USER_ERROR
+			' on line ' . $trace[0]['line']
 		);
 	}
 

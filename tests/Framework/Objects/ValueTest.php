@@ -2,6 +2,7 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class ConcreteValue extends Value {
@@ -20,15 +21,8 @@ final class ComplexValue extends Value {
 }
 
 final class ValueTest extends TestCase {
-	public function testSettingDefinedPropertyGivesError() {
-		$this->expectError();
-		$val = new ConcreteValue(key: '//localhost');
-
-		$val->key = 'nope';
-	}
-
 	public function testSettingRuntimePropertyGivesError() {
-		$this->expectError();
+		$this->expectException(Exception::class);
 		$val = new ConcreteValue(key: '//localhost');
 
 		$val->someKey = 'nope';

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Exception;
 use JsonSerializable;
 
 /**
@@ -21,17 +22,18 @@ abstract class Value implements ArraySerializable, JsonSerializable {
 	/**
 	 * Override `__set` to do nothing. Will remove when PHP 8.2 is required.
 	 *
+	 * @throws Exception When value is attempted to be set.
+	 *
 	 * @param string $name  Variable to set.
 	 * @param mixed  $value Value to provide.
 	 * @return void
 	 */
 	public function __set(string $name, mixed $value): void {
 		$trace = debug_backtrace();
-		trigger_error(
+		throw new Exception(
 			'Attempt to modify read-only object ' .
 			' in ' . $trace[0]['file'] .
-			' on line ' . $trace[0]['line'],
-			E_USER_ERROR
+			' on line ' . $trace[0]['line']
 		);
 	}
 }

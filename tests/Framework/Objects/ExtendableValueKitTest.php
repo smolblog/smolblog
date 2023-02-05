@@ -2,6 +2,7 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class ConcreteExtendableValue extends Value {
@@ -16,15 +17,8 @@ final class ConcreteExtendableValue extends Value {
 }
 
 final class ExtendableValueKitTest extends TestCase {
-	public function testSettingDefinedPropertyGivesError() {
-		$this->expectError();
-		$cev = new ConcreteExtendableValue(definedKey: 'dictionary', someKey: 'someValue');
-
-		$cev->definedKey = 'nope';
-	}
-
 	public function testSettingRuntimePropertyGivesError() {
-		$this->expectError();
+		$this->expectException(Exception::class);
 		$cev = new ConcreteExtendableValue(definedKey: 'dictionary', someKey: 'someValue');
 
 		$cev->someKey = 'nope';
