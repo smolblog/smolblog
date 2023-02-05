@@ -18,7 +18,7 @@ class QueryMemoizationService {
 	 *
 	 * @var array
 	 */
-	private array $memos = [];
+	protected array $memos = [];
 
 	/**
 	 * Check the incoming query for an existing memo and provide the results if so.
@@ -48,16 +48,5 @@ class QueryMemoizationService {
 		$key = $query->getMemoKey();
 
 		$this->memos[$key] = $query->results;
-	}
-
-	/**
-	 * Remove all memos from the service. For testing.
-	 *
-	 * No seriously, just for testing.
-	 *
-	 * @return void
-	 */
-	public function reset(): void {
-		$this->memos = [];
 	}
 }

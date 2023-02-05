@@ -19,7 +19,7 @@ class SmolblogMarkdown extends Markdown {
 	 * @param EmbedProvider $embedProvider EmbedProvider to provide embed codes.
 	 */
 	public function __construct(
-		EmbedProvider $embedProvider
+		?EmbedProvider $embedProvider = null
 	) {
 		$this->embedProvider = $embedProvider;
 		$this->html5 = true;

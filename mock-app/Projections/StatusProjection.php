@@ -10,6 +10,7 @@ use Smolblog\Core\Content\Types\Status\Status;
 use Smolblog\Core\Content\Types\Status\StatusBodyEdited;
 use Smolblog\Core\Content\Types\Status\StatusById;
 use Smolblog\Core\Content\Types\Status\StatusCreated;
+use Smolblog\Core\Content\Types\Status\StatusDeleted;
 use Smolblog\Framework\Objects\Identifier;
 
 class StatusProjection {
@@ -64,7 +65,7 @@ class StatusProjection {
 		);
 	}
 
-	public function onContentDeleted(ContentDeleted $event): void {
+	public function onContentDeleted(StatusDeleted $event): void {
 		$prepared = $this->db->prepare('DELETE FROM statuses WHERE content_id = ?');
 		$prepared->execute([$event->contentId->toByteString()]);
 	}

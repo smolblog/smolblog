@@ -8,11 +8,11 @@ use Smolblog\Core\Connector\Services\ConnectorRegistrar;
 use Smolblog\Core\Model;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Infrastructure\ListenerRegistrar;
-use Smolblog\Framework\Infrastructure\QueryMemoizationService;
 use Smolblog\Framework\Infrastructure\SecurityCheckService;
 use Smolblog\Framework\Infrastructure\ServiceRegistrar;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query;
+use Smolblog\Markdown\SmolblogMarkdown;
 use Smolblog\Mock\Model as MockModel;
 
 final class App {
@@ -52,8 +52,9 @@ final class App {
 			ContainerInterface::class => ServiceRegistrar::class,
 			Connector::class => [],
 			PDO::class => fn() => $pdo,
-			QueryMemoizationService::class => [],
+			MockMemoService::class => [],
 			SecurityCheckService::class => [MessageBus::class],
+			SmolblogMarkdown::class => [],
 		];
 
 		$services = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::SERVICES), []);
@@ -65,7 +66,7 @@ final class App {
 
 		$listeners = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::LISTENERS), []);
 		array_walk($listeners, fn($className) => $registry->registerService($className));
-		$registry->registerService(QueryMemoizationService::class);
+		$registry->registerService(MockMemoService::class);
 		$registry->registerService(SecurityCheckService::class);
 
 		$this->bus = new DefaultMessageBus($registry);

@@ -12,9 +12,9 @@ use Smolblog\Core\Content\Types\Status\Status;
 use Smolblog\Core\Content\Types\Status\StatusBodyEdited;
 use Smolblog\Core\Content\Types\Status\StatusById;
 use Smolblog\Core\Content\Types\Status\StatusCreated;
-use Smolblog\Framework\Infrastructure\QueryMemoizationService;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Mock\App;
+use Smolblog\Mock\MockMemoService;
 
 final class ContentTest extends TestCase {
 	public function testStatusContentEvents() {
@@ -66,7 +66,7 @@ final class ContentTest extends TestCase {
 			siteId: $siteId,
 		));
 
-		App::getService(QueryMemoizationService::class)->reset();
+		App::getService(MockMemoService::class)->reset();
 		$this->assertEquals(
 			new Status(
 				text: 'Hello everybody! Except @oddEvan. Screw that guy.',
@@ -86,7 +86,7 @@ final class ContentTest extends TestCase {
 			siteId: $siteId,
 		));
 
-		App::getService(QueryMemoizationService::class)->reset();
+		App::getService(MockMemoService::class)->reset();
 		$this->assertNull(App::fetch(new StatusById($contentId)));
 	}
 }
