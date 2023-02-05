@@ -34,7 +34,8 @@ class StatusProjection {
 				standard_content.permalink AS "permalink",
 				standard_content.publish_timestamp AS "publishTimestamp",
 				standard_content.visibility AS "visibility",
-				standard_content.extensions AS "extensions"
+				standard_content.extensions AS "extensions",
+				standard_content.body AS "rendered"
 			FROM
 				statuses
 				INNER JOIN standard_content ON statuses.content_id = standard_content.content_id
@@ -62,6 +63,7 @@ class StatusProjection {
 			visibility: ContentVisibility::tryFrom($results['visibility'] ?? ''),
 			id: $query->id,
 			extensions: $extParsed,
+			rendered: $results['rendered'],
 		);
 	}
 

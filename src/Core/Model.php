@@ -31,7 +31,10 @@ class Model extends DomainModel {
 		],
 		Content\Markdown\MarkdownMessageRenderer::class => [
 			'md' => SmolblogMarkdown::class,
-		]
+		],
+		Content\Types\Status\StatusService::class => [
+			'bus' => MessageBus::class,
+		],
 	];
 
 	public const LISTENERS = [
@@ -39,5 +42,6 @@ class Model extends DomainModel {
 		Connector\Services\ChannelRefresher::class,
 		Connector\Services\ConnectionRefresher::class,
 		Content\Markdown\MarkdownMessageRenderer::class,
+		Content\Types\Status\StatusService::class,
 	];
 }

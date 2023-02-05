@@ -18,6 +18,7 @@ class Model extends DomainModel {
 		Projections\StandardContentProjection::class => ['db' => PDO::class],
 		Projections\StatusProjection::class => ['db' => PDO::class],
 		Transients::class => ['db' => PDO::class],
+		SecurityService::class => ['db' => PDO::class],
 
 		AuthRequestStateRepo::class => Transients::class,
 	];
@@ -29,5 +30,6 @@ class Model extends DomainModel {
 		Projections\ChannelProjection::class,
 		Projections\StandardContentProjection::class,
 		Projections\StatusProjection::class,
+		SecurityService::class,
 	];
 }

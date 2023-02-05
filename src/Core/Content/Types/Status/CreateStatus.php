@@ -16,6 +16,13 @@ class CreateStatus extends Command implements AuthorizableMessage {
 	use StoppableMessageKit;
 
 	/**
+	 * Generated ID for the status.
+	 *
+	 * @var Identifier
+	 */
+	public Identifier $statusId;
+
+	/**
 	 * Construct the command.
 	 *
 	 * @param Identifier $siteId Site for this status.

@@ -39,6 +39,8 @@ class StatusService {
 			publishTimestamp: new DateTimeImmutable(),
 			visibility: ContentVisibility::Published,
 		));
+
+		$command->statusId = $id;
 	}
 
 	/**

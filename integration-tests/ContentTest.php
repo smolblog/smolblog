@@ -5,63 +5,37 @@ namespace Smolblog\Test;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
-use Smolblog\Core\Content\Events\ContentDeleted;
-use Smolblog\Core\Content\Events\ContentVisibilityChanged;
+use Smolblog\Core\Content\Types\Status\CreateStatus;
+use Smolblog\Core\Content\Types\Status\DeleteStatus;
+use Smolblog\Core\Content\Types\Status\EditStatus;
 use Smolblog\Core\Content\Types\Status\Status;
-use Smolblog\Core\Content\Types\Status\StatusBodyEdited;
 use Smolblog\Core\Content\Types\Status\StatusById;
-use Smolblog\Core\Content\Types\Status\StatusCreated;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Mock\App;
 use Smolblog\Mock\MockMemoService;
+use Smolblog\Mock\SecurityService;
 
 final class ContentTest extends TestCase {
-	public function testStatusContentEvents() {
-		$contentId = Identifier::createRandom();
-		$userId = Identifier::createRandom();
-		$siteId = Identifier::createRandom();
+	public function testStatusLifecycle() {
+		$userId = Identifier::fromString(SecurityService::SITE1AUTHOR);
+		$siteId = Identifier::fromString(SecurityService::SITE1);
 
-		App::dispatch(new StatusCreated(
-			text: 'Hello everybody!',
-			authorId: $userId,
-			contentId: $contentId,
-			userId: $userId,
+		$createCommand = new CreateStatus(
 			siteId: $siteId,
-			publishTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
-			permalink: '/status/' . $contentId->toString(),
-		));
-
-		$this->assertEquals(
-			new Status(
-				text: 'Hello everybody!',
-				authorId: $userId,
-				id: $contentId,
-				siteId: $siteId,
-				publishTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
-				permalink: '/status/' . $contentId->toString(),
-				visibility: ContentVisibility::Draft,
-			),
-			App::fetch(new StatusById($contentId))
+			userId: $userId,
+			text: 'Hello everybody!'
 		);
+		App::dispatch($createCommand);
 
-		App::dispatch(new StatusBodyEdited(
+		$contentId = $createCommand->statusId;
+		$content = App::fetch(new StatusById($contentId));
+
+		$this->assertInstanceOf(Status::class, $content);
+		$this->assertEquals("<p>Hello everybody!</p>\n", $content->getBodyContent());
+
+		App::dispatch(new EditStatus(
 			text: 'Hello everybody! Except @oddEvan. Screw that guy.',
-			contentId: $contentId,
-			userId: $userId,
-			siteId: $siteId,
-		));
-
-		App::dispatch(new ContentBaseAttributeEdited(
-			permalink: '/status/hello-everybody',
-			contentId: $contentId,
-			userId: $userId,
-			siteId: $siteId,
-		));
-
-		App::dispatch(new ContentVisibilityChanged(
-			visibility: ContentVisibility::Published,
-			contentId: $contentId,
+			statusId: $contentId,
 			userId: $userId,
 			siteId: $siteId,
 		));
@@ -73,15 +47,16 @@ final class ContentTest extends TestCase {
 				authorId: $userId,
 				id: $contentId,
 				siteId: $siteId,
-				publishTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
-				permalink: '/status/hello-everybody',
+				publishTimestamp: $content->publishTimestamp,
+				permalink: $content->permalink,
 				visibility: ContentVisibility::Published,
+				rendered: "<p>Hello everybody! Except @oddEvan. Screw that guy.</p>\n"
 			),
 			App::fetch(new StatusById($contentId))
 		);
 
-		App::dispatch(new ContentDeleted(
-			contentId: $contentId,
+		App::dispatch(new DeleteStatus(
+			statusId: $contentId,
 			userId: $userId,
 			siteId: $siteId,
 		));
