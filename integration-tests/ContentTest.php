@@ -10,6 +10,7 @@ use Smolblog\Core\Content\Types\Status\DeleteStatus;
 use Smolblog\Core\Content\Types\Status\EditStatus;
 use Smolblog\Core\Content\Types\Status\Status;
 use Smolblog\Core\Content\Types\Status\StatusById;
+use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Mock\App;
 use Smolblog\Mock\MockMemoService;
@@ -63,5 +64,27 @@ final class ContentTest extends TestCase {
 
 		App::getService(MockMemoService::class)->reset();
 		$this->assertNull(App::fetch(new StatusById($contentId)));
+	}
+
+	public function testAuthorCanOnlyEditOwnStatus() {
+		$this->expectException(MessageNotAuthorizedException::class);
+
+		$authorUserId = Identifier::fromString(SecurityService::SITE1AUTHOR);
+		$adminUserId = Identifier::fromString(SecurityService::SITE1ADMIN);
+		$siteId = Identifier::fromString(SecurityService::SITE1);
+
+		$createCommand = new CreateStatus(
+			siteId: $siteId,
+			userId: $adminUserId,
+			text: 'Hello everybody!'
+		);
+		App::dispatch($createCommand);
+		$contentId = $createCommand->statusId;
+
+		App::dispatch(new DeleteStatus(
+			siteId: $siteId,
+			userId: $authorUserId,
+			statusId: $contentId,
+		));
 	}
 }
