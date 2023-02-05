@@ -10,7 +10,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Get a given Content object as a GenericContent object.
  */
-class ContentById extends Query implements MemoizableQuery, ExtensableContentQuery {
+class GenericContentById extends Query implements MemoizableQuery, ExtensableContentQuery {
 	use MemoizableQueryKit;
 
 	/**

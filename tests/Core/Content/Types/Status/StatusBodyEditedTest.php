@@ -32,6 +32,7 @@ final class StatusBodyEditedTest extends TestCase {
 		);
 		$status->setHtml($this->simpleTextFormatted);
 
+		$this->assertEquals($this->simpleTextMd, $status->getMarkdown());
 		$this->assertEquals($this->simpleTextFormatted, $status->getNewBody());
 	}
 
