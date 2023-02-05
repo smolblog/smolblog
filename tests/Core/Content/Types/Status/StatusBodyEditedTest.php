@@ -30,8 +30,9 @@ final class StatusBodyEditedTest extends TestCase {
 			contentId: Identifier::createRandom(),
 			userId: Identifier::createRandom(),
 		);
+		$status->setHtml($this->simpleTextFormatted);
 
-		$this->assertEquals($this->simpleTextMd, $status->getNewBody());
+		$this->assertEquals($this->simpleTextFormatted, $status->getNewBody());
 	}
 
 	public function testItSerializesAPayloadCorrectly() {

@@ -41,8 +41,10 @@ final class StatusTest extends TestCase {
 			id: Identifier::createRandom(),
 		);
 
+		$status->setHtml($this->simpleTextFormatted);
+
 		$this->assertEquals(
-			$this->simpleTextMd,
+			$this->simpleTextFormatted,
 			$status->getBodyContent()
 		);
 	}

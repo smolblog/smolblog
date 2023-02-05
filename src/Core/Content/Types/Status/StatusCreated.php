@@ -6,18 +6,14 @@ use DateTimeInterface;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentCreated;
 use Smolblog\Core\Content\InvalidContentException;
+use Smolblog\Core\Content\Markdown\NeedsMarkdownRendered;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a Status content has been created.
  */
-class StatusCreated extends ContentCreated {
-	/**
-	 * Internal Status object to assist with processing.
-	 *
-	 * @var InternalStatusBody
-	 */
-	private InternalStatusBody $internal;
+class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
+	use StatusEventKit;
 
 	/**
 	 * Create the Event.
@@ -54,7 +50,6 @@ class StatusCreated extends ContentCreated {
 			throw new InvalidContentException("StatusCreated initialized with non-Status content type: $contentType");
 		}
 
-		$this->internal = new InternalStatusBody(text: $text);
 		parent::__construct(
 			contentType: Status::class,
 			permalink: $permalink,
@@ -67,24 +62,6 @@ class StatusCreated extends ContentCreated {
 			id: $id,
 			timestamp: $timestamp,
 		);
-	}
-
-	/**
-	 * Get a title-appropriate truncation of the content.
-	 *
-	 * @return string
-	 */
-	public function getNewTitle(): string {
-		return Status::truncateText($this->text);
-	}
-
-	/**
-	 * Get the HTML-formatted content of the status.
-	 *
-	 * @return string
-	 */
-	public function getNewBody(): string {
-		return $this->internal->text;
 	}
 
 	/**

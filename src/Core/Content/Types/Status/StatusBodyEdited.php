@@ -4,13 +4,15 @@ namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Events\ContentBodyEdited;
-use Smolblog\Core\Content\Events\ContentEvent;
+use Smolblog\Core\Content\Markdown\NeedsMarkdownRendered;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a status' text has been edited.
  */
-class StatusBodyEdited extends ContentBodyEdited {
+class StatusBodyEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
+	use StatusEventKit;
+
 	/**
 	 * Create the event.
 	 *
@@ -29,26 +31,7 @@ class StatusBodyEdited extends ContentBodyEdited {
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
-		$this->internal = new InternalStatusBody(text: $text);
 		parent::__construct(contentId: $contentId, userId: $userId, siteId: $siteId, id: $id, timestamp: $timestamp);
-	}
-
-	/**
-	 * Get a title-appropriate truncation of the content.
-	 *
-	 * @return string
-	 */
-	public function getNewTitle(): string {
-		return $this->internal->getTruncated(100);
-	}
-
-	/**
-	 * Get the HTML-formatted content of the status.
-	 *
-	 * @return string
-	 */
-	public function getNewBody(): string {
-		return $this->internal->text;
 	}
 
 	/**
