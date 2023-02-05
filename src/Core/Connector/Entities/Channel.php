@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use Smolblog\Framework\Entity;
-use Smolblog\Framework\Identifier;
+use Smolblog\Framework\Objects\Entity;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media

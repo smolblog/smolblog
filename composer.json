@@ -8,6 +8,11 @@
       "Smolblog\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Smolblog\\Mock\\": "mock-app/"
+    }
+  },
   "authors": [
     {
       "name": "Smolblog",
@@ -25,16 +30,20 @@
   "scripts": {
     "coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite core; cat coverage.txt",
     "test": "phpunit --testsuite core",
+    "integration": "phpunit --testsuite integration",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },
   "require": {
+    "php": "^8.2",
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
     "league/container": "^4.2",
     "league/event": "^3.0",
     "league/tactician": "^1.1",
     "league/tactician-container": "^3.0",
-    "ramsey/uuid": "^4.6"
+    "ramsey/uuid": "^4.6",
+    "crell/tukio": "^1.4",
+    "cebe/markdown": "^1.2"
   }
 }

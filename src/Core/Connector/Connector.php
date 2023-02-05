@@ -34,4 +34,20 @@ interface Connector {
 	 * @return Channel[] Array of Channels this Connection can use
 	 */
 	public function getChannels(Connection $connection): array;
+
+	/**
+	 * Check the connection to see if it needs to be refreshed.
+	 *
+	 * @param Connection $connection Connection object to check.
+	 * @return boolean true if Connection requires a refresh.
+	 */
+	public function connectionNeedsRefresh(Connection $connection): bool;
+
+	/**
+	 * Refresh the given Connection and return the updated object.
+	 *
+	 * @param Connection $connection Connection object to refresh.
+	 * @return Connection Refreshed Connection.
+	 */
+	public function refreshConnection(Connection $connection): Connection;
 }
