@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Post\Blocks;
 
+use Smolblog\Core\Content\Media as ContentMedia;
 use Smolblog\Core\Post\Media;
 
 trait MediaBlockSerializationToolkit {
@@ -24,7 +25,7 @@ trait MediaBlockSerializationToolkit {
 	 * @return static
 	 */
 	public static function fromArray(array $data): static {
-		$data['media'] = Media::fromArray($data['media']);
+		$data['media'] = ContentMedia::fromArray($data['media']);
 
 		return parent::fromArray($data);
 	}

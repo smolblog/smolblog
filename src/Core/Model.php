@@ -5,6 +5,7 @@ namespace Smolblog\Core;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
  * Set up the services and listeners for the Core domain model.
@@ -28,11 +29,19 @@ class Model extends DomainModel {
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
+		Content\Markdown\MarkdownMessageRenderer::class => [
+			'md' => SmolblogMarkdown::class,
+		],
+		Content\Types\Status\StatusService::class => [
+			'bus' => MessageBus::class,
+		],
 	];
 
 	public const LISTENERS = [
 		Connector\Services\AuthRequestService::class,
 		Connector\Services\ChannelRefresher::class,
 		Connector\Services\ConnectionRefresher::class,
+		Content\Markdown\MarkdownMessageRenderer::class,
+		Content\Types\Status\StatusService::class,
 	];
 }

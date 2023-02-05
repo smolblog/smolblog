@@ -18,7 +18,7 @@ class QueryMemoizationService {
 	 *
 	 * @var array
 	 */
-	private array $memos = [];
+	protected array $memos = [];
 
 	/**
 	 * Check the incoming query for an existing memo and provide the results if so.

@@ -42,6 +42,8 @@
     "league/tactician": "^1.1",
     "league/tactician-container": "^3.0",
     "ramsey/uuid": "^4.6",
-    "crell/tukio": "^1.4"
+    "crell/tukio": "^1.4",
+    "cebe/markdown": "^1.2",
+    "embed/embed": "^4.4"
   }
 }
