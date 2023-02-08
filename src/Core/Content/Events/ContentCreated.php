@@ -109,7 +109,6 @@ abstract class ContentCreated extends ContentEvent {
 		);
 
 		return [
-			'contentType' => $payload['contentType'],
 			'authorId' => self::safeDeserializeIdentifier($payload['authorId'] ?? null),
 			'permalink' => $payload['permalink'] ?? null,
 			'publishTimestamp' => self::safeDeserializeDate($payload['publishTimestamp'] ?? ''),

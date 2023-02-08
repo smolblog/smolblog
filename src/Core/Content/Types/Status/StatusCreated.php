@@ -30,7 +30,6 @@ class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 * @param ContentVisibility|null $visibility       Visiblity of the content.
 	 * @param Identifier|null        $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
-	 * @param string|null            $contentType      For deserialization; must be Static::class if provided.
 	 */
 	public function __construct(
 		public readonly string $text,
@@ -43,13 +42,7 @@ class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
 		?ContentVisibility $visibility = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null,
-		?string $contentType = null,
 	) {
-		if (isset($contentType) && $contentType !== Status::class) {
-			// Something has gone very wrong somewhere!
-			throw new InvalidContentException("StatusCreated initialized with non-Status content type: $contentType");
-		}
-
 		parent::__construct(
 			contentType: Status::class,
 			permalink: $permalink,
