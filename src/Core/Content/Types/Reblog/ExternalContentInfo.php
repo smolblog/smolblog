@@ -16,9 +16,7 @@ class ExternalContentInfo extends Value {
 	 */
 	public function __construct(
 		public readonly string $title,
-		public readonly string $embed,	
-	)
-	{
-		
+		public readonly string $embed,
+	) {
 	}
 }
