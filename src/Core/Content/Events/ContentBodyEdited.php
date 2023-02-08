@@ -9,16 +9,16 @@ namespace Smolblog\Core\Content\Events;
  */
 abstract class ContentBodyEdited extends ContentEvent {
 	/**
-	 * Get the updated HTML-formatted body text.
+	 * Get the updated HTML-formatted body text. Null if no change.
 	 *
-	 * @return array
+	 * @return string
 	 */
-	abstract public function getNewBody(): string;
+	abstract public function getNewBody(): ?string;
 
 	/**
-	 * Get the updated title.
+	 * Get the updated title. Null if no change.
 	 *
-	 * @return array
+	 * @return string
 	 */
-	abstract public function getNewTitle(): string;
+	abstract public function getNewTitle(): ?string;
 }

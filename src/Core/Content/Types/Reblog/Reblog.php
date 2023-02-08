@@ -14,26 +14,24 @@ class Reblog extends Content {
 	/**
 	 * Undocumented function
 	 *
-	 * @param string                 $url              URL being reblogged.
-	 * @param Identifier             $siteId           ID of the site this content belongs to.
-	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
-	 * @param string|null            $comment          Optional markdown-formatted comment on the remote content.
-	 * @param string|null            $title            The generated title, usually the remote page's title.
-	 * @param string|null            $embedHtml        The HTML code to embed the Reblog's URL.
-	 * @param string|null            $commentHtml      The HTML-formatted optional comment.
-	 * @param string|null            $permalink        Relative URL for this content.
-	 * @param DateTimeInterface|null $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility      $visibility       Visiblity of the content.
-	 * @param Identifier|null        $id               ID of this content.
-	 * @param array                  $extensions       Extensions attached to this content.
+	 * @param string                   $url              URL being reblogged.
+	 * @param Identifier               $siteId           ID of the site this content belongs to.
+	 * @param Identifier               $authorId         ID of the user that authored/owns this content.
+	 * @param string|null              $comment          Optional markdown-formatted comment on the remote content.
+	 * @param ExternalContentInfo|null $info             Fetched info from the external URL.
+	 * @param string|null              $commentHtml      The HTML-formatted optional comment.
+	 * @param string|null              $permalink        Relative URL for this content.
+	 * @param DateTimeInterface|null   $publishTimestamp Date and time this content was first published.
+	 * @param ContentVisibility        $visibility       Visiblity of the content.
+	 * @param Identifier|null          $id               ID of this content.
+	 * @param array                    $extensions       Extensions attached to this content.
 	 */
 	public function __construct(
 		public readonly string $url,
 		Identifier $siteId,
 		Identifier $authorId,
 		public readonly ?string $comment = null,
-		private ?string $title = null,
-		private ?string $embedHtml = null,
+		private ?ExternalContentInfo $info,
 		private ?string $commentHtml = null,
 		?string $permalink = null,
 		?DateTimeInterface $publishTimestamp = null,
@@ -58,7 +56,7 @@ class Reblog extends Content {
 	 * @return string
 	 */
 	public function getTitle(): string {
-		return $this->title;
+		return $this->info->title;
 	}
 
 	/**
@@ -67,17 +65,17 @@ class Reblog extends Content {
 	 * @return string
 	 */
 	public function getBodyContent(): string {
-		return $this->embedHtml . "\n\n" . $this->commentHtml;
+		return $this->info->embed . "\n\n" . $this->commentHtml;
 	}
 
 	/**
-	 * Store the rendered embed code for $this->url
+	 * Set the info for the external URL
 	 *
-	 * @param string $code HTML code to embed $this->url.
+	 * @param ExternalContentInfo $info Fetched info.
 	 * @return void
 	 */
-	public function setEmbedCode(string $code): void {
-		$this->embedHtml = $code;
+	public function setExternalInfo(ExternalContentInfo $info): void {
+		$this->info = $info;
 	}
 
 	/**
@@ -88,15 +86,5 @@ class Reblog extends Content {
 	 */
 	public function setCommentHtml(string $html): void {
 		$this->commentHtml = $html;
-	}
-
-	/**
-	 * Set a title for the post. Usually a variation on the external URL's title.
-	 *
-	 * @param string $title Title of this content.
-	 * @return void
-	 */
-	public function setTitle(string $title): void {
-		$this->title = $title;
 	}
 }
