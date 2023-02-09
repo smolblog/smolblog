@@ -20,8 +20,8 @@ class UserHasPermissionForSite extends Query {
 	public function __construct(
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
-		public readonly bool $mustBeAuthor,
-		public readonly bool $mustBeAdmin,
+		public readonly bool $mustBeAuthor = false,
+		public readonly bool $mustBeAdmin = false,
 	) {
 	}
 }

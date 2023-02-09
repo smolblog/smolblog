@@ -15,6 +15,7 @@ class ReblogInfoChanged extends ContentBodyEdited {
 	/**
 	 * Construct the event.
 	 *
+	 * @param string                 $url       URL of the content being reblogged.
 	 * @param ExternalContentInfo    $info      Updated external URL info.
 	 * @param Identifier             $contentId Identifier for the content this event is about.
 	 * @param Identifier             $userId    User responsible for this event.
@@ -23,6 +24,7 @@ class ReblogInfoChanged extends ContentBodyEdited {
 	 * @param DateTimeInterface|null $timestamp Optional timestamp for this event.
 	 */
 	public function __construct(
+		public readonly string $url,
 		public readonly ExternalContentInfo $info,
 		Identifier $contentId,
 		Identifier $userId,
