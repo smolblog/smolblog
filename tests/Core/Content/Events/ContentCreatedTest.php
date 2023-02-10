@@ -10,7 +10,9 @@ use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Framework\Objects\Identifier;
 
 final class TestContentCreated extends ContentCreated {
-	public function __construct(public readonly string $one = 'two', ...$props) { parent::__construct(...$props); }
+	public function __construct(public readonly string $one = 'two', ...$props) {
+		parent::__construct(GenericContent::class, ...$props);
+	}
 	public function getNewBody(): string { return '<p>hullo</p>'; }
 	public function getNewTitle(): string { return 'Hullo'; }
 	public function getContentPayload(): array { return ['one' => 'two']; }
@@ -19,7 +21,6 @@ final class TestContentCreated extends ContentCreated {
 final class ContentCreatedTest extends TestCase {
 	public function testUnprovidedInformationRemainsNull() {
 		$actual = new TestContentCreated(
-			contentType: GenericContent::class,
 			authorId: Identifier::createRandom(),
 			contentId: Identifier::createRandom(),
 			userId: Identifier::createRandom(),
@@ -36,7 +37,6 @@ final class ContentCreatedTest extends TestCase {
 		$this->expectException(InvalidContentException::class);
 
 		$actual = new TestContentCreated(
-			contentType: GenericContent::class,
 			authorId: Identifier::createRandom(),
 			contentId: Identifier::createRandom(),
 			userId: Identifier::createRandom(),
@@ -50,7 +50,6 @@ final class ContentCreatedTest extends TestCase {
 		$this->expectException(InvalidContentException::class);
 
 		$actual = new TestContentCreated(
-			contentType: GenericContent::class,
 			authorId: Identifier::createRandom(),
 			contentId: Identifier::createRandom(),
 			userId: Identifier::createRandom(),
@@ -76,7 +75,6 @@ final class ContentCreatedTest extends TestCase {
 		];
 
 		$actual = new TestContentCreated(
-			contentType: GenericContent::class,
 			contentId: Identifier::fromString('7fe339e8-459b-4a48-8e30-e6638dc5ceb5'),
 			userId: Identifier::fromString('f8e10d2e-9f72-447a-8376-0007b14d94e7'),
 			siteId: Identifier::fromString('bd991aac-bd81-4ee7-b77c-793d4bc55796'),
@@ -90,7 +88,6 @@ final class ContentCreatedTest extends TestCase {
 
 	public function testItDeserializesAPayloadCorrectly() {
 		$expected = new TestContentCreated(
-			contentType: GenericContent::class,
 			contentId: Identifier::fromString('7fe339e8-459b-4a48-8e30-e6638dc5ceb5'),
 			userId: Identifier::fromString('f8e10d2e-9f72-447a-8376-0007b14d94e7'),
 			siteId: Identifier::fromString('bd991aac-bd81-4ee7-b77c-793d4bc55796'),
