@@ -41,7 +41,7 @@ class ReblogInfoChanged extends ContentBodyEdited {
 	 * @return array
 	 */
 	public function getPayload(): array {
-		return [ 'info' => $this->info->toArray() ];
+		return [ 'url' => $this->url, 'info' => $this->info->toArray() ];
 	}
 
 	/**
@@ -51,6 +51,6 @@ class ReblogInfoChanged extends ContentBodyEdited {
 	 * @return array
 	 */
 	protected static function payloadFromArray(array $payload): array {
-		return [ 'info' => ExternalContentInfo::fromArray($payload['info']) ];
+		return [ 'url' => $payload['url'], 'info' => ExternalContentInfo::fromArray($payload['info']) ];
 	}
 }

@@ -31,7 +31,7 @@ class Reblog extends Content {
 		Identifier $siteId,
 		Identifier $authorId,
 		public readonly ?string $comment = null,
-		private ?ExternalContentInfo $info,
+		private ?ExternalContentInfo $info = null,
 		private ?string $commentHtml = null,
 		?string $permalink = null,
 		?DateTimeInterface $publishTimestamp = null,

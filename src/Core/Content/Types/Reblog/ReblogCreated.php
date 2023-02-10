@@ -12,7 +12,10 @@ use Smolblog\Framework\Objects\Identifier;
  * Indicates a Reblog has been created.
  */
 class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
-	use ReblogEventKit;
+	use ReblogEventKit {
+		getNewBody as internalGetBody;
+		getNewTitle as internalGetTitle;
+	}
 
 	/**
 	 * Construct the event.
@@ -82,5 +85,23 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 			...$payload,
 			'info' => ExternalContentInfo::fromArray($payload['info']),
 		];
+	}
+
+	/**
+	 * Get the title of the created content.
+	 *
+	 * @return string
+	 */
+	public function getNewTitle(): string {
+		return $this->internalGetTitle() ?? 'Reblog';
+	}
+
+	/**
+	 * Get the body of the created content.
+	 *
+	 * @return string
+	 */
+	public function getNewBody(): string {
+		return $this->internalGetBody() ?? '';
 	}
 }
