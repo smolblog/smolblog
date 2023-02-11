@@ -48,7 +48,6 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 		?DateTimeInterface $timestamp = null,
 	) {
 		parent::__construct(
-			contentType: Reblog::class,
 			permalink: $permalink,
 			publishTimestamp: $publishTimestamp,
 			visibility: $visibility,
@@ -103,5 +102,14 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 */
 	public function getNewBody(): string {
 		return $this->internalGetBody() ?? '';
+	}
+
+	/**
+	 * Get the class of the content this event creates.
+	 *
+	 * @return string
+	 */
+	public function getContentType(): string {
+		return Reblog::class;
 	}
 }

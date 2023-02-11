@@ -44,7 +44,6 @@ class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
 		?DateTimeInterface $timestamp = null,
 	) {
 		parent::__construct(
-			contentType: Status::class,
 			permalink: $permalink,
 			publishTimestamp: $publishTimestamp,
 			visibility: $visibility,
@@ -64,5 +63,14 @@ class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 */
 	public function getContentPayload(): array {
 		return ['text' => $this->text];
+	}
+
+	/**
+	 * Get the class of the content this event creates.
+	 *
+	 * @return string
+	 */
+	public function getContentType(): string {
+		return Status::class;
 	}
 }

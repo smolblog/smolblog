@@ -11,11 +11,12 @@ use Smolblog\Framework\Objects\Identifier;
 
 final class TestContentCreated extends ContentCreated {
 	public function __construct(public readonly string $one = 'two', ...$props) {
-		parent::__construct(GenericContent::class, ...$props);
+		parent::__construct(...$props);
 	}
 	public function getNewBody(): string { return '<p>hullo</p>'; }
 	public function getNewTitle(): string { return 'Hullo'; }
 	public function getContentPayload(): array { return ['one' => 'two']; }
+	public function getContentType(): string { return GenericContent::class; }
 }
 
 final class ContentCreatedTest extends TestCase {
@@ -68,7 +69,6 @@ final class ContentCreatedTest extends TestCase {
 			'id' => '20366a42-2839-41c7-83a9-3a00cb411c7d',
 			'timestamp' => '2022-02-22T22:22:22.000+00:00',
 			'payload' => [
-				'contentType' => GenericContent::class,
 				'authorId' => '376ee1ba-4544-4e9e-827f-2792b0c67c76',
 				'one' => 'two',
 			]
@@ -105,7 +105,6 @@ final class ContentCreatedTest extends TestCase {
 			'id' => '20366a42-2839-41c7-83a9-3a00cb411c7d',
 			'timestamp' => '2022-02-22T22:22:22.000+00:00',
 			'payload' => [
-				'contentType' => GenericContent::class,
 				'authorId' => '376ee1ba-4544-4e9e-827f-2792b0c67c76',
 				'one' => 'hello',
 			]

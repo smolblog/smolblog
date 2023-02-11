@@ -14,6 +14,21 @@ include_once __DIR__ . '/_StatusTestKit.php';
 final class StatusCreatedTest extends TestCase {
 	use StatusTestKit;
 
+	public function testItCreatesAStatus() {
+		$status = new StatusCreated(
+			text: $this->simpleTextMd,
+			siteId: Identifier::createRandom(),
+			authorId: Identifier::createRandom(),
+			permalink: '/test/content.html',
+			publishTimestamp: new DateTimeImmutable(),
+			visibility: ContentVisibility::Published,
+			contentId: Identifier::createRandom(),
+			userId: Identifier::createRandom(),
+		);
+
+		$this->assertEquals(Status::class, $status->getContentType());
+	}
+
 	public function testTheTitleIsTheTextTruncated() {
 		$status = new StatusCreated(
 			text: $this->simpleTextMd,
@@ -55,7 +70,6 @@ final class StatusCreatedTest extends TestCase {
 			'id' => '20366a42-2839-41c7-83a9-3a00cb411c7d',
 			'timestamp' => '2022-02-22T22:22:22.000+00:00',
 			'payload' => [
-				'contentType' => Status::class,
 				'authorId' => '376ee1ba-4544-4e9e-827f-2792b0c67c76',
 				'text' => 'There\'s a horse loose in a hospital!'
 			]
@@ -83,7 +97,6 @@ final class StatusCreatedTest extends TestCase {
 			'id' => '20366a42-2839-41c7-83a9-3a00cb411c7d',
 			'timestamp' => '2022-02-22T22:22:22.000+00:00',
 			'payload' => [
-				'contentType' => Status::class,
 				'authorId' => '376ee1ba-4544-4e9e-827f-2792b0c67c76',
 				'text' => 'There\'s a horse loose in a hospital!'
 			]
