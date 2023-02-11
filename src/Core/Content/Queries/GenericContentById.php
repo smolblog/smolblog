@@ -12,6 +12,7 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class GenericContentById extends Query implements MemoizableQuery, ExtensableContentQuery {
 	use MemoizableQueryKit;
+	use ExtensableContentQueryKit;
 
 	/**
 	 * Construct the query.
