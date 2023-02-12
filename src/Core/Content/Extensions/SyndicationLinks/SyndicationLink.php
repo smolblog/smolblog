@@ -27,10 +27,10 @@ class SyndicationLink extends Value {
 	 * @return array
 	 */
 	public function toArray(): array {
-		return [
+		return array_filter([
 			'url' => $this->url,
-			'channelId' => $this->channelId->toString(),
-		];
+			'channelId' => $this->channelId?->toString(),
+		]);
 	}
 
 	/**
@@ -40,6 +40,6 @@ class SyndicationLink extends Value {
 	 * @return static
 	 */
 	public static function fromArray(array $data): static {
-		return new static(url: $data['url'], channelId: self::safeDeserializeIdentifier($data['channelId']));
+		return new static(url: $data['url'], channelId: self::safeDeserializeIdentifier($data['channelId'] ?? ''));
 	}
 }

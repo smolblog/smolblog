@@ -43,7 +43,7 @@ class SyndicationLinks implements ContentExtension {
 	 * @return array
 	 */
 	public function toArray(): array {
-		return['link' => array_map(fn($link) => $link->toArray(), $this->links)];
+		return['links' => array_map(fn($link) => $link->toArray(), $this->links)];
 	}
 
 	/**

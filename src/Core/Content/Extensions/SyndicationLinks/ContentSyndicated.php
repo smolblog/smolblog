@@ -68,7 +68,7 @@ class ContentSyndicated extends ContentExtensionEdited {
 	public function getPayload(): array {
 		return [
 			'url' => $this->url,
-			'channelId' => $this->channelId->toString(),
+			'channelId' => $this->channelId?->toString(),
 		];
 	}
 
