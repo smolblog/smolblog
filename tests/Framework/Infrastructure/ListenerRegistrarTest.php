@@ -99,10 +99,10 @@ final class ListenerTestTimingService {
 
 final class ListenerRegistrarTest extends TestCase {
 	private ListenerRegistrar $provider;
-	private ServiceRegistrar $container;
+	private ServiceRegistry $container;
 
 	public function setUp(): void {
-		$this->container = new ServiceRegistrar([
+		$this->container = new ServiceRegistry([
 			ListenerTestMainService::class => [],
 			ListenerTestTimingService::class => [],
 		]);
