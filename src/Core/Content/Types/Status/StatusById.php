@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use Smolblog\Core\Content\Queries\ExtensableContentQuery;
+use Smolblog\Core\Content\Queries\ExtensableContentQueryKit;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\MemoizableQueryKit;
 use Smolblog\Framework\Messages\Query;
@@ -13,6 +14,7 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class StatusById extends Query implements MemoizableQuery, ExtensableContentQuery {
 	use MemoizableQueryKit;
+	use ExtensableContentQueryKit;
 
 	/**
 	 * Construct the query

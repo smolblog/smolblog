@@ -24,4 +24,42 @@ final class TagsTest extends TestCase {
 			$this->assertEquals($expected, Tags::normalizeTagText($actual));
 		}
 	}
+
+	public function testItCanBeConstructedWithTags() {
+		$expected = [
+			new Tag('tag one'),
+			new Tag('Tag2'),
+		];
+
+		$tags = new Tags(tags: $expected);
+		$this->assertEquals($expected, $tags->tags);
+	}
+
+	public function testItWillSerializeCorrectly() {
+		$expected = [ 'tags' => [
+			['text' => 'tag one', 'normalized' => Tags::normalizeTagText('tag one')],
+			['text' => 'Tag2', 'normalized' => Tags::normalizeTagText('Tag2')],
+		]];
+
+		$actual = new Tags(tags: [
+			new Tag('tag one'),
+			new Tag('Tag2'),
+		]);
+
+		$this->assertEquals($expected, $actual->toArray());
+	}
+
+	public function testItWillDeserializeCorrectly() {
+		$actual = [ 'tags' => [
+			['text' => 'tag one', 'normalized' => Tags::normalizeTagText('tag one')],
+			['text' => 'Tag2', 'normalized' => Tags::normalizeTagText('Tag2')],
+		]];
+
+		$expected = new Tags(tags: [
+			new Tag('tag one'),
+			new Tag('Tag2'),
+		]);
+
+		$this->assertEquals($expected, Tags::fromArray($actual));
+	}
 }

@@ -13,8 +13,6 @@ use Smolblog\Framework\Objects\SerializableKit;
  * change as things get more mature, which is why the _events_ only store the full unicode text.
  */
 class Tags implements ContentExtension {
-	use SerializableKit;
-
 	/**
 	 * Transform the tag text into a normalized format.
 	 *
@@ -49,5 +47,24 @@ class Tags implements ContentExtension {
 	 */
 	public function setTags(array $tags) {
 		$this->tags = $tags;
+	}
+
+	/**
+	 * Serialize this extension.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		return['tags' => array_map(fn($tag) => $tag->toArray(), $this->tags)];
+	}
+
+	/**
+	 * Deserialize this extension.
+	 *
+	 * @param array $data Serialized extension.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		return new static(tags: array_map(fn($tag) => Tag::fromArray($tag), $data['tags']));
 	}
 }
