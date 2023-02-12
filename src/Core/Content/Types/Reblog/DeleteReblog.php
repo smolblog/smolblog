@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
+use Smolblog\Core\Content\EditContentCommandKit;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
@@ -13,7 +14,14 @@ use Smolblog\Framework\Objects\Identifier;
  * Delete a reblog and remove it from projections.
  */
 class DeleteReblog extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
+	use EditContentCommandKit;
+
+	/**
+	 * Mirror the reblogId into contentId so we can use the trait.
+	 *
+	 * @var Identifier
+	 */
+	private Identifier $contentId;
 
 	/**
 	 * Construct the command.
@@ -27,18 +35,6 @@ class DeleteReblog extends Command implements AuthorizableMessage {
 		public readonly Identifier $userId,
 		public readonly Identifier $reblogId,
 	) {
-	}
-
-	/**
-	 * User must be able to edit this content.
-	 *
-	 * @return Query
-	 */
-	public function getAuthorizationQuery(): Query {
-		return new UserCanEditContent(
-			userId: $this->userId,
-			siteId: $this->siteId,
-			contentId: $this->reblogId,
-		);
+		$this->contentId = $this->reblogId;
 	}
 }
