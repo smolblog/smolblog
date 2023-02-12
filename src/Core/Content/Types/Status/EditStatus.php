@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Status;
 
+use Smolblog\Core\Content\EditContentCommandKit;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
@@ -13,7 +14,14 @@ use Smolblog\Framework\Objects\Identifier;
  * Change the text on a Status.
  */
 class EditStatus extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
+	use EditContentCommandKit;
+
+	/**
+	 * Map statusId to contentID so we can use the trait.
+	 *
+	 * @var Identifier
+	 */
+	private Identifier $contentId;
 
 	/**
 	 * Construct the command.
@@ -29,18 +37,6 @@ class EditStatus extends Command implements AuthorizableMessage {
 		public readonly Identifier $statusId,
 		public readonly string $text,
 	) {
-	}
-
-	/**
-	 * User must be able to edit this content.
-	 *
-	 * @return Query
-	 */
-	public function getAuthorizationQuery(): Query {
-		return new UserCanEditContent(
-			userId: $this->userId,
-			siteId: $this->siteId,
-			contentId: $this->statusId,
-		);
+		$this->contentId = $this->statusId;
 	}
 }

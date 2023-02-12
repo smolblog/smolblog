@@ -2,11 +2,9 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use Smolblog\Core\Content\Queries\UserCanEditContent;
+use Smolblog\Core\Content\EditContentCommandKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -15,7 +13,14 @@ use Smolblog\Framework\Objects\Identifier;
  * Could also be the same URL if the data needs to be refreshed.
  */
 class EditReblogUrl extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
+	use EditContentCommandKit;
+
+	/**
+	 * Mirror the reblogId into contentId so we can use the trait.
+	 *
+	 * @var Identifier
+	 */
+	private Identifier $contentId;
 
 	/**
 	 * Construct the command.
@@ -31,18 +36,6 @@ class EditReblogUrl extends Command implements AuthorizableMessage {
 		public readonly Identifier $reblogId,
 		public readonly string $url,
 	) {
-	}
-
-	/**
-	 * User must be able to edit this content.
-	 *
-	 * @return Query
-	 */
-	public function getAuthorizationQuery(): Query {
-		return new UserCanEditContent(
-			userId: $this->userId,
-			siteId: $this->siteId,
-			contentId: $this->reblogId,
-		);
+		$this->contentId = $this->reblogId;
 	}
 }
