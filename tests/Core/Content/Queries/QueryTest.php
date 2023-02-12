@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\Content\Queries;
 
 use PHPUnit\Framework\TestCase;
-use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Core\Content\Types\Status\StatusById;
 use Smolblog\Framework\Objects\Identifier;
 
