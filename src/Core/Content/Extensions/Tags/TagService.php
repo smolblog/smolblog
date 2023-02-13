@@ -2,12 +2,13 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle Tag commands.
  */
-class TagService {
+class TagService implements Listener {
 	/**
 	 * Construct the service.
 	 *

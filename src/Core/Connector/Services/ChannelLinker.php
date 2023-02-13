@@ -6,12 +6,13 @@ use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Service to handle setting permissions for a Site and Channel.
  */
-class ChannelLinker {
+class ChannelLinker implements Listener {
 	/**
 	 * Construct the service.
 	 *

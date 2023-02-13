@@ -7,13 +7,14 @@ use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Service to check if a Connection needs a refresh and save the refreshed Connection if so.
  */
-class ConnectionRefresher {
+class ConnectionRefresher implements Listener {
 	/**
 	 * Construct the service
 	 *

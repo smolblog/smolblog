@@ -3,12 +3,13 @@
 namespace Smolblog\Core\Content\Markdown;
 
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
  * Service to provide rendered Markdown on a message that needs it.
  */
-class MarkdownMessageRenderer {
+class MarkdownMessageRenderer implements Listener {
 	/**
 	 * Construct the service
 	 *

@@ -29,19 +29,20 @@ class Model extends DomainModel {
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
+		Content\Extensions\SyndicationLinks\SyndicationLinkService::class => [
+			'bus' => MessageBus::class,
+		],
+		Content\Extensions\Tags\TagService::class => [
+			'bus' => MessageBus::class,
+		],
 		Content\Markdown\MarkdownMessageRenderer::class => [
 			'md' => SmolblogMarkdown::class,
+		],
+		Content\Types\Reblog\ReblogService ::class => [
+			'bus' => MessageBus::class,
 		],
 		Content\Types\Status\StatusService::class => [
 			'bus' => MessageBus::class,
 		],
-	];
-
-	public const LISTENERS = [
-		Connector\Services\AuthRequestService::class,
-		Connector\Services\ChannelRefresher::class,
-		Connector\Services\ConnectionRefresher::class,
-		Content\Markdown\MarkdownMessageRenderer::class,
-		Content\Types\Status\StatusService::class,
 	];
 }
