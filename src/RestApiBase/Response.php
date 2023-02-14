@@ -2,12 +2,22 @@
 
 namespace Smolblog\RestApiBase;
 
+use JsonSerializable;
 use Smolblog\Framework\Objects\Value;
 
-class Response extends Value {
+/**
+ * Represents a response to a REST API request.
+ */
+class Response {
+	/**
+	 * Construct the response.
+	 *
+	 * @param JsonSerializable|array $body   Data of the response.
+	 * @param integer                $status HTTP status to return.
+	 */
 	public function __construct(
-		public readonly Value $body,
-		public readonly int $status = 200,
+		public readonly JsonSerializable|array $body,
+		public readonly int $status,
 	) {
 	}
 }
