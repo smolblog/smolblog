@@ -32,7 +32,8 @@
     "test": "phpunit --testsuite core",
     "integration": "phpunit --testsuite integration",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+    "swagger": "Smolblog\\RestApiBase\\Model::generateOpenApiSpec"
   },
   "require": {
     "php": "^8.2",

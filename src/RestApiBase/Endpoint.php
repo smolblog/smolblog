@@ -3,6 +3,7 @@
 namespace Smolblog\RestApiBase;
 
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\Value;
 
 /**
  * Base Endpoint interface
@@ -24,11 +25,11 @@ interface Endpoint {
 	 * @param Identifier|null $userId ID of the authenticated user; null if no logged-in user.
 	 * @param array           $params Associative array of any parameters in the URL or query string.
 	 * @param array           $body   Array-decoded JSON body if present.
-	 * @return Response
+	 * @return Value
 	 */
 	public function run(
 		?Identifier $userId,
 		array $params,
 		array $body,
-	): Response;
+	): Value;
 }

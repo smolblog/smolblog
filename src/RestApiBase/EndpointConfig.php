@@ -2,10 +2,12 @@
 
 namespace Smolblog\RestApiBase;
 
+use Smolblog\Framework\Objects\Value;
+
 /**
  * Configuration data for an Endpoint used to register it with the outside router.
  */
-class EndpointConfig {
+class EndpointConfig extends Value {
 	/**
 	 * The given route for this endpoint.
 	 *
@@ -20,14 +22,12 @@ class EndpointConfig {
 	public readonly string $route;
 
 	/**
-	 * HTTP verbs this endpoint will respond to.
+	 * HTTP verb this endpoint will respond to.
 	 *
-	 * Given as an array of Verb enum instances.
-	 *
-	 * @var Verb[]
+	 * @var Verb
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 	 */
-	public readonly array $verbs;
+	public readonly Verb $verb;
 
 	/**
 	 * Parameters for this endpoint's path in an array of strings.
@@ -70,7 +70,7 @@ class EndpointConfig {
 	 * Create the configuration object.
 	 *
 	 * @param string      $route          The given route for this endpoint.
-	 * @param array       $verbs          HTTP verbs this endpoint will respond to.
+	 * @param Verb        $verb           HTTP verb this endpoint will respond to.
 	 * @param array       $pathVariables  Parameters for this endpoint's path in an array of strings.
 	 * @param array       $queryVariables Parameters this endpoint accepts in the query string.
 	 * @param string|null $bodyClass      Fully qualified class name that the request body should serialize to/from.
@@ -78,15 +78,15 @@ class EndpointConfig {
 	 */
 	public function __construct(
 		string $route,
-		array $verbs = [Verb::GET],
+		Verb $verb = Verb::GET,
 		array $pathVariables = [],
 		array $queryVariables = [],
 		?string $bodyClass = null,
 		bool $public = true,
 	) {
 		$this->route = $route;
-		$this->verbs = $verbs;
-		$this->$pathVariables = $pathVariables;
+		$this->verb = $verb;
+		$this->pathVariables = $pathVariables;
 		$this->queryVariables = $queryVariables;
 		$this->bodyClass = $bodyClass;
 		$this->public = $public;
