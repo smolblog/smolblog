@@ -82,7 +82,7 @@ class EndpointConfig extends Value {
 		array $pathVariables = [],
 		array $queryVariables = [],
 		?string $bodyClass = null,
-		bool $public = true,
+		bool $public = false,
 	) {
 		$this->route = $route;
 		$this->verb = $verb;

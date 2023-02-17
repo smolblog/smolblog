@@ -9,7 +9,8 @@ use Smolblog\Framework\Objects\DomainModel;
 
 class Model extends DomainModel {
 	const SERVICES = [
-		Connector\AuthInit::class => [],
+		// Connector\AuthInit::class => [],
+		Connector\AuthCallback::class => [],
 	];
 
 	public static function generateOpenApiSpec(): void {
@@ -29,7 +30,7 @@ class Model extends DomainModel {
 
 			print_r(
 				array_map(
-					fn($prop) => [$prop->getName(), strval($prop->getType())],
+					fn($prop) => [$prop->getName(), strval($prop->getType()), $prop->getDocComment()],
 					$endpoints[$endpoint]['response']->getProperties(ReflectionProperty::IS_PUBLIC)
 				)
 			);

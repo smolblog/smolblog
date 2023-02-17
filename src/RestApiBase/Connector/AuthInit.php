@@ -3,10 +3,12 @@
 namespace Smolblog\RestApiBase\Connector;
 
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\Value;
 use Smolblog\RestApiBase\Endpoint;
 use Smolblog\RestApiBase\EndpointConfig;
 use Smolblog\RestApiBase\ParameterType;
 use Smolblog\RestApiBase\Response;
+use Smolblog\RestApiBase\ResponseShape;
 use Smolblog\RestApiBase\Verb;
 
 /**
@@ -32,13 +34,18 @@ class AuthInit implements Endpoint {
 	 * @param Identifier|null $userId Authenticated user's ID.
 	 * @param array           $params Ignored.
 	 * @param array           $body   Ignored.
-	 * @return EndpointConfig
+	 * @return Value
 	 */
-	public function run(?Identifier $userId, array $params, array $body): EndpointConfig {
-		// return new class ('//tumblr.com/user/auth') extends Response {
-		// 	public function __construct(public readonly string $url) {
-		// 	}
-		// };
-		return self::getConfiguration();
+	// #[ResponseShape(['url' => ParameterType::string(format: 'url')])]
+	public function run(?Identifier $userId, array $params, array $body): Value {
+		return new class ('//tumblr.com/user/auth') extends Value {
+			/**
+			 * Construct the response
+			 *
+			 * @param string $url URL to redirect the user to.
+			 */
+			public function __construct(public readonly string $url) {
+			}
+		};
 	}
 }
