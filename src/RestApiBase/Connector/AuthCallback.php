@@ -6,8 +6,18 @@ use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\RestApiBase\Endpoint;
 use Smolblog\RestApiBase\EndpointConfig;
+use Smolblog\RestApiBase\DataType;
+use Smolblog\RestApiBase\ErrorResponses;
+use Smolblog\RestApiBase\Exceptions\BadRequest;
+use Smolblog\RestApiBase\Exceptions\NotFound;
 use Smolblog\RestApiBase\ParameterType;
 
+/**
+ * OAuth callback hook.
+ *
+ * Endpoint a user is redirected to after authenticating against their external provider. It provides support for both
+ * OAuth 1 and OAuth 2 callbacks.
+ */
 class AuthCallback implements Endpoint {
 	/**
 	 * Get the configuration for this endpoint.
@@ -17,7 +27,7 @@ class AuthCallback implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: 'connect/callback/{provider}',
-			pathVariables: ['provider' => ParameterType::string(pattern: '/[a-z0-9]+/i')],
+			pathVariables: ['provider' => ParameterType::string(pattern: '^[a-zA-Z0-9]+$')],
 			queryVariables: [
 				'state' => ParameterType::string(),
 				'code' => ParameterType::string(),
@@ -28,8 +38,25 @@ class AuthCallback implements Endpoint {
 		);
 	}
 
-	public function run(?Identifier $userId, array $params, array $body): ConnectionEstablishedResponse
-	{
+	/**
+	 * Run the endpoint
+	 *
+	 * @throws NotFound Provider not registered.
+	 * @throws BadRequest Invalid parameters given.
+	 *
+	 * @param Identifier|null $userId
+	 * @param array $params
+	 * @param array $body
+	 * @return ConnectionEstablishedResponse
+	 */
+	public function run(?Identifier $userId, array $params, array $body): ConnectionEstablishedResponse {
+		if (!$params['provider']) {
+			throw new NotFound('The given provider has not been registered.');
+		}
+		if (!$params['state'] && !$params['oauth_token']) {
+			throw new BadRequest('No valid state or oauth_token was given');
+		}
+
 		return new ConnectionEstablishedResponse(
 			id: Identifier::createRandom(),
 			provider: 'smolblog',

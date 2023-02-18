@@ -2,11 +2,13 @@
 
 namespace Smolblog\RestApiBase;
 
+use Attribute;
 use Smolblog\Framework\Objects\ExtendableValueKit;
 
 /**
  * Class to declare and define API parameters.
  */
+#[Attribute]
 class ParameterType {
 	use ExtendableValueKit;
 
@@ -29,7 +31,7 @@ class ParameterType {
 	public static function identifier(): ParameterType {
 		return self::string(
 			format: 'uuid',
-			pattern: '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9][0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/i'
+			pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
 		);
 	}
 
@@ -105,13 +107,27 @@ class ParameterType {
 	/**
 	 * Construct the type
 	 *
-	 * @param string $type     OpenAPI type.
-	 * @param mixed  ...$props Any additional properties.
+	 * @param string  $type     OpenAPI type.
+	 * @param boolean $required True if this is a required parameter.
+	 * @param mixed   ...$props Any additional properties.
 	 */
-	private function __construct(
+	public function __construct(
 		public readonly string $type,
+		public readonly bool $required = false,
 		mixed ...$props,
 	) {
 		$this->extendedFields = $props;
+	}
+
+	/**
+	 * Get the OpenAPI-compatible schema for this type.
+	 *
+	 * @return array
+	 */
+	public function schema(): array {
+		$base = $this->toArray();
+		unset($base['required']);
+
+		return array_filter($base, fn($i) => isset($i));
 	}
 }

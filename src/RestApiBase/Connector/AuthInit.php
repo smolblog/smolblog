@@ -6,7 +6,7 @@ use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\RestApiBase\Endpoint;
 use Smolblog\RestApiBase\EndpointConfig;
-use Smolblog\RestApiBase\ParameterType;
+use Smolblog\RestApiBase\DataType;
 use Smolblog\RestApiBase\Response;
 use Smolblog\RestApiBase\ResponseShape;
 use Smolblog\RestApiBase\Verb;
@@ -23,7 +23,7 @@ class AuthInit implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: 'connect/init/{provider}',
-			pathVariables: ['provider' => ParameterType::string(pattern: '/[a-z0-9]+/i')],
+			pathVariables: ['provider' => DataType::string(pattern: '/[a-z0-9]+/i')],
 			public: false,
 		);
 	}
@@ -36,7 +36,7 @@ class AuthInit implements Endpoint {
 	 * @param array           $body   Ignored.
 	 * @return Value
 	 */
-	// #[ResponseShape(['url' => ParameterType::string(format: 'url')])]
+	#[ResponseShape(['url' => ['type' => 'string', 'format' => 'url']])]
 	public function run(?Identifier $userId, array $params, array $body): Value {
 		return new class ('//tumblr.com/user/auth') extends Value {
 			/**
