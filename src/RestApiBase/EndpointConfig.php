@@ -59,9 +59,9 @@ class EndpointConfig extends Value {
 	/**
 	 * Describes the shape of the response body if it is not a defined class.
 	 *
-	 * @var array|null
+	 * @var ParameterType|null
 	 */
-	public readonly ?array $responseShape;
+	public readonly ?ParameterType $responseShape;
 
 	/**
 	 * Indicate if this is a public endpoint.
@@ -79,13 +79,13 @@ class EndpointConfig extends Value {
 	 *
 	 * @throws InvalidArgumentException If both or neither $bodyClass and $bodyShape are given.
 	 *
-	 * @param string      $route          The given route for this endpoint.
-	 * @param Verb        $verb           HTTP verb this endpoint will respond to.
-	 * @param array       $pathVariables  Parameters for this endpoint's path in an array of strings.
-	 * @param array       $queryVariables Parameters this endpoint accepts in the query string.
-	 * @param string|null $bodyClass      Fully qualified class name that the request body should serialize to/from.
-	 * @param string|null $responseShape  Describes the shape of the response body if it is not a defined class.
-	 * @param boolean     $public         Indicate if this is a public endpoint.
+	 * @param string             $route          The given route for this endpoint.
+	 * @param Verb               $verb           HTTP verb this endpoint will respond to.
+	 * @param array              $pathVariables  Parameters for this endpoint's path in an array of strings.
+	 * @param array              $queryVariables Parameters this endpoint accepts in the query string.
+	 * @param string|null        $bodyClass      Fully qualified class name that the request body should serialize from.
+	 * @param ParameterType|null $responseShape  Describes the shape of the response body if it is not a defined class.
+	 * @param boolean            $public         Indicate if this is a public endpoint.
 	 */
 	public function __construct(
 		string $route,
@@ -93,7 +93,7 @@ class EndpointConfig extends Value {
 		array $pathVariables = [],
 		array $queryVariables = [],
 		?string $bodyClass = null,
-		?array $responseShape = null,
+		?ParameterType $responseShape = null,
 		bool $public = false,
 	) {
 		$this->route = $route;

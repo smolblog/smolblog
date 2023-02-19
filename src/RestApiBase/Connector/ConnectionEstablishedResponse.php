@@ -22,7 +22,7 @@ class ConnectionEstablishedResponse extends Value {
 		public readonly Identifier $id,
 		public readonly string $provider,
 		public readonly string $displayName,
-		#[ParameterType(type: 'array', item: 'string')] public readonly array $channels,
+		#[ParameterType(type: 'array', items: ['type' => 'string'])] public readonly array $channels,
 	) {
 	}
 }

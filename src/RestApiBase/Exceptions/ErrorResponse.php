@@ -34,8 +34,8 @@ abstract class ErrorResponse extends Exception implements SmolblogException, Jso
 			'schema' => [
 				'type' => 'object',
 				'properties' => [
-					'code' => DataType::INTEGER,
-					'error' => DataType::STRING,
+					'code' => ['type' => 'integer'],
+					'error' => ['type' => 'string'],
 				]
 			]
 		]

@@ -45,8 +45,8 @@ class AuthCallback implements Endpoint {
 	 * @throws BadRequest Invalid parameters given.
 	 *
 	 * @param Identifier|null $userId
-	 * @param array $params
-	 * @param array $body
+	 * @param array           $params
+	 * @param array           $body
 	 * @return ConnectionEstablishedResponse
 	 */
 	public function run(?Identifier $userId, array $params, array $body): ConnectionEstablishedResponse {

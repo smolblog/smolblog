@@ -116,6 +116,9 @@ class ParameterType {
 		public readonly bool $required = false,
 		mixed ...$props,
 	) {
+		if ($this->type === 'dateTime') {
+			$this->type = 'date-time';
+		}
 		$this->extendedFields = $props;
 	}
 

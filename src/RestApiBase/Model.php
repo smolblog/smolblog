@@ -2,10 +2,13 @@
 
 namespace Smolblog\RestApiBase;
 
+use DateTimeInterface;
+use Exception;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Framework\Objects\Identifier;
 use Smolblog\RestApiBase\Exceptions\BadRequest;
 use Smolblog\RestApiBase\Exceptions\ErrorResponse;
 use Smolblog\RestApiBase\Exceptions\NotFound;
@@ -26,11 +29,22 @@ class Model extends DomainModel {
 			$classReflect = new ReflectionClass($endpoint);
 			$runReflect = $classReflect->getMethod('run');
 			$config = $endpoint::getConfiguration();
-			$errors = self::getThrownResponses($runReflect->getDocComment());
+			$responses = self::getThrownResponses($runReflect->getDocComment());
 			$descriptions = self::getDescription($classReflect->getDocComment());
 
+			$responseClassName = $runReflect->getReturnType()?->getName();
+
+			$responses[200] = [
+				'description' => 'Successful response',
+				'content' => [
+					'application/json' => [
+						'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+					],
+				],
+			];
+
 			/*
-			print_r(
+				print_r(
 				[
 					'errors' => $data['errors'],
 					'response' => array_map(
@@ -42,7 +56,7 @@ class Model extends DomainModel {
 						$data['response']->getProperties(ReflectionProperty::IS_PUBLIC)
 					)
 				]
-			);
+				);
 			*/
 
 			$parameters = [
@@ -65,13 +79,13 @@ class Model extends DomainModel {
 					'description' => $descriptions[1],
 					'operationId' => str_replace('\\', '', $endpoint),
 					'parameters' => $parameters,
-					'responses' => $errors,
+					'responses' => $responses,
+					'components' => ['schemas' => self::$schemaCache],
 				],
 			];
-
 		}//end foreach
 
-		print_r($endpoints);
+		echo json_encode($endpoints, JSON_PRETTY_PRINT);
 	}
 
 	private static function getDescription(string $docblock): array {
@@ -126,5 +140,60 @@ class Model extends DomainModel {
 			'required' => $schema->required,
 			'schema' => $schema->schema(),
 		];
+	}
+
+	private static function buildSuccessResponse(?string $class, ?ParameterType $shape): array {
+		if (isset($shape)) {
+			return $shape->schema();
+		}
+
+		if (!isset($class)) {
+			throw new Exception("Need either a shape or class!");
+		}
+
+		return self::makeSchemaFromClass($class);
+	}
+
+	private static array $schemaCache = [];
+
+	private static function makeSchemaFromClass(string $className): array {
+		$compressedName = str_replace('\\', '', $className);
+		if (isset(self::$schemaCache[$compressedName])) {
+			return ['$ref' => '#/components/schemas/' . $compressedName]; //$schemaCache[$compressedName];
+		}
+
+		$reflect = new ReflectionClass($className);
+		$props = [];
+		foreach ($reflect->getProperties(ReflectionProperty::IS_PUBLIC) as $prop) {
+			$name = $prop->getName();
+			$atts = $prop->getAttributes(ParameterType::class);
+
+			if (isset($atts[0])) {
+				$props[$name] = (new ParameterType(...$atts[0]->getArguments()))->schema();
+				continue;
+			}
+
+			$typeName = strval($prop->getType());
+			if (!class_exists($typeName)) {
+				// Assuming this is a primitive type; just pass it along.
+				$props[$name] = ['type' => $typeName];
+				continue;
+			}
+
+			switch ($typeName) {
+				// Throw in some known types.
+				case Identifier::class:
+					$props[$name] = ParameterType::identifier()->schema();
+					continue 2;
+				case DateTimeInterface::class:
+					$props[$name] = ParameterType::dateTime()->schema();
+					continue 2;
+			}
+
+			$props[$name] = self::makeSchemaFromClass($typeName);
+		}
+
+		self::$schemaCache[$compressedName] = ['type' => 'object', 'properties' => $props];
+		return ['$ref' => '#/components/schemas/' . $compressedName]; //$schemaCache[$compressedName];
 	}
 }
