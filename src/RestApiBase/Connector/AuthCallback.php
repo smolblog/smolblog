@@ -52,7 +52,11 @@ class AuthCallback implements Endpoint {
 	 * @param array           $body   Ignored.
 	 * @return ConnectionEstablishedResponse
 	 */
-	public function run(?Identifier $userId = null, array $params = [], array $body = []): ConnectionEstablishedResponse {
+	public function run(
+		?Identifier $userId = null,
+		array $params = [],
+		array $body = []
+	): ConnectionEstablishedResponse {
 		if (!$params['provider']) {
 			throw new NotFound('The given provider has not been registered.');
 		}

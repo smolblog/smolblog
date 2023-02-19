@@ -80,7 +80,7 @@ class Model extends DomainModel {
 					'tags' => [ str_replace(__NAMESPACE__ . '\\', '', $classReflect->getNamespaceName()) ],
 					'summary' => $descriptions[0],
 					'description' => $descriptions[1],
-					'operationId' => str_replace('\\', '', $endpoint),
+					'operationId' => self::makeAbbreviatedName($endpoint),
 					'parameters' => $parameters,
 					'responses' => $responses,
 				],
@@ -218,20 +218,30 @@ class Model extends DomainModel {
 	 * @return array Reference to the class' schema.
 	 */
 	private static function makeSchemaFromClass(string $className): array {
-		$compressedName = str_replace('\\', '', $className);
+		$compressedName = self::makeAbbreviatedName($className);
 		if (isset(self::$schemaCache[$compressedName])) {
 			return ['$ref' => '#/components/schemas/' . $compressedName];
 		}
 
 		$reflect = new ReflectionClass($className);
 		$props = [];
+		$required = [];
 		foreach ($reflect->getProperties(ReflectionProperty::IS_PUBLIC) as $prop) {
 			$name = $prop->getName();
 			$atts = $prop->getAttributes(ParameterType::class);
 
 			if (isset($atts[0])) {
-				$props[$name] = (new ParameterType(...$atts[0]->getArguments()))->schema();
+				$type = new ParameterType(...$atts[0]->getArguments());
+				if ($type->required) {
+					$required[] = $name;
+				}
+
+				$props[$name] = $type->schema();
 				continue;
+			}
+
+			if (!$prop->getType()->allowsNull()) {
+				$required[] = $name;
 			}
 
 			$typeName = strval($prop->getType());
@@ -254,7 +264,17 @@ class Model extends DomainModel {
 			$props[$name] = self::makeSchemaFromClass($typeName);
 		}//end foreach
 
-		self::$schemaCache[$compressedName] = ['type' => 'object', 'properties' => $props];
+		self::$schemaCache[$compressedName] = ['type' => 'object', 'properties' => $props, 'required' => $required];
 		return ['$ref' => '#/components/schemas/' . $compressedName];
+	}
+
+	/**
+	 * Make an OpenAPI-compatible name from a class.
+	 *
+	 * @param string $className Fully-qualified class name.
+	 * @return string
+	 */
+	public static function makeAbbreviatedName(string $className): string {
+		return str_replace('\\', '', str_replace(__NAMESPACE__, '', $className));
 	}
 }

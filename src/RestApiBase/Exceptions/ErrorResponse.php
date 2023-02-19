@@ -36,7 +36,8 @@ abstract class ErrorResponse extends Exception implements SmolblogException, Jso
 				'properties' => [
 					'code' => ['type' => 'integer'],
 					'error' => ['type' => 'string'],
-				]
+				],
+				'required' => ['code', 'error'],
 			]
 		]
 	];

@@ -103,6 +103,16 @@ class ParameterType {
 	}
 
 	/**
+	 * Make the given type required.
+	 *
+	 * @param ParameterType $base ParameterType that should be required.
+	 * @return ParameterType
+	 */
+	public static function required(ParameterType $base): ParameterType {
+		return ParameterType::fromArray([...$base->toArray(), 'required' => true]);
+	}
+
+	/**
 	 * Construct the type
 	 *
 	 * @param string  $type     OpenAPI type.
@@ -129,8 +139,9 @@ class ParameterType {
 		$base = $this->toArray();
 		unset($base['required']);
 
-		if ($this->type === 'class') {
+		if ($this->type === 'object') {
 			$base['properties'] = array_map(fn($p) => $p->schema(), $this->properties);
+			$base['required'] = array_keys(array_filter($this->properties, fn($p) => $p->required));
 		}
 
 		return array_filter($base, fn($i) => isset($i));
