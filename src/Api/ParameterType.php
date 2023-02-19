@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\RestApiBase;
+namespace Smolblog\Api;
 
 use Attribute;
 use Smolblog\Framework\Objects\ExtendableValueKit;

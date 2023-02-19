@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\RestApiBase;
+namespace Smolblog\Api;
 
 use InvalidArgumentException;
 use Smolblog\Framework\Objects\Value;

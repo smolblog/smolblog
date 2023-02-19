@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\RestApiBase\Exceptions;
+namespace Smolblog\Api\Exceptions;
 
 use Exception;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\RestApiBase;
+namespace Smolblog\Api;
 
 /**
  * Standard definition of HTTP verbs.

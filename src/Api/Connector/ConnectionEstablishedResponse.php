@@ -1,10 +1,10 @@
 <?php
 
-namespace Smolblog\RestApiBase\Connector;
+namespace Smolblog\Api\Connector;
 
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
-use Smolblog\RestApiBase\ParameterType;
+use Smolblog\Api\ParameterType;
 
 /**
  * Response when a Connection is established.

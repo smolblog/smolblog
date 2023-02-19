@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\RestApiBase;
+namespace Smolblog\Api;
 
 use DateTimeInterface;
 use Exception;
@@ -9,9 +9,9 @@ use ReflectionMethod;
 use ReflectionProperty;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\RestApiBase\Exceptions\BadRequest;
-use Smolblog\RestApiBase\Exceptions\ErrorResponse;
-use Smolblog\RestApiBase\Exceptions\NotFound;
+use Smolblog\Api\Exceptions\BadRequest;
+use Smolblog\Api\Exceptions\ErrorResponse;
+use Smolblog\Api\Exceptions\NotFound;
 
 /**
  * Domain model for the API.

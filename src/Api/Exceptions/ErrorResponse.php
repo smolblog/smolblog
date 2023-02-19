@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\RestApiBase\Exceptions;
+namespace Smolblog\Api\Exceptions;
 
 use Exception;
 use JsonSerializable;
 use Smolblog\Framework\Exceptions\SmolblogException;
-use Smolblog\RestApiBase\DataType;
+use Smolblog\Api\DataType;
 
 /**
  * Generic exception to create an error response for the API.

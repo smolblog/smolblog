@@ -1,16 +1,16 @@
 <?php
 
-namespace Smolblog\RestApiBase\Connector;
+namespace Smolblog\Api\Connector;
 
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
-use Smolblog\RestApiBase\Endpoint;
-use Smolblog\RestApiBase\EndpointConfig;
-use Smolblog\RestApiBase\DataType;
-use Smolblog\RestApiBase\ErrorResponses;
-use Smolblog\RestApiBase\Exceptions\BadRequest;
-use Smolblog\RestApiBase\Exceptions\NotFound;
-use Smolblog\RestApiBase\ParameterType;
+use Smolblog\Api\Endpoint;
+use Smolblog\Api\EndpointConfig;
+use Smolblog\Api\DataType;
+use Smolblog\Api\ErrorResponses;
+use Smolblog\Api\Exceptions\BadRequest;
+use Smolblog\Api\Exceptions\NotFound;
+use Smolblog\Api\ParameterType;
 
 /**
  * OAuth callback hook.

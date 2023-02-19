@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\RestApiBase;
+namespace Smolblog\Api;
 
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
