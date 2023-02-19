@@ -93,15 +93,13 @@ class ParameterType {
 	}
 
 	/**
-	 * Declare an object parameter with a class.
+	 * Declare an object parameter with the given properties.
 	 *
-	 * $class must be a fully-qualified class name that can be serialized to and from JSON.
-	 *
-	 * @param string $class Class name that defines the parameter.
+	 * @param ParameterType[] $properties Associative array of properties.
 	 * @return ParameterType
 	 */
-	public static function object(string $class): ParameterType {
-		return new ParameterType(type: 'object', backingClass: $class);
+	public static function object(array $properties): ParameterType {
+		return new ParameterType(type: 'object', properties: $properties);
 	}
 
 	/**
@@ -130,6 +128,10 @@ class ParameterType {
 	public function schema(): array {
 		$base = $this->toArray();
 		unset($base['required']);
+
+		if ($this->type === 'class') {
+			$base['properties'] = array_map(fn($p) => $p->schema(), $this->properties);
+		}
 
 		return array_filter($base, fn($i) => isset($i));
 	}

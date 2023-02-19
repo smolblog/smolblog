@@ -13,12 +13,31 @@ use Smolblog\RestApiBase\Exceptions\BadRequest;
 use Smolblog\RestApiBase\Exceptions\ErrorResponse;
 use Smolblog\RestApiBase\Exceptions\NotFound;
 
+/**
+ * Domain model for the API.
+ *
+ * Also contains a script to create an OpenAPI (Swagger) spec from the given endpoints.
+ */
 class Model extends DomainModel {
-	const SERVICES = [
-		// Connector\AuthInit::class => [],
+	public const SERVICES = [
+		Connector\AuthInit::class => [],
 		Connector\AuthCallback::class => [],
 	];
 
+	/**
+	 * Store schemas for reflected classes.
+	 *
+	 * These will be stored in the `components` section of the spec and referenced elsewhere.
+	 *
+	 * @var array
+	 */
+	private static array $schemaCache = [];
+
+	/**
+	 * Create a JSON-formatted OpenAPI spec from the endpoints.
+	 *
+	 * @return void
+	 */
 	public static function generateOpenApiSpec(): void {
 		$endpoints = [];
 		foreach (array_keys(self::SERVICES) as $endpoint) {
@@ -43,22 +62,6 @@ class Model extends DomainModel {
 				],
 			];
 
-			/*
-				print_r(
-				[
-					'errors' => $data['errors'],
-					'response' => array_map(
-						fn($prop) => [
-							'name' => $prop->getName(),
-							'type' => strval($prop->getType()),
-							'attributes' => array_map(fn($att) => $att->getArguments(), $prop->getAttributes(DataType::class) ?? [])
-						],
-						$data['response']->getProperties(ReflectionProperty::IS_PUBLIC)
-					)
-				]
-				);
-			*/
-
 			$parameters = [
 				...array_map(
 					fn($key, $val) => [...self::processParam($key, $val), 'in' => 'path', 'required' => true],
@@ -80,14 +83,44 @@ class Model extends DomainModel {
 					'operationId' => str_replace('\\', '', $endpoint),
 					'parameters' => $parameters,
 					'responses' => $responses,
-					'components' => ['schemas' => self::$schemaCache],
 				],
 			];
 		}//end foreach
 
-		echo json_encode($endpoints, JSON_PRETTY_PRINT);
+		$fullSchema = [
+			'openapi' => '3.0.3',
+			'info' => [
+				'title' => 'Smolblog Core API',
+				'version' => 'dev-main',
+				'description' => <<<EOF
+				Preferred way of interacting with a Smolblog server.
+
+				The REST API is a first-class method—perhaps the only method!—of interacting with a server. It is the
+				backbone of the dashboard web app and powers the server-to-server communication.
+				EOF,
+				'contact' => [
+					'email' => 'dev@smolblog.org',
+					'url' => 'https://smolblog.org/',
+					'name' => 'The Smolblog Project',
+				],
+			],
+			'externalDocs' => [
+				'description' => 'All Smolblog project documentation',
+				'url' => 'https://docs.smolblog.org/',
+			],
+			'paths' => $endpoints,
+			'components' => ['schemas' => self::$schemaCache],
+		];
+
+		echo json_encode($fullSchema, JSON_PRETTY_PRINT);
 	}
 
+	/**
+	 * Get a description and summary from an endpoint class' docblock.
+	 *
+	 * @param string $docblock Unparsed docblock.
+	 * @return array Summary on index 0, full description on index 1.
+	 */
 	private static function getDescription(string $docblock): array {
 		$summary = '';
 		$description = '';
@@ -112,6 +145,12 @@ class Model extends DomainModel {
 		return [$summary, $description];
 	}
 
+	/**
+	 * Get error responses from the endpoint's run method's `throws` declarations.
+	 *
+	 * @param string $docblock Unparsed run method docblock.
+	 * @return array
+	 */
 	private static function getThrownResponses(string $docblock): array {
 		$matches = [];
 		preg_match_all('/@throws\s+(\w+)\s+(.+)/', $docblock, $matches, PREG_SET_ORDER);
@@ -134,6 +173,13 @@ class Model extends DomainModel {
 		return $responses;
 	}
 
+	/**
+	 * Turn a parameter entry into a schema.
+	 *
+	 * @param string        $name   Name of the parameter.
+	 * @param ParameterType $schema ParameterType for the parameter.
+	 * @return array
+	 */
 	private static function processParam(string $name, ParameterType $schema): array {
 		return [
 			'name' => $name,
@@ -142,6 +188,15 @@ class Model extends DomainModel {
 		];
 	}
 
+	/**
+	 * Build a response from config or return type.
+	 *
+	 * @throws Exception If class and shape are both null.
+	 *
+	 * @param string|null        $class Class returned by the endpoint's run() method.
+	 * @param ParameterType|null $shape ParameterType describing the response; higher priority than $class.
+	 * @return array
+	 */
 	private static function buildSuccessResponse(?string $class, ?ParameterType $shape): array {
 		if (isset($shape)) {
 			return $shape->schema();
@@ -154,12 +209,18 @@ class Model extends DomainModel {
 		return self::makeSchemaFromClass($class);
 	}
 
-	private static array $schemaCache = [];
-
+	/**
+	 * Make a schema from a class and return a reference.
+	 *
+	 * Stores the schema in self::$schemaCache and returns a reference to that schema.
+	 *
+	 * @param string $className Fully-qualified class name to reflect.
+	 * @return array Reference to the class' schema.
+	 */
 	private static function makeSchemaFromClass(string $className): array {
 		$compressedName = str_replace('\\', '', $className);
 		if (isset(self::$schemaCache[$compressedName])) {
-			return ['$ref' => '#/components/schemas/' . $compressedName]; //$schemaCache[$compressedName];
+			return ['$ref' => '#/components/schemas/' . $compressedName];
 		}
 
 		$reflect = new ReflectionClass($className);
@@ -191,9 +252,9 @@ class Model extends DomainModel {
 			}
 
 			$props[$name] = self::makeSchemaFromClass($typeName);
-		}
+		}//end foreach
 
 		self::$schemaCache[$compressedName] = ['type' => 'object', 'properties' => $props];
-		return ['$ref' => '#/components/schemas/' . $compressedName]; //$schemaCache[$compressedName];
+		return ['$ref' => '#/components/schemas/' . $compressedName];
 	}
 }

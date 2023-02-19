@@ -41,15 +41,18 @@ class AuthCallback implements Endpoint {
 	/**
 	 * Run the endpoint
 	 *
+	 * This is a public endpoint as there is not always a way to ensure authentication carries through the entire
+	 * OAuth process.
+	 *
 	 * @throws NotFound Provider not registered.
 	 * @throws BadRequest Invalid parameters given.
 	 *
-	 * @param Identifier|null $userId
-	 * @param array           $params
-	 * @param array           $body
+	 * @param Identifier|null $userId Authenticated user; ignored.
+	 * @param array           $params Parameters for the endpoint.
+	 * @param array           $body   Ignored.
 	 * @return ConnectionEstablishedResponse
 	 */
-	public function run(?Identifier $userId, array $params, array $body): ConnectionEstablishedResponse {
+	public function run(?Identifier $userId = null, array $params = [], array $body = []): ConnectionEstablishedResponse {
 		if (!$params['provider']) {
 			throw new NotFound('The given provider has not been registered.');
 		}

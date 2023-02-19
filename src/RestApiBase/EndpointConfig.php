@@ -96,7 +96,7 @@ class EndpointConfig extends Value {
 		?ParameterType $responseShape = null,
 		bool $public = false,
 	) {
-		$this->route = $route;
+		$this->route = '/' . ltrim(rtrim($route, '/'), '/');
 		$this->verb = $verb;
 		$this->pathVariables = $pathVariables;
 		$this->queryVariables = $queryVariables;

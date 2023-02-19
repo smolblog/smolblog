@@ -6,10 +6,9 @@ use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\RestApiBase\Endpoint;
 use Smolblog\RestApiBase\EndpointConfig;
-use Smolblog\RestApiBase\DataType;
-use Smolblog\RestApiBase\Response;
-use Smolblog\RestApiBase\ResponseShape;
-use Smolblog\RestApiBase\Verb;
+use Smolblog\RestApiBase\Exceptions\NotFound;
+use Smolblog\RestApiBase\GenericResponse;
+use Smolblog\RestApiBase\ParameterType;
 
 /**
  * Kick off an OAuth request to an external provider.
@@ -22,30 +21,28 @@ class AuthInit implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: 'connect/init/{provider}',
-			pathVariables: ['provider' => DataType::string(pattern: '/[a-z0-9]+/i')],
+			route: '/connect/init/{provider}',
+			pathVariables: ['provider' => ParameterType::string(pattern: '/[a-z0-9]+/i')],
 			public: false,
+			responseShape: ParameterType::object(['url' => ParameterType::string(format: 'url')]),
 		);
 	}
 
 	/**
 	 * Perform the endpoint
 	 *
+	 * @throws NotFound Provider not registered.
+	 *
 	 * @param Identifier|null $userId Authenticated user's ID.
 	 * @param array           $params Ignored.
 	 * @param array           $body   Ignored.
 	 * @return Value
 	 */
-	#[ResponseShape(['url' => ['type' => 'string', 'format' => 'url']])]
-	public function run(?Identifier $userId, array $params, array $body): Value {
-		return new class ('//tumblr.com/user/auth') extends Value {
-			/**
-			 * Construct the response
-			 *
-			 * @param string $url URL to redirect the user to.
-			 */
-			public function __construct(public readonly string $url) {
-			}
-		};
+	public function run(?Identifier $userId, array $params = [], array $body = []): Value {
+		if (!$params['provider']) {
+			throw new NotFound('The given provider has not been registered.');
+		}
+
+		return new GenericResponse(url: '//tumblr.com/auth/');
 	}
 }
