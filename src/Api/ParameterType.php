@@ -95,10 +95,10 @@ class ParameterType {
 	/**
 	 * Declare an object parameter with the given properties.
 	 *
-	 * @param ParameterType[] $properties Associative array of properties.
+	 * @param ParameterType ...$properties Associative array of properties.
 	 * @return ParameterType
 	 */
-	public static function object(array $properties): ParameterType {
+	public static function object(ParameterType ...$properties): ParameterType {
 		return new ParameterType(type: 'object', properties: $properties);
 	}
 
@@ -124,10 +124,7 @@ class ParameterType {
 		public readonly bool $required = false,
 		mixed ...$props,
 	) {
-		if ($this->type === 'dateTime') {
-			$this->type = 'date-time';
-		}
-		$this->extendedFields = $props;
+		$this->extendedFields = array_filter($props, fn($i) => isset($i));
 	}
 
 	/**
@@ -144,6 +141,6 @@ class ParameterType {
 			$base['required'] = array_keys(array_filter($this->properties, fn($p) => $p->required));
 		}
 
-		return array_filter($base, fn($i) => isset($i));
+		return $base;
 	}
 }

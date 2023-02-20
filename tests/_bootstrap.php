@@ -5,8 +5,12 @@ namespace Smolblog\Test;
 use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use Smolblog\App\Endpoint\{Endpoint, EndpointConfig, EndpointRequest, EndpointResponse};
+use Smolblog\Api\ApiEnvironment;
+use Smolblog\Api\Endpoint;
+use Smolblog\Api\EndpointConfig;
+use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -14,18 +18,23 @@ require_once __DIR__ . '/../vendor/autoload.php';
 trait EndpointTestToolkit {
 	protected $endpoint;
 
+	private function getApiEnvironment(): ApiEnvironment {
+		return new class implements ApiEnvironment {
+			public function getApiUrl(string $endpoint = '/'): string {
+				return '//smol.blog/api' . $endpoint;
+			}
+		};
+	}
+
+	private function mockBusExpects(Command $expected) {
+		$bus = $this->createMock(MessageBus::class);
+		$bus->expects($this->once())->method('dispatch')->with($this->equalTo($expected));
+		return $bus;
+	}
+
 	public function testItGivesAValidConfiguration(): void {
-		$config = get_class($this->endpoint)::config();
+		$config = self::ENDPOINT::getConfiguration();
 		$this->assertInstanceOf(EndpointConfig::class, $config);
-	}
-
-	public function testItCanBeInstantiated(): void {
-		$this->assertInstanceOf(Endpoint::class, $this->endpoint);
-	}
-
-	public function testItCanBeCalled(): void {
-		$response = $this->endpoint->run(new EndpointRequest());
-		$this->assertInstanceOf(EndpointResponse::class, $response);
 	}
 }
 

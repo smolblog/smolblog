@@ -5,7 +5,6 @@ namespace Smolblog\Api;
 use DateTimeInterface;
 use Exception;
 use ReflectionClass;
-use ReflectionMethod;
 use ReflectionProperty;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Framework\Objects\Identifier;
@@ -17,6 +16,8 @@ use Smolblog\Api\Exceptions\NotFound;
  * Domain model for the API.
  *
  * Also contains a script to create an OpenAPI (Swagger) spec from the given endpoints.
+ *
+ * @codeCoverageIgnore
  */
 class Model extends DomainModel {
 	public const SERVICES = [
@@ -247,6 +248,10 @@ class Model extends DomainModel {
 			$typeName = strval($prop->getType());
 			if (!class_exists($typeName)) {
 				// Assuming this is a primitive type; just pass it along.
+				if ($typeName === 'bool') {
+					$typeName = 'boolean';
+				}
+
 				$props[$name] = ['type' => $typeName];
 				continue;
 			}

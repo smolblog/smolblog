@@ -7,7 +7,7 @@ use Exception;
 /**
  * Return a 404 not found error.
  */
-class BadRequest extends Exception implements ErrorResponse {
+class BadRequest extends ErrorResponse {
 	/**
 	 * Get the HTTP error code.
 	 *

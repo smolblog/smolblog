@@ -10,7 +10,7 @@ use Smolblog\Api\DataType;
 /**
  * Generic exception to create an error response for the API.
  */
-abstract class ErrorResponse extends Exception implements SmolblogException, JsonSerializable {
+class ErrorResponse extends Exception implements SmolblogException, JsonSerializable {
 	/**
 	 * Create a standard JSON representation.
 	 *

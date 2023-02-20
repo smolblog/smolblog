@@ -11,6 +11,11 @@ use Smolblog\Api\ErrorResponses;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
+use Smolblog\Api\SuccessResponse;
+use Smolblog\Core\Connector\Commands\FinishAuthRequest;
+use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
+use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * OAuth callback hook.
@@ -39,6 +44,20 @@ class AuthCallback implements Endpoint {
 	}
 
 	/**
+	 * Construct the endpoint.
+	 *
+	 * @param MessageBus           $bus        To dispatch command.
+	 * @param ConnectorRegistrar   $connectors To check if provider is registered.
+	 * @param AuthRequestStateRepo $authRepo   To check if state is valid.
+	 */
+	public function __construct(
+		private MessageBus $bus,
+		private ConnectorRegistrar $connectors,
+		private AuthRequestStateRepo $authRepo,
+	) {
+	}
+
+	/**
 	 * Run the endpoint
 	 *
 	 * This is a public endpoint as there is not always a way to ensure authentication carries through the entire
@@ -50,25 +69,33 @@ class AuthCallback implements Endpoint {
 	 * @param Identifier|null $userId Authenticated user; ignored.
 	 * @param array           $params Parameters for the endpoint.
 	 * @param array           $body   Ignored.
-	 * @return ConnectionEstablishedResponse
+	 * @return SuccessResponse
 	 */
-	public function run(
-		?Identifier $userId = null,
-		array $params = [],
-		array $body = []
-	): ConnectionEstablishedResponse {
-		if (!$params['provider']) {
+	public function run(?Identifier $userId = null, array $params = [], array $body = []): SuccessResponse {
+		if (empty($params['provider']) || !$this->connectors->has($params['provider'])) {
 			throw new NotFound('The given provider has not been registered.');
 		}
-		if (!$params['state'] && !$params['oauth_token']) {
+
+		$state = $params['state'] ?? $params['oauth_token'] ?? null;
+		$code = $params['code'] ?? $params['oauth_verifier'] ?? null;
+
+		if (!$state) {
 			throw new BadRequest('No valid state or oauth_token was given');
 		}
+		if (!$code) {
+			throw new BadRequest('No valid code or oauth_verifier was given');
+		}
 
-		return new ConnectionEstablishedResponse(
-			id: Identifier::createRandom(),
-			provider: 'smolblog',
-			displayName: 'snek@smolblog.org',
-			channels: ['snek.smol.blog', 'birb.smol.blog'],
-		);
+		if ($this->authRepo->getAuthRequestState($state) === null) {
+			throw new NotFound('The given authentication session was not found. It may be incorrect or expired.');
+		}
+
+		$this->bus->dispatch(new FinishAuthRequest(
+			provider: $params['provider'],
+			stateKey: $state,
+			code: $code,
+		));
+
+		return new SuccessResponse();
 	}
 }

@@ -43,6 +43,8 @@
 		<exclude name="Squiz.Commenting.FileComment"/>
 		<!-- Contradicted by PSR-12. -->
 		<exclude name="Squiz.Commenting.ClosingDeclarationComment"/>
+		<!-- We need to make use of some of these tags -->
+		<exclude name="Squiz.Commenting.ClassComment.TagNotAllowed"/>
 	</rule>
 
 	<!-- Make structures look nicer -->

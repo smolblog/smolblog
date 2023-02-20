@@ -2,6 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
+use Smolblog\Api\ApiEnvironment;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\Api\Endpoint;
@@ -9,6 +10,9 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
+use Smolblog\Core\Connector\Commands\BeginAuthRequest;
+use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Kick off an OAuth request to an external provider.
@@ -24,10 +28,24 @@ class AuthInit implements Endpoint {
 			route: '/connect/init/{provider}',
 			pathVariables: ['provider' => ParameterType::string(pattern: '/[a-z0-9]+/i')],
 			public: false,
-			responseShape: ParameterType::object([
-				'url' => ParameterType::required(ParameterType::string(format: 'url'))
-			]),
+			responseShape: ParameterType::object(
+				url: ParameterType::required(ParameterType::string(format: 'url'))
+			),
 		);
+	}
+
+	/**
+	 * Construct the endpoint.
+	 *
+	 * @param MessageBus         $bus        MessageBus for sending the command.
+	 * @param ConnectorRegistrar $connectors Check param against registered Connectors.
+	 * @param ApiEnvironment     $env        Environment information.
+	 */
+	public function __construct(
+		private MessageBus $bus,
+		private ConnectorRegistrar $connectors,
+		private ApiEnvironment $env,
+	) {
 	}
 
 	/**
@@ -41,10 +59,18 @@ class AuthInit implements Endpoint {
 	 * @return Value
 	 */
 	public function run(?Identifier $userId, array $params = [], array $body = []): Value {
-		if (!$params['provider']) {
+		if (empty($params['provider']) || !$this->connectors->has($params['provider'])) {
 			throw new NotFound('The given provider has not been registered.');
 		}
 
-		return new GenericResponse(url: '//tumblr.com/auth/');
+		$command = new BeginAuthRequest(
+			provider: $params['provider'],
+			userId: $userId,
+			callbackUrl: $this->env->getApiUrl('/connect/callback/' . $params['provider']),
+		);
+
+		$this->bus->dispatch($command);
+
+		return new GenericResponse(url: $command->redirectUrl);
 	}
 }
