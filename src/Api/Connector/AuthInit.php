@@ -54,11 +54,11 @@ class AuthInit implements Endpoint {
 	 * @throws NotFound Provider not registered.
 	 *
 	 * @param Identifier|null $userId Authenticated user's ID.
-	 * @param array           $params Ignored.
-	 * @param array           $body   Ignored.
+	 * @param array|null      $params Ignored.
+	 * @param object|null     $body   Ignored.
 	 * @return Value
 	 */
-	public function run(?Identifier $userId, array $params = [], array $body = []): Value {
+	public function run(?Identifier $userId, ?array $params = null, ?object $body = null): Value {
 		if (empty($params['provider']) || !$this->connectors->has($params['provider'])) {
 			throw new NotFound('The given provider has not been registered.');
 		}

@@ -23,6 +23,7 @@ class Model extends DomainModel {
 	public const SERVICES = [
 		Connector\AuthInit::class => [],
 		Connector\AuthCallback::class => [],
+		Connector\ChannelLink::class => [],
 	];
 
 	/**

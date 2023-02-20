@@ -23,13 +23,13 @@ interface Endpoint {
 	 * Respond to the request.
 	 *
 	 * @param Identifier|null $userId ID of the authenticated user; null if no logged-in user.
-	 * @param array           $params Associative array of any parameters in the URL or query string.
-	 * @param array           $body   Array-decoded JSON body if present.
+	 * @param array|null      $params Associative array of any parameters in the URL or query string.
+	 * @param object|null     $body   JSON body if present.
 	 * @return Value
 	 */
 	public function run(
 		?Identifier $userId,
-		array $params,
-		array $body,
+		?array $params,
+		?object $body,
 	): Value;
 }
