@@ -76,16 +76,28 @@ class Model extends DomainModel {
 					array_values($config->queryVariables)
 				),
 			];
+			if (empty($parameters)) {
+				$parameters = null;
+			}
+
+			$body = null;
+			if (class_exists($config->bodyClass ?? '')) {
+				$body = [
+					'required' => true,
+					'content' => ['application/json' => ['schema' => self::makeSchemaFromClass($config->bodyClass)]],
+				];
+			}
 
 			$endpoints[$config->route] = [
-				strtolower($config->verb->value) => [
+				strtolower($config->verb->value) => array_filter([
 					'tags' => [ str_replace(__NAMESPACE__ . '\\', '', $classReflect->getNamespaceName()) ],
 					'summary' => $descriptions[0],
 					'description' => $descriptions[1],
 					'operationId' => self::makeAbbreviatedName($endpoint),
 					'parameters' => $parameters,
+					'requestBody' => $body,
 					'responses' => $responses,
-				],
+				], fn($i) => isset($i)),
 			];
 		}//end foreach
 
@@ -246,7 +258,7 @@ class Model extends DomainModel {
 				$required[] = $name;
 			}
 
-			$typeName = strval($prop->getType());
+			$typeName = ltrim(strval($prop->getType()), '?');
 			if (!class_exists($typeName)) {
 				// Assuming this is a primitive type; just pass it along.
 				if ($typeName === 'bool') {

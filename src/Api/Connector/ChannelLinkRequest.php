@@ -20,8 +20,8 @@ class ChannelLinkRequest extends Value {
 	public function __construct(
 		public readonly Identifier $channelId,
 		public readonly Identifier $siteId,
-		public readonly ?bool $push,
-		public readonly ?bool $pull,
+		public readonly ?bool $push = null,
+		public readonly ?bool $pull = null,
 	) {
 	}
 }
