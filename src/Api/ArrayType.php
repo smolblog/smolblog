@@ -12,8 +12,8 @@ class ArrayType {
 	/**
 	 * Construct the attribute.
 	 *
-	 * @param string|array $type Class name, primitive type, or OpenAPI schema.
+	 * @param string|array $items Class name, primitive type, or OpenAPI schema.
 	 */
-	public function __construct(public readonly string|array $type) {
+	public function __construct(public readonly string|array $items) {
 	}
 }

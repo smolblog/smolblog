@@ -24,6 +24,7 @@ class Model extends DomainModel {
 		Connector\AuthInit::class => [],
 		Connector\AuthCallback::class => [],
 		Connector\ChannelLink::class => [],
+		Connector\RefreshChannels::class => [],
 	];
 
 	/**
@@ -123,7 +124,34 @@ class Model extends DomainModel {
 				'url' => 'https://docs.smolblog.org/',
 			],
 			'paths' => $endpoints,
-			'components' => ['schemas' => self::$schemaCache],
+			'components' => [
+				'schemas' => self::$schemaCache,
+				'securitySchemes' => [
+					'smolAuth' => [
+						'type' => 'oauth2',
+						'description' => 'Gain user credentials without needing to store their password.',
+						'flows' => [
+							'authorizationCode' => [
+								'authorizationUrl' => '/oauth/authorize',
+								'tokenUrl' => '/oauth/token',
+								'refreshUrl' => '/oauth/refresh',
+								'scopes' => [
+									'read' => 'Retrieve information from the API.',
+									'write' => 'Make changes to a user\'s content or site.'
+								],
+							],
+							'implicit' => [
+								'authorizationUrl' => '/oauth/authorize',
+								'refreshUrl' => '/oauth/refresh',
+								'scopes' => [
+									'read' => 'Retrieve information from the API.',
+									'write' => 'Make changes to a user\'s content or site.'
+								],
+							]
+						],
+					],
+				],
+			],
 		];
 
 		echo json_encode($fullSchema, JSON_PRETTY_PRINT);
@@ -258,32 +286,52 @@ class Model extends DomainModel {
 				$required[] = $name;
 			}
 
-			$typeName = ltrim(strval($prop->getType()), '?');
-			if (!class_exists($typeName)) {
-				// Assuming this is a primitive type; just pass it along.
-				if ($typeName === 'bool') {
-					$typeName = 'boolean';
-				}
-
-				$props[$name] = ['type' => $typeName];
-				continue;
-			}
-
-			switch ($typeName) {
-				// Throw in some known types.
-				case Identifier::class:
-					$props[$name] = ParameterType::identifier()->schema();
-					continue 2;
-				case DateTimeInterface::class:
-					$props[$name] = ParameterType::dateTime()->schema();
-					continue 2;
-			}
-
-			$props[$name] = self::makeSchemaFromClass($typeName);
+			$props[$name] = self::typeFromProperty($prop);
 		}//end foreach
 
 		self::$schemaCache[$compressedName] = ['type' => 'object', 'properties' => $props, 'required' => $required];
 		return ['$ref' => '#/components/schemas/' . $compressedName];
+	}
+
+	private static function typeFromProperty(ReflectionProperty|string $prop): array {
+		$typeName = is_string($prop) ? $prop : ltrim(strval($prop->getType()), '?');
+
+		if (class_exists($typeName)) {
+			switch ($typeName) {
+				// Throw in some known types.
+				case Identifier::class:
+					return ParameterType::identifier()->schema();
+				case DateTimeInterface::class:
+					return ParameterType::dateTime()->schema();
+			}
+
+			return self::makeSchemaFromClass($typeName);
+		}
+
+		// Assuming this is a primitive type; just pass it along.
+		if ($typeName === 'bool') {
+			$typeName = 'boolean';
+		}
+
+		if ($typeName === 'array') {
+			$arrayTypeAttribute = $prop->getAttributes(ArrayType::class);
+			if ($arrayTypeAttribute[0]?->getArguments() !== null) {
+				$arrayType = $arrayTypeAttribute[0]->getArguments()[0];
+				if (is_array($arrayType)) {
+					return [
+						'type' => 'array',
+						'items' => $arrayType,
+					];
+				}
+
+				return [
+					'type' => 'array',
+					'items' => self::typeFromProperty($arrayType),
+				];
+			}
+		}
+
+		return ['type' => $typeName];
 	}
 
 	/**
