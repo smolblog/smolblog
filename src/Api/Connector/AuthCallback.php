@@ -2,6 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
+use Smolblog\Api\AuthScope;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\Api\Endpoint;
@@ -39,7 +40,7 @@ class AuthCallback implements Endpoint {
 				'oauth_token' => ParameterType::string(),
 				'oauth_verifier' => ParameterType::string(),
 			],
-			public: true,
+			requiredScopes: [],
 		);
 	}
 

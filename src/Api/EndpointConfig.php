@@ -72,7 +72,7 @@ class EndpointConfig extends Value {
 	 *
 	 * @var boolean
 	 */
-	public readonly bool $public;
+	public readonly array $requiredScopes;
 
 	/**
 	 * Create the configuration object.
@@ -85,7 +85,7 @@ class EndpointConfig extends Value {
 	 * @param array              $queryVariables Parameters this endpoint accepts in the query string.
 	 * @param string|null        $bodyClass      Fully qualified class name that the request body should serialize from.
 	 * @param ParameterType|null $responseShape  Describes the shape of the response body if it is not a defined class.
-	 * @param boolean            $public         Indicate if this is a public endpoint.
+	 * @param AuthScope[]            $requiredScopes         Security scopes required to access the endpoint.
 	 */
 	public function __construct(
 		string $route,
@@ -94,7 +94,7 @@ class EndpointConfig extends Value {
 		array $queryVariables = [],
 		?string $bodyClass = null,
 		?ParameterType $responseShape = null,
-		bool $public = false,
+		array $requiredScopes = [AuthScope::Read, AuthScope::Write],
 	) {
 		$this->route = '/' . ltrim(rtrim($route, '/'), '/');
 		$this->verb = $verb;
@@ -102,6 +102,6 @@ class EndpointConfig extends Value {
 		$this->queryVariables = $queryVariables;
 		$this->bodyClass = $bodyClass;
 		$this->responseShape = $responseShape;
-		$this->public = $public;
+		$this->requiredScopes = $requiredScopes;
 	}
 }

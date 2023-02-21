@@ -89,12 +89,18 @@ class Model extends DomainModel {
 				];
 			}
 
+			$security = [];
+			if (!empty($config->requiredScopes)) {
+				$security['smolAuth'] = array_map(fn($s) => $s->value, $config->requiredScopes);
+			}
+
 			$endpoints[$config->route] = [
 				strtolower($config->verb->value) => array_filter([
 					'tags' => [ str_replace(__NAMESPACE__ . '\\', '', $classReflect->getNamespaceName()) ],
 					'summary' => $descriptions[0],
 					'description' => $descriptions[1],
 					'operationId' => self::makeAbbreviatedName($endpoint),
+					'security' => $security,
 					'parameters' => $parameters,
 					'requestBody' => $body,
 					'responses' => $responses,
