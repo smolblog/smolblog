@@ -299,6 +299,12 @@ class Model extends DomainModel {
 		return ['$ref' => '#/components/schemas/' . $compressedName];
 	}
 
+	/**
+	 * Turn a property or string into a schema.
+	 *
+	 * @param ReflectionProperty|string $prop Property or type name to parse.
+	 * @return array
+	 */
 	private static function typeFromProperty(ReflectionProperty|string $prop): array {
 		$typeName = is_string($prop) ? $prop : ltrim(strval($prop->getType()), '?');
 

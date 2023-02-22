@@ -85,7 +85,7 @@ class EndpointConfig extends Value {
 	 * @param array              $queryVariables Parameters this endpoint accepts in the query string.
 	 * @param string|null        $bodyClass      Fully qualified class name that the request body should serialize from.
 	 * @param ParameterType|null $responseShape  Describes the shape of the response body if it is not a defined class.
-	 * @param AuthScope[]            $requiredScopes         Security scopes required to access the endpoint.
+	 * @param AuthScope[]        $requiredScopes Security scopes required to access the endpoint.
 	 */
 	public function __construct(
 		string $route,

@@ -76,4 +76,16 @@ final class ParameterTypeTest extends TestCase {
 			$type->schema()
 		);
 	}
+
+	public function testArrayTypeAlsoWorks() {
+		$this->assertInstanceOf(
+			ArrayType::class,
+			new ArrayType(self::class),
+		);
+
+		$this->assertInstanceOf(
+			ArrayType::class,
+			new ArrayType(['type' => 'integer', 'format' => 'base64']),
+		);
+	}
 }
