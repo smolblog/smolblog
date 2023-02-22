@@ -85,10 +85,10 @@ class ParameterType {
 	 *
 	 * The items paramter defines the type of the objects inside the array. Mixed arrays are not currently supported.
 	 *
-	 * @param ParameterType $items The parameter type that makes up the array.
+	 * @param ParameterType|string $items The parameter type that makes up the array.
 	 * @return ParameterType
 	 */
-	public static function array(ParameterType $items): ParameterType {
+	public static function array(ParameterType|string $items): ParameterType {
 		return new ParameterType(type: 'array', items: $items);
 	}
 
