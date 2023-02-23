@@ -25,6 +25,7 @@ class Model extends DomainModel {
 		Connector\AuthCallback::class => [],
 		Connector\ChannelLink::class => [],
 		Connector\RefreshChannels::class => [],
+		Connector\UserConnections::class => [],
 	];
 
 	/**
@@ -56,14 +57,20 @@ class Model extends DomainModel {
 
 			$responseClassName = $runReflect->getReturnType()?->getName();
 
-			$responses[200] = [
-				'description' => 'Successful response',
-				'content' => [
-					'application/json' => [
-						'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+			if ($responseClassName === SuccessResponse::class) {
+				$responses[204] = [
+					'description' => 'Successful response',
+				];
+			} else {
+				$responses[200] = [
+					'description' => 'Successful response',
+					'content' => [
+						'application/json' => [
+							'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+						],
 					],
-				],
-			];
+				];
+			}
 
 			$parameters = [
 				...array_map(

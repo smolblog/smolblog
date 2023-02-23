@@ -88,4 +88,25 @@ final class ParameterTypeTest extends TestCase {
 			new ArrayType(['type' => 'integer', 'format' => 'base64']),
 		);
 	}
+
+	public function testArrayParameterTypeHasItemSchema() {
+		$expected = [
+			'type' => 'array',
+			'items' => [
+				'type' => 'string',
+				'format' => 'date-time',
+			],
+		];
+
+		$actual = ParameterType::array(items: ParameterType::dateTime());
+
+		$this->assertEquals($expected, $actual->schema());
+	}
+
+	public function testAnObjectReferenceCanBeCreated() {
+		$expected = ['$ref' => '#/components/schemas/ParameterTypeTest'];
+		$actual = ParameterType::fromClass(self::class);
+
+		$this->assertEquals($expected, $actual->schema());
+	}
 }

@@ -3,6 +3,7 @@
 namespace Smolblog\Api;
 
 use Attribute;
+use ReflectionProperty;
 use Smolblog\Framework\Objects\ExtendableValueKit;
 
 /**
@@ -85,10 +86,10 @@ class ParameterType {
 	 *
 	 * The items paramter defines the type of the objects inside the array. Mixed arrays are not currently supported.
 	 *
-	 * @param ParameterType|string $items The parameter type that makes up the array.
+	 * @param ParameterType $items The parameter type that makes up the array.
 	 * @return ParameterType
 	 */
-	public static function array(ParameterType|string $items): ParameterType {
+	public static function array(ParameterType $items): ParameterType {
 		return new ParameterType(type: 'array', items: $items);
 	}
 
@@ -110,6 +111,19 @@ class ParameterType {
 	 */
 	public static function required(ParameterType $base): ParameterType {
 		return ParameterType::fromArray([...$base->toArray(), 'required' => true]);
+	}
+
+	/**
+	 * A ParameterType that references an existing class.
+	 *
+	 * This is fragile in the sense that the class must be used elsewhere in the API documentation so that the reference
+	 * will resolve correctly.
+	 *
+	 * @param string $className Fully-qualified class name.
+	 * @return ParameterType
+	 */
+	public static function fromClass(string $className): ParameterType {
+		return new ParameterType(type: 'reference', className: $className);
 	}
 
 	/**
@@ -136,9 +150,22 @@ class ParameterType {
 		$base = $this->toArray();
 		unset($base['required']);
 
+		if ($this->type === 'reference') {
+			// Short-circuit to a reference if this references a class.
+			// TODO: Modularize this code better.
+			if (class_exists($this->className ?? '')) {
+				$compressedName = str_replace('\\', '', str_replace(__NAMESPACE__, '', $this->className));
+				return ['$ref' => '#/components/schemas/' . $compressedName];
+			}
+		}
+
 		if ($this->type === 'object') {
 			$base['properties'] = array_map(fn($p) => $p->schema(), $this->properties);
 			$base['required'] = array_keys(array_filter($this->properties, fn($p) => $p->required));
+		}
+
+		if (isset($base['items'])) {
+			$base['items'] = $base['items']->schema();
 		}
 
 		return $base;

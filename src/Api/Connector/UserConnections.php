@@ -26,7 +26,9 @@ class UserConnections implements Endpoint {
 			route: '/my/connections',
 			requiredScopes: [AuthScope::Read],
 			responseShape: ParameterType::object(
-				connections: ParameterType::required(ParameterType::array(Channel::class))
+				connections: ParameterType::required(ParameterType::array(
+					items: ParameterType::fromClass(Connection::class),
+				))
 			),
 		);
 	}
