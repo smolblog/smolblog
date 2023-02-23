@@ -7,9 +7,9 @@ use Psr\Container\ContainerExceptionInterface;
 use Throwable;
 
 /**
- * Exception for when an error is found in the ServiceRegistrar configuration.
+ * Exception for when an error is found in the ServiceRegistry configuration.
  */
-class ServiceRegistrarConfigurationException extends Exception implements
+class ServiceRegistryConfigurationException extends Exception implements
 	SmolblogException,
 	ContainerExceptionInterface {
 	/**
@@ -28,7 +28,7 @@ class ServiceRegistrarConfigurationException extends Exception implements
 		int $code = 0,
 		?Throwable $previous = null
 	) {
-		$message ??= "Configuration error for $service in ServiceRegistrar" .
+		$message ??= "Configuration error for $service in ServiceRegistry" .
 			($previous ? ': ' . $previous->getMessage() : '.');
 		parent::__construct($message, $code, $previous);
 	}

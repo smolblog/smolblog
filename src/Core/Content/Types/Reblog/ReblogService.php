@@ -4,13 +4,14 @@ namespace Smolblog\Core\Content\Types\Reblog;
 
 use DateTimeImmutable;
 use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Service to handle Reblog commands.
  */
-class ReblogService {
+class ReblogService implements Listener {
 	/**
 	 * Construct the service.
 	 *

@@ -4,13 +4,14 @@ namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeImmutable;
 use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Service to handle Status-related commands.
  */
-class StatusService {
+class StatusService implements Listener {
 	/**
 	 * Construct the service.
 	 *

@@ -5,12 +5,12 @@ namespace Smolblog\Framework\Infrastructure;
 use Exception;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Exceptions\ServiceNotFoundException;
-use Smolblog\Framework\Exceptions\ServiceRegistrarConfigurationException;
+use Smolblog\Framework\Exceptions\ServiceRegistryConfigurationException;
 
 /**
  * A basic implementation of a dependency injection container.
  *
- * ServiceRegistrar takes a single configuration array. The keys are the fully-qualified class names of either service
+ * ServiceRegistry takes a single configuration array. The keys are the fully-qualified class names of either service
  * classes or interfaces. The values can be one of three things:
  *
  * - A callable that will instantiate the class. This is useful for low-level classes that take simple configuration
@@ -25,9 +25,10 @@ use Smolblog\Framework\Exceptions\ServiceRegistrarConfigurationException;
  *   Ex: '\oddEvan\Vanity\NameService' => ['\Smolblog\MessageBus', '\Smolblog\Post\Media']
  *   Ex: '\Some\Other\Service' => ['messageBus' => '\Smolblog\MessageBus', 'configArray' => fn() => [1, 2, 3]]
  *
- * ServiceRegistrar will register itself so it can be used as a dependency for other services.
+ * ServiceRegistry will register itself so it can be used as a dependency for other services as both ServiceRegistry and
+ * the generic ContainerInterface.
  */
-class ServiceRegistrar implements ContainerInterface {
+class ServiceRegistry implements ContainerInterface {
 	/**
 	 * Store for the instantiated services.
 	 *
@@ -50,6 +51,7 @@ class ServiceRegistrar implements ContainerInterface {
 	public function __construct(private array $configuration = []) {
 		$this->library = array_fill_keys(keys: array_keys($this->configuration), value: null);
 		$this->library[self::class] = $this;
+		$this->library[ContainerInterface::class] = $this;
 	}
 
 	/**
@@ -58,7 +60,7 @@ class ServiceRegistrar implements ContainerInterface {
 	 * @param string $id Identifier of the entry to look for.
 	 *
 	 * @throws ServiceNotFoundException  No entry was found for **this** identifier.
-	 * @throws ServiceRegistrarConfigurationException Error while retrieving the entry.
+	 * @throws ServiceRegistryConfigurationException Error while retrieving the entry.
 	 *
 	 * @return mixed Entry.
 	 */
@@ -70,7 +72,7 @@ class ServiceRegistrar implements ContainerInterface {
 		try {
 			$this->library[$id] ??= $this->instantiateService($id);
 		} catch (Exception $e) {
-			throw new ServiceRegistrarConfigurationException(
+			throw new ServiceRegistryConfigurationException(
 				service: $id,
 				config: $this->configuration[$id],
 				previous: $e
@@ -109,8 +111,8 @@ class ServiceRegistrar implements ContainerInterface {
 			return call_user_func($config);
 		}
 
-		if (interface_exists($service)) {
-			// The service is an interface, so we should provide an instance of the implementation.
+		if (is_string($config)) {
+			// This is an alias, so we should provide an instance of the implementation.
 			return $this->get($config);
 		}
 

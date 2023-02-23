@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Infrastructure;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Framework\Exceptions\ServiceNotFoundException;
-use Smolblog\Framework\Exceptions\ServiceRegistrarConfigurationException;
+use Smolblog\Framework\Exceptions\ServiceRegistryConfigurationException;
 
 interface TestBasicInterface {}
 
@@ -22,47 +22,47 @@ final class TestComplexService {
 	) {}
 }
 
-final class ServiceRegistrarTest extends TestCase {
+final class ServiceRegistryTest extends TestCase {
 	public function testItRegistersItself() {
-		$container = new ServiceRegistrar([]);
+		$container = new ServiceRegistry([]);
 
-		$this->assertTrue($container->has(ServiceRegistrar::class));
-		$this->assertEquals($container, $container->get(ServiceRegistrar::class));
+		$this->assertTrue($container->has(ServiceRegistry::class));
+		$this->assertEquals($container, $container->get(ServiceRegistry::class));
 	}
 
 	public function testItThrowsANotFoundExceptionWhenAServiceIsNotRegistered() {
 		$this->expectException(ServiceNotFoundException::class);
-		$container = new ServiceRegistrar([]);
+		$container = new ServiceRegistry([]);
 
 		$this->assertFalse($container->has(self::class));
 		$container->get(self::class);
 	}
 
 	public function testItThrowsAnExceptionWhenAServiceDoesNotExist() {
-		$this->expectException(ServiceRegistrarConfigurationException::class);
+		$this->expectException(ServiceRegistryConfigurationException::class);
 		$wrongClass = __NAMESPACE__ . '\ClassNotExists';
-		$container = new ServiceRegistrar([$wrongClass => []]);
+		$container = new ServiceRegistry([$wrongClass => []]);
 
 		$this->assertTrue($container->has($wrongClass));
 		$container->get($wrongClass);
 	}
 
 	public function testItThrowsAConfigurationExceptionWhenADependencyIsNotRegistered() {
-		$this->expectException(ServiceRegistrarConfigurationException::class);
-		$container = new ServiceRegistrar([TestBasicService::class => ['helper' => TestBasicDependency::class]]);
+		$this->expectException(ServiceRegistryConfigurationException::class);
+		$container = new ServiceRegistry([TestBasicService::class => ['helper' => TestBasicDependency::class]]);
 
 		$container->get(TestBasicService::class);
 	}
 
 	public function testAServiceWithNoDependenciesCanBeRegistered() {
-		$container = new ServiceRegistrar([TestBasicDependency::class => []]);
+		$container = new ServiceRegistry([TestBasicDependency::class => []]);
 
 		$this->assertTrue($container->has(TestBasicDependency::class));
 		$this->assertInstanceOf(TestBasicDependency::class, $container->get(TestBasicDependency::class));
 	}
 
 	public function testAServiceWithServiceDependenciesCanBeRegistered() {
-		$container = new ServiceRegistrar([
+		$container = new ServiceRegistry([
 			TestBasicDependency::class => [],
 			TestBasicService::class => ['helper' => TestBasicDependency::class],
 		]);
@@ -74,7 +74,7 @@ final class ServiceRegistrarTest extends TestCase {
 	}
 
 	public function testAnInterfaceCanHaveAnImplementation() {
-		$container = new ServiceRegistrar([
+		$container = new ServiceRegistry([
 			TestBasicDependency::class => [],
 			TestBasicInterface::class => TestBasicDependency::class,
 		]);
@@ -84,7 +84,7 @@ final class ServiceRegistrarTest extends TestCase {
 	}
 
 	public function testAConfigCanBeACallable() {
-		$container = new ServiceRegistrar([
+		$container = new ServiceRegistry([
 			TestBasicDependency::class => fn() => new TestBasicDependency(),
 		]);
 
@@ -93,7 +93,7 @@ final class ServiceRegistrarTest extends TestCase {
 	}
 
 	public function testADependencyCanComeFromACallable() {
-		$container = new ServiceRegistrar([
+		$container = new ServiceRegistry([
 			TestBasicService::class => ['helper' => fn() => new TestBasicDependency()],
 		]);
 
@@ -104,7 +104,7 @@ final class ServiceRegistrarTest extends TestCase {
 	}
 
 	public function testAServiceWithComplexDependenciesCanBeRegistered() {
-		$container = new ServiceRegistrar([
+		$container = new ServiceRegistry([
 			TestBasicService::class => ['helper' => TestBasicDependency::class],
 			TestBasicDependency::class => [],
 			TestBasicInterface::class => TestBasicDependency::class,
@@ -124,7 +124,7 @@ final class ServiceRegistrarTest extends TestCase {
 	}
 
 	public function testDependenciesCanBeNamedOutOfOrder() {
-		$container = new ServiceRegistrar([
+		$container = new ServiceRegistry([
 			TestBasicService::class => ['helper' => TestBasicDependency::class],
 			TestBasicDependency::class => [],
 			TestBasicInterface::class => TestBasicDependency::class,
@@ -143,7 +143,7 @@ final class ServiceRegistrarTest extends TestCase {
 	}
 
 	public function testDependenciesCanBeInOrderWithoutNames() {
-		$container = new ServiceRegistrar([
+		$container = new ServiceRegistry([
 			TestBasicService::class => ['helper' => TestBasicDependency::class],
 			TestBasicDependency::class => [],
 			TestBasicInterface::class => TestBasicDependency::class,

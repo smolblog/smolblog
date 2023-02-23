@@ -4,15 +4,15 @@ namespace Smolblog\Core\Connector\Services;
 
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
-use Smolblog\Core\Connector\Commands\RefreshChannels;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Service to handle an OAuth request with an external provider.
  */
-class AuthRequestService {
+class AuthRequestService implements Listener {
 	/**
 	 * Construct the service
 	 *

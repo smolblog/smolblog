@@ -2,12 +2,13 @@
 
 namespace Smolblog\Core\Content\Extensions\SyndicationLinks;
 
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle SyndicationLink commands.
  */
-class SyndicationLinkService {
+class SyndicationLinkService implements Listener {
 	/**
 	 * Construct the service
 	 *

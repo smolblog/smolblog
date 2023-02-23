@@ -5,6 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
 use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
+use Smolblog\Framework\Messages\Listener;
 
 /**
  * Simple class to memoize a query for the duration of a web request.
@@ -12,7 +13,7 @@ use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
  * This assumes that this is a standard PHP app that only lasts for the duration of a web request. If another
  * framework is being used that persists the application, then this service will need to be replaced.
  */
-class QueryMemoizationService {
+class QueryMemoizationService implements Listener {
 	/**
 	 * Store the memoization results.
 	 *
