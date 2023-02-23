@@ -11,6 +11,9 @@ use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\ErrorResponse;
 use Smolblog\Api\Exceptions\NotFound;
+use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
+use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Domain model for the API.
@@ -21,11 +24,19 @@ use Smolblog\Api\Exceptions\NotFound;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
-		Connector\AuthInit::class => [],
-		Connector\AuthCallback::class => [],
-		Connector\ChannelLink::class => [],
-		Connector\RefreshChannels::class => [],
-		Connector\UserConnections::class => [],
+		Connector\AuthInit::class => [
+			'bus' => MessageBus::class,
+			'connectors' => ConnectorRegistrar::class,
+			'env' => ApiEnvironment::class,
+		],
+		Connector\AuthCallback::class => [
+			'bus' => MessageBus::class,
+			'connectors' => ConnectorRegistrar::class,
+			'authRepo' => AuthRequestStateRepo::class,
+		],
+		Connector\ChannelLink::class => ['bus' => MessageBus::class],
+		Connector\RefreshChannels::class => ['bus' => MessageBus::class],
+		Connector\UserConnections::class => ['bus' => MessageBus::class],
 	];
 
 	/**
