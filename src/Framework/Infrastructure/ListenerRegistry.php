@@ -28,7 +28,7 @@ use Smolblog\Framework\Messages\Listener;
  * `later:` parameters (ex: `#[EventStoreLayerListener(earlier: 3)]` would be 3 places higher in the priority queue
  * than a default listener in that layer).
  */
-class ListenerRegistrar implements ListenerProviderInterface, Registry {
+class ListenerRegistry implements ListenerProviderInterface, Registry {
 	/**
 	 * This registry registers Listener classes.
 	 *

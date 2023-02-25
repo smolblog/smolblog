@@ -7,7 +7,7 @@ use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Services\ConnectorRegistrar;
 use Smolblog\Core\Model;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
-use Smolblog\Framework\Infrastructure\ListenerRegistrar;
+use Smolblog\Framework\Infrastructure\ListenerRegistry;
 use Smolblog\Framework\Infrastructure\SecurityCheckService;
 use Smolblog\Framework\Infrastructure\ServiceRegistry;
 use Smolblog\Framework\Messages\MessageBus;
@@ -62,7 +62,7 @@ final class App {
 		$services[ConnectorRegistrar::class]['configuration'] = fn() => ['smolblog' => Connector::class];
 
 		$this->container = new ServiceRegistry(configuration: $services);
-		$registry = new ListenerRegistrar(container: $this->container);
+		$registry = new ListenerRegistry(container: $this->container);
 
 		$listeners = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::LISTENERS), []);
 		array_walk($listeners, fn($className) => $registry->registerService($className));

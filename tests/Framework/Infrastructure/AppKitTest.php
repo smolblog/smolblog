@@ -22,7 +22,7 @@ final class BasicModel extends DomainModel {
 
 final class ListenerModel extends DomainModel {
 	const SERVICES = [
-		ListenerRegistrar::class => ['container' => ServiceRegistry::class],
+		ListenerRegistry::class => ['container' => ServiceRegistry::class],
 		QueryMemoizationService::class => [],
 		SecurityCheckService::class => ['messageBus' => MessageBus::class],
 	];
@@ -49,7 +49,7 @@ final class AppKitTest extends TestCase {
 		$expected = [
 			TestApp::class => [],
 			AppKitTest::class => ['stub' => TestApp::class],
-			ListenerRegistrar::class => [
+			ListenerRegistry::class => [
 				'container' => ServiceRegistry::class,
 				'configuration' => [QueryMemoizationService::class, SecurityCheckService::class]
 			],

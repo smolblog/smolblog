@@ -98,8 +98,8 @@ final class ListenerTestTimingService {
 	}
 }
 
-final class ListenerRegistrarTest extends TestCase {
-	private ListenerRegistrar $provider;
+final class ListenerRegistryTest extends TestCase {
+	private ListenerRegistry $provider;
 	private ServiceRegistry $container;
 
 	public function setUp(): void {
@@ -108,11 +108,11 @@ final class ListenerRegistrarTest extends TestCase {
 			ListenerTestTimingService::class => [],
 		]);
 
-		$this->provider = new ListenerRegistrar(container: $this->container);
+		$this->provider = new ListenerRegistry(container: $this->container);
 	}
 
 	public function testItRegistersListeners() {
-		$this->assertEquals(Listener::class, ListenerRegistrar::getInterfaceToRegister());
+		$this->assertEquals(Listener::class, ListenerRegistry::getInterfaceToRegister());
 	}
 
 	public function testListenerCanBeACallable() {
