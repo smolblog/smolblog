@@ -9,7 +9,7 @@ use Smolblog\Core\Model;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Infrastructure\ListenerRegistrar;
 use Smolblog\Framework\Infrastructure\SecurityCheckService;
-use Smolblog\Framework\Infrastructure\ServiceRegistrar;
+use Smolblog\Framework\Infrastructure\ServiceRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -36,7 +36,7 @@ final class App {
 	}
 
 	public readonly MessageBus $bus;
-	public readonly ServiceRegistrar $container;
+	public readonly ServiceRegistry $container;
 
 	private function __construct() {
 		$pdo = $this->makeDatabase();
@@ -49,7 +49,7 @@ final class App {
 		$appServices = [
 			MessageBus::class => DefaultMessageBus::class,
 			DefaultMessageBus::class => fn() => $this->bus,
-			ContainerInterface::class => ServiceRegistrar::class,
+			ContainerInterface::class => ServiceRegistry::class,
 			Connector::class => [],
 			PDO::class => fn() => $pdo,
 			MockMemoService::class => [],
@@ -61,7 +61,7 @@ final class App {
 		$services = array_merge($services, $appServices);
 		$services[ConnectorRegistrar::class]['configuration'] = fn() => ['smolblog' => Connector::class];
 
-		$this->container = new ServiceRegistrar(configuration: $services);
+		$this->container = new ServiceRegistry(configuration: $services);
 		$registry = new ListenerRegistrar(container: $this->container);
 
 		$listeners = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::LISTENERS), []);
