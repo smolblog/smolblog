@@ -26,7 +26,7 @@ trait AppKit {
 	 * @return array
 	 */
 	private function buildDependencyMap(array $models): array {
-		$services = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::SERVICES), []);
+		$services = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::getDependencyMap()), []);
 
 		$registries = array_filter(
 			array_keys($services),
