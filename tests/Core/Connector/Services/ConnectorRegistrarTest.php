@@ -7,29 +7,27 @@ use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Connector;
 use Smolblog\Framework\Exceptions\RegistrationException;
 
+abstract class TestConnector implements Connector {
+	public static function getSlug(): string { return 'test'; }
+}
+
 final class ConnectorRegistrarTest extends TestCase {
+	public function testItRegistersConnectors() {
+		$this->assertEquals(Connector::class, ConnectorRegistrar::getInterfaceToRegister());
+	}
+
 	public function testAConnectorCanBeRegisteredAndRetrieved() {
-		$connector = $this->createStub(Connector::class);
-		$connectorClass = get_class($connector);
+		$connector = $this->createStub(TestConnector::class);
 
 		$container = $this->createStub(ContainerInterface::class);
 		$container->method('get')->willReturn($connector);
 		$container->method('has')->willReturn(true);
 
-		$config = ['test' => $connectorClass];
+		$config = [TestConnector::class];
 
 		$reg = new ConnectorRegistrar(container: $container, configuration: $config);
 
 		$this->assertTrue($reg->has('test'));
-		$this->assertInstanceOf($connectorClass, $reg->get('test'));
-	}
-
-	public function testItThrowsAnExceptionIfItIsNotAConnector() {
-		$this->expectException(RegistrationException::class);
-
-		$container = $this->createStub(ContainerInterface::class);
-		$config = ['test' => self::class];
-
-		new ConnectorRegistrar(container: $container, configuration: $config);
+		$this->assertInstanceOf(TestConnector::class, $reg->get('test'));
 	}
 }

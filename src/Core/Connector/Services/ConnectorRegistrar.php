@@ -4,28 +4,38 @@ namespace Smolblog\Core\Connector\Services;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Connector;
+use Smolblog\Framework\Infrastructure\Registry;
 use Smolblog\Framework\Objects\RegistrarKit;
 
 /**
  * Class to handle storing Connectors for use later.
  */
-class ConnectorRegistrar {
+class ConnectorRegistrar implements Registry {
 	use RegistrarKit {
 		get as baseGet;
+	}
+
+	/**
+	 * This Registry is for Connectors.
+	 *
+	 * @return string
+	 */
+	public static function getInterfaceToRegister(): string {
+		return Connector::class;
 	}
 
 	/**
 	 * Construct the Registrar with a DI container
 	 *
 	 * @param ContainerInterface $container     Containter which contains the needed classes.
-	 * @param array              $configuration Array of key => service class to configure the registrar.
+	 * @param array              $configuration Array of class names to configure the registrar.
 	 */
 	public function __construct(ContainerInterface $container, array $configuration) {
 		$this->container = $container;
 		$this->interface = Connector::class;
 
-		foreach ($configuration as $provider => $className) {
-			$this->register(key: $provider, class: $className);
+		foreach ($configuration as $className) {
+			$this->library[$className::getSlug()] = $className;
 		}
 	}
 
