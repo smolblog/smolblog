@@ -5,6 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Crell\Tukio\OrderedListenerProvider;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Smolblog\Framework\Messages\Listener;
 
 /**
  * Registrar for message listeners.
@@ -27,7 +28,16 @@ use Psr\EventDispatcher\ListenerProviderInterface;
  * `later:` parameters (ex: `#[EventStoreLayerListener(earlier: 3)]` would be 3 places higher in the priority queue
  * than a default listener in that layer).
  */
-class ListenerRegistrar implements ListenerProviderInterface {
+class ListenerRegistry implements ListenerProviderInterface, Registry {
+	/**
+	 * This registry registers Listener classes.
+	 *
+	 * @return string
+	 */
+	public static function getInterfaceToRegister(): string {
+		return Listener::class;
+	}
+
 	/**
 	 * Internal OrderedListenerProvider
 	 *
@@ -38,10 +48,12 @@ class ListenerRegistrar implements ListenerProviderInterface {
 	/**
 	 * Create the Registry
 	 *
-	 * @param ContainerInterface $container Dependency Injection container with the required services.
+	 * @param ContainerInterface $container     Dependency Injection container with the required services.
+	 * @param string[]           $configuration Array of service classes to register by default.
 	 */
-	public function __construct(ContainerInterface $container) {
+	public function __construct(ContainerInterface $container, array $configuration = []) {
 		$this->internal = new OrderedListenerProvider(container: $container);
+		array_walk($configuration, fn($srv) => $this->registerService($srv));
 	}
 
 	/**

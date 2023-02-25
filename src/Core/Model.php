@@ -13,19 +13,19 @@ use Smolblog\Markdown\SmolblogMarkdown;
 class Model extends DomainModel {
 	public const SERVICES = [
 		Connector\Services\AuthRequestService::class => [
-			'connectors' => Connector\Services\ConnectorRegistrar::class,
+			'connectors' => Connector\Services\ConnectorRegistry::class,
 			'stateRepo' => Connector\Services\AuthRequestStateRepo::class,
 			'messageBus' => MessageBus::class,
 		],
 		Connector\Services\ChannelRefresher::class => [
 			'messageBus' => MessageBus::class,
-			'connectors' => Connector\Services\ConnectorRegistrar::class,
+			'connectors' => Connector\Services\ConnectorRegistry::class,
 		],
 		Connector\Services\ConnectionRefresher::class => [
 			'messageBus' => MessageBus::class,
-			'connectorRepo' => Connector\Services\ConnectorRegistrar::class,
+			'connectorRepo' => Connector\Services\ConnectorRegistry::class,
 		],
-		Connector\Services\ConnectorRegistrar::class => [
+		Connector\Services\ConnectorRegistry::class => [
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],

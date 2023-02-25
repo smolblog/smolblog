@@ -21,12 +21,12 @@ class ChannelRefresher implements Listener {
 	/**
 	 * Construct the service.
 	 *
-	 * @param MessageBus         $messageBus MessageBus for the system.
-	 * @param ConnectorRegistrar $connectors ConnectorRegistrar for retrieving the Connection's Connector.
+	 * @param MessageBus        $messageBus MessageBus for the system.
+	 * @param ConnectorRegistry $connectors ConnectorRegistry for retrieving the Connection's Connector.
 	 */
 	public function __construct(
 		private MessageBus $messageBus,
-		private ConnectorRegistrar $connectors,
+		private ConnectorRegistry $connectors,
 	) {
 	}
 

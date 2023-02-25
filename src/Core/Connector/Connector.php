@@ -11,6 +11,15 @@ use Smolblog\Core\Connector\Entities\Connection;
  */
 interface Connector {
 	/**
+	 * Get the string this Connector should be registered under.
+	 *
+	 * Typically the provider name in all lowercase, e.g. 'tumblr', 'mastodon', or 'discord'.
+	 *
+	 * @return string
+	 */
+	public static function getSlug(): string;
+
+	/**
 	 * Get the information needed to start an OAuth session with the provider
 	 *
 	 * @param string $callbackUrl URL of the callback endpoint.

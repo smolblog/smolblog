@@ -16,12 +16,12 @@ class AuthRequestService implements Listener {
 	/**
 	 * Construct the service
 	 *
-	 * @param ConnectorRegistrar   $connectors Repository of Connectors.
+	 * @param ConnectorRegistry    $connectors Repository of Connectors.
 	 * @param AuthRequestStateRepo $stateRepo  Repository for request states.
 	 * @param MessageBus           $messageBus MessageBus for the system.
 	 */
 	public function __construct(
-		private ConnectorRegistrar $connectors,
+		private ConnectorRegistry $connectors,
 		private AuthRequestStateRepo $stateRepo,
 		private MessageBus $messageBus,
 	) {

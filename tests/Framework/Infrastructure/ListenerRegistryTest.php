@@ -14,6 +14,7 @@ use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
 use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
+use Smolblog\Framework\Messages\Listener;
 
 function listenerTestTrace($add = '', $reset = false) {
 	static $trace;
@@ -97,8 +98,8 @@ final class ListenerTestTimingService {
 	}
 }
 
-final class ListenerRegistrarTest extends TestCase {
-	private ListenerRegistrar $provider;
+final class ListenerRegistryTest extends TestCase {
+	private ListenerRegistry $provider;
 	private ServiceRegistry $container;
 
 	public function setUp(): void {
@@ -107,7 +108,11 @@ final class ListenerRegistrarTest extends TestCase {
 			ListenerTestTimingService::class => [],
 		]);
 
-		$this->provider = new ListenerRegistrar(container: $this->container);
+		$this->provider = new ListenerRegistry(container: $this->container);
+	}
+
+	public function testItRegistersListeners() {
+		$this->assertEquals(Listener::class, ListenerRegistry::getInterfaceToRegister());
 	}
 
 	public function testListenerCanBeACallable() {
