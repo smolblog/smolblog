@@ -5,7 +5,7 @@ namespace Smolblog\Core\Connector\Services;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
 use Smolblog\Core\Connector\Connector;
-use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ChannelDeleted;
@@ -21,7 +21,7 @@ final class ChannelRefresherTest extends TestCase {
 	use EventComparisonTestKit;
 
 	private Connection $connection;
-	private ConnectorRegistrar $connectors;
+	private ConnectorRegistry $connectors;
 	private MessageBus $messageBus;
 	private ChannelRefresher $service;
 	private array $oldChannels;
@@ -67,7 +67,7 @@ final class ChannelRefresherTest extends TestCase {
 		$connector = $this->createMock(Connector::class);
 		$connector->expects($this->once())->method('getChannels')->willReturn($this->newChannels);
 
-		$this->connectors = $this->createStub(ConnectorRegistrar::class);
+		$this->connectors = $this->createStub(ConnectorRegistry::class);
 		$this->connectors->method('get')->willReturn($connector);
 
 		$this->messageBus = $this->createMock(MessageBus::class);

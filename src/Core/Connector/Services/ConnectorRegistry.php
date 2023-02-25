@@ -10,7 +10,7 @@ use Smolblog\Framework\Objects\RegistrarKit;
 /**
  * Class to handle storing Connectors for use later.
  */
-class ConnectorRegistrar implements Registry {
+class ConnectorRegistry implements Registry {
 	use RegistrarKit {
 		get as baseGet;
 	}

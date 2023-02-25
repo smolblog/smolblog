@@ -4,7 +4,7 @@ namespace Smolblog\Mock;
 
 use PDO;
 use Psr\Container\ContainerInterface;
-use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Core\Model;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Infrastructure\ListenerRegistry;
@@ -59,7 +59,7 @@ final class App {
 
 		$services = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::SERVICES), []);
 		$services = array_merge($services, $appServices);
-		$services[ConnectorRegistrar::class]['configuration'] = fn() => ['smolblog' => Connector::class];
+		$services[ConnectorRegistry::class]['configuration'] = fn() => ['smolblog' => Connector::class];
 
 		$this->container = new ServiceRegistry(configuration: $services);
 		$registry = new ListenerRegistry(container: $this->container);

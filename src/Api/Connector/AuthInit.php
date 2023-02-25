@@ -11,7 +11,7 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
-use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
@@ -36,13 +36,13 @@ class AuthInit implements Endpoint {
 	/**
 	 * Construct the endpoint.
 	 *
-	 * @param MessageBus         $bus        MessageBus for sending the command.
-	 * @param ConnectorRegistrar $connectors Check param against registered Connectors.
-	 * @param ApiEnvironment     $env        Environment information.
+	 * @param MessageBus        $bus        MessageBus for sending the command.
+	 * @param ConnectorRegistry $connectors Check param against registered Connectors.
+	 * @param ApiEnvironment    $env        Environment information.
 	 */
 	public function __construct(
 		private MessageBus $bus,
-		private ConnectorRegistrar $connectors,
+		private ConnectorRegistry $connectors,
 		private ApiEnvironment $env,
 	) {
 	}

@@ -8,7 +8,7 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
-use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\EndpointTestToolkit;
 
@@ -17,7 +17,7 @@ final class AuthCallbackTest extends TestCase {
 	const ENDPOINT = AuthCallback::class;
 
 	public function testItRespondsToAnOAuth2Request() {
-		$conReg = $this->createStub(ConnectorRegistrar::class);
+		$conReg = $this->createStub(ConnectorRegistry::class);
 		$conReg->method('has')->willReturn(true);
 
 		$reqRep = $this->createStub(AuthRequestStateRepo::class);
@@ -45,7 +45,7 @@ final class AuthCallbackTest extends TestCase {
 	}
 
 	public function testItRespondsToAnOAuth1Request() {
-		$conReg = $this->createStub(ConnectorRegistrar::class);
+		$conReg = $this->createStub(ConnectorRegistry::class);
 		$conReg->method('has')->willReturn(true);
 
 		$reqRep = $this->createStub(AuthRequestStateRepo::class);
@@ -77,7 +77,7 @@ final class AuthCallbackTest extends TestCase {
 
 		$endpoint = new AuthCallback(
 			bus: $this->createStub(MessageBus::class),
-			connectors: $this->createStub(ConnectorRegistrar::class),
+			connectors: $this->createStub(ConnectorRegistry::class),
 			authRepo: $this->createStub(AuthRequestStateRepo::class)
 		);
 
@@ -87,7 +87,7 @@ final class AuthCallbackTest extends TestCase {
 	public function testItGivesBadRequestWithNoState() {
 		$this->expectException(BadRequest::class);
 
-		$conReg = $this->createStub(ConnectorRegistrar::class);
+		$conReg = $this->createStub(ConnectorRegistry::class);
 		$conReg->method('has')->willReturn(true);
 
 		$reqRep = $this->createStub(AuthRequestStateRepo::class);
@@ -110,7 +110,7 @@ final class AuthCallbackTest extends TestCase {
 	public function testItGivesBadRequestWithNoCode() {
 		$this->expectException(BadRequest::class);
 
-		$conReg = $this->createStub(ConnectorRegistrar::class);
+		$conReg = $this->createStub(ConnectorRegistry::class);
 		$conReg->method('has')->willReturn(true);
 
 		$reqRep = $this->createStub(AuthRequestStateRepo::class);
@@ -133,7 +133,7 @@ final class AuthCallbackTest extends TestCase {
 	public function testItGivesNotFoundWithInvalidState() {
 		$this->expectException(NotFound::class);
 
-		$conReg = $this->createStub(ConnectorRegistrar::class);
+		$conReg = $this->createStub(ConnectorRegistry::class);
 		$conReg->method('has')->willReturn(true);
 
 		$reqRep = $this->createStub(AuthRequestStateRepo::class);

@@ -25,7 +25,7 @@ final class ConnectionRefresherTest extends TestCase {
 	public function setUp(): void {
 		$this->connector = $this->createStub(Connector::class);
 
-		$repo = $this->createStub(ConnectorRegistrar::class);
+		$repo = $this->createStub(ConnectorRegistry::class);
 		$repo->method('get')->willReturn($this->connector);
 
 		$this->connection = new Connection(

@@ -15,7 +15,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Api\SuccessResponse;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
-use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
@@ -48,12 +48,12 @@ class AuthCallback implements Endpoint {
 	 * Construct the endpoint.
 	 *
 	 * @param MessageBus           $bus        To dispatch command.
-	 * @param ConnectorRegistrar   $connectors To check if provider is registered.
+	 * @param ConnectorRegistry    $connectors To check if provider is registered.
 	 * @param AuthRequestStateRepo $authRepo   To check if state is valid.
 	 */
 	public function __construct(
 		private MessageBus $bus,
-		private ConnectorRegistrar $connectors,
+		private ConnectorRegistry $connectors,
 		private AuthRequestStateRepo $authRepo,
 	) {
 	}

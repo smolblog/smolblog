@@ -5,7 +5,7 @@ namespace Smolblog\Api\Connector;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
-use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EndpointTestToolkit;
@@ -15,7 +15,7 @@ final class AuthInitTest extends TestCase {
 	const ENDPOINT = AuthInit::class;
 
 	public function testItRespondsToACorrectRequest() {
-		$conReg = $this->createStub(ConnectorRegistrar::class);
+		$conReg = $this->createStub(ConnectorRegistry::class);
 		$conReg->method('has')->willReturn(true);
 
 		$command = new BeginAuthRequest(
@@ -41,7 +41,7 @@ final class AuthInitTest extends TestCase {
 
 		$endpoint = new AuthInit(
 			bus: $this->createStub(MessageBus::class),
-			connectors: $this->createStub(ConnectorRegistrar::class),
+			connectors: $this->createStub(ConnectorRegistry::class),
 			env: $this->getApiEnvironment(),
 		);
 

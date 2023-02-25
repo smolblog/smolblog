@@ -12,7 +12,7 @@ use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\ErrorResponse;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
-use Smolblog\Core\Connector\Services\ConnectorRegistrar;
+use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
@@ -26,12 +26,12 @@ class Model extends DomainModel {
 	public const SERVICES = [
 		Connector\AuthInit::class => [
 			'bus' => MessageBus::class,
-			'connectors' => ConnectorRegistrar::class,
+			'connectors' => ConnectorRegistry::class,
 			'env' => ApiEnvironment::class,
 		],
 		Connector\AuthCallback::class => [
 			'bus' => MessageBus::class,
-			'connectors' => ConnectorRegistrar::class,
+			'connectors' => ConnectorRegistry::class,
 			'authRepo' => AuthRequestStateRepo::class,
 		],
 		Connector\ChannelLink::class => ['bus' => MessageBus::class],

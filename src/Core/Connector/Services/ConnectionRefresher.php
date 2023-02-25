@@ -18,11 +18,11 @@ class ConnectionRefresher implements Listener {
 	/**
 	 * Construct the service
 	 *
-	 * @param ConnectorRegistrar $connectorRepo Connectors to look up.
-	 * @param MessageBus         $messageBus    MessageBus to send the save event.
+	 * @param ConnectorRegistry $connectorRepo Connectors to look up.
+	 * @param MessageBus        $messageBus    MessageBus to send the save event.
 	 */
 	public function __construct(
-		private ConnectorRegistrar $connectorRepo,
+		private ConnectorRegistry $connectorRepo,
 		private MessageBus $messageBus,
 	) {
 	}

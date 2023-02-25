@@ -26,7 +26,7 @@ final class AuthRequestServiceTest extends TestCase {
 		          ->method('getInitializationData')
 							->willReturn(new ConnectorInitData(url: $authUrl, state: 'bob', info: []));
 
-		$connectors = $this->createMock(ConnectorRegistrar::class);
+		$connectors = $this->createMock(ConnectorRegistry::class);
 		$connectors->expects($this->once())
 							 ->method('get')
 							 ->willReturn($connector);
@@ -70,7 +70,7 @@ final class AuthRequestServiceTest extends TestCase {
 		$connector = $this->createMock(Connector::class);
 		$connector->expects($this->once())->method('createConnection')->willReturn($returnedConnection);
 
-		$connectors = $this->createStub(ConnectorRegistrar::class);
+		$connectors = $this->createStub(ConnectorRegistry::class);
 		$connectors->method('get')->willReturn($connector);
 
 		$stateRepo = $this->createStub(AuthRequestStateRepo::class);

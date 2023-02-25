@@ -11,9 +11,9 @@ abstract class TestConnector implements Connector {
 	public static function getSlug(): string { return 'test'; }
 }
 
-final class ConnectorRegistrarTest extends TestCase {
+final class ConnectorRegistryTest extends TestCase {
 	public function testItRegistersConnectors() {
-		$this->assertEquals(Connector::class, ConnectorRegistrar::getInterfaceToRegister());
+		$this->assertEquals(Connector::class, ConnectorRegistry::getInterfaceToRegister());
 	}
 
 	public function testAConnectorCanBeRegisteredAndRetrieved() {
@@ -25,7 +25,7 @@ final class ConnectorRegistrarTest extends TestCase {
 
 		$config = [TestConnector::class];
 
-		$reg = new ConnectorRegistrar(container: $container, configuration: $config);
+		$reg = new ConnectorRegistry(container: $container, configuration: $config);
 
 		$this->assertTrue($reg->has('test'));
 		$this->assertInstanceOf(TestConnector::class, $reg->get('test'));
