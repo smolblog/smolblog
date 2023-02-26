@@ -1,0 +1,466 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Smolblog Core API",
+        "version": "dev-main",
+        "description": "Preferred way of interacting with a Smolblog server.\n\nThe REST API is a first-class method\u2014perhaps the only method!\u2014of interacting with a server. It is the\nbackbone of the dashboard web app and powers the server-to-server communication.",
+        "contact": {
+            "email": "dev@smolblog.org",
+            "url": "https:\/\/smolblog.org\/",
+            "name": "The Smolblog Project"
+        }
+    },
+    "externalDocs": {
+        "description": "All Smolblog project documentation",
+        "url": "https:\/\/docs.smolblog.org\/"
+    },
+    "paths": {
+        "\/connect\/init\/{provider}": {
+            "get": {
+                "tags": [
+                    "Connector"
+                ],
+                "summary": "Kick off an OAuth request to an external provider.",
+                "description": "",
+                "operationId": "ConnectorAuthInit",
+                "security": {
+                    "smolAuth": [
+                        "read",
+                        "write"
+                    ],
+                    "wpAuth": []
+                },
+                "parameters": [
+                    {
+                        "name": "provider",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9]+$"
+                        },
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Provider not registered.",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "error"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "url": {
+                                            "type": "string",
+                                            "format": "url"
+                                        }
+                                    },
+                                    "required": [
+                                        "url"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "\/connect\/callback\/{provider}": {
+            "get": {
+                "tags": [
+                    "Connector"
+                ],
+                "summary": "OAuth callback hook.",
+                "description": "Endpoint a user is redirected to after authenticating against their external provider. It provides support for both\nOAuth 1 and OAuth 2 callbacks.\n",
+                "operationId": "ConnectorAuthCallback",
+                "security": [],
+                "parameters": [
+                    {
+                        "name": "provider",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9]+$"
+                        },
+                        "in": "path"
+                    },
+                    {
+                        "name": "state",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query"
+                    },
+                    {
+                        "name": "code",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query"
+                    },
+                    {
+                        "name": "oauth_token",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query"
+                    },
+                    {
+                        "name": "oauth_verifier",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Provider not registered.",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "error"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters given.",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "error"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        },
+        "\/connect\/link": {
+            "put": {
+                "tags": [
+                    "Connector"
+                ],
+                "summary": "Set permissions for a Channel and Site.",
+                "description": "Requires administrator permission for the site and ownership of the Connector that provides the Channel. Set `push`\nto allow the site to send content into the Channel. Set `pull` to allow the site to retrieve content from the\nChannel.\n",
+                "operationId": "ConnectorChannelLink",
+                "security": {
+                    "smolAuth": [
+                        "read",
+                        "write"
+                    ],
+                    "wpAuth": []
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/ConnectorChannelLinkRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Channel or Site not found.",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "error"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        },
+        "\/connect\/connection\/{id}\/refresh": {
+            "post": {
+                "tags": [
+                    "Connector"
+                ],
+                "summary": "Get an updated list of channels for the given Connection.",
+                "description": "",
+                "operationId": "ConnectorRefreshChannels",
+                "security": {
+                    "smolAuth": [
+                        "read",
+                        "write"
+                    ],
+                    "wpAuth": []
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+                        },
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Connection does not exist.",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "error"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/ConnectorConnection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "\/my\/connections": {
+            "get": {
+                "tags": [
+                    "Connector"
+                ],
+                "summary": "Get all connections for a user along with their channels.",
+                "description": "",
+                "operationId": "ConnectorUserConnections",
+                "security": {
+                    "smolAuth": [
+                        "read"
+                    ],
+                    "wpAuth": []
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "connections": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/ConnectorConnection"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "connections"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ConnectorChannelLinkRequest": {
+                "type": "object",
+                "properties": {
+                    "channelId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+                    },
+                    "siteId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+                    },
+                    "push": {
+                        "type": "boolean"
+                    },
+                    "pull": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "channelId",
+                    "siteId"
+                ]
+            },
+            "ConnectorChannel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+                    },
+                    "channelKey": {
+                        "type": "string"
+                    },
+                    "displayName": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "channelKey",
+                    "displayName"
+                ]
+            },
+            "ConnectorConnection": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+                    },
+                    "provider": {
+                        "type": "string"
+                    },
+                    "providerKey": {
+                        "type": "string"
+                    },
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "channels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/components\/schemas\/ConnectorChannel"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "userId",
+                    "provider",
+                    "providerKey",
+                    "displayName",
+                    "channels"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "wpAuth": {
+                "type": "http",
+                "scheme": "basic"
+            },
+            "smolAuth": {
+                "type": "oauth2",
+                "description": "Gain user credentials without needing to store their password.",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "\/oauth\/authorize",
+                        "tokenUrl": "\/oauth\/token",
+                        "refreshUrl": "\/oauth\/refresh",
+                        "scopes": {
+                            "read": "Retrieve information from the API.",
+                            "write": "Make changes to a user's content or site."
+                        }
+                    },
+                    "implicit": {
+                        "authorizationUrl": "\/oauth\/authorize",
+                        "refreshUrl": "\/oauth\/refresh",
+                        "scopes": {
+                            "read": "Retrieve information from the API.",
+                            "write": "Make changes to a user's content or site."
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

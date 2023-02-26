@@ -26,7 +26,7 @@ class AuthInit implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/connect/init/{provider}',
-			pathVariables: ['provider' => ParameterType::string(pattern: '/[a-z0-9]+/i')],
+			pathVariables: ['provider' => ParameterType::string(pattern: '^[a-zA-Z0-9]+$')],
 			responseShape: ParameterType::object(
 				url: ParameterType::required(ParameterType::string(format: 'url'))
 			),

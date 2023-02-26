@@ -110,6 +110,7 @@ class Model extends DomainModel {
 			$security = [];
 			if (!empty($config->requiredScopes)) {
 				$security['smolAuth'] = array_map(fn($s) => $s->value, $config->requiredScopes);
+				$security['wpAuth'] = [];
 			}
 
 			$endpoints[$config->route] = [
@@ -151,6 +152,10 @@ class Model extends DomainModel {
 			'components' => [
 				'schemas' => self::$schemaCache,
 				'securitySchemes' => [
+					'wpAuth' => [
+						'type' => 'http',
+						'scheme' => 'basic',
+					],
 					'smolAuth' => [
 						'type' => 'oauth2',
 						'description' => 'Gain user credentials without needing to store their password.',
