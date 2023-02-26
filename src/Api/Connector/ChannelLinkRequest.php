@@ -24,4 +24,20 @@ class ChannelLinkRequest extends Value {
 		public readonly ?bool $pull = null,
 	) {
 	}
+
+	/**
+	 * Deserialize from an array.
+	 *
+	 * @param array $data Serialized data.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		$params = [
+			...$data,
+			'channelId' => Identifier::fromString($data['channelId']),
+			'siteId' => Identifier::fromString($data['siteId']),
+		];
+
+		return new static(...$params);
+	}
 }
