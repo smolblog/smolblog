@@ -51,14 +51,19 @@ final class AppKitTest extends TestCase {
 			AppKitTest::class => ['stub' => TestApp::class],
 			ListenerRegistry::class => [
 				'container' => ServiceRegistry::class,
-				'configuration' => [QueryMemoizationService::class, SecurityCheckService::class]
+				'configuration' => fn() => [QueryMemoizationService::class, SecurityCheckService::class]
 			],
 			QueryMemoizationService::class => [],
 			SecurityCheckService::class => ['messageBus' => MessageBus::class],
 		];
 
 		$app = new TestApp();
-		$this->assertEquals($expected, $app->buildDependencyMap([BasicModel::class, ListenerModel::class]));
+		$actual = $app->buildDependencyMap([BasicModel::class, ListenerModel::class]);
+		$this->assertEquals($expected, $actual);
+		$this->assertEquals(
+			$expected[ListenerRegistry::class]['configuration'](),
+			$actual[ListenerRegistry::class]['configuration'](),
+		);
 	}
 
 	public function testItWillCreateAServiceRegistryWithTheDefaultModel() {

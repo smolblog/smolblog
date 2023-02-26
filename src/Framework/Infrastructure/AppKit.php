@@ -35,10 +35,12 @@ trait AppKit {
 
 		foreach ($registries as $registry) {
 			$interface = $registry::getInterfaceToRegister();
-			$services[$registry]['configuration'] = array_values(array_filter(
+			$config = array_values(array_filter(
 				array_keys($services),
 				fn($srv) => in_array($interface, class_implements($srv))
 			));
+
+			$services[$registry]['configuration'] = fn() => $config;
 		}
 
 		return $services;
