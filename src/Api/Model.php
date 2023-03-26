@@ -37,6 +37,9 @@ class Model extends DomainModel {
 		Connector\ChannelLink::class => ['bus' => MessageBus::class],
 		Connector\RefreshChannels::class => ['bus' => MessageBus::class],
 		Connector\UserConnections::class => ['bus' => MessageBus::class],
+
+		Server\Base::class => ['env' => ApiEnvironment::class],
+		Server\Spec::class => [],
 	];
 
 	/**
@@ -49,11 +52,20 @@ class Model extends DomainModel {
 	private static array $schemaCache = [];
 
 	/**
-	 * Create a JSON-formatted OpenAPI spec from the endpoints.
+	 * Print the generated spec to standard output.
 	 *
 	 * @return void
 	 */
-	public static function generateOpenApiSpec(): void {
+	public static function printSpec(): void {
+		json_encode(self::generateOpenApiSpec(), JSON_PRETTY_PRINT);
+	}
+
+	/**
+	 * Create a JSON-formatted OpenAPI spec from the endpoints.
+	 *
+	 * @return array
+	 */
+	public static function generateOpenApiSpec(): array {
 		$endpoints = [];
 		foreach (array_keys(self::SERVICES) as $endpoint) {
 			if (!in_array(Endpoint::class, class_implements($endpoint))) {
@@ -183,7 +195,7 @@ class Model extends DomainModel {
 			],
 		];
 
-		echo json_encode($fullSchema, JSON_PRETTY_PRINT);
+		return $fullSchema;
 	}
 
 	/**

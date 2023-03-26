@@ -33,7 +33,7 @@
     "integration": "phpunit --testsuite integration",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-    "swagger": "Smolblog\\Api\\Model::generateOpenApiSpec"
+    "swagger": "Smolblog\\Api\\Model::printSpec"
   },
   "require": {
     "php": "^8.1",
