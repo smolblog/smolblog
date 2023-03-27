@@ -3,11 +3,8 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use Smolblog\Core\Content\EditContentCommandKit;
-use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
