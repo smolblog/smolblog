@@ -122,8 +122,8 @@ class Model extends DomainModel {
 
 			$security = [];
 			if (!empty($config->requiredScopes)) {
-				$security['smolAuth'] = array_map(fn($s) => $s->value, $config->requiredScopes);
-				$security['wpAuth'] = [];
+				$security[] = ['smolAuth' => array_map(fn($s) => $s->value, $config->requiredScopes)];
+				$security[] = ['wpAuth' => []];
 			}
 
 			$endpoints[$config->route] = [
