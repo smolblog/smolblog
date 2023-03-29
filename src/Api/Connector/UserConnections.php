@@ -65,10 +65,10 @@ class UserConnections implements Endpoint {
 						channelKey: $cha->channelKey,
 						displayName: $cha->displayName,
 					),
-					$this->bus->fetch(new ChannelsForConnection($con->id))
+					$this->bus->fetch(new ChannelsForConnection($con->id)) ?? []
 				)
 			),
-			$this->bus->fetch(new ConnectionsForUser(userId: $userId))
+			$this->bus->fetch(new ConnectionsForUser(userId: $userId)) ?? []
 		));
 	}
 }
