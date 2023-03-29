@@ -39,7 +39,7 @@ class Model extends DomainModel {
 		Connector\UserConnections::class => ['bus' => MessageBus::class],
 
 		Server\Base::class => ['env' => ApiEnvironment::class],
-		Server\Spec::class => [],
+		Server\Spec::class => ['env' => ApiEnvironment::class],
 	];
 
 	/**
