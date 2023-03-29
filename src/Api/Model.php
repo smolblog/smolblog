@@ -63,9 +63,10 @@ class Model extends DomainModel {
 	/**
 	 * Create a JSON-formatted OpenAPI spec from the endpoints.
 	 *
+	 * @param string $apiBase URL base for the endpoints.
 	 * @return array
 	 */
-	public static function generateOpenApiSpec(): array {
+	public static function generateOpenApiSpec(string $apiBase = null): array {
 		$endpoints = [];
 		foreach (array_keys(self::SERVICES) as $endpoint) {
 			if (!in_array(Endpoint::class, class_implements($endpoint))) {
@@ -194,6 +195,12 @@ class Model extends DomainModel {
 				],
 			],
 		];
+
+		if (!empty($apiBase)) {
+			$fullSchema['servers'] = [
+				['url' => $apiBase]
+			];
+		}
 
 		return $fullSchema;
 	}

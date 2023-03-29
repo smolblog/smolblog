@@ -2,6 +2,7 @@
 
 namespace Smolblog\Api\Server;
 
+use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
@@ -28,6 +29,16 @@ class Spec implements Endpoint {
 	}
 
 	/**
+	 * Construct the endpoint.
+	 *
+	 * @param ApiEnvironment $env Current environment info.
+	 */
+	public function __construct(
+		private ApiEnvironment $env,
+	) {
+	}
+
+	/**
 	 * Execute the endpoint.
 	 *
 	 * @param Identifier|null $userId Ignored.
@@ -36,6 +47,6 @@ class Spec implements Endpoint {
 	 * @return Value
 	 */
 	public function run(?Identifier $userId = null, ?array $params = null, ?object $body = null): Value {
-		return new GenericResponse(...Model::generateOpenApiSpec());
+		return new GenericResponse(...Model::generateOpenApiSpec(apiBase: $this->env->getApiUrl()));
 	}
 }
