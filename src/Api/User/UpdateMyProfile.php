@@ -24,7 +24,7 @@ class UpdateMyProfile implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/my/profile',
+			route: '/my/profile/update',
 			verb: Verb::POST,
 			bodyClass: UpdateProfileBody::class,
 			requiredScopes: [AuthScope::Write],
