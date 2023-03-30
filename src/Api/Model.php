@@ -40,6 +40,9 @@ class Model extends DomainModel {
 
 		Server\Base::class => ['env' => ApiEnvironment::class],
 		Server\Spec::class => ['env' => ApiEnvironment::class],
+
+		User\GetProfile::class => ['bus' => MessageBus::class],
+		User\UpdateMyProfile::class => ['bus' => MessageBus::class],
 	];
 
 	/**
