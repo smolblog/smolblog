@@ -58,6 +58,13 @@ class User extends Entity {
 	public readonly string $email;
 
 	/**
+	 * Preferred pronouns for the user.
+	 *
+	 * @var string
+	 */
+	public readonly string $pronouns;
+
+	/**
 	 * Construct the entity
 	 *
 	 * @param Identifier $id          Unique identifier for the user.
