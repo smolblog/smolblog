@@ -13,7 +13,9 @@ use Smolblog\Api\Exceptions\ErrorResponse;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
+use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
  * Domain model for the API.
@@ -38,6 +40,11 @@ class Model extends DomainModel {
 		Connector\DeleteConnection::class => ['bus' => MessageBus::class],
 		Connector\RefreshChannels::class => ['bus' => MessageBus::class],
 		Connector\UserConnections::class => ['bus' => MessageBus::class],
+
+		Content\ListContent::class => ['bus' => MessageBus::class],
+
+		Preview\PreviewEmbed::class => ['embed' => ExternalContentService::class],
+		Preview\PreviewMarkdown::class => ['md' => SmolblogMarkdown::class],
 
 		Server\Base::class => ['env' => ApiEnvironment::class],
 		Server\Spec::class => ['env' => ApiEnvironment::class],
