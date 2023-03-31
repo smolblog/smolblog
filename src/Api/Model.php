@@ -35,13 +35,15 @@ class Model extends DomainModel {
 			'authRepo' => AuthRequestStateRepo::class,
 		],
 		Connector\ChannelLink::class => ['bus' => MessageBus::class],
+		Connector\DeleteConnection::class => ['bus' => MessageBus::class],
 		Connector\RefreshChannels::class => ['bus' => MessageBus::class],
 		Connector\UserConnections::class => ['bus' => MessageBus::class],
 
 		Server\Base::class => ['env' => ApiEnvironment::class],
 		Server\Spec::class => ['env' => ApiEnvironment::class],
 
-		User\GetProfile::class => ['bus' => MessageBus::class],
+		User\GetMyProfile::class => ['bus' => MessageBus::class],
+		User\GetMySites::class => ['bus' => MessageBus::class],
 		User\UpdateMyProfile::class => ['bus' => MessageBus::class],
 	];
 

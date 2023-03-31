@@ -25,10 +25,14 @@ class Model extends DomainModel {
 			'messageBus' => MessageBus::class,
 			'connectorRepo' => Connector\Services\ConnectorRegistry::class,
 		],
+		Connector\Services\ConnectionService::class => [
+			'bus' => MessageBus::class,
+		],
 		Connector\Services\ConnectorRegistry::class => [
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
+
 		Content\Extensions\SyndicationLinks\SyndicationLinkService::class => [
 			'bus' => MessageBus::class,
 		],
