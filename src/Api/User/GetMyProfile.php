@@ -13,7 +13,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Endpoint to get standard information about the server.
  */
-class GetProfile implements Endpoint {
+class GetMyProfile implements Endpoint {
 	/**
 	 * Get the configuration for this endpoint.
 	 *
