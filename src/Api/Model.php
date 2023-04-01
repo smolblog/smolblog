@@ -42,6 +42,8 @@ class Model extends DomainModel {
 		Connector\UserConnections::class => ['bus' => MessageBus::class],
 
 		Content\ListContent::class => ['bus' => MessageBus::class],
+		Content\GetReblog::class => ['bus' => MessageBus::class],
+		Content\GetStatus::class => ['bus' => MessageBus::class],
 
 		Preview\PreviewEmbed::class => ['embed' => ExternalContentService::class],
 		Preview\PreviewMarkdown::class => ['md' => SmolblogMarkdown::class],
