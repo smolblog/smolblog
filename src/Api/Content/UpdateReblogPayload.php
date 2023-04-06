@@ -15,17 +15,17 @@ class UpdateReblogPayload extends Value {
 	 *
 	 * @throws BadRequest No updated attributes provided.
 	 *
-	 * @param BaseReblogPayload|null       $reblog           Updated reblog info.
-	 * @param BaseAttributesPayload|null   $baseAttributes   Updated base attributes.
-	 * @param SetTagsPayload|null          $tags             Updated tags.
-	 * @param SyndicationLinksPayload|null $syndicationLinks Updated links.
-	 * @param ContentVisibility|null       $visibility       Updated visibility.
+	 * @param BaseReblogPayload|null     $reblog           Updated reblog info.
+	 * @param BaseAttributesPayload|null $baseAttributes   Updated base attributes.
+	 * @param SetTagsPayload|null        $tags             Updated tags.
+	 * @param SyndicationPayload|null    $syndicationLinks Updated links.
+	 * @param ContentVisibility|null     $visibility       Updated visibility.
 	 */
 	public function __construct(
 		public readonly ?BaseReblogPayload $reblog = null,
 		public readonly ?BaseAttributesPayload $baseAttributes = null,
 		public readonly ?SetTagsPayload $tags = null,
-		public readonly ?SyndicationLinksPayload $syndicationLinks = null,
+		public readonly ?SyndicationPayload $syndicationLinks = null,
 		public readonly ?ContentVisibility $visibility = null,
 	) {
 		if (

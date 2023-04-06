@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Content;
 
-use Smolblog\Api\ParameterType;
+use Smolblog\Api\ArrayType;
 use Smolblog\Framework\Objects\Value;
 
 /**
@@ -15,7 +15,7 @@ class SetTagsPayload extends Value {
 	 * @param string[] $tags Tags to set on the content.
 	 */
 	public function __construct(
-		#[ParameterType(type: 'array', required: true, items: 'string')] public readonly array $tags
+		#[ArrayType('string')] public readonly array $tags
 	) {
 	}
 }
