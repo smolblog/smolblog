@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\SyndicationLinks;
+namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;

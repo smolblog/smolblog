@@ -1,14 +1,14 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\SyndicationLinks;
+namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
- * Handle SyndicationLink commands.
+ * Handle Syndication commands.
  */
-class SyndicationLinkService implements Listener {
+class SyndicationService implements Listener {
 	/**
 	 * Construct the service
 	 *
@@ -28,6 +28,21 @@ class SyndicationLinkService implements Listener {
 	public function onAddSyndicationLink(AddSyndicationLink $command) {
 		$this->bus->dispatch(new ContentSyndicated(
 			url: $command->url,
+			contentId: $command->contentId,
+			userId: $command->userId,
+			siteId: $command->siteId,
+		));
+	}
+
+	/**
+	 * Handle the SetSyndicationChannels command
+	 *
+	 * @param SetSyndicationChannels $command Command to execute.
+	 * @return void
+	 */
+	public function onSetSyndicationChannels(SetSyndicationChannels $command) {
+		$this->bus->dispatch(new SyndicationChannelsSet(
+			channels: $command->channels,
 			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,

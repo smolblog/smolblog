@@ -1,9 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\SyndicationLinks;
+namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use DateTimeInterface;
-use Smolblog\Core\Content\ContentExtension;
 use Smolblog\Core\Content\Events\ContentExtensionEdited;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -12,11 +11,11 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class ContentSyndicated extends ContentExtensionEdited {
 	/**
-	 * Store the state of all SyndicationLinks on this content.
+	 * Store the state of syndication on this content.
 	 *
-	 * @var SyndicationLinks
+	 * @var Syndication
 	 */
-	private SyndicationLinks $links;
+	private Syndication $state;
 
 	/**
 	 * Construct the event.
@@ -42,22 +41,22 @@ class ContentSyndicated extends ContentExtensionEdited {
 	}
 
 	/**
-	 * Store the current state of all SyndicationLinks on this content.
+	 * Store the current state of Syndication on this content.
 	 *
-	 * @param SyndicationLinks $links Links on this content, including this one.
+	 * @param Syndication $state Current Syndication info.
 	 * @return void
 	 */
-	public function setLinks(SyndicationLinks $links) {
-		$this->links = $links;
+	public function setState(Syndication $state) {
+		$this->state = $state;
 	}
 
 	/**
-	 * Get the current state of the SyndicationLinks as of this event.
+	 * Get the current state of the Syndication as of this event.
 	 *
-	 * @return SyndicationLinks
+	 * @return Syndication
 	 */
-	public function getNewExtension(): SyndicationLinks {
-		return $this->links;
+	public function getNewExtension(): Syndication {
+		return $this->state;
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\SyndicationLinks;
+namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use Smolblog\Core\Content\EditContentCommandKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;

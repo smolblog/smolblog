@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\SyndicationLinks;
+namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
