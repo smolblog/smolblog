@@ -7,9 +7,9 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Objects\Value;
 
 /**
- * Composed payload to update a reblog.
+ * Composed payload to update a status.
  */
-class UpdateReblogPayload extends Value {
+class UpdateStatusPayload extends Value {
 	/**
 	 * Construct the payload. Omit vales for no changes.
 	 *
