@@ -25,14 +25,16 @@ class CreateStatus extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $siteId Site for this status.
-	 * @param Identifier $userId User authoring this status.
-	 * @param string     $text   Markdown-formatted text of the status.
+	 * @param Identifier $siteId  Site for this status.
+	 * @param Identifier $userId  User authoring this status.
+	 * @param string     $text    Markdown-formatted text of the status.
+	 * @param boolean    $publish True to publish status immediately.
 	 */
 	public function __construct(
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
 		public readonly string $text,
+		public readonly bool $publish,
 	) {
 	}
 

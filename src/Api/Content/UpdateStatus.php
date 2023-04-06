@@ -16,13 +16,14 @@ use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Types\Reblog\CreateReblog as ReblogCreateReblog;
 use Smolblog\Core\Content\Types\Reblog\EditReblogComment;
 use Smolblog\Core\Content\Types\Reblog\EditReblogUrl;
+use Smolblog\Core\Content\Types\Status\EditStatus;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Endpoint to update a reblog post.
  */
-class UpdateReblog implements Endpoint {
+class UpdateStatus implements Endpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *
@@ -30,13 +31,13 @@ class UpdateReblog implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/site/{site}/content/reblog/{content}/update',
+			route: '/site/{site}/content/status/{content}/update',
 			verb: Verb::POST,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 				'content' => ParameterType::identifier(),
 			],
-			bodyClass: UpdateReblogPayload::class,
+			bodyClass: UpdateStatusPayload::class,
 			requiredScopes: [AuthScope::Write]
 		);
 	}
@@ -58,7 +59,7 @@ class UpdateReblog implements Endpoint {
 	 *
 	 * @param Identifier|null $userId Required; user making the change.
 	 * @param array|null      $params Expectes site and content parameters.
-	 * @param object|null     $body   Instance of UpdateReblogPayload.
+	 * @param object|null     $body   Instance of UpdateStatusPayload.
 	 * @return SuccessResponse
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
@@ -68,12 +69,13 @@ class UpdateReblog implements Endpoint {
 			'contentId' => $params['content'],
 		];
 
-		if (isset($body->reblog)) {
-			$this->handleReblog($body->reblog, [
-				'userId' => $userId,
-				'siteId' => $params['site'],
-				'reblogId' => $params['content'],
-			]);
+		if (isset($body->text)) {
+			$this->bus->dispatch(new EditStatus(
+				siteId: $params['site'],
+				userId: $userId,
+				statusId: $params['content'],
+				text: $body->text,
+			));
 		}
 		if (isset($body->baseAttributes)) {
 			$this->bus->dispatch(new EditContentBaseAttributes(
@@ -105,33 +107,5 @@ class UpdateReblog implements Endpoint {
 		}
 
 		return new SuccessResponse();
-	}
-
-	/**
-	 * Handle the reblog payload.
-	 *
-	 * @throws BadRequest If neither URL or Comment are provided.
-	 *
-	 * @param BaseReblogPayload $reblog Reblog payload to handle.
-	 * @param array             $props  Standard command props.
-	 * @return void
-	 */
-	private function handleReblog(BaseReblogPayload $reblog, array $props) {
-		if (!isset($reblog->url) && !isset($reblog->comment)) {
-			throw new BadRequest('Reblog provided with no updated attributes.');
-		}
-
-		if (isset($reblog->url)) {
-			$this->bus->dispatch(new EditReblogUrl(
-				...$props,
-				url: $reblog->url,
-			));
-		}
-		if (isset($reblog->comment)) {
-			$this->bus->dispatch(new EditReblogComment(
-				...$props,
-				comment: $reblog->comment,
-			));
-		}
 	}
 }

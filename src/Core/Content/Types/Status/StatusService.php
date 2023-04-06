@@ -38,7 +38,7 @@ class StatusService implements Listener {
 			siteId: $command->siteId,
 			permalink: '/status/' . $id->toString(),
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
+			visibility: $command->publish ? ContentVisibility::Published : ContentVisibility::Draft,
 		));
 
 		$command->statusId = $id;
