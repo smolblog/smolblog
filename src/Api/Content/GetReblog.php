@@ -25,8 +25,11 @@ class GetReblog implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/content/reblog/{id}',
-			pathVariables: ['id' => ParameterType::identifier()],
+			route: '/site/{site}/content/reblog/{content}',
+			pathVariables: [
+				'site' => ParameterType::identifier(),
+				'content' => ParameterType::identifier(),
+			],
 			requiredScopes: [AuthScope::Read],
 		);
 	}
@@ -53,11 +56,17 @@ class GetReblog implements Endpoint {
 	 * @return Reblog
 	 */
 	public function run(?Identifier $userId = null, ?array $params = [], ?object $body = null): Reblog {
-		if (!$this->bus->fetch(new GenericContentById(id: $params['id'], userId: $userId))) {
+		if (
+			!$this->bus->fetch(
+				new GenericContentById(siteId: $params['site'], contentId: $params['content'], userId: $userId)
+			)
+		) {
 			throw new NotFound('No content exists with that ID.');
 		}
 
-		$reblog = $this->bus->fetch(new ReblogById(id: $params['id'], userId: $userId));
+		$reblog = $this->bus->fetch(
+			new ReblogById(siteId: $params['site'], contentId: $params['content'], userId: $userId)
+		);
 		if (!$reblog) {
 			throw new BadRequest('Content is not a Reblog.');
 		}

@@ -25,8 +25,11 @@ class GetStatus implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/content/status/{id}',
-			pathVariables: ['id' => ParameterType::identifier()],
+			route: '/site/{site}/content/status/{content}',
+			pathVariables: [
+				'site' => ParameterType::identifier(),
+				'content' => ParameterType::identifier(),
+			],
 			requiredScopes: [AuthScope::Read],
 		);
 	}
@@ -53,11 +56,17 @@ class GetStatus implements Endpoint {
 	 * @return Status
 	 */
 	public function run(?Identifier $userId = null, ?array $params = [], ?object $body = null): Status {
-		if (!$this->bus->fetch(new GenericContentById(id: $params['id'], userId: $userId))) {
+		if (
+			!$this->bus->fetch(
+				new GenericContentById(siteId: $params['site'], contentId: $params['content'], userId: $userId)
+			)
+		) {
 			throw new NotFound('No content exists with that ID.');
 		}
 
-		$status = $this->bus->fetch(new StatusById(id: $params['id'], userId: $userId));
+		$status = $this->bus->fetch(
+			new StatusById(siteId: $params['site'], contentId: $params['content'], userId: $userId)
+		);
 		if (!$status) {
 			throw new BadRequest('Content is not a Status.');
 		}

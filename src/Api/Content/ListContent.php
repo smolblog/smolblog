@@ -26,7 +26,7 @@ class ListContent implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/content',
+			route: '/site/{site}/content',
 			queryVariables: [
 				'page' => ParameterType::integer(),
 				'pageSize' => ParameterType::integer(),
@@ -79,7 +79,9 @@ class ListContent implements Endpoint {
 		}
 
 		try {
-			return new GenericResponse(content: $this->bus->fetch(new ContentList(...array_filter($opts))));
+			return new GenericResponse(
+				content: $this->bus->fetch(new ContentList(...array_filter($opts), siteId: $params['site']))
+			);
 		} catch (InvalidMessageAttributesException $e) {
 			throw new BadRequest(previous: $e);
 		}

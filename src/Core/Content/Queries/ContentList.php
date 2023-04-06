@@ -32,6 +32,7 @@ class ContentList extends Query implements MemoizableQuery, StoppableMessage {
 	 *
 	 * @throws InvalidMessageAttributesException Thown when invalid arguments are provided.
 	 *
+	 * @param Identifier      $siteId     ID of the site to pull from.
 	 * @param integer         $page       Page to show starting from 0; defaults to 0, must be non-negative.
 	 * @param integer         $pageSize   Number of items per page; defaults to 30, must be positive.
 	 * @param Identifier|null $userId     Optional ID of user making the query to determine draft/hidden posts to show.
@@ -39,6 +40,7 @@ class ContentList extends Query implements MemoizableQuery, StoppableMessage {
 	 * @param array|null      $types      Array of content types to show; omit to show all.
 	 */
 	public function __construct(
+		public readonly Identifier $siteId,
 		public readonly int $page = 1,
 		public readonly int $pageSize = 30,
 		public readonly ?Identifier $userId = null,

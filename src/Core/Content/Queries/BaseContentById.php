@@ -24,11 +24,13 @@ abstract class BaseContentById extends Query implements MemoizableQuery, Extensa
 	/**
 	 * Construct the query.
 	 *
-	 * @param Identifier      $id     ID of the content being queried.
-	 * @param Identifier|null $userId Optional user making the request.
+	 * @param Identifier      $siteId    ID of the site to pull from.
+	 * @param Identifier      $contentId ID of the content being queried.
+	 * @param Identifier|null $userId    Optional user making the request.
 	 */
 	public function __construct(
-		public readonly Identifier $id,
+		public readonly Identifier $siteId,
+		public readonly Identifier $contentId,
 		public readonly ?Identifier $userId = null
 	) {
 	}
@@ -39,6 +41,6 @@ abstract class BaseContentById extends Query implements MemoizableQuery, Extensa
 	 * @return Query
 	 */
 	public function getAuthorizationQuery(): Query {
-		return new ContentVisibleToUser(contentId: $this->id, userId: $this->userId);
+		return new ContentVisibleToUser(contentId: $this->contentId, userId: $this->userId);
 	}
 }
