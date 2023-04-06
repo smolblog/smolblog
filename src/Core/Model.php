@@ -33,7 +33,7 @@ class Model extends DomainModel {
 			'configuration' => null,
 		],
 
-		Content\Extensions\SyndicationLinks\SyndicationLinkService::class => [
+		Content\Extensions\Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
 		],
 		Content\Extensions\Tags\TagService::class => [
