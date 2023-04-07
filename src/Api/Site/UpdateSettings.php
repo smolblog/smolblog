@@ -7,6 +7,7 @@ use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\SuccessResponse;
+use Smolblog\Api\Verb;
 use Smolblog\Core\Site\UpdateSettings as UpdateSettingsCommand;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
@@ -23,6 +24,7 @@ class UpdateSettings implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/settings/set',
+			verb: Verb::PUT,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 			],
