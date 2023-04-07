@@ -57,6 +57,11 @@ class Model extends DomainModel {
 		Server\Base::class => ['env' => ApiEnvironment::class],
 		Server\Spec::class => ['env' => ApiEnvironment::class],
 
+		Site\GetSettings::class => ['bus' => MessageBus::class],
+		Site\UpdateSettings::class => ['bus' => MessageBus::class],
+		Site\GetUsers::class => ['bus' => MessageBus::class],
+		Site\UpdateUserPermissions::class => ['bus' => MessageBus::class],
+
 		User\GetMyProfile::class => ['bus' => MessageBus::class],
 		User\GetMySites::class => ['bus' => MessageBus::class],
 		User\UpdateMyProfile::class => ['bus' => MessageBus::class],

@@ -11,7 +11,7 @@ use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Endpoint to get standard information about the server.
+ * Endpoint to get standard information about the user.
  */
 class GetMyProfile implements Endpoint {
 	/**
