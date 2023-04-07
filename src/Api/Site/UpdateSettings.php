@@ -22,7 +22,7 @@ class UpdateSettings implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/site/{site}/users',
+			route: '/site/{site}/settings/set',
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 			],
