@@ -27,4 +27,7 @@ interface MessageBus extends EventDispatcherInterface {
 	 * @return mixed Results of the query.
 	 */
 	public function fetch(Query $query): mixed;
+
+	// TODO: regenerate(Event): method that takes an Event and only calls Projection services.
+	// TODO: async(mixed): method that dispatches a message on a separate thread.
 }
