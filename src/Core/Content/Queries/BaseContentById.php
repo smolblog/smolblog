@@ -5,7 +5,6 @@ namespace Smolblog\Core\Content\Queries;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -17,7 +16,6 @@ use Smolblog\Framework\Objects\Identifier;
  */
 abstract class BaseContentById extends MemoizableQuery implements ExtensableContentQuery, AuthorizableMessage {
 	use ExtensableContentQueryKit;
-	use StoppableMessageKit;
 
 	/**
 	 * Construct the query.

@@ -4,15 +4,12 @@ namespace Smolblog\Core\Site;
 
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Get the settings for the given site.
  */
 class GetSiteSettings extends Query implements AuthorizableMessage {
-	use StoppableMessageKit;
-
 	/**
 	 * Construct the query
 	 *

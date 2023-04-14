@@ -6,15 +6,12 @@ use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Update settings for a site.
  */
 class UpdateSettings extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
-
 	/**
 	 * Construct the command.
 	 *

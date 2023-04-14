@@ -6,14 +6,12 @@ use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Delete a Connection.
  */
 class DeleteConnection extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
 
 	/**
 	 * Construct the query.

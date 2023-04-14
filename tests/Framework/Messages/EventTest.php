@@ -43,7 +43,6 @@ final class EventTest extends TestCase {
 
 	public function testItCanBeStoppable() {
 		$event = new class('camelot') extends Event {
-			use StoppableMessageKit;
 			public function __construct(
 				public readonly string $payload
 			) {

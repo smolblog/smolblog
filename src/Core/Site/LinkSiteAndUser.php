@@ -5,7 +5,6 @@ namespace Smolblog\Core\Site;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -14,8 +13,6 @@ use Smolblog\Framework\Objects\Identifier;
  * The user must be an admin *unless* the user is changing their own permissions and not enabling admin permissions.
  */
 class LinkSiteAndUser extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
-
 	/**
 	 * Construct the command.
 	 *

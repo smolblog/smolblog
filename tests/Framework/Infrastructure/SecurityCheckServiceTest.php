@@ -5,12 +5,11 @@ namespace Smolblog\Framework\Infrastructure;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 
-final class TestAuthorizableMessage implements AuthorizableMessage {
-	use StoppableMessageKit;
+final class TestAuthorizableMessage extends Message implements AuthorizableMessage {
 	public function getAuthorizationQuery(): Query {
 		return new class() extends Query {};
 	}

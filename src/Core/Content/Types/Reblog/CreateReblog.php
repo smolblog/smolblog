@@ -6,15 +6,12 @@ use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Create a Reblog.
  */
 class CreateReblog extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
-
 	/**
 	 * Generated ID for the reblog.
 	 *

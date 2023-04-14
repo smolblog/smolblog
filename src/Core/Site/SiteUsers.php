@@ -4,7 +4,6 @@ namespace Smolblog\Core\Site;
 
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -13,8 +12,6 @@ use Smolblog\Framework\Objects\Identifier;
  * The querying user must be an author or admin on the site.
  */
 class SiteUsers extends Query implements AuthorizableMessage {
-	use StoppableMessageKit;
-
 	/**
 	 * Construct the query
 	 *
