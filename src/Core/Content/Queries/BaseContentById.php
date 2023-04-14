@@ -37,6 +37,6 @@ abstract class BaseContentById extends MemoizableQuery implements ExtensableCont
 	 * @return Query
 	 */
 	public function getAuthorizationQuery(): Query {
-		return new ContentVisibleToUser(contentId: $this->contentId, userId: $this->userId);
+		return new ContentVisibleToUser(siteId: $this->siteId, contentId: $this->contentId, userId: $this->userId);
 	}
 }

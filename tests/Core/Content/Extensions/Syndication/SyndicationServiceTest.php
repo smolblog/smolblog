@@ -7,7 +7,7 @@ use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EventComparisonTestKit;
 
-final class SyndicationLinkServiceTest extends TestCase {
+final class SyndicationServiceTest extends TestCase {
 	use EventComparisonTestKit;
 
 	public function testItHandlesTheAddSyndicationLinkCommand() {
@@ -29,5 +29,30 @@ final class SyndicationLinkServiceTest extends TestCase {
 
 		$service = new SyndicationService(bus: $bus);
 		$service->onAddSyndicationLink($command);
+	}
+
+	public function testItHandlesTheSetSyndicationChannelsCommand() {
+		$command = new SetSyndicationChannels(
+			userId: Identifier::createRandom(),
+			siteId: Identifier::createRandom(),
+			contentId: Identifier::createRandom(),
+			channels: [
+				Identifier::createRandom(),
+				Identifier::createRandom(),
+			],
+		);
+
+		$bus = $this->createMock(MessageBus::class);
+		$bus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo(
+			new SyndicationChannelsSet(
+				channels: $command->channels,
+				contentId: $command->contentId,
+				userId: $command->userId,
+				siteId: $command->siteId,
+			)
+		));
+
+		$service = new SyndicationService(bus: $bus);
+		$service->onSetSyndicationChannels($command);
 	}
 }

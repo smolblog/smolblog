@@ -15,10 +15,12 @@ class ContentVisibleToUser extends Query {
 	/**
 	 * Construct the query.
 	 *
+	 * @param Identifier      $siteId    ID of site with content.
 	 * @param Identifier      $contentId ID of content being viewed.
 	 * @param Identifier|null $userId    ID of user making the request; null if request is unauthenticated.
 	 */
 	public function __construct(
+		public readonly Identifier $siteId,
 		public readonly Identifier $contentId,
 		public readonly ?Identifier $userId,
 	) {

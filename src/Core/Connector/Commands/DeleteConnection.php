@@ -12,7 +12,6 @@ use Smolblog\Framework\Objects\Identifier;
  * Delete a Connection.
  */
 class DeleteConnection extends Command implements AuthorizableMessage {
-
 	/**
 	 * Construct the query.
 	 *
@@ -30,7 +29,7 @@ class DeleteConnection extends Command implements AuthorizableMessage {
 	 *
 	 * @return Query
 	 */
-	public function getAuthorizationQuery(): Query {
+	public function getAuthorizationQuery(): ConnectionBelongsToUser {
 		return new ConnectionBelongsToUser(
 			connectionId: $this->connectionId,
 			userId: $this->userId,

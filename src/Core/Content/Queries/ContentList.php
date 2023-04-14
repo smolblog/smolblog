@@ -28,7 +28,7 @@ class ContentList extends MemoizableQuery {
 	 * @throws InvalidMessageAttributesException Thown when invalid arguments are provided.
 	 *
 	 * @param Identifier      $siteId     ID of the site to pull from.
-	 * @param integer         $page       Page to show starting from 0; defaults to 0, must be non-negative.
+	 * @param integer         $page       Page to show starting from 1; defaults to 1, must be non-negative.
 	 * @param integer         $pageSize   Number of items per page; defaults to 30, must be positive.
 	 * @param Identifier|null $userId     Optional ID of user making the query to determine draft/hidden posts to show.
 	 * @param array|null      $visibility Array of ContentVisibility types to show; omit to show all.
@@ -44,7 +44,7 @@ class ContentList extends MemoizableQuery {
 	) {
 		// Check for invalid values; these indicate a programming error.
 		if (
-			$page < 0 ||
+			$page <= 0 ||
 			$pageSize <= 0
 		) {
 			throw new InvalidMessageAttributesException("Invalid filters given");

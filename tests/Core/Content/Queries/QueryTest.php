@@ -20,4 +20,15 @@ final class QueryTest extends TestCase {
 			new StatusById(siteId: Identifier::createRandom(), contentId: Identifier::createRandom())
 		);
 	}
+
+	public function testContentVisibleToUserCanBeInstantiated() {
+		$this->assertInstanceOf(
+			ContentVisibleToUser::class,
+			new ContentVisibleToUser(
+				siteId: Identifier::createRandom(),
+				contentId: Identifier::createRandom(),
+				userId: Identifier::createRandom()
+			)
+		);
+	}
 }

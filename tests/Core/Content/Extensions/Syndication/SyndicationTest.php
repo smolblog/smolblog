@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Extensions\Syndication;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
-final class SyndicationLinksTest extends TestCase {
+final class SyndicationTest extends TestCase {
 	public function testItWillSerializeCorrectly() {
 		$serial = [
 			'links' => [
