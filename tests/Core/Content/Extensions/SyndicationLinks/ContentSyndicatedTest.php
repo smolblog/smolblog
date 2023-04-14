@@ -9,11 +9,14 @@ use Smolblog\Framework\Objects\Identifier;
 
 class ContentSyndicatedTest extends TestCase {
 	public function testLinksCanBeSetAndRetrieved() {
-		$links = new SyndicationLinks(links: [
-			new SyndicationLink(url: '//one.com/'),
-			new SyndicationLink(url: '//two.com/'),
-			new SyndicationLink(url: '//smol.blog/'),
-		]);
+		$links = new Syndication(
+			links: [
+				new SyndicationLink(url: '//one.com/'),
+				new SyndicationLink(url: '//two.com/'),
+				new SyndicationLink(url: '//smol.blog/'),
+			],
+			channels: []
+		);
 
 		$event = new ContentSyndicated(
 			url: '//smol.blog/',
@@ -21,7 +24,7 @@ class ContentSyndicatedTest extends TestCase {
 			userId: Identifier::createRandom(),
 			siteId: Identifier::createRandom(),
 		);
-		$event->setLinks($links);
+		$event->setState($links);
 
 		$this->assertEquals($links, $event->getNewExtension());
 	}

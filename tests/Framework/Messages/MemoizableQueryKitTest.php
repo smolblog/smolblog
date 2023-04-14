@@ -4,13 +4,11 @@ namespace Smolblog\Framework\Messages;
 
 use PHPUnit\Framework\TestCase;
 
-final class AQuery {
-	use MemoizableQueryKit;
+final class AQuery extends MemoizableQuery {
 	public function __construct(public readonly string $argA, public readonly string $argB) {}
 }
 
-final class BQuery {
-	use MemoizableQueryKit;
+final class BQuery extends MemoizableQuery {
 	public function __construct(public readonly string $argA, public readonly string $argB) {}
 }
 

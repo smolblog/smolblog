@@ -27,7 +27,7 @@ final class SyndicationLinkServiceTest extends TestCase {
 		$bus = $this->createMock(MessageBus::class);
 		$bus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
 
-		$service = new SyndicationLinkService(bus: $bus);
+		$service = new SyndicationService(bus: $bus);
 		$service->onAddSyndicationLink($command);
 	}
 }

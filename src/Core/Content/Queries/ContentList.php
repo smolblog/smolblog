@@ -5,9 +5,6 @@ namespace Smolblog\Core\Content\Queries;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Messages\MemoizableQueryKit;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessage;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -24,9 +21,7 @@ use Smolblog\Framework\Objects\Identifier;
  * - An empty array for `visibility` or `types` (give `null` to ignore the filter)
  * - Not including Published in `visibility` on an unauthenticated query (`userId` is null)
  */
-class ContentList extends Query implements MemoizableQuery, StoppableMessage {
-	use MemoizableQueryKit;
-
+class ContentList extends MemoizableQuery {
 	/**
 	 * Construct the query.
 	 *

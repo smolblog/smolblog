@@ -4,11 +4,8 @@ namespace Smolblog\Framework\Infrastructure;
 
 use PHPUnit\Framework\TestCase;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Messages\MemoizableQueryKit;
-use Smolblog\Framework\Messages\Query;
 
-final class TestMemoizableQuery extends Query implements MemoizableQuery {
-	use MemoizableQueryKit;
+final class TestMemoizableQuery extends MemoizableQuery {
 	public function __construct(public readonly string $key, public readonly string $aux) {}
 	public function getMemoKey(): string {
 		// We are using an intentionally bad function here to prove the short-circuiting of a memoized query.

@@ -12,13 +12,6 @@ trait EntityKit {
 	use SerializableKit;
 
 	/**
-	 * Unique identifier (UUID) for this particular entity.
-	 *
-	 * @var Identifier
-	 */
-	public readonly Identifier $id;
-
-	/**
 	 * Create an instance of this class from an associative array. Assumes array keys map correctly to object
 	 * properties.
 	 *

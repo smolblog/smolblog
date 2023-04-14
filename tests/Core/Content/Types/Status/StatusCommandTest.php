@@ -13,6 +13,7 @@ final class StatusCommandTest extends TestCase {
 			siteId: Identifier::createRandom(),
 			userId: Identifier::createRandom(),
 			text: 'Hello, world!',
+			publish: false,
 		);
 		$expected = new UserHasPermissionForSite(
 			siteId: $command->siteId,

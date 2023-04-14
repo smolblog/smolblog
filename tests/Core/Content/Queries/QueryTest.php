@@ -10,14 +10,14 @@ final class QueryTest extends TestCase {
 	public function testGenericContentByIdCanBeInstantiated() {
 		$this->assertInstanceOf(
 			GenericContentById::class,
-			new GenericContentById(id: Identifier::createRandom())
+			new GenericContentById(siteId: Identifier::createRandom(), contentId: Identifier::createRandom())
 		);
 	}
 
 	public function testStatusByIdCanBeInstantiated() {
 		$this->assertInstanceOf(
 			StatusById::class,
-			new StatusById(id: Identifier::createRandom())
+			new StatusById(siteId: Identifier::createRandom(), contentId: Identifier::createRandom())
 		);
 	}
 }

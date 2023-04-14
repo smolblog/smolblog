@@ -5,7 +5,6 @@ namespace Smolblog\Framework\Infrastructure;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
-use Smolblog\Framework\Messages\Hook;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Messages\StoppableMessageKit;
@@ -14,6 +13,7 @@ use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
 use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
+use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Listener;
 
 function listenerTestTrace($add = '', $reset = false) {
@@ -42,7 +42,7 @@ final class ListenerTestMainService {
 	public function eventStore(Event $event) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	public function onExecute(Hook $event) {
+	public function onExecute(Command $event) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[SaveMemoLayerListener]
@@ -80,11 +80,11 @@ final class ListenerTestTimingService {
 	}
 
 	#[ExecutionLayerListener(earlier: 1)]
-	public function beforeExecution(Hook $message) {
+	public function beforeExecution(Command $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[ExecutionLayerListener(later: 1)]
-	public function afterExecution(Hook $message) {
+	public function afterExecution(Command $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
@@ -127,7 +127,7 @@ final class ListenerRegistryTest extends TestCase {
 
 	public function testListenerCanBeAService() {
 		$this->provider->registerService(ListenerTestMainService::class);
-		$event = $this->createStub(Hook::class);
+		$event = $this->createStub(Command::class);
 
 		foreach ($this->provider->getListenersForEvent($event) as $listener) { $listener($event); }
 

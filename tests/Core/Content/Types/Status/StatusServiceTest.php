@@ -15,6 +15,7 @@ class StatusServiceTest extends TestCase {
 			siteId: Identifier::createRandom(),
 			userId: Identifier::createRandom(),
 			text: 'Hello, everybody!',
+			publish: false,
 		);
 
 		$messageBus = $this->createMock(MessageBus::class);

@@ -18,8 +18,15 @@ use Smolblog\Framework\Objects\Identifier;
  * themselves._ This can allow old data to be interpreted in new ways, making migrations more reliable. It provides a
  * comprehensive audit trail that can more easily roll back unwanted changes.
  */
-abstract class Event {
+abstract class Event extends Message {
 	use EntityKit;
+
+	/**
+	 * Unique identifier (UUID) for this particular entity.
+	 *
+	 * @var Identifier
+	 */
+	public readonly Identifier $id;
 
 	/**
 	 * Time this Event took place.

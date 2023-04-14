@@ -13,5 +13,5 @@ namespace Smolblog\Framework\Messages;
  *
  * Comamnds can provide a Query object that will return a truthy or falsy value in order to authorize the command.
  */
-abstract class Command {
+abstract class Command extends Message {
 }

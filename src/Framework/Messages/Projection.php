@@ -10,7 +10,7 @@ namespace Smolblog\Framework\Messages;
  *
  * Because Events are Messages, any service can react to them. This includes services with side effects; for example, a
  * service that reacts to published content by sending a webhook. Regenerating a projection should be a free action with
- * no loss or generation of data. Therefore, when regenerating, we need to ensure that only Projection services are
+ * no loss of data or side effects. Therefore, when regenerating, we need to ensure that only Projection services are
  * called, not all Listeners.
  */
 interface Projection extends Listener {
