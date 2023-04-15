@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Objects;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class EntityTestConstructor extends Entity {
 	public function __construct(
@@ -25,7 +25,7 @@ final class EntityTestHidden extends Entity {
 
 final class EntityTest extends TestCase {
 	public function testASubclassCanBeCreated() {
-		$test = new EntityTestConstructor(id: Identifier::createRandom(), name: 'Luke');
+		$test = new EntityTestConstructor(id: $this->randomId(), name: 'Luke');
 
 		$this->assertInstanceOf(Entity::class, $test);
 	}
@@ -39,7 +39,7 @@ final class EntityTest extends TestCase {
 	}
 
 	public function testTwoEntitiesWithTheSameClassAndIdHaveEqualStringRepresentation() {
-		$ident = Identifier::createRandom();
+		$ident = $this->randomId();
 		$test1 = new EntityTestConstructor(id: $ident, name: 'Arthur');
 		$test2 = new EntityTestConstructor(id: $ident, name: 'Dent');
 

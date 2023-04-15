@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\Connector\Commands;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
 use Smolblog\Framework\Objects\Identifier;
 
 final class DeleteConnectionTest extends TestCase {
 	public function testItIsAuthorizedByAConnectionBelongsToUserQuery() {
-		$command = new DeleteConnection(connectionId: Identifier::createRandom(), userId: Identifier::createRandom());
+		$command = new DeleteConnection(connectionId: $this->randomId(), userId: $this->randomId());
 		$authQuery = $command->getAuthorizationQuery();
 
 		$this->assertInstanceOf(ConnectionBelongsToUser::class, $authQuery);

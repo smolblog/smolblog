@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Queries;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Objects\Identifier;
@@ -11,31 +11,31 @@ final class ContentListTest extends TestCase {
 	public function testPageZeroWillThrowAnException() {
 		$this->expectException(InvalidMessageAttributesException::class);
 
-		new ContentList(siteId: Identifier::createRandom(), page: 0);
+		new ContentList(siteId: $this->randomId(), page: 0);
 	}
 
 	public function testPageSizeZeroWillThrowAnException() {
 		$this->expectException(InvalidMessageAttributesException::class);
 
-		new ContentList(siteId: Identifier::createRandom(), pageSize: 0);
+		new ContentList(siteId: $this->randomId(), pageSize: 0);
 	}
 
 	public function testEmptyVisibilityStopsMessage() {
-		$query = new ContentList(siteId: Identifier::createRandom(), visibility: []);
+		$query = new ContentList(siteId: $this->randomId(), visibility: []);
 
 		$this->assertTrue($query->isPropagationStopped());
 		$this->assertEquals([], $query->results);
 	}
 
 	public function testEmptyTypesStopsMessage() {
-		$query = new ContentList(siteId: Identifier::createRandom(), types: []);
+		$query = new ContentList(siteId: $this->randomId(), types: []);
 
 		$this->assertTrue($query->isPropagationStopped());
 		$this->assertEquals([], $query->results);
 	}
 
 	public function testAnonymousQueryWithoutPublishedVisibilityStopsMessage() {
-		$query = new ContentList(siteId: Identifier::createRandom(), visibility: [ContentVisibility::Protected]);
+		$query = new ContentList(siteId: $this->randomId(), visibility: [ContentVisibility::Protected]);
 
 		$this->assertTrue($query->isPropagationStopped());
 		$this->assertEquals([], $query->results);

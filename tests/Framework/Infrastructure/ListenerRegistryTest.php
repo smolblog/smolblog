@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MemoizableQuery;

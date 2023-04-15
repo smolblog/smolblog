@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Events;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Core\Content\InvalidContentException;
@@ -22,10 +22,10 @@ final class TestContentCreated extends ContentCreated {
 final class ContentCreatedTest extends TestCase {
 	public function testUnprovidedInformationRemainsNull() {
 		$actual = new TestContentCreated(
-			authorId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			authorId: $this->randomId(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 		);
 
 		$this->assertInstanceOf(ContentCreated::class, $actual);
@@ -38,10 +38,10 @@ final class ContentCreatedTest extends TestCase {
 		$this->expectException(InvalidContentException::class);
 
 		$actual = new TestContentCreated(
-			authorId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			authorId: $this->randomId(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 			publishTimestamp: new DateTimeImmutable(),
 			visibility: ContentVisibility::Published,
 		);
@@ -51,10 +51,10 @@ final class ContentCreatedTest extends TestCase {
 		$this->expectException(InvalidContentException::class);
 
 		$actual = new TestContentCreated(
-			authorId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			authorId: $this->randomId(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 			permalink: '/one/two.html',
 			visibility: ContentVisibility::Published,
 		);

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Messages;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 final class MessageTest extends TestCase {

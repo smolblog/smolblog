@@ -4,7 +4,7 @@ namespace Smolblog\Core\Connector\Events;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class ChannelSiteLinkSetTest extends TestCase {

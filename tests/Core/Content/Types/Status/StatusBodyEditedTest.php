@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\StatusTestKit;
 
@@ -15,9 +15,9 @@ final class StatusBodyEditedTest extends TestCase {
 	public function testTheTitleIsTheTextTruncated() {
 		$status = new StatusBodyEdited(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
 		);
 
 		$this->assertEquals($this->simpleTextTruncated, $status->getNewTitle());
@@ -26,9 +26,9 @@ final class StatusBodyEditedTest extends TestCase {
 	public function testTheBodyIsTheTextFormatted() {
 		$status = new StatusBodyEdited(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
 		);
 		$status->setHtml($this->simpleTextFormatted);
 

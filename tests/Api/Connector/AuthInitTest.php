@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
@@ -45,6 +45,6 @@ final class AuthInitTest extends TestCase {
 			env: $this->getApiEnvironment(),
 		);
 
-		$endpoint->run(userId: Identifier::createRandom());
+		$endpoint->run(userId: $this->randomId());
 	}
 }

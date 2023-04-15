@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Commands\ChangeContentVisibility;
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
@@ -17,12 +17,12 @@ final class ContentServiceTest extends TestCase {
 
 	public function testItHandlesTheEditContentBaseAttributesCommand() {
 		$command = new EditContentBaseAttributes(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			contentId: $this->randomId(),
 			permalink: '/thing/slug-23',
 			publishTimestamp: new DateTimeImmutable(),
-			authorId: Identifier::createRandom(),
+			authorId: $this->randomId(),
 		);
 		$expectedEvent = new ContentBaseAttributeEdited(
 			contentId: $command->contentId,
@@ -42,9 +42,9 @@ final class ContentServiceTest extends TestCase {
 
 	public function testItHandlesTheChangeContentVisibilityCommand() {
 		$command = new ChangeContentVisibility(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			contentId: $this->randomId(),
 			visibility: ContentVisibility::Protected,
 		);
 		$expectedEvent = new ContentVisibilityChanged(

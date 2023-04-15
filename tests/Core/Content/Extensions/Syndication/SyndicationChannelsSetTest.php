@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -43,13 +43,13 @@ final class SyndicationChannelsSetTest extends TestCase {
 	public function testTheExtensionCanBeSetAndRetrieved() {
 		$event = new SyndicationChannelsSet(
 			channels: [],
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 		);
 		$state = new Syndication(
 			links: ['https://smol.blog/1254'],
-			channels: [Identifier::createRandom()],
+			channels: [$this->randomId()],
 		);
 
 		$event->setState($state);

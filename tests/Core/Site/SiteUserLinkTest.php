@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\Site;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class SiteUserLinkTest extends TestCase {
 	public function testAnIdIsKnowableFromSiteAndUser() {
-		$siteId = Identifier::createRandom();
-		$userId = Identifier::createRandom();
+		$siteId = $this->randomId();
+		$userId = $this->randomId();
 
 		$this->assertEquals(
 			SiteUserLink::buildId(siteId: $siteId, userId: $userId),

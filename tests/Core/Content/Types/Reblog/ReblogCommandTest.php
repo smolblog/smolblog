@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;
@@ -11,8 +11,8 @@ class ReblogCommandTest extends TestCase {
 	public function testCreateReblogRequiresAuthorPermissions() {
 		$command = new CreateReblog(
 			url: '//smol.blog/',
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 			publish: false,
 		);
 
@@ -29,9 +29,9 @@ class ReblogCommandTest extends TestCase {
 
 	public function testDeleteReblogRequiresEditPermissions() {
 		$command = new DeleteReblog(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			reblogId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			reblogId: $this->randomId(),
 		);
 
 		$this->assertInstanceOf(UserCanEditContent::class, $command->getAuthorizationQuery());
@@ -39,9 +39,9 @@ class ReblogCommandTest extends TestCase {
 
 	public function testEditReblogCommentRequiresEditPermissions() {
 		$command = new EditReblogComment(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			reblogId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			reblogId: $this->randomId(),
 			comment: 'Hello!',
 		);
 
@@ -50,9 +50,9 @@ class ReblogCommandTest extends TestCase {
 
 	public function testEditReblogUrlRequiresEditPermissions() {
 		$command = new EditReblogUrl(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			reblogId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			reblogId: $this->randomId(),
 			url: '//eph.me/music',
 		);
 

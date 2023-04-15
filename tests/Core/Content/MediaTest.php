@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class MediaTest extends TestCase {
 	public function testItCanBeInstantiated() {

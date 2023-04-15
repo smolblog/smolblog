@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Status;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EventComparisonTestKit;
@@ -12,8 +12,8 @@ class StatusServiceTest extends TestCase {
 
 	public function testItHandlesTheCreateStatusCommand() {
 		$command = new CreateStatus(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
 			text: 'Hello, everybody!',
 			publish: false,
 		);
@@ -27,9 +27,9 @@ class StatusServiceTest extends TestCase {
 
 	public function testItHandlesTheEditStatusCommand() {
 		$command = new EditStatus(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			statusId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			statusId: $this->randomId(),
 			text: "What's happening?"
 		);
 		$expectedEvent = new StatusBodyEdited(
@@ -48,9 +48,9 @@ class StatusServiceTest extends TestCase {
 
 	public function testItHandlesTheDeleteStatusCommand() {
 		$command = new DeleteStatus(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			statusId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			statusId: $this->randomId(),
 		);
 		$expectedEvent = new StatusDeleted(
 			contentId: $command->statusId,

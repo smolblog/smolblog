@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
@@ -20,8 +20,8 @@ final class TestContentExtension implements ContentExtension {
 final class ContentTest extends TestCase {
 	public function testItCanBeInstantiatedWithMinimalFields() {
 		$actual = new TestContent(
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 		);
 
 		$this->assertInstanceOf(Content::class, $actual);
@@ -33,12 +33,12 @@ final class ContentTest extends TestCase {
 
 	public function testItCanBeCreatedWithAllFields() {
 		$actual = new TestContent(
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			permalink: '/test/content.html',
 			publishTimestamp: new DateTimeImmutable(),
 			visibility: ContentVisibility::Published,
-			id: Identifier::createRandom(),
+			id: $this->randomId(),
 			extensions: [new TestContentExtension(tagline: 'So it goes.')],
 		);
 
@@ -50,8 +50,8 @@ final class ContentTest extends TestCase {
 		$this->expectException(InvalidContentException::class);
 
 		new TestContent(
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			publishTimestamp: new DateTimeImmutable(),
 			visibility: ContentVisibility::Published,
 		);
@@ -61,8 +61,8 @@ final class ContentTest extends TestCase {
 		$this->expectException(InvalidContentException::class);
 
 		new TestContent(
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			permalink: '/one/two.html',
 			visibility: ContentVisibility::Published,
 		);
@@ -70,8 +70,8 @@ final class ContentTest extends TestCase {
 
 	public function testAnExtensionCanBeAddedAfterConstruction() {
 		$actual = new TestContent(
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 		);
 		$actual->attachExtension(new TestContentExtension(tagline: 'hullo'));
 

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Exceptions;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class BadRequestTest extends TestCase {
 	public function testItCreatesAStandardResponse() {

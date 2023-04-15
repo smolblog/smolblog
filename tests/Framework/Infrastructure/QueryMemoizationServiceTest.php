@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MemoizableQuery;
 
 final class TestMemoizableQuery extends MemoizableQuery {

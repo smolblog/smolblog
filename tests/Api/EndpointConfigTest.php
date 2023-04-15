@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class EndpointConfigTest extends TestCase {
 	public function testItNormalizesTheRoute() {

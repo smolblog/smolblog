@@ -3,14 +3,14 @@
 namespace Smolblog\Framework\Objects;
 
 use DateInterval;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class IdentifierTest extends TestCase {
 	public function testARandomIdentifierCanBeCreated() {
-		$rand1 = Identifier::createRandom();
+		$rand1 = $this->randomId();
 		$this->assertInstanceOf(Identifier::class, $rand1);
 
-		$rand2 = Identifier::createRandom();
+		$rand2 = $this->randomId();
 		$this->assertNotEquals($rand1->toString(), $rand2->toString());
 	}
 

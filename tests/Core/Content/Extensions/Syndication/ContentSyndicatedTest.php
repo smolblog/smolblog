@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -20,9 +20,9 @@ class ContentSyndicatedTest extends TestCase {
 
 		$event = new ContentSyndicated(
 			url: '//smol.blog/',
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 		);
 		$event->setState($links);
 

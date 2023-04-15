@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Events;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -12,11 +12,11 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 		$this->assertInstanceOf(
 			ContentBaseAttributeEdited::class,
 			new ContentBaseAttributeEdited(
-				contentId: Identifier::createRandom(),
-				userId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
+				contentId: $this->randomId(),
+				userId: $this->randomId(),
+				siteId: $this->randomId(),
 				permalink: '/new/permalink.html',
-				authorId: Identifier::createRandom(),
+				authorId: $this->randomId(),
 				publishTimestamp: new DateTimeImmutable(),
 			)
 		);
@@ -24,9 +24,9 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 		$this->assertInstanceOf(
 			ContentBaseAttributeEdited::class,
 			new ContentBaseAttributeEdited(
-				contentId: Identifier::createRandom(),
-				userId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
+				contentId: $this->randomId(),
+				userId: $this->randomId(),
+				siteId: $this->randomId(),
 				permalink: '/new/permalink.html',
 			)
 		);
@@ -34,19 +34,19 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 		$this->assertInstanceOf(
 			ContentBaseAttributeEdited::class,
 			new ContentBaseAttributeEdited(
-				contentId: Identifier::createRandom(),
-				userId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
-				authorId: Identifier::createRandom(),
+				contentId: $this->randomId(),
+				userId: $this->randomId(),
+				siteId: $this->randomId(),
+				authorId: $this->randomId(),
 			)
 		);
 
 		$this->assertInstanceOf(
 			ContentBaseAttributeEdited::class,
 			new ContentBaseAttributeEdited(
-				contentId: Identifier::createRandom(),
-				userId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
+				contentId: $this->randomId(),
+				userId: $this->randomId(),
+				siteId: $this->randomId(),
 				publishTimestamp: new DateTimeImmutable(),
 			)
 		);
@@ -54,10 +54,10 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 		$this->assertInstanceOf(
 			ContentBaseAttributeEdited::class,
 			new ContentBaseAttributeEdited(
-				contentId: Identifier::createRandom(),
-				userId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
-				authorId: Identifier::createRandom(),
+				contentId: $this->randomId(),
+				userId: $this->randomId(),
+				siteId: $this->randomId(),
+				authorId: $this->randomId(),
 				publishTimestamp: new DateTimeImmutable(),
 			)
 		);
@@ -65,9 +65,9 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 		$this->assertInstanceOf(
 			ContentBaseAttributeEdited::class,
 			new ContentBaseAttributeEdited(
-				contentId: Identifier::createRandom(),
-				userId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
+				contentId: $this->randomId(),
+				userId: $this->randomId(),
+				siteId: $this->randomId(),
 				permalink: '/new/permalink.html',
 				publishTimestamp: new DateTimeImmutable(),
 			)
@@ -76,11 +76,11 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 		$this->assertInstanceOf(
 			ContentBaseAttributeEdited::class,
 			new ContentBaseAttributeEdited(
-				contentId: Identifier::createRandom(),
-				userId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
+				contentId: $this->randomId(),
+				userId: $this->randomId(),
+				siteId: $this->randomId(),
 				permalink: '/new/permalink.html',
-				authorId: Identifier::createRandom(),
+				authorId: $this->randomId(),
 			)
 		);
 	}
@@ -89,9 +89,9 @@ final class ContentBaseAttributeEditedTest extends TestCase {
 		$this->expectException(InvalidMessageAttributesException::class);
 
 		new ContentBaseAttributeEdited(
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 		);
 	}
 

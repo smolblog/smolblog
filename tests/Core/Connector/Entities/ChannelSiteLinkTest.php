@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class ChannelSiteLinkTest extends TestCase {
 	public function testAnIdIsKnowableFromChannelAndSite() {
-		$channelId = Identifier::createRandom();
-		$siteId = Identifier::createRandom();
+		$channelId = $this->randomId();
+		$siteId = $this->randomId();
 		$expcted = ChannelSiteLink::buildId(channelId: $channelId, siteId: $siteId);
 		$actual = new ChannelSiteLink(
 			channelId: $channelId,

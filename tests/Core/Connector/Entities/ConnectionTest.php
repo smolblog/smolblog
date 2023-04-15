@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class ConnectionTest extends TestCase {
@@ -11,7 +11,7 @@ final class ConnectionTest extends TestCase {
 		$key = 543;
 
 		$connection = new Connection(
-			userId: Identifier::createRandom(),
+			userId: $this->randomId(),
 			provider: $provider,
 			providerKey: $key,
 			displayName: 'smol_bean',

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class AuthRequestStateTest extends TestCase {

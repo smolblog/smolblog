@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Site;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class SiteTest extends TestCase {
@@ -10,7 +10,7 @@ final class SiteTest extends TestCase {
 		$this->assertInstanceOf(
 			Site::class,
 			new Site(
-				id: Identifier::createRandom(),
+				id: $this->randomId(),
 				handle: 'snek',
 				displayName: 'The Snek',
 				baseUrl: 'https://snek.smol.blog',

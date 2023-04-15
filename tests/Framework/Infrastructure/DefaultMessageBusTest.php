@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Smolblog\Framework\Messages\Query;

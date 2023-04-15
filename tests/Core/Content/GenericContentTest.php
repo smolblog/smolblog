@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class GenericContentTest extends TestCase {
@@ -11,12 +11,12 @@ final class GenericContentTest extends TestCase {
 		$actual = new GenericContent(
 			title: 'Hello world!',
 			body: "<p>What's going on?</p>",
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			permalink: '/test/content.html',
 			publishTimestamp: new DateTimeImmutable(),
 			visibility: ContentVisibility::Published,
-			id: Identifier::createRandom(),
+			id: $this->randomId(),
 		);
 
 		$this->assertInstanceOf(Content::class, $actual);

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Commands\DeleteConnection;
 use Smolblog\Core\Connector\Events\ConnectionDeleted;
 use Smolblog\Framework\Messages\MessageBus;
@@ -14,8 +14,8 @@ final class ConnectionServiceTest extends TestCase {
 
 	public function testItHandlesTheDeleteConnectionCommand() {
 		$command = new DeleteConnection(
-			userId: Identifier::createRandom(),
-			connectionId: Identifier::createRandom(),
+			userId: $this->randomId(),
+			connectionId: $this->randomId(),
 		);
 
 		$bus = $this->createMock(MessageBus::class);

@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Messages;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\DateIdentifierTestKit;

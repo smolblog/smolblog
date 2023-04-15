@@ -3,16 +3,16 @@
 namespace Smolblog\Core\Content\Commands;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Objects\Identifier;
 
 final class EditContentBaseAttributesTest extends TestCase {
 	public function testItCanBeCreatedWithAtLeastOneValidAttribute() {
 		$baseAtts = [
-			'userId' => Identifier::createRandom(),
-			'siteId' => Identifier::createRandom(),
-			'contentId' => Identifier::createRandom(),
+			'userId' => $this->randomId(),
+			'siteId' => $this->randomId(),
+			'contentId' => $this->randomId(),
 		];
 
 		$this->assertInstanceOf(
@@ -25,7 +25,7 @@ final class EditContentBaseAttributesTest extends TestCase {
 		);
 		$this->assertInstanceOf(
 			EditContentBaseAttributes::class,
-			new EditContentBaseAttributes(...$baseAtts, authorId: Identifier::createRandom()),
+			new EditContentBaseAttributes(...$baseAtts, authorId: $this->randomId()),
 		);
 
 		$this->assertInstanceOf(
@@ -41,7 +41,7 @@ final class EditContentBaseAttributesTest extends TestCase {
 			new EditContentBaseAttributes(
 				...$baseAtts,
 				publishTimestamp: new DateTimeImmutable(),
-				authorId: Identifier::createRandom()
+				authorId: $this->randomId()
 			),
 		);
 		$this->assertInstanceOf(
@@ -49,7 +49,7 @@ final class EditContentBaseAttributesTest extends TestCase {
 			new EditContentBaseAttributes(
 				...$baseAtts,
 				permalink: '/thing/slug-23',
-				authorId: Identifier::createRandom()
+				authorId: $this->randomId()
 			),
 		);
 
@@ -59,7 +59,7 @@ final class EditContentBaseAttributesTest extends TestCase {
 				...$baseAtts,
 				permalink: '/thing/slug-23',
 				publishTimestamp: new DateTimeImmutable(),
-				authorId: Identifier::createRandom()
+				authorId: $this->randomId()
 			),
 		);
 	}
@@ -68,9 +68,9 @@ final class EditContentBaseAttributesTest extends TestCase {
 		$this->expectException(InvalidCommandParametersException::class);
 
 		new EditContentBaseAttributes(
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 	}
 }

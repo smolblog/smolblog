@@ -3,7 +3,7 @@
 namespace Smolblog\Framework\Messages;
 
 use DateTimeInterface;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 abstract class TestBaseEvent extends Event {
@@ -34,7 +34,7 @@ final class TestSubEvent extends TestBaseEvent {
 final class PayloadKitTest extends TestCase {
 	public function testDifferentSubEventsWillSerializeToSameFormat() {
 		$expectedKeys = ['type', 'id', 'timestamp', 'mainProp', 'payload'];
-		$someId = Identifier::createRandom();
+		$someId = $this->randomId();
 
 		$eventOne = new TestSubEvent(subProp: 'hello', mainProp: 'everybody');
 		$arrayOne = $eventOne->toArray();

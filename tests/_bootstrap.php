@@ -4,9 +4,9 @@ namespace Smolblog\Test;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
@@ -15,9 +15,13 @@ use Smolblog\Framework\Objects\Identifier;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-trait EndpointTestToolkit {
-	protected $endpoint;
+class TestCase extends PHPUnitTestCase {
+	protected function randomId(): Identifier {
+		return Identifier::createRandom();
+	}
+}
 
+trait EndpointTestToolkit {
 	private function getApiEnvironment(): ApiEnvironment {
 		return new class implements ApiEnvironment {
 			public function getApiUrl(string $endpoint = '/'): string {

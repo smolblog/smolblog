@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class ReblogTest extends TestCase {
@@ -14,8 +14,8 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			info: $external,
 		);
 
@@ -30,8 +30,8 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			info: $external,
 		);
 
@@ -46,8 +46,8 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			info: $external,
 			comment: 'Bamboozled again...',
 			commentHtml: "<p>Bamboozled again...</p>\n",
@@ -67,8 +67,8 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			comment: 'Bamboozled again...',
 		);
 

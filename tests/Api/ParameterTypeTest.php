@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class ParameterTypeTest extends TestCase {
@@ -48,7 +48,7 @@ final class ParameterTypeTest extends TestCase {
 		$this->assertEquals('string', $idType->type);
 		$this->assertEquals('uuid', $idType->format);
 
-		$this->assertEquals(1, preg_match("/$idType->pattern/", Identifier::createRandom()->toString()));
+		$this->assertEquals(1, preg_match("/$idType->pattern/", $this->randomId()->toString()));
 	}
 
 	public function testItCreatesASchema() {

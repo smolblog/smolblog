@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EventComparisonTestKit;
@@ -12,9 +12,9 @@ final class TagServiceTest extends TestCase {
 
 	public function testItHandlesTheSetTagsCommand() {
 		$command = new SetTags(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			contentId: $this->randomId(),
 			tags: ['one', 'two'],
 		);
 		$expectedEvent = new TagsSet(

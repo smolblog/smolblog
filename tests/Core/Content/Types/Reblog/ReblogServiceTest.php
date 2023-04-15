@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EventComparisonTestKit;
@@ -28,8 +28,8 @@ final class ReblogServiceTest extends TestCase {
 	public function testItHandlesTheCreateReblogCommand() {
 		$command = new CreateReblog(
 			url: '//smol.blog/',
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 			publish: false,
 			comment: 'Hello.'
 		);
@@ -41,9 +41,9 @@ final class ReblogServiceTest extends TestCase {
 
 	public function testItHandlesTheDeleteReblogCommand() {
 		$command = new DeleteReblog(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			reblogId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			reblogId: $this->randomId(),
 		);
 
 		$expectedEvent = new ReblogDeleted(
@@ -58,9 +58,9 @@ final class ReblogServiceTest extends TestCase {
 
 	public function testItHandlesTheEditReblogCommentCommand() {
 		$command = new EditReblogComment(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			reblogId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			reblogId: $this->randomId(),
 			comment: 'Another day',
 		);
 
@@ -77,9 +77,9 @@ final class ReblogServiceTest extends TestCase {
 
 	public function testItHandlesTheEditReblogUrlCommand() {
 		$command = new EditReblogUrl(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			reblogId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			reblogId: $this->randomId(),
 			url: '//smol.blog/',
 		);
 

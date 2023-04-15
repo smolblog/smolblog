@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Events;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Objects\Identifier;
 

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EventComparisonTestKit;
@@ -12,9 +12,9 @@ final class SyndicationServiceTest extends TestCase {
 
 	public function testItHandlesTheAddSyndicationLinkCommand() {
 		$command = new AddSyndicationLink(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			contentId: $this->randomId(),
 			url: '//smol.blog/post/123',
 		);
 		$expectedEvent = new ContentSyndicated(
@@ -33,12 +33,12 @@ final class SyndicationServiceTest extends TestCase {
 
 	public function testItHandlesTheSetSyndicationChannelsCommand() {
 		$command = new SetSyndicationChannels(
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
-			contentId: Identifier::createRandom(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+			contentId: $this->randomId(),
 			channels: [
-				Identifier::createRandom(),
-				Identifier::createRandom(),
+				$this->randomId(),
+				$this->randomId(),
 			],
 		);
 

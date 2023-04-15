@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Commands\RefreshChannels as RefreshCommand;
 use Smolblog\Core\Connector\Entities\Channel as ChannelEntity;
@@ -20,14 +20,14 @@ final class RefreshChannelsTest extends TestCase {
 
 		$endpoint = new RefreshChannels($this->createStub(MessageBus::class));
 		$endpoint->run(
-			userId: Identifier::createRandom(),
-			params: ['id' => Identifier::createRandom()],
+			userId: $this->randomId(),
+			params: ['id' => $this->randomId()],
 		);
 	}
 
 	public function testItRefreshesChannelsWithAllParameters() {
 		$connection = new ConnectionEntity(
-			userId: Identifier::createRandom(),
+			userId: $this->randomId(),
 			provider: 'smolblog',
 			providerKey: 'windfox',
 			displayName: '@windfox@smol.blog',

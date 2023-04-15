@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
 use Smolblog\Core\Connector\Connector;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
@@ -29,7 +29,7 @@ final class ChannelRefresherTest extends TestCase {
 
 	public function setUp(): void {
 		$this->connection = new Connection(
-			userId: Identifier::createRandom(),
+			userId: $this->randomId(),
 			provider: 'something',
 			providerKey: 'something',
 			displayName: 'something',

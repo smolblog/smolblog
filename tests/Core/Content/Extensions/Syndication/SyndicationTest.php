@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class SyndicationTest extends TestCase {

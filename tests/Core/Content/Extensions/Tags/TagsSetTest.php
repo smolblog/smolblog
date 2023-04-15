@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class TagsSetTest extends TestCase {
@@ -14,9 +14,9 @@ final class TagsSetTest extends TestCase {
 
 		$event = new TagsSet(
 			tagText:['one', 'two'],
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
 		);
 
 		$this->assertEquals($expected, $event->getNewExtension());

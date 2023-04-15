@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Framework\Messages\MessageBus;
@@ -19,10 +19,10 @@ final class ChannelLinkTest extends TestCase {
 
 		$endpoint = new ChannelLink($this->createStub(MessageBus::class));
 		$endpoint->run(
-			userId: Identifier::createRandom(),
+			userId: $this->randomId(),
 			body: new ChannelLinkRequest(
-				channelId: Identifier::createRandom(),
-				siteId: Identifier::createRandom(),
+				channelId: $this->randomId(),
+				siteId: $this->randomId(),
 			),
 		);
 	}

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Connector;
 

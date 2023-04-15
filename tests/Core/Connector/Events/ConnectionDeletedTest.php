@@ -2,14 +2,14 @@
 
 namespace Smolblog\Core\Connector\Events;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class ConnectionDeletedTest extends TestCase {
 	public function testItHasNoPayload() {
 		$event = new ConnectionDeleted(
-			connectionId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			connectionId: $this->randomId(),
+			userId: $this->randomId(),
 		);
 
 		$this->assertEquals([], $event->getPayload());

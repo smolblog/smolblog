@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Exceptions;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class NotFoundTest extends TestCase {
 	public function testItCreatesAStandardResponse() {

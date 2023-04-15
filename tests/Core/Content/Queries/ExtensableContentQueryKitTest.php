@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Queries;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentExtension;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\GenericContent;
@@ -24,12 +24,12 @@ final class ExtensableContentQueryKitTest extends TestCase {
 		$query->results = new GenericContent(
 			title: 'Content Test',
 			body: '<p>A thing</p>',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			permalink: '/test/content.html',
 			publishTimestamp: new DateTimeImmutable(),
 			visibility: ContentVisibility::Published,
-			id: Identifier::createRandom(),
+			id: $this->randomId(),
 		);
 
 		$query->setExtension(new TestExtensionForQuery(tagline: 'boom'));
