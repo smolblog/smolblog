@@ -50,7 +50,7 @@ class DeleteConnection implements Endpoint {
 	 * @param object|null     $body   Ignored.
 	 * @return SuccessResponse
 	 */
-	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
+	public function run(?Identifier $userId, ?array $params, ?object $body = null): SuccessResponse {
 		if ($this->bus->fetch(new ConnectionById($params['id'])) === null) {
 			throw new NotFound('The given Connection was not found.');
 		}
