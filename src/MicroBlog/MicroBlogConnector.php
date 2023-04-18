@@ -13,8 +13,7 @@ use Smolblog\Framework\Objects\Identifier;
 class MicroBlogConnector implements Connector {
 	use NoRefreshKit;
 
-	public static function getSlug(): string
-	{
+	public static function getSlug(): string {
 		return 'microblog';
 	}
 
@@ -29,7 +28,7 @@ class MicroBlogConnector implements Connector {
 		];
 
 		return new ConnectorInitData(
-			url: 'https://micro.blog/indieauth/auth' . http_build_query($args),
+			url: 'https://micro.blog/indieauth/auth?' . http_build_query($args),
 			state: $state,
 			info: [],
 		);
