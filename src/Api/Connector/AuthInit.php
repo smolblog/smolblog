@@ -27,6 +27,7 @@ class AuthInit implements Endpoint {
 		return new EndpointConfig(
 			route: '/connect/init/{provider}',
 			pathVariables: ['provider' => ParameterType::string(pattern: '^[a-zA-Z0-9]+$')],
+			queryVariables: ['returnTo' => ParameterType::string(format: 'url')],
 			responseShape: ParameterType::object(
 				url: ParameterType::required(ParameterType::string(format: 'url'))
 			),
@@ -66,6 +67,7 @@ class AuthInit implements Endpoint {
 			provider: $params['provider'],
 			userId: $userId,
 			callbackUrl: $this->env->getApiUrl('/connect/callback/' . $params['provider']),
+			returnToUrl: $params['returnTo'] ?? null,
 		);
 
 		$this->bus->dispatch($command);

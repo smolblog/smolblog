@@ -43,7 +43,9 @@ class AuthRequestService implements Listener {
 		$this->stateRepo->saveAuthRequestState(new AuthRequestState(
 			key: $data->state,
 			userId: $request->userId,
+			provider: $request->provider,
 			info: $data->info,
+			returnToUrl: $request->returnToUrl,
 		));
 
 		$request->redirectUrl = $data->url;
@@ -68,5 +70,7 @@ class AuthRequestService implements Listener {
 			connectionId: $connection->id,
 			userId: $info->userId
 		));
+
+		$request->returnToUrl = $info->returnToUrl;
 	}
 }

@@ -12,6 +12,7 @@ use Smolblog\Api\ErrorResponses;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
+use Smolblog\Api\RedirectResponse;
 use Smolblog\Api\SuccessResponse;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
@@ -91,12 +92,13 @@ class AuthCallback implements Endpoint {
 			throw new NotFound('The given authentication session was not found. It may be incorrect or expired.');
 		}
 
-		$this->bus->dispatch(new FinishAuthRequest(
+		$command = new FinishAuthRequest(
 			provider: $params['provider'],
 			stateKey: $state,
 			code: $code,
-		));
+		);
+		$this->bus->dispatch($command);
 
-		return new SuccessResponse();
+		return isset($command->returnToUrl) ? new RedirectResponse(url: $command->returnToUrl) : new SuccessResponse();
 	}
 }
