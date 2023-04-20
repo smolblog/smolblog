@@ -73,7 +73,11 @@ class AuthCallback implements Endpoint {
 	 * @param object|null     $body   Ignored.
 	 * @return SuccessResponse
 	 */
-	public function run(?Identifier $userId = null, ?array $params = [], ?object $body = null): SuccessResponse {
+	public function run(
+		?Identifier $userId = null,
+		?array $params = [],
+		?object $body = null
+	): SuccessResponse|RedirectResponse {
 		if (empty($params['provider']) || !$this->connectors->has($params['provider'])) {
 			throw new NotFound('The given provider has not been registered.');
 		}
