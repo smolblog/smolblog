@@ -57,14 +57,22 @@ class SiteAndAvailableChannels implements Endpoint {
 	public function run(?Identifier $userId, ?array $params, ?object $body = null): GenericResponse {
 		$results = $this->bus->fetch(new ChannelsForAdmin(siteId: $params['site'], userId: $userId));
 
-		return new GenericResponse(channels: array_map(fn($cha) => new ChannelViaSite(
-			id: $cha->id,
-			channelKey: $cha->channelKey,
-			displayName: $cha->displayName,
-			connectionProvider: $results['connections'][$cha->connectionId->toString()]->provider,
-			connectionName: $results['connections'][$cha->connectionId->toString()]->displayName,
-			canPull: $results['links'][$cha->id->toString()]?->canPull,
-			canPush: $results['links'][$cha->id->toString()]?->canPush,
-		), $results['channels']));
+		$response = [];
+		foreach ($results['connections'] as $conn) {
+			$response = array_merge(
+				$response,
+				array_map(fn($cha) => new ChannelViaSite(
+					id: $cha->id,
+					channelKey: $cha->channelKey,
+					displayName: $cha->displayName,
+					connectionProvider: $conn->provider,
+					connectionName: $conn->displayName,
+					canPull: $results['links'][$cha->id->toString()]?->canPull ?? false,
+					canPush: $results['links'][$cha->id->toString()]?->canPush ?? false,
+				), $results['channels'][$conn->id->toString()])
+			);
+		}
+
+		return new GenericResponse(channels: $response);
 	}
 }
