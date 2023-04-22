@@ -6,6 +6,7 @@ use DateTimeInterface;
 use Exception;
 use ReflectionClass;
 use ReflectionProperty;
+use ReflectionUnionType;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Api\Exceptions\BadRequest;
@@ -82,7 +83,7 @@ class Model extends DomainModel {
 	 * @return void
 	 */
 	public static function printSpec(): void {
-		json_encode(self::generateOpenApiSpec(), JSON_PRETTY_PRINT);
+		echo json_encode(self::generateOpenApiSpec(), JSON_PRETTY_PRINT);
 	}
 
 	/**
@@ -104,21 +105,29 @@ class Model extends DomainModel {
 			$responses = self::getThrownResponses($runReflect->getDocComment());
 			$descriptions = self::getDescription($classReflect->getDocComment());
 
-			$responseClassName = $runReflect->getReturnType()?->getName();
-
-			if ($responseClassName === SuccessResponse::class) {
-				$responses[204] = [
-					'description' => 'Successful response',
-				];
+			$responseReturn = $runReflect->getReturnType();
+			$responseReturnTypes = [];
+			if (get_class($responseReturn) === ReflectionUnionType::class) {
+				$responseReturnTypes = array_map(fn($type) => $type->getName(), $responseReturn->getTypes());
 			} else {
-				$responses[200] = [
-					'description' => 'Successful response',
-					'content' => [
-						'application/json' => [
-							'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+				$responseReturnTypes[] = $responseReturn->getName();
+			}
+
+			foreach ($responseReturnTypes as $responseClassName) {
+				if ($responseClassName === SuccessResponse::class) {
+					$responses[204] = [
+						'description' => 'Successful response',
+					];
+				} else {
+					$responses[200] = [
+						'description' => 'Successful response',
+						'content' => [
+							'application/json' => [
+								'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+							],
 						],
-					],
-				];
+					];
+				}
 			}
 
 			$parameters = [
