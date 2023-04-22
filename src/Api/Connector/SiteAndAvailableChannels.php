@@ -31,7 +31,7 @@ class SiteAndAvailableChannels implements Endpoint {
 			pathVariables: ['site' => ParameterType::identifier()],
 			responseShape: ParameterType::object(
 				channels: ParameterType::required(ParameterType::array(
-					items: ParameterType::fromClass(Channel::class),
+					items: ParameterType::fromClass(ChannelWithLink::class),
 				))
 			),
 			requiredScopes: [AuthScope::Read],
@@ -56,6 +56,15 @@ class SiteAndAvailableChannels implements Endpoint {
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body = null): GenericResponse {
 		$results = $this->bus->fetch(new ChannelsForAdmin(siteId: $params['site'], userId: $userId));
-		return new GenericResponse(not: 'implemented');
+
+		return new GenericResponse(channels: array_map(fn($cha) => new ChannelViaSite(
+			id: $cha->id,
+			channelKey: $cha->channelKey,
+			displayName: $cha->displayName,
+			connectionProvider: $results['connections'][$cha->connectionId->toString()]->provider,
+			connectionName: $results['connections'][$cha->connectionId->toString()]->displayName,
+			canPull: $results['links'][$cha->id->toString()]?->canPull,
+			canPush: $results['links'][$cha->id->toString()]?->canPush,
+		), $results['channels']));
 	}
 }
