@@ -115,19 +115,29 @@ class Model extends DomainModel {
 			}
 
 			foreach ($responseReturnTypes as $responseClassName) {
-				if ($responseClassName === SuccessResponse::class) {
-					$responses[204] = [
-						'description' => 'Successful response',
-					];
-				} else {
-					$responses[200] = [
-						'description' => 'Successful response',
-						'content' => [
-							'application/json' => [
-								'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+				switch ($responseClassName) {
+					case SuccessResponse::class:
+						$responses[204] = [
+							'description' => 'Successful response',
+						];
+						break;
+
+					case RedirectResponse::class:
+						$responses[302] = [
+							'description' => 'Redirect'
+						];
+						break;
+
+					default:
+						$responses[200] = [
+							'description' => 'Successful response',
+							'content' => [
+								'application/json' => [
+									'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+								],
 							],
-						],
-					];
+						];
+					}
 				}
 			}
 
