@@ -41,6 +41,7 @@ class Model extends DomainModel {
 		Connector\DeleteConnection::class => ['bus' => MessageBus::class],
 		Connector\RefreshChannels::class => ['bus' => MessageBus::class],
 		Connector\UserConnections::class => ['bus' => MessageBus::class],
+		Connector\SiteAndAvailableChannels::class => ['bus' => MessageBus::class],
 
 		Content\ListContent::class => ['bus' => MessageBus::class],
 		Content\GetReblog::class => ['bus' => MessageBus::class],
