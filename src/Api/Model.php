@@ -137,9 +137,9 @@ class Model extends DomainModel {
 								],
 							],
 						];
-					}
-				}
-			}
+						break;
+				}//end switch
+			}//end foreach
 
 			$parameters = [
 				...array_map(
