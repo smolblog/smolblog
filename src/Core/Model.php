@@ -17,6 +17,9 @@ class Model extends DomainModel {
 			'stateRepo' => Connector\Services\AuthRequestStateRepo::class,
 			'messageBus' => MessageBus::class,
 		],
+		Connector\Services\ChannelLinker::class => [
+			'bus' => MessageBus::class,
+		],
 		Connector\Services\ChannelRefresher::class => [
 			'messageBus' => MessageBus::class,
 			'connectors' => Connector\Services\ConnectorRegistry::class,

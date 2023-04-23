@@ -26,4 +26,16 @@ class Channel extends Value {
 		public readonly ?string $connectionName = null,
 	) {
 	}
+
+	/**
+	 * Serialize this object.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		return [
+			...parent::toArray(),
+			'id' => $this->id->toString(),
+		];
+	}
 }
