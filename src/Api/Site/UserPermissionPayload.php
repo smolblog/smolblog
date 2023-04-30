@@ -22,4 +22,17 @@ class UserPermissionPayload extends Value {
 		public readonly bool $isAuthor = false,
 	) {
 	}
+
+	/**
+	 * Deserialize properly.
+	 *
+	 * @param array $data Serialized array.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		return parent::fromArray([
+			...$data,
+			'userId' => Identifier::fromString($data['userId']),
+		]);
+	}
 }
