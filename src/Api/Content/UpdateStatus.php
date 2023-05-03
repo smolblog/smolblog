@@ -32,7 +32,7 @@ class UpdateStatus implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/content/status/{content}/update',
-			verb: Verb::POST,
+			verb: Verb::PUT,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 				'content' => ParameterType::identifier(),

@@ -47,6 +47,7 @@ class Model extends DomainModel {
 		],
 		Content\Types\Reblog\ReblogService ::class => [
 			'bus' => MessageBus::class,
+			'embedService' => Content\Types\Reblog\ExternalContentService::class,
 		],
 		Content\Types\Status\StatusService::class => [
 			'bus' => MessageBus::class,

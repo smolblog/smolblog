@@ -25,4 +25,12 @@ class CreateReblogPayload extends Value {
 			throw new BadRequest('reblog.url is required.');
 		}
 	}
+
+	public static function fromArray(array $data): static
+	{
+		return parent::fromArray([
+			...$data,
+			'reblog' => BaseReblogPayload::fromArray($data['reblog']),
+		]);
+	}
 }

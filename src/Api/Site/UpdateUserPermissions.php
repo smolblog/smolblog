@@ -24,7 +24,7 @@ class UpdateUserPermissions implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/users/set',
-			verb: Verb::PUT,
+			verb: Verb::POST,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 			],

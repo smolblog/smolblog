@@ -31,7 +31,7 @@ class UpdateReblog implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/content/reblog/{content}/update',
-			verb: Verb::POST,
+			verb: Verb::PUT,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 				'content' => ParameterType::identifier(),
