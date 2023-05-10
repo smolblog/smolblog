@@ -19,9 +19,7 @@ final class StatusCreatedTest extends TestCase {
 			text: $this->simpleTextMd,
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
-			permalink: '/test/content.html',
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
 			contentId: $this->randomId(),
 			userId: $this->randomId(),
 		);
@@ -34,9 +32,7 @@ final class StatusCreatedTest extends TestCase {
 			text: $this->simpleTextMd,
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
-			permalink: '/test/content.html',
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
 			contentId: $this->randomId(),
 			userId: $this->randomId(),
 		);
@@ -49,9 +45,7 @@ final class StatusCreatedTest extends TestCase {
 			text: $this->simpleTextMd,
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
-			permalink: '/test/content.html',
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
 			contentId: $this->randomId(),
 			userId: $this->randomId(),
 		);

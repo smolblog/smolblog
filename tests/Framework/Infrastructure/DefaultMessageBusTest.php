@@ -5,7 +5,9 @@ namespace Smolblog\Framework\Infrastructure;
 use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
+use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
+use Smolblog\Framework\Objects\Identifier;
 
 final class DefaultMessageBusTest extends TestCase {
 	public function testItCallsListenersInOrder() {
@@ -58,5 +60,19 @@ final class DefaultMessageBusTest extends TestCase {
 		$actual = $bus->fetch($message);
 
 		$this->assertEquals($expected, $actual);
+	}
+
+	public function testItCanWrapAMessageInAnAsyncMessageWrapper() {
+		$message = new class($this->randomId()) extends Command { public function __construct(public readonly Identifier $thing) {} };
+		$asyncMessage = new AsyncWrappedMessage($message);
+
+		$providerStub = $this->createStub(ListenerProviderInterface::class);
+		$providerStub->method('getListenersForEvent')->willReturn([
+			fn($event) => $this->assertEquals($asyncMessage, $event),
+		]);
+
+		$bus = new DefaultMessageBus($providerStub);
+
+		$bus->dispatchAsync($message);
 	}
 }

@@ -59,8 +59,8 @@ class Status extends Content {
 	 * @param string            $text             Markdown-formatted text of the content.
 	 * @param Identifier        $siteId           ID of the site this content belongs to.
 	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
-	 * @param string            $permalink        Relative URL for this content.
 	 * @param DateTimeInterface $publishTimestamp Date and time this content was first published.
+	 * @param string|null       $permalink        Relative URL for this content.
 	 * @param ContentVisibility $visibility       Visiblity of the content.
 	 * @param Identifier|null   $id               ID of this content.
 	 * @param array             $extensions       Extensions attached to this content.
@@ -70,9 +70,9 @@ class Status extends Content {
 		public readonly string $text,
 		Identifier $siteId,
 		Identifier $authorId,
-		?string $permalink = null,
 		?DateTimeInterface $publishTimestamp = null,
-		?ContentVisibility $visibility = null,
+		?string $permalink = null,
+		?ContentVisibility $visibility = ContentVisibility::Draft,
 		?Identifier $id = null,
 		?array $extensions = null,
 		private ?string $rendered = null,
@@ -80,8 +80,8 @@ class Status extends Content {
 		parent::__construct(
 			siteId: $siteId,
 			authorId: $authorId,
-			permalink: $permalink,
 			publishTimestamp: $publishTimestamp,
+			permalink: $permalink,
 			visibility: $visibility,
 			id: $id,
 			extensions: $extensions ?? [],

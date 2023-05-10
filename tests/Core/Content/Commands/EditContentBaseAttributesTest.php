@@ -17,10 +17,6 @@ final class EditContentBaseAttributesTest extends TestCase {
 
 		$this->assertInstanceOf(
 			EditContentBaseAttributes::class,
-			new EditContentBaseAttributes(...$baseAtts, permalink: '/thing/slug-23'),
-		);
-		$this->assertInstanceOf(
-			EditContentBaseAttributes::class,
 			new EditContentBaseAttributes(...$baseAtts, publishTimestamp: new DateTimeImmutable()),
 		);
 		$this->assertInstanceOf(
@@ -32,32 +28,6 @@ final class EditContentBaseAttributesTest extends TestCase {
 			EditContentBaseAttributes::class,
 			new EditContentBaseAttributes(
 				...$baseAtts,
-				permalink: '/thing/slug-23',
-				publishTimestamp: new DateTimeImmutable()
-			),
-		);
-		$this->assertInstanceOf(
-			EditContentBaseAttributes::class,
-			new EditContentBaseAttributes(
-				...$baseAtts,
-				publishTimestamp: new DateTimeImmutable(),
-				authorId: $this->randomId()
-			),
-		);
-		$this->assertInstanceOf(
-			EditContentBaseAttributes::class,
-			new EditContentBaseAttributes(
-				...$baseAtts,
-				permalink: '/thing/slug-23',
-				authorId: $this->randomId()
-			),
-		);
-
-		$this->assertInstanceOf(
-			EditContentBaseAttributes::class,
-			new EditContentBaseAttributes(
-				...$baseAtts,
-				permalink: '/thing/slug-23',
 				publishTimestamp: new DateTimeImmutable(),
 				authorId: $this->randomId()
 			),

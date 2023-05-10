@@ -25,9 +25,7 @@ class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
 	 * @param Identifier             $siteId           Site this content belongs to.
-	 * @param string|null            $permalink        Relative URL for this content.
 	 * @param DateTimeInterface|null $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility|null $visibility       Visiblity of the content.
 	 * @param Identifier|null        $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
 	 */
@@ -37,16 +35,12 @@ class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
 		Identifier $contentId,
 		Identifier $userId,
 		Identifier $siteId,
-		?string $permalink = null,
 		?DateTimeInterface $publishTimestamp = null,
-		?ContentVisibility $visibility = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null,
 	) {
 		parent::__construct(
-			permalink: $permalink,
 			publishTimestamp: $publishTimestamp,
-			visibility: $visibility,
 			authorId: $authorId,
 			contentId: $contentId,
 			userId: $userId,

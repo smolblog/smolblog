@@ -36,10 +36,16 @@ class StatusService implements Listener {
 			contentId: $id,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			permalink: '/status/' . $id->toString(),
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: $command->publish ? ContentVisibility::Published : ContentVisibility::Draft,
 		));
+
+		if ($command->publish) {
+			$this->bus->dispatch(new PublicStatusCreated(
+				contentId: $id,
+				userId: $command->userId,
+				siteId: $command->siteId,
+			));
+		}
 
 		$command->statusId = $id;
 	}
@@ -51,12 +57,42 @@ class StatusService implements Listener {
 	 * @return void
 	 */
 	public function onEditStatus(EditStatus $command) {
+		$contentParams = [
+			'contentId' => $command->statusId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$status = $this->bus->fetch(new StatusById(...$contentParams));
+
 		$this->bus->dispatch(new StatusBodyEdited(
+			...$contentParams,
 			text: $command->text,
-			contentId: $command->statusId,
-			userId: $command->userId,
-			siteId: $command->siteId,
 		));
+
+		if ($status->visibility === ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicStatusEdited(...$contentParams));
+		}
+	}
+
+	/**
+	 * Publish a draft status
+	 *
+	 * @param PublishStatus $command Command to execute.
+	 * @return void
+	 */
+	public function onPublishStatus(PublishStatus $command) {
+		$contentParams = [
+			'contentId' => $command->statusId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$status = $this->bus->fetch(new StatusById(...$contentParams));
+
+		if ($status->visibility !== ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicStatusCreated(...$contentParams));
+		}
 	}
 
 	/**
@@ -66,10 +102,18 @@ class StatusService implements Listener {
 	 * @return void
 	 */
 	public function onDeleteStatus(DeleteStatus $command) {
-		$this->bus->dispatch(new StatusDeleted(
-			contentId: $command->statusId,
-			userId: $command->userId,
-			siteId: $command->siteId,
-		));
+		$contentParams = [
+			'contentId' => $command->statusId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$status = $this->bus->fetch(new StatusById(...$contentParams));
+
+		if ($status->visibility === ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicStatusRemoved(...$contentParams));
+		}
+
+		$this->bus->dispatch(new StatusDeleted(...$contentParams));
 	}
 }

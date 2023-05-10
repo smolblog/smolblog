@@ -34,24 +34,8 @@ class ContentService extends Listener {
 			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			permalink: $command->permalink,
 			publishTimestamp: $command->publishTimestamp,
 			authorId: $command->authorId,
-		));
-	}
-
-	/**
-	 * Change content visibility (draft -> published)
-	 *
-	 * @param ChangeContentVisibility $command Valid command to execute.
-	 * @return void
-	 */
-	public function onChangeContentVisibility(ChangeContentVisibility $command): void {
-		$this->bus->dispatch(new ContentVisibilityChanged(
-			visibility: $command->visibility,
-			contentId: $command->contentId,
-			userId: $command->userId,
-			siteId: $command->siteId,
 		));
 	}
 }

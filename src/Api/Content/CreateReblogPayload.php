@@ -26,8 +26,13 @@ class CreateReblogPayload extends Value {
 		}
 	}
 
-	public static function fromArray(array $data): static
-	{
+	/**
+	 * Create the payload from a serialized array.
+	 *
+	 * @param array $data Serialized payload.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
 		return parent::fromArray([
 			...$data,
 			'reblog' => BaseReblogPayload::fromArray($data['reblog']),

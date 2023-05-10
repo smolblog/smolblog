@@ -37,10 +37,10 @@ class DefaultMessageBus implements MessageBus {
 	/**
 	 * Dispatch the given message to its listeners.
 	 *
-	 * @param mixed $message Message to send.
+	 * @param object $message Message to send.
 	 * @return mixed Message potentially modified by listeners.
 	 */
-	public function dispatch(mixed $message): mixed {
+	public function dispatch(object $message): mixed {
 		return $this->internal->dispatch($message);
 	}
 

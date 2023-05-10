@@ -42,12 +42,38 @@ class ReblogService implements Listener {
 			siteId: $command->siteId,
 			comment: $command->comment,
 			info: $info,
-			permalink: $reblogId->toString(),
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: $command->publish ? ContentVisibility::Published : ContentVisibility::Draft,
 		));
 
+		if ($command->publish) {
+			$this->bus->dispatch(new PublicReblogCreated(
+				contentId: $reblogId,
+				userId: $command->userId,
+				siteId: $command->siteId,
+			));
+		}
+
 		$command->reblogId = $reblogId;
+	}
+
+	/**
+	 * Publish a draft reblog
+	 *
+	 * @param PublishReblog $command Command to execute.
+	 * @return void
+	 */
+	public function onPublishReblog(PublishReblog $command) {
+		$contentParams = [
+			'contentId' => $command->reblogId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$reblog = $this->bus->fetch(new ReblogById(...$contentParams));
+
+		if ($reblog->visibility !== ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicReblogCreated(...$contentParams));
+		}
 	}
 
 	/**
@@ -57,11 +83,19 @@ class ReblogService implements Listener {
 	 * @return void
 	 */
 	public function onDeleteReblog(DeleteReblog $command) {
-		$this->bus->dispatch(new ReblogDeleted(
-			siteId: $command->siteId,
-			userId: $command->userId,
-			contentId: $command->reblogId,
-		));
+		$contentParams = [
+			'contentId' => $command->reblogId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$reblog = $this->bus->fetch(new ReblogById(...$contentParams));
+
+		if ($reblog->visibility === ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicReblogRemoved(...$contentParams));
+		}
+
+		$this->bus->dispatch(new ReblogDeleted(...$contentParams));
 	}
 
 	/**
@@ -71,12 +105,22 @@ class ReblogService implements Listener {
 	 * @return void
 	 */
 	public function onEditReblogComment(EditReblogComment $command) {
+		$contentParams = [
+			'contentId' => $command->reblogId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$reblog = $this->bus->fetch(new ReblogById(...$contentParams));
+
 		$this->bus->dispatch(new ReblogCommentChanged(
+			...$contentParams,
 			comment: $command->comment,
-			contentId: $command->reblogId,
-			userId: $command->userId,
-			siteId: $command->siteId,
 		));
+
+		if ($reblog->visibility === ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicReblogEdited(...$contentParams));
+		}
 	}
 
 	/**
@@ -86,15 +130,24 @@ class ReblogService implements Listener {
 	 * @return void
 	 */
 	public function onEditReblogUrl(EditReblogUrl $command) {
+		$contentParams = [
+			'contentId' => $command->reblogId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$reblog = $this->bus->fetch(new ReblogById(...$contentParams));
 		$info = $this->getExternalInfo($command->url);
 
 		$this->bus->dispatch(new ReblogInfoChanged(
+			...$contentParams,
 			url: $command->url,
 			info: $info,
-			contentId: $command->reblogId,
-			userId: $command->userId,
-			siteId: $command->siteId,
 		));
+
+		if ($reblog->visibility === ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicReblogEdited(...$contentParams));
+		}
 	}
 
 	/**

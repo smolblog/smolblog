@@ -30,34 +30,6 @@ final class ContentCreatedTest extends TestCase {
 
 		$this->assertInstanceOf(ContentCreated::class, $actual);
 		$this->assertNull($actual->publishTimestamp);
-		$this->assertNull($actual->permalink);
-		$this->assertNull($actual->visibility);
-	}
-
-	public function testItThrowsAnErrorIfItIsPublishedWithoutAPermalink() {
-		$this->expectException(InvalidContentException::class);
-
-		$actual = new TestContentCreated(
-			authorId: $this->randomId(),
-			contentId: $this->randomId(),
-			userId: $this->randomId(),
-			siteId: $this->randomId(),
-			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
-		);
-	}
-
-	public function testItThrowsAnErrorIfItIsPublishedWithoutATimestamp() {
-		$this->expectException(InvalidContentException::class);
-
-		$actual = new TestContentCreated(
-			authorId: $this->randomId(),
-			contentId: $this->randomId(),
-			userId: $this->randomId(),
-			siteId: $this->randomId(),
-			permalink: '/one/two.html',
-			visibility: ContentVisibility::Published,
-		);
 	}
 
 	public function testItSerializesAPayloadCorrectly() {

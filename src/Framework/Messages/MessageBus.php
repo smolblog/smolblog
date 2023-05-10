@@ -15,10 +15,10 @@ interface MessageBus extends EventDispatcherInterface {
 	/**
 	 * Dispatch the given message to its listeners.
 	 *
-	 * @param Message $message Message to send.
+	 * @param object $message Message to send.
 	 * @return mixed Message potentially modified by listeners.
 	 */
-	public function dispatch(Message $message): mixed;
+	public function dispatch(object $message): mixed;
 
 	/**
 	 * Convenience method for sending Query messages that will return the results.

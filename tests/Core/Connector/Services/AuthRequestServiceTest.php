@@ -77,7 +77,9 @@ final class AuthRequestServiceTest extends TestCase {
 		$stateRepo->method('getAuthRequestState')->willReturn(new AuthRequestState(
 			key: 'two',
 			userId: $userId,
+			provider: 'smol',
 			info: ['six' => 'eight'],
+			returnToUrl: 'https://smol.blog/callback',
 		));
 
 		$messageBus = $this->createMock(MessageBus::class);
@@ -89,10 +91,14 @@ final class AuthRequestServiceTest extends TestCase {
 			messageBus: $messageBus,
 		);
 
-		$service->onFinishAuthRequest(new FinishAuthRequest(
+		$command = new FinishAuthRequest(
 			provider: 'smol',
 			stateKey: 'two',
 			code: 'abc123',
-		));
+		);
+
+		$service->onFinishAuthRequest($command);
+
+		$this->assertEquals('https://smol.blog/callback', $command->returnToUrl);
 	}
 }

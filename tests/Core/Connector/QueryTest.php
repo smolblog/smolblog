@@ -3,7 +3,6 @@
 namespace Smolblog\Core\Connector\Queries;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
 
 final class QueryTest extends TestCase {
 	public function testOtherQueriesCanBeCreated() {
