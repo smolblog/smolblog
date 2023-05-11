@@ -18,7 +18,14 @@ use Smolblog\Framework\Objects\Identifier;
  * Remember, the canonical store for all data is the event stream! The Content class is intented to provide a
  * view into the data, but there may be other data accessable in other ways.
  */
-abstract class Content extends Entity {
+class Content extends Entity {
+	/**
+	 * Handles the body and title.
+	 *
+	 * @var ContentType
+	 */
+	public readonly ContentType $type;
+
 	/**
 	 * Relative URL for this content.
 	 *
@@ -57,40 +64,26 @@ abstract class Content extends Entity {
 	/**
 	 * Extensions attached to this content.
 	 *
-	 * @var array
+	 * @var ContentExtension[]
 	 */
-	private array $extensions;
-
-	/**
-	 * Get the title of the content.
-	 *
-	 * For use in the title tag, the list of content, and other places.
-	 *
-	 * @return string
-	 */
-	abstract public function getTitle(): string;
-
-	/**
-	 * Get the HTML-formatted content body.
-	 *
-	 * @return string
-	 */
-	abstract public function getBodyContent(): string;
+	public readonly array $extensions;
 
 	/**
 	 * Construct the content
 	 *
 	 * @throws InvalidContentException Thrown if an invalid state is given.
 	 *
-	 * @param Identifier        $siteId           ID of the site this content belongs to.
-	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
-	 * @param string            $permalink        Relative URL for this content.
-	 * @param DateTimeInterface $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility $visibility       Visiblity of the content.
-	 * @param Identifier|null   $id               ID of this content.
-	 * @param array             $extensions       Extensions attached to this content.
+	 * @param ContentType        $type             ContentType that handles body and title.
+	 * @param Identifier         $siteId           ID of the site this content belongs to.
+	 * @param Identifier         $authorId         ID of the user that authored/owns this content.
+	 * @param string             $permalink        Relative URL for this content.
+	 * @param DateTimeInterface  $publishTimestamp Date and time this content was first published.
+	 * @param ContentVisibility  $visibility       Visiblity of the content.
+	 * @param Identifier|null    $id               ID of this content.
+	 * @param ContentExtension[] $extensions       Extensions attached to this content.
 	 */
 	public function __construct(
+		ContentType $type,
 		Identifier $siteId,
 		Identifier $authorId,
 		?string $permalink = null,
@@ -103,33 +96,13 @@ abstract class Content extends Entity {
 			throw new InvalidContentException('Permalink and timestamp are required if content is published.');
 		}
 
+		$this->type = $type;
 		$this->permalink = $permalink;
 		$this->publishTimestamp = $publishTimestamp;
 		$this->visibility = $visibility;
 		$this->siteId = $siteId;
 		$this->authorId = $authorId;
+		$this->extensions = $extensions;
 		parent::__construct(id: $id ?? Identifier::createFromDate());
-
-		array_walk($extensions, fn($ext) => $this->attachExtension($ext));
-	}
-
-	/**
-	 * Add information from a ContentExtension
-	 *
-	 * @param ContentExtension $extension Data to add.
-	 * @return void
-	 */
-	public function attachExtension(ContentExtension $extension): void {
-		$this->extensions[get_class($extension)] = $extension;
-	}
-
-	/**
-	 * Get the given extension from this content.
-	 *
-	 * @param string $class Fully-qualified class name of an extension.
-	 * @return ContentExtension
-	 */
-	public function getExtension(string $class): ContentExtension {
-		return $this->extensions[$class];
 	}
 }
