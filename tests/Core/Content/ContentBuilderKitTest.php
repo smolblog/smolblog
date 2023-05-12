@@ -16,6 +16,11 @@ use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
+final class ContentBuilderKitTestExtension implements ContentExtension {
+	use SerializableKit;
+	public function __construct(public readonly string $test) {}
+}
+
 final class ContentBuilderKitTest extends TestCase {
 	private $builder;
 	private ContentType $type;
@@ -77,5 +82,34 @@ final class ContentBuilderKitTest extends TestCase {
 			'publishTimestamp' => $testDate,
 			'visibility' => ContentVisibility::Published,
 		], $this->builder->getCurrentProps());
+	}
+
+	public function testExtensionsAreAddedAndOverwrittenByName() {
+		$ext1 = new class('one') implements ContentExtension {
+			use SerializableKit;
+			public function __construct(public readonly string $itStartsWith) {}
+		};
+		$ext2 = new class('two') implements ContentExtension {
+			use SerializableKit;
+			public function __construct(public readonly string $itTakes) {}
+		};
+
+		$this->builder->addContentExtension($ext1);
+		$this->builder->addContentExtension($ext2);
+		$this->builder->addContentExtension(new ContentBuilderKitTestExtension(test: 'Hello'));
+
+		$this->assertEquals(3, count($this->builder->getCurrentProps()['extensions']));
+		$this->assertEquals(
+			'Hello',
+			$this->builder->getCurrentProps()['extensions'][ContentBuilderKitTestExtension::class]->test
+		);
+
+		$this->builder->addContentExtension(new ContentBuilderKitTestExtension(test: 'World'));
+
+		$this->assertEquals(3, count($this->builder->getCurrentProps()['extensions']));
+		$this->assertEquals(
+			'World',
+			$this->builder->getCurrentProps()['extensions'][ContentBuilderKitTestExtension::class]->test
+		);
 	}
 }
