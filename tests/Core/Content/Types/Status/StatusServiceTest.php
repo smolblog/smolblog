@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeImmutable;
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
@@ -58,8 +59,8 @@ class StatusServiceTest extends TestCase {
 
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
-		$messageBus->method('fetch')->willReturn(new Status(
-			text: 'Hello',
+		$messageBus->method('fetch')->willReturn(new Content(
+			type: new Status(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 		));
@@ -84,8 +85,8 @@ class StatusServiceTest extends TestCase {
 
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
-		$messageBus->method('fetch')->willReturn(new Status(
-			text: 'Hello',
+		$messageBus->method('fetch')->willReturn(new Content(
+			type: new Status(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 		));
@@ -112,8 +113,8 @@ class StatusServiceTest extends TestCase {
 			[$this->eventEquivalentTo(new StatusBodyEdited(...$contentArgs, text: "What's happening?"))],
 			[$this->eventEquivalentTo(new PublicStatusEdited(...$contentArgs))],
 		);
-		$messageBus->method('fetch')->willReturn(new Status(
-			text: 'Hello',
+		$messageBus->method('fetch')->willReturn(new Content(
+			type: new Status(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			visibility: ContentVisibility::Published,
@@ -139,8 +140,8 @@ class StatusServiceTest extends TestCase {
 
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
-		$messageBus->method('fetch')->willReturn(new Status(
-			text: 'Hello',
+		$messageBus->method('fetch')->willReturn(new Content(
+			type: new Status(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 		));
@@ -166,8 +167,8 @@ class StatusServiceTest extends TestCase {
 			[$this->eventEquivalentTo(new PublicStatusRemoved(...$contentArgs))],
 			[$this->eventEquivalentTo(new StatusDeleted(...$contentArgs))],
 		);
-		$messageBus->method('fetch')->willReturn(new Status(
-			text: 'Hello',
+		$messageBus->method('fetch')->willReturn(new Content(
+			type: new Status(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			visibility: ContentVisibility::Published,

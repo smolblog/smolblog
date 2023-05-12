@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content\Types\Reblog;
 
 use DateTimeImmutable;
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
@@ -12,7 +13,7 @@ use Smolblog\Test\EventComparisonTestKit;
 final class ReblogServiceTest extends TestCase {
 	use EventComparisonTestKit;
 
-	private Reblog $reblog;
+	private Content $reblog;
 	private MessageBus $bus;
 	private ExternalContentService $embed;
 	private ReblogService $service;
@@ -26,8 +27,8 @@ final class ReblogServiceTest extends TestCase {
 	}
 
 	private function setUpDraft() {
-		$this->reblog = new Reblog(
-			url: '//smol.blog/',
+		$this->reblog = new Content(
+			type: new Reblog(url: '//smol.blog/'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			visibility: ContentVisibility::Draft,
@@ -40,11 +41,10 @@ final class ReblogServiceTest extends TestCase {
 	}
 
 	private function setUpPublished() {
-		$this->reblog = new Reblog(
-			url: '//smol.blog/',
+		$this->reblog = new Content(
+			type: new Reblog(url: '//smol.blog/', comment: 'A thing I said.'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
-			comment: 'A thing I said.',
 			permalink: '/reblog/a-thing',
 			publishTimestamp: new DateTimeImmutable(),
 			visibility: ContentVisibility::Published,

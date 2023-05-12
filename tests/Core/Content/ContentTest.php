@@ -7,7 +7,7 @@ use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
-final class TestContent extends Content {
+final class TestContent implements ContentType {
 	public function getTitle(): string { return 'Title'; }
 	public function getBodyContent(): string { return '<p>Hullo</p>'; }
 }
@@ -19,7 +19,8 @@ final class TestContentExtension implements ContentExtension {
 
 final class ContentTest extends TestCase {
 	public function testItCanBeInstantiatedWithMinimalFields() {
-		$actual = new TestContent(
+		$actual = new Content(
+			type: new TestContent(),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 		);
@@ -32,7 +33,8 @@ final class ContentTest extends TestCase {
 	}
 
 	public function testItCanBeCreatedWithAllFields() {
-		$actual = new TestContent(
+		$actual = new Content(
+			type: new TestContent(),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			permalink: '/test/content.html',
@@ -43,13 +45,13 @@ final class ContentTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(Content::class, $actual);
-		$this->assertInstanceOf(TestContentExtension::class, $actual->getExtension(TestContentExtension::class));
 	}
 
 	public function testItThrowsAnErrorIfItIsPublishedWithoutAPermalink() {
 		$this->expectException(InvalidContentException::class);
 
-		new TestContent(
+		new Content(
+			type: new TestContent(),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			publishTimestamp: new DateTimeImmutable(),
@@ -60,22 +62,12 @@ final class ContentTest extends TestCase {
 	public function testItThrowsAnErrorIfItIsPublishedWithoutATimestamp() {
 		$this->expectException(InvalidContentException::class);
 
-		new TestContent(
+		new Content(
+			type: new TestContent(),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			permalink: '/one/two.html',
 			visibility: ContentVisibility::Published,
 		);
-	}
-
-	public function testAnExtensionCanBeAddedAfterConstruction() {
-		$actual = new TestContent(
-			siteId: $this->randomId(),
-			authorId: $this->randomId(),
-		);
-		$actual->attachExtension(new TestContentExtension(tagline: 'hullo'));
-
-		$this->assertInstanceOf(TestContentExtension::class, $actual->getExtension(TestContentExtension::class));
-		$this->assertEquals('hullo', $actual->getExtension(TestContentExtension::class)->tagline);
 	}
 }

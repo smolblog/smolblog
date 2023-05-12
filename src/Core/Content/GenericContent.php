@@ -5,16 +5,14 @@ namespace Smolblog\Core\Content;
 /**
  * Content instantiated without a type.
  */
-class GenericContent extends Content {
+class GenericContent implements ContentType {
 	/**
 	 * Create the content
 	 *
-	 * @param string $title    Content title.
-	 * @param string $body     HTML-formatted content body.
-	 * @param mixed  ...$props Content properties.
+	 * @param string $title Content title.
+	 * @param string $body  HTML-formatted content body.
 	 */
-	public function __construct(private string $title, private string $body, mixed ...$props) {
-		parent::__construct(...$props);
+	public function __construct(private string $title, private string $body) {
 	}
 
 	/**

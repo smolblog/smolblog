@@ -9,6 +9,7 @@ use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
 use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
+use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
@@ -39,6 +40,10 @@ final class ListenerTestMainService {
 	}
 	#[EventStoreLayerListener]
 	public function eventStore(Event $event) {
+		listenerTestTrace(add: __METHOD__);
+	}
+	#[ContentBuildLayerListener]
+	public function contentBuild(Command $event) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	public function onExecute(Command $event) {
@@ -75,6 +80,15 @@ final class ListenerTestTimingService {
 	}
 	#[EventStoreLayerListener(later: 1)]
 	public function afterEventStore(Event $message) {
+		listenerTestTrace(add: __METHOD__);
+	}
+
+	#[ContentBuildLayerListener(earlier: 1)]
+	public function beforeContentBuild(Event $message) {
+		listenerTestTrace(add: __METHOD__);
+	}
+	#[ContentBuildLayerListener(later: 1)]
+	public function afterContentBuild(Event $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
@@ -130,7 +144,10 @@ final class ListenerRegistryTest extends TestCase {
 
 		foreach ($this->provider->getListenersForEvent($event) as $listener) { $listener($event); }
 
-		$this->assertEquals([ListenerTestMainService::class . '::' . 'onExecute'], listenerTestTrace(reset: true));
+		$this->assertEquals([
+			ListenerTestMainService::class . '::' . 'contentBuild',
+			ListenerTestMainService::class . '::' . 'onExecute'
+		], listenerTestTrace(reset: true));
 	}
 
 	public function testTimingLayerCanBeSetWithAttributes() {
