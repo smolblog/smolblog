@@ -8,6 +8,7 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Core\Content\Types\Status\Status;
 use Smolblog\Core\Content\Types\Status\StatusById;
@@ -53,9 +54,9 @@ class GetStatus implements Endpoint {
 	 * @param Identifier|null $userId User making the request.
 	 * @param array|null      $params Expects id parameter from path.
 	 * @param object|null     $body   Ignored.
-	 * @return Status
+	 * @return Content
 	 */
-	public function run(?Identifier $userId = null, ?array $params = [], ?object $body = null): Status {
+	public function run(?Identifier $userId = null, ?array $params = [], ?object $body = null): Content {
 		if (
 			!$this->bus->fetch(
 				new GenericContentById(siteId: $params['site'], contentId: $params['content'], userId: $userId)

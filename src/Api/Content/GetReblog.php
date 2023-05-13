@@ -8,8 +8,8 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\Queries\GenericContentById;
-use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Core\Content\Types\Reblog\ReblogById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
@@ -53,9 +53,9 @@ class GetReblog implements Endpoint {
 	 * @param Identifier|null $userId User making the request.
 	 * @param array|null      $params Expects id parameter from path.
 	 * @param object|null     $body   Ignored.
-	 * @return Reblog
+	 * @return Content
 	 */
-	public function run(?Identifier $userId = null, ?array $params = [], ?object $body = null): Reblog {
+	public function run(?Identifier $userId = null, ?array $params = [], ?object $body = null): Content {
 		if (
 			!$this->bus->fetch(
 				new GenericContentById(siteId: $params['site'], contentId: $params['content'], userId: $userId)
