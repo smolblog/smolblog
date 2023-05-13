@@ -11,7 +11,7 @@ use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
 use Smolblog\Core\Content\Commands\ChangeContentVisibility;
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
-use Smolblog\Core\Content\Extensions\SyndicationLinks\AddSyndicationLink;
+use Smolblog\Core\Content\Extensions\Syndication\AddSyndicationLink;
 use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Types\Reblog\CreateReblog as ReblogCreateReblog;
 use Smolblog\Core\Content\Types\Reblog\EditReblogComment;

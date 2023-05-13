@@ -31,7 +31,7 @@ class SiteAndAvailableChannels implements Endpoint {
 			pathVariables: ['site' => ParameterType::identifier()],
 			responseShape: ParameterType::object(
 				channels: ParameterType::required(ParameterType::array(
-					items: ParameterType::fromClass(ChannelWithLink::class),
+					items: ParameterType::fromClass(ChannelViaSite::class),
 				))
 			),
 			requiredScopes: [AuthScope::Read],

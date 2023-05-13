@@ -3,6 +3,7 @@
 namespace Smolblog\Framework\Exceptions;
 
 use Exception;
+use Throwable;
 
 /**
  * Indicates an invalid class was attempted to be registered.
