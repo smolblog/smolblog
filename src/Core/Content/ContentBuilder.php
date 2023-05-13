@@ -23,6 +23,13 @@ interface ContentBuilder {
 	public function getContent(): Content;
 
 	/**
+	 * Get the ID of the content in question.
+	 *
+	 * @return Identifier
+	 */
+	public function getContentId(): Identifier;
+
+	/**
 	 * Set the type of the Content
 	 *
 	 * @param ContentType $type ContentType for this Content.

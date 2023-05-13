@@ -14,4 +14,13 @@ final class PublicContentEventTest extends TestCase {
 			siteId: $this->randomId(),
 		))->getPayload());
 	}
+
+	public function testItCorrectlyGivesTheContentId() {
+		$expected = $this->randomId();
+		$this->assertEquals($expected, (new SamplePublicContentEvent(
+			contentId: $expected,
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+		))->getContentId());
+	}
 }

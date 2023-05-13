@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Events;
 
 use Smolblog\Core\Content\ContentBuilderKit;
 use Smolblog\Core\Content\ContentBuilder;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * For events that indicate something has changed to the public-facing content.
@@ -17,6 +18,15 @@ use Smolblog\Core\Content\ContentBuilder;
  */
 abstract class PublicContentEvent extends ContentEvent implements ContentBuilder {
 	use ContentBuilderKit;
+
+	/**
+	 * Get the ID of the content in question.
+	 *
+	 * @return Identifier
+	 */
+	public function getContentId(): Identifier {
+		return $this->contentId;
+	}
 
 	/**
 	 * Empty payload (for now).

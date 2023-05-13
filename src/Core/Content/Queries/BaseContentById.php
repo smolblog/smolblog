@@ -34,6 +34,15 @@ abstract class BaseContentById extends MemoizableQuery implements ContentBuilder
 	}
 
 	/**
+	 * Get the ID of the content in question.
+	 *
+	 * @return Identifier
+	 */
+	public function getContentId(): Identifier {
+		return $this->contentId;
+	}
+
+	/**
 	 * Get the authorization query and check if the given user can see the given content.
 	 *
 	 * @return Query

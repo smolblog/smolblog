@@ -19,4 +19,12 @@ final class BaseContentByIdTest extends TestCase {
 
 		$this->assertEquals($auth, $query->getAuthorizationQuery());
 	}
+
+	public function testItCorrectlyGivesTheContentId() {
+		$expected = $this->randomId();
+		$this->assertEquals($expected, (new class(
+			contentId: $expected,
+			siteId: $this->randomId(),
+		) extends BaseContentById{})->getContentId());
+	}
 }

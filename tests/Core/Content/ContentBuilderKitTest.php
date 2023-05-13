@@ -31,6 +31,7 @@ final class ContentBuilderKitTest extends TestCase {
 		$this->builder = new class() implements ContentBuilder {
 			use ContentBuilderKit;
 			public function getCurrentProps() { return $this->contentProps; }
+			public function getContentId(): Identifier { return $this->contentProps['id'] ?? null; }
 		};
 	}
 
