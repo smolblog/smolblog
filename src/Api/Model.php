@@ -414,7 +414,7 @@ class Model extends DomainModel {
 
 		if ($typeName === 'array') {
 			$arrayTypeAttribute = $prop->getAttributes(ArrayType::class);
-			if ($arrayTypeAttribute[0]?->getArguments() !== null) {
+			if (isset($arrayTypeAttribute[0]) && $arrayTypeAttribute[0]->getArguments() !== null) {
 				$arrayType = $arrayTypeAttribute[0]->getArguments()[0];
 				if (is_array($arrayType)) {
 					return [

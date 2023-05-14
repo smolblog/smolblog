@@ -26,6 +26,9 @@ class ListContent implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/content',
+			pathVariables: [
+				'site' => ParameterType::identifier(),
+			],
 			queryVariables: [
 				'page' => ParameterType::integer(),
 				'pageSize' => ParameterType::integer(),
