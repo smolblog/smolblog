@@ -7,5 +7,5 @@ use Smolblog\Core\Content\Queries\BaseContentById;
 /**
  * Get a Status by its id.
  */
-class StatusById extends BaseContentById {
+class StatusById extends BaseContentById implements StatusBuilder {
 }

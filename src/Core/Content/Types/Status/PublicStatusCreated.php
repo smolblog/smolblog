@@ -7,5 +7,5 @@ use Smolblog\Core\Content\Events\PublicContentAdded;
 /**
  * Indicates a Status has been published.
  */
-class PublicStatusCreated extends PublicContentAdded {
+class PublicStatusCreated extends PublicContentAdded implements StatusBuilder {
 }
