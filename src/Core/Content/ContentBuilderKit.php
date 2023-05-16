@@ -56,6 +56,7 @@ trait ContentBuilderKit {
 	 */
 	public function setContentType(ContentType $type): void {
 		$this->contentProps['type'] = $type;
+		$this->contentState = null;
 	}
 
 	/**
@@ -67,6 +68,7 @@ trait ContentBuilderKit {
 	public function addContentExtension(ContentExtension $extension): void {
 		$this->contentProps['extensions'] ??= [];
 		$this->contentProps['extensions'][get_class($extension)] = $extension;
+		$this->contentState = null;
 	}
 
 	/**
@@ -96,5 +98,6 @@ trait ContentBuilderKit {
 			'publishTimestamp' => $publishTimestamp,
 			'visibility' => $visibility,
 		], fn($val) => isset($val)));
+		$this->contentState = null;
 	}
 }

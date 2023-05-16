@@ -92,7 +92,9 @@ class Content extends Entity {
 		?Identifier $id = null,
 		array $extensions = [],
 	) {
-		if ($visibility === ContentVisibility::Published && (!isset($permalink) || !isset($publishTimestamp))) {
+		// TODO: Check for $permalink when published. Currently ignoring since WordPress doesn't assign permalinks until
+		// after publishing.
+		if ($visibility === ContentVisibility::Published && (!isset($publishTimestamp))) {
 			throw new InvalidContentException('Permalink and timestamp are required if content is published.');
 		}
 
