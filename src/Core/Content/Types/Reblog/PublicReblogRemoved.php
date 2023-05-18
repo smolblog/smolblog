@@ -7,5 +7,5 @@ use Smolblog\Core\Content\Events\PublicContentRemoved;
 /**
  * Indicates a Reblog has been published.
  */
-class PublicReblogRemoved extends PublicContentRemoved {
+class PublicReblogRemoved extends PublicContentRemoved implements ReblogBuilder {
 }
