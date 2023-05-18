@@ -7,5 +7,5 @@ use Smolblog\Core\Content\Queries\BaseContentById;
 /**
  * Get a Reblog by its id.
  */
-class ReblogById extends BaseContentById {
+class ReblogById extends BaseContentById implements ReblogBuilder {
 }

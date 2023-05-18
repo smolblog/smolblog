@@ -84,6 +84,7 @@ class ReblogCreatedTest extends TestCase {
 		$event->setHtml('<p>Another thing.</p>');
 
 		$this->assertEquals('Hello', $event->getNewTitle());
+		$this->assertEquals('<p>Another thing.</p>', $event->getCommentHtml());
 		$this->assertEquals("<iframe></iframe>\n\n<p>Another thing.</p>", $event->getNewBody());
 	}
 

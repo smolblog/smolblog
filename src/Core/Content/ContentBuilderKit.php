@@ -23,9 +23,9 @@ trait ContentBuilderKit {
 	/**
 	 * The full Content object as of this event.
 	 *
-	 * @var Content
+	 * @var Content|null
 	 */
-	protected Content $contentState;
+	protected ?Content $contentState;
 
 	/**
 	 * Get the state of the content as of this event.

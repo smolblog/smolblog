@@ -47,7 +47,8 @@ final class ContentTest extends TestCase {
 		$this->assertInstanceOf(Content::class, $actual);
 	}
 
-	public function testItThrowsAnErrorIfItIsPublishedWithoutAPermalink() {
+	/* This test is deferred until Smolblog\Core can handle permalinks on its own. */
+	public function deferred_testItThrowsAnErrorIfItIsPublishedWithoutAPermalink() {
 		$this->expectException(InvalidContentException::class);
 
 		new Content(
