@@ -3,11 +3,14 @@
 namespace Smolblog\Core\Content\Types\Reblog;
 
 use Smolblog\Core\Content\ContentType;
+use Smolblog\Framework\Objects\SerializableKit;
 
 /**
  * For reblogging interesting things from around the web.
  */
 class Reblog implements ContentType {
+	use SerializableKit;
+
 	/**
 	 * Undocumented function
 	 *

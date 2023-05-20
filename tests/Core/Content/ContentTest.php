@@ -8,6 +8,7 @@ use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
 final class TestContent implements ContentType {
+	use SerializableKit;
 	public function getTitle(): string { return 'Title'; }
 	public function getBodyContent(): string { return '<p>Hullo</p>'; }
 }

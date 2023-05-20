@@ -2,10 +2,14 @@
 
 namespace Smolblog\Core\Content;
 
+use Smolblog\Framework\Objects\SerializableKit;
+
 /**
  * Content instantiated without a type.
  */
 class GenericContent implements ContentType {
+	use SerializableKit;
+
 	/**
 	 * Create the content
 	 *

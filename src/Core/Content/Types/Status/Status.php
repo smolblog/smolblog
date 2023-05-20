@@ -8,6 +8,7 @@ use Smolblog\Core\Content\ContentType;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\SerializableKit;
 
 /**
  * A short, title-less post.
@@ -16,6 +17,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Mastodon "toot" or a Micro.blog post in that it allows some basic formatting.
  */
 class Status implements ContentType {
+	use SerializableKit;
+
 	/**
 	 * Truncated the given text to a given number of characters.
 	 *

@@ -107,4 +107,48 @@ class Content extends Entity {
 		$this->extensions = $extensions;
 		parent::__construct(id: $id ?? Identifier::createFromDate());
 	}
+
+	/**
+	 * Serialize this array.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array
+	{
+		return [
+			...parent::toArray(),
+			'siteId' => $this->siteId->toString(),
+			'authorId' => $this->authorId->toString(),
+			'publishTimestamp' => $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
+			'title' => $this->type->getTitle(),
+			'body' => $this->type->getBodyContent(),
+			'contentType' => [
+				...$this->type->toArray(),
+				'type' => get_class($this->type),
+			],
+			'extensions' => array_map(fn($ext) => $ext->toArray(), $this->extensions),
+		];
+	}
+
+	public static function fromArray(array $data): Content
+	{
+		$contentTypeClass = $data['contentType']['type'];
+		unset($data['contentType']['type']);
+
+		$extensions = [];
+		foreach ($data['extensions'] as $extClass => $extData) {
+			$extensions[$extClass] = $extClass::fromArray($extData);
+		}
+
+		return new Content(
+			id: Identifier::fromString($data['id']),
+			type: $contentTypeClass::fromArray($data['contentType']),
+			siteId: Identifier::fromString($data['siteId']),
+			authorId: Identifier::fromString($data['authorId']),
+			permalink: $data['permalink'] ?? null,
+			publishTimestamp: self::safeDeserializeDate($data['publishTimestamp']),
+			visibility: ContentVisibility::tryFrom($data['visibility']),
+			extensions: $extensions,
+		);
+	}
 }
