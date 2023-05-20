@@ -113,13 +113,14 @@ class Content extends Entity {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array
-	{
+	public function toArray(): array {
 		return [
-			...parent::toArray(),
+			'id' => $this->id->toString(),
 			'siteId' => $this->siteId->toString(),
 			'authorId' => $this->authorId->toString(),
+			'permalink' => $this->permalink,
 			'publishTimestamp' => $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
+			'visibility' => $this->visibility->value,
 			'title' => $this->type->getTitle(),
 			'body' => $this->type->getBodyContent(),
 			'contentType' => [
@@ -130,10 +131,26 @@ class Content extends Entity {
 		];
 	}
 
-	public static function fromArray(array $data): Content
-	{
-		$contentTypeClass = $data['contentType']['type'];
-		unset($data['contentType']['type']);
+	/**
+	 * Create content from a serialized array
+	 *
+	 * @param array $data Serialized data.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		$type = null;
+		if (isset($data['contentType'])) {
+			$contentTypeClass = $data['contentType']['type'];
+			unset($data['contentType']['type']);
+
+			$type = $contentTypeClass::fromArray($data['contentType']);
+		} else {
+			$type = new GenericContent(title: $data['title'], body: $data['body']);
+		}
+
+		unset($data['contentType']);
+		unset($data['title']);
+		unset($data['body']);
 
 		$extensions = [];
 		foreach ($data['extensions'] as $extClass => $extData) {
@@ -142,7 +159,7 @@ class Content extends Entity {
 
 		return new Content(
 			id: Identifier::fromString($data['id']),
-			type: $contentTypeClass::fromArray($data['contentType']),
+			type: $type,
 			siteId: Identifier::fromString($data['siteId']),
 			authorId: Identifier::fromString($data['authorId']),
 			permalink: $data['permalink'] ?? null,
