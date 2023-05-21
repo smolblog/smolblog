@@ -7,6 +7,8 @@ use Smolblog\Core\Content\Commands\ChangeContentVisibility;
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
 use Smolblog\Core\Content\Events\ContentVisibilityChanged;
+use Smolblog\Core\Content\Queries\BaseContentById;
+use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
@@ -37,5 +39,18 @@ class ContentService extends Listener {
 			publishTimestamp: $command->publishTimestamp,
 			authorId: $command->authorId,
 		));
+	}
+
+	/**
+	 * Copy the generated content to the query results.
+	 *
+	 * BaseContentById is tagged as a ContentBuilder message, which means by this point the Content should already be
+	 * built. It just needs to be copied to the query results, which this handles.
+	 *
+	 * @param BaseContentById $query Query to handle.
+	 * @return void
+	 */
+	public function onBaseContentById(BaseContentById $query): void {
+		$query->results = $query->getContent();
 	}
 }

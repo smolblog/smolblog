@@ -8,6 +8,8 @@ use Smolblog\Core\Content\Commands\ChangeContentVisibility;
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
 use Smolblog\Core\Content\Events\ContentVisibilityChanged;
+use Smolblog\Core\Content\Queries\BaseContentById;
+use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\EventComparisonTestKit;
@@ -36,5 +38,17 @@ final class ContentServiceTest extends TestCase {
 
 		$service = new ContentService(bus: $messageBus);
 		$service->onEditContentBaseAttributes($command);
+	}
+
+	public function testItHandlesBaseContentByIdQueries() {
+		$contentMock = $this->createStub(Content::class);
+
+		$queryMock = $this->createStub(BaseContentById::class);
+		$queryMock->method('getContent')->willReturn($contentMock);
+
+		$service = new ContentService(bus: $this->createStub(MessageBus::class));
+		$service->onBaseContentById($queryMock);
+
+		$this->assertEquals($contentMock, $queryMock->results);
 	}
 }
