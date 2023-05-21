@@ -36,6 +36,9 @@ class Model extends DomainModel {
 			'configuration' => null,
 		],
 
+		Content\ContentService::class => [
+			'bus' => MessageBus::class,
+		],
 		Content\Extensions\Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
 		],
