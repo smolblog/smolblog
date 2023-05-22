@@ -2,19 +2,16 @@
 
 namespace Smolblog\Core\Content;
 
-use Crell\Tukio\Listener;
-use Smolblog\Core\Content\Commands\ChangeContentVisibility;
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
-use Smolblog\Core\Content\Events\ContentVisibilityChanged;
 use Smolblog\Core\Content\Queries\BaseContentById;
-use Smolblog\Core\Content\Queries\GenericContentById;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle generic content commands.
  */
-class ContentService extends Listener {
+class ContentService implements Listener {
 	/**
 	 * Construct the service
 	 *
