@@ -67,6 +67,7 @@ class Model extends DomainModel {
 		User\GetMyProfile::class => ['bus' => MessageBus::class],
 		User\GetMySites::class => ['bus' => MessageBus::class],
 		User\UpdateMyProfile::class => ['bus' => MessageBus::class],
+		User\Webfinger::class => [],
 	];
 
 	/**
