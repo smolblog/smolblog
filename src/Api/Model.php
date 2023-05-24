@@ -63,11 +63,11 @@ class Model extends DomainModel {
 		Site\UpdateSettings::class => ['bus' => MessageBus::class],
 		Site\GetUsers::class => ['bus' => MessageBus::class],
 		Site\UpdateUserPermissions::class => ['bus' => MessageBus::class],
+		Site\Webfinger::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
 
 		User\GetMyProfile::class => ['bus' => MessageBus::class],
 		User\GetMySites::class => ['bus' => MessageBus::class],
 		User\UpdateMyProfile::class => ['bus' => MessageBus::class],
-		User\Webfinger::class => [],
 	];
 
 	/**
