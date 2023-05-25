@@ -26,4 +26,9 @@ class WebfingerLink extends Value {
 		#[ArrayType('object')] public readonly ?array $properties = null,
 	) {
 	}
+
+	public function toArray(): array
+	{
+		return array_filter(parent::toArray(), fn($item) => isset($item));
+	}
 }

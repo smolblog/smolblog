@@ -24,4 +24,9 @@ class WebfingerResponse extends Value {
 		#[ArrayType(WebfingerLink::class)] public readonly ?array $links = null,
 	) {
 	}
+
+	public function toArray(): array
+	{
+		return array_filter(parent::toArray(), fn($item) => isset($item));
+	}
 }
