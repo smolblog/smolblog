@@ -75,7 +75,7 @@ class Webfinger implements Endpoint {
 				new WebfingerLink(
 					rel: 'self',
 					type: 'application/activity+json',
-					href: $this->env->getApiUrl("site/$site->id/activitypub/actor"),
+					href: $this->env->getApiUrl("/site/$site->id/activitypub/actor"),
 				)
 			]
 		);
