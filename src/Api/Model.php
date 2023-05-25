@@ -27,6 +27,9 @@ use Smolblog\Markdown\SmolblogMarkdown;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
+		ActivityPub\GetActor::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
+		ActivityPub\Webfinger::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
+
 		Connector\AuthInit::class => [
 			'bus' => MessageBus::class,
 			'connectors' => ConnectorRegistry::class,
@@ -63,7 +66,6 @@ class Model extends DomainModel {
 		Site\UpdateSettings::class => ['bus' => MessageBus::class],
 		Site\GetUsers::class => ['bus' => MessageBus::class],
 		Site\UpdateUserPermissions::class => ['bus' => MessageBus::class],
-		Site\Webfinger::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
 
 		User\GetMyProfile::class => ['bus' => MessageBus::class],
 		User\GetMySites::class => ['bus' => MessageBus::class],
