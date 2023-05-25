@@ -5,6 +5,7 @@ namespace Smolblog\Api\Site;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
+use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Framework\Messages\MessageBus;
@@ -58,6 +59,10 @@ class Webfinger implements Endpoint {
 	 */
 	public function run(?Identifier $userId = null, ?array $params, ?object $body = null): WebfingerResponse {
 		$site = $this->bus->fetch(new SiteByResourceUri($params['resource']));
+
+		if (!isset($site)) {
+			throw new NotFound('Could not find resource.');
+		}
 
 		return new WebfingerResponse(
 			subject: $params['resource'],
