@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content;
 
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -23,6 +24,6 @@ class Media extends Entity {
 		public readonly array $attributes,
 		Identifier $id = null,
 	) {
-		parent::__construct(id: $id ?? Identifier::createFromDate());
+		parent::__construct(id: $id ?? new DateIdentifier());
 	}
 }

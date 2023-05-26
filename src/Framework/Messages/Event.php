@@ -4,6 +4,7 @@ namespace Smolblog\Framework\Messages;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\EntityKit;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -46,6 +47,6 @@ abstract class Event extends Message {
 		DateTimeInterface $timestamp = null,
 	) {
 		$this->timestamp = $timestamp ?? new DateTimeImmutable();
-		$this->id = $id ?? Identifier::createFromDate($this->timestamp);
+		$this->id = $id ?? new DateIdentifier($this->timestamp);
 	}
 }

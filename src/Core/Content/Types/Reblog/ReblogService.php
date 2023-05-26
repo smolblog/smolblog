@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -32,7 +33,7 @@ class ReblogService implements Listener {
 	 */
 	public function onCreateReblog(CreateReblog $command) {
 		$info = $this->getExternalInfo($command->url);
-		$reblogId = Identifier::createFromDate();
+		$reblogId = new DateIdentifier();
 
 		$this->bus->dispatch(new ReblogCreated(
 			url: $command->url,

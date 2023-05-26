@@ -4,6 +4,7 @@ namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\NamedIdentifier;
 
 /**
  * Information about credentials needed to authenticate against an
@@ -20,7 +21,7 @@ class Connection extends Entity {
 	 * @return Identifier ID constructed from provider and key.
 	 */
 	public static function buildId(string $provider, string $providerKey): Identifier {
-		return Identifier::createFromName(namespace: self::NAMESPACE, name: "$provider|$providerKey");
+		return new NamedIdentifier(namespace: self::NAMESPACE, name: "$provider|$providerKey");
 	}
 
 	/**

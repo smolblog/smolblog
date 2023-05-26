@@ -4,13 +4,14 @@ namespace Smolblog\Core\Connector\Events;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 
 final class ChannelSiteLinkSetTest extends TestCase {
 	public function testItWillCorrectlyDeserialize() {
 		$timestamp = new DateTimeImmutable('2022-02-22T22:22:22+0000');
-		$id = Identifier::createFromDate($timestamp);
+		$id = Identifier::fromString('017f2387-4530-71a3-8e5f-dd6feb6072f7');
 		$data = [
 			'type' => ChannelSiteLinkSet::class,
 			'connectionId' => 'a44f29ff-b55d-4fb5-94b6-230411fcf94c',

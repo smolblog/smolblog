@@ -12,12 +12,13 @@ use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\RandomIdentifier;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 class TestCase extends PHPUnitTestCase {
 	protected function randomId(): Identifier {
-		return Identifier::createRandom();
+		return new RandomIdentifier();
 	}
 }
 

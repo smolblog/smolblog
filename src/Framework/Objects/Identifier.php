@@ -17,16 +17,6 @@ use Stringable;
  */
 class Identifier implements Stringable {
 	/**
-	 * Standard namespace for creating Identifiers from a URL.
-	 */
-	public const NAMESPACE_URL = Uuid::NAMESPACE_URL;
-
-	/**
-	 * Standard namespace for creating Identifiers from a fully-qualified domain name.
-	 */
-	public const NAMESPACE_DOMAIN = Uuid::NAMESPACE_DNS;
-
-	/**
 	 * Re-create an Identifier instance from a string representation.
 	 *
 	 * Not to be confused with the create* methods; this creates an instance from an existing ID's representation. The
@@ -53,48 +43,11 @@ class Identifier implements Stringable {
 	}
 
 	/**
-	 * Create a new random Identifier.
-	 *
-	 * Creates a version 4 UUID.
-	 *
-	 * @return static
-	 */
-	public static function createRandom(): static {
-		return new static(internal: Uuid::uuid4());
-	}
-
-	/**
-	 * Create a new Identifier from the given date (default now).
-	 *
-	 * Creates a version 7 UUID using the given date/time.
-	 *
-	 * @param DateTimeInterface $date Optional date to use to create the Identifier; defaults to now.
-	 * @return static
-	 */
-	public static function createFromDate(DateTimeInterface $date = null): static {
-		return new static(internal: Uuid::uuid7($date));
-	}
-
-	/**
-	 * Create a new identifier from the given namespace and name.
-	 *
-	 * Creates a version 5 UUID using the given namespace and name. The namespace must be a valid UUID. It is
-	 * recommended for classes using these to define their namespace as a public constant.
-	 *
-	 * @param string $namespace UUID string to differentiate the names for this domain.
-	 * @param string $name      Unique name to generate the Identifier from.
-	 * @return static
-	 */
-	public static function createFromName(string $namespace, string $name): static {
-		return new static(internal: Uuid::uuid5($namespace, $name));
-	}
-
-	/**
 	 * Create an Identifier from a Ramsey\Uuid. Not for general use.
 	 *
 	 * @param UuidInterface $internal Uuid instance to use.
 	 */
-	private function __construct(
+	protected function __construct(
 		private UuidInterface $internal
 	) {
 	}
