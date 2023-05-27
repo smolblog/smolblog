@@ -17,13 +17,11 @@ class ActorResponse extends ActivityPubObject {
 		public readonly ?string $followers = null,
 		public readonly ?string $sharedInbox = null,
 		public readonly ?string $publicKeyPem = null,
-	)
-	{
+	) {
 		parent::__construct(id: $id, type: $type->value);
 	}
 
-	public function toArray(): array
-	{
+	public function toArray(): array {
 		$base = parent::toArray();
 
 		$base['@context'] = [

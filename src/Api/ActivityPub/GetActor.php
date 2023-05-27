@@ -13,8 +13,7 @@ use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 
 class GetActor implements Endpoint {
-	public static function getConfiguration(): EndpointConfig
-	{
+	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/activitypub/actor',
 			pathVariables: ['site' => ParameterType::identifier()],
@@ -34,8 +33,7 @@ class GetActor implements Endpoint {
 	) {
 	}
 
-	public function run(?Identifier $userId, ?array $params, ?object $body): ActorResponse
-	{
+	public function run(?Identifier $userId, ?array $params, ?object $body): ActorResponse {
 		$site = $this->bus->fetch(new SiteById($params['site']));
 
 		return new ActorResponse(
