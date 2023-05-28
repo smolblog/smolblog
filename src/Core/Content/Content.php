@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content;
 
 use DateTimeInterface;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -105,7 +106,7 @@ class Content extends Entity {
 		$this->siteId = $siteId;
 		$this->authorId = $authorId;
 		$this->extensions = $extensions;
-		parent::__construct(id: $id ?? Identifier::createFromDate());
+		parent::__construct(id: $id ?? new DateIdentifier());
 	}
 
 	/**

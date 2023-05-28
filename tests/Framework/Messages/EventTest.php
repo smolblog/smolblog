@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\StoppableEventInterface;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\DateIdentifierTestKit;
 
@@ -22,7 +23,7 @@ final class EventTest extends TestCase {
 		};
 
 		$this->assertEquals('camelot', $event->payload);
-		$this->assertIdentifiersHaveSameDate(Identifier::createFromDate($event->timestamp), $event->id);
+		$this->assertIdentifiersHaveSameDate(new DateIdentifier($event->timestamp), $event->id);
 	}
 
 	public function testTheDefaultIdentifierIsCreatedFromTheTimestamp() {
@@ -38,7 +39,7 @@ final class EventTest extends TestCase {
 
 		$this->assertEquals('camelot', $event->payload);
 		$this->assertEquals($testTime->format(DateTimeInterface::COOKIE), $event->timestamp->format(DateTimeInterface::COOKIE));
-		$this->assertIdentifiersHaveSameDate(Identifier::createFromDate($testTime), $event->id);
+		$this->assertIdentifiersHaveSameDate(new DateIdentifier($testTime), $event->id);
 	}
 
 	public function testItCanBeStoppable() {

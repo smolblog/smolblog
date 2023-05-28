@@ -4,6 +4,7 @@ namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\NamedIdentifier;
 
 /**
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media
@@ -20,7 +21,7 @@ class Channel extends Entity {
 	 * @return Identifier ID constructed from connection and key.
 	 */
 	public static function buildId(Identifier $connectionId, string $channelKey): Identifier {
-		return Identifier::createFromName(namespace: self::NAMESPACE, name: "$connectionId|$channelKey");
+		return new NamedIdentifier(namespace: self::NAMESPACE, name: "$connectionId|$channelKey");
 	}
 
 	/**

@@ -16,7 +16,7 @@ final class EntityTestHidden extends Entity {
 	public function __construct(
 		public readonly string $name
 	) {
-		parent::__construct(id: Identifier::createFromName(
+		parent::__construct(id: new NamedIdentifier(
 			namespace: self::NAMESPACE,
 			name: $this->name
 		));
@@ -47,7 +47,7 @@ final class EntityTest extends TestCase {
 	}
 
 	public function testTwoEntitiesWithDifferentClassesHaveDifferentStringRepresentation() {
-		$ident = Identifier::createFromName(
+		$ident = new NamedIdentifier(
 			namespace: EntityTestHidden::NAMESPACE,
 			name: 'Arthur'
 		);

@@ -8,7 +8,7 @@ use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\NoRefreshKit;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\RandomIdentifier;
 
 class MicroBlogConnector implements Connector {
 	use NoRefreshKit;
@@ -18,7 +18,7 @@ class MicroBlogConnector implements Connector {
 	}
 
 	public function getInitializationData(string $callbackUrl): ConnectorInitData {
-		$state = Identifier::createRandom()->toString();
+		$state = (new RandomIdentifier())->toString();
 		$args = [
 			'redirect_uri' => $callbackUrl,
 			'client_id' => 'https://smolblog.localhost/',

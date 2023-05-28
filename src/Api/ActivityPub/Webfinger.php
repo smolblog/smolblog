@@ -52,12 +52,14 @@ class Webfinger implements Endpoint {
 	/**
 	 * Run the endpoint.
 	 *
-	 * @param Identifier|null $userId Ignored.
-	 * @param array|null      $params Expects 'resource'.
-	 * @param object|null     $body   Ignored.
+	 * @throws NotFound When the resource does not exist here.
+	 *
+	 * @param Identifier  $userId Ignored.
+	 * @param array|null  $params Expects 'resource'.
+	 * @param object|null $body   Ignored.
 	 * @return WebfingerResponse
 	 */
-	public function run(?Identifier $userId = null, ?array $params, ?object $body = null): WebfingerResponse {
+	public function run(?Identifier $userId, ?array $params, ?object $body = null): WebfingerResponse {
 		$site = $this->bus->fetch(new SiteByResourceUri($params['resource']));
 
 		if (!isset($site)) {

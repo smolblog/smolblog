@@ -4,66 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cf1f5dc5cf022425d0ae3b552dce931",
+    "content-hash": "7bf5adc62b85ac6aab9f8f5a38f0eaf4",
     "packages": [
-        {
-            "name": "99designs/http-signatures",
-            "version": "4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/99designs/http-signatures-php.git",
-                "reference": "acb9d2e4f4661de9445fa5930b49a259bfd6175b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/99designs/http-signatures-php/zipball/acb9d2e4f4661de9445fa5930b49a259bfd6175b",
-                "reference": "acb9d2e4f4661de9445fa5930b49a259bfd6175b",
-                "shasum": ""
-            },
-            "require": {
-                "paragonie/random_compat": "^1.0|^2.0",
-                "php": ">=5.5",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.11",
-                "guzzlehttp/psr7": "^1.2",
-                "phpunit/phpunit": "~4.8",
-                "symfony/http-foundation": "~2.8|~3.0",
-                "symfony/psr-http-message-bridge": "^1.0",
-                "zendframework/zend-diactoros": "^1.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "HttpSignatures\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Paul Annesley",
-                    "email": "paul@99designs.com"
-                }
-            ],
-            "description": "Sign and verify HTTP messages",
-            "keywords": [
-                "hmac",
-                "http",
-                "https",
-                "signature",
-                "signed",
-                "signing"
-            ],
-            "support": {
-                "issues": "https://github.com/99designs/http-signatures-php/issues",
-                "source": "https://github.com/99designs/http-signatures-php/tree/master"
-            },
-            "time": "2017-05-04T01:36:17+00:00"
-        },
         {
             "name": "brick/math",
             "version": "0.11.0",
@@ -375,215 +317,6 @@
             "time": "2022-03-30T18:25:35+00:00"
         },
         {
-            "name": "guzzlehttp/guzzle",
-            "version": "7.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "fb7566caccf22d74d1ab270de3551f72a58399f5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/fb7566caccf22d74d1ab270de3551f72a58399f5",
-                "reference": "fb7566caccf22d74d1ab270de3551f72a58399f5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "guzzlehttp/promises": "^1.5.3 || ^2.0",
-                "guzzlehttp/psr7": "^1.9.1 || ^2.4.5",
-                "php": "^7.2.5 || ^8.0",
-                "psr/http-client": "^1.0",
-                "symfony/deprecation-contracts": "^2.2 || ^3.0"
-            },
-            "provide": {
-                "psr/http-client-implementation": "1.0"
-            },
-            "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
-                "ext-curl": "*",
-                "php-http/client-integration-tests": "dev-master#2c025848417c1135031fdf9c728ee53d0a7ceaee as 3.0.999",
-                "php-http/message-factory": "^1.1",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23",
-                "psr/log": "^1.1 || ^2.0 || ^3.0"
-            },
-            "suggest": {
-                "ext-curl": "Required for CURL handler support",
-                "ext-intl": "Required for Internationalized Domain Name (IDN) support",
-                "psr/log": "Required for using the Log middleware"
-            },
-            "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": true,
-                    "forward-command": false
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
-                "psr-4": {
-                    "GuzzleHttp\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Graham Campbell",
-                    "email": "hello@gjcampbell.co.uk",
-                    "homepage": "https://github.com/GrahamCampbell"
-                },
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "Jeremy Lindblom",
-                    "email": "jeremeamia@gmail.com",
-                    "homepage": "https://github.com/jeremeamia"
-                },
-                {
-                    "name": "George Mponos",
-                    "email": "gmponos@gmail.com",
-                    "homepage": "https://github.com/gmponos"
-                },
-                {
-                    "name": "Tobias Nyholm",
-                    "email": "tobias.nyholm@gmail.com",
-                    "homepage": "https://github.com/Nyholm"
-                },
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com",
-                    "homepage": "https://github.com/sagikazarmark"
-                },
-                {
-                    "name": "Tobias Schultze",
-                    "email": "webmaster@tubo-world.de",
-                    "homepage": "https://github.com/Tobion"
-                }
-            ],
-            "description": "Guzzle is a PHP HTTP client library",
-            "keywords": [
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http client",
-                "psr-18",
-                "psr-7",
-                "rest",
-                "web service"
-            ],
-            "support": {
-                "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.7.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/Nyholm",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/guzzlehttp/guzzle",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2023-05-21T14:04:53+00:00"
-        },
-        {
-            "name": "guzzlehttp/promises",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/promises.git",
-                "reference": "3a494dc7dc1d7d12e511890177ae2d0e6c107da6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/3a494dc7dc1d7d12e511890177ae2d0e6c107da6",
-                "reference": "3a494dc7dc1d7d12e511890177ae2d0e6c107da6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2.5 || ^8.0"
-            },
-            "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23"
-            },
-            "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": true,
-                    "forward-command": false
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Promise\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Graham Campbell",
-                    "email": "hello@gjcampbell.co.uk",
-                    "homepage": "https://github.com/GrahamCampbell"
-                },
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "Tobias Nyholm",
-                    "email": "tobias.nyholm@gmail.com",
-                    "homepage": "https://github.com/Nyholm"
-                },
-                {
-                    "name": "Tobias Schultze",
-                    "email": "webmaster@tubo-world.de",
-                    "homepage": "https://github.com/Tobion"
-                }
-            ],
-            "description": "Guzzle promises library",
-            "keywords": [
-                "promise"
-            ],
-            "support": {
-                "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/Nyholm",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/guzzlehttp/promises",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2023-05-21T13:50:22+00:00"
-        },
-        {
             "name": "guzzlehttp/psr7",
             "version": "2.5.0",
             "source": {
@@ -700,25 +433,179 @@
             "time": "2023-04-17T16:11:26+00:00"
         },
         {
-            "name": "paragonie/constant_time_encoding",
-            "version": "v2.6.3",
+            "name": "liamdennehy/http-signatures-php",
+            "version": "v11.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "58c3f47f650c94ec05a151692652a868995d2938"
+                "url": "https://github.com/liamdennehy/http-signatures-php.git",
+                "reference": "754cbbad4c4e2b197c9a1f4d4f6cfdd543320780"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/58c3f47f650c94ec05a151692652a868995d2938",
-                "reference": "58c3f47f650c94ec05a151692652a868995d2938",
+                "url": "https://api.github.com/repos/liamdennehy/http-signatures-php/zipball/754cbbad4c4e2b197c9a1f4d4f6cfdd543320780",
+                "reference": "754cbbad4c4e2b197c9a1f4d4f6cfdd543320780",
                 "shasum": ""
             },
             "require": {
-                "php": "^7|^8"
+                "liamdennehy/phpseclib": "~3.0",
+                "php": ">=5.6",
+                "psr/http-message": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6|^7|^8|^9",
-                "vimeo/psalm": "^1|^2|^3|^4"
+                "friendsofphp/php-cs-fixer": "^2",
+                "guzzlehttp/psr7": "^1.2",
+                "kriswallsmith/buzz": "^1.0",
+                "nyholm/psr7": "^1.1",
+                "nyholm/psr7-server": "^0.3.0",
+                "phpunit/phpunit": "~5.6",
+                "symfony/http-foundation": "~2.8|~3.0",
+                "symfony/psr-http-message-bridge": "^1.0.2",
+                "zendframework/zend-diactoros": "^1.1",
+                "zendframework/zend-httphandlerrunner": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HttpSignatures\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Liam Dennehy",
+                    "email": "liam@wiemax.net"
+                },
+                {
+                    "name": "Paul Annesley",
+                    "email": "paul@99designs.com"
+                }
+            ],
+            "description": "Sign and verify PSR-7 HTTP messages with HMAC and RSA keys",
+            "keywords": [
+                "digital signature",
+                "electronic signature",
+                "hmac",
+                "http",
+                "https",
+                "rsa",
+                "signature",
+                "signed",
+                "signing"
+            ],
+            "support": {
+                "issues": "https://github.com/liamdennehy/http-signatures-php/issues",
+                "source": "https://github.com/liamdennehy/http-signatures-php/tree/v11.0.0-beta2"
+            },
+            "time": "2020-07-20T15:20:54+00:00"
+        },
+        {
+            "name": "liamdennehy/phpseclib",
+            "version": "3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liamdennehy/phpseclib.git",
+                "reference": "cb338b9f036e4b03196042deb9525ca6d37b1ebc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liamdennehy/phpseclib/zipball/cb338b9f036e4b03196042deb9525ca6d37b1ebc",
+                "reference": "cb338b9f036e4b03196042deb9525ca6d37b1ebc",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/constant_time_encoding": "^1",
+                "paragonie/random_compat": "^1.4|^2.0",
+                "php": ">=5.6.1"
+            },
+            "require-dev": {
+                "phing/phing": "~2.7",
+                "phpunit/phpunit": "^4.8.35|^5.7|^6.0",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "phpseclib/bootstrap.php"
+                ],
+                "psr-4": {
+                    "phpseclib3\\": "phpseclib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jim Wigginton",
+                    "email": "terrafrost@php.net",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Patrick Monnerat",
+                    "email": "pm@datasphere.ch",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Andreas Fischer",
+                    "email": "bantu@phpbb.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Hans-Jürgen Petrich",
+                    "email": "petrich@tronic-media.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Graham Campbell",
+                    "email": "graham@alt-three.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "\"stable\" phpseclib 3.0 library - see warnings",
+            "support": {
+                "issues": "https://github.com/liamdennehy/phpseclib/issues",
+                "source": "https://github.com/liamdennehy/phpseclib/tree/3.0.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/terrafrost",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/phpseclib",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-11-05T12:38:43+00:00"
+        },
+        {
+            "name": "paragonie/constant_time_encoding",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/constant_time_encoding.git",
+                "reference": "317718fb438e60151f72b20404f040cb5ae1d494"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/317718fb438e60151f72b20404f040cb5ae1d494",
+                "reference": "317718fb438e60151f72b20404f040cb5ae1d494",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3|^7|^8"
+            },
+            "require-dev": {
+                "paragonie/random_compat": "^1.4|^2",
+                "phpunit/phpunit": ">= 4"
             },
             "type": "library",
             "autoload": {
@@ -764,7 +651,7 @@
                 "issues": "https://github.com/paragonie/constant_time_encoding/issues",
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
-            "time": "2022-06-14T06:56:20+00:00"
+            "time": "2022-01-17T05:23:46+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -1467,73 +1354,6 @@
                 }
             ],
             "time": "2023-04-15T23:01:58+00:00"
-        },
-        {
-            "name": "symfony/deprecation-contracts",
-            "version": "v3.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "e2d1534420bd723d0ef5aec58a22c5fe60ce6f5e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/e2d1534420bd723d0ef5aec58a22c5fe60ce6f5e",
-                "reference": "e2d1534420bd723d0ef5aec58a22c5fe60ce6f5e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "3.3-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "function.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "A generic function and convention to trigger deprecation notices",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.2.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2023-03-01T10:25:55+00:00"
         }
     ],
     "packages-dev": [

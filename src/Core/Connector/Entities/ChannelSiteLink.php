@@ -4,6 +4,7 @@ namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\NamedIdentifier;
 
 /**
  * Represents a link between a Connection and a Site.
@@ -19,7 +20,7 @@ class ChannelSiteLink extends Entity {
 	 * @return Identifier
 	 */
 	public static function buildId(Identifier|string $channelId, Identifier|string $siteId): Identifier {
-		return Identifier::createFromName(self::NAMESPACE, strval($channelId) . '|' . strval($siteId));
+		return new NamedIdentifier(self::NAMESPACE, strval($channelId) . '|' . strval($siteId));
 	}
 
 	/**

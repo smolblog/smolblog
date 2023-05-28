@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -29,7 +30,7 @@ class StatusService implements Listener {
 	 * @return void
 	 */
 	public function onCreateStatus(CreateStatus $command) {
-		$id = Identifier::createFromDate();
+		$id = new DateIdentifier();
 		$this->bus->dispatch(new StatusCreated(
 			text: $command->text,
 			authorId: $command->userId,

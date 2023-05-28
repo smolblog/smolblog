@@ -15,16 +15,16 @@ final class IdentifierTest extends TestCase {
 	}
 
 	public function testADateIdentifierCanBeCreated() {
-		$yesterday = Identifier::createFromDate(date_sub(date_create(), new DateInterval('P1D')));
-		$today = Identifier::createFromDate();
+		$yesterday = new DateIdentifier(date_sub(date_create(), new DateInterval('P1D')));
+		$today = new DateIdentifier();
 
 		$this->assertLessThan($today->toString(), $yesterday->toString());
 	}
 
 	public function testANamespacedIdentifierCanBeCreated() {
 		$expected = '3a972fd1-e2bb-56ad-917e-05eaf754b62b';
-		$actual = Identifier::createFromName(
-			namespace: Identifier::NAMESPACE_URL,
+		$actual = new NamedIdentifier(
+			namespace: NamedIdentifier::NAMESPACE_URL,
 			name: 'https://smol.blog/test'
 		);
 
