@@ -8,6 +8,18 @@ use Smolblog\Framework\Objects\HttpVerb;
 use Smolblog\Test\TestCase;
 
 final class HttpSignerTest extends TestCase {
+	const PUBLIC_KEY = <<<EOF
+	-----BEGIN PUBLIC KEY-----
+	MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsp+ROePbM/54gm2YirSG
+	QTAmaKzmYwDgfR5NaITJbizQS9F3CnJsGKQWprAW8bbnXQVyBDb9yP9OM+0/OtqH
+	c2NxW4ZNovSO/ehJqZ34yDFK9pg9UMksP7GnlKp2WIHWJMg+YBo8wc4Bpelm7PTa
+	rcqi8QOb2LxMUgaI6Fm/g3/NsSWvaJ3gsZLu9DzheYlvLC5ggY+H91VNyBzsA7Eb
+	aENmFuAMBp5egMFstZa8d4Cq4huQbUvuy2LfeNiPCTGZHA+AqW//w2T+FslEKiJf
+	1vlkqAXEdC+xmVI6FoSKIfLa/wNbeI2Hz+u7dTJN1U+OJg+Cxhzra8soRVWaQvl3
+	LQIDAQAB
+	-----END PUBLIC KEY-----
+	EOF;
+
 	const PRIVATE_KEY = <<<EOF
 	-----BEGIN RSA PRIVATE KEY-----
 	MIIEpAIBAAKCAQEAsp+ROePbM/54gm2YirSGQTAmaKzmYwDgfR5NaITJbizQS9F3
@@ -49,12 +61,12 @@ final class HttpSignerTest extends TestCase {
 		$service = new HttpSigner();
 		$request = $service->sign(request: $request, key: self::PRIVATE_KEY);
 
-		echo $request->getHeaderLine('Signature');
-
 		$this->assertEquals(
-			'keyId="key",algorithm="hmac-sha256",headers="(request-target) date host",signature="BjQJQz9RBGnUPYGaYyuwkw2NZNmaX3mbIUEcHq96LPI="',
+			'keyId="key",algorithm="rsa-sha256",headers="(request-target) date host digest",signature="sB6q486awo4pCX88ige0xl63EWQDMU7VVLI++fvalB/+mt+BnQvNgdud9hG2PJYzcpTSVNeuJUpjcezrg8OLYpzFkDYNfDddsUYWUT58SS0bymxN/ZCVmWlPeuB0xmWZjo+wB7TCpKSoeu1sc2wM5zO+rSuWaJs9wHbNfjg3QlJoif/ZEje2sfs7HUwk78VwFr0ittDkBKLZYy5WV+/bgvPDWi8IplgvCc2Q5td1JGc2Uo0HYo/gwwiNp/fGPIH0YktSeHVwjGXtltRBKlB2g+hrfQ5K7Ixt0pQIdJWA34Vb6lh3nWp5uXIcuRfcLSY66lQcXD1Pv96BJABSqf3QFg=="',
 			$request->getHeaderLine('Signature')
 		);
+
+		$this->assertTrue($service->verify(request: $request, key: self::PUBLIC_KEY));
 	}
 
 	public function testItAddsADateHeaderIfNoneExists() {

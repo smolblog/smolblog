@@ -20,7 +20,7 @@ class HttpSigner {
 	public function sign(RequestInterface $request, string $key): RequestInterface {
 		$context = new Context([
 			'keys' => ['key' => $key],
-			'algorithm' => 'hmac-sha256',
+			'algorithm' => 'rsa-sha256',
 			'headers' => ['(request-target)', 'Date', 'Host'],
 		]);
 
@@ -28,6 +28,27 @@ class HttpSigner {
 			$request = $request->withAddedHeader('Date', date(DateTimeInterface::RFC7231));
 		}
 
-		return $context->signer()->sign($request);
+		return $context->signer()->signWithDigest($request);
+	}
+
+	/**
+	 * Verify a signed a PSR-7 Request.
+	 *
+	 * @param RequestInterface $request Request with a signature.
+	 * @param string           $key     Public key to use to verify the request.
+	 * @return boolean
+	 */
+	public function verify(RequestInterface $request, string $key): bool {
+		$context = new Context([
+			'keys' => ['key' => $key],
+			'algorithm' => 'rsa-sha256',
+			'headers' => ['(request-target)', 'Date', 'Host'],
+		]);
+
+		if (!$request->hasHeader('Date')) {
+			$request = $request->withAddedHeader('Date', date(DateTimeInterface::RFC7231));
+		}
+
+		return $context->verifier()->isSignedWithDigest($request);
 	}
 }

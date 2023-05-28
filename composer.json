@@ -42,10 +42,10 @@
     "ramsey/uuid": "^4.6",
     "crell/tukio": "^1.4",
     "cebe/markdown": "^1.2",
-    "psr/http-message": "^2.0",
-    "99designs/http-signatures": "^2.0",
+    "psr/http-message": "^1.1 || ^2.0",
     "phpseclib/phpseclib": "^3.0",
     "guzzlehttp/psr7": "^2.5",
-    "psr/http-client": "^1.0"
+    "psr/http-client": "^1.0",
+    "liamdennehy/http-signatures-php": "^11.0"
   }
 }
