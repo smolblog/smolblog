@@ -4,9 +4,7 @@ namespace Smolblog\Framework\Objects;
 
 use GuzzleHttp\Psr7\Request;
 use JsonSerializable;
-use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
