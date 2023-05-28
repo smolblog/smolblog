@@ -27,8 +27,7 @@ class WebfingerLink extends Value {
 	) {
 	}
 
-	public function toArray(): array
-	{
+	public function toArray(): array {
 		return array_filter(parent::toArray(), fn($item) => isset($item));
 	}
 }
