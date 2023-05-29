@@ -10,4 +10,8 @@ abstract class ActivityPubObject extends Value {
 		public readonly string $type,
 	) {
 	}
+
+	public function toArray(): array {
+		return array_filter(parent::toArray(), fn($item) => isset($item));
+	}
 }
