@@ -14,12 +14,13 @@ class HttpSigner {
 	 * Sign a PSR-7 Request.
 	 *
 	 * @param RequestInterface $request Request that needs a signature.
-	 * @param string           $key     Private key to use to sign the request.
+	 * @param string           $keyId   Name of the key to use in the signature.
+	 * @param string           $keyPem  Private key to use to sign the request.
 	 * @return RequestInterface
 	 */
-	public function sign(RequestInterface $request, string $key): RequestInterface {
+	public function sign(RequestInterface $request, string $keyId, string $keyPem): RequestInterface {
 		$context = new Context([
-			'keys' => ['key' => $key],
+			'keys' => [$keyId => $keyPem],
 			'algorithm' => 'rsa-sha256',
 			'headers' => ['(request-target)', 'Date', 'Host'],
 		]);
@@ -35,12 +36,13 @@ class HttpSigner {
 	 * Verify a signed a PSR-7 Request.
 	 *
 	 * @param RequestInterface $request Request with a signature.
-	 * @param string           $key     Public key to use to verify the request.
+	 * @param string           $keyId   Name of the key used in the signature.
+	 * @param string           $keyPem  Public key to use to verify the request.
 	 * @return boolean
 	 */
-	public function verify(RequestInterface $request, string $key): bool {
+	public function verify(RequestInterface $request, string $keyId, string $keyPem): bool {
 		$context = new Context([
-			'keys' => ['key' => $key],
+			'keys' => [$keyId => $keyPem],
 			'algorithm' => 'rsa-sha256',
 			'headers' => ['(request-target)', 'Date', 'Host'],
 		]);

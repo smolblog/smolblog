@@ -59,14 +59,14 @@ final class HttpSignerTest extends TestCase {
 
 
 		$service = new HttpSigner();
-		$request = $service->sign(request: $request, key: self::PRIVATE_KEY);
+		$request = $service->sign(request: $request, keyId: 'key', keyPem: self::PRIVATE_KEY);
 
 		$this->assertEquals(
 			'keyId="key",algorithm="rsa-sha256",headers="(request-target) date host digest",signature="sB6q486awo4pCX88ige0xl63EWQDMU7VVLI++fvalB/+mt+BnQvNgdud9hG2PJYzcpTSVNeuJUpjcezrg8OLYpzFkDYNfDddsUYWUT58SS0bymxN/ZCVmWlPeuB0xmWZjo+wB7TCpKSoeu1sc2wM5zO+rSuWaJs9wHbNfjg3QlJoif/ZEje2sfs7HUwk78VwFr0ittDkBKLZYy5WV+/bgvPDWi8IplgvCc2Q5td1JGc2Uo0HYo/gwwiNp/fGPIH0YktSeHVwjGXtltRBKlB2g+hrfQ5K7Ixt0pQIdJWA34Vb6lh3nWp5uXIcuRfcLSY66lQcXD1Pv96BJABSqf3QFg=="',
 			$request->getHeaderLine('Signature')
 		);
 
-		$this->assertTrue($service->verify(request: $request, key: self::PUBLIC_KEY));
+		$this->assertTrue($service->verify(request: $request, keyId: 'key', keyPem: self::PUBLIC_KEY));
 	}
 
 	public function testItAddsADateHeaderIfNoneExists() {
@@ -77,7 +77,7 @@ final class HttpSignerTest extends TestCase {
 		);
 
 		$service = new HttpSigner();
-		$request = $service->sign(request: $request, key: self::PRIVATE_KEY);
+		$request = $service->sign(request: $request, keyId: 'key', keyPem: self::PRIVATE_KEY);
 
 		$this->assertEquals(date(DateTimeInterface::RFC7231), $request->getHeaderLine('Date'));
 	}

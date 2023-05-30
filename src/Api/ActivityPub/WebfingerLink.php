@@ -27,6 +27,11 @@ class WebfingerLink extends Value {
 	) {
 	}
 
+	/**
+	 * Serialize this object.
+	 *
+	 * @return array
+	 */
 	public function toArray(): array {
 		return array_filter(parent::toArray(), fn($item) => isset($item));
 	}

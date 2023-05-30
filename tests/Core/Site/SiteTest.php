@@ -14,6 +14,8 @@ final class SiteTest extends TestCase {
 				handle: 'snek',
 				displayName: 'The Snek',
 				baseUrl: 'https://snek.smol.blog',
+				description: 'You know who I am.',
+				publicKey: '---PUBLIC KEY GOES HERE---',
 			)
 		);
 	}

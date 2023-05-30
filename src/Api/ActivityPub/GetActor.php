@@ -12,7 +12,15 @@ use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 
+/**
+ * Endpoint to give an ActivityPub actor for a site.
+ */
 class GetActor implements Endpoint {
+	/**
+	 * Get endpoint configuration.
+	 *
+	 * @return EndpointConfig
+	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/activitypub/actor',
@@ -33,6 +41,14 @@ class GetActor implements Endpoint {
 	) {
 	}
 
+	/**
+	 * Execute the endpoint.
+	 *
+	 * @param Identifier|null $userId Ignored.
+	 * @param array|null      $params Expects 'site'.
+	 * @param object|null     $body   Ignored.
+	 * @return ActorResponse
+	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): ActorResponse {
 		$site = $this->bus->fetch(new SiteById($params['site']));
 
@@ -43,7 +59,9 @@ class GetActor implements Endpoint {
 			outbox: $this->env->getApiUrl("/site/$site->id/activitypub/outbox"),
 			preferredUsername: $site->handle,
 			name: $site->displayName,
+			summary: $site->description,
 			sharedInbox: $this->env->getApiUrl("/activitypub/inbox"),
+			publicKeyPem: $site->publicKey,
 		);
 	}
 }
