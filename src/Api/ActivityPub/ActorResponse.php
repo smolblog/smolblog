@@ -14,6 +14,7 @@ class ActorResponse extends ActivityPubObject {
 	 * @param string      $inbox             URL to private inbox for this Actor.
 	 * @param string      $outbox            URL to outbox for this Actor.
 	 * @param string|null $preferredUsername Handle for this Actor on this server.
+	 * @param string|null $url               Link to the Actor's profile (blog home page).
 	 * @param string|null $name              Display name for this Actor.
 	 * @param string|null $summary           Description/summary for this Actor.
 	 * @param string|null $following         URL to accounts this Actor is following.
@@ -27,6 +28,7 @@ class ActorResponse extends ActivityPubObject {
 		public readonly string $inbox,
 		public readonly string $outbox,
 		public readonly ?string $preferredUsername = null,
+		public readonly ?string $url = null,
 		public readonly ?string $name = null,
 		public readonly ?string $summary = null,
 		public readonly ?string $following = null,

@@ -58,6 +58,7 @@ class GetActor implements Endpoint {
 			inbox: $this->env->getApiUrl("/site/$site->id/activitypub/inbox"),
 			outbox: $this->env->getApiUrl("/site/$site->id/activitypub/outbox"),
 			preferredUsername: $site->handle,
+			url: $site->baseUrl,
 			name: $site->displayName,
 			summary: $site->description,
 			sharedInbox: $this->env->getApiUrl("/activitypub/inbox"),
