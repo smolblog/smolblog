@@ -10,13 +10,29 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\NoRefreshKit;
 use Smolblog\Framework\Objects\RandomIdentifier;
 
+/**
+ * Connection class for Micro.blog
+ *
+ * Here because Micro.blog has an open, free API unlike *some* services we could mention.
+ */
 class MicroBlogConnector implements Connector {
 	use NoRefreshKit;
 
+	/**
+	 * Get the configuration for this Connector.
+	 *
+	 * @return string
+	 */
 	public static function getSlug(): string {
 		return 'microblog';
 	}
 
+	/**
+	 * Start an IndieAuth request with Micro.blog
+	 *
+	 * @param string $callbackUrl URL to redirect back to.
+	 * @return ConnectorInitData
+	 */
 	public function getInitializationData(string $callbackUrl): ConnectorInitData {
 		$state = (new RandomIdentifier())->toString();
 		$args = [
@@ -34,6 +50,13 @@ class MicroBlogConnector implements Connector {
 		);
 	}
 
+	/**
+	 * Finalize an IndieAuth request with Micro.blog
+	 *
+	 * @param string           $code Identification code from Micro.blog.
+	 * @param AuthRequestState $info Stored information about the request.
+	 * @return Connection|null
+	 */
 	public function createConnection(string $code, AuthRequestState $info): ?Connection {
 		$response = file_get_contents('https://micro.blog/indieauth/token', false, stream_context_create([
 			'http' => [
@@ -57,6 +80,12 @@ class MicroBlogConnector implements Connector {
 		);
 	}
 
+	/**
+	 * Get available blogs from Micro.blog
+	 *
+	 * @param Connection $connection Micro.blog connection to authenticate the request.
+	 * @return array
+	 */
 	public function getChannels(Connection $connection): array {
 		$authHeader = 'Bearer ' . $connection->details['token'];
 
