@@ -5,15 +5,12 @@ namespace Smolblog\Core\Connector\Commands;
 use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\StoppableMessageKit;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Command to fetch and save an updated list of channels for a given Connection.
  */
 class RefreshChannels extends Command implements AuthorizableMessage {
-	use StoppableMessageKit;
-
 	/**
 	 * Construct the command
 	 *

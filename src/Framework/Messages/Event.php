@@ -4,6 +4,7 @@ namespace Smolblog\Framework\Messages;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\EntityKit;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -18,8 +19,15 @@ use Smolblog\Framework\Objects\Identifier;
  * themselves._ This can allow old data to be interpreted in new ways, making migrations more reliable. It provides a
  * comprehensive audit trail that can more easily roll back unwanted changes.
  */
-abstract class Event {
+abstract class Event extends Message {
 	use EntityKit;
+
+	/**
+	 * Unique identifier (UUID) for this particular entity.
+	 *
+	 * @var Identifier
+	 */
+	public readonly Identifier $id;
 
 	/**
 	 * Time this Event took place.
@@ -39,6 +47,6 @@ abstract class Event {
 		DateTimeInterface $timestamp = null,
 	) {
 		$this->timestamp = $timestamp ?? new DateTimeImmutable();
-		$this->id = $id ?? Identifier::createFromDate($this->timestamp);
+		$this->id = $id ?? new DateIdentifier($this->timestamp);
 	}
 }

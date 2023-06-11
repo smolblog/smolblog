@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Markdown;
 
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Markdown\SmolblogMarkdown;
 
@@ -24,7 +24,7 @@ class MarkdownMessageRenderer implements Listener {
 	 * @param NeedsMarkdownRendered $message Message with Markdown to process.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(later: 1)]
+	#[ContentBuildLayerListener(earlier: 10)]
 	public function onNeedsMarkdownRendered(NeedsMarkdownRendered $message) {
 		$message->setHtml($this->md->parse($message->getMarkdown()));
 	}

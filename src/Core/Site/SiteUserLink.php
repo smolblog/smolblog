@@ -4,6 +4,7 @@ namespace Smolblog\Core\Site;
 
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\NamedIdentifier;
 
 /**
  * Represents a link between a User and a Site.
@@ -22,7 +23,7 @@ class SiteUserLink extends Entity {
 	 * @return Identifier
 	 */
 	public static function buildId(Identifier|string $siteId, Identifier|string $userId): Identifier {
-		return Identifier::createFromName(self::NAMESPACE, strval($siteId) . '|' . strval($userId));
+		return new NamedIdentifier(self::NAMESPACE, strval($siteId) . '|' . strval($userId));
 	}
 
 	/**

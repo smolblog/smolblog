@@ -17,6 +17,9 @@ class Model extends DomainModel {
 			'stateRepo' => Connector\Services\AuthRequestStateRepo::class,
 			'messageBus' => MessageBus::class,
 		],
+		Connector\Services\ChannelLinker::class => [
+			'bus' => MessageBus::class,
+		],
 		Connector\Services\ChannelRefresher::class => [
 			'messageBus' => MessageBus::class,
 			'connectors' => Connector\Services\ConnectorRegistry::class,
@@ -25,11 +28,18 @@ class Model extends DomainModel {
 			'messageBus' => MessageBus::class,
 			'connectorRepo' => Connector\Services\ConnectorRegistry::class,
 		],
+		Connector\Services\ConnectionService::class => [
+			'bus' => MessageBus::class,
+		],
 		Connector\Services\ConnectorRegistry::class => [
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
-		Content\Extensions\SyndicationLinks\SyndicationLinkService::class => [
+
+		Content\ContentService::class => [
+			'bus' => MessageBus::class,
+		],
+		Content\Extensions\Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
 		],
 		Content\Extensions\Tags\TagService::class => [
@@ -40,6 +50,7 @@ class Model extends DomainModel {
 		],
 		Content\Types\Reblog\ReblogService ::class => [
 			'bus' => MessageBus::class,
+			'embedService' => Content\Types\Reblog\ExternalContentService::class,
 		],
 		Content\Types\Status\StatusService::class => [
 			'bus' => MessageBus::class,

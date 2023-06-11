@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Framework\Objects\Identifier;
@@ -17,12 +17,6 @@ final class StatusTest extends TestCase {
 	public function testTheTitleIsTheTextTruncated() {
 		$status = new Status(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
-			permalink: '/test/content.html',
-			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
-			id: Identifier::createRandom(),
 		);
 
 		$this->assertEquals(
@@ -34,12 +28,6 @@ final class StatusTest extends TestCase {
 	public function testTheBodyIsTheTextFormatted() {
 		$status = new Status(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
-			permalink: '/test/content.html',
-			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
-			id: Identifier::createRandom(),
 		);
 
 		$status->setHtml($this->simpleTextFormatted);
@@ -55,12 +43,6 @@ final class StatusTest extends TestCase {
 
 		$status = new Status(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
-			permalink: '/test/content.html',
-			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
-			id: Identifier::createRandom(),
 		);
 
 		$status->getBodyContent();

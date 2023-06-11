@@ -3,7 +3,7 @@
 namespace Smolblog\Framework\Objects;
 
 use Exception;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class ConcreteValue extends Value {
 	public function __construct(

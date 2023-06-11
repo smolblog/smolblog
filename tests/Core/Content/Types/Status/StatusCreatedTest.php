@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
@@ -17,13 +17,11 @@ final class StatusCreatedTest extends TestCase {
 	public function testItCreatesAStatus() {
 		$status = new StatusCreated(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
-			permalink: '/test/content.html',
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
 		);
 
 		$this->assertEquals(Status::class, $status->getContentType());
@@ -32,13 +30,11 @@ final class StatusCreatedTest extends TestCase {
 	public function testTheTitleIsTheTextTruncated() {
 		$status = new StatusCreated(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
-			permalink: '/test/content.html',
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
 		);
 
 		$this->assertEquals($this->simpleTextTruncated, $status->getNewTitle());
@@ -47,13 +43,11 @@ final class StatusCreatedTest extends TestCase {
 	public function testTheBodyIsTheTextFormatted() {
 		$status = new StatusCreated(
 			text: $this->simpleTextMd,
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
-			permalink: '/test/content.html',
+			siteId: $this->randomId(),
+			authorId: $this->randomId(),
 			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
-			contentId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
 		);
 		$status->setHtml($this->simpleTextFormatted);
 

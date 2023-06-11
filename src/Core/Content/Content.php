@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content;
 
 use DateTimeInterface;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -18,7 +19,14 @@ use Smolblog\Framework\Objects\Identifier;
  * Remember, the canonical store for all data is the event stream! The Content class is intented to provide a
  * view into the data, but there may be other data accessable in other ways.
  */
-abstract class Content extends Entity {
+class Content extends Entity {
+	/**
+	 * Handles the body and title.
+	 *
+	 * @var ContentType
+	 */
+	public readonly ContentType $type;
+
 	/**
 	 * Relative URL for this content.
 	 *
@@ -57,40 +65,26 @@ abstract class Content extends Entity {
 	/**
 	 * Extensions attached to this content.
 	 *
-	 * @var array
+	 * @var ContentExtension[]
 	 */
-	private array $extensions;
-
-	/**
-	 * Get the title of the content.
-	 *
-	 * For use in the title tag, the list of content, and other places.
-	 *
-	 * @return string
-	 */
-	abstract public function getTitle(): string;
-
-	/**
-	 * Get the HTML-formatted content body.
-	 *
-	 * @return string
-	 */
-	abstract public function getBodyContent(): string;
+	public readonly array $extensions;
 
 	/**
 	 * Construct the content
 	 *
 	 * @throws InvalidContentException Thrown if an invalid state is given.
 	 *
-	 * @param Identifier        $siteId           ID of the site this content belongs to.
-	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
-	 * @param string            $permalink        Relative URL for this content.
-	 * @param DateTimeInterface $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility $visibility       Visiblity of the content.
-	 * @param Identifier|null   $id               ID of this content.
-	 * @param array             $extensions       Extensions attached to this content.
+	 * @param ContentType        $type             ContentType that handles body and title.
+	 * @param Identifier         $siteId           ID of the site this content belongs to.
+	 * @param Identifier         $authorId         ID of the user that authored/owns this content.
+	 * @param string             $permalink        Relative URL for this content.
+	 * @param DateTimeInterface  $publishTimestamp Date and time this content was first published.
+	 * @param ContentVisibility  $visibility       Visiblity of the content.
+	 * @param Identifier|null    $id               ID of this content.
+	 * @param ContentExtension[] $extensions       Extensions attached to this content.
 	 */
 	public function __construct(
+		ContentType $type,
 		Identifier $siteId,
 		Identifier $authorId,
 		?string $permalink = null,
@@ -99,37 +93,80 @@ abstract class Content extends Entity {
 		?Identifier $id = null,
 		array $extensions = [],
 	) {
-		if ($visibility === ContentVisibility::Published && (!isset($permalink) || !isset($publishTimestamp))) {
+		// TODO: Check for $permalink when published. Currently ignoring since WordPress doesn't assign permalinks until
+		// after publishing.
+		if ($visibility === ContentVisibility::Published && (!isset($publishTimestamp))) {
 			throw new InvalidContentException('Permalink and timestamp are required if content is published.');
 		}
 
+		$this->type = $type;
 		$this->permalink = $permalink;
 		$this->publishTimestamp = $publishTimestamp;
 		$this->visibility = $visibility;
 		$this->siteId = $siteId;
 		$this->authorId = $authorId;
-		parent::__construct(id: $id ?? Identifier::createFromDate());
-
-		array_walk($extensions, fn($ext) => $this->attachExtension($ext));
+		$this->extensions = $extensions;
+		parent::__construct(id: $id ?? new DateIdentifier());
 	}
 
 	/**
-	 * Add information from a ContentExtension
+	 * Serialize this array.
 	 *
-	 * @param ContentExtension $extension Data to add.
-	 * @return void
+	 * @return array
 	 */
-	public function attachExtension(ContentExtension $extension): void {
-		$this->extensions[get_class($extension)] = $extension;
+	public function toArray(): array {
+		return [
+			'id' => $this->id->toString(),
+			'siteId' => $this->siteId->toString(),
+			'authorId' => $this->authorId->toString(),
+			'permalink' => $this->permalink,
+			'publishTimestamp' => $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
+			'visibility' => $this->visibility->value,
+			'title' => $this->type->getTitle(),
+			'body' => $this->type->getBodyContent(),
+			'contentType' => [
+				...$this->type->toArray(),
+				'type' => get_class($this->type),
+			],
+			'extensions' => array_map(fn($ext) => $ext->toArray(), $this->extensions),
+		];
 	}
 
 	/**
-	 * Get the given extension from this content.
+	 * Create content from a serialized array
 	 *
-	 * @param string $class Fully-qualified class name of an extension.
-	 * @return ContentExtension
+	 * @param array $data Serialized data.
+	 * @return static
 	 */
-	public function getExtension(string $class): ContentExtension {
-		return $this->extensions[$class];
+	public static function fromArray(array $data): static {
+		$type = null;
+		if (isset($data['contentType'])) {
+			$contentTypeClass = $data['contentType']['type'];
+			unset($data['contentType']['type']);
+
+			$type = $contentTypeClass::fromArray($data['contentType']);
+		} else {
+			$type = new GenericContent(title: $data['title'], body: $data['body']);
+		}
+
+		unset($data['contentType']);
+		unset($data['title']);
+		unset($data['body']);
+
+		$extensions = [];
+		foreach ($data['extensions'] as $extClass => $extData) {
+			$extensions[$extClass] = $extClass::fromArray($extData);
+		}
+
+		return new Content(
+			id: Identifier::fromString($data['id']),
+			type: $type,
+			siteId: Identifier::fromString($data['siteId']),
+			authorId: Identifier::fromString($data['authorId']),
+			permalink: $data['permalink'] ?? null,
+			publishTimestamp: self::safeDeserializeDate($data['publishTimestamp']),
+			visibility: ContentVisibility::tryFrom($data['visibility']),
+			extensions: $extensions,
+		);
 	}
 }

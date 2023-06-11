@@ -2,52 +2,29 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use DateTimeInterface;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Core\Content\ContentType;
+use Smolblog\Framework\Objects\SerializableKit;
 
 /**
  * For reblogging interesting things from around the web.
  */
-class Reblog extends Content {
+class Reblog implements ContentType {
+	use SerializableKit;
+
 	/**
 	 * Undocumented function
 	 *
-	 * @param string                   $url              URL being reblogged.
-	 * @param Identifier               $siteId           ID of the site this content belongs to.
-	 * @param Identifier               $authorId         ID of the user that authored/owns this content.
-	 * @param string|null              $comment          Optional markdown-formatted comment on the remote content.
-	 * @param ExternalContentInfo|null $info             Fetched info from the external URL.
-	 * @param string|null              $commentHtml      The HTML-formatted optional comment.
-	 * @param string|null              $permalink        Relative URL for this content.
-	 * @param DateTimeInterface|null   $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility        $visibility       Visiblity of the content.
-	 * @param Identifier|null          $id               ID of this content.
-	 * @param array                    $extensions       Extensions attached to this content.
+	 * @param string                   $url         URL being reblogged.
+	 * @param string|null              $comment     Optional markdown-formatted comment on the remote content.
+	 * @param ExternalContentInfo|null $info        Fetched info from the external URL.
+	 * @param string|null              $commentHtml The HTML-formatted optional comment.
 	 */
 	public function __construct(
 		public readonly string $url,
-		Identifier $siteId,
-		Identifier $authorId,
 		public readonly ?string $comment = null,
 		private ?ExternalContentInfo $info = null,
 		private ?string $commentHtml = null,
-		?string $permalink = null,
-		?DateTimeInterface $publishTimestamp = null,
-		ContentVisibility $visibility = ContentVisibility::Draft,
-		?Identifier $id = null,
-		array $extensions = [],
 	) {
-		parent::__construct(
-			siteId: $siteId,
-			authorId: $authorId,
-			permalink: $permalink,
-			publishTimestamp: $publishTimestamp,
-			visibility: $visibility,
-			id: $id,
-			extensions: $extensions ?? [],
-		);
 	}
 
 	/**

@@ -5,6 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Crell\Tukio\Dispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query;
 
@@ -27,17 +28,19 @@ class DefaultMessageBus implements MessageBus {
 	 *
 	 * @param ListenerProviderInterface $provider PSR-14-compliant provider.
 	 */
-	public function __construct(ListenerProviderInterface $provider = null) {
+	public function __construct(
+		ListenerProviderInterface $provider = null
+	) {
 		$this->internal = new Dispatcher($provider);
 	}
 
 	/**
 	 * Dispatch the given message to its listeners.
 	 *
-	 * @param mixed $message Message to send.
+	 * @param object $message Message to send.
 	 * @return mixed Message potentially modified by listeners.
 	 */
-	public function dispatch(mixed $message): mixed {
+	public function dispatch(object $message): mixed {
 		return $this->internal->dispatch($message);
 	}
 
@@ -49,5 +52,19 @@ class DefaultMessageBus implements MessageBus {
 	 */
 	public function fetch(Query $query): mixed {
 		return $this->internal->dispatch($query)->results;
+	}
+
+	/**
+	 * Dispatch the given message on a separate thread.
+	 *
+	 * No guidance is given where said thread is. It could be a queued job on the same thread, it could be a managed
+	 * queue, it could be an entirely different server. As such, the given Message should have as much information
+	 * included as reasonably possible.
+	 *
+	 * @param Message $message Message to send.
+	 * @return void
+	 */
+	public function dispatchAsync(Message $message): void {
+		$this->internal->dispatch(new AsyncWrappedMessage($message));
 	}
 }

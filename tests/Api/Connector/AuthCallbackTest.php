@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;

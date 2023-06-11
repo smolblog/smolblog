@@ -2,16 +2,16 @@
 
 namespace Smolblog\Core\Connector\Commands;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
 use Smolblog\Framework\Objects\Identifier;
 
 final class LinkChannelToSiteTest extends TestCase {
 	public function testItIsAuthorizedByAUserCanLinkChannelAndSiteQuery() {
 		$command = new LinkChannelToSite(
-			channelId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			channelId: $this->randomId(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
 			canPull: true, canPush: false,
 		);
 		$authQuery = $command->getAuthorizationQuery();

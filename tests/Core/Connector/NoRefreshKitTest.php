@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Entities\Connection;
 
 final class TestUnrefreshableConnector {

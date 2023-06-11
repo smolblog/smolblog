@@ -50,4 +50,13 @@ trait ReblogEventKit {
 	public function setHtml(string $html): void {
 		$this->rendered = $html;
 	}
+
+	/**
+	 * Get the rendered HTML for the comment if it exists.
+	 *
+	 * @return string
+	 */
+	public function getCommentHtml(): string {
+		return $this->rendered ?? '';
+	}
 }

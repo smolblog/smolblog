@@ -5,9 +5,6 @@ namespace Smolblog\Core\Content\Queries;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Messages\MemoizableQueryKit;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Messages\StoppableMessage;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -24,21 +21,21 @@ use Smolblog\Framework\Objects\Identifier;
  * - An empty array for `visibility` or `types` (give `null` to ignore the filter)
  * - Not including Published in `visibility` on an unauthenticated query (`userId` is null)
  */
-class ContentList extends Query implements MemoizableQuery, StoppableMessage {
-	use MemoizableQueryKit;
-
+class ContentList extends MemoizableQuery {
 	/**
 	 * Construct the query.
 	 *
 	 * @throws InvalidMessageAttributesException Thown when invalid arguments are provided.
 	 *
-	 * @param integer         $page       Page to show starting from 0; defaults to 0, must be non-negative.
+	 * @param Identifier      $siteId     ID of the site to pull from.
+	 * @param integer         $page       Page to show starting from 1; defaults to 1, must be non-negative.
 	 * @param integer         $pageSize   Number of items per page; defaults to 30, must be positive.
 	 * @param Identifier|null $userId     Optional ID of user making the query to determine draft/hidden posts to show.
 	 * @param array|null      $visibility Array of ContentVisibility types to show; omit to show all.
 	 * @param array|null      $types      Array of content types to show; omit to show all.
 	 */
 	public function __construct(
+		public readonly Identifier $siteId,
 		public readonly int $page = 1,
 		public readonly int $pageSize = 30,
 		public readonly ?Identifier $userId = null,
@@ -47,7 +44,7 @@ class ContentList extends Query implements MemoizableQuery, StoppableMessage {
 	) {
 		// Check for invalid values; these indicate a programming error.
 		if (
-			$page < 0 ||
+			$page <= 0 ||
 			$pageSize <= 0
 		) {
 			throw new InvalidMessageAttributesException("Invalid filters given");

@@ -20,9 +20,7 @@ abstract class ContentCreated extends ContentEvent {
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
 	 * @param Identifier             $siteId           Site this content belongs to.
-	 * @param string                 $permalink        Relative URL for this content.
 	 * @param DateTimeInterface      $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility      $visibility       Visiblity of the content.
 	 * @param Identifier|null        $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
 	 */
@@ -31,19 +29,10 @@ abstract class ContentCreated extends ContentEvent {
 		Identifier $contentId,
 		Identifier $userId,
 		Identifier $siteId,
-		public readonly ?string $permalink = null,
 		public readonly ?DateTimeInterface $publishTimestamp = null,
-		public readonly ?ContentVisibility $visibility = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
-		if (
-			$this->visibility === ContentVisibility::Published &&
-			(!isset($this->permalink) || !isset($this->publishTimestamp))
-		) {
-			throw new InvalidContentException('Permalink and timestamp are required if content is published.');
-		}
-
 		parent::__construct(contentId: $contentId, userId: $userId, siteId: $siteId, id: $id, timestamp: $timestamp);
 	}
 
@@ -83,9 +72,7 @@ abstract class ContentCreated extends ContentEvent {
 	public function getPayload(): array {
 		return [
 			'authorId' => $this->authorId->toString(),
-			'permalink' => $this->permalink ?? null,
 			'publishTimestamp' => $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
-			'visibility' => $this->visibility?->value,
 			...$this->getContentPayload(),
 		];
 	}
@@ -109,14 +96,12 @@ abstract class ContentCreated extends ContentEvent {
 	protected static function payloadFromArray(array $payload): array {
 		$contentPayload = array_diff_key(
 			$payload,
-			array_flip(['authorId', 'permalink', 'publishTimestamp', 'visibility'])
+			array_flip(['authorId', 'permalinkSlug', 'publishTimestamp', 'visibility'])
 		);
 
 		return [
 			'authorId' => self::safeDeserializeIdentifier($payload['authorId'] ?? null),
-			'permalink' => $payload['permalink'] ?? null,
 			'publishTimestamp' => self::safeDeserializeDate($payload['publishTimestamp'] ?? ''),
-			'visibility' => ContentVisibility::tryFrom($payload['visibility'] ?? ''),
 			...static::contentPayloadFromArray($contentPayload),
 		];
 	}

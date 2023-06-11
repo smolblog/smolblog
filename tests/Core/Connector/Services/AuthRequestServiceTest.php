@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
@@ -42,14 +42,14 @@ final class AuthRequestServiceTest extends TestCase {
 			messageBus: $messageBus,
 		);
 
-		$command = new BeginAuthRequest(userId: Identifier::createRandom(), provider: 'smol', callbackUrl: '//smol.blog');
+		$command = new BeginAuthRequest(userId: $this->randomId(), provider: 'smol', callbackUrl: '//smol.blog');
 		$service->onBeginAuthRequest($command);
 
 		$this->assertEquals($authUrl, $command->redirectUrl);
 	}
 
 	public function testItHandlesTheFinishAuthRequestCommand(): void {
-		$userId = Identifier::createRandom();
+		$userId = $this->randomId();
 		$returnedConnection = new Connection(
 			userId: $userId,
 			provider: 'something',
@@ -77,7 +77,9 @@ final class AuthRequestServiceTest extends TestCase {
 		$stateRepo->method('getAuthRequestState')->willReturn(new AuthRequestState(
 			key: 'two',
 			userId: $userId,
+			provider: 'smol',
 			info: ['six' => 'eight'],
+			returnToUrl: 'https://smol.blog/callback',
 		));
 
 		$messageBus = $this->createMock(MessageBus::class);
@@ -89,10 +91,14 @@ final class AuthRequestServiceTest extends TestCase {
 			messageBus: $messageBus,
 		);
 
-		$service->onFinishAuthRequest(new FinishAuthRequest(
+		$command = new FinishAuthRequest(
 			provider: 'smol',
 			stateKey: 'two',
 			code: 'abc123',
-		));
+		);
+
+		$service->onFinishAuthRequest($command);
+
+		$this->assertEquals('https://smol.blog/callback', $command->returnToUrl);
 	}
 }

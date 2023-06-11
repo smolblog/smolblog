@@ -29,7 +29,7 @@ class ChannelLink implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: 'connect/link',
-			verb: Verb::PUT,
+			verb: Verb::POST,
 			bodyClass: ChannelLinkRequest::class,
 		);
 	}

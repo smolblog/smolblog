@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Objects;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Exceptions\RegistrationException;
 

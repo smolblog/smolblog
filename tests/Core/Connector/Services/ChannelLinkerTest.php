@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
@@ -16,15 +16,15 @@ final class ChannelLinkerTest extends TestCase {
 
 	public function testItHandlesTheLinkChannelToSiteCommand() {
 		$channel = new Channel(
-			connectionId: Identifier::createRandom(),
+			connectionId: $this->randomId(),
 			channelKey: 'snek.smol.blog',
 			displayName: 'snek.smol.blog',
 			details: ['smol' => 'blog'],
 		);
 		$command = new LinkChannelToSite(
 			channelId: $channel->id,
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
 			canPull: true, canPush: false,
 		);
 		$expectedEvent = new ChannelSiteLinkSet(
@@ -49,9 +49,9 @@ final class ChannelLinkerTest extends TestCase {
 
 		$bus = $this->createStub(MessageBus::class);
 		$command = new LinkChannelToSite(
-			channelId: Identifier::createRandom(),
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			channelId: $this->randomId(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
 			canPull: true, canPush: false,
 		);
 

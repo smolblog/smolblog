@@ -3,7 +3,7 @@
 namespace Smolblog\Test;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\Event;
 
 final class TestEvent extends Event {

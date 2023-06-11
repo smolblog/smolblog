@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Objects;
 
 use DateTimeImmutable;
 use JsonSerializable;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class TestSerializableObject { use SerializableKit; }
 

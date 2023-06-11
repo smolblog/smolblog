@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Status;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;
@@ -10,9 +10,10 @@ use Smolblog\Framework\Objects\Identifier;
 final class StatusCommandTest extends TestCase {
 	public function testCreateStatusIsAuthorizedByQuery() {
 		$command = new CreateStatus(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
 			text: 'Hello, world!',
+			publish: false,
 		);
 		$expected = new UserHasPermissionForSite(
 			siteId: $command->siteId,
@@ -26,9 +27,9 @@ final class StatusCommandTest extends TestCase {
 
 	public function testEditStatusIsAuthorizedByQuery() {
 		$command = new EditStatus(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			statusId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			statusId: $this->randomId(),
 			text: "What's happening?",
 		);
 		$expected = new UserCanEditContent(
@@ -42,9 +43,9 @@ final class StatusCommandTest extends TestCase {
 
 	public function testDeleteStatusIsAuthorizedByQuery() {
 		$command = new DeleteStatus(
-			siteId: Identifier::createRandom(),
-			userId: Identifier::createRandom(),
-			statusId: Identifier::createRandom(),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			statusId: $this->randomId(),
 		);
 		$expected = new UserCanEditContent(
 			siteId: $command->siteId,

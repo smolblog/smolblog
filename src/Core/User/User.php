@@ -30,6 +30,7 @@ class User extends Entity {
 			id: Identifier::fromString('4cf81e87-02ae-492c-9458-eef01a968d45'),
 			handle: 'smolbot',
 			displayName: 'Smolblog Internal System',
+			pronouns: 'it/its',
 			email: 'system@smolblog.org',
 		);
 		return self::$smolbot;
@@ -57,21 +58,31 @@ class User extends Entity {
 	public readonly string $email;
 
 	/**
+	 * Preferred pronouns for the user.
+	 *
+	 * @var string
+	 */
+	public readonly string $pronouns;
+
+	/**
 	 * Construct the entity
 	 *
 	 * @param Identifier $id          Unique identifier for the user.
 	 * @param string     $handle      Unique, all-lowercase text identifier (a.k.a. a "username").
 	 * @param string     $displayName Preferred displayed name for the user.
+	 * @param string     $pronouns    Preferred pronouns for the user.
 	 * @param string     $email       User's email address.
 	 */
 	public function __construct(
 		Identifier $id,
 		string $handle,
 		string $displayName,
+		string $pronouns,
 		string $email,
 	) {
 		$this->handle = $handle;
 		$this->displayName = $displayName;
+		$this->pronouns = $pronouns;
 		$this->email = $email;
 		parent::__construct(id: $id);
 	}

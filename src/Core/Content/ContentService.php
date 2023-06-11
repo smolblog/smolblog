@@ -2,17 +2,16 @@
 
 namespace Smolblog\Core\Content;
 
-use Crell\Tukio\Listener;
-use Smolblog\Core\Content\Commands\ChangeContentVisibility;
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
-use Smolblog\Core\Content\Events\ContentVisibilityChanged;
+use Smolblog\Core\Content\Queries\BaseContentById;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle generic content commands.
  */
-class ContentService extends Listener {
+class ContentService implements Listener {
 	/**
 	 * Construct the service
 	 *
@@ -34,24 +33,21 @@ class ContentService extends Listener {
 			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			permalink: $command->permalink,
 			publishTimestamp: $command->publishTimestamp,
 			authorId: $command->authorId,
 		));
 	}
 
 	/**
-	 * Change content visibility (draft -> published)
+	 * Copy the generated content to the query results.
 	 *
-	 * @param ChangeContentVisibility $command Valid command to execute.
+	 * BaseContentById is tagged as a ContentBuilder message, which means by this point the Content should already be
+	 * built. It just needs to be copied to the query results, which this handles.
+	 *
+	 * @param BaseContentById $query Query to handle.
 	 * @return void
 	 */
-	public function onChangeContentVisibility(ChangeContentVisibility $command): void {
-		$this->bus->dispatch(new ContentVisibilityChanged(
-			visibility: $command->visibility,
-			contentId: $command->contentId,
-			userId: $command->userId,
-			siteId: $command->siteId,
-		));
+	public function onBaseContentById(BaseContentById $query): void {
+		$query->results = $query->getContent();
 	}
 }

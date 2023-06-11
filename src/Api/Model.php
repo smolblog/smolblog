@@ -6,6 +6,7 @@ use DateTimeInterface;
 use Exception;
 use ReflectionClass;
 use ReflectionProperty;
+use ReflectionUnionType;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Api\Exceptions\BadRequest;
@@ -13,7 +14,9 @@ use Smolblog\Api\Exceptions\ErrorResponse;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
+use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
  * Domain model for the API.
@@ -24,6 +27,9 @@ use Smolblog\Framework\Messages\MessageBus;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
+		ActivityPub\GetActor::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
+		ActivityPub\Webfinger::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
+
 		Connector\AuthInit::class => [
 			'bus' => MessageBus::class,
 			'connectors' => ConnectorRegistry::class,
@@ -35,11 +41,35 @@ class Model extends DomainModel {
 			'authRepo' => AuthRequestStateRepo::class,
 		],
 		Connector\ChannelLink::class => ['bus' => MessageBus::class],
+		Connector\DeleteConnection::class => ['bus' => MessageBus::class],
 		Connector\RefreshChannels::class => ['bus' => MessageBus::class],
 		Connector\UserConnections::class => ['bus' => MessageBus::class],
+		Connector\SiteAndAvailableChannels::class => ['bus' => MessageBus::class],
+
+		Content\ListContent::class => ['bus' => MessageBus::class],
+		Content\GetReblog::class => ['bus' => MessageBus::class],
+		Content\CreateReblog::class => ['bus' => MessageBus::class],
+		Content\UpdateReblog::class => ['bus' => MessageBus::class],
+		Content\DeleteReblog::class => ['bus' => MessageBus::class],
+		Content\GetStatus::class => ['bus' => MessageBus::class],
+		Content\CreateStatus::class => ['bus' => MessageBus::class],
+		Content\UpdateStatus::class => ['bus' => MessageBus::class],
+		Content\DeleteStatus::class => ['bus' => MessageBus::class],
+
+		Preview\PreviewEmbed::class => ['embed' => ExternalContentService::class],
+		Preview\PreviewMarkdown::class => ['md' => SmolblogMarkdown::class],
 
 		Server\Base::class => ['env' => ApiEnvironment::class],
 		Server\Spec::class => ['env' => ApiEnvironment::class],
+
+		Site\GetSettings::class => ['bus' => MessageBus::class],
+		Site\UpdateSettings::class => ['bus' => MessageBus::class],
+		Site\GetUsers::class => ['bus' => MessageBus::class],
+		Site\UpdateUserPermissions::class => ['bus' => MessageBus::class],
+
+		User\GetMyProfile::class => ['bus' => MessageBus::class],
+		User\GetMySites::class => ['bus' => MessageBus::class],
+		User\UpdateMyProfile::class => ['bus' => MessageBus::class],
 	];
 
 	/**
@@ -57,7 +87,7 @@ class Model extends DomainModel {
 	 * @return void
 	 */
 	public static function printSpec(): void {
-		json_encode(self::generateOpenApiSpec(), JSON_PRETTY_PRINT);
+		echo json_encode(self::generateOpenApiSpec(), JSON_PRETTY_PRINT);
 	}
 
 	/**
@@ -79,22 +109,40 @@ class Model extends DomainModel {
 			$responses = self::getThrownResponses($runReflect->getDocComment());
 			$descriptions = self::getDescription($classReflect->getDocComment());
 
-			$responseClassName = $runReflect->getReturnType()?->getName();
-
-			if ($responseClassName === SuccessResponse::class) {
-				$responses[204] = [
-					'description' => 'Successful response',
-				];
+			$responseReturn = $runReflect->getReturnType();
+			$responseReturnTypes = [];
+			if (get_class($responseReturn) === ReflectionUnionType::class) {
+				$responseReturnTypes = array_map(fn($type) => $type->getName(), $responseReturn->getTypes());
 			} else {
-				$responses[200] = [
-					'description' => 'Successful response',
-					'content' => [
-						'application/json' => [
-							'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
-						],
-					],
-				];
+				$responseReturnTypes[] = $responseReturn->getName();
 			}
+
+			foreach ($responseReturnTypes as $responseClassName) {
+				switch ($responseClassName) {
+					case SuccessResponse::class:
+						$responses[204] = [
+							'description' => 'Successful response',
+						];
+						break;
+
+					case RedirectResponse::class:
+						$responses[302] = [
+							'description' => 'Redirect'
+						];
+						break;
+
+					default:
+						$responses[200] = [
+							'description' => 'Successful response',
+							'content' => [
+								'application/json' => [
+									'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+								],
+							],
+						];
+						break;
+				}//end switch
+			}//end foreach
 
 			$parameters = [
 				...array_map(
@@ -369,7 +417,7 @@ class Model extends DomainModel {
 
 		if ($typeName === 'array') {
 			$arrayTypeAttribute = $prop->getAttributes(ArrayType::class);
-			if ($arrayTypeAttribute[0]?->getArguments() !== null) {
+			if (isset($arrayTypeAttribute[0]) && $arrayTypeAttribute[0]->getArguments() !== null) {
 				$arrayType = $arrayTypeAttribute[0]->getArguments()[0];
 				if (is_array($arrayType)) {
 					return [

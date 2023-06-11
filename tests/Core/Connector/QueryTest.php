@@ -2,24 +2,23 @@
 
 namespace Smolblog\Core\Connector\Queries;
 
-use PHPUnit\Framework\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Test\TestCase;
 
 final class QueryTest extends TestCase {
 	public function testOtherQueriesCanBeCreated() {
 		$this->assertInstanceOf(
 			ChannelsForSite::class,
-			new ChannelsForSite(siteId: Identifier::createRandom(), canPull: true)
+			new ChannelsForSite(siteId: $this->randomId(), canPull: true)
 		);
 
 		$this->assertInstanceOf(
 			ConnectionsForUser::class,
-			new ConnectionsForUser(userId: Identifier::createRandom()),
+			new ConnectionsForUser(userId: $this->randomId()),
 		);
 
 		$this->assertInstanceOf(
 			SiteHasPermissionForChannel::class,
-			new SiteHasPermissionForChannel(siteId: Identifier::createRandom(), channelId: Identifier::createRandom())
+			new SiteHasPermissionForChannel(siteId: $this->randomId(), channelId: $this->randomId())
 		);
 	}
 }

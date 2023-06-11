@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 final class TagsTest extends TestCase {
 	public function testNormalizationWorksCorrectly() {

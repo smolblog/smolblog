@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Connector;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Entities\ConnectionWriter;
@@ -29,7 +29,7 @@ final class ConnectionRefresherTest extends TestCase {
 		$repo->method('get')->willReturn($this->connector);
 
 		$this->connection = new Connection(
-			userId: Identifier::createRandom(),
+			userId: $this->randomId(),
 			provider: 'test',
 			providerKey: '123',
 			displayName: '@me',

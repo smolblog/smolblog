@@ -9,6 +9,13 @@ use Smolblog\Framework\Messages\Command;
  */
 class FinishAuthRequest extends Command {
 	/**
+	 * URL to return the user to.
+	 *
+	 * @var string|null
+	 */
+	public ?string $returnToUrl = null;
+
+	/**
 	 * Create the command
 	 *
 	 * @param string $provider ID for a registered Connector.

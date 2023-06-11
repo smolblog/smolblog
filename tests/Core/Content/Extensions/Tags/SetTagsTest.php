@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Framework\Objects\Identifier;
 

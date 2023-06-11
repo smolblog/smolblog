@@ -2,10 +2,9 @@
 
 namespace Smolblog\Core\Connector\Services;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Connector;
-use Smolblog\Framework\Exceptions\RegistrationException;
 
 abstract class TestConnector implements Connector {
 	public static function getSlug(): string { return 'test'; }

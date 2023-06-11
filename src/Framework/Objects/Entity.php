@@ -11,6 +11,13 @@ abstract class Entity extends Value implements Stringable {
 	use EntityKit;
 
 	/**
+	 * Unique identifier (UUID) for this particular entity.
+	 *
+	 * @var Identifier
+	 */
+	public readonly Identifier $id;
+
+	/**
 	 * Create the Entity. This constructor exists mostly for use by subclasses.
 	 *
 	 * @param Identifier $id Unique identification for this object.

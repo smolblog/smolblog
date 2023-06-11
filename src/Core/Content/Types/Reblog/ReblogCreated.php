@@ -27,9 +27,7 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 * @param Identifier               $siteId           Site this content belongs to.
 	 * @param string|null              $comment          Additional comments on the URL.
 	 * @param ExternalContentInfo|null $info             External info on the URL.
-	 * @param string|null              $permalink        Relative URL for this content.
 	 * @param DateTimeInterface|null   $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility|null   $visibility       Visiblity of the content.
 	 * @param Identifier|null          $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null   $timestamp        Optional timestamp for this event.
 	 */
@@ -41,16 +39,12 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 		Identifier $siteId,
 		public readonly ?string $comment = null,
 		public readonly ?ExternalContentInfo $info = null,
-		?string $permalink = null,
 		?DateTimeInterface $publishTimestamp = null,
-		?ContentVisibility $visibility = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null,
 	) {
 		parent::__construct(
-			permalink: $permalink,
 			publishTimestamp: $publishTimestamp,
-			visibility: $visibility,
 			authorId: $authorId,
 			contentId: $contentId,
 			userId: $userId,

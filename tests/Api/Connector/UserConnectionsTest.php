@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Test\EndpointTestToolkit;
 use Smolblog\Core\Connector\Entities\Channel as ChannelEntity;
@@ -16,7 +16,7 @@ final class UserConnectionsTest extends TestCase {
 
 	public function testItReturnsConnectionsAndChannels() {
 		$connection = new ConnectionEntity(
-			userId: Identifier::createRandom(),
+			userId: $this->randomId(),
 			provider: 'smolblog',
 			providerKey: 'windfox',
 			displayName: '@windfox@smol.blog',

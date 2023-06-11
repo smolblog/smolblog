@@ -9,17 +9,10 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Indicates a base attribute has been edited.
  *
- * A "base" attribute is an attribute on the Content class, like permalink and timestamp. These attributes
+ * A "base" attribute is an attribute on the Content class, like permalinkSlug and timestamp. These attributes
  * are common across all content types and are not extensions.
  */
 class ContentBaseAttributeEdited extends ContentEvent {
-	/**
-	 * Relative URL for this content. Null indicates no change.
-	 *
-	 * @var string
-	 */
-	public readonly ?string $permalink;
-
 	/**
 	 * Date and time this content was first published. Null indicates no change.
 	 *
@@ -35,14 +28,13 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	public readonly ?Identifier $authorId;
 
 	/**
-	 * Construct the event. Requires either $permalink or $publishTimestamp
+	 * Construct the event. Requires either $permalinkSlug or $publishTimestamp
 	 *
 	 * @throws InvalidMessageAttributesException Thrown if no updated attributes provided.
 	 *
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
 	 * @param Identifier             $siteId           Site this content belongs to.
-	 * @param string|null            $permalink        Updated permalink; null indicates no change.
 	 * @param DateTimeInterface|null $publishTimestamp Date/Time content published; null indicates no change.
 	 * @param Identifier|null        $authorId         Identifier for the user that authored/owns this content.
 	 * @param Identifier|null        $id               Optional identifier for this event.
@@ -52,19 +44,17 @@ class ContentBaseAttributeEdited extends ContentEvent {
 		Identifier $contentId,
 		Identifier $userId,
 		Identifier $siteId,
-		?string $permalink = null,
 		?DateTimeInterface $publishTimestamp = null,
 		?Identifier $authorId = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
-		if (!isset($permalink) && !isset($publishTimestamp) && !isset($authorId)) {
+		if (!isset($publishTimestamp) && !isset($authorId)) {
 			throw new InvalidMessageAttributesException(
-				message: "ContentBaseAttributeEdited requires either permalink or publishTimestamp."
+				message: "ContentBaseAttributeEdited requires either authorId or publishTimestamp."
 			);
 		}
 
-		$this->permalink = $permalink;
 		$this->publishTimestamp = $publishTimestamp;
 		$this->authorId = $authorId;
 		parent::__construct(contentId: $contentId, userId: $userId, siteId: $siteId, id: $id, timestamp: $timestamp);
@@ -77,7 +67,6 @@ class ContentBaseAttributeEdited extends ContentEvent {
 	 */
 	public function getPayload(): array {
 		return [
-			'permalink' => $this->permalink,
 			'publishTimestamp' => $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED),
 			'authorId' => $this->authorId?->toString(),
 		];

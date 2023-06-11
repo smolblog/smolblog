@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Markdown;
 
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 final class MarkdownMessageRendererTest extends TestCase {

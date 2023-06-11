@@ -22,11 +22,13 @@ class BeginAuthRequest extends Command {
 	 * @param string     $provider    Identifier for a registered Connector.
 	 * @param Identifier $userId      Identifier for the authenticated User.
 	 * @param string     $callbackUrl Callback URL to give to the provider.
+	 * @param string     $returnToUrl Optional URL to return the end-user to upon completion.
 	 */
 	public function __construct(
 		public readonly string $provider,
 		public readonly Identifier $userId,
 		public readonly string $callbackUrl,
+		public readonly ?string $returnToUrl = null,
 	) {
 	}
 }

@@ -4,9 +4,11 @@ namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Content;
+use Smolblog\Core\Content\ContentType;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\SerializableKit;
 
 /**
  * A short, title-less post.
@@ -14,7 +16,9 @@ use Smolblog\Framework\Objects\Identifier;
  * While a comparison could be drawn to what the Iconfactory first called a "tweet", this is closer to a
  * Mastodon "toot" or a Micro.blog post in that it allows some basic formatting.
  */
-class Status extends Content {
+class Status implements ContentType {
+	use SerializableKit;
+
 	/**
 	 * Truncated the given text to a given number of characters.
 	 *
@@ -56,36 +60,13 @@ class Status extends Content {
 	/**
 	 * Construct this content object
 	 *
-	 * @param string            $text             Markdown-formatted text of the content.
-	 * @param Identifier        $siteId           ID of the site this content belongs to.
-	 * @param Identifier        $authorId         ID of the user that authored/owns this content.
-	 * @param string            $permalink        Relative URL for this content.
-	 * @param DateTimeInterface $publishTimestamp Date and time this content was first published.
-	 * @param ContentVisibility $visibility       Visiblity of the content.
-	 * @param Identifier|null   $id               ID of this content.
-	 * @param array             $extensions       Extensions attached to this content.
-	 * @param string|null       $rendered         Rendered HTML of the content.
+	 * @param string      $text     Markdown-formatted text of the content.
+	 * @param string|null $rendered Rendered HTML of the content.
 	 */
 	public function __construct(
 		public readonly string $text,
-		Identifier $siteId,
-		Identifier $authorId,
-		?string $permalink = null,
-		?DateTimeInterface $publishTimestamp = null,
-		?ContentVisibility $visibility = null,
-		?Identifier $id = null,
-		?array $extensions = null,
 		private ?string $rendered = null,
 	) {
-		parent::__construct(
-			siteId: $siteId,
-			authorId: $authorId,
-			permalink: $permalink,
-			publishTimestamp: $publishTimestamp,
-			visibility: $visibility,
-			id: $id,
-			extensions: $extensions ?? [],
-		);
 	}
 
 	/**

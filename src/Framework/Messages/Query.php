@@ -9,9 +9,9 @@ namespace Smolblog\Framework\Messages;
  * creating objects and sending them through a central orchestrator, we can more easily cache queries or send
  * complex queries to specialized handlers.
  *
- * All Queries that can be memoized should implement the MemoizableQuery interface.
+ * All Queries that can be memoized should extend MemoizableQuery.
  */
-abstract class Query {
+abstract class Query extends Message {
 	/**
 	 * Stores the results of the query. Initialized to `null`.
 	 *

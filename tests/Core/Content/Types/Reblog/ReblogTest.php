@@ -2,8 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use PHPUnit\Framework\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Test\TestCase;
 
 final class ReblogTest extends TestCase {
 	public function testTheTitleIsTheExternalContentTitle() {
@@ -14,8 +13,6 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
 			info: $external,
 		);
 
@@ -30,8 +27,6 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
 			info: $external,
 		);
 
@@ -46,8 +41,6 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
 			info: $external,
 			comment: 'Bamboozled again...',
 			commentHtml: "<p>Bamboozled again...</p>\n",
@@ -67,8 +60,6 @@ final class ReblogTest extends TestCase {
 
 		$reblog = new Reblog(
 			url: 'https://youtu.be/abc123',
-			siteId: Identifier::createRandom(),
-			authorId: Identifier::createRandom(),
 			comment: 'Bamboozled again...',
 		);
 
