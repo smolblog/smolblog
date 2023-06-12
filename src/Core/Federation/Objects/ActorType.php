@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\Core\Federation\Objects;
 
 enum ActorType: string {
 	case Application = 'Application';

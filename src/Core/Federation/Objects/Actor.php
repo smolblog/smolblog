@@ -1,13 +1,13 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\Core\Federation\Objects;
 
 /**
  * ActivityPub response for an Actor.
  */
-class ActorResponse extends ActivityPubObject {
+class Actor extends ActivityPubObject {
 	/**
-	 * Create the response.
+	 * Create the object.
 	 *
 	 * @param string      $id                ID (usually the URI) for this document.
 	 * @param ActorType   $type              Type of this actor.

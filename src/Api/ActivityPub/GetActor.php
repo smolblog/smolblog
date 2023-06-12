@@ -5,13 +5,13 @@ namespace Smolblog\Api\ActivityPub;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
-use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\RedirectResponse;
+use Smolblog\Core\Federation\Objects\Actor;
+use Smolblog\Core\Federation\Objects\ActorType;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\Value;
 
 /**
  * Endpoint to give an ActivityPub actor for a site.
@@ -48,16 +48,16 @@ class GetActor implements Endpoint {
 	 * @param Identifier|null $userId Ignored.
 	 * @param array|null      $params Expects 'site'.
 	 * @param object|null     $body   Ignored.
-	 * @return ActorResponse|RedirectResponse
+	 * @return Actor|RedirectResponse
 	 */
-	public function run(?Identifier $userId, ?array $params, ?object $body): ActorResponse|RedirectResponse {
+	public function run(?Identifier $userId, ?array $params, ?object $body): Actor|RedirectResponse {
 		$site = $this->bus->fetch(new SiteById($params['site']));
 
 		if (isset($params['Accept']) && !str_contains($params['Accept'], 'json')) {
 			return new RedirectResponse($site->baseUrl);
 		}
 
-		return new ActorResponse(
+		return new Actor(
 			id: $this->env->getApiUrl("/site/$site->id/activitypub/actor"),
 			type: ActorType::Person,
 			inbox: $this->env->getApiUrl("/site/$site->id/activitypub/inbox"),
