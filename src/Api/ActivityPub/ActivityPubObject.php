@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Federation\Objects;
+namespace Smolblog\Api\ActivityPub;
 
 use Smolblog\Framework\Objects\ExtendableValueKit;
 use Smolblog\Framework\Objects\Value;

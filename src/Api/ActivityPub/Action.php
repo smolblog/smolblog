@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Federation\Objects;
+namespace Smolblog\Api\ActivityPub;
 
 class Action extends ActivityPubObject {
 }
