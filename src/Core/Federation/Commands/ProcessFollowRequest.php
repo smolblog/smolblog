@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Federation\Commands;
 
-use Smolblog\Core\Federation\Objects\Actor;
+use Smolblog\Core\Federation\Follower;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -15,12 +15,12 @@ class ProcessFollowRequest extends Command {
 	 *
 	 * @param string     $requestId ID/URI of the ActivityPub Action.
 	 * @param Identifier $siteId    Site being followed.
-	 * @param Actor      $actor     Actor making the request.
+	 * @param Follower   $follower  Prospective follower making the request.
 	 */
 	public function __construct(
 		public readonly string $requestId,
 		public readonly Identifier $siteId,
-		public readonly Actor $actor,
+		public readonly Follower $follower,
 	) {
 	}
 }
