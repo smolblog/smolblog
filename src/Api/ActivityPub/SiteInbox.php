@@ -4,6 +4,7 @@ namespace Smolblog\Api\ActivityPub;
 
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
+use Smolblog\Api\ParameterType;
 use Smolblog\Api\Verb;
 
 class SiteInbox implements Endpoint {

@@ -21,6 +21,7 @@ class ActorResponse extends ActivityPubObject {
 	 * @param string|null $followers         URL to accounts following this Actor.
 	 * @param string|null $sharedInbox       URL to the public shared inbox on this server.
 	 * @param string|null $publicKeyPem      Public key for this Actor.
+	 * @param mixed       ...$etCetera       Additional fields found on the object.
 	 */
 	public function __construct(
 		string $id,
@@ -35,8 +36,9 @@ class ActorResponse extends ActivityPubObject {
 		public readonly ?string $followers = null,
 		public readonly ?string $sharedInbox = null,
 		public readonly ?string $publicKeyPem = null,
+		mixed ...$etCetera,
 	) {
-		parent::__construct(id: $id, type: $type->value);
+		parent::__construct(...$etCetera, id: $id, type: $type->value);
 	}
 
 	/**
