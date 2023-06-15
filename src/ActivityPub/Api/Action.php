@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\ActivityPub\Api;
 
 class Action extends ActivityPubObject {
 	public function __construct(

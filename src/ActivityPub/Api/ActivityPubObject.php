@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\ActivityPub\Api;
 
 use Smolblog\Framework\Objects\ExtendableValueKit;
 use Smolblog\Framework\Objects\Value;

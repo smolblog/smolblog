@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\ActivityPub\Api;
 
 /**
  * ActivityPub response for an Actor.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\ActivityPub\Api;
 
 enum ActorType: string {
 	case Application = 'Application';
