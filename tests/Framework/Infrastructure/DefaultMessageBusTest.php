@@ -51,7 +51,7 @@ final class DefaultMessageBusTest extends TestCase {
 
 		$providerStub = $this->createStub(ListenerProviderInterface::class);
 		$providerStub->method('getListenersForEvent')->willReturn([
-			fn($event) => $event->results = $expected,
+			fn($event) => $event->setResults($expected),
 		]);
 
 		$bus = new DefaultMessageBus($providerStub);

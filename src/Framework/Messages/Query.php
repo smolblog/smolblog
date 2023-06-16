@@ -17,5 +17,13 @@ abstract class Query extends Message {
 	 *
 	 * @var mixed
 	 */
-	public mixed $results = null;
+	protected mixed $results = null;
+
+	public function setResults(mixed $results): void {
+		$this->results = $results;
+	}
+
+	public function results(): mixed {
+		return $this->results;
+	}
 }

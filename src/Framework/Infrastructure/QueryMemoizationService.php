@@ -34,7 +34,7 @@ class QueryMemoizationService implements Listener {
 			return;
 		}
 
-		$query->results = $this->memos[$key];
+		$query->setResults($this->memos[$key]);
 		$query->stopMessage();
 	}
 
@@ -48,6 +48,6 @@ class QueryMemoizationService implements Listener {
 	public function setMemo(MemoizableQuery $query): void {
 		$key = $query->getMemoKey();
 
-		$this->memos[$key] = $query->results;
+		$this->memos[$key] = $query->results();
 	}
 }

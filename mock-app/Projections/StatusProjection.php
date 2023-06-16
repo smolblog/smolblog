@@ -44,7 +44,7 @@ class StatusProjection {
 		$prepared->execute([$query->id->toByteString()]);
 		$results = $prepared->fetch(mode: PDO::FETCH_ASSOC);
 		if (empty($results)) {
-			$query->results = null;
+			$query->setResults(null);
 			return;
 		}
 
@@ -54,7 +54,7 @@ class StatusProjection {
 			$extParsed[$class] = $class::fromArray($data);
 		}
 
-		$query->results = new Status(
+		$query->setResults(new Status(
 			text: $results['text'],
 			siteId: Identifier::fromByteString($results['siteId']),
 			authorId: Identifier::fromByteString($results['authorId']),
@@ -64,7 +64,7 @@ class StatusProjection {
 			id: $query->id,
 			extensions: $extParsed,
 			rendered: $results['rendered'],
-		);
+		));
 	}
 
 	public function onContentDeleted(StatusDeleted $event): void {

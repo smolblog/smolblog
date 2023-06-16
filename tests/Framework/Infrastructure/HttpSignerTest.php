@@ -77,9 +77,10 @@ final class HttpSignerTest extends TestCase {
 		);
 
 		$service = new HttpSigner();
+		$dateString = date(DateTimeInterface::RFC7231);
 		$request = $service->sign(request: $request, keyId: 'key', keyPem: self::PRIVATE_KEY);
 
 		// TODO: This test can fail if the previous line takes place in the previous second.
-		$this->assertEquals(date(DateTimeInterface::RFC7231), $request->getHeaderLine('Date'));
+		$this->assertEquals($dateString, $request->getHeaderLine('Date'));
 	}
 }

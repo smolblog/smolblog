@@ -56,7 +56,7 @@ class ContentList extends MemoizableQuery {
 			(!isset($userId) && isset($visibility) && !in_array(ContentVisibility::Published, $visibility)) ||
 			(isset($types) && empty($types))
 		) {
-			$this->results = [];
+			$this->setResults([]);
 			$this->stopMessage();
 		}
 	}

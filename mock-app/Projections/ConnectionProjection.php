@@ -37,22 +37,22 @@ class ConnectionProjection {
 		$prepared->execute([$query->connectionId->toByteString()]);
 		$results = $prepared->fetch(mode: PDO::FETCH_ASSOC);
 		if (empty($results)) {
-			$query->results = null;
+			$query->setResults(null);
 			return;
 		}
 
-		$query->results = new Connection(
+		$query->setResults(new Connection(
 			userId: Identifier::fromByteString($results['userId']),
 			provider: $results['provider'],
 			providerKey: $results['providerKey'],
 			displayName: $results['displayName'],
 			details: json_decode($results['details'], associative: true),
-		);
+		));
 	}
 
 	public function onConnectionBelongsToUser(ConnectionBelongsToUser $query) {
 		$prepared = $this->db->prepare('SELECT 1 FROM connections WHERE connection_id = ? AND user_id = ?');
 		$prepared->execute([$query->connectionId->toByteString(), $query->userId->toByteString()]);
-		$query->results = !empty($prepared->fetch());
+		$query->setResults(!empty($prepared->fetch()));
 	}
 }

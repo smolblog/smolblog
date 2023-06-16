@@ -35,8 +35,8 @@ class ConnectionRefresher implements Listener {
 	 */
 	#[ExecutionLayerListener(later: 1)]
 	public function checkOnConnectionById(ConnectionById $query) {
-		if ($query->results) {
-			$query->results = $this->refresh($query->results, userId: User::internalSystemUser()->id);
+		if ($query->results()) {
+			$query->setResults($this->refresh($query->results(), userId: User::internalSystemUser()->id));
 		}
 	}
 

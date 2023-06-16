@@ -48,6 +48,6 @@ class ContentService implements Listener {
 	 * @return void
 	 */
 	public function onBaseContentById(BaseContentById $query): void {
-		$query->results = $query->getContent();
+		$query->setResults($query->getContent());
 	}
 }

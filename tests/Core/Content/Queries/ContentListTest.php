@@ -24,20 +24,20 @@ final class ContentListTest extends TestCase {
 		$query = new ContentList(siteId: $this->randomId(), visibility: []);
 
 		$this->assertTrue($query->isPropagationStopped());
-		$this->assertEquals([], $query->results);
+		$this->assertEquals([], $query->results());
 	}
 
 	public function testEmptyTypesStopsMessage() {
 		$query = new ContentList(siteId: $this->randomId(), types: []);
 
 		$this->assertTrue($query->isPropagationStopped());
-		$this->assertEquals([], $query->results);
+		$this->assertEquals([], $query->results());
 	}
 
 	public function testAnonymousQueryWithoutPublishedVisibilityStopsMessage() {
 		$query = new ContentList(siteId: $this->randomId(), visibility: [ContentVisibility::Protected]);
 
 		$this->assertTrue($query->isPropagationStopped());
-		$this->assertEquals([], $query->results);
+		$this->assertEquals([], $query->results());
 	}
 }

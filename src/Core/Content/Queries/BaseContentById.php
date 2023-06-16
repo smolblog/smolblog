@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Queries;
 
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentBuilder;
 use Smolblog\Core\Content\ContentBuilderKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;
@@ -18,6 +19,13 @@ use Smolblog\Framework\Objects\Identifier;
  */
 abstract class BaseContentById extends MemoizableQuery implements ContentBuilder, AuthorizableMessage {
 	use ContentBuilderKit;
+
+	/**
+	 * True if the content with given ID does not exist.
+	 *
+	 * @var boolean
+	 */
+	protected bool $notFound = false;
 
 	/**
 	 * Construct the query.
@@ -40,6 +48,36 @@ abstract class BaseContentById extends MemoizableQuery implements ContentBuilder
 	 */
 	public function getContentId(): Identifier {
 		return $this->contentId;
+	}
+
+	/**
+	 * Directly set the Content.
+	 *
+	 * If `null` is given, the content is assumed "not found" and the query is halted.
+	 *
+	 * @param mixed $results Fully-formed Content or null if not found.
+	 * @return void
+	 */
+	public function setResults(mixed $results): void {
+		if (!isset($results)) {
+			$this->notFound = true;
+			$this->stopMessage();
+		}
+
+		$this->results = $results;
+	}
+
+	/**
+	 * Get the content from the ContentBuilder.
+	 *
+	 * @return Content|null
+	 */
+	public function results(): ?Content {
+		if ($this->notFound) {
+			return null;
+		}
+
+		return $this->results ?? $this->getContent();
 	}
 
 	/**

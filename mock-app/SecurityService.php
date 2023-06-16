@@ -54,17 +54,17 @@ class SecurityService {
 		$link = $this->getLink(siteId: $query->siteId, userId: $query->userId);
 
 		// If link does not exist or is not an admin link.
-		if (!($link?->isAdmin ?? false)) { $query->results = false; return; }
+		if (!($link?->isAdmin ?? false)) { $query->setResults(false; return); }
 
 		$prepared = $this->db->prepare('SELECT 1 FROM connections INNER JOIN channels ON channels.connection_id = connections.connection_id WHERE channel_id = ? AND user_id = ?');
 		$prepared->execute([$query->channelId->toByteString(), $query->userId->toByteString()]);
-		$query->results = !empty($prepared->fetch());
+		$query->setResults(!empty($prepared->fetch()));
 	}
 
 	public function onUserHasPermissionForSite(UserHasPermissionForSite $query) {
 		$link = $this->getLink(siteId: $query->siteId, userId: $query->userId);
 
-		$query->results = (
+		$query->setResults(
 			isset($link) &&
 			(!$query->mustBeAdmin || $link->isAdmin) &&
 			(!$query->mustBeAuthor || $link->isAuthor)
@@ -73,11 +73,11 @@ class SecurityService {
 
 	public function onUserCanEditContent(UserCanEditContent $query) {
 		$link = $this->getLink(siteId: $query->siteId, userId: $query->userId);
-		if (!isset($link)) { $query->results = false; return; }
-		if ($link->isAdmin) { $query->results = true; return; }
+		if (!isset($link)) { $query->setResults(false; return); }
+		if ($link->isAdmin) { $query->setResults(true; return); }
 
 		$prepared = $this->db->prepare('SELECT 1 FROM standard_content WHERE content_id = ? AND author_id = ?');
 		$prepared->execute([$query->contentId->toByteString(), $query->userId->toByteString()]);
-		$query->results = !empty($prepared->fetch());
+		$query->setResults(!empty($prepared->fetch()));
 	}
 }

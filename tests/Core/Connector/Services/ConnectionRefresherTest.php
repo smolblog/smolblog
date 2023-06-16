@@ -88,19 +88,19 @@ final class ConnectionRefresherTest extends TestCase {
 		$this->connector->method('connectionNeedsRefresh')->willReturn(false);
 
 		$query = new ConnectionById(connectionId: $this->connection->id);
-		$query->results = $this->connection;
+		$query->setResults($this->connection);
 
 		$this->service->checkOnConnectionById($query);
-		$this->assertEquals($this->connection, $query->results);
+		$this->assertEquals($this->connection, $query->results());
 	}
 
 	public function testItUpdatesTheConnectionByIdQueryWhenARefreshIsNeeded() {
 		$this->setUpForRefresh();
 
 		$query = new ConnectionById(connectionId: $this->connection->id);
-		$query->results = $this->connection;
+		$query->setResults($this->connection);
 
 		$this->service->checkOnConnectionById($query);
-		$this->assertEquals($this->refreshedConnection, $query->results);
+		$this->assertEquals($this->refreshedConnection, $query->results());
 	}
 }

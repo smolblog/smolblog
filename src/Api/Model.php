@@ -27,9 +27,6 @@ use Smolblog\Markdown\SmolblogMarkdown;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
-		ActivityPub\GetActor::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
-		ActivityPub\Webfinger::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
-
 		Connector\AuthInit::class => [
 			'bus' => MessageBus::class,
 			'connectors' => ConnectorRegistry::class,
