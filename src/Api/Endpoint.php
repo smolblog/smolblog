@@ -25,11 +25,11 @@ interface Endpoint {
 	 * @param Identifier|null $userId ID of the authenticated user; null if no logged-in user.
 	 * @param array|null      $params Associative array of any parameters in the URL or query string.
 	 * @param object|null     $body   JSON body if present.
-	 * @return Value
+	 * @return mixed
 	 */
 	public function run(
 		?Identifier $userId,
 		?array $params,
 		?object $body,
-	): Value;
+	): mixed;
 }
