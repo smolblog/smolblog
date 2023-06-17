@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Represents a User in the system.
  */
 class User extends Entity {
+	public const INTERNAL_SYSTEM_USER_ID = '4cf81e87-02ae-492c-9458-eef01a968d45';
+
 	/**
 	 * User object to represent system actions not tied to a particular user.
 	 *
@@ -27,7 +29,7 @@ class User extends Entity {
 	 */
 	public static function internalSystemUser(): User {
 		self::$smolbot ??= new User(
-			id: Identifier::fromString('4cf81e87-02ae-492c-9458-eef01a968d45'),
+			id: Identifier::fromString(self::INTERNAL_SYSTEM_USER_ID),
 			handle: 'smolbot',
 			displayName: 'Smolblog Internal System',
 			pronouns: 'it/its',
