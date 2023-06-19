@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\ActivityPub;
+namespace Smolblog\ActivityPub\Follow;
 
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;

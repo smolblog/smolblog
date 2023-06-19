@@ -6,7 +6,7 @@ use Smolblog\ActivityPhp\Type;
 use Smolblog\ActivityPhp\Type\AbstractObject;
 
 class ActivityObject {
-	public function fromArray(array $data): AbstractObject {
+	public static function fromArray(array $data): AbstractObject {
 		return Type::create($data);
 	}
 }

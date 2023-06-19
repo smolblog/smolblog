@@ -6,7 +6,9 @@ use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
 use Smolblog\ActivityPub\InboxService;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
+use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\ParameterType;
+use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -23,21 +25,30 @@ class SiteInbox implements Endpoint {
 
 	public function __construct(
 		private InboxService $service,
-	)
-	{
-
+	) {
 	}
 
-	public function run(?Identifier $userId, ?array $params, ?object $body): mixed
-	{
+	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
 		switch (get_class($body)) {
 			case Follow::class:
-				$this->service->handleFollow($body);
+				if (is_string($body->object) && !str_contains($body->object, $params['site'])) {
+					throw new BadRequest('Request sent to site inbox that does not target site.');
+				}
+
+				$this->service->handleFollow(request: $body, siteId: $params['site']);
 				break;
 
 			default:
-				# code...
+				if (function_exists('wp_insert_post')) {
+					wp_insert_post([
+						'post_author' => 1,
+						'post_content' => '<pre>' . print_r($body, true) . '</pre>',
+						'post_title' => 'Hit on inbox ' . $params['site'],
+					]);
+				}
 				break;
 		}
+
+		return new SuccessResponse();
 	}
 }

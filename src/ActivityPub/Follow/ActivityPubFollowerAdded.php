@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\ActivityPub;
+namespace Smolblog\ActivityPub\Follow;
 
 use DateTimeInterface;
 use Smolblog\ActivityPhp\Type;
