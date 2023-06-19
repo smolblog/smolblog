@@ -12,7 +12,15 @@ use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
 use Smolblog\Framework\Objects\Identifier;
 
+/**
+ * ActivityPub Inbox endpoint.
+ */
 class SiteInbox implements Endpoint {
+	/**
+	 * Get endpoint configuration.
+	 *
+	 * @return EndpointConfig
+	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/site/{site}/activitypub/inbox',
@@ -23,11 +31,26 @@ class SiteInbox implements Endpoint {
 		);
 	}
 
+	/**
+	 * Create the endpoint.
+	 *
+	 * @param InboxService $service Service to handle the request.
+	 */
 	public function __construct(
 		private InboxService $service,
 	) {
 	}
 
+	/**
+	 * Execute the endpoint.
+	 *
+	 * @throws BadRequest When the object does not match the site.
+	 *
+	 * @param Identifier|null $userId User making the request. Ignored.
+	 * @param array|null      $params Site expected.
+	 * @param object|null     $body   Some ActivityPub object expected.
+	 * @return SuccessResponse
+	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
 		switch (get_class($body)) {
 			case Follow::class:
