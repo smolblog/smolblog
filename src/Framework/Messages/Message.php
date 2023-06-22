@@ -48,4 +48,16 @@ abstract class Message implements StoppableEventInterface, ArraySerializable, Js
 	public function isPropagationStopped(): bool {
 		return $this->messageStopped;
 	}
+
+	/**
+	 * Serialize the message.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$data = get_object_vars($this);
+		unset($data['messageStopped']);
+
+		return $data;
+	}
 }

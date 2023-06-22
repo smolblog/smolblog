@@ -2,10 +2,12 @@
 
 namespace Smolblog\ActivityPub\Follow;
 
+use Exception;
 use Psr\Http\Client\ClientInterface;
 use Smolblog\ActivityPhp\Type\Extended\Activity\Accept;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Site\SiteById;
+use Smolblog\Core\User\User;
 use Smolblog\Framework\Infrastructure\HttpSigner;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
@@ -38,6 +40,8 @@ class FollowService implements Listener {
 	 *
 	 * TODO: dispatch an ActivityPubFollowerAdded event once an actual approval flow is in place.
 	 *
+	 * @throws Exception Thrown when sending the Accept action gives an error.
+	 *
 	 * @param ApproveFollowRequest $command Approval command.
 	 * @return void
 	 */
@@ -51,14 +55,35 @@ class FollowService implements Listener {
 		$body->actor = $this->env->getApiUrl("/site/$site->id/activitypub/actor");
 		$body->object = $command->request;
 
-		$this->fetcher->sendRequest($this->signer->sign(
-			request: new HttpRequest(
-				verb: HttpVerb::POST,
-				url: $command->request->actor->inbox,
-				body: $body->toArray(),
-			),
-			keyId: "$body->actor#publicKey",
-			keyPem: $site->publicKey,
-		));
+		$request = new HttpRequest(
+			verb: HttpVerb::POST,
+			url: $command->request->actor->inbox,
+			body: $body->toArray(),
+		);
+
+		/*
+			Signer is not working.
+			$this->fetcher->sendRequest($this->signer->sign(
+				request: $request,
+				keyId: "$body->actor#publicKey",
+				keyPem: $site->publicKey,
+			));
+		*/
+
+		$acceptResponse = $this->fetcher->sendRequest($request);
+		$resCode = $acceptResponse->getStatusCode();
+		if ($resCode >= 300 || $resCode < 200) {
+			throw new Exception('Error from federated server: ' . $acceptResponse->getBody()->getContents());
+		}
+	}
+
+	/**
+	 * Check for internal system user.
+	 *
+	 * @param UserCanApproveFollowers $query Security Query.
+	 * @return void
+	 */
+	public function onUserCanApproveFollowers(UserCanApproveFollowers $query) {
+		$query->setResults($query->userId->toString() == User::INTERNAL_SYSTEM_USER_ID);
 	}
 }

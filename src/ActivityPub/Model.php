@@ -4,6 +4,7 @@ namespace Smolblog\ActivityPub;
 
 use Psr\Http\Client\ClientInterface;
 use Smolblog\Api\ApiEnvironment;
+use Smolblog\Framework\Infrastructure\HttpSigner;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 
@@ -21,6 +22,13 @@ class Model extends DomainModel {
 		],
 		Api\Webfinger::class => [
 			'bus' => MessageBus::class,
+			'env' => ApiEnvironment::class,
+		],
+
+		Follow\FollowService::class => [
+			'bus' => MessageBus::class,
+			'fetcher' => ClientInterface::class,
+			'signer' => HttpSigner::class,
 			'env' => ApiEnvironment::class,
 		],
 

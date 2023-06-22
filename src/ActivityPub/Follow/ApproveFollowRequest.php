@@ -2,6 +2,7 @@
 
 namespace Smolblog\ActivityPub\Follow;
 
+use Smolblog\ActivityPhp\Type;
 use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
 use Smolblog\Core\Site\Site;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
@@ -39,8 +40,6 @@ class ApproveFollowRequest extends Command implements AuthorizableMessage {
 				message: 'Either a Site or a Site ID must be provided.',
 			);
 		}
-
-		$this->siteId ??= $site->id;
 	}
 
 	/**
@@ -52,6 +51,35 @@ class ApproveFollowRequest extends Command implements AuthorizableMessage {
 		return new UserCanApproveFollowers(
 			siteId: $this->siteId ?? $this->site->id,
 			userId: $this->userId,
+		);
+	}
+
+	/**
+	 * Serialize the message.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		return array_filter([
+			'userId' => $this->userId->toString(),
+			'request' => $this->request->toArray(),
+			'siteId' => $this->siteId?->toString(),
+			'site' => $this->site?->toArray(),
+		], fn($i) => isset($i));
+	}
+
+	/**
+	 * Deserialize the message.
+	 *
+	 * @param array $data Seriliazed message.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		return new self(
+			userId: Identifier::fromString($data['userId']),
+			request: Type::create($data['request']),
+			siteId: isset($data['siteId']) ? Identifier::fromString($data['siteId']) : null,
+			site: isset($data['site']) ? Site::fromArray($data['site']) : null,
 		);
 	}
 }

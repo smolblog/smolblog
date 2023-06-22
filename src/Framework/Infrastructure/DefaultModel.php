@@ -20,5 +20,7 @@ class DefaultModel extends DomainModel {
 		QueryMemoizationService::class => [],
 		SecurityCheckService::class => ['messageBus' => MessageBus::class],
 		SmolblogMarkdown::class => [],
+		HttpSigner::class => [],
+		KeypairGenerator::class => [],
 	];
 }
