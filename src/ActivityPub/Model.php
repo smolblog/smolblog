@@ -17,6 +17,10 @@ class Model extends DomainModel {
 			'bus' => MessageBus::class,
 			'env' => ApiEnvironment::class,
 		],
+		Api\SharedInbox::class => [
+			'service' => InboxService::class,
+			'env' => ApiEnvironment::class,
+		],
 		Api\SiteInbox::class => [
 			'service' => InboxService::class,
 		],
