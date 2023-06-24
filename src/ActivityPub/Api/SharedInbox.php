@@ -34,7 +34,8 @@ class SharedInbox implements Endpoint {
 	/**
 	 * Create the endpoint.
 	 *
-	 * @param InboxService $service Service to handle the request.
+	 * @param InboxService   $service Service to handle the request.
+	 * @param ApiEnvironment $env     Environment for the request.
 	 */
 	public function __construct(
 		private InboxService $service,
@@ -71,6 +72,12 @@ class SharedInbox implements Endpoint {
 		return new SuccessResponse();
 	}
 
+	/**
+	 * Turn a Smolblog actor URL or object into a site ID.
+	 *
+	 * @param string|object $prop Actor object or url string.
+	 * @return Identifier
+	 */
 	private function getSiteIdFromProperty(string|object $prop): Identifier {
 		$actorUrl = $prop;
 		if (is_object($prop) && is_string($prop->id)) {
