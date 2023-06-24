@@ -36,7 +36,7 @@ class GetUsers implements Endpoint {
 					),
 				)),
 			),
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Admin],
 		);
 	}
 

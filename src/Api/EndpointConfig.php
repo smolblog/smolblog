@@ -94,7 +94,7 @@ class EndpointConfig extends Value {
 		array $queryVariables = [],
 		?string $bodyClass = null,
 		?ParameterType $responseShape = null,
-		array $requiredScopes = [AuthScope::Read, AuthScope::Write],
+		array $requiredScopes = [AuthScope::Admin],
 	) {
 		$this->route = '/' . ltrim(rtrim($route, '/'), '/');
 		$this->verb = $verb;

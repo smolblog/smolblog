@@ -29,7 +29,7 @@ class UpdateSettings implements Endpoint {
 				'site' => ParameterType::identifier(),
 			],
 			bodyClass: SiteSettingsPayload::class,
-			requiredScopes: [AuthScope::Write],
+			requiredScopes: [AuthScope::Admin],
 		);
 	}
 

@@ -22,7 +22,7 @@ class GetMyProfile implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/my/profile',
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Profile],
 		);
 	}
 

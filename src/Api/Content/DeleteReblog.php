@@ -29,7 +29,7 @@ class DeleteReblog implements Endpoint {
 				'site' => ParameterType::identifier(),
 				'content' => ParameterType::identifier(),
 			],
-			requiredScopes: [AuthScope::Write]
+			requiredScopes: [AuthScope::Delete]
 		);
 	}
 

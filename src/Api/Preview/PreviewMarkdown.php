@@ -34,7 +34,7 @@ class PreviewMarkdown implements Endpoint {
 			responseShape: ParameterType::object(
 				rendered: ParameterType::string()
 			),
-			requiredScopes: [AuthScope::Read]
+			requiredScopes: [AuthScope::Identified]
 		);
 	}
 

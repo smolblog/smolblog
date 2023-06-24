@@ -29,7 +29,7 @@ class CreateStatus implements Endpoint {
 				'site' => ParameterType::identifier(),
 			],
 			bodyClass: CreateStatusPayload::class,
-			requiredScopes: [AuthScope::Write]
+			requiredScopes: [AuthScope::Create]
 		);
 	}
 

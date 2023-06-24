@@ -26,7 +26,7 @@ class PreviewEmbed implements Endpoint {
 			queryVariables: [
 				'url' => ParameterType::string(format: 'url'),
 			],
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Identified],
 		);
 	}
 

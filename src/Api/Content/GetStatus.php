@@ -31,7 +31,7 @@ class GetStatus implements Endpoint {
 				'site' => ParameterType::identifier(),
 				'content' => ParameterType::identifier(),
 			],
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Identified],
 		);
 	}
 

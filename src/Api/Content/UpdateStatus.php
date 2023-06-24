@@ -38,7 +38,7 @@ class UpdateStatus implements Endpoint {
 				'content' => ParameterType::identifier(),
 			],
 			bodyClass: UpdateStatusPayload::class,
-			requiredScopes: [AuthScope::Write]
+			requiredScopes: [AuthScope::Update]
 		);
 	}
 

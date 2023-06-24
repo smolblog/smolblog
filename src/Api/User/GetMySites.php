@@ -29,7 +29,7 @@ class GetMySites implements Endpoint {
 					items: ParameterType::fromClass(Site::class)
 				))
 			),
-			requiredScopes: [AuthScope::Read]
+			requiredScopes: [AuthScope::Profile]
 		);
 	}
 

@@ -34,7 +34,7 @@ class SiteAndAvailableChannels implements Endpoint {
 					items: ParameterType::fromClass(ChannelViaSite::class),
 				))
 			),
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Admin],
 		);
 	}
 

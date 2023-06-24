@@ -169,7 +169,7 @@ class Model extends DomainModel {
 
 			$security = [];
 			if (!empty($config->requiredScopes)) {
-				$security[] = ['smolAuth' => array_map(fn($s) => $s->value, $config->requiredScopes)];
+				$security[] = ['indieAuth' => array_map(fn($s) => $s->value, $config->requiredScopes)];
 				$security[] = ['wpAuth' => []];
 			}
 
@@ -216,28 +216,10 @@ class Model extends DomainModel {
 						'type' => 'http',
 						'scheme' => 'basic',
 					],
-					'smolAuth' => [
-						'type' => 'oauth2',
-						'description' => 'Gain user credentials without needing to store their password.',
-						'flows' => [
-							'authorizationCode' => [
-								'authorizationUrl' => '/oauth/authorize',
-								'tokenUrl' => '/oauth/token',
-								'refreshUrl' => '/oauth/refresh',
-								'scopes' => [
-									'read' => 'Retrieve information from the API.',
-									'write' => 'Make changes to a user\'s content or site.'
-								],
-							],
-							'implicit' => [
-								'authorizationUrl' => '/oauth/authorize',
-								'refreshUrl' => '/oauth/refresh',
-								'scopes' => [
-									'read' => 'Retrieve information from the API.',
-									'write' => 'Make changes to a user\'s content or site.'
-								],
-							]
-						],
+					'indieAuth' => [
+						'type' => 'http',
+						'scheme' => 'bearer',
+						'bearerFormat' => 'IndieAuth (see indieauth.net)'
 					],
 				],
 			],
