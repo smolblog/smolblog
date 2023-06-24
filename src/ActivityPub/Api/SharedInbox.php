@@ -51,19 +51,20 @@ class SharedInbox implements Endpoint {
 	 * @return SuccessResponse
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
+		if (function_exists('wp_insert_post')) {
+			wp_insert_post([
+				'post_author' => 1,
+				'post_content' => '<pre>' . print_r($body, true) . '</pre>',
+				'post_title' => 'Hit on shared inbox',
+			]);
+		}
+
 		switch (get_class($body)) {
 			case Follow::class:
 				$this->service->handleFollow(request: $body, siteId: $this->getSiteIdFromProperty($body->object));
 				break;
 
 			default:
-				if (function_exists('wp_insert_post')) {
-					wp_insert_post([
-						'post_author' => 1,
-						'post_content' => '<pre>' . print_r($body, true) . '</pre>',
-						'post_title' => 'Hit on shared inbox',
-					]);
-				}
 				break;
 		}
 

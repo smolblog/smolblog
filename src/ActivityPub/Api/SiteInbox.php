@@ -52,6 +52,14 @@ class SiteInbox implements Endpoint {
 	 * @return SuccessResponse
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
+		if (function_exists('wp_insert_post')) {
+			wp_insert_post([
+				'post_author' => 1,
+				'post_content' => '<pre>' . print_r($body, true) . '</pre>',
+				'post_title' => 'Hit on inbox ' . $params['site'],
+			]);
+		}
+
 		switch (get_class($body)) {
 			case Follow::class:
 				if (is_string($body->object) && !str_contains($body->object, $params['site'])) {
@@ -62,13 +70,6 @@ class SiteInbox implements Endpoint {
 				break;
 
 			default:
-				if (function_exists('wp_insert_post')) {
-					wp_insert_post([
-						'post_author' => 1,
-						'post_content' => '<pre>' . print_r($body, true) . '</pre>',
-						'post_title' => 'Hit on inbox ' . $params['site'],
-					]);
-				}
 				break;
 		}
 
