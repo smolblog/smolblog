@@ -9,6 +9,7 @@ use Smolblog\Core\Federation\Follower;
 use Smolblog\Core\Federation\FollowerAdded;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\Objects\NamedIdentifier;
 
 /**
  * Indicate that a new ActivityPub follower has been added.
@@ -45,15 +46,16 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 */
 	public function getFollower(): Follower {
 		$displayName = (isset($this->request->actor->name) ? $this->request->actor->name : '') .
-			'@' . $this->request->actor->preferredUsername .
-			'@' . parse_url($this->request->actor->inbox, PHP_URL_HOST);
+			' (@' . $this->request->actor->preferredUsername .
+			'@' . parse_url($this->request->actor->inbox, PHP_URL_HOST) . ')';
 
 		return new Follower(
 			siteId: $this->siteId,
 			provider: ActivityPubFollowerProvider::SLUG,
-			providerKey: $this->request->actor->id,
+			providerKey: new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, $this->request->actor->id),
 			displayName: $displayName,
 			data: [
+				'actor' => $this->request->actor->id,
 				'inbox' => $this->request->actor->inbox,
 				'sharedInbox' => $this->request->actor->sharedInbox ?? null,
 			],
