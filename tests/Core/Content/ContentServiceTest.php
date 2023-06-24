@@ -39,16 +39,4 @@ final class ContentServiceTest extends TestCase {
 		$service = new ContentService(bus: $messageBus);
 		$service->onEditContentBaseAttributes($command);
 	}
-
-	// public function testItHandlesBaseContentByIdQueries() {
-	// 	$contentMock = $this->createStub(Content::class);
-
-	// 	$queryMock = $this->createMock(BaseContentById::class);
-	// 	$queryMock->method('getContent')->willReturn($contentMock);
-
-	// 	$service = new ContentService(bus: $this->createStub(MessageBus::class));
-	// 	$service->onBaseContentById($queryMock);
-
-	// 	$this->assertEquals($contentMock, $queryMock->results());
-	// }
 }
