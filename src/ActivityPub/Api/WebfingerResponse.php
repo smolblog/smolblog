@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\ActivityPub\Api;
 
 use Smolblog\Api\ArrayType;
 use Smolblog\Framework\Objects\Value;

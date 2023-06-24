@@ -33,11 +33,11 @@ class ChannelProjection {
 		$results = $prepared->fetchAll(mode: PDO::FETCH_ASSOC);
 		// $results['details'] = json_decode($results['details'], associative: true);
 		//array map results to new Channel objects
-		$query->results = array_map(fn($row) => new Channel(
+		$query->setResults(array_map(fn($row) => new Channel(
 			connectionId: $query->connectionId,
 			channelKey: $row['channelKey'],
 			displayName: $row['displayName'],
 			details: json_decode($row['details'], associative: true),
-		), $results);
+		), $results));
 	}
 }

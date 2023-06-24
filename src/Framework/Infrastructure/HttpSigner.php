@@ -43,13 +43,7 @@ class HttpSigner {
 	public function verify(RequestInterface $request, string $keyId, string $keyPem): bool {
 		$context = new Context([
 			'keys' => [$keyId => $keyPem],
-			'algorithm' => 'rsa-sha256',
-			'headers' => ['(request-target)', 'Date', 'Host'],
 		]);
-
-		if (!$request->hasHeader('Date')) {
-			$request = $request->withAddedHeader('Date', date(DateTimeInterface::RFC7231));
-		}
 
 		return $context->verifier()->isSignedWithDigest($request);
 	}

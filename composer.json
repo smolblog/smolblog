@@ -23,6 +23,16 @@
       "email": "me@eph.me"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/oddevan/http-signatures-php"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/smolblog/activitypub-types"
+    }
+  ],
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
     "phpunit/phpunit": "^9"
@@ -46,6 +56,7 @@
     "phpseclib/phpseclib": "^3.0",
     "guzzlehttp/psr7": "^2.5",
     "psr/http-client": "^1.0",
-    "liamdennehy/http-signatures-php": "^11.0"
+    "liamdennehy/http-signatures-php": "dev-use-upstream-phpseclib",
+    "smolblog/activitypub-types": "^1.0"
   }
 }

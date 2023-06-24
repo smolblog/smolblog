@@ -51,7 +51,7 @@ class DefaultMessageBus implements MessageBus {
 	 * @return mixed Results of the query.
 	 */
 	public function fetch(Query $query): mixed {
-		return $this->internal->dispatch($query)->results;
+		return $this->internal->dispatch($query)->results();
 	}
 
 	/**

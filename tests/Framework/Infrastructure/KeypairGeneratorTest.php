@@ -17,4 +17,14 @@ final class KeypairGeneratorTest extends TestCase {
 		$this->assertTrue(str_ends_with($key1->privateKey, "-----END PRIVATE KEY-----"));
 		$this->assertNotEquals($key1, $key2);
 	}
+
+	public function testItNormalizesLineEndings() {
+		$service = new KeypairGenerator();
+		$key = $service->generate();
+
+		$this->assertStringNotContainsString("\r", $key->publicKey);
+		$this->assertStringContainsString("\n", $key->publicKey);
+		$this->assertStringNotContainsString("\r", $key->privateKey);
+		$this->assertStringContainsString("\n", $key->privateKey);
+	}
 }

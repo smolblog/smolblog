@@ -17,5 +17,24 @@ abstract class Query extends Message {
 	 *
 	 * @var mixed
 	 */
-	public mixed $results = null;
+	protected mixed $results = null;
+
+	/**
+	 * Set the results of the query. Override to add any extra validation.
+	 *
+	 * @param mixed $results Results of the query.
+	 * @return void
+	 */
+	public function setResults(mixed $results): void {
+		$this->results = $results;
+	}
+
+	/**
+	 * Get the query results. Override to add extra logic or specify a return type.
+	 *
+	 * @return mixed
+	 */
+	public function results(): mixed {
+		return $this->results;
+	}
 }

@@ -47,6 +47,9 @@ class Spec implements Endpoint {
 	 * @return Value
 	 */
 	public function run(?Identifier $userId = null, ?array $params = null, ?object $body = null): Value {
-		return new GenericResponse(...Model::generateOpenApiSpec(apiBase: $this->env->getApiUrl()));
+		return new GenericResponse(...Model::generateOpenApiSpec(
+			apiBase: $this->env->getApiUrl(),
+			endpoints: $params['endpoints'] ?? null,
+		));
 	}
 }

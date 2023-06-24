@@ -37,6 +37,7 @@ class HttpRequest implements RequestInterface {
 		$parsedBody = $body;
 		if (isset($body) && (is_array($body) || is_object($body))) {
 			$parsedBody = json_encode($body);
+			$headers['Content-Type'] ??= 'application/json';
 		}
 
 		$this->internal = new Request($verb->value, $url, $headers, $parsedBody);

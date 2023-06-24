@@ -37,17 +37,4 @@ class ContentService implements Listener {
 			authorId: $command->authorId,
 		));
 	}
-
-	/**
-	 * Copy the generated content to the query results.
-	 *
-	 * BaseContentById is tagged as a ContentBuilder message, which means by this point the Content should already be
-	 * built. It just needs to be copied to the query results, which this handles.
-	 *
-	 * @param BaseContentById $query Query to handle.
-	 * @return void
-	 */
-	public function onBaseContentById(BaseContentById $query): void {
-		$query->results = $query->getContent();
-	}
 }

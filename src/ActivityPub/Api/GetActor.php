@@ -1,7 +1,8 @@
 <?php
 
-namespace Smolblog\Api\ActivityPub;
+namespace Smolblog\ActivityPub\Api;
 
+use Smolblog\ActivityPhp\Type\Extended\Actor\Person;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
@@ -48,26 +49,30 @@ class GetActor implements Endpoint {
 	 * @param Identifier|null $userId Ignored.
 	 * @param array|null      $params Expects 'site'.
 	 * @param object|null     $body   Ignored.
-	 * @return ActorResponse|RedirectResponse
+	 * @return Person|RedirectResponse
 	 */
-	public function run(?Identifier $userId, ?array $params, ?object $body): ActorResponse|RedirectResponse {
+	public function run(?Identifier $userId, ?array $params, ?object $body): Person|RedirectResponse {
 		$site = $this->bus->fetch(new SiteById($params['site']));
 
 		if (isset($params['Accept']) && !str_contains($params['Accept'], 'json')) {
 			return new RedirectResponse($site->baseUrl);
 		}
 
-		return new ActorResponse(
-			id: $this->env->getApiUrl("/site/$site->id/activitypub/actor"),
-			type: ActorType::Person,
-			inbox: $this->env->getApiUrl("/site/$site->id/activitypub/inbox"),
-			outbox: $this->env->getApiUrl("/site/$site->id/activitypub/outbox"),
-			preferredUsername: $site->handle,
-			url: $site->baseUrl,
-			name: $site->displayName,
-			summary: $site->description,
-			sharedInbox: $this->env->getApiUrl("/activitypub/inbox"),
-			publicKeyPem: $site->publicKey,
-		);
+		$response = new Person();
+		$response->id = $this->env->getApiUrl("/site/$site->id/activitypub/actor");
+		$response->inbox = $this->env->getApiUrl("/site/$site->id/activitypub/inbox");
+		$response->outbox = $this->env->getApiUrl("/site/$site->id/activitypub/outbox");
+		$response->preferredUsername = $site->handle;
+		$response->url = $site->baseUrl;
+		$response->name = $site->displayName;
+		$response->summary = $site->description;
+		$response->endpoints = ['sharedInbox' => $this->env->getApiUrl("/activitypub/inbox")];
+		$response->publicKey = [
+			'id' => $response->id . '#publicKey',
+			'owner' => $response->id,
+			'publicKeyPem' => $site->publicKey,
+		];
+
+		return $response;
 	}
 }

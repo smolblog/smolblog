@@ -20,7 +20,7 @@ final class QueryMemoizationServiceTest extends TestCase {
 
 		$service->checkMemo($query);
 		$this->assertFalse($query->isPropagationStopped());
-		$this->assertNull($query->results);
+		$this->assertNull($query->results());
 	}
 
 	public function testAQueryWillBeStoppedAndGivenTheMemoizedValueIfPresent() {
@@ -28,13 +28,13 @@ final class QueryMemoizationServiceTest extends TestCase {
 		$service = new QueryMemoizationService();
 
 		$queryOne = new TestMemoizableQuery(key: 'one', aux: 'two');
-		$queryOne->results = $expected;
+		$queryOne->setResults($expected);
 		$service->setMemo($queryOne);
 
 		$queryTwo = new TestMemoizableQuery(key: 'one', aux: 'four');
 		$service->checkMemo($queryTwo);
 
 		$this->assertTrue($queryTwo->isPropagationStopped());
-		$this->assertEquals($expected, $queryTwo->results);
+		$this->assertEquals($expected, $queryTwo->results());
 	}
 }

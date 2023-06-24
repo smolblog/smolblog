@@ -5,50 +5,14 @@ namespace Smolblog\Framework\Infrastructure;
 use DateTimeInterface;
 use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpVerb;
+use Smolblog\Framework\Objects\Keypair;
 use Smolblog\Test\TestCase;
 
 final class HttpSignerTest extends TestCase {
-	const PUBLIC_KEY = <<<EOF
-	-----BEGIN PUBLIC KEY-----
-	MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsp+ROePbM/54gm2YirSG
-	QTAmaKzmYwDgfR5NaITJbizQS9F3CnJsGKQWprAW8bbnXQVyBDb9yP9OM+0/OtqH
-	c2NxW4ZNovSO/ehJqZ34yDFK9pg9UMksP7GnlKp2WIHWJMg+YBo8wc4Bpelm7PTa
-	rcqi8QOb2LxMUgaI6Fm/g3/NsSWvaJ3gsZLu9DzheYlvLC5ggY+H91VNyBzsA7Eb
-	aENmFuAMBp5egMFstZa8d4Cq4huQbUvuy2LfeNiPCTGZHA+AqW//w2T+FslEKiJf
-	1vlkqAXEdC+xmVI6FoSKIfLa/wNbeI2Hz+u7dTJN1U+OJg+Cxhzra8soRVWaQvl3
-	LQIDAQAB
-	-----END PUBLIC KEY-----
-	EOF;
-
-	const PRIVATE_KEY = <<<EOF
-	-----BEGIN RSA PRIVATE KEY-----
-	MIIEpAIBAAKCAQEAsp+ROePbM/54gm2YirSGQTAmaKzmYwDgfR5NaITJbizQS9F3
-	CnJsGKQWprAW8bbnXQVyBDb9yP9OM+0/OtqHc2NxW4ZNovSO/ehJqZ34yDFK9pg9
-	UMksP7GnlKp2WIHWJMg+YBo8wc4Bpelm7PTarcqi8QOb2LxMUgaI6Fm/g3/NsSWv
-	aJ3gsZLu9DzheYlvLC5ggY+H91VNyBzsA7EbaENmFuAMBp5egMFstZa8d4Cq4huQ
-	bUvuy2LfeNiPCTGZHA+AqW//w2T+FslEKiJf1vlkqAXEdC+xmVI6FoSKIfLa/wNb
-	eI2Hz+u7dTJN1U+OJg+Cxhzra8soRVWaQvl3LQIDAQABAoIBAFsFnQeW6PjRz68H
-	Ehh8bX2Cf9APa0dAByU67882+z49b9dy4epc7GCSHUjLqqV5wuRQBg3HyANIth0X
-	5ISlHyjZn8Y35hAH92XDnOXmLgQ1ujF22qf0G6xJZ1AGnU/0uZ78u2xVcmiABa76
-	BQzyqQyumeGfKSeErI+P7OwZ79Gd0KwJfzQLexNQd1qbFAMVXUKeMmH34vS2B1fN
-	05AXxsDTxWmn+IbH3Vc5vfoiEDkjyBGZLcxiZE5gHPr69l15pue3cZECoPZ3Cn4D
-	rbnzYEBeNArGt1vbN+zeXgg5OnavMVyR2sEiHW/Lc3bnjOFdybNwiz51mgqgAZUO
-	4q9QcrECgYEA3Y+8NEGnTgWc/8Mob1YSv+agFctC6GUqjPaV8qYvDd6sQH7ZbQ3d
-	cKMMqxfXjgz+7/Q3xCVHA5a+D6Sp6SG/DtWB6egy/oFtg3FybIMUu4nvDWVIuchy
-	In8xNEdyRRuRPR+FV5l5FsKsxslSY9FZIrIW7vjdBpAfv1ycaB3f/K8CgYEAzmNC
-	FfRhYGzkSHT6dGvwWamcexiV3lzmIWQNvW+yI+qWNbYYU7xgX1q5OUrV4lF0oMta
-	vetbKqu7sN3nEmJXjen3JkgmssDwguqmcaBcRhuvk8AA8UNBCnS/1NoVtsCUwtqH
-	7Js/gKTtAD5jDwSWBkIBO/Y1QBOsiu+mR3gUGOMCgYEAgedZaKYpyuQdphOtrIGh
-	4qP8rmqLoyhVp2qYhjmLky1Af1wgbQFZGUZwEgyblKzn+JaO79EPbvo+G3vnJ0pi
-	8/aZAiTjaTdHl263sQm16TM5VvhQiKUOzk0W81kElaJRKK5HhxHz3jVsCe1WAjJn
-	eaFDMv/0z3lHM/K/vYfuoP8CgYBZvS7u/OOaWb6pArQkCwrm8ajonTgNB7fIrQiM
-	ZhS/KTFHCXZqcm41B+2hy7hUP7bGc6VxDvUFCMcDkHj4tWn8es7MBnNNJjdttTnK
-	DkAQ+9jMFaBTRzrwoPMISgtG+1Wzo/GWH6rs9MlYYcgQr53L+scum09sHSHZB3r1
-	eHDEoQKBgQCeoyVIkhaezeCQsvrwWT4wurqs/+yz3d2FeX+SDF7sLa9Kp8RLY0TJ
-	uhuMkThJ1ZW9QD8zFe+KcdYDgWc7n0kLAHJkHpOAl9fJgIFnSjoDicurDxRicV5p
-	MnQVV7oVQ9/tNIUBMJQZsI2FOJMHlbxcsYuY0eobeORy4TnKM1u3KQ==
-	-----END RSA PRIVATE KEY-----
-	EOF;
+	private Keypair $keypair;
+	public function setUp(): void {
+		$this->keypair = Keypair::jsonDeserialize('{"privateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCfQilRaBBSsYft\nXohIBL6QVoCB4zGaIGxSo7bfGTKnC3oZw/PkSSE3g3J8uG/b28fdAvSZKUv5sCrq\nnxPFw1s+IuKeMzunLo39FnkRcpP08jZno7A1oe49GI6HTK2XINXszymfSuEuKpcw\nlpBUAu8Vbr6dtYgsjIIjvBx48uXaAO61dGSVR0Aaxq7BW1yDIaXByXbE+iXG/Sx2\nntg0ol4VEy+uk5ncbFTkKd6BnJ42FPBilESbRhUxI8n2+iDCnXkZtkFs6C8E2WNQ\nkDvpzLutCpRl2FgIrH4RagXqLqfxajQC9rmlI9n9IkYljqgETKPoG2opXnwmMhsQ\nIkv5X3FhAgMBAAECggEAQlLOXD2nVpjij8MnpD59kiTEHdOdC5/nHL9bYCvhQVnx\nPpuxjWe7MqBGZJR22Sv9Xxhk/wgIwPJR3SXkmR6TeBwVHmcdt7EWpsjeIJsD7SWV\n7LFpp9xJGB6K9OPFA0REcvuPTOxlPNG15yE8+A/Eu7tEHO/Fxy+43uLvRJt7h77l\nesDo3dtF1HODmf/al4iCX9AJPHeyE8vbWantW1HWknP9fJ5nMyELR2kU7cIHu+Xc\nGsRJK/SBzh6AlTbgvhqb8HXyvLJ7pPt5tb+5unNc4AR6YJZp9lA49wnQPrjaoDtI\nsXkxGG1mOIoU8MusKVx3OqvYyRdj6rh/xQZ79ow4dQKBgQDL3EoLYIwiKcHoYbT/\nv4euuAOVLXw3oJXn1KMLqtHIrDMOCdTFKqx39TWHDIyt8X754MStAq90sSsR5ry1\nLen9CJfQ0vA0EKvUiGkcW7/aFn8/8I4X9IpJSuO1oUibSR6xCSXZNjfWRzK+ScWm\no9l9DGawMDHys6DprUJ7WTHA5wKBgQDH/ZB6ZyU95Cy0Ka8nq96udubg5v6uI2vY\nETlix6wKlmPQQnTm25lwoZZdAI61utuxCQGTv4RivPSYQAs9QTWLBt4yS6MEDDnz\ngh60h+pGxcu8kBIuxpI5qOynHfBOvI5S6qQCHo1UbGyV7eHaQ1uE0DcSYKYsNlrh\nQCX01yRKdwKBgAYPOjQ0XnX1f8oEfXjMnJ/Y4GJiw7pzj4EglOgX37xzQeE88ZIa\nvp2iMEEfYl8ZOoj64V2zIrv5OCqEDT/laXsX8ktGudUSWckrdNRe9cjpukaQQ+j6\nX9Hl4/bWIG5dMghZGULnlalM3HlDgBh/7ksFP1glVpa8OCA6AivgbtYpAoGBAI74\nC0gl4q7LJtYpEolWyduJLuZK3Hia4+bT8WVXfvsWpgZk6/N5u8iUC80yr9Lk4Vc/\nK/x2pmp70JPi/OXubxuTblcgUUp8fxVAyTigDXBIyKxlhkogNLq5s2yI75kqHMjT\n6ymEs95NoJbSN2p0SsG4pBYkN8dVmER9OmU9RDljAoGBALbSg8f/Y1YGAM4ilpw1\nO4t1M9AfaP9ezqC67CwMI2E0k36AP8cM7OqEZG1BBup3K3U6L9yDnH0ND6LZXUnZ\n8ySPr1jpOYo0NYAwwLHUyL2u5GxYTGPiSuEPOHQ3QT94kOaugho/lmnLia8pbcVd\npCoZvHStMlNiu7hZoYFkD946\n-----END PRIVATE KEY-----","publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn0IpUWgQUrGH7V6ISAS+\nkFaAgeMxmiBsUqO23xkypwt6GcPz5EkhN4NyfLhv29vH3QL0mSlL+bAq6p8TxcNb\nPiLinjM7py6N/RZ5EXKT9PI2Z6OwNaHuPRiOh0ytlyDV7M8pn0rhLiqXMJaQVALv\nFW6+nbWILIyCI7wcePLl2gDutXRklUdAGsauwVtcgyGlwcl2xPolxv0sdp7YNKJe\nFRMvrpOZ3GxU5CnegZyeNhTwYpREm0YVMSPJ9vogwp15GbZBbOgvBNljUJA76cy7\nrQqUZdhYCKx+EWoF6i6n8Wo0Ava5pSPZ/SJGJY6oBEyj6BtqKV58JjIbECJL+V9x\nYQIDAQAB\n-----END PUBLIC KEY-----"}');
+	}
 
 	public function testItAddsAValidSignatureToAHttpRequest() {
 		$request = (new HttpRequest(
@@ -59,14 +23,22 @@ final class HttpSignerTest extends TestCase {
 
 
 		$service = new HttpSigner();
-		$request = $service->sign(request: $request, keyId: 'key', keyPem: self::PRIVATE_KEY);
+		$request = $service->sign(
+			request: $request,
+			keyId: 'https://smolblog.localhost/api/site/22523c80-32f6-45ff-a5bd-a623ebc1d0ac/activitypub/actor#publicKey',
+			keyPem: $this->keypair->privateKey
+		);
 
 		$this->assertEquals(
-			'keyId="key",algorithm="rsa-sha256",headers="(request-target) date host digest",signature="sB6q486awo4pCX88ige0xl63EWQDMU7VVLI++fvalB/+mt+BnQvNgdud9hG2PJYzcpTSVNeuJUpjcezrg8OLYpzFkDYNfDddsUYWUT58SS0bymxN/ZCVmWlPeuB0xmWZjo+wB7TCpKSoeu1sc2wM5zO+rSuWaJs9wHbNfjg3QlJoif/ZEje2sfs7HUwk78VwFr0ittDkBKLZYy5WV+/bgvPDWi8IplgvCc2Q5td1JGc2Uo0HYo/gwwiNp/fGPIH0YktSeHVwjGXtltRBKlB2g+hrfQ5K7Ixt0pQIdJWA34Vb6lh3nWp5uXIcuRfcLSY66lQcXD1Pv96BJABSqf3QFg=="',
+			'keyId="https://smolblog.localhost/api/site/22523c80-32f6-45ff-a5bd-a623ebc1d0ac/activitypub/actor#publicKey",algorithm="rsa-sha256",headers="(request-target) date host digest",signature="M82XytRCoUzxMk95oE5P9Hcn3HXvjCG3GyT8/WLSmyodvWEvCWNdGUB+9Xs4jcXAg/GoZXts9TGs1IiLZUL1OQHe/Uarm+V9Jiw+Tnlu8gdjgnhW8NNGbe6XsH75dzrOLAECUN/DzBmLY3QxNlHKsZrZ2VLjvIaA1gCdRdiVUQ7NnC31Z5tVNLF55XOOzIksRYdR9hmRXUC+MNVgub0z8TsIYzuv1kCGjk8rSahlFcfvPOUWAuFooWUbCEsbweuMLk2d2E/MLwRvZhKM4nSJfhue4MJkoLghRXjqchqHcdAwmGzZtdxI6kSME0SpP/+FxTkSCMZYJZRVaIkrzfQQiQ=="',
 			$request->getHeaderLine('Signature')
 		);
 
-		$this->assertTrue($service->verify(request: $request, keyId: 'key', keyPem: self::PUBLIC_KEY));
+		$this->assertTrue($service->verify(
+			request: $request,
+			keyId: 'https://smolblog.localhost/api/site/22523c80-32f6-45ff-a5bd-a623ebc1d0ac/activitypub/actor#publicKey',
+			keyPem: $this->keypair->publicKey
+		));
 	}
 
 	public function testItAddsADateHeaderIfNoneExists() {
@@ -77,9 +49,14 @@ final class HttpSignerTest extends TestCase {
 		);
 
 		$service = new HttpSigner();
-		$request = $service->sign(request: $request, keyId: 'key', keyPem: self::PRIVATE_KEY);
+		$dateString = date(DateTimeInterface::RFC7231);
+		$request = $service->sign(
+			request: $request,
+			keyId: 'https://smolblog.localhost/api/site/0c2f2fe8-8098-4868-a6f7-7a37dc679662/activitypub/actor#publicKey',
+			keyPem: $this->keypair->privateKey
+		);
 
 		// TODO: This test can fail if the previous line takes place in the previous second.
-		$this->assertEquals(date(DateTimeInterface::RFC7231), $request->getHeaderLine('Date'));
+		$this->assertEquals($dateString, $request->getHeaderLine('Date'));
 	}
 }

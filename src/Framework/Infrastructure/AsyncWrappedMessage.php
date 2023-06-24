@@ -7,7 +7,7 @@ use Smolblog\Framework\Messages\Message;
 /**
  * Wrapper to designate a message that should be enqueued to handle on a different thread.
  */
-class AsyncWrappedMessage {
+class AsyncWrappedMessage extends Message {
 	/**
 	 * Construct the message wrapper.
 	 *

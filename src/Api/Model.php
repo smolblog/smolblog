@@ -27,9 +27,6 @@ use Smolblog\Markdown\SmolblogMarkdown;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
-		ActivityPub\GetActor::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
-		ActivityPub\Webfinger::class => ['bus' => MessageBus::class, 'env' => ApiEnvironment::class],
-
 		Connector\AuthInit::class => [
 			'bus' => MessageBus::class,
 			'connectors' => ConnectorRegistry::class,
@@ -93,12 +90,14 @@ class Model extends DomainModel {
 	/**
 	 * Create a JSON-formatted OpenAPI spec from the endpoints.
 	 *
-	 * @param string $apiBase URL base for the endpoints.
+	 * @param string   $apiBase   URL base for the endpoints.
+	 * @param string[] $endpoints List of endpoint classes to parse.
 	 * @return array
 	 */
-	public static function generateOpenApiSpec(string $apiBase = null): array {
-		$endpoints = [];
-		foreach (array_keys(self::SERVICES) as $endpoint) {
+	public static function generateOpenApiSpec(string $apiBase = null, array $endpoints = null): array {
+		$endpoints ??= array_keys(self::SERVICES);
+		$paths = [];
+		foreach ($endpoints as $endpoint) {
 			if (!in_array(Endpoint::class, class_implements($endpoint))) {
 				continue;
 			}
@@ -174,7 +173,7 @@ class Model extends DomainModel {
 				$security[] = ['wpAuth' => []];
 			}
 
-			$endpoints[$config->route] = [
+			$paths[$config->route] = [
 				strtolower($config->verb->value) => array_filter([
 					'tags' => [ str_replace(__NAMESPACE__ . '\\', '', $classReflect->getNamespaceName()) ],
 					'summary' => $descriptions[0],
@@ -209,7 +208,7 @@ class Model extends DomainModel {
 				'description' => 'All Smolblog project documentation',
 				'url' => 'https://docs.smolblog.org/',
 			],
-			'paths' => $endpoints,
+			'paths' => $paths,
 			'components' => [
 				'schemas' => self::$schemaCache,
 				'securitySchemes' => [
