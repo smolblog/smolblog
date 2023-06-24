@@ -27,7 +27,7 @@ class UpdateMyProfile implements Endpoint {
 			route: '/my/profile/update',
 			verb: Verb::PUT,
 			bodyClass: UpdateProfileBody::class,
-			requiredScopes: [AuthScope::Write],
+			requiredScopes: [AuthScope::Profile],
 		);
 	}
 

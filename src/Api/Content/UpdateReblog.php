@@ -37,7 +37,7 @@ class UpdateReblog implements Endpoint {
 				'content' => ParameterType::identifier(),
 			],
 			bodyClass: UpdateReblogPayload::class,
-			requiredScopes: [AuthScope::Write]
+			requiredScopes: [AuthScope::Update]
 		);
 	}
 

@@ -18,6 +18,6 @@ final class EndpointConfigTest extends TestCase {
 		$config = new EndpointConfig(route: '/one/two');
 
 		$this->assertEquals(Verb::GET, $config->verb);
-		$this->assertEquals([AuthScope::Read, AuthScope::Write], $config->requiredScopes);
+		$this->assertEquals([AuthScope::Admin], $config->requiredScopes);
 	}
 }

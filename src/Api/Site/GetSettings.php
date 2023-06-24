@@ -26,7 +26,7 @@ class GetSettings implements Endpoint {
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 			],
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Admin],
 		);
 	}
 

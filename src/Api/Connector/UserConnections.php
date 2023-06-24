@@ -24,7 +24,7 @@ class UserConnections implements Endpoint {
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/my/connections',
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Admin],
 			responseShape: ParameterType::object(
 				connections: ParameterType::required(ParameterType::array(
 					items: ParameterType::fromClass(Connection::class),

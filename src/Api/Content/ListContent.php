@@ -40,7 +40,7 @@ class ListContent implements Endpoint {
 					items: ParameterType::fromClass(GenericContent::class)
 				))
 			),
-			requiredScopes: [AuthScope::Read],
+			requiredScopes: [AuthScope::Identified],
 		);
 	}
 

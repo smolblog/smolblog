@@ -30,7 +30,7 @@ class CreateReblog implements Endpoint {
 				'site' => ParameterType::identifier(),
 			],
 			bodyClass: CreateReblogPayload::class,
-			requiredScopes: [AuthScope::Write]
+			requiredScopes: [AuthScope::Create]
 		);
 	}
 

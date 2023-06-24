@@ -29,7 +29,7 @@ class UpdateUserPermissions implements Endpoint {
 				'site' => ParameterType::identifier(),
 			],
 			bodyClass: UserPermissionPayload::class,
-			requiredScopes: [AuthScope::Write],
+			requiredScopes: [AuthScope::Admin],
 		);
 	}
 
