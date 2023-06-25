@@ -3,6 +3,8 @@
 namespace Smolblog\Core\Content\Types\Status;
 
 use DateTimeImmutable;
+use Smolblog\Core\Content\ContentTypeConfiguration;
+use Smolblog\Core\Content\ContentTypeService;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
@@ -12,7 +14,21 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Service to handle Status-related commands.
  */
-class StatusService implements Listener {
+class StatusService implements Listener, ContentTypeService {
+	/**
+	 * Get the Status configuration.
+	 *
+	 * @return ContentTypeConfiguration
+	 */
+	public static function getConfiguration(): ContentTypeConfiguration {
+		return new ContentTypeConfiguration(
+			handle: 'status',
+			displayName: 'Status',
+			typeClass: Status::class,
+			singleItemQuery: StatusById::class,
+		);
+	}
+
 	/**
 	 * Construct the service.
 	 *
