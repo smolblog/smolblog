@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\SuccessResponse;
@@ -20,7 +20,7 @@ use Smolblog\Framework\Objects\Identifier;
  * to allow the site to send content into the Channel. Set `pull` to allow the site to retrieve content from the
  * Channel.
  */
-class ChannelLink implements Endpoint {
+class ChannelLink extends BasicEndpoint {
 	/**
 	 * Get the configuration.
 	 *

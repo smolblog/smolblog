@@ -3,14 +3,14 @@
 namespace Smolblog\Api\Server;
 
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Endpoint to get standard information about the server.
  */
-class Base implements Endpoint {
+class Base extends BasicEndpoint {
 	/**
 	 * Get the configuration for this endpoint.
 	 *

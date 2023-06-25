@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Preview;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
@@ -20,7 +20,7 @@ use Smolblog\Markdown\SmolblogMarkdown;
  * Even though there are no side-effects and this could safely be a GET request, the longer nature of some markdown
  * fields could exceed the request size for a GET request. So this is a POST request instead.
  */
-class PreviewMarkdown implements Endpoint {
+class PreviewMarkdown extends BasicEndpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *

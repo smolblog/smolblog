@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Content;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\SuccessResponse;
@@ -15,7 +15,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Endpoint to delete a note.
  */
-class DeleteNote implements Endpoint {
+class DeleteNote extends BasicEndpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *

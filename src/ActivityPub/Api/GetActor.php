@@ -4,7 +4,7 @@ namespace Smolblog\ActivityPub\Api;
 
 use Smolblog\ActivityPhp\Type\Extended\Actor\Person;
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
@@ -17,7 +17,7 @@ use Smolblog\Framework\Objects\Value;
 /**
  * Endpoint to give an ActivityPub actor for a site.
  */
-class GetActor implements Endpoint {
+class GetActor extends BasicEndpoint {
 	/**
 	 * Get endpoint configuration.
 	 *

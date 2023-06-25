@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Server;
 
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\Model;
@@ -14,7 +14,7 @@ use Smolblog\Framework\Objects\Value;
 /**
  * Return the generated OpenAPI spec.
  */
-class Spec implements Endpoint {
+class Spec extends BasicEndpoint {
 	/**
 	 * Get configuration.
 	 *

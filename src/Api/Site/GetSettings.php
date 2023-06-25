@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Site;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Site\GetSiteSettings;
@@ -14,7 +14,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Endpoint to get a site's settings.
  */
-class GetSettings implements Endpoint {
+class GetSettings extends BasicEndpoint {
 	/**
 	 * Get the configuration for this endpoint.
 	 *

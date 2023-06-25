@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Content;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\ParameterType;
@@ -22,7 +22,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Endpoint to update a reblog post.
  */
-class UpdateReblog implements Endpoint {
+class UpdateReblog extends BasicEndpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *

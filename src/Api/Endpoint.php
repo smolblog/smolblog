@@ -2,6 +2,8 @@
 
 namespace Smolblog\Api;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 
@@ -20,16 +22,10 @@ interface Endpoint {
 	public static function getConfiguration(): EndpointConfig;
 
 	/**
-	 * Respond to the request.
+	 * Handle the endpoint.
 	 *
-	 * @param Identifier|null $userId ID of the authenticated user; null if no logged-in user.
-	 * @param array|null      $params Associative array of any parameters in the URL or query string.
-	 * @param object|null     $body   JSON body if present.
-	 * @return mixed
+	 * @param ServerRequestInterface $request Incoming request.
+	 * @return ResponseInterface
 	 */
-	public function run(
-		?Identifier $userId,
-		?array $params,
-		?object $body,
-	): mixed;
+	public function handle(ServerRequestInterface $request): ResponseInterface;
 }

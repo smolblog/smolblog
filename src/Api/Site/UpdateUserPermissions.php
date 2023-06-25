@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Site;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\SuccessResponse;
@@ -15,7 +15,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Set permissions for a user on a site.
  */
-class UpdateUserPermissions implements Endpoint {
+class UpdateUserPermissions extends BasicEndpoint {
 	/**
 	 * Get endpoint configuration.
 	 *
