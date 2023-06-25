@@ -5,6 +5,7 @@ namespace Smolblog\IndieWeb\Micropub;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
+use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Core\User\UserSites;
 use Smolblog\Framework\Messages\MessageBus;
 use Taproot\Micropub\MicropubAdapter;
@@ -25,8 +26,12 @@ class MicropubService extends MicropubAdapter {
 		];
 	}
 
-
-
+	/**
+	 * Get the Micropub configuration for this server.
+	 *
+	 * @param array $params Raw query parameters.
+	 * @return void
+	 */
 	public function configurationQueryCallback(array $params) {
 		$sites = $this->bus->fetch(new UserSites($this->user['id'])) ?? [];
 		$allChannels = [];
@@ -74,8 +79,25 @@ class MicropubService extends MicropubAdapter {
 		];
 	}
 
-
+	/**
+	 * Handle a source query.
+	 *
+	 * @param string     $url        URL of the item to query.
+	 * @param array|null $properties Properties to return (null if all).
+	 * @return array|false
+	 */
 	public function sourceQueryCallback(string $url, ?array $properties = null) {
+		$parts = parse_url($url);
+		if (!$parts) {
+			return false;
+		}
+
+		$site = $this->bus->fetch(new SiteByResourceUri($parts['host']));
+		if (!$site) {
+			return false;
+		}
+
+		$content = $this->bus->fetch();
 	}
 
 
