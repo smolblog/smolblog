@@ -2,22 +2,21 @@
 
 namespace Smolblog\ActivityPub\Api;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Smolblog\ActivityPhp\Type\Extended\Actor\Person;
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Api\BasicEndpoint;
+use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
-use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
-use Smolblog\Api\RedirectResponse;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Framework\Objects\HttpResponse;
 
 /**
  * Endpoint to give an ActivityPub actor for a site.
  */
-class GetActor extends BasicEndpoint {
+class GetActor implements Endpoint {
 	/**
 	 * Get endpoint configuration.
 	 *
@@ -46,16 +45,17 @@ class GetActor extends BasicEndpoint {
 	/**
 	 * Execute the endpoint.
 	 *
-	 * @param Identifier|null $userId Ignored.
-	 * @param array|null      $params Expects 'site'.
-	 * @param object|null     $body   Ignored.
-	 * @return Person|RedirectResponse
+	 * If the `Accept` header does not contain 'json', the endpoint will redirect to the site homepage. This works
+	 * around Mastodon ignoring the `url` property and linking to the `ID` (this endpoint) for the user profile.
+	 *
+	 * @param ServerRequestInterface $request Incoming request.
+	 * @return ResponseInterface
 	 */
-	public function run(?Identifier $userId, ?array $params, ?object $body): Person|RedirectResponse {
-		$site = $this->bus->fetch(new SiteById($params['site']));
+	public function handle(ServerRequestInterface $request): ResponseInterface {
+		$site = $this->bus->fetch(new SiteById($request->getAttribute('smolblogPathVars', [])['site']));
 
-		if (isset($params['Accept']) && !str_contains($params['Accept'], 'json')) {
-			return new RedirectResponse($site->baseUrl);
+		if ($request->hasHeader('Accept') && !str_contains($request->getHeaderLine('Accept'), 'json')) {
+			return new HttpResponse(code: 302, headers: ['Location' => $site->baseUrl]);
 		}
 
 		$response = new Person();
@@ -73,6 +73,6 @@ class GetActor extends BasicEndpoint {
 			'publicKeyPem' => $site->publicKey,
 		];
 
-		return $response;
+		return new HttpResponse(body: $response->toArray());
 	}
 }

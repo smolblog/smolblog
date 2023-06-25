@@ -24,7 +24,7 @@ interface Endpoint {
 	/**
 	 * Handle the endpoint.
 	 *
-	 * @param ServerRequestInterface $request Incoming request.
+	 * @param ServerRequestInterface $request Incoming request with smolblogUserId and smolblogPathVars set.
 	 * @return ResponseInterface
 	 */
 	public function handle(ServerRequestInterface $request): ResponseInterface;
