@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Events\ContentBodyEdited;
@@ -8,10 +8,10 @@ use Smolblog\Core\Content\Markdown\NeedsMarkdownRendered;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Indicates a status' text has been edited.
+ * Indicates a note' text has been edited.
  */
-class StatusBodyEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
-	use StatusEventKit;
+class NoteBodyEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
+	use NoteEventKit;
 
 	/**
 	 * Create the event.

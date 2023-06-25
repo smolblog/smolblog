@@ -10,15 +10,15 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\Queries\GenericContentById;
-use Smolblog\Core\Content\Types\Status\Status;
-use Smolblog\Core\Content\Types\Status\StatusById;
+use Smolblog\Core\Content\Types\Note\Note;
+use Smolblog\Core\Content\Types\Note\NoteById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Get a particular Status content
+ * Get a particular Note content
  */
-class GetStatus implements Endpoint {
+class GetNote implements Endpoint {
 	/**
 	 * Get the endpoint's configuration.
 	 *
@@ -26,7 +26,7 @@ class GetStatus implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/site/{site}/content/status/{content}',
+			route: '/site/{site}/content/note/{content}',
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 				'content' => ParameterType::identifier(),
@@ -48,7 +48,7 @@ class GetStatus implements Endpoint {
 	/**
 	 * Execute the endpoint.
 	 *
-	 * @throws BadRequest Given ID is not a Status.
+	 * @throws BadRequest Given ID is not a Note.
 	 * @throws NotFound Given ID is not a visible piece of content.
 	 *
 	 * @param Identifier|null $userId User making the request.
@@ -65,13 +65,13 @@ class GetStatus implements Endpoint {
 			throw new NotFound('No content exists with that ID.');
 		}
 
-		$status = $this->bus->fetch(
-			new StatusById(siteId: $params['site'], contentId: $params['content'], userId: $userId)
+		$note = $this->bus->fetch(
+			new NoteById(siteId: $params['site'], contentId: $params['content'], userId: $userId)
 		);
-		if (!$status) {
-			throw new BadRequest('Content is not a Status.');
+		if (!$note) {
+			throw new BadRequest('Content is not a Note.');
 		}
 
-		return $status;
+		return $note;
 	}
 }

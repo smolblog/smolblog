@@ -1,21 +1,21 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\StatusTestKit;
+use Smolblog\Test\NoteTestKit;
 
-include_once __DIR__ . '/_StatusTestKit.php';
+include_once __DIR__ . '/_NoteTestKit.php';
 
-final class StatusCreatedTest extends TestCase {
-	use StatusTestKit;
+final class NoteCreatedTest extends TestCase {
+	use NoteTestKit;
 
-	public function testItCreatesAStatus() {
-		$status = new StatusCreated(
+	public function testItCreatesANote() {
+		$note = new NoteCreated(
 			text: $this->simpleTextMd,
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
@@ -24,11 +24,11 @@ final class StatusCreatedTest extends TestCase {
 			userId: $this->randomId(),
 		);
 
-		$this->assertEquals(Status::class, $status->getContentType());
+		$this->assertEquals(Note::class, $note->getContentType());
 	}
 
 	public function testTheTitleIsTheTextTruncated() {
-		$status = new StatusCreated(
+		$note = new NoteCreated(
 			text: $this->simpleTextMd,
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
@@ -37,11 +37,11 @@ final class StatusCreatedTest extends TestCase {
 			userId: $this->randomId(),
 		);
 
-		$this->assertEquals($this->simpleTextTruncated, $status->getNewTitle());
+		$this->assertEquals($this->simpleTextTruncated, $note->getNewTitle());
 	}
 
 	public function testTheBodyIsTheTextFormatted() {
-		$status = new StatusCreated(
+		$note = new NoteCreated(
 			text: $this->simpleTextMd,
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
@@ -49,15 +49,15 @@ final class StatusCreatedTest extends TestCase {
 			contentId: $this->randomId(),
 			userId: $this->randomId(),
 		);
-		$status->setHtml($this->simpleTextFormatted);
+		$note->setHtml($this->simpleTextFormatted);
 
-		$this->assertEquals($this->simpleTextMd, $status->getMarkdown());
-		$this->assertEquals($this->simpleTextFormatted, $status->getNewBody());
+		$this->assertEquals($this->simpleTextMd, $note->getMarkdown());
+		$this->assertEquals($this->simpleTextFormatted, $note->getNewBody());
 	}
 
 	public function testItSerializesAPayloadCorrectly() {
 		$expected = [
-			'type' => StatusCreated::class,
+			'type' => NoteCreated::class,
 			'contentId' => '7fe339e8-459b-4a48-8e30-e6638dc5ceb5',
 			'userId' => 'f8e10d2e-9f72-447a-8376-0007b14d94e7',
 			'siteId' => 'bd991aac-bd81-4ee7-b77c-793d4bc55796',
@@ -69,7 +69,7 @@ final class StatusCreatedTest extends TestCase {
 			]
 		];
 
-		$actual = new StatusCreated(
+		$actual = new NoteCreated(
 			text: 'There\'s a horse loose in a hospital!',
 			contentId: Identifier::fromString('7fe339e8-459b-4a48-8e30-e6638dc5ceb5'),
 			userId: Identifier::fromString('f8e10d2e-9f72-447a-8376-0007b14d94e7'),
@@ -84,7 +84,7 @@ final class StatusCreatedTest extends TestCase {
 
 	public function testItDeserializesAPayloadCorrectly() {
 		$actual = [
-			'type' => StatusCreated::class,
+			'type' => NoteCreated::class,
 			'contentId' => '7fe339e8-459b-4a48-8e30-e6638dc5ceb5',
 			'userId' => 'f8e10d2e-9f72-447a-8376-0007b14d94e7',
 			'siteId' => 'bd991aac-bd81-4ee7-b77c-793d4bc55796',
@@ -96,7 +96,7 @@ final class StatusCreatedTest extends TestCase {
 			]
 		];
 
-		$expected = new StatusCreated(
+		$expected = new NoteCreated(
 			text: 'There\'s a horse loose in a hospital!',
 			contentId: Identifier::fromString('7fe339e8-459b-4a48-8e30-e6638dc5ceb5'),
 			userId: Identifier::fromString('f8e10d2e-9f72-447a-8376-0007b14d94e7'),

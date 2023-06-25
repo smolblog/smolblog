@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\ContentVisibility;
@@ -10,17 +10,17 @@ use Smolblog\Core\Content\Markdown\NeedsMarkdownRendered;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Indicates a Status content has been created.
+ * Indicates a Note content has been created.
  */
-class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
-	use StatusEventKit;
+class NoteCreated extends ContentCreated implements NeedsMarkdownRendered {
+	use NoteEventKit;
 
 	/**
 	 * Create the Event.
 	 *
 	 * @throws InvalidContentException When contentType is not Static::class.
 	 *
-	 * @param string                 $text             Markdown-formatted text of the status.
+	 * @param string                 $text             Markdown-formatted text of the note.
 	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
@@ -65,6 +65,6 @@ class StatusCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 * @return string
 	 */
 	public function getContentType(): string {
-		return Status::class;
+		return Note::class;
 	}
 }

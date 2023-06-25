@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test;
 
-trait StatusTestKit {
+trait NoteTestKit {
 	private $simpleTextMd = 'I tend to frequent a local coffee shop for waffles. Today\'s soundtrack as I walked in was "I\'m Still Standing," "Funky Town" as I waited, and "Take On Me" as I left.';
 	private $simpleTextTruncated = 'I tend to frequent a local coffee shop for waffles. Today\'s soundtrack as I walked in was "I\'m Still...';
 	private $simpleTextFormatted = '<p>I tend to frequent a local coffee shop for waffles. Today\'s soundtrack as I walked in was "I\'m Still Standing," "Funky Town" as I waited, and "Take On Me" as I left.</p>';

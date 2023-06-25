@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Content;
@@ -16,7 +16,7 @@ use Smolblog\Framework\Objects\SerializableKit;
  * While a comparison could be drawn to what the Iconfactory first called a "tweet", this is closer to a
  * Mastodon "toot" or a Micro.blog post in that it allows some basic formatting.
  */
-class Status implements ContentType {
+class Note implements ContentType {
 	use SerializableKit;
 
 	/**
@@ -44,7 +44,7 @@ class Status implements ContentType {
 	}
 
 	/**
-	 * Get the HTML-formatted content of the status.
+	 * Get the HTML-formatted content of the note.
 	 *
 	 * @throws InvalidContentException Thrown if the rendered HTML has not been set on this object.
 	 *

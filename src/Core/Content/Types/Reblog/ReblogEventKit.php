@@ -23,7 +23,7 @@ trait ReblogEventKit {
 	}
 
 	/**
-	 * Get the HTML-formatted content of the status.
+	 * Get the HTML-formatted content of the reblog.
 	 *
 	 * @return string
 	 */

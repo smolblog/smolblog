@@ -1,50 +1,50 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\StatusTestKit;
+use Smolblog\Test\NoteTestKit;
 
-include_once __DIR__ . '/_StatusTestKit.php';
+include_once __DIR__ . '/_NoteTestKit.php';
 
-final class StatusTest extends TestCase {
-	use StatusTestKit;
+final class NoteTest extends TestCase {
+	use NoteTestKit;
 
 	public function testTheTitleIsTheTextTruncated() {
-		$status = new Status(
+		$note = new Note(
 			text: $this->simpleTextMd,
 		);
 
 		$this->assertEquals(
 			$this->simpleTextTruncated,
-			$status->getTitle()
+			$note->getTitle()
 		);
 	}
 
 	public function testTheBodyIsTheTextFormatted() {
-		$status = new Status(
+		$note = new Note(
 			text: $this->simpleTextMd,
 		);
 
-		$status->setHtml($this->simpleTextFormatted);
+		$note->setHtml($this->simpleTextFormatted);
 
 		$this->assertEquals(
 			$this->simpleTextFormatted,
-			$status->getBodyContent()
+			$note->getBodyContent()
 		);
 	}
 
 	public function testItThrowsAnExceptionIfFormattedTextIsAccessedBeforeBeingSet() {
 		$this->expectException(InvalidContentException::class);
 
-		$status = new Status(
+		$note = new Note(
 			text: $this->simpleTextMd,
 		);
 
-		$status->getBodyContent();
+		$note->getBodyContent();
 	}
 }

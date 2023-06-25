@@ -16,7 +16,7 @@ class Model extends DomainModel {
 		Projections\ConnectionProjection::class => ['db' => PDO::class],
 		Projections\ChannelProjection::class => ['db' => PDO::class],
 		Projections\StandardContentProjection::class => ['db' => PDO::class],
-		Projections\StatusProjection::class => ['db' => PDO::class],
+		Projections\NoteProjection::class => ['db' => PDO::class],
 		Transients::class => ['db' => PDO::class],
 		SecurityService::class => ['db' => PDO::class],
 
@@ -29,7 +29,7 @@ class Model extends DomainModel {
 		Projections\ConnectionProjection::class,
 		Projections\ChannelProjection::class,
 		Projections\StandardContentProjection::class,
-		Projections\StatusProjection::class,
+		Projections\NoteProjection::class,
 		SecurityService::class,
 	];
 }

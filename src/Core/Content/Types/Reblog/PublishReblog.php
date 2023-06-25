@@ -8,7 +8,7 @@ use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Take a status from draft to Published
+ * Take a reblog from draft to Published
  */
 class PublishReblog extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
@@ -23,7 +23,7 @@ class PublishReblog extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $siteId   Site this status is posted on.
+	 * @param Identifier $siteId   Site this reblog is posted on.
 	 * @param Identifier $userId   User making this change.
 	 * @param Identifier $reblogId Reblog being changed.
 	 */

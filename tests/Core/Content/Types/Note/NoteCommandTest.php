@@ -1,15 +1,15 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;
 
-final class StatusCommandTest extends TestCase {
-	public function testCreateStatusIsAuthorizedByQuery() {
-		$command = new CreateStatus(
+final class NoteCommandTest extends TestCase {
+	public function testCreateNoteIsAuthorizedByQuery() {
+		$command = new CreateNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
 			text: 'Hello, world!',
@@ -25,32 +25,32 @@ final class StatusCommandTest extends TestCase {
 		$this->assertEquals($expected, $command->getAuthorizationQuery());
 	}
 
-	public function testEditStatusIsAuthorizedByQuery() {
-		$command = new EditStatus(
+	public function testEditNoteIsAuthorizedByQuery() {
+		$command = new EditNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			statusId: $this->randomId(),
+			noteId: $this->randomId(),
 			text: "What's happening?",
 		);
 		$expected = new UserCanEditContent(
 			siteId: $command->siteId,
 			userId: $command->userId,
-			contentId: $command->statusId,
+			contentId: $command->noteId,
 		);
 
 		$this->assertEquals($expected, $command->getAuthorizationQuery());
 	}
 
-	public function testDeleteStatusIsAuthorizedByQuery() {
-		$command = new DeleteStatus(
+	public function testDeleteNoteIsAuthorizedByQuery() {
+		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			statusId: $this->randomId(),
+			noteId: $this->randomId(),
 		);
 		$expected = new UserCanEditContent(
 			siteId: $command->siteId,
 			userId: $command->userId,
-			contentId: $command->statusId,
+			contentId: $command->noteId,
 		);
 
 		$this->assertEquals($expected, $command->getAuthorizationQuery());

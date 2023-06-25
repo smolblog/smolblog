@@ -7,15 +7,15 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Objects\Value;
 
 /**
- * Composed payload to update a status.
+ * Composed payload to update a note.
  */
-class UpdateStatusPayload extends Value {
+class UpdateNotePayload extends Value {
 	/**
 	 * Construct the payload. Omit vales for no changes.
 	 *
 	 * @throws BadRequest No updated attributes provided.
 	 *
-	 * @param string|null                $text             Updated status text.
+	 * @param string|null                $text             Updated note text.
 	 * @param BaseAttributesPayload|null $baseAttributes   Updated base attributes.
 	 * @param SetTagsPayload|null        $tags             Updated tags.
 	 * @param SyndicationPayload|null    $syndicationLinks Updated links.

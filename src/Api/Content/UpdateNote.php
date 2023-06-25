@@ -16,14 +16,14 @@ use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Types\Reblog\CreateReblog as ReblogCreateReblog;
 use Smolblog\Core\Content\Types\Reblog\EditReblogComment;
 use Smolblog\Core\Content\Types\Reblog\EditReblogUrl;
-use Smolblog\Core\Content\Types\Status\EditStatus;
+use Smolblog\Core\Content\Types\Note\EditNote;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Endpoint to update a reblog post.
  */
-class UpdateStatus implements Endpoint {
+class UpdateNote implements Endpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *
@@ -31,13 +31,13 @@ class UpdateStatus implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/site/{site}/content/status/{content}/update',
+			route: '/site/{site}/content/note/{content}/update',
 			verb: Verb::PUT,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 				'content' => ParameterType::identifier(),
 			],
-			bodyClass: UpdateStatusPayload::class,
+			bodyClass: UpdateNotePayload::class,
 			requiredScopes: [AuthScope::Update]
 		);
 	}
@@ -59,7 +59,7 @@ class UpdateStatus implements Endpoint {
 	 *
 	 * @param Identifier|null $userId Required; user making the change.
 	 * @param array|null      $params Expectes site and content parameters.
-	 * @param object|null     $body   Instance of UpdateStatusPayload.
+	 * @param object|null     $body   Instance of UpdateNotePayload.
 	 * @return SuccessResponse
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
@@ -70,10 +70,10 @@ class UpdateStatus implements Endpoint {
 		];
 
 		if (isset($body->text)) {
-			$this->bus->dispatch(new EditStatus(
+			$this->bus->dispatch(new EditNote(
 				siteId: $params['site'],
 				userId: $userId,
-				statusId: $params['content'],
+				noteId: $params['content'],
 				text: $body->text,
 			));
 		}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\AuthorizableMessage;
@@ -9,23 +9,23 @@ use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Create a Status.
+ * Create a Note.
  */
-class CreateStatus extends Command implements AuthorizableMessage {
+class CreateNote extends Command implements AuthorizableMessage {
 	/**
-	 * Generated ID for the status.
+	 * Generated ID for the note.
 	 *
 	 * @var Identifier
 	 */
-	public Identifier $statusId;
+	public Identifier $noteId;
 
 	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $siteId  Site for this status.
-	 * @param Identifier $userId  User authoring this status.
-	 * @param string     $text    Markdown-formatted text of the status.
-	 * @param boolean    $publish True to publish status immediately.
+	 * @param Identifier $siteId  Site for this note.
+	 * @param Identifier $userId  User authoring this note.
+	 * @param string     $text    Markdown-formatted text of the note.
+	 * @param boolean    $publish True to publish note immediately.
 	 */
 	public function __construct(
 		public readonly Identifier $siteId,

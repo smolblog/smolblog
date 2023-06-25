@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 /**
- * Common code for Status-related events.
+ * Common code for Note-related events.
  */
-trait StatusEventKit {
+trait NoteEventKit {
 	/**
 	 * Store the rendered HTML
 	 *
@@ -19,11 +19,11 @@ trait StatusEventKit {
 	 * @return string
 	 */
 	public function getNewTitle(): string {
-		return Status::truncateText($this->text);
+		return Note::truncateText($this->text);
 	}
 
 	/**
-	 * Get the HTML-formatted content of the status.
+	 * Get the HTML-formatted content of the note.
 	 *
 	 * @return string
 	 */

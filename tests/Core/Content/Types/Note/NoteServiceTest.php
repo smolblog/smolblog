@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Status;
+namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeImmutable;
 use Smolblog\Core\Content\Content;
@@ -9,11 +9,11 @@ use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\EventComparisonTestKit;
 
-class StatusServiceTest extends TestCase {
+class NoteServiceTest extends TestCase {
 	use EventComparisonTestKit;
 
-	public function testItHandlesTheCreateStatusCommand() {
-		$command = new CreateStatus(
+	public function testItHandlesTheCreateNoteCommand() {
+		$command = new CreateNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
 			text: 'Hello, everybody!',
@@ -21,14 +21,14 @@ class StatusServiceTest extends TestCase {
 		);
 
 		$messageBus = $this->createMock(MessageBus::class);
-		$messageBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(StatusCreated::class));
+		$messageBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(NoteCreated::class));
 
-		$service = new StatusService(bus: $messageBus);
-		$service->onCreateStatus($command);
+		$service = new NoteService(bus: $messageBus);
+		$service->onCreateNote($command);
 	}
 
-	public function testItSendsAPublicEventIfCreateStatusSaysToPublish() {
-		$command = new CreateStatus(
+	public function testItSendsAPublicEventIfCreateNoteSaysToPublish() {
+		$command = new CreateNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
 			text: 'Hello, everybody!',
@@ -37,22 +37,22 @@ class StatusServiceTest extends TestCase {
 
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->isInstanceOf(StatusCreated::class)],
-			[$this->isInstanceOf(PublicStatusCreated::class)],
+			[$this->isInstanceOf(NoteCreated::class)],
+			[$this->isInstanceOf(PublicNoteCreated::class)],
 		);
 
-		$service = new StatusService(bus: $messageBus);
-		$service->onCreateStatus($command);
+		$service = new NoteService(bus: $messageBus);
+		$service->onCreateNote($command);
 	}
 
-	public function testItHandlesThePublishStatusCommand() {
-		$command = new PublishStatus(
+	public function testItHandlesThePublishNoteCommand() {
+		$command = new PublishNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			statusId: $this->randomId(),
+			noteId: $this->randomId(),
 		);
-		$expectedEvent = new PublicStatusCreated(
-			contentId: $command->statusId,
+		$expectedEvent = new PublicNoteCreated(
+			contentId: $command->noteId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -60,25 +60,25 @@ class StatusServiceTest extends TestCase {
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
 		$messageBus->method('fetch')->willReturn(new Content(
-			type: new Status(text: 'Hello'),
+			type: new Note(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 		));
 
-		$service = new StatusService(bus: $messageBus);
-		$service->onPublishStatus($command);
+		$service = new NoteService(bus: $messageBus);
+		$service->onPublishNote($command);
 	}
 
-	public function testItHandlesTheEditStatusCommand() {
-		$command = new EditStatus(
+	public function testItHandlesTheEditNoteCommand() {
+		$command = new EditNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			statusId: $this->randomId(),
+			noteId: $this->randomId(),
 			text: "What's happening?"
 		);
-		$expectedEvent = new StatusBodyEdited(
+		$expectedEvent = new NoteBodyEdited(
 			text: "What's happening?",
-			contentId: $command->statusId,
+			contentId: $command->noteId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -86,54 +86,54 @@ class StatusServiceTest extends TestCase {
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
 		$messageBus->method('fetch')->willReturn(new Content(
-			type: new Status(text: 'Hello'),
+			type: new Note(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 		));
 
-		$service = new StatusService(bus: $messageBus);
-		$service->onEditStatus($command);
+		$service = new NoteService(bus: $messageBus);
+		$service->onEditNote($command);
 	}
 
-	public function testItSendsAPublicEventWhenAPublishedStatusIsEdited() {
-		$command = new EditStatus(
+	public function testItSendsAPublicEventWhenAPublishedNoteIsEdited() {
+		$command = new EditNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			statusId: $this->randomId(),
+			noteId: $this->randomId(),
 			text: "What's happening?"
 		);
 		$contentArgs = [
-			'contentId' => $command->statusId,
+			'contentId' => $command->noteId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
 
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new StatusBodyEdited(...$contentArgs, text: "What's happening?"))],
-			[$this->eventEquivalentTo(new PublicStatusEdited(...$contentArgs))],
+			[$this->eventEquivalentTo(new NoteBodyEdited(...$contentArgs, text: "What's happening?"))],
+			[$this->eventEquivalentTo(new PublicNoteEdited(...$contentArgs))],
 		);
 		$messageBus->method('fetch')->willReturn(new Content(
-			type: new Status(text: 'Hello'),
+			type: new Note(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			visibility: ContentVisibility::Published,
-			permalink: '/status/hello',
+			permalink: '/note/hello',
 			publishTimestamp: new DateTimeImmutable(),
 		));
 
-		$service = new StatusService(bus: $messageBus);
-		$service->onEditStatus($command);
+		$service = new NoteService(bus: $messageBus);
+		$service->onEditNote($command);
 	}
 
-	public function testItHandlesTheDeleteStatusCommand() {
-		$command = new DeleteStatus(
+	public function testItHandlesTheDeleteNoteCommand() {
+		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			statusId: $this->randomId(),
+			noteId: $this->randomId(),
 		);
-		$expectedEvent = new StatusDeleted(
-			contentId: $command->statusId,
+		$expectedEvent = new NoteDeleted(
+			contentId: $command->noteId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -141,42 +141,42 @@ class StatusServiceTest extends TestCase {
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
 		$messageBus->method('fetch')->willReturn(new Content(
-			type: new Status(text: 'Hello'),
+			type: new Note(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 		));
 
-		$service = new StatusService(bus: $messageBus);
-		$service->onDeleteStatus($command);
+		$service = new NoteService(bus: $messageBus);
+		$service->onDeleteNote($command);
 	}
 
-	public function testItSendsAPublicEventWhenAPublishedStatusIsDeleted() {
-		$command = new DeleteStatus(
+	public function testItSendsAPublicEventWhenAPublishedNoteIsDeleted() {
+		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			statusId: $this->randomId(),
+			noteId: $this->randomId(),
 		);
 		$contentArgs = [
-			'contentId' => $command->statusId,
+			'contentId' => $command->noteId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
 
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new PublicStatusRemoved(...$contentArgs))],
-			[$this->eventEquivalentTo(new StatusDeleted(...$contentArgs))],
+			[$this->eventEquivalentTo(new PublicNoteRemoved(...$contentArgs))],
+			[$this->eventEquivalentTo(new NoteDeleted(...$contentArgs))],
 		);
 		$messageBus->method('fetch')->willReturn(new Content(
-			type: new Status(text: 'Hello'),
+			type: new Note(text: 'Hello'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
 			visibility: ContentVisibility::Published,
-			permalink: '/status/hello',
+			permalink: '/note/hello',
 			publishTimestamp: new DateTimeImmutable(),
 		));
 
-		$service = new StatusService(bus: $messageBus);
-		$service->onDeleteStatus($command);
+		$service = new NoteService(bus: $messageBus);
+		$service->onDeleteNote($command);
 	}
 }

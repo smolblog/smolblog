@@ -13,7 +13,7 @@ use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Endpoint to delete a status.
+ * Endpoint to delete a reblog.
  */
 class DeleteReblog implements Endpoint {
 	/**
