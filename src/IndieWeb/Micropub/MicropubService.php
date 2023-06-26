@@ -5,9 +5,12 @@ namespace Smolblog\IndieWeb\Micropub;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
+use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Federation\SiteByResourceUri;
+use Smolblog\Core\User\UserById;
 use Smolblog\Core\User\UserSites;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\IndieWeb\MicroformatsConverter;
 use Taproot\Micropub\MicropubAdapter;
 
 /**
@@ -17,6 +20,7 @@ class MicropubService extends MicropubAdapter {
 	public function __construct(
 		private ApiEnvironment $env,
 		private MessageBus $bus,
+		private MicroformatsConverter $mf,
 	) {
 	}
 
@@ -97,7 +101,23 @@ class MicropubService extends MicropubAdapter {
 			return false;
 		}
 
-		$content = $this->bus->fetch();
+		$content = $this->bus->fetch(new ContentByPermalink(
+			siteId: $site->id,
+			permalink: $parts['path'],
+			userId: $this->user['id'],
+		));
+		if (!$content) {
+			return false;
+		}
+
+		$author = $this->bus->fetch(new UserById($content->authorId));
+		$props = $this->mf->entryPropertiesFromContent(content: $content, author: $author);
+
+		return array_filter(
+			$props,
+			fn($key) => !isset($properties) || in_array($key, $properties),
+			ARRAY_FILTER_USE_KEY
+		);
 	}
 
 
