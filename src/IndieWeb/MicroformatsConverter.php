@@ -10,24 +10,32 @@ use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Core\User\User;
 
 class MicroformatsConverter {
-	public function entryPropertiesFromContent(Content $content, ?User $author): array {
+	public function entryPropertiesFromContent(Content $content, ?User $author = null): array {
 		$props = [
 			'name' => [$content->type->getTitle()],
 			'content' => [['html' => $content->type->getBodyContent()]],
-			'published' => [$content->publishTimestamp ?? null],
-			'author' => [['value' => $author->displayName ?? null]],
-			'category' => array_map(
+			'published' => [$content->publishTimestamp?->format(DATE_ISO8601_EXPANDED) ?? null],
+			'url' => [$content->permalink ?? null],
+			'uid' => [$content->id->toString()],
+		];
+
+		if (!empty($content->extensions[Tags::class])) {
+			$props['category'] = array_map(
 				fn($ent) => $ent->text,
 				$content->extensions[Tags::class]?->tags ?? []
-			),
-			'url' => [[$content->permalink ?? null]],
-			'uid' => [[$content->id->toString()]],
-			'syndication' => array_map(
+			);
+		}
+
+		if (!empty($content->extensions[Syndication::class])) {
+			$props['syndication'] = array_map(
 				fn($ent) => $ent->url,
 				$content->extensions[Syndication::class]?->links ?? []
-			),
-			'repost-of' => [''],
-		];
+			);
+		}
+
+		if (isset($author)) {
+			$props['author'] = [['value' => $author?->displayName ?? null]];
+		}
 
 		switch (get_class($content->type)) {
 			case Note::class:

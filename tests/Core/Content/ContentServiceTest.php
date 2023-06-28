@@ -36,7 +36,7 @@ final class ContentServiceTest extends TestCase {
 		$messageBus = $this->createMock(MessageBus::class);
 		$messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
 
-		$service = new ContentService(bus: $messageBus);
+		$service = new ContentService(bus: $messageBus, registry: $this->createMock(ContentTypeRegistry::class));
 		$service->onEditContentBaseAttributes($command);
 	}
 }

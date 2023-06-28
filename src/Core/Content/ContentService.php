@@ -47,7 +47,7 @@ class ContentService implements Listener {
 	 * @return void
 	 */
 	public function onAdaptableContentQuery(AdaptableContentQuery $query): void {
-		if (!isset($query->getContentId())) {
+		if ($query->getContentId() === null) {
 			$query->setResults(null);
 			return;
 		}
