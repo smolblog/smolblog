@@ -69,7 +69,7 @@ class ChannelProjection implements Projection {
 		$this->db->table(self::TABLE)->where('channel_uuid', Channel::buildId(
 			connectionId: $event->connectionId,
 			channelKey: $event->channelKey,
-		));
+		))->delete();
 	}
 
 	/**
