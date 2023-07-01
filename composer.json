@@ -57,6 +57,7 @@
     "guzzlehttp/psr7": "^2.5",
     "psr/http-client": "^1.0",
     "liamdennehy/http-signatures-php": "dev-use-upstream-phpseclib",
-    "smolblog/activitypub-types": "^1.0"
+    "smolblog/activitypub-types": "^1.0",
+    "illuminate/database": "^9.0"
   }
 }

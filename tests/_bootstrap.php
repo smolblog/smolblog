@@ -2,6 +2,10 @@
 
 namespace Smolblog\Test;
 
+use Closure;
+use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
 use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
@@ -17,8 +21,10 @@ use Smolblog\Framework\Objects\RandomIdentifier;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 class TestCase extends PHPUnitTestCase {
-	protected function randomId(): Identifier {
-		return new RandomIdentifier();
+	protected function randomId(bool $scrub = false): Identifier {
+		$id = new RandomIdentifier();
+
+		return $scrub ? Identifier::fromByteString($id->toByteString()) : $id;
 	}
 }
 
@@ -106,5 +112,29 @@ class EventIsEquivalent extends Constraint {
 		}
 
 		parent::fail($other, $description, $comparisonFailure);
+	}
+}
+
+trait DatabaseTestKit {
+	private Connection $db;
+
+	private function initDatabaseWithTable(string $name, Closure $builder): void {
+		$manager = new Manager();
+		$manager->addConnection([
+			'driver' => 'sqlite',
+			'database' => ':memory:',
+			'prefix' => '',
+		]);
+		$manager->getConnection()->getSchemaBuilder()->create($name, $builder);
+
+		$this->db = $manager->getConnection();
+	}
+
+	protected function assertOnlyTableEntryEquals(Builder $table, mixed ...$expected) {
+		$this->assertEquals((object)$expected, $table->first());
+	}
+
+	protected function assertTableEmpty(Builder $table) {
+		$this->assertEquals(0, $table->count(), 'Table not empty: found ' . print_r($table->first(), true));
 	}
 }
