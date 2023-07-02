@@ -65,6 +65,6 @@ class NoteCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 * @return string
 	 */
 	public function getContentType(): string {
-		return Note::class;
+		return 'note';
 	}
 }

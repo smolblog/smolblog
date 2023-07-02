@@ -37,7 +37,7 @@ abstract class ContentCreated extends ContentEvent {
 	}
 
 	/**
-	 * Get the content type this event is creating (usually the fully-qualified class name).
+	 * Get the content type this event is creating (corresponds to a registered handle in ContentTypeRegistry).
 	 *
 	 * @return string
 	 */
