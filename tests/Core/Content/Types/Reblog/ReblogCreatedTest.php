@@ -101,6 +101,6 @@ class ReblogCreatedTest extends TestCase {
 			timestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
 		);
 
-		$this->assertEquals(Reblog::class, $event->getContentType());
+		$this->assertEquals('reblog', $event->getContentType());
 	}
 }

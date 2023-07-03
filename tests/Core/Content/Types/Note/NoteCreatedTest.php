@@ -24,7 +24,7 @@ final class NoteCreatedTest extends TestCase {
 			userId: $this->randomId(),
 		);
 
-		$this->assertEquals(Note::class, $note->getContentType());
+		$this->assertEquals('note', $note->getContentType());
 	}
 
 	public function testTheTitleIsTheTextTruncated() {
