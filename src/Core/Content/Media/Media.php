@@ -3,80 +3,37 @@
 namespace Smolblog\Core\Content\Media;
 
 use Smolblog\Core\Content\ContentType;
+use Smolblog\Framework\Objects\Entity;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Abstract class for handling media uploads.
+ * Entity for handling media uploads.
  */
-abstract class Media implements ContentType {
+class Media extends Entity {
 	/**
-	 * Construct the media object.
+	 * Create the Media object.
 	 *
-	 * @param string      $title             Title for the media (filename if nothing else).
-	 * @param string      $accessibilityText Alternative text.
-	 * @param MediaType   $type              MediaType for this media.
-	 * @param string|null $attribution       Optional must-include attribution (will be automatically added to HTML).
+	 * @param Identifier  $id                ID for this object.
+	 * @param Identifier  $userId            User who owns this object.
+	 * @param Identifier  $siteId            Site this object belongs to.
+	 * @param string      $title             Title for the media (usually filename).
+	 * @param string      $accessibilityText Text description of the media.
+	 * @param MediaType   $type              Broad type of media (image, video, etc).
+	 * @param string      $handler           Key for the MediaHandler responsible for this media.
+	 * @param string|null $attribution       Optional attribution that will always be included with this media.
+	 * @param array       $info              Handler-specific info for this media.
 	 */
 	public function __construct(
+		Identifier $id,
+		public readonly Identifier $userId,
+		public readonly Identifier $siteId,
 		public readonly string $title,
 		public readonly string $accessibilityText,
 		public readonly MediaType $type,
+		public readonly string $handler,
 		public readonly ?string $attribution = null,
+		public readonly array $info = [],
 	) {
+		parent::__construct($id);
 	}
-
-	/**
-	 * Get the title of the media.
-	 *
-	 * @return string
-	 */
-	public function getTitle(): string {
-		return $this->title;
-	}
-
-	/**
-	 * Get the default HTML for the media.
-	 *
-	 * @return string
-	 */
-	public function getBodyContent(): string {
-		return $this->getHtml();
-	}
-
-	/**
-	 * Get the media handler for this media.
-	 *
-	 * @return string
-	 */
-	abstract public function handledBy(): string;
-
-	/**
-	 * Get the URL for this media given the parameters.
-	 *
-	 * All parameters can be ignored on both sides, but they may be used to provide the optimal file. Any unrecognized
-	 * extra props should be ignored. Ideally, the media object will use this to provide the url to a copy of the media
-	 * that will fit in the box provided.
-	 *
-	 * @param integer|null $maxWidth  Max width of the media needed.
-	 * @param integer|null $maxHeight Max height of the media needed.
-	 * @param mixed        ...$props  Any additional props needed.
-	 * @return string
-	 */
-	abstract public function getUrl(?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
-
-	/**
-	 * Get the HTML to display this media given the parameters.
-	 *
-	 * While `getUrl` provides a raw URL, this provides the full HTML code. If this media has an attribution, this
-	 * function should return a `figure` with the required attribution as a caption.
-	 *
-	 * All parameters can be ignored on both sides, but they may be used to provide the optimal file. Any unrecognized
-	 * extra props should be ignored. Ideally, the media object will use this to provide the url to a copy of the media
-	 * that will fit in the box provided.
-	 *
-	 * @param integer|null $maxWidth  Max width of the media needed.
-	 * @param integer|null $maxHeight Max height of the media needed.
-	 * @param mixed        ...$props  Any additional props needed.
-	 * @return string
-	 */
-	abstract public function getHtml(?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
 }

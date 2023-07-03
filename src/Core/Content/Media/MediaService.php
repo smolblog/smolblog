@@ -2,16 +2,40 @@
 
 namespace Smolblog\Core\Content\Media;
 
-use Smolblog\Core\Content\ContentTypeConfiguration;
-use Smolblog\Core\Content\ContentTypeService;
+use Smolblog\Framework\Messages\Listener;
+use Smolblog\Framework\Messages\MessageBus;
 
-class MediaService implements ContentTypeService {
-	public static function getConfiguration(): ContentTypeConfiguration {
-		return new ContentTypeConfiguration(
-			handle: 'media',
-			displayName: 'Media',
-			typeClass: Media::class,
-			singleItemQuery: '',
+/**
+ * Handle tasks related to Media.
+ */
+class MediaService implements Listener {
+	/**
+	 * Create the service.
+	 *
+	 * @param MessageBus           $bus      MessageBus to dispatch events.
+	 * @param MediaHandlerRegistry $registry Available MediaHandlers.
+	 */
+	public function __construct(
+		private MessageBus $bus,
+		private MediaHandlerRegistry $registry,
+	) {
+	}
+
+	/**
+	 * Handle the HandleUploadMedia command.
+	 *
+	 * @param HandleUploadedMedia $command Command to execute.
+	 * @return void
+	 */
+	public function onHandleUploadedMedia(HandleUploadedMedia $command) {
+		$handler = $this->registry->get();
+		$newMedia = $handler->handleUploadedFile(
+			file: $command->file,
+			userId: $command->userId,
+			siteId: $command->siteId,
 		);
+
+		// $this->bus->dispatch();
+		$command->createdMedia = $newMedia;
 	}
 }
