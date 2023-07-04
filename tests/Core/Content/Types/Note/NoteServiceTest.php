@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeImmutable;
 use Smolblog\Core\Content\Content;
+use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
@@ -11,6 +12,10 @@ use Smolblog\Test\EventComparisonTestKit;
 
 class NoteServiceTest extends TestCase {
 	use EventComparisonTestKit;
+
+	public function testItHasAValidConfiguration() {
+		$this->assertInstanceOf(ContentTypeConfiguration::class, NoteService::getConfiguration());
+	}
 
 	public function testItHandlesTheCreateNoteCommand() {
 		$command = new CreateNote(

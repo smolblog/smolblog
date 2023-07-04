@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Types\Reblog;
 
 use DateTimeImmutable;
 use Smolblog\Core\Content\Content;
+use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
@@ -54,6 +55,10 @@ final class ReblogServiceTest extends TestCase {
 		$this->bus->method('fetch')->willReturn($this->reblog);
 
 		$this->service = new ReblogService(bus: $this->bus, embedService: $this->embed);
+	}
+
+	public function testItHasAValidConfiguration() {
+		$this->assertInstanceOf(ContentTypeConfiguration::class, ReblogService::getConfiguration());
 	}
 
 	public function testItHandlesTheCreateReblogCommand() {

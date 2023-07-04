@@ -35,7 +35,17 @@ class MediaService implements Listener {
 			siteId: $command->siteId,
 		);
 
-		// $this->bus->dispatch();
+		$this->bus->dispatch(new MediaAdded(
+			contentId: $newMedia->id,
+			userId: $newMedia->userId,
+			siteId: $newMedia->siteId,
+			title: $newMedia->title,
+			accessibilityText: $newMedia->accessibilityText,
+			type: $newMedia->type,
+			handler: $newMedia->handler,
+			attribution: $newMedia->attribution,
+			info: $newMedia->info,
+		));
 		$command->createdMedia = $newMedia;
 	}
 }
