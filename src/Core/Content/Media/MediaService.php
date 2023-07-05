@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Media;
 
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Framework\Objects\DateIdentifier;
 
 /**
  * Handle tasks related to Media.
@@ -29,10 +30,22 @@ class MediaService implements Listener {
 	 */
 	public function onHandleUploadedMedia(HandleUploadedMedia $command) {
 		$handler = $this->registry->get();
-		$newMedia = $handler->handleUploadedFile(
+		$mediaInfo = $handler->handleUploadedFile(
 			file: $command->file,
 			userId: $command->userId,
 			siteId: $command->siteId,
+		);
+
+		$newMedia = new Media(
+			id: new DateIdentifier(),
+			userId: $command->userId,
+			siteId: $command->siteId,
+			title: $command->title ?? $command->file->getClientFilename() ?? $mediaInfo->type->name,
+			accessibilityText: $command->accessibilityText ?? 'Uploaded file',
+			type: $mediaInfo->type,
+			handler: $mediaInfo->handler,
+			attribution: $command->attribution,
+			info: $mediaInfo->info,
 		);
 
 		$this->bus->dispatch(new MediaAdded(

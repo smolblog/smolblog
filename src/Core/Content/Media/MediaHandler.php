@@ -24,9 +24,13 @@ interface MediaHandler {
 	 * @param UploadedFileInterface $file   Uploaded file information.
 	 * @param Identifier            $userId ID of the user uploading the file.
 	 * @param Identifier            $siteId Site the file is being uploaded to.
-	 * @return Media
+	 * @return UploadedMediaInfo
 	 */
-	public function handleUploadedFile(UploadedFileInterface $file, Identifier $userId, Identifier $siteId): Media;
+	public function handleUploadedFile(
+		UploadedFileInterface $file,
+		Identifier $userId,
+		Identifier $siteId
+	): UploadedMediaInfo;
 
 	/**
 	 * Get the URL for this media given the parameters.

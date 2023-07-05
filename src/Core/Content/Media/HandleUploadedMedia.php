@@ -16,14 +16,20 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	/**
 	 * Create the command.
 	 *
-	 * @param UploadedFileInterface $file   Uploaded file.
-	 * @param Identifier            $userId User uploading the file.
-	 * @param Identifier            $siteId Site file is being uploaded to.
+	 * @param UploadedFileInterface $file              Uploaded file.
+	 * @param Identifier            $userId            User uploading the file.
+	 * @param Identifier            $siteId            Site file is being uploaded to.
+	 * @param string                $title             Title of the media.
+	 * @param string                $accessibilityText Alt text.
+	 * @param string                $attribution       Any required attribution for the image.
 	 */
 	public function __construct(
 		public readonly UploadedFileInterface $file,
 		public readonly Identifier $userId,
 		public readonly Identifier $siteId,
+		public readonly ?string $title = null,
+		public readonly ?string $accessibilityText = null,
+		public readonly ?string $attribution = null,
 	) {
 	}
 

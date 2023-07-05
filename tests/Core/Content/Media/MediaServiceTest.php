@@ -10,21 +10,20 @@ use Smolblog\Test\TestCase;
 final class MediaServiceTest extends TestCase {
 	use EventComparisonTestKit;
 
-	public function testItHandlesUploadedMedia() {
+	public function testItHandlesUploadedMediaWithSaneDefaults() {
+		$file = $this->createStub(UploadedFileInterface::class);
+		$file->method('getClientFilename')->willReturn('IMG_90108.jpg');
+
+		$uploadInfo = new UploadedMediaInfo(
+			handler: 'default',
+			type: MediaType::Image,
+			info: ['key' => 'value'],
+		);
+
 		$command = new HandleUploadedMedia(
-			file: $this->createStub(UploadedFileInterface::class),
+			file: $file,
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
-		);
-		$media = new Media(
-			id: $this->randomId(),
-			userId: $command->userId,
-			siteId: $command->siteId,
-			title: 'IMG_90108',
-			accessibilityText: 'A small dock looking over a river.',
-			type: MediaType::Image,
-			handler: 'default',
-			info: ['key' => 'value'],
 		);
 
 		$handler = $this->createMock(MediaHandler::class);
@@ -32,27 +31,76 @@ final class MediaServiceTest extends TestCase {
 			$this->equalTo($command->file),
 			$this->equalTo($command->userId),
 			$this->equalTo($command->siteId),
-		)->willReturn($media);
+		)->willReturn($uploadInfo);
 
 		$registry = $this->createStub(MediaHandlerRegistry::class);
 		$registry->method('get')->willReturn($handler);
 
 		$bus = $this->createMock(MessageBus::class);
-		$bus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo(
-			new MediaAdded(
-				contentId: $media->id,
-				userId: $command->userId,
-				siteId: $command->siteId,
-				title: 'IMG_90108',
-				accessibilityText: 'A small dock looking over a river.',
-				type: MediaType::Image,
-				handler: 'default',
-				info: ['key' => 'value'],
-			)
-		));
+		$bus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(MediaAdded::class));
 
 		$service = new MediaService($bus, $registry);
 		$service->onHandleUploadedMedia($command);
+
+
+		$media = new Media(
+			id: $command->createdMedia?->id,
+			userId: $command->userId,
+			siteId: $command->siteId,
+			title: 'IMG_90108.jpg',
+			accessibilityText: 'Uploaded file',
+			type: MediaType::Image,
+			handler: 'default',
+			info: ['key' => 'value'],
+		);
+
+		$this->assertEquals($media, $command->createdMedia);
+	}
+
+	public function testItHandlesUploadedMediaWithGivenValues() {
+		$uploadInfo = new UploadedMediaInfo(
+			handler: 'default',
+			type: MediaType::Image,
+			info: ['key' => 'value'],
+		);
+
+		$command = new HandleUploadedMedia(
+			file: $this->createStub(UploadedFileInterface::class),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+			title: 'A strange encounter',
+			accessibilityText: 'Nicolas Cage sitting next to Andy Samberg as Nicolas Cage',
+			attribution: 'Courtesy Broadway Video/NBC',
+		);
+
+		$handler = $this->createMock(MediaHandler::class);
+		$handler->expects($this->once())->method('handleUploadedFile')->with(
+			$this->equalTo($command->file),
+			$this->equalTo($command->userId),
+			$this->equalTo($command->siteId),
+		)->willReturn($uploadInfo);
+
+		$registry = $this->createStub(MediaHandlerRegistry::class);
+		$registry->method('get')->willReturn($handler);
+
+		$bus = $this->createMock(MessageBus::class);
+		$bus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(MediaAdded::class));
+
+		$service = new MediaService($bus, $registry);
+		$service->onHandleUploadedMedia($command);
+
+
+		$media = new Media(
+			id: $command->createdMedia?->id,
+			userId: $command->userId,
+			siteId: $command->siteId,
+			title: 'A strange encounter',
+			accessibilityText: 'Nicolas Cage sitting next to Andy Samberg as Nicolas Cage',
+			type: MediaType::Image,
+			handler: 'default',
+			attribution: 'Courtesy Broadway Video/NBC',
+			info: ['key' => 'value'],
+		);
 
 		$this->assertEquals($media, $command->createdMedia);
 	}
