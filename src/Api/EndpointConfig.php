@@ -25,10 +25,10 @@ class EndpointConfig extends Value {
 	/**
 	 * HTTP verb this endpoint will respond to.
 	 *
-	 * @var Verb
+	 * @var Verb[]
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 	 */
-	public readonly Verb $verb;
+	public readonly array $verb;
 
 	/**
 	 * Parameters for this endpoint's path in an array of strings.
@@ -80,7 +80,7 @@ class EndpointConfig extends Value {
 	 * @throws InvalidArgumentException If both or neither $bodyClass and $bodyShape are given.
 	 *
 	 * @param string             $route          The given route for this endpoint.
-	 * @param Verb               $verb           HTTP verb this endpoint will respond to.
+	 * @param Verb|array         $verb           HTTP verb(s) this endpoint will respond to.
 	 * @param array              $pathVariables  Parameters for this endpoint's path in an array of strings.
 	 * @param array              $queryVariables Parameters this endpoint accepts in the query string.
 	 * @param string|null        $bodyClass      Fully qualified class name that the request body should serialize from.
@@ -89,7 +89,7 @@ class EndpointConfig extends Value {
 	 */
 	public function __construct(
 		string $route,
-		Verb $verb = Verb::GET,
+		Verb|array $verb = Verb::GET,
 		array $pathVariables = [],
 		array $queryVariables = [],
 		?string $bodyClass = null,
@@ -97,7 +97,7 @@ class EndpointConfig extends Value {
 		array $requiredScopes = [AuthScope::Admin],
 	) {
 		$this->route = '/' . ltrim(rtrim($route, '/'), '/');
-		$this->verb = $verb;
+		$this->verb = is_array($verb) ? $verb : [$verb];
 		$this->pathVariables = $pathVariables;
 		$this->queryVariables = $queryVariables;
 		$this->bodyClass = $bodyClass;

@@ -174,7 +174,7 @@ class Model extends DomainModel {
 			}
 
 			$paths[$config->route] = [
-				strtolower($config->verb->value) => array_filter([
+				strtolower($config->verb[0]->value) => array_filter([
 					'tags' => [ str_replace(__NAMESPACE__ . '\\', '', $classReflect->getNamespaceName()) ],
 					'summary' => $descriptions[0],
 					'description' => $descriptions[1],
