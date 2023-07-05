@@ -104,6 +104,6 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 	 * @return string
 	 */
 	public function getContentType(): string {
-		return Reblog::class;
+		return 'reblog';
 	}
 }

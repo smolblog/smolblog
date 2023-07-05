@@ -5,11 +5,11 @@ namespace Smolblog\Test;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\Types\Status\CreateStatus;
-use Smolblog\Core\Content\Types\Status\DeleteStatus;
-use Smolblog\Core\Content\Types\Status\EditStatus;
-use Smolblog\Core\Content\Types\Status\Status;
-use Smolblog\Core\Content\Types\Status\StatusById;
+use Smolblog\Core\Content\Types\Note\CreateNote;
+use Smolblog\Core\Content\Types\Note\DeleteNote;
+use Smolblog\Core\Content\Types\Note\EditNote;
+use Smolblog\Core\Content\Types\Note\Note;
+use Smolblog\Core\Content\Types\Note\NoteById;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Mock\App;
@@ -17,33 +17,33 @@ use Smolblog\Mock\MockMemoService;
 use Smolblog\Mock\SecurityService;
 
 final class ContentTest extends TestCase {
-	public function testStatusLifecycle() {
+	public function testNoteLifecycle() {
 		$userId = Identifier::fromString(SecurityService::SITE1AUTHOR);
 		$siteId = Identifier::fromString(SecurityService::SITE1);
 
-		$createCommand = new CreateStatus(
+		$createCommand = new CreateNote(
 			siteId: $siteId,
 			userId: $userId,
 			text: 'Hello everybody!'
 		);
 		App::dispatch($createCommand);
 
-		$contentId = $createCommand->statusId;
-		$content = App::fetch(new StatusById($contentId));
+		$contentId = $createCommand->noteId;
+		$content = App::fetch(new NoteById($contentId));
 
-		$this->assertInstanceOf(Status::class, $content);
+		$this->assertInstanceOf(Note::class, $content);
 		$this->assertEquals("<p>Hello everybody!</p>\n", $content->getBodyContent());
 
-		App::dispatch(new EditStatus(
+		App::dispatch(new EditNote(
 			text: 'Hello everybody! Except @oddEvan. Screw that guy.',
-			statusId: $contentId,
+			noteId: $contentId,
 			userId: $userId,
 			siteId: $siteId,
 		));
 
 		App::getService(MockMemoService::class)->reset();
 		$this->assertEquals(
-			new Status(
+			new Note(
 				text: 'Hello everybody! Except @oddEvan. Screw that guy.',
 				authorId: $userId,
 				id: $contentId,
@@ -53,38 +53,38 @@ final class ContentTest extends TestCase {
 				visibility: ContentVisibility::Published,
 				rendered: "<p>Hello everybody! Except @oddEvan. Screw that guy.</p>\n"
 			),
-			App::fetch(new StatusById($contentId))
+			App::fetch(new NoteById($contentId))
 		);
 
-		App::dispatch(new DeleteStatus(
-			statusId: $contentId,
+		App::dispatch(new DeleteNote(
+			noteId: $contentId,
 			userId: $userId,
 			siteId: $siteId,
 		));
 
 		App::getService(MockMemoService::class)->reset();
-		$this->assertNull(App::fetch(new StatusById($contentId)));
+		$this->assertNull(App::fetch(new NoteById($contentId)));
 	}
 
-	public function testAuthorCanOnlyEditOwnStatus() {
+	public function testAuthorCanOnlyEditOwnNote() {
 		$this->expectException(MessageNotAuthorizedException::class);
 
 		$authorUserId = Identifier::fromString(SecurityService::SITE1AUTHOR);
 		$adminUserId = Identifier::fromString(SecurityService::SITE1ADMIN);
 		$siteId = Identifier::fromString(SecurityService::SITE1);
 
-		$createCommand = new CreateStatus(
+		$createCommand = new CreateNote(
 			siteId: $siteId,
 			userId: $adminUserId,
 			text: 'Hello everybody!'
 		);
 		App::dispatch($createCommand);
-		$contentId = $createCommand->statusId;
+		$contentId = $createCommand->noteId;
 
-		App::dispatch(new DeleteStatus(
+		App::dispatch(new DeleteNote(
 			siteId: $siteId,
 			userId: $authorUserId,
-			statusId: $contentId,
+			noteId: $contentId,
 		));
 	}
 }

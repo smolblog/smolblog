@@ -25,7 +25,7 @@ class EditReblogComment extends Command implements AuthorizableMessage {
 	 *
 	 * @param Identifier $siteId   Site this reblog is posted on.
 	 * @param Identifier $userId   User making this change.
-	 * @param Identifier $reblogId Status being changed.
+	 * @param Identifier $reblogId Note being changed.
 	 * @param string     $comment  New reblog comment.
 	 */
 	public function __construct(

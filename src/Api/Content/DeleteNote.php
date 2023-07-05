@@ -8,14 +8,14 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
-use Smolblog\Core\Content\Types\Reblog\DeleteReblog as DeleteReblogCommand;
+use Smolblog\Core\Content\Types\Note\DeleteNote as DeleteNoteCommand;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
- * Endpoint to delete a reblog.
+ * Endpoint to delete a note.
  */
-class DeleteReblog implements Endpoint {
+class DeleteNote implements Endpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *
@@ -23,7 +23,7 @@ class DeleteReblog implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/site/{site}/content/reblog/{content}/delete',
+			route: '/site/{site}/content/note/{content}/delete',
 			verb: Verb::DELETE,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
@@ -52,10 +52,10 @@ class DeleteReblog implements Endpoint {
 	 * @return SuccessResponse
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
-		$this->bus->dispatch(new DeleteReblogCommand(
+		$this->bus->dispatch(new DeleteNoteCommand(
 			siteId: $params['site'],
 			userId: $userId,
-			reblogId: $params['content'],
+			noteId: $params['content'],
 		));
 
 		return new SuccessResponse();

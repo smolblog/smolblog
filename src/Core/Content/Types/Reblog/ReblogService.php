@@ -3,16 +3,31 @@
 namespace Smolblog\Core\Content\Types\Reblog;
 
 use DateTimeImmutable;
+use Smolblog\Core\Content\ContentTypeConfiguration;
+use Smolblog\Core\Content\ContentTypeService;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Service to handle Reblog commands.
  */
-class ReblogService implements Listener {
+class ReblogService implements Listener, ContentTypeService {
+	/**
+	 * Get the configuration for Reblogs
+	 *
+	 * @return ContentTypeConfiguration
+	 */
+	public static function getConfiguration(): ContentTypeConfiguration {
+		return new ContentTypeConfiguration(
+			handle: 'reblog',
+			displayName: 'Reblog',
+			typeClass: Reblog::class,
+			singleItemQuery: ReblogById::class,
+		);
+	}
+
 	/**
 	 * Construct the service.
 	 *

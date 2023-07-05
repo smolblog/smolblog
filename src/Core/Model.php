@@ -52,7 +52,7 @@ class Model extends DomainModel {
 			'bus' => MessageBus::class,
 			'embedService' => Content\Types\Reblog\ExternalContentService::class,
 		],
-		Content\Types\Status\StatusService::class => [
+		Content\Types\Note\NoteService::class => [
 			'bus' => MessageBus::class,
 		],
 	];

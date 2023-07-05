@@ -4,7 +4,6 @@ namespace Smolblog\Core\Content;
 
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
-use Smolblog\Core\Content\Queries\BaseContentById;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 

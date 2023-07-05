@@ -6,29 +6,29 @@ use DateTimeImmutable;
 use PDO;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentDeleted;
-use Smolblog\Core\Content\Types\Status\Status;
-use Smolblog\Core\Content\Types\Status\StatusBodyEdited;
-use Smolblog\Core\Content\Types\Status\StatusById;
-use Smolblog\Core\Content\Types\Status\StatusCreated;
-use Smolblog\Core\Content\Types\Status\StatusDeleted;
+use Smolblog\Core\Content\Types\Note\Note;
+use Smolblog\Core\Content\Types\Note\NoteBodyEdited;
+use Smolblog\Core\Content\Types\Note\NoteById;
+use Smolblog\Core\Content\Types\Note\NoteCreated;
+use Smolblog\Core\Content\Types\Note\NoteDeleted;
 use Smolblog\Framework\Objects\Identifier;
 
-class StatusProjection {
+class NoteProjection {
 	public function __construct(private PDO $db) {}
 
-	public function onStatusCreated(StatusCreated $event) {
-		$prepared = $this->db->prepare('INSERT INTO statuses (content_id, body) VALUES (?, ?)');
+	public function onNoteCreated(NoteCreated $event) {
+		$prepared = $this->db->prepare('INSERT INTO notes (content_id, body) VALUES (?, ?)');
 		$prepared->execute([$event->contentId->toByteString(), $event->text]);
 	}
 
-	public function onStatusBodyEdited(StatusBodyEdited $event) {
-		$prepared = $this->db->prepare('UPDATE statuses SET body = ? WHERE content_id = ?');
+	public function onNoteBodyEdited(NoteBodyEdited $event) {
+		$prepared = $this->db->prepare('UPDATE notes SET body = ? WHERE content_id = ?');
 		$prepared->execute([$event->text, $event->contentId->toByteString()]);
 	}
 
-	public function onStatusById(StatusById $query) {
+	public function onNoteById(NoteById $query) {
 		$prepared = $this->db->prepare('SELECT
-				statuses.body AS "text",
+				notes.body AS "text",
 				standard_content.site_id AS "siteId",
 				standard_content.author_id AS "authorId",
 				standard_content.permalink AS "permalink",
@@ -37,10 +37,10 @@ class StatusProjection {
 				standard_content.extensions AS "extensions",
 				standard_content.body AS "rendered"
 			FROM
-				statuses
-				INNER JOIN standard_content ON statuses.content_id = standard_content.content_id
+				notes
+				INNER JOIN standard_content ON notes.content_id = standard_content.content_id
 			WHERE
-				statuses.content_id = ?');
+				notes.content_id = ?');
 		$prepared->execute([$query->id->toByteString()]);
 		$results = $prepared->fetch(mode: PDO::FETCH_ASSOC);
 		if (empty($results)) {
@@ -54,7 +54,7 @@ class StatusProjection {
 			$extParsed[$class] = $class::fromArray($data);
 		}
 
-		$query->setResults(new Status(
+		$query->setResults(new Note(
 			text: $results['text'],
 			siteId: Identifier::fromByteString($results['siteId']),
 			authorId: Identifier::fromByteString($results['authorId']),
@@ -67,8 +67,8 @@ class StatusProjection {
 		));
 	}
 
-	public function onContentDeleted(StatusDeleted $event): void {
-		$prepared = $this->db->prepare('DELETE FROM statuses WHERE content_id = ?');
+	public function onContentDeleted(NoteDeleted $event): void {
+		$prepared = $this->db->prepare('DELETE FROM notes WHERE content_id = ?');
 		$prepared->execute([$event->contentId->toByteString()]);
 	}
 }
