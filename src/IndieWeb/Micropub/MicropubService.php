@@ -5,12 +5,19 @@ namespace Smolblog\IndieWeb\Micropub;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
+use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
+use Smolblog\Core\Content\Queries\GenericContentById;
+use Smolblog\Core\Content\Types\Note\CreateNote;
+use Smolblog\Core\Content\Types\Note\PublishNote;
+use Smolblog\Core\Content\Types\Reblog\CreateReblog;
+use Smolblog\Core\Content\Types\Reblog\PublishReblog;
 use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Core\User\UserById;
 use Smolblog\Core\User\UserSites;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\IndieWeb\MicroformatsConverter;
 use Taproot\Micropub\MicropubAdapter;
 
@@ -123,10 +130,62 @@ class MicropubService extends MicropubAdapter {
 
 
 	public function createCallback(array $data, array $uploadedFiles) {
-		wp_insert_post([
-			'post_title' => 'Hit to micropub endpoint: create',
-			'post_content' => '<pre>' . print_r(['data' => $data, 'uploadedFiles' => $uploadedFiles], true) . '</pre>',
-		]);
+		if (!in_array('h-entry', $data['type'])) {
+			return [
+				'error' => 400,
+				'error_description' => 'Unsupported type; must be Note or Repost.',
+			];
+		}
+
+		$props = $data['properties'];
+		$site = $this->bus->fetch(new UserSites($this->user['id']))[0];
+		$createCommand = null;
+		$publishCommand = null;
+
+		$commonProps = [
+			'userId' => $this->user['id'],
+			'siteId' => $site->id,
+			'contentId' => new DateIdentifier(),
+		];
+
+		if (isset($props['repost-of'])) {
+			$createCommand = new CreateReblog(
+				...$commonProps,
+				url: $props['repost-of'][0],
+				comment: $props['content'][0],
+				publish: false,
+			);
+			$publishCommand = new PublishReblog(
+				siteId: $commonProps['siteId'],
+				userId: $commonProps['userId'],
+				reblogId: $commonProps['contentId'],
+			);
+		} else {
+			$createCommand = new CreateNote(
+				...$commonProps,
+				text: $props['content'][0],
+				publish: false,
+			);
+			$publishCommand = new PublishNote(
+				siteId: $commonProps['siteId'],
+				userId: $commonProps['userId'],
+				noteId: $commonProps['contentId'],
+			);
+		}
+
+		$this->bus->dispatch($createCommand);
+
+		if (isset($props['category'])) {
+			$this->bus->dispatch(new SetTags(
+				...$commonProps,
+				tags: $props['category'],
+			));
+		}
+
+		$this->bus->dispatch($publishCommand);
+
+		$createdContent = $this->bus->fetch(new GenericContentById(...$commonProps));
+		return $site->baseUrl . $createdContent->permalink;
 	}
 
 
