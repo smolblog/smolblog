@@ -41,6 +41,13 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	public ?Media $createdMedia = null;
 
 	/**
+	 * Send the final URL to the uploaded, unaltered file. Used primarily for the micropub endpoint.
+	 *
+	 * @var string|null
+	 */
+	public ?string $urlToOriginal = null;
+
+	/**
 	 * Get the authorization query: user must have authorship permissions.
 	 *
 	 * @return Query

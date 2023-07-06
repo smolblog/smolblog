@@ -60,5 +60,6 @@ class MediaService implements Listener {
 			info: $newMedia->info,
 		));
 		$command->createdMedia = $newMedia;
+		$command->urlToOriginal = $handler->getUrlFor($newMedia);
 	}
 }

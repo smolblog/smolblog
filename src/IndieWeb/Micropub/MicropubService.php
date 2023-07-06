@@ -5,6 +5,7 @@ namespace Smolblog\IndieWeb\Micropub;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
+use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Core\User\UserById;
@@ -138,5 +139,14 @@ class MicropubService extends MicropubAdapter {
 
 
 	public function mediaEndpointCallback(UploadedFileInterface $file) {
+		$command = new HandleUploadedMedia(
+			file: $file,
+			userId: $this->user['id'],
+			siteId: $this->bus->fetch(new UserSites($this->user['id']))[0]->id
+		);
+
+		$this->bus->dispatch($command);
+
+		return $command->urlToOriginal ?? 500;
 	}
 }
