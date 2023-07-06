@@ -2,6 +2,7 @@
 
 namespace Smolblog\IndieWeb;
 
+use DateTimeInterface;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
@@ -14,7 +15,7 @@ class MicroformatsConverter {
 		$props = [
 			'name' => [$content->type->getTitle()],
 			'content' => [['html' => $content->type->getBodyContent()]],
-			'published' => [$content->publishTimestamp?->format(DATE_ISO8601_EXPANDED) ?? null],
+			'published' => [$content->publishTimestamp?->format(DateTimeInterface::ATOM) ?? null],
 			'url' => [$content->permalink ?? null],
 			'uid' => [$content->id->toString()],
 		];

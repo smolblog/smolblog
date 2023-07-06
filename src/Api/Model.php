@@ -98,13 +98,6 @@ class Model extends DomainModel {
 		$endpoints ??= array_keys(self::SERVICES);
 		$paths = [];
 		foreach ($endpoints as $endpoint) {
-			// $atts = (new ReflectionClass($endpoint))->getAttributes(ManualSpec::class);
-			// if (isset($atts[0])) {
-			// 	$spec = new ManualSpec(...$atts[0]->getArguments());
-			// 	$paths[$spec->path] = $spec->spec;
-			// 	continue;
-			// }
-
 			$generated = self::generatePathSpec($endpoint);
 			$route = $generated['path'];
 			unset($generated['path']);
@@ -211,8 +204,8 @@ class Model extends DomainModel {
 						],
 					];
 					break;
-			}
-		}
+			}//end switch
+		}//end foreach
 
 		$parameters = [
 			...array_map(
