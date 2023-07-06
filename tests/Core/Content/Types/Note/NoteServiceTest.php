@@ -26,7 +26,15 @@ class NoteServiceTest extends TestCase {
 		);
 
 		$messageBus = $this->createMock(MessageBus::class);
-		$messageBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(NoteCreated::class));
+		$messageBus->expects($this->once())->method('dispatch')->with(
+			$this->eventEquivalentTo(new NoteCreated(
+				text: $command->text,
+				authorId: $command->userId,
+				contentId: $command->contentId,
+				userId: $command->userId,
+				siteId: $command->siteId,
+			))
+		);
 
 		$service = new NoteService(bus: $messageBus);
 		$service->onCreateNote($command);

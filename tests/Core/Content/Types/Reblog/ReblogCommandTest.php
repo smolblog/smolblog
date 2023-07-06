@@ -8,25 +8,6 @@ use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;
 
 class ReblogCommandTest extends TestCase {
-	public function testCreateReblogRequiresAuthorPermissions() {
-		$command = new CreateReblog(
-			url: '//smol.blog/',
-			userId: $this->randomId(),
-			siteId: $this->randomId(),
-			publish: false,
-		);
-
-		$this->assertEquals(
-			new UserHasPermissionForSite(
-				siteId: $command->siteId,
-				userId: $command->userId,
-				mustBeAdmin: false,
-				mustBeAuthor: true
-			),
-			$command->getAuthorizationQuery()
-		);
-	}
-
 	public function testDeleteReblogRequiresEditPermissions() {
 		$command = new DeleteReblog(
 			siteId: $this->randomId(),

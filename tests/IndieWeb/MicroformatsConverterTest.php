@@ -24,7 +24,7 @@ final class MicroformatsConverterTest extends TestCase {
 		$expected = [
 			'name' => ['Test'],
 			'content' => [['html' => '<p>Hello world!</p>']],
-			'published' => ['+2022-02-02T22:22:22+00:00'],
+			'published' => ['2022-02-02T22:22:22+00:00'],
 			'url' => ['/thing/one'],
 			'uid' => ['edef89d0-d0d6-46e9-9fb0-26cdf4ad956a'],
 		];

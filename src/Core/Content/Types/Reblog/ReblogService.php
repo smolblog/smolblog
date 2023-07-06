@@ -48,12 +48,11 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onCreateReblog(CreateReblog $command) {
 		$info = $this->getExternalInfo($command->url);
-		$reblogId = new DateIdentifier();
 
 		$this->bus->dispatch(new ReblogCreated(
 			url: $command->url,
 			authorId: $command->userId,
-			contentId: $reblogId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 			comment: $command->comment,
@@ -63,13 +62,11 @@ class ReblogService implements Listener, ContentTypeService {
 
 		if ($command->publish) {
 			$this->bus->dispatch(new PublicReblogCreated(
-				contentId: $reblogId,
+				contentId: $command->contentId,
 				userId: $command->userId,
 				siteId: $command->siteId,
 			));
 		}
-
-		$command->reblogId = $reblogId;
 	}
 
 	/**

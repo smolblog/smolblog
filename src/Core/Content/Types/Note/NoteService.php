@@ -46,25 +46,22 @@ class NoteService implements Listener, ContentTypeService {
 	 * @return void
 	 */
 	public function onCreateNote(CreateNote $command) {
-		$id = new DateIdentifier();
 		$this->bus->dispatch(new NoteCreated(
 			text: $command->text,
 			authorId: $command->userId,
-			contentId: $id,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			publishTimestamp: new DateTimeImmutable(),
+			publishTimestamp: $command->publish ? new DateTimeImmutable() : null,
 		));
 
 		if ($command->publish) {
 			$this->bus->dispatch(new PublicNoteCreated(
-				contentId: $id,
+				contentId: $command->contentId,
 				userId: $command->userId,
 				siteId: $command->siteId,
 			));
 		}
-
-		$command->noteId = $id;
 	}
 
 	/**
