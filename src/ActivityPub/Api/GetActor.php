@@ -28,6 +28,23 @@ class GetActor implements Endpoint {
 			route: '/site/{site}/activitypub/actor',
 			pathVariables: ['site' => ParameterType::identifier()],
 			requiredScopes: [],
+			responseShape: ParameterType::object(
+				id: ParameterType::string(format: 'url'),
+				inbox: ParameterType::string(format: 'url'),
+				outbox: ParameterType::string(format: 'url'),
+				preferredUsername: ParameterType::string(),
+				url: ParameterType::string(format: 'url'),
+				name: ParameterType::string(),
+				summary: ParameterType::string(),
+				endpoints: ParameterType::object(
+					sharedInbox: ParameterType::string(format: 'url'),
+				),
+				publicKey: ParameterType::object(
+					id: ParameterType::string(format: 'url'),
+					owner: ParameterType::string(format: 'url'),
+					publicKeyPem: ParameterType::string(),
+				),
+			),
 		);
 	}
 

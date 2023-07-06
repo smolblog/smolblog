@@ -2,6 +2,7 @@
 
 namespace Smolblog\Api\Server;
 
+use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Smolblog\Api\ApiEnvironment;

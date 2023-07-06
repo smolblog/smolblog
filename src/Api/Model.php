@@ -98,12 +98,12 @@ class Model extends DomainModel {
 		$endpoints ??= array_keys(self::SERVICES);
 		$paths = [];
 		foreach ($endpoints as $endpoint) {
-			$atts = (new ReflectionClass($endpoint))->getAttributes(ManualSpec::class);
-			if (isset($atts[0])) {
-				$spec = new ManualSpec(...$atts[0]->getArguments());
-				$paths[$spec->path] = $spec->spec;
-				continue;
-			}
+			// $atts = (new ReflectionClass($endpoint))->getAttributes(ManualSpec::class);
+			// if (isset($atts[0])) {
+			// 	$spec = new ManualSpec(...$atts[0]->getArguments());
+			// 	$paths[$spec->path] = $spec->spec;
+			// 	continue;
+			// }
 
 			$generated = self::generatePathSpec($endpoint);
 			$route = $generated['path'];
@@ -165,22 +165,26 @@ class Model extends DomainModel {
 	 * @return array
 	 */
 	private static function generatePathSpec(string $endpoint): array {
-		if (!in_array(BasicEndpoint::class, class_parents($endpoint))) {
+		if (!in_array(Endpoint::class, class_implements($endpoint))) {
 			return [];
 		}
 
 		$classReflect = new ReflectionClass($endpoint);
-		$runReflect = $classReflect->getMethod('run');
-		$config = $endpoint::getConfiguration();
-		$responses = self::getThrownResponses($runReflect->getDocComment());
 		$descriptions = self::getDescription($classReflect->getDocComment());
+		$config = $endpoint::getConfiguration();
+		$responseReturnTypes = ['null'];
+		$responses = [];
 
-		$responseReturn = $runReflect->getReturnType();
-		$responseReturnTypes = [];
-		if (get_class($responseReturn) === ReflectionUnionType::class) {
-			$responseReturnTypes = array_map(fn($type) => $type->getName(), $responseReturn->getTypes());
-		} else {
-			$responseReturnTypes[] = $responseReturn->getName();
+		if ($classReflect->hasMethod('run')) {
+			$runReflect = $classReflect->getMethod('run');
+			$responses = self::getThrownResponses($runReflect->getDocComment());
+
+			$responseReturn = $runReflect->getReturnType();
+			if (get_class($responseReturn) === ReflectionUnionType::class) {
+				$responseReturnTypes = array_map(fn($type) => $type->getName(), $responseReturn->getTypes());
+			} else {
+				$responseReturnTypes = [$responseReturn->getName()];
+			}
 		}
 
 		foreach ($responseReturnTypes as $responseClassName) {
@@ -207,8 +211,8 @@ class Model extends DomainModel {
 						],
 					];
 					break;
-			}//end switch
-		}//end foreach
+			}
+		}
 
 		$parameters = [
 			...array_map(
@@ -342,7 +346,7 @@ class Model extends DomainModel {
 			return $shape->schema();
 		}
 
-		if (!isset($class)) {
+		if (!isset($class) || !class_exists($class)) {
 			throw new Exception("Need either a shape or class!");
 		}
 
