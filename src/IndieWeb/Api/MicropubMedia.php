@@ -20,8 +20,7 @@ class MicropubMedia implements Endpoint {
 	 *
 	 * @return EndpointConfig
 	 */
-	public static function getConfiguration(): EndpointConfig
-	{
+	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
 			route: '/micropub/media',
 			verb: Verb::POST,

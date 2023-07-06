@@ -12,6 +12,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\HttpResponse;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Endpoint to give an ActivityPub actor for a site.
@@ -52,7 +53,9 @@ class GetActor implements Endpoint {
 	 * @return ResponseInterface
 	 */
 	public function handle(ServerRequestInterface $request): ResponseInterface {
-		$site = $this->bus->fetch(new SiteById($request->getAttribute('smolblogPathVars', [])['site']));
+		$site = $this->bus->fetch(new SiteById(
+			Identifier::fromString($request->getAttribute('smolblogPathVars', [])['site'])
+		));
 
 		if ($request->hasHeader('Accept') && !str_contains($request->getHeaderLine('Accept'), 'json')) {
 			return new HttpResponse(code: 302, headers: ['Location' => $site->baseUrl]);

@@ -98,94 +98,18 @@ class Model extends DomainModel {
 		$endpoints ??= array_keys(self::SERVICES);
 		$paths = [];
 		foreach ($endpoints as $endpoint) {
-			if (!in_array(Endpoint::class, class_implements($endpoint))) {
+			$atts = (new ReflectionClass($endpoint))->getAttributes(ManualSpec::class);
+			if (isset($atts[0])) {
+				$spec = new ManualSpec(...$atts[0]->getArguments());
+				$paths[$spec->path] = $spec->spec;
 				continue;
 			}
 
-			$classReflect = new ReflectionClass($endpoint);
-			$runReflect = $classReflect->getMethod('run');
-			$config = $endpoint::getConfiguration();
-			$responses = self::getThrownResponses($runReflect->getDocComment());
-			$descriptions = self::getDescription($classReflect->getDocComment());
-
-			$responseReturn = $runReflect->getReturnType();
-			$responseReturnTypes = [];
-			if (get_class($responseReturn) === ReflectionUnionType::class) {
-				$responseReturnTypes = array_map(fn($type) => $type->getName(), $responseReturn->getTypes());
-			} else {
-				$responseReturnTypes[] = $responseReturn->getName();
-			}
-
-			foreach ($responseReturnTypes as $responseClassName) {
-				switch ($responseClassName) {
-					case SuccessResponse::class:
-						$responses[204] = [
-							'description' => 'Successful response',
-						];
-						break;
-
-					case RedirectResponse::class:
-						$responses[302] = [
-							'description' => 'Redirect'
-						];
-						break;
-
-					default:
-						$responses[200] = [
-							'description' => 'Successful response',
-							'content' => [
-								'application/json' => [
-									'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
-								],
-							],
-						];
-						break;
-				}//end switch
-			}//end foreach
-
-			$parameters = [
-				...array_map(
-					fn($key, $val) => [...self::processParam($key, $val), 'in' => 'path', 'required' => true],
-					array_keys($config->pathVariables),
-					array_values($config->pathVariables)
-				),
-				...array_map(
-					fn($key, $val) => [...self::processParam($key, $val), 'in' => 'query'],
-					array_keys($config->queryVariables),
-					array_values($config->queryVariables)
-				),
-			];
-			if (empty($parameters)) {
-				$parameters = null;
-			}
-
-			$body = null;
-			if (class_exists($config->bodyClass ?? '')) {
-				$body = [
-					'required' => true,
-					'content' => ['application/json' => ['schema' => self::makeSchemaFromClass($config->bodyClass)]],
-				];
-			}
-
-			$security = [];
-			if (!empty($config->requiredScopes)) {
-				$security[] = ['indieAuth' => array_map(fn($s) => $s->value, $config->requiredScopes)];
-				$security[] = ['wpAuth' => []];
-			}
-
-			$paths[$config->route] = [
-				strtolower($config->verb[0]->value) => array_filter([
-					'tags' => [ str_replace(__NAMESPACE__ . '\\', '', $classReflect->getNamespaceName()) ],
-					'summary' => $descriptions[0],
-					'description' => $descriptions[1],
-					'operationId' => self::makeAbbreviatedName($endpoint),
-					'security' => $security,
-					'parameters' => $parameters,
-					'requestBody' => $body,
-					'responses' => $responses,
-				], fn($i) => isset($i)),
-			];
-		}//end foreach
+			$generated = self::generatePathSpec($endpoint);
+			$route = $generated['path'];
+			unset($generated['path']);
+			$paths[$route] = $generated;
+		}
 
 		$fullSchema = [
 			'openapi' => '3.0.3',
@@ -232,6 +156,103 @@ class Model extends DomainModel {
 		}
 
 		return $fullSchema;
+	}
+
+	/**
+	 * Generate the meat of the endpoint's spec.
+	 *
+	 * @param string $endpoint Endpoint class.
+	 * @return array
+	 */
+	private static function generatePathSpec(string $endpoint): array {
+		if (!in_array(BasicEndpoint::class, class_parents($endpoint))) {
+			return [];
+		}
+
+		$classReflect = new ReflectionClass($endpoint);
+		$runReflect = $classReflect->getMethod('run');
+		$config = $endpoint::getConfiguration();
+		$responses = self::getThrownResponses($runReflect->getDocComment());
+		$descriptions = self::getDescription($classReflect->getDocComment());
+
+		$responseReturn = $runReflect->getReturnType();
+		$responseReturnTypes = [];
+		if (get_class($responseReturn) === ReflectionUnionType::class) {
+			$responseReturnTypes = array_map(fn($type) => $type->getName(), $responseReturn->getTypes());
+		} else {
+			$responseReturnTypes[] = $responseReturn->getName();
+		}
+
+		foreach ($responseReturnTypes as $responseClassName) {
+			switch ($responseClassName) {
+				case SuccessResponse::class:
+					$responses[204] = [
+						'description' => 'Successful response',
+					];
+					break;
+
+				case RedirectResponse::class:
+					$responses[302] = [
+						'description' => 'Redirect'
+					];
+					break;
+
+				default:
+					$responses[200] = [
+						'description' => 'Successful response',
+						'content' => [
+							'application/json' => [
+								'schema' => self::buildSuccessResponse($responseClassName, $config->responseShape)
+							],
+						],
+					];
+					break;
+			}//end switch
+		}//end foreach
+
+		$parameters = [
+			...array_map(
+				fn($key, $val) => [...self::processParam($key, $val), 'in' => 'path', 'required' => true],
+				array_keys($config->pathVariables),
+				array_values($config->pathVariables)
+			),
+			...array_map(
+				fn($key, $val) => [...self::processParam($key, $val), 'in' => 'query'],
+				array_keys($config->queryVariables),
+				array_values($config->queryVariables)
+			),
+		];
+		if (empty($parameters)) {
+			$parameters = null;
+		}
+
+		$body = null;
+		if (class_exists($config->bodyClass ?? '')) {
+			$body = [
+				'required' => true,
+				'content' => ['application/json' => ['schema' => self::makeSchemaFromClass($config->bodyClass)]],
+			];
+		}
+
+		$security = [];
+		if (!empty($config->requiredScopes)) {
+			$security[] = ['indieAuth' => array_map(fn($s) => $s->value, $config->requiredScopes)];
+			$security[] = ['wpAuth' => []];
+		}
+
+		return [
+			'path' => $config->route,
+			strtolower($config->verb[0]->value) => array_filter([
+				'tags' => [ str_replace(__NAMESPACE__ . '\\', '', $classReflect->getNamespaceName()) ],
+				'summary' => $descriptions[0],
+				'description' => $descriptions[1],
+				'operationId' => self::makeAbbreviatedName($endpoint),
+				'security' => $security,
+				'parameters' => $parameters,
+				'requestBody' => $body,
+				'responses' => $responses,
+			], fn($i) => isset($i)),
+		];
 	}
 
 	/**

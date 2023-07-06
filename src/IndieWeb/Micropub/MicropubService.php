@@ -123,6 +123,10 @@ class MicropubService extends MicropubAdapter {
 
 
 	public function createCallback(array $data, array $uploadedFiles) {
+		wp_insert_post([
+			'post_title' => 'Hit to micropub endpoint: create',
+			'post_content' => '<pre>' . print_r(['data' => $data, 'uploadedFiles' => $uploadedFiles], true) . '</pre>',
+		]);
 	}
 
 
