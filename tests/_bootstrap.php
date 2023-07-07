@@ -132,6 +132,7 @@ trait DatabaseTestKit {
 
 	protected function assertOnlyTableEntryEquals(Builder $table, mixed ...$expected) {
 		$this->assertEquals((object)$expected, $table->first());
+		$this->assertEquals(1, $table->count());
 	}
 
 	protected function assertTableEmpty(Builder $table) {

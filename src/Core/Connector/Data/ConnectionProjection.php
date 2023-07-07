@@ -88,7 +88,7 @@ class ConnectionProjection implements Projection {
 	 * @return void
 	 */
 	public function onConnectionsForUser(ConnectionsForUser $query) {
-		$results = $this->db->table(self::TABLE)->where('user_uuid', $query->userId->toString())->all();
+		$results = $this->db->table(self::TABLE)->where('user_uuid', $query->userId->toString())->get();
 
 		$query->setResults($results->map(fn($cha) => $this->connectionFromRow($cha))->all());
 	}
