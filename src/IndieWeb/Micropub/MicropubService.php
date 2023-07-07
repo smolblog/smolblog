@@ -171,7 +171,7 @@ class MicropubService extends MicropubAdapter {
 				userId: $commonProps['userId'],
 				noteId: $commonProps['contentId'],
 			);
-		}
+		}//end if
 
 		$this->bus->dispatch($createCommand);
 

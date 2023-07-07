@@ -23,12 +23,12 @@ class CreateReblog extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command
 	 *
-	 * @param string      $url     URL being reblogged.
-	 * @param Identifier  $userId  User creating the reblog.
-	 * @param Identifier  $siteId  Site reblog belongs to.
-	 * @param boolean     $publish True if published immediately, false if draft.
-	 * @param string|null $comment Optional Markdown-formatted comment.
-	 * @param Identifier $contentId ID for the new note; will auto-generate if not given.
+	 * @param string      $url       URL being reblogged.
+	 * @param Identifier  $userId    User creating the reblog.
+	 * @param Identifier  $siteId    Site reblog belongs to.
+	 * @param boolean     $publish   True if published immediately, false if draft.
+	 * @param string|null $comment   Optional Markdown-formatted comment.
+	 * @param Identifier  $contentId ID for the new note; will auto-generate if not given.
 	 */
 	public function __construct(
 		public readonly string $url,
