@@ -78,7 +78,7 @@ class ConnectionProjection implements Projection {
 	public function onConnectionById(ConnectionById $query) {
 		$result = $this->db->table(self::TABLE)->where('connection_uuid', $query->connectionId->toString())->first();
 
-		$query->setResults($this->connectionFromRow($result));
+		$query->setResults(self::connectionFromRow($result));
 	}
 
 	/**
@@ -90,7 +90,7 @@ class ConnectionProjection implements Projection {
 	public function onConnectionsForUser(ConnectionsForUser $query) {
 		$results = $this->db->table(self::TABLE)->where('user_uuid', $query->userId->toString())->get();
 
-		$query->setResults($results->map(fn($cha) => $this->connectionFromRow($cha))->all());
+		$query->setResults($results->map(fn($cha) => self::connectionFromRow($cha))->all());
 	}
 
 	/**
@@ -113,7 +113,7 @@ class ConnectionProjection implements Projection {
 	 * @param object $data Results from the database.
 	 * @return Connection
 	 */
-	private function connectionFromRow(object $data): Connection {
+	public static function connectionFromRow(object $data): Connection {
 		return new Connection(
 			userId: Identifier::fromString($data->user_uuid),
 			provider: $data->provider,

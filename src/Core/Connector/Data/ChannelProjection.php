@@ -81,7 +81,7 @@ class ChannelProjection implements Projection {
 	public function onChannelById(ChannelById $query) {
 		$result = $this->db->table(self::TABLE)->where('channel_uuid', $query->channelId->toString())->first();
 
-		$query->setResults($this->channelFromRow($result));
+		$query->setResults(self::channelFromRow($result));
 	}
 
 	/**
@@ -93,7 +93,7 @@ class ChannelProjection implements Projection {
 	public function onChannelsForConnection(ChannelsForConnection $query) {
 		$results = $this->db->table(self::TABLE)->where('connection_uuid', $query->connectionId->toString())->get();
 
-		$query->setResults($results->map(fn($con) => $this->channelFromRow($con))->all());
+		$query->setResults($results->map(fn($con) => self::channelFromRow($con))->all());
 	}
 
 	/**
@@ -102,7 +102,7 @@ class ChannelProjection implements Projection {
 	 * @param object $data Object from the database.
 	 * @return Channel
 	 */
-	public function channelFromRow(object $data): Channel {
+	public static function channelFromRow(object $data): Channel {
 		return new Channel(
 			connectionId: Identifier::fromString($data->connection_uuid),
 			channelKey: $data->channel_key,
