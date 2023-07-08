@@ -5,6 +5,7 @@ namespace Smolblog\Core\Content;
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
 use Smolblog\Core\Content\Queries\AdaptableContentQuery;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
@@ -46,6 +47,7 @@ class ContentService implements Listener {
 	 * @param AdaptableContentQuery $query Query being fetched.
 	 * @return void
 	 */
+	#[ExecutionLayerListener(later: 5)]
 	public function onAdaptableContentQuery(AdaptableContentQuery $query): void {
 		if ($query->getContentId() === null) {
 			$query->setResults(null);
