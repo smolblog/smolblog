@@ -3,14 +3,21 @@
 namespace Smolblog\Core\Content\Data;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use Illuminate\Database\Schema\Blueprint;
+use Smolblog\Core\Content\ContentBuilder;
 use Smolblog\Core\Content\ContentExtension;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
 use Smolblog\Core\Content\Events\ContentBodyEdited;
 use Smolblog\Core\Content\Events\ContentCreated;
+use Smolblog\Core\Content\Events\ContentDeleted;
 use Smolblog\Core\Content\Events\ContentExtensionEdited;
 use Smolblog\Core\Content\Events\PermalinkAssigned;
+use Smolblog\Core\Content\Events\PublicContentAdded;
+use Smolblog\Core\Content\Events\PublicContentRemoved;
+use Smolblog\Core\Content\GenericContent;
+use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Framework\Objects\ExtendableValueKit;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
@@ -280,9 +287,139 @@ final class StandardContentProjectionTest extends TestCase {
 		);
 	}
 
-	public function testItDeletesContent() {}
+	public function testItDeletesContent() {
+		$this->setUpSampleRow();
 
-	public function testItPublishesContent() {}
+		$this->projection->onContentDeleted(new ContentDeleted(
+			contentId: Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			userId: Identifier::fromString('4151844f-9031-477e-b6e9-0d4842a9697c'),
+			siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		));
 
-	public function testItUnpublishesContent() {}
+		$this->assertTableEmpty($this->db->table('standard_content'));
+	}
+
+	public function testItAddsAPublishTimestampWhenPublishingContent() {
+		$this->setUpSampleRow();
+
+		$event = new PublicContentAdded(
+			contentId: Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			userId: Identifier::fromString('4151844f-9031-477e-b6e9-0d4842a9697c'),
+			siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		);
+		$this->projection->onPublicContentAdded($event);
+
+		$this->assertOnlyTableEntryEquals(
+			$this->db->table('standard_content'),
+			content_uuid: '3a694a6b-9540-45e6-8ec1-2a02a92d955d',
+			type: 'spud',
+			title: 'poTAYtos',
+			body: '<p>Boil them, mash them</p>',
+			author_uuid: '81721bdc-2c22-4c3a-90ca-d34194557767',
+			site_uuid: '27ccd497-acac-4196-9b9a-70b95e49f463',
+			permalink: null,
+			publish_timestamp: $event->timestamp->format(DateTimeInterface::RFC3339_EXTENDED),
+			visibility: ContentVisibility::Published->value,
+			extensions: '[]',
+		);
+	}
+
+	public function testItDoesNotChangeAnExistingPublishTimestampWhenPublishingContent() {
+		$this->setUpSampleRow();
+		$this->db->table('standard_content')->update(['publish_timestamp' => '2022-02-02T22:22:22.000+00:00']);
+
+		$this->projection->onPublicContentAdded(new PublicContentAdded(
+			contentId: Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			userId: Identifier::fromString('4151844f-9031-477e-b6e9-0d4842a9697c'),
+			siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		));
+
+		$this->assertOnlyTableEntryEquals(
+			$this->db->table('standard_content'),
+			content_uuid: '3a694a6b-9540-45e6-8ec1-2a02a92d955d',
+			type: 'spud',
+			title: 'poTAYtos',
+			body: '<p>Boil them, mash them</p>',
+			author_uuid: '81721bdc-2c22-4c3a-90ca-d34194557767',
+			site_uuid: '27ccd497-acac-4196-9b9a-70b95e49f463',
+			permalink: null,
+			publish_timestamp: '2022-02-02T22:22:22.000+00:00',
+			visibility: ContentVisibility::Published->value,
+			extensions: '[]',
+		);
+	}
+
+	public function testItUnpublishesContent() {
+		$this->setUpSampleRow();
+		$this->db->table('standard_content')->update([
+			'publish_timestamp' => '2022-02-02T22:22:22.000+00:00',
+			'visibility' => ContentVisibility::Published->value,
+		]);
+
+		$this->projection->onPublicContentRemoved(new PublicContentRemoved(
+			contentId: Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			userId: Identifier::fromString('4151844f-9031-477e-b6e9-0d4842a9697c'),
+			siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		));
+
+		$this->assertOnlyTableEntryEquals(
+			$this->db->table('standard_content'),
+			content_uuid: '3a694a6b-9540-45e6-8ec1-2a02a92d955d',
+			type: 'spud',
+			title: 'poTAYtos',
+			body: '<p>Boil them, mash them</p>',
+			author_uuid: '81721bdc-2c22-4c3a-90ca-d34194557767',
+			site_uuid: '27ccd497-acac-4196-9b9a-70b95e49f463',
+			permalink: null,
+			publish_timestamp: '2022-02-02T22:22:22.000+00:00',
+			visibility: ContentVisibility::Draft->value,
+			extensions: '[]',
+		);
+	}
+
+	public function testItAddsStandardAttributesToAContentBuilder() {
+		$this->setUpSampleRow();
+		$ext = new class(one: 'two', three: 'four') extends Value implements ContentExtension {
+			use ExtendableValueKit;
+			public function __construct(mixed ...$props) { $this->extendedFields = $props; }
+		};
+		$this->db->table('standard_content')->update([
+			'permalink' => '/ask/whats-taters-precious',
+			'publish_timestamp' => '2022-02-02T22:22:22.000+00:00',
+			'visibility' => ContentVisibility::Published->value,
+			'extensions' => json_encode([get_class($ext) => $ext->toArray()]),
+		]);
+
+		$message = $this->createMock(ContentBuilder::class);
+		$message->method('getContentId')->willReturn(Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'));
+		$message->expects($this->once())->method('setContentProperty')->with(
+			id: $this->equalTo(Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d')),
+			siteId: $this->equalTo(Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463')),
+			authorId: $this->equalTo(Identifier::fromString('81721bdc-2c22-4c3a-90ca-d34194557767')),
+			permalink: $this->equalTo('/ask/whats-taters-precious'),
+			publishTimestamp: $this->equalTo(new DateTimeImmutable('2022-02-02T22:22:22.000+00:00')),
+			visibility: $this->equalTo(ContentVisibility::Published),
+		);
+		$message->expects($this->once())->method('addContentExtension')->with($this->equalTo($ext));
+
+		$this->projection->onContentBuilder($message);
+	}
+
+	public function testItAddsTitleAndBodyToAGenericContentQuery() {
+		$this->setUpSampleRow();
+
+		$message = new class(
+			contentId: Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			userId: Identifier::fromString('4151844f-9031-477e-b6e9-0d4842a9697c'),
+			siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		) extends GenericContentById {
+			public function getContentType() { return $this->contentProps['type']; }
+		};
+
+		$this->projection->onGenericContentById($message);
+		$this->assertEquals(
+			new GenericContent(title: 'poTAYtos', body: '<p>Boil them, mash them</p>'),
+			$message->getContentType(),
+		);
+	}
 }
