@@ -100,7 +100,7 @@ class ChannelSiteLinkProjection implements Projection {
 			$builder = $builder->where('can_push', '=', true);
 		}
 
-		$query->setResults($builder->count() > 0);
+		$query->setResults($builder->exists());
 	}
 
 	/**
@@ -122,9 +122,9 @@ class ChannelSiteLinkProjection implements Projection {
 				ConnectionProjection::TABLE . '.connection_uuid'
 			)->where(ConnectionProjection::TABLE . '.user_uuid', '=', $query->userId->toString())->
 			where(ChannelProjection::TABLE . '.channel_uuid', '=', $query->channelId->toString())->
-			count();
+			exists();
 
-		if ($channelResults < 1) {
+		if (!$channelResults) {
 			$query->setResults(false);
 			return;
 		}

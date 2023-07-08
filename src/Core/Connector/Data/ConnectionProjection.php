@@ -100,11 +100,9 @@ class ConnectionProjection implements Projection {
 	 * @return void
 	 */
 	public function onConnectionBelongsToUser(ConnectionBelongsToUser $query) {
-		$results = $this->db->table(self::TABLE)->
+		$query->setResults($this->db->table(self::TABLE)->
 			where('user_uuid', $query->userId->toString())->
-			where('connection_uuid', $query->connectionId->toString())->count();
-
-		$query->setResults($results > 0);
+			where('connection_uuid', $query->connectionId->toString())->exists());
 	}
 
 	/**
