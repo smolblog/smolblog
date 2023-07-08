@@ -12,7 +12,7 @@ final class BQuery extends MemoizableQuery {
 	public function __construct(public readonly string $argA, public readonly string $argB) {}
 }
 
-final class MemoizableQueryKitTest extends TestCase {
+final class MemoizableQueryTest extends TestCase {
 	public function testTheSameClassWithTheSameParametersWillHaveTheSameMemoKey() {
 		$queryOne = new AQuery(argA: 'One', argB: 'Two');
 		$queryTwo = new AQuery(argA: 'One', argB: 'Two');

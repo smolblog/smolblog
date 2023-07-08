@@ -76,7 +76,6 @@ final class ChannelProjectionTest extends TestCase {
 			userId: $this->randomId(),
 		));
 
-		echo $channel->id;
 		$this->assertTableEmpty($this->db->table('channels'));
 	}
 
