@@ -6,14 +6,15 @@ use Smolblog\Test\TestCase;
 
 class FollowerTest extends TestCase {
 	public function testIdCanBeKnownFromProviderSlugAndKey() {
+		$siteId = $this->randomId();
 		$follower = new Follower(
-			siteId: $this->randomId(),
+			siteId: $siteId,
 			provider: 'test-provider',
 			providerKey: 'someRandoBirdThing',
 			displayName: 'Rando @person@site.tld',
-			data: ['inbox' => 'https://smol.blog/'],
+			details: ['inbox' => 'https://smol.blog/'],
 		);
-		$expected = Follower::buildId(provider: 'test-provider', providerKey: 'someRandoBirdThing');
+		$expected = Follower::buildId(siteId: $siteId, provider: 'test-provider', providerKey: 'someRandoBirdThing');
 
 		$this->assertEquals($expected, $follower->id);
 	}
