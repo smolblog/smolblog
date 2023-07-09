@@ -5,6 +5,7 @@ namespace Smolblog\Core\Content\Data;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\ContentBuilder;
 use Smolblog\Core\Content\Events\{
@@ -18,8 +19,10 @@ use Smolblog\Core\Content\Events\{
 	PublicContentRemoved,
 };
 use Smolblog\Core\Content\GenericContent;
-use Smolblog\Core\Content\Queries\GenericContentById;
+use Smolblog\Core\Content\Queries\{ContentList, ContentVisibleToUser, GenericContentById, UserCanEditContent};
+use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Projection;
 use Smolblog\Framework\Objects\Identifier;
 
@@ -32,10 +35,12 @@ class StandardContentProjection implements Projection {
 	/**
 	 * Construct the service.
 	 *
-	 * @param ConnectionInterface $db Working DB connection.
+	 * @param ConnectionInterface $db  Working DB connection.
+	 * @param MessageBus          $bus Active MessageBus.
 	 */
 	public function __construct(
 		private ConnectionInterface $db,
+		private MessageBus $bus,
 	) {
 	}
 
@@ -209,5 +214,110 @@ class StandardContentProjection implements Projection {
 			where('content_uuid', '=', $query->contentId->toString())->first();
 
 		$query->setContentType(new GenericContent(title: $results->title, body: $results->body));
+	}
+
+	/**
+	 * Check if the user can see the content.
+	 *
+	 * Will be true if:
+	 * 1. The content is public.
+	 * 2. The user is the author.
+	 * 3. The user is an admin.
+	 *
+	 * @param ContentVisibleToUser $query Query to fetch.
+	 * @return void
+	 */
+	public function onContentVisibleToUser(ContentVisibleToUser $query) {
+		$isPublic = $this->db->table(self::TABLE)->
+			where('content_uuid', '=', $query->contentId->toString())->value('visibility');
+
+		$query->setResults($isPublic === ContentVisibility::Published->value ? true : $this->checkContentPerm(
+			contentId: $query->contentId,
+			siteId: $query->siteId,
+			userId: $query->userId,
+		));
+	}
+
+	/**
+	 * Check if the user can edit the content.
+	 *
+	 * Will be true if:
+	 * 2. The user is the author.
+	 * 3. The user is an admin.
+	 *
+	 * @param UserCanEditContent $query Query to fetch.
+	 * @return void
+	 */
+	public function onUserCanEditContent(UserCanEditContent $query) {
+		$query->setResults($this->checkContentPerm(
+			contentId: $query->contentId,
+			siteId: $query->siteId,
+			userId: $query->userId,
+		));
+	}
+
+	/*
+		Commenting out until this is needed. Because I don't want to test this yet.
+		public function onContentList(ContentList $query) {
+			$isAdmin = isset($query->userId) && $this->bus->fetch(
+				new UserHasPermissionForSite(siteId: $query->siteId, userId: $query->userId, mustBeAdmin: true)
+			);
+
+			$builder = $this->db->table(self::TABLE)
+				->where('site_uuid', '=', $query->siteId->toString())
+				->orderByDesc('publish_timestamp')
+				->skip(($query->page - 1) * $query->pageSize)->take($query->pageSize);
+
+			if (!$isAdmin) {
+				$builder = $builder->where(
+					fn($q) => $q->where('author_uuid', '=', $query->userId->toString())
+											->orWhere('visibility', '=', ContentVisibility::Published->value)
+				);
+			}
+
+			if (isset($query->types)) {
+				$builder = $builder->whereIn('type', $query->types);
+			}
+			if (isset($query->visibility)) {
+				$builder = $builder->whereIn('visibility', $query->visibility);
+			}
+
+			$query->setResults($builder->get()->map(
+				fn($row) => new Content(
+					id: Identifier::fromString($row->content_uuid),
+					type: new GenericContent(title: $row->title, body: $row->body, typeClass: $row->type),
+					siteId: Identifier::fromString($row->site_uuid),
+					authorId: Identifier::fromString($row->author_uuid),
+					permalink: $row->permalink ?? null,
+					publishTimestamp: isset($row->publish_timestamp) ?
+						new DateTimeImmutable($row->publish_timestamp) : null,
+					visibility: ContentVisibility::tryFrom($row->visibility),
+				)
+			));
+		}
+	*/
+
+	/**
+	 * Check if the given user either owns the content or has admin priveleges.
+	 *
+	 * @param Identifier $contentId ID of the content.
+	 * @param Identifier $siteId    Site the content belongs to.
+	 * @param Identifier $userId    User making the request.
+	 * @return boolean
+	 */
+	private function checkContentPerm(Identifier $contentId, Identifier $siteId, ?Identifier $userId): bool {
+		if (!isset($userId)) {
+			return false;
+		}
+
+		$is_author = $this->db->table(self::TABLE)->where([
+			['content_uuid', '=', $contentId->toString()],
+			['site_uuid', '=', $siteId->toString()],
+			['author_uuid', '=', $userId->toString()],
+		])->exists();
+
+		return $is_author || $this->bus->fetch(
+			new UserHasPermissionForSite(siteId: $siteId, userId: $userId, mustBeAdmin: true)
+		);
 	}
 }

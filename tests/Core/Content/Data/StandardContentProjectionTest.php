@@ -17,7 +17,11 @@ use Smolblog\Core\Content\Events\PermalinkAssigned;
 use Smolblog\Core\Content\Events\PublicContentAdded;
 use Smolblog\Core\Content\Events\PublicContentRemoved;
 use Smolblog\Core\Content\GenericContent;
+use Smolblog\Core\Content\Queries\ContentVisibleToUser;
 use Smolblog\Core\Content\Queries\GenericContentById;
+use Smolblog\Core\Content\Queries\UserCanEditContent;
+use Smolblog\Core\Site\UserHasPermissionForSite;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\ExtendableValueKit;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
@@ -28,6 +32,7 @@ final class StandardContentProjectionTest extends TestCase {
 	use DatabaseTestKit;
 
 	private StandardContentProjection $projection;
+	private MessageBus $bus;
 
 	protected function setUp(): void {
 		$this->initDatabaseWithTable('standard_content', function(Blueprint $table) {
@@ -43,7 +48,8 @@ final class StandardContentProjectionTest extends TestCase {
 			$table->text('extensions');
 		});
 
-		$this->projection = new StandardContentProjection(db: $this->db);
+		$this->bus = $this->createMock(MessageBus::class);
+		$this->projection = new StandardContentProjection(db: $this->db, bus: $this->bus);
 	}
 
 	private function setUpSampleRow(): void {
@@ -421,5 +427,110 @@ final class StandardContentProjectionTest extends TestCase {
 			new GenericContent(title: 'poTAYtos', body: '<p>Boil them, mash them</p>'),
 			$message->getContentType(),
 		);
+	}
+
+	public function testPublicContentIsAlwaysVisible() {
+		$this->setUpSampleRow();
+		$this->db->table('standard_content')->update([
+			'publish_timestamp' => '2022-02-02T22:22:22.000+00:00',
+			'visibility' => ContentVisibility::Published->value,
+		]);
+
+		$siteAndContent = [
+			'contentId' => Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			'siteId' => Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		];
+		$this->bus->expects($this->never())->method('fetch');
+
+		$anonQuery = new ContentVisibleToUser(...$siteAndContent, userId: null);
+		$this->projection->onContentVisibleToUser($anonQuery);
+		$this->assertTrue($anonQuery->results());
+
+		$otherQuery = new ContentVisibleToUser(...$siteAndContent, userId: $this->randomId());
+		$this->projection->onContentVisibleToUser($otherQuery);
+		$this->assertTrue($otherQuery->results());
+
+		$ownerQuery = new ContentVisibleToUser(
+			...$siteAndContent,
+			userId: Identifier::fromString('81721bdc-2c22-4c3a-90ca-d34194557767')
+		);
+		$this->projection->onContentVisibleToUser($ownerQuery);
+		$this->assertTrue($ownerQuery->results());
+	}
+
+	public function testAnAuthorCanAlwaysViewTheirContent() {
+		$this->setUpSampleRow();
+
+		$siteAndContent = [
+			'contentId' => Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			'siteId' => Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		];
+		$this->bus->expects($this->never())->method('fetch');
+
+		$ownerQuery = new ContentVisibleToUser(
+			...$siteAndContent,
+			userId: Identifier::fromString('81721bdc-2c22-4c3a-90ca-d34194557767')
+		);
+		$this->projection->onContentVisibleToUser($ownerQuery);
+		$this->assertTrue($ownerQuery->results());
+	}
+
+	public function testDraftContentIsNeverVisibleToPublic() {
+		$this->setUpSampleRow();
+
+		$siteAndContent = [
+			'contentId' => Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			'siteId' => Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		];
+		$this->bus->expects($this->never())->method('fetch');
+
+		$anonQuery = new ContentVisibleToUser(...$siteAndContent, userId: null);
+		$this->projection->onContentVisibleToUser($anonQuery);
+		$this->assertFalse($anonQuery->results());
+	}
+
+	public function testItChecksForAdminIfContentIsDraftAndUserIsNotAuthor() {
+		$this->setUpSampleRow();
+		$userId = $this->randomId();
+		$contentId = Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d');
+		$siteId = Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463');
+
+		$this->bus->expects($this->once())->method('fetch')->with($this->equalTo(
+			new UserHasPermissionForSite(siteId: $siteId, userId: $userId, mustBeAdmin: true)
+		));
+
+		$otherQuery = new ContentVisibleToUser(siteId: $siteId, userId: $userId, contentId: $contentId);
+		$this->projection->onContentVisibleToUser($otherQuery);
+	}
+
+	public function testAuthorCanAlwaysEditTheirOwnContent() {
+		$this->setUpSampleRow();
+
+		$siteAndContent = [
+			'contentId' => Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			'siteId' => Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		];
+		$this->bus->expects($this->never())->method('fetch');
+
+		$ownerQuery = new UserCanEditContent(
+			...$siteAndContent,
+			userId: Identifier::fromString('81721bdc-2c22-4c3a-90ca-d34194557767')
+		);
+		$this->projection->onUserCanEditContent($ownerQuery);
+		$this->assertTrue($ownerQuery->results());
+	}
+
+	public function testItChecksForAdminIfContentBeingEditedIsNotByUser() {
+		$this->setUpSampleRow();
+		$userId = $this->randomId();
+		$contentId = Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d');
+		$siteId = Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463');
+
+		$this->bus->expects($this->once())->method('fetch')->with($this->equalTo(
+			new UserHasPermissionForSite(siteId: $siteId, userId: $userId, mustBeAdmin: true)
+		));
+
+		$otherQuery = new UserCanEditContent(siteId: $siteId, userId: $userId, contentId: $contentId);
+		$this->projection->onUserCanEditContent($otherQuery);
 	}
 }
