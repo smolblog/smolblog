@@ -54,7 +54,6 @@ class Model extends DomainModel {
 			'bus' => MessageBus::class,
 		],
 		Content\ContentTypeRegistry::class => [
-			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
 		Content\Data\ContentEventStream::class => [
@@ -72,6 +71,14 @@ class Model extends DomainModel {
 		],
 		Content\Markdown\MarkdownMessageRenderer::class => [
 			'md' => SmolblogMarkdown::class,
+		],
+		Content\Media\MediaService::class => [
+			'bus' => MessageBus::class,
+			'registry' => Content\Media\MediaHandlerRegistry::class,
+		],
+		Content\Media\MediaHandlerRegistry::class => [
+			'container' => ContainerInterface::class,
+			'configuration' => null,
 		],
 		Content\Types\Note\NoteProjection::class => [
 			'db' => ConnectionInterface::class,
