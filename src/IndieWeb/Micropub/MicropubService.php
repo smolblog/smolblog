@@ -149,10 +149,11 @@ class MicropubService extends MicropubAdapter {
 		];
 
 		if (isset($props['repost-of'])) {
+			$comment = is_array($props['content'] ?? null) ? $props['content'][0] : null;
 			$createCommand = new CreateReblog(
 				...$commonProps,
 				url: $props['repost-of'][0],
-				comment: $props['content'][0],
+				comment: $comment,
 				publish: false,
 			);
 			$publishCommand = new PublishReblog(
@@ -175,7 +176,7 @@ class MicropubService extends MicropubAdapter {
 
 		$this->bus->dispatch($createCommand);
 
-		if (isset($props['category'])) {
+		if (!empty($props['category'])) {
 			$this->bus->dispatch(new SetTags(
 				...$commonProps,
 				tags: $props['category'],
