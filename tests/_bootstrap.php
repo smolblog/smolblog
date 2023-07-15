@@ -24,7 +24,11 @@ class TestCase extends PHPUnitTestCase {
 	protected function randomId(bool $scrub = false): Identifier {
 		$id = new RandomIdentifier();
 
-		return $scrub ? Identifier::fromByteString($id->toByteString()) : $id;
+		return $scrub ? $this->scrubId($id) : $id;
+	}
+
+	protected function scrubId(Identifier $id): Identifier {
+		return Identifier::fromByteString($id->toByteString());
 	}
 }
 

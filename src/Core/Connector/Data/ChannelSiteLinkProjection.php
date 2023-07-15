@@ -3,14 +3,18 @@
 namespace Smolblog\Core\Connector\Data;
 
 use Illuminate\Database\ConnectionInterface;
+use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\ChannelSiteLink;
+use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\{ChannelSiteLinkSet};
+use Smolblog\Core\Connector\Queries\ChannelsForAdmin;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Connector\Queries\SiteHasPermissionForChannel;
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Projection;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Track permissions for sites and channels.
@@ -133,5 +137,108 @@ class ChannelSiteLinkProjection implements Projection {
 		$query->setResults($this->bus->fetch(
 			new UserHasPermissionForSite(siteId: $query->siteId, userId: $query->userId, mustBeAdmin: true)
 		));
+	}
+
+	/**
+	 * Handle the ChannelsForAdmin query.
+	 *
+	 * This is one of those queries that would be 2-3 queries normally, but here it's one trip to the database.
+	 *
+	 * @param ChannelsForAdmin $query Query to execute.
+	 * @return void
+	 */
+	public function onChannelsForAdmin(ChannelsForAdmin $query) {
+		$channelTable = ChannelProjection::TABLE;
+		$connectionTable = ConnectionProjection::TABLE;
+
+		$linksQuery = $this->db->table(self::TABLE)->where('site_uuid', '=', $query->siteId->toString());
+		$results = $this->db->table($channelTable)->
+			join($connectionTable, "$connectionTable.connection_uuid", '=', "$channelTable.connection_uuid")->
+			leftJoinSub($linksQuery, 'links', "$channelTable.channel_uuid", '=', 'links.channel_uuid')->
+			where("$connectionTable.user_uuid", '=', $query->userId->toString())->
+			orWhereNotNull('links.link_uuid')->
+			select(
+				"$connectionTable.connection_uuid",
+				"$connectionTable.user_uuid",
+				"$connectionTable.provider",
+				"$connectionTable.provider_key",
+				"$connectionTable.display_name as connection_display_name",
+				"$connectionTable.details as connection_details",
+				"$channelTable.channel_uuid",
+				"$channelTable.channel_key",
+				"$channelTable.display_name as channel_display_name",
+				"$channelTable.details as channel_details",
+				"links.site_uuid",
+				"links.can_pull",
+				"links.can_push",
+			)->get();
+
+		$connections = [];
+		$channels = [];
+		$links = [];
+		foreach ($results->all() as $row) {
+			if (!array_key_exists($row->connection_uuid, $channels)) {
+				$connections[$row->connection_uuid] = $this->adminConnectionFromRow($row);
+				$channels[$row->connection_uuid] = [];
+			}
+
+			$channels[$row->connection_uuid][] = $this->adminChannelFromRow($row);
+
+			if (isset($row->site_uuid)) {
+				$links[$row->channel_uuid] = $this->adminLinkFromRow($row);
+			}
+		}
+
+		$query->setResults([
+			'connections' => $connections,
+			'channels' => $channels,
+			'links' => $links,
+		]);
+	}
+
+	/**
+	 * Create a Connection from the channels-for-admin query.
+	 *
+	 * @param object $row Database row.
+	 * @return Connection
+	 */
+	private function adminConnectionFromRow(object $row): Connection {
+		return new Connection(
+			userId: Identifier::fromString($row->user_uuid),
+			provider: $row->provider,
+			providerKey: $row->provider_key,
+			displayName: $row->connection_display_name,
+			details: json_decode($row->connection_details, true),
+		);
+	}
+
+	/**
+	 * Create a Channel from the channels-for-admin query.
+	 *
+	 * @param object $row Database row.
+	 * @return Channel
+	 */
+	private function adminChannelFromRow(object $row): Channel {
+		return new Channel(
+			connectionId: Identifier::fromString($row->connection_uuid),
+			channelKey: $row->channel_key,
+			displayName: $row->channel_display_name,
+			details: json_decode($row->channel_details, true),
+		);
+	}
+
+	/**
+	 * Create a ChannelSiteLink from the channels-for-admin query.
+	 *
+	 * @param object $row Database row.
+	 * @return ChannelSiteLink
+	 */
+	private function adminLinkFromRow(object $row): ChannelSiteLink {
+		return new ChannelSiteLink(
+			channelId: Identifier::fromString($row->channel_uuid),
+			siteId: Identifier::fromString($row->site_uuid),
+			canPull: $row->can_pull ?? false,
+			canPush: $row->can_push ?? false,
+		);
 	}
 }

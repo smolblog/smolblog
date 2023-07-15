@@ -7,6 +7,7 @@ use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\ChannelSiteLink;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
+use Smolblog\Core\Connector\Queries\ChannelsForAdmin;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Connector\Queries\SiteHasPermissionForChannel;
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
@@ -282,5 +283,128 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 		$this->projection->onUserCanLinkChannelAndSite($query);
 	}
 
-// public function onChannelsForAdmin
+	public function testItWillFindChannelsForTheAdminScreen() {
+		$siteId = $this->randomId(scrub: true);
+		$connections = [
+			new Connection(
+				userId: $this->randomId(scrub: true),
+				provider: 'microdon',
+				providerKey: '44245',
+				displayName: '@me@microdon.com',
+				details: ['one' => 'two'],
+			),
+			new Connection(
+				userId: $this->randomId(scrub: true),
+				provider: 'mastopub',
+				providerKey: '34567',
+				displayName: '@lager@mastopub.com',
+				details: ['three' => 'four'],
+			),
+		];
+		$this->db->table('connections')->insert(array_map(
+			fn($con) => [
+				'connection_uuid' => $con->id->toString(),
+				'user_uuid' => $con->userId->toString(),
+				'provider' => $con->provider,
+				'provider_key' => $con->providerKey,
+				'display_name' => $con->displayName,
+				'details' => json_encode($con->details),
+			],
+			$connections
+		));
+
+		$channels = [
+			new Channel(
+				connectionId: $this->scrubId($connections[0]->id),
+				channelKey: '2345',
+				displayName: '@me@microdon.com',
+				details: ['five' => 'six'],
+			),
+			new Channel(
+				connectionId: $this->scrubId($connections[0]->id),
+				channelKey: '4567',
+				displayName: '@otherme@microdon.com',
+				details: ['seven' => 'eight'],
+			),
+			new Channel(
+				connectionId: $this->scrubId($connections[1]->id),
+				channelKey: '7750',
+				displayName: '@lager@mastopub.com',
+				details: ['nine' => 'ten'],
+			),
+			new Channel(
+				connectionId: $this->scrubId($connections[1]->id),
+				channelKey: '9943',
+				displayName: '@pilsner@mastopub.com',
+				details: ['eleven' => 'twelve'],
+			),
+		];
+		$this->db->table('channels')->insert(array_map(
+			fn($cha) => [
+				'channel_uuid' => $cha->id->toString(),
+				'connection_uuid' => $cha->connectionId->toString(),
+				'channel_key' => $cha->channelKey,
+				'display_name' => $cha->displayName,
+				'details' => json_encode($cha->details),
+			],
+			$channels
+		));
+
+		$links = [
+			new ChannelSiteLink(
+				channelId: $this->scrubId($channels[0]->id),
+				siteId: $siteId,
+				canPull: true,
+				canPush: false,
+			),
+			new ChannelSiteLink(
+				channelId: $this->scrubId($channels[0]->id),
+				siteId: $this->randomId(),
+				canPull: true,
+				canPush: false,
+			),
+			new ChannelSiteLink(
+				channelId: $this->scrubId($channels[2]->id),
+				siteId: $this->randomId(),
+				canPull: true,
+				canPush: false,
+			),
+			new ChannelSiteLink(
+				channelId: $this->scrubId($channels[3]->id),
+				siteId: $siteId,
+				canPull: true,
+				canPush: true,
+			),
+		];
+		$this->db->table('channel_site_links')->insert(array_map(
+			fn($link) => [
+				'link_uuid' => $link->id->toString(),
+				'channel_uuid' => $link->channelId->toString(),
+				'site_uuid' => $link->siteId->toString(),
+				'can_pull' => $link->canPull,
+				'can_push' => $link->canPush,
+			],
+			$links
+		));
+
+		$expected = [
+			'connections' => [
+				$connections[0]->id->toString() => $connections[0],
+				$connections[1]->id->toString() => $connections[1],
+			],
+			'channels' => [
+				$connections[0]->id->toString() => [$channels[0], $channels[1]],
+				$connections[1]->id->toString() => [$channels[3]],
+			],
+			'links' => [
+				$channels[0]->id->toString() => $links[0],
+				$channels[3]->id->toString() => $links[3],
+			],
+		];
+
+		$query = new ChannelsForAdmin(siteId: $siteId, userId: $connections[0]->userId);
+		$this->projection->onChannelsForAdmin($query);
+
+		$this->assertEquals($expected, $query->results());
+	}
 }
