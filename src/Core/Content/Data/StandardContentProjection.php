@@ -19,7 +19,13 @@ use Smolblog\Core\Content\Events\{
 	PublicContentRemoved,
 };
 use Smolblog\Core\Content\GenericContent;
-use Smolblog\Core\Content\Queries\{ContentList, ContentVisibleToUser, GenericContentById, UserCanEditContent};
+use Smolblog\Core\Content\Queries\{
+	ContentByPermalink,
+	ContentList,
+	ContentVisibleToUser,
+	GenericContentById,
+	UserCanEditContent
+};
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\MessageBus;
@@ -254,6 +260,26 @@ class StandardContentProjection implements Projection {
 			siteId: $query->siteId,
 			userId: $query->userId,
 		));
+	}
+
+	/**
+	 * Find info for a Content piece by permalink.
+	 *
+	 * This is an AdaptableQuery, so it will be picked up by the ContentService after this which will dispatch the
+	 * query for the content's particular type.
+	 *
+	 * @param ContentByPermalink $query Query to execute.
+	 * @return void
+	 */
+	public function onContentByPermalink(ContentByPermalink $query) {
+		$result = $this->db->table('standard_content')->
+			where('site_uuid', '=', $query->siteId->toString())->
+			where('permalink', '=', $query->permalink)->
+			first(['content_uuid', 'type']);
+
+		if (isset($result)) {
+			$query->setContentInfo(id: Identifier::fromString($result->content_uuid), type: $result->type);
+		}
 	}
 
 	/*

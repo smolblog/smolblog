@@ -99,13 +99,13 @@ class MicropubService extends MicropubAdapter {
 	 * @return array|false
 	 */
 	public function sourceQueryCallback(string $url, ?array $properties = null) {
-		$parts = parse_url($url);
-		if (!$parts) {
+		$site = $this->bus->fetch(new SiteByResourceUri($url));
+		if (!$site) {
 			return false;
 		}
 
-		$site = $this->bus->fetch(new SiteByResourceUri($parts['host']));
-		if (!$site) {
+		$parts = parse_url($url);
+		if (!$parts) {
 			return false;
 		}
 

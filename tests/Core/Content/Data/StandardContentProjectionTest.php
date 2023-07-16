@@ -17,6 +17,7 @@ use Smolblog\Core\Content\Events\PermalinkAssigned;
 use Smolblog\Core\Content\Events\PublicContentAdded;
 use Smolblog\Core\Content\Events\PublicContentRemoved;
 use Smolblog\Core\Content\GenericContent;
+use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Content\Queries\ContentVisibleToUser;
 use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
@@ -532,5 +533,23 @@ final class StandardContentProjectionTest extends TestCase {
 
 		$otherQuery = new UserCanEditContent(siteId: $siteId, userId: $userId, contentId: $contentId);
 		$this->projection->onUserCanEditContent($otherQuery);
+	}
+
+	public function testItWillFindContentByPermalink() {
+		$this->setUpSampleRow();
+		$this->db->table('standard_content')->update([
+			'permalink' => '/ask/whats-taters-precious.html',
+			'publish_timestamp' => '2022-02-02T22:22:22.000+00:00',
+			'visibility' => ContentVisibility::Published->value,
+		]);
+
+		$query = new ContentByPermalink(
+			siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+			permalink: '/ask/whats-taters-precious.html',
+		);
+		$this->projection->onContentByPermalink($query);
+
+		$this->assertEquals(Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'), $query->getContentId());
+		$this->assertEquals('spud', $query->getContentType());
 	}
 }
