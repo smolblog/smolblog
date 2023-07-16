@@ -12,7 +12,7 @@ class ReblogCommandTest extends TestCase {
 		$command = new DeleteReblog(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 
 		$this->assertInstanceOf(UserCanEditContent::class, $command->getAuthorizationQuery());

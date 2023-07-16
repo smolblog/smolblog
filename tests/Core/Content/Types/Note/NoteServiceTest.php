@@ -143,10 +143,10 @@ class NoteServiceTest extends TestCase {
 		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 		$expectedEvent = new NoteDeleted(
-			contentId: $command->noteId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -167,10 +167,10 @@ class NoteServiceTest extends TestCase {
 		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 		$contentArgs = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

@@ -5,6 +5,8 @@ namespace Smolblog\IndieWeb\Micropub;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
+use Smolblog\Core\Content\Content;
+use Smolblog\Core\Content\ContentTypeRegistry;
 use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
@@ -28,14 +30,16 @@ class MicropubService extends MicropubAdapter {
 	/**
 	 * Construct the service.
 	 *
-	 * @param ApiEnvironment        $env Current environment.
-	 * @param MessageBus            $bus For sending queries and commands.
-	 * @param MicroformatsConverter $mf  Handle converting Smolblog objects to their Microformats counterparts.
+	 * @param ApiEnvironment        $env     Current environment.
+	 * @param MessageBus            $bus     For sending queries and commands.
+	 * @param MicroformatsConverter $mf      Handle converting Smolblog objects to their Microformats counterparts.
+	 * @param ContentTypeRegistry   $typeReg For getting content type information.
 	 */
 	public function __construct(
 		private ApiEnvironment $env,
 		private MessageBus $bus,
 		private MicroformatsConverter $mf,
+		private ContentTypeRegistry $typeReg,
 	) {
 	}
 
@@ -114,22 +118,8 @@ class MicropubService extends MicropubAdapter {
 	 * @return array|false
 	 */
 	public function sourceQueryCallback(string $url, ?array $properties = null) {
-		$site = $this->bus->fetch(new SiteByResourceUri($url));
-		if (!$site) {
-			return false;
-		}
-
-		$parts = parse_url($url);
-		if (!$parts) {
-			return false;
-		}
-
-		$content = $this->bus->fetch(new ContentByPermalink(
-			siteId: $site->id,
-			permalink: $parts['path'],
-			userId: $this->user['id'],
-		));
-		if (!$content) {
+		$content = $this->contentByUrl($url);
+		if (!isset($content)) {
 			return false;
 		}
 
@@ -228,6 +218,19 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function deleteCallback(string $url) {
+		$content = $this->contentByUrl($url);
+		if (!isset($content)) {
+			return false;
+		}
+
+		$commandClass = $this->typeReg->deleteItemCommandFor($content->type->getTypeKey());
+		if (!isset($commandClass) || !class_exists($commandClass)) {
+			return false;
+		}
+
+		$this->bus->dispatch(
+			new $commandClass(contentId: $content->id, siteId: $content->siteId, userId: $this->user['id'])
+		);
 	}
 
 	/**
@@ -246,5 +249,31 @@ class MicropubService extends MicropubAdapter {
 		$this->bus->dispatch($command);
 
 		return $command->urlToOriginal ?? 500;
+	}
+
+	/**
+	 * Get the Content at the given URL.
+	 *
+	 * This will likely be its own query eventually. Eventually.
+	 *
+	 * @param string $url URL of the content.
+	 * @return Content|null
+	 */
+	private function contentByUrl(string $url): ?Content {
+		$site = $this->bus->fetch(new SiteByResourceUri($url));
+		if (!$site) {
+			return null;
+		}
+
+		$parts = parse_url($url);
+		if (!$parts) {
+			return null;
+		}
+
+		return $this->bus->fetch(new ContentByPermalink(
+			siteId: $site->id,
+			permalink: $parts['path'],
+			userId: $this->user['id'],
+		));
 	}
 }

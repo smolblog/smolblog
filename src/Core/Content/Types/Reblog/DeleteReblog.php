@@ -14,24 +14,16 @@ class DeleteReblog extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**
-	 * Mirror the reblogId into contentId so we can use the trait.
-	 *
-	 * @var Identifier
-	 */
-	private Identifier $contentId;
-
-	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $siteId   Site this reblog is posted on.
-	 * @param Identifier $userId   User making this change.
-	 * @param Identifier $reblogId Reblog being changed.
+	 * @param Identifier $siteId    Site this reblog is posted on.
+	 * @param Identifier $userId    User making this change.
+	 * @param Identifier $contentId Reblog being changed.
 	 */
 	public function __construct(
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
-		public readonly Identifier $reblogId,
+		public readonly Identifier $contentId,
 	) {
-		$this->contentId = $this->reblogId;
 	}
 }

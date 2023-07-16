@@ -102,11 +102,11 @@ final class ReblogServiceTest extends TestCase {
 		$command = new DeleteReblog(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 
 		$expectedEvent = new ReblogDeleted(
-			contentId: $command->reblogId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -121,10 +121,10 @@ final class ReblogServiceTest extends TestCase {
 		$command = new DeleteReblog(
 			siteId: $this->reblog->siteId,
 			userId: $this->reblog->authorId,
-			reblogId: $this->reblog->id,
+			contentId: $this->reblog->id,
 		);
 		$contentArgs = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

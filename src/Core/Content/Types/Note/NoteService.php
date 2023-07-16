@@ -26,6 +26,7 @@ class NoteService implements Listener, ContentTypeService {
 			displayName: 'Note',
 			typeClass: Note::class,
 			singleItemQuery: NoteById::class,
+			deleteItemCommand: DeleteNote::class,
 		);
 	}
 
@@ -117,7 +118,7 @@ class NoteService implements Listener, ContentTypeService {
 	 */
 	public function onDeleteNote(DeleteNote $command) {
 		$contentParams = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

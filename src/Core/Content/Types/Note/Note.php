@@ -58,6 +58,15 @@ class Note implements ContentType {
 	}
 
 	/**
+	 * Get the type key ('note').
+	 *
+	 * @return string
+	 */
+	public function getTypeKey(): string {
+		return 'note';
+	}
+
+	/**
 	 * Construct this content object
 	 *
 	 * @param string      $text     Markdown-formatted text of the content.

@@ -25,6 +25,7 @@ class ReblogService implements Listener, ContentTypeService {
 			displayName: 'Reblog',
 			typeClass: Reblog::class,
 			singleItemQuery: ReblogById::class,
+			deleteItemCommand: DeleteReblog::class,
 		);
 	}
 
@@ -97,7 +98,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onDeleteReblog(DeleteReblog $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

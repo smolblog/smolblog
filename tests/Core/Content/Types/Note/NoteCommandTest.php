@@ -28,12 +28,12 @@ final class NoteCommandTest extends TestCase {
 		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 		$expected = new UserCanEditContent(
 			siteId: $command->siteId,
 			userId: $command->userId,
-			contentId: $command->noteId,
+			contentId: $command->contentId,
 		);
 
 		$this->assertEquals($expected, $command->getAuthorizationQuery());

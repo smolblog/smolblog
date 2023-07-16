@@ -55,7 +55,7 @@ class DeleteReblog extends BasicEndpoint {
 		$this->bus->dispatch(new DeleteReblogCommand(
 			siteId: $params['site'],
 			userId: $userId,
-			reblogId: $params['content'],
+			contentId: $params['content'],
 		));
 
 		return new SuccessResponse();

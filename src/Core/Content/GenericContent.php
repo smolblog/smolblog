@@ -41,4 +41,16 @@ class GenericContent implements ContentType {
 	public function getBodyContent(): string {
 		return $this->body;
 	}
+
+	/**
+	 * Get the "key" for this content. It's content.
+	 *
+	 * Honestly, if this is being called, there's a problem.
+	 *
+	 * @return string
+	 */
+	public function getTypeKey(): string
+	{
+		return 'content';
+	}
 }
