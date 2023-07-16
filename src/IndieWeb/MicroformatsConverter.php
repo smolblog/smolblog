@@ -10,7 +10,17 @@ use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Core\User\User;
 
+/**
+ * Convert Smolblog objects to their Microformats counterparts.
+ */
 class MicroformatsConverter {
+	/**
+	 * Convert a Content object to a h-entry.
+	 *
+	 * @param Content   $content Given content.
+	 * @param User|null $author  User object corresponding to the author.
+	 * @return array
+	 */
 	public function entryPropertiesFromContent(Content $content, ?User $author = null): array {
 		$props = [
 			'name' => [$content->type->getTitle()],

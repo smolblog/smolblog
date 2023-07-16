@@ -25,6 +25,13 @@ use Taproot\Micropub\MicropubAdapter;
  * Handle the Micropub endpoint
  */
 class MicropubService extends MicropubAdapter {
+	/**
+	 * Construct the service.
+	 *
+	 * @param ApiEnvironment        $env Current environment.
+	 * @param MessageBus            $bus For sending queries and commands.
+	 * @param MicroformatsConverter $mf  Handle converting Smolblog objects to their Microformats counterparts.
+	 */
 	public function __construct(
 		private ApiEnvironment $env,
 		private MessageBus $bus,
@@ -32,6 +39,14 @@ class MicropubService extends MicropubAdapter {
 	) {
 	}
 
+	/**
+	 * Verify the given access token.
+	 *
+	 * Verification itself is handled by the API layer itself. Scopes are not currently checked.
+	 *
+	 * @param string $token Given access token.
+	 * @return array
+	 */
 	public function verifyAccessTokenCallback(string $token) {
 		return [
 			'id' => $this->request->getAttribute('smolblogUserId'),
@@ -42,7 +57,7 @@ class MicropubService extends MicropubAdapter {
 	 * Get the Micropub configuration for this server.
 	 *
 	 * @param array $params Raw query parameters.
-	 * @return void
+	 * @return mixed
 	 */
 	public function configurationQueryCallback(array $params) {
 		$sites = $this->bus->fetch(new UserSites($this->user['id'])) ?? [];
@@ -128,7 +143,13 @@ class MicropubService extends MicropubAdapter {
 		);
 	}
 
-
+	/**
+	 * Create new content from the Micropub endpoint.
+	 *
+	 * @param array $data          Provided content.
+	 * @param array $uploadedFiles Uploaded images.
+	 * @return mixed
+	 */
 	public function createCallback(array $data, array $uploadedFiles) {
 		if (!in_array('h-entry', $data['type'])) {
 			return [
@@ -190,18 +211,31 @@ class MicropubService extends MicropubAdapter {
 	}
 
 
+	/**
+	 * Update the given content.
+	 *
+	 * @param string $url     URL of the content.
+	 * @param array  $actions Actions to take.
+	 * @return mixed
+	 */
 	public function updateCallback(string $url, array $actions) {
 	}
 
-
+	/**
+	 * Delete the given content.
+	 *
+	 * @param string $url URL of the content.
+	 * @return mixed
+	 */
 	public function deleteCallback(string $url) {
 	}
 
-
-	public function undeleteCallback(string $url) {
-	}
-
-
+	/**
+	 * Handle uploads at the media endpoint.
+	 *
+	 * @param UploadedFileInterface $file Uploaded files.
+	 * @return mixed
+	 */
 	public function mediaEndpointCallback(UploadedFileInterface $file) {
 		$command = new HandleUploadedMedia(
 			file: $file,
