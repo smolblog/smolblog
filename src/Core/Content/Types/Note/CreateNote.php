@@ -14,13 +14,6 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class CreateNote extends Command implements AuthorizableMessage {
 	/**
-	 * Generated ID for the note.
-	 *
-	 * @var Identifier
-	 */
-	public Identifier $noteId;
-
-	/**
 	 * Construct the command.
 	 *
 	 * @param Identifier $siteId    Site for this note.

@@ -16,8 +16,8 @@ class DeleteNote extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $siteId Site this note is posted on.
-	 * @param Identifier $userId User making this change.
+	 * @param Identifier $siteId    Site this note is posted on.
+	 * @param Identifier $userId    User making this change.
 	 * @param Identifier $contentId Note being changed.
 	 */
 	public function __construct(

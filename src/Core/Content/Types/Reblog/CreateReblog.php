@@ -14,13 +14,6 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class CreateReblog extends Command implements AuthorizableMessage {
 	/**
-	 * Generated ID for the reblog.
-	 *
-	 * @var Identifier
-	 */
-	public Identifier $reblogId;
-
-	/**
 	 * Construct the command
 	 *
 	 * @param string      $url       URL being reblogged.

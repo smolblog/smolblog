@@ -143,13 +143,13 @@ final class ReblogServiceTest extends TestCase {
 		$command = new EditReblogComment(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			comment: 'Another day',
 		);
 
 		$expectedEvent = new ReblogCommentChanged(
 			comment: 'Another day',
-			contentId: $command->reblogId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -164,11 +164,11 @@ final class ReblogServiceTest extends TestCase {
 		$command = new EditReblogComment(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			comment: 'Another day',
 		);
 		$contentArgs = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -187,12 +187,12 @@ final class ReblogServiceTest extends TestCase {
 		$command = new EditReblogUrl(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			url: '//smol.blog/',
 		);
 
 		$expectedEvent = new ReblogInfoChanged(
-			contentId: $command->reblogId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 			url: '//smol.blog/',
@@ -209,11 +209,11 @@ final class ReblogServiceTest extends TestCase {
 		$command = new EditReblogUrl(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			url: '//smol.blog/',
 		);
 		$contentArgs = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -232,11 +232,11 @@ final class ReblogServiceTest extends TestCase {
 		$command = new PublishReblog(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 
 		$expectedEvent = new PublicReblogCreated(
-			contentId: $command->reblogId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);

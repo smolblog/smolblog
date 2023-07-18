@@ -14,24 +14,16 @@ class PublishNote extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**
-	 * Map noteId to contentID so we can use the trait.
-	 *
-	 * @var Identifier
-	 */
-	private Identifier $contentId;
-
-	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $siteId Site this note is posted on.
-	 * @param Identifier $userId User making this change.
-	 * @param Identifier $noteId Note being changed.
+	 * @param Identifier $siteId    Site this note is posted on.
+	 * @param Identifier $userId    User making this change.
+	 * @param Identifier $contentId Note being changed.
 	 */
 	public function __construct(
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
-		public readonly Identifier $noteId,
+		public readonly Identifier $contentId,
 	) {
-		$this->contentId = $this->noteId;
 	}
 }

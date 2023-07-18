@@ -49,8 +49,7 @@ class GenericContent implements ContentType {
 	 *
 	 * @return string
 	 */
-	public function getTypeKey(): string
-	{
+	public function getTypeKey(): string {
 		return 'content';
 	}
 }

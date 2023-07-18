@@ -22,7 +22,7 @@ class ReblogCommandTest extends TestCase {
 		$command = new EditReblogComment(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			comment: 'Hello!',
 		);
 
@@ -33,7 +33,7 @@ class ReblogCommandTest extends TestCase {
 		$command = new EditReblogUrl(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			url: '//eph.me/music',
 		);
 

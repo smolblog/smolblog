@@ -8,8 +8,6 @@ use Smolblog\Core\Content\ContentTypeService;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Service to handle Note-related commands.
@@ -73,7 +71,7 @@ class NoteService implements Listener, ContentTypeService {
 	 */
 	public function onEditNote(EditNote $command) {
 		$contentParams = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -98,7 +96,7 @@ class NoteService implements Listener, ContentTypeService {
 	 */
 	public function onPublishNote(PublishNote $command) {
 		$contentParams = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

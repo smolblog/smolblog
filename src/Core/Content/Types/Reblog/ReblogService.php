@@ -78,7 +78,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onPublishReblog(PublishReblog $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -120,7 +120,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onEditReblogComment(EditReblogComment $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -145,7 +145,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onEditReblogUrl(EditReblogUrl $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
