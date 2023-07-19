@@ -3,6 +3,7 @@
 namespace Smolblog\IndieWeb;
 
 use Smolblog\Api\ApiEnvironment;
+use Smolblog\Core\Content\ContentTypeRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 
@@ -21,6 +22,7 @@ class Model extends DomainModel {
 			'env' => ApiEnvironment::class,
 			'bus' => MessageBus::class,
 			'mf' => MicroformatsConverter::class,
+			'typeReg' => ContentTypeRegistry::class,
 		],
 		MicroformatsConverter::class => [],
 	];

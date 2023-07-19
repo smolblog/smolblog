@@ -6,14 +6,19 @@ use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Content\Content;
+use Smolblog\Core\Content\ContentType;
 use Smolblog\Core\Content\ContentTypeRegistry;
 use Smolblog\Core\Content\Extensions\Tags\SetTags;
+use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Core\Content\Types\Note\CreateNote;
+use Smolblog\Core\Content\Types\Note\EditNote;
 use Smolblog\Core\Content\Types\Note\PublishNote;
 use Smolblog\Core\Content\Types\Reblog\CreateReblog;
+use Smolblog\Core\Content\Types\Reblog\EditReblogComment;
+use Smolblog\Core\Content\Types\Reblog\EditReblogUrl;
 use Smolblog\Core\Content\Types\Reblog\PublishReblog;
 use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Core\User\UserById;
@@ -167,22 +172,14 @@ class MicropubService extends MicropubAdapter {
 				comment: $comment,
 				publish: false,
 			);
-			$publishCommand = new PublishReblog(
-				siteId: $commonProps['siteId'],
-				userId: $commonProps['userId'],
-				reblogId: $commonProps['contentId'],
-			);
+			$publishCommand = new PublishReblog(...$commonProps);
 		} else {
 			$createCommand = new CreateNote(
 				...$commonProps,
 				text: $props['content'][0],
 				publish: false,
 			);
-			$publishCommand = new PublishNote(
-				siteId: $commonProps['siteId'],
-				userId: $commonProps['userId'],
-				noteId: $commonProps['contentId'],
-			);
+			$publishCommand = new PublishNote(...$commonProps);
 		}//end if
 
 		$this->bus->dispatch($createCommand);
@@ -209,6 +206,73 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function updateCallback(string $url, array $actions) {
+		$content = $this->contentByUrl($url);
+		if (!isset($content)) {
+			return false;
+		}
+
+		$type = $content->type->getTypeKey();
+		$commonProps = [
+			'userId' => $this->user['id'],
+			'siteId' => $content->siteId,
+			'contentId' => $content->id,
+		];
+		$commands = [];
+		$tags = array_map(fn($ent) => $ent->text, $content->extensions[Tags::class]?->tags ?? []);
+		$originalTags = $tags;
+		foreach ($actions as $action => $props) {
+			if ($type === 'reblog' && isset($props['repost-of'])) {
+				$commands[] = new EditReblogUrl(...$commonProps, url: $props['repost-of'][0]);
+			}
+
+			if (is_array($props['content'] ?? null)) {
+				$newContent = $action === 'add' ? $this->getTextContent($content->type) ?? '' : '';
+				$newContent .= $props['content'][0];
+				switch ($content->type->getTypeKey()) {
+					case 'reblog':
+						$commands[] = new EditReblogComment(...$commonProps, comment: $newContent);
+						break;
+
+					case 'note':
+						$commands[] = new EditNote(...$commonProps, text: $newContent);
+						break;
+				}
+			}
+
+			if (!empty($props['category'])) {
+				switch ($action) {
+					case 'add':
+						$tags = array_merge($tags, $props['category']);
+						break;
+
+					case 'replace':
+						$tags = $props['category'];
+						break;
+
+					case 'delete':
+						$tags = array_values(array_diff($tags, $props['category']));
+						break;
+				}
+			}
+		}//end foreach
+
+		if (is_array($actions['delete']) && array_is_list($actions['delete'])) {
+			$deleteThese = $actions['delete'];
+			if ($type === 'reblog' && in_array('content', $deleteThese)) {
+				$commands[] = new EditReblogComment(...$commonProps, comment: null);
+			}
+			if (in_array('category', $deleteThese)) {
+				$tags = [];
+			}
+		}
+
+		if ($tags != $originalTags) {
+			$commands[] = new SetTags(...$commonProps, tags: $tags);
+		}
+
+		foreach ($commands as $command) {
+			$this->bus->dispatch($command);
+		}
 	}
 
 	/**
@@ -275,5 +339,24 @@ class MicropubService extends MicropubAdapter {
 			permalink: $parts['path'],
 			userId: $this->user['id'],
 		));
+	}
+
+	/**
+	 * Get the text content from a ContentType object.
+	 *
+	 * @param ContentType $contentTypeData Content data.
+	 * @return string|null
+	 */
+	private function getTextContent(ContentType $contentTypeData): ?string {
+		switch ($contentTypeData->getTypeKey()) {
+			case 'note':
+				return $contentTypeData->text;
+
+			case 'reblog':
+				return $contentTypeData->comment;
+
+			default:
+				return null;
+		}
 	}
 }

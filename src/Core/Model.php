@@ -52,6 +52,7 @@ class Model extends DomainModel {
 
 		Content\ContentService::class => [
 			'bus' => MessageBus::class,
+			'registry' => Content\ContentTypeRegistry::class,
 		],
 		Content\ContentTypeRegistry::class => [
 			'configuration' => null,
