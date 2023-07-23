@@ -8,6 +8,10 @@ use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentType;
 use Smolblog\Core\Content\ContentTypeRegistry;
+use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Core\Content\Extensions\Syndication\AddSyndicationLink;
+use Smolblog\Core\Content\Extensions\Syndication\SetSyndicationChannels;
+use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
@@ -25,6 +29,7 @@ use Smolblog\Core\User\UserById;
 use Smolblog\Core\User\UserSites;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Framework\Objects\Identifier;
 use Smolblog\IndieWeb\MicroformatsConverter;
 use Taproot\Micropub\MicropubAdapter;
 
@@ -131,11 +136,18 @@ class MicropubService extends MicropubAdapter {
 		$author = $this->bus->fetch(new UserById($content->authorId));
 		$props = $this->mf->entryPropertiesFromContent(content: $content, author: $author);
 
-		return array_filter(
-			$props,
-			fn($key) => !isset($properties) || in_array($key, $properties),
-			ARRAY_FILTER_USE_KEY
-		);
+		$res = [
+			'properties' => array_filter(
+				$props,
+				fn($key) => !isset($properties) || in_array($key, $properties),
+				ARRAY_FILTER_USE_KEY
+			)
+		];
+		if (!isset($properties)) {
+			$res['type'] = ['h-entry'];
+		}
+
+		return $res;
 	}
 
 	/**
@@ -146,6 +158,12 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function createCallback(array $data, array $uploadedFiles) {
+		wp_insert_post( [
+			'post_title' => 'Micropub create ' . date(\DateTimeInterface::COOKIE),
+			'post_content' => '<pre>' . print_r($data, true) . '</pre>',
+			'post_type' => 'log',
+		], true );
+
 		if (!in_array('h-entry', $data['type'])) {
 			return [
 				'error' => 400,
@@ -191,7 +209,16 @@ class MicropubService extends MicropubAdapter {
 			));
 		}
 
-		$this->bus->dispatch($publishCommand);
+		if (!empty($props['mp-syndicate-to'])) {
+			$this->bus->dispatch(new SetSyndicationChannels(
+				...$commonProps,
+				channels: array_map(fn($id) => Identifier::fromString($id), $props['mp-syndicate-to']),
+			));
+		}
+
+		if (!isset($props['post-status']) || $props['post-status'][0] == 'publish') {
+			$this->bus->dispatch($publishCommand);
+		}
 
 		$createdContent = $this->bus->fetch(new GenericContentById(...$commonProps));
 		return $site->baseUrl . $createdContent->permalink;
@@ -206,6 +233,12 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function updateCallback(string $url, array $actions) {
+		wp_insert_post( [
+			'post_title' => 'Micropub update ' . date(\DateTimeInterface::COOKIE),
+			'post_content' => print_r(['url' => $url, 'actions' => $actions], true),
+			'post_type' => 'log',
+		], true );
+
 		$content = $this->contentByUrl($url);
 		if (!isset($content)) {
 			return false;
@@ -220,7 +253,19 @@ class MicropubService extends MicropubAdapter {
 		$commands = [];
 		$tags = array_map(fn($ent) => $ent->text, $content->extensions[Tags::class]?->tags ?? []);
 		$originalTags = $tags;
+		$publish = false;
 		foreach ($actions as $action => $props) {
+			if ($action === 'mp-syndicate-to') {
+				$channels = array_values(array_unique(array_merge(
+					array_map(fn($id) => Identifier::fromString($id), $props),
+					$content->extensions[Syndication::class]?->channels ?? []
+				)));
+
+				$commands[] = new SetSyndicationChannels(...$commonProps, channels: $channels);
+
+				continue;
+			}
+
 			if ($type === 'reblog' && isset($props['repost-of'])) {
 				$commands[] = new EditReblogUrl(...$commonProps, url: $props['repost-of'][0]);
 			}
@@ -254,6 +299,20 @@ class MicropubService extends MicropubAdapter {
 						break;
 				}
 			}
+
+			if (is_array($props['syndication'] ?? null)) {
+				foreach ($props['syndication'] as $syndLink) {
+					$commands[] = new AddSyndicationLink(...$commonProps, url: $syndLink);
+				}
+			}
+
+			if (
+				isset($props['post-status']) &&
+				$props['post-status'][0] == 'publish' &&
+				$content->visibility !== ContentVisibility::Published
+			) {
+				$publish = true;
+			}
 		}//end foreach
 
 		if (is_array($actions['delete']) && array_is_list($actions['delete'])) {
@@ -264,10 +323,16 @@ class MicropubService extends MicropubAdapter {
 			if (in_array('category', $deleteThese)) {
 				$tags = [];
 			}
+			if (in_array('mp-syndicate-to', $deleteThese)) {
+				$commands[] = new SetSyndicationChannels(...$commonProps, channels: []);
+			}
 		}
 
 		if ($tags != $originalTags) {
 			$commands[] = new SetTags(...$commonProps, tags: $tags);
+		}
+		if ($publish) {
+			$commands[] = $type === 'reblog' ? new PublishReblog(...$commonProps) : new PublishNote(...$commonProps);
 		}
 
 		foreach ($commands as $command) {

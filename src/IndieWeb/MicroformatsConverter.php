@@ -42,6 +42,10 @@ class MicroformatsConverter {
 				fn($ent) => $ent->url,
 				$content->extensions[Syndication::class]?->links ?? []
 			);
+			$props['mp-syndicate-to'] = array_map(
+				fn($id) => $id->toString(),
+				$content->extensions[Syndication::class]?->channels ?? []
+			);
 		}
 
 		if (isset($author)) {

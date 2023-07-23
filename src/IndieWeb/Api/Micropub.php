@@ -2,6 +2,7 @@
 
 namespace Smolblog\IndieWeb\Api;
 
+use DateTimeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Smolblog\Api\AuthScope;
@@ -53,6 +54,16 @@ class Micropub implements Endpoint {
 	 * @return ResponseInterface
 	 */
 	public function handle(ServerRequestInterface $request): ResponseInterface {
+		wp_insert_post( [
+			'post_title' => 'Micropub endpoint ' . date(DateTimeInterface::COOKIE),
+			'post_content' => print_r([
+				'method' => $request->getMethod(),
+				'query' => $request->getQueryParams(),
+				'body' => $request->getBody()->getContents(),
+			], true),
+			'post_type' => 'log',
+		], true );
+
 		return $this->micropub->handleRequest($request);
 	}
 }
