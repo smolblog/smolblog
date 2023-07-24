@@ -62,10 +62,10 @@ class NoteServiceTest extends TestCase {
 		$command = new PublishNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 		$expectedEvent = new PublicNoteCreated(
-			contentId: $command->noteId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -86,12 +86,12 @@ class NoteServiceTest extends TestCase {
 		$command = new EditNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 			text: "What's happening?"
 		);
 		$expectedEvent = new NoteBodyEdited(
 			text: "What's happening?",
-			contentId: $command->noteId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -112,11 +112,11 @@ class NoteServiceTest extends TestCase {
 		$command = new EditNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 			text: "What's happening?"
 		);
 		$contentArgs = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
