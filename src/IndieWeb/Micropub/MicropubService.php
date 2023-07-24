@@ -158,11 +158,11 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function createCallback(array $data, array $uploadedFiles) {
-		wp_insert_post( [
+		wp_insert_post([
 			'post_title' => 'Micropub create ' . date(\DateTimeInterface::COOKIE),
 			'post_content' => '<pre>' . print_r($data, true) . '</pre>',
 			'post_type' => 'log',
-		], true );
+		], true);
 
 		if (!in_array('h-entry', $data['type'])) {
 			return [
@@ -233,11 +233,11 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function updateCallback(string $url, array $actions) {
-		wp_insert_post( [
+		wp_insert_post([
 			'post_title' => 'Micropub update ' . date(\DateTimeInterface::COOKIE),
 			'post_content' => print_r(['url' => $url, 'actions' => $actions], true),
 			'post_type' => 'log',
-		], true );
+		], true);
 
 		$content = $this->contentByUrl($url);
 		if (!isset($content)) {

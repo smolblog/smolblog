@@ -24,8 +24,9 @@ class ContentSyndicatedTest extends TestCase {
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 		);
-		$event->setState($links);
+		$event->setSyndicationState($links);
 
+		$this->assertEquals($event->contentId, $event->getContentId());
 		$this->assertEquals($links, $event->getNewExtension());
 	}
 

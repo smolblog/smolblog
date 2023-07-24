@@ -54,7 +54,7 @@ class Micropub implements Endpoint {
 	 * @return ResponseInterface
 	 */
 	public function handle(ServerRequestInterface $request): ResponseInterface {
-		wp_insert_post( [
+		wp_insert_post([
 			'post_title' => 'Micropub endpoint ' . date(DateTimeInterface::COOKIE),
 			'post_content' => print_r([
 				'method' => $request->getMethod(),
@@ -62,7 +62,7 @@ class Micropub implements Endpoint {
 				'body' => $request->getBody()->getContents(),
 			], true),
 			'post_type' => 'log',
-		], true );
+		], true);
 
 		return $this->micropub->handleRequest($request);
 	}
