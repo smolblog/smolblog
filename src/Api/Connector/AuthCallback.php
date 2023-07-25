@@ -5,7 +5,7 @@ namespace Smolblog\Api\Connector;
 use Smolblog\Api\AuthScope;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\DataType;
 use Smolblog\Api\ErrorResponses;
@@ -25,7 +25,7 @@ use Smolblog\Framework\Messages\MessageBus;
  * Endpoint a user is redirected to after authenticating against their external provider. It provides support for both
  * OAuth 1 and OAuth 2 callbacks.
  */
-class AuthCallback implements Endpoint {
+class AuthCallback extends BasicEndpoint {
 	/**
 	 * Get the configuration for this endpoint.
 	 *

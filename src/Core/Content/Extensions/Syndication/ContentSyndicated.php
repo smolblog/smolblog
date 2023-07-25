@@ -9,7 +9,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Indicates a piece of content has been syndicated to the given URL.
  */
-class ContentSyndicated extends ContentExtensionEdited {
+class ContentSyndicated extends ContentExtensionEdited implements NeedsSyndicationState {
 	/**
 	 * Store the state of syndication on this content.
 	 *
@@ -41,12 +41,21 @@ class ContentSyndicated extends ContentExtensionEdited {
 	}
 
 	/**
+	 * Get the ID of the content in question.
+	 *
+	 * @return Identifier
+	 */
+	public function getContentId(): Identifier {
+		return $this->contentId;
+	}
+
+	/**
 	 * Store the current state of Syndication on this content.
 	 *
 	 * @param Syndication $state Current Syndication info.
 	 * @return void
 	 */
-	public function setState(Syndication $state) {
+	public function setSyndicationState(Syndication $state) {
 		$this->state = $state;
 	}
 

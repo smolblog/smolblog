@@ -25,4 +25,11 @@ interface ContentType extends ArraySerializable {
 	 * @return string
 	 */
 	public function getBodyContent(): string;
+
+	/**
+	 * Get the key for this type.
+	 *
+	 * @return string
+	 */
+	public function getTypeKey(): string;
 }

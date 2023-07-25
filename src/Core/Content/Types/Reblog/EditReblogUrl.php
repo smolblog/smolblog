@@ -16,26 +16,18 @@ class EditReblogUrl extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**
-	 * Mirror the reblogId into contentId so we can use the trait.
-	 *
-	 * @var Identifier
-	 */
-	private Identifier $contentId;
-
-	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $siteId   Site this reblog is posted on.
-	 * @param Identifier $userId   User making this change.
-	 * @param Identifier $reblogId Reblog being changed.
-	 * @param string     $url      New URL being reblogged.
+	 * @param Identifier $siteId    Site this reblog is posted on.
+	 * @param Identifier $userId    User making this change.
+	 * @param Identifier $contentId Reblog being changed.
+	 * @param string     $url       New URL being reblogged.
 	 */
 	public function __construct(
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
-		public readonly Identifier $reblogId,
+		public readonly Identifier $contentId,
 		public readonly string $url,
 	) {
-		$this->contentId = $this->reblogId;
 	}
 }

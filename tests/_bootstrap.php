@@ -24,7 +24,11 @@ class TestCase extends PHPUnitTestCase {
 	protected function randomId(bool $scrub = false): Identifier {
 		$id = new RandomIdentifier();
 
-		return $scrub ? Identifier::fromByteString($id->toByteString()) : $id;
+		return $scrub ? $this->scrubId($id) : $id;
+	}
+
+	protected function scrubId(Identifier $id): Identifier {
+		return Identifier::fromByteString($id->toByteString());
 	}
 }
 
@@ -132,6 +136,7 @@ trait DatabaseTestKit {
 
 	protected function assertOnlyTableEntryEquals(Builder $table, mixed ...$expected) {
 		$this->assertEquals((object)$expected, $table->first());
+		$this->assertEquals(1, $table->count());
 	}
 
 	protected function assertTableEmpty(Builder $table) {

@@ -25,6 +25,7 @@ class ReblogService implements Listener, ContentTypeService {
 			displayName: 'Reblog',
 			typeClass: Reblog::class,
 			singleItemQuery: ReblogById::class,
+			deleteItemCommand: DeleteReblog::class,
 		);
 	}
 
@@ -48,12 +49,11 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onCreateReblog(CreateReblog $command) {
 		$info = $this->getExternalInfo($command->url);
-		$reblogId = new DateIdentifier();
 
 		$this->bus->dispatch(new ReblogCreated(
 			url: $command->url,
 			authorId: $command->userId,
-			contentId: $reblogId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 			comment: $command->comment,
@@ -63,13 +63,11 @@ class ReblogService implements Listener, ContentTypeService {
 
 		if ($command->publish) {
 			$this->bus->dispatch(new PublicReblogCreated(
-				contentId: $reblogId,
+				contentId: $command->contentId,
 				userId: $command->userId,
 				siteId: $command->siteId,
 			));
 		}
-
-		$command->reblogId = $reblogId;
 	}
 
 	/**
@@ -80,7 +78,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onPublishReblog(PublishReblog $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -100,7 +98,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onDeleteReblog(DeleteReblog $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -122,7 +120,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onEditReblogComment(EditReblogComment $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -147,7 +145,7 @@ class ReblogService implements Listener, ContentTypeService {
 	 */
 	public function onEditReblogUrl(EditReblogUrl $command) {
 		$contentParams = [
-			'contentId' => $command->reblogId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

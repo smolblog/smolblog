@@ -46,6 +46,15 @@ class Reblog implements ContentType {
 	}
 
 	/**
+	 * Get the type key ('reblog').
+	 *
+	 * @return string
+	 */
+	public function getTypeKey(): string {
+		return 'reblog';
+	}
+
+	/**
 	 * Set the info for the external URL
 	 *
 	 * @param ExternalContentInfo $info Fetched info.

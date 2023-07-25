@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core;
 
+use Illuminate\Database\ConnectionInterface;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
@@ -12,6 +13,19 @@ use Smolblog\Markdown\SmolblogMarkdown;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
+		Connector\Data\ChannelProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
+		Connector\Data\ChannelSiteLinkProjection::class => [
+			'db' => ConnectionInterface::class,
+			'bus' => MessageBus::class,
+		],
+		Connector\Data\ConnectionProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
+		Connector\Data\ConnectorEventStream::class => [
+			'db' => ConnectionInterface::class,
+		],
 		Connector\Services\AuthRequestService::class => [
 			'connectors' => Connector\Services\ConnectorRegistry::class,
 			'stateRepo' => Connector\Services\AuthRequestStateRepo::class,
@@ -38,6 +52,20 @@ class Model extends DomainModel {
 
 		Content\ContentService::class => [
 			'bus' => MessageBus::class,
+			'registry' => Content\ContentTypeRegistry::class,
+		],
+		Content\ContentTypeRegistry::class => [
+			'configuration' => null,
+		],
+		Content\Data\ContentEventStream::class => [
+			'db' => ConnectionInterface::class,
+		],
+		Content\Data\StandardContentProjection::class => [
+			'db' => ConnectionInterface::class,
+			'bus' => MessageBus::class,
+		],
+		Content\Extensions\Syndication\ContentSyndicationProjection::class => [
+			'db' => ConnectionInterface::class,
 		],
 		Content\Extensions\Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
@@ -48,12 +76,36 @@ class Model extends DomainModel {
 		Content\Markdown\MarkdownMessageRenderer::class => [
 			'md' => SmolblogMarkdown::class,
 		],
+		Content\Media\MediaService::class => [
+			'bus' => MessageBus::class,
+			'registry' => Content\Media\MediaHandlerRegistry::class,
+		],
+		Content\Media\MediaHandlerRegistry::class => [
+			'container' => ContainerInterface::class,
+			'configuration' => null,
+		],
+		Content\Types\Note\NoteProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
+		Content\Types\Note\NoteService::class => [
+			'bus' => MessageBus::class,
+		],
 		Content\Types\Reblog\ReblogService ::class => [
 			'bus' => MessageBus::class,
 			'embedService' => Content\Types\Reblog\ExternalContentService::class,
 		],
-		Content\Types\Note\NoteService::class => [
-			'bus' => MessageBus::class,
+		Content\Types\Reblog\ReblogProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
+		Federation\FollowerProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
+		Federation\FollowerProviderRegistry::class => [
+			'container' => ContainerInterface::class,
+			'configuration' => null,
+		],
+		Site\SiteEventStream::class => [
+			'db' => ConnectionInterface::class,
 		],
 	];
 }

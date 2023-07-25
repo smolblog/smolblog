@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Content;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\GenericResponse;
@@ -17,7 +17,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Get a list of recent content.
  */
-class ListContent implements Endpoint {
+class ListContent extends BasicEndpoint {
 	/**
 	 * Get the endpoint's configuration.
 	 *

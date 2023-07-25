@@ -2,12 +2,18 @@
 
 namespace Smolblog\Api\Server;
 
+use Exception;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Smolblog\Api\ApiEnvironment;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
+use Smolblog\Api\ManualSpec;
 use Smolblog\Api\Model;
 use Smolblog\Api\ParameterType;
+use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 
@@ -41,15 +47,15 @@ class Spec implements Endpoint {
 	/**
 	 * Execute the endpoint.
 	 *
-	 * @param Identifier|null $userId Ignored.
-	 * @param array|null      $params Ignored.
-	 * @param object|null     $body   Ignored.
-	 * @return Value
+	 * @param ServerRequestInterface $request Incoming request (with optional 'endpoints' attribute).
+	 * @return ResponseInterface
 	 */
-	public function run(?Identifier $userId = null, ?array $params = null, ?object $body = null): Value {
-		return new GenericResponse(...Model::generateOpenApiSpec(
-			apiBase: $this->env->getApiUrl(),
-			endpoints: $params['endpoints'] ?? null,
-		));
+	public function handle(ServerRequestInterface $request): ResponseInterface {
+		return new HttpResponse(
+			body: Model::generateOpenApiSpec(
+				apiBase: $this->env->getApiUrl(),
+				endpoints: $request->getAttribute('endpoints'),
+			)
+		);
 	}
 }

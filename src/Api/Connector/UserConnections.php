@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Connector;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
@@ -15,7 +15,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Get all connections for a user along with their channels.
  */
-class UserConnections implements Endpoint {
+class UserConnections extends BasicEndpoint {
 	/**
 	 * Get the configuration.
 	 *

@@ -17,7 +17,7 @@ final class EndpointConfigTest extends TestCase {
 	public function testItHasSaneDefualts() {
 		$config = new EndpointConfig(route: '/one/two');
 
-		$this->assertEquals(Verb::GET, $config->verb);
+		$this->assertEquals([Verb::GET], $config->verb);
 		$this->assertEquals([AuthScope::Admin], $config->requiredScopes);
 	}
 }

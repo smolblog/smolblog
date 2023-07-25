@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Preview;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\ParameterType;
@@ -14,7 +14,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Get embed info for an external URL.
  */
-class PreviewEmbed implements Endpoint {
+class PreviewEmbed extends BasicEndpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *

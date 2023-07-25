@@ -5,7 +5,7 @@ namespace Smolblog\ActivityPub\Api;
 use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
 use Smolblog\ActivityPub\InboxService;
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\ParameterType;
@@ -16,7 +16,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Server-wide ActivityPub Inbox endpoint.
  */
-class SharedInbox implements Endpoint {
+class SharedInbox extends BasicEndpoint {
 	/**
 	 * Get endpoint configuration.
 	 *

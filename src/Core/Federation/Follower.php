@@ -19,12 +19,13 @@ class Follower extends Entity {
 	/**
 	 * Consistently build a unique identifier out of the provider and key.
 	 *
-	 * @param string $provider    Slug for the FollowerProvider this is tied to (usually protocol name).
-	 * @param string $providerKey Unique identifier for this follower via this provider.
+	 * @param string|Identifier $siteId      Site the follower is following.
+	 * @param string            $provider    Slug for the FollowerProvider this is tied to (usually protocol name).
+	 * @param string            $providerKey Unique identifier for this follower via this provider.
 	 * @return Identifier ID constructed from provider and key.
 	 */
-	public static function buildId(string $provider, string $providerKey): Identifier {
-		return new NamedIdentifier(namespace: self::NAMESPACE, name: "$provider|$providerKey");
+	public static function buildId(string|Identifier $siteId, string $provider, string $providerKey): Identifier {
+		return new NamedIdentifier(namespace: self::NAMESPACE, name: "$siteId|$provider|$providerKey");
 	}
 
 	/**
@@ -34,15 +35,15 @@ class Follower extends Entity {
 	 * @param string     $provider    Slug for the FollowerProvider this is tied to (usually protocol name).
 	 * @param string     $providerKey Unique identifier for this follower via this provider.
 	 * @param string     $displayName Human-recognizable identifier for this follower.
-	 * @param array      $data        Any data required for the FollowerProvider to work.
+	 * @param array      $details     Any data required for the FollowerProvider to work.
 	 */
 	public function __construct(
 		public readonly Identifier $siteId,
 		public readonly string $provider,
 		public readonly string $providerKey,
 		public readonly string $displayName,
-		public readonly array $data,
+		public readonly array $details,
 	) {
-		parent::__construct(id: self::buildId(provider: $provider, providerKey: $providerKey));
+		parent::__construct(id: self::buildId(siteId: $siteId, provider: $provider, providerKey: $providerKey));
 	}
 }

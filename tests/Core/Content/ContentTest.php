@@ -11,6 +11,7 @@ final class TestContent implements ContentType {
 	use SerializableKit;
 	public function getTitle(): string { return 'Title'; }
 	public function getBodyContent(): string { return '<p>Hullo</p>'; }
+	public function getTypeKey(): string { return 'test'; }
 }
 
 final class TestContentExtension implements ContentExtension {

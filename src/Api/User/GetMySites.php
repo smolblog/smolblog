@@ -3,7 +3,7 @@
 namespace Smolblog\Api\User;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
@@ -15,7 +15,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Get a list of the user's sites.
  */
-class GetMySites implements Endpoint {
+class GetMySites extends BasicEndpoint {
 	/**
 	 * Get the endpont configuration.
 	 *

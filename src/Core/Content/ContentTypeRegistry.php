@@ -66,4 +66,16 @@ class ContentTypeRegistry implements Registry {
 	public function singleItemQueryFor(string $type): string {
 		return $this->library[$type]->singleItemQuery;
 	}
+
+	/**
+	 * Get the name of the given type's delete command.
+	 *
+	 * Will give null if the command is not defined for the given type.
+	 *
+	 * @param string $type Handle for the content type.
+	 * @return string|null
+	 */
+	public function deleteItemCommandFor(string $type): ?string {
+		return $this->library[$type]->deleteItemCommand;
+	}
 }

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
@@ -16,7 +16,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Delete a connection.
  */
-class DeleteConnection implements Endpoint {
+class DeleteConnection extends BasicEndpoint {
 	/**
 	 * Get the endpoint's configuration.
 	 *

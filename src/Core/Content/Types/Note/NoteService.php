@@ -8,8 +8,6 @@ use Smolblog\Core\Content\ContentTypeService;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Service to handle Note-related commands.
@@ -26,6 +24,7 @@ class NoteService implements Listener, ContentTypeService {
 			displayName: 'Note',
 			typeClass: Note::class,
 			singleItemQuery: NoteById::class,
+			deleteItemCommand: DeleteNote::class,
 		);
 	}
 
@@ -46,25 +45,22 @@ class NoteService implements Listener, ContentTypeService {
 	 * @return void
 	 */
 	public function onCreateNote(CreateNote $command) {
-		$id = new DateIdentifier();
 		$this->bus->dispatch(new NoteCreated(
 			text: $command->text,
 			authorId: $command->userId,
-			contentId: $id,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			publishTimestamp: new DateTimeImmutable(),
+			publishTimestamp: $command->publish ? new DateTimeImmutable() : null,
 		));
 
 		if ($command->publish) {
 			$this->bus->dispatch(new PublicNoteCreated(
-				contentId: $id,
+				contentId: $command->contentId,
 				userId: $command->userId,
 				siteId: $command->siteId,
 			));
 		}
-
-		$command->noteId = $id;
 	}
 
 	/**
@@ -75,7 +71,7 @@ class NoteService implements Listener, ContentTypeService {
 	 */
 	public function onEditNote(EditNote $command) {
 		$contentParams = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -100,7 +96,7 @@ class NoteService implements Listener, ContentTypeService {
 	 */
 	public function onPublishNote(PublishNote $command) {
 		$contentParams = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -120,7 +116,7 @@ class NoteService implements Listener, ContentTypeService {
 	 */
 	public function onDeleteNote(DeleteNote $command) {
 		$contentParams = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

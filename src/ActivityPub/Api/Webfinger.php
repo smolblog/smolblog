@@ -3,7 +3,7 @@
 namespace Smolblog\ActivityPub\Api;
 
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
@@ -20,7 +20,7 @@ use Smolblog\Framework\Objects\Identifier;
  *
  * [Webfinger]: https://webfinger.net
  */
-class Webfinger implements Endpoint {
+class Webfinger extends BasicEndpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *

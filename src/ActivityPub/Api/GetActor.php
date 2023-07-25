@@ -2,17 +2,17 @@
 
 namespace Smolblog\ActivityPub\Api;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Smolblog\ActivityPhp\Type\Extended\Actor\Person;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
-use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
-use Smolblog\Api\RedirectResponse;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\Value;
 
 /**
  * Endpoint to give an ActivityPub actor for a site.
@@ -28,6 +28,23 @@ class GetActor implements Endpoint {
 			route: '/site/{site}/activitypub/actor',
 			pathVariables: ['site' => ParameterType::identifier()],
 			requiredScopes: [],
+			responseShape: ParameterType::object(
+				id: ParameterType::string(format: 'url'),
+				inbox: ParameterType::string(format: 'url'),
+				outbox: ParameterType::string(format: 'url'),
+				preferredUsername: ParameterType::string(),
+				url: ParameterType::string(format: 'url'),
+				name: ParameterType::string(),
+				summary: ParameterType::string(),
+				endpoints: ParameterType::object(
+					sharedInbox: ParameterType::string(format: 'url'),
+				),
+				publicKey: ParameterType::object(
+					id: ParameterType::string(format: 'url'),
+					owner: ParameterType::string(format: 'url'),
+					publicKeyPem: ParameterType::string(),
+				),
+			),
 		);
 	}
 
@@ -46,16 +63,19 @@ class GetActor implements Endpoint {
 	/**
 	 * Execute the endpoint.
 	 *
-	 * @param Identifier|null $userId Ignored.
-	 * @param array|null      $params Expects 'site'.
-	 * @param object|null     $body   Ignored.
-	 * @return Person|RedirectResponse
+	 * If the `Accept` header does not contain 'json', the endpoint will redirect to the site homepage. This works
+	 * around Mastodon ignoring the `url` property and linking to the `ID` (this endpoint) for the user profile.
+	 *
+	 * @param ServerRequestInterface $request Incoming request.
+	 * @return ResponseInterface
 	 */
-	public function run(?Identifier $userId, ?array $params, ?object $body): Person|RedirectResponse {
-		$site = $this->bus->fetch(new SiteById($params['site']));
+	public function handle(ServerRequestInterface $request): ResponseInterface {
+		$site = $this->bus->fetch(new SiteById(
+			Identifier::fromString($request->getAttribute('smolblogPathVars', [])['site'])
+		));
 
-		if (isset($params['Accept']) && !str_contains($params['Accept'], 'json')) {
-			return new RedirectResponse($site->baseUrl);
+		if ($request->hasHeader('Accept') && !str_contains($request->getHeaderLine('Accept'), 'json')) {
+			return new HttpResponse(code: 302, headers: ['Location' => $site->baseUrl]);
 		}
 
 		$response = new Person();
@@ -73,6 +93,6 @@ class GetActor implements Endpoint {
 			'publicKeyPem' => $site->publicKey,
 		];
 
-		return $response;
+		return new HttpResponse(body: $response->toArray());
 	}
 }

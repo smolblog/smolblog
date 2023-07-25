@@ -4,6 +4,8 @@ namespace Smolblog\Core\Content;
 
 use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
+use Smolblog\Core\Content\Queries\AdaptableContentQuery;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
@@ -14,10 +16,12 @@ class ContentService implements Listener {
 	/**
 	 * Construct the service
 	 *
-	 * @param MessageBus $bus MessageBus for messages.
+	 * @param MessageBus          $bus      MessageBus for messages.
+	 * @param ContentTypeRegistry $registry Registry of content types.
 	 */
 	public function __construct(
 		private MessageBus $bus,
+		private ContentTypeRegistry $registry,
 	) {
 	}
 
@@ -35,5 +39,30 @@ class ContentService implements Listener {
 			publishTimestamp: $command->publishTimestamp,
 			authorId: $command->authorId,
 		));
+	}
+
+	/**
+	 * Fetch the content for an AdaptableContentQuery.
+	 *
+	 * @param AdaptableContentQuery $query Query being fetched.
+	 * @return void
+	 */
+	#[ExecutionLayerListener(later: 5)]
+	public function onAdaptableContentQuery(AdaptableContentQuery $query): void {
+		if ($query->getContentId() === null) {
+			$query->setResults(null);
+			return;
+		}
+
+		$singleQueryClass = $this->registry->singleItemQueryFor($query->getContentType());
+		$query->setResults(
+			$this->bus->fetch(
+				new $singleQueryClass(
+					userId: $query->getUserId(),
+					siteId: $query->getSiteId(),
+					contentId: $query->getContentId(),
+				)
+			)
+		);
 	}
 }

@@ -19,6 +19,7 @@ final class ContentTypeRegistryTest extends TestCase {
 					displayName: 'Type One',
 					typeClass: __NAMESPACE__ . '\\TypeOne',
 					singleItemQuery: __NAMESPACE__ . '\\TypeOneQuery',
+					deleteItemCommand: __NAMESPACE__ . '\\TypeOneDelete',
 				);
 			}
 		};
@@ -30,6 +31,7 @@ final class ContentTypeRegistryTest extends TestCase {
 					displayName: 'Type Two',
 					typeClass: __NAMESPACE__ . '\\TypeTwo',
 					singleItemQuery: __NAMESPACE__ . '\\TypeTwoQuery',
+					deleteItemCommand: __NAMESPACE__ . '\\TypeTwoDelete',
 				);
 			}
 		};
@@ -41,5 +43,7 @@ final class ContentTypeRegistryTest extends TestCase {
 		$this->assertEquals(__NAMESPACE__ . '\\TypeTwo', $registry->typeClassFor('typeTwo'));
 		$this->assertEquals(__NAMESPACE__ . '\\TypeOneQuery', $registry->singleItemQueryFor('typeOne'));
 		$this->assertEquals(__NAMESPACE__ . '\\TypeTwoQuery', $registry->singleItemQueryFor('typeTwo'));
+		$this->assertEquals(__NAMESPACE__ . '\\TypeOneDelete', $registry->deleteItemCommandFor('typeOne'));
+		$this->assertEquals(__NAMESPACE__ . '\\TypeTwoDelete', $registry->deleteItemCommandFor('typeTwo'));
 	}
 }

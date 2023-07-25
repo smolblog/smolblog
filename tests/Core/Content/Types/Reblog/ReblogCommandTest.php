@@ -8,30 +8,11 @@ use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;
 
 class ReblogCommandTest extends TestCase {
-	public function testCreateReblogRequiresAuthorPermissions() {
-		$command = new CreateReblog(
-			url: '//smol.blog/',
-			userId: $this->randomId(),
-			siteId: $this->randomId(),
-			publish: false,
-		);
-
-		$this->assertEquals(
-			new UserHasPermissionForSite(
-				siteId: $command->siteId,
-				userId: $command->userId,
-				mustBeAdmin: false,
-				mustBeAuthor: true
-			),
-			$command->getAuthorizationQuery()
-		);
-	}
-
 	public function testDeleteReblogRequiresEditPermissions() {
 		$command = new DeleteReblog(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 
 		$this->assertInstanceOf(UserCanEditContent::class, $command->getAuthorizationQuery());
@@ -41,7 +22,7 @@ class ReblogCommandTest extends TestCase {
 		$command = new EditReblogComment(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			comment: 'Hello!',
 		);
 
@@ -52,7 +33,7 @@ class ReblogCommandTest extends TestCase {
 		$command = new EditReblogUrl(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			reblogId: $this->randomId(),
+			contentId: $this->randomId(),
 			url: '//eph.me/music',
 		);
 

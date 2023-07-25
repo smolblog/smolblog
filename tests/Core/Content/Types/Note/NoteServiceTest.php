@@ -26,7 +26,15 @@ class NoteServiceTest extends TestCase {
 		);
 
 		$messageBus = $this->createMock(MessageBus::class);
-		$messageBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(NoteCreated::class));
+		$messageBus->expects($this->once())->method('dispatch')->with(
+			$this->eventEquivalentTo(new NoteCreated(
+				text: $command->text,
+				authorId: $command->userId,
+				contentId: $command->contentId,
+				userId: $command->userId,
+				siteId: $command->siteId,
+			))
+		);
 
 		$service = new NoteService(bus: $messageBus);
 		$service->onCreateNote($command);
@@ -54,10 +62,10 @@ class NoteServiceTest extends TestCase {
 		$command = new PublishNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 		$expectedEvent = new PublicNoteCreated(
-			contentId: $command->noteId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -78,12 +86,12 @@ class NoteServiceTest extends TestCase {
 		$command = new EditNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 			text: "What's happening?"
 		);
 		$expectedEvent = new NoteBodyEdited(
 			text: "What's happening?",
-			contentId: $command->noteId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -104,11 +112,11 @@ class NoteServiceTest extends TestCase {
 		$command = new EditNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 			text: "What's happening?"
 		);
 		$contentArgs = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];
@@ -135,10 +143,10 @@ class NoteServiceTest extends TestCase {
 		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 		$expectedEvent = new NoteDeleted(
-			contentId: $command->noteId,
+			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
@@ -159,10 +167,10 @@ class NoteServiceTest extends TestCase {
 		$command = new DeleteNote(
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
-			noteId: $this->randomId(),
+			contentId: $this->randomId(),
 		);
 		$contentArgs = [
-			'contentId' => $command->noteId,
+			'contentId' => $command->contentId,
 			'userId' => $command->userId,
 			'siteId' => $command->siteId,
 		];

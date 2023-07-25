@@ -5,7 +5,7 @@ namespace Smolblog\Api\Connector;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\GenericResponse;
@@ -17,7 +17,7 @@ use Smolblog\Framework\Messages\MessageBus;
 /**
  * Kick off an OAuth request to an external provider.
  */
-class AuthInit implements Endpoint {
+class AuthInit extends BasicEndpoint {
 	/**
 	 * Get the configuration for this endpoint.
 	 *

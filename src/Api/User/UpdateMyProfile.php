@@ -3,7 +3,7 @@
 namespace Smolblog\Api\User;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Api\Endpoint;
+use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\SuccessResponse;
@@ -16,7 +16,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Endpoint to allow a user to update their profile.
  */
-class UpdateMyProfile implements Endpoint {
+class UpdateMyProfile extends BasicEndpoint {
 	/**
 	 * Get this endpoint's configuration.
 	 *
