@@ -64,6 +64,9 @@ class Model extends DomainModel {
 			'db' => ConnectionInterface::class,
 			'bus' => MessageBus::class,
 		],
+		Content\Extensions\Syndication\ContentSyndicationProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
 		Content\Extensions\Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
 		],

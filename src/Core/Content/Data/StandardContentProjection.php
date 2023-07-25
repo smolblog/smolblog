@@ -28,6 +28,7 @@ use Smolblog\Core\Content\Queries\{
 };
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Projection;
 use Smolblog\Framework\Objects\Identifier;
@@ -114,6 +115,7 @@ class StandardContentProjection implements Projection {
 	 * @param ContentExtensionEdited $event Event to handle.
 	 * @return void
 	 */
+	#[ExecutionLayerListener(later: 5)]
 	public function onContentExtensionEdited(ContentExtensionEdited $event) {
 		$currentJson = $this->db->table(self::TABLE)->
 			where('content_uuid', '=', $event->contentId->toString())->
