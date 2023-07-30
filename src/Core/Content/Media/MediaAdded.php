@@ -62,6 +62,7 @@ class MediaAdded extends ContentEvent {
 			'thumbnailUrl' => $this->thumbnailUrl,
 			'defaultUrl' => $this->defaultUrl,
 			'defaultHtml' => $this->defaultHtml,
+			'file' => $this->file->toArray(),
 		];
 	}
 
@@ -73,6 +74,7 @@ class MediaAdded extends ContentEvent {
 	 */
 	protected static function payloadFromArray(array $payload): array {
 		$payload['type'] = MediaType::tryFrom($payload['type'] ?? '');
+		$payload['file'] = MediaFile::fromArray($payload['file']);
 		return $payload;
 	}
 }

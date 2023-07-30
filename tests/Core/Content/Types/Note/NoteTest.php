@@ -47,4 +47,8 @@ final class NoteTest extends TestCase {
 
 		$note->getBodyContent();
 	}
+
+	public function testItsTypeKeyIsNote() {
+		$this->assertEquals('note', (new Note('a'))->getTypeKey());
+	}
 }

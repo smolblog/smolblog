@@ -59,16 +59,19 @@ class MediaService implements Listener {
 			userId: $command->userId,
 			siteId: $command->siteId,
 			handler: $file->handler,
+			mimeType: $file->mimeType,
 			details: $file->details,
 		));
+
+		$type = self::typeFromMimeType($file->mimeType ?? $command->file->getClientMediaType() ?? '');
 
 		$this->bus->dispatch(new MediaAdded(
 			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			title: $command->title,
+			title: $command->title ?? $command->file->getClientFilename() ?? $type->name . strval($command->contentId),
 			accessibilityText: $command->accessibilityText,
-			type: self::typeFromMimeType($command->file->getClientMediaType()),
+			type: $type,
 			thumbnailUrl: $handler->getThumbnailUrlFor(file: $file),
 			defaultUrl: $handler->getUrlFor(file: $file),
 			defaultHtml: $handler->getHtmlFor(file: $file),

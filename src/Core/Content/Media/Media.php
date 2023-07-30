@@ -38,4 +38,34 @@ class Media extends Entity {
 	) {
 		parent::__construct($id);
 	}
+
+	/**
+	 * Serialize the entity.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$base = parent::toArray();
+		$base['userId'] = $this->userId->toString();
+		$base['siteId'] = $this->siteId->toString();
+		$base['type'] = $this->type->value;
+		$base['file'] = $this->file->toArray();
+
+		return $base;
+	}
+
+	/**
+	 * Deserialize the entity.
+	 *
+	 * @param array $data Serialized entity.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		$data['userId'] = Identifier::fromString($data['userId']);
+		$data['siteId'] = Identifier::fromString($data['siteId']);
+		$data['type'] = MediaType::tryFrom($data['type']);
+		$data['file'] = MediaFile::fromArray($data['file']);
+
+		return parent::fromArray($data);
+	}
 }

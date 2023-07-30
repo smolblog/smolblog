@@ -17,6 +17,7 @@ class MediaFileAdded extends ContentEvent {
 	 * @param Identifier             $userId    User uploading the media.
 	 * @param Identifier             $siteId    Site media is being uploaded to.
 	 * @param string                 $handler   Handler for this media.
+	 * @param string|null            $mimeType  Media type (MIME) for the file. Optional.
 	 * @param array                  $details   Handler-specific info for this media.
 	 * @param Identifier|null        $id        ID of the event.
 	 * @param DateTimeInterface|null $timestamp Timestamp of the event.
@@ -26,6 +27,7 @@ class MediaFileAdded extends ContentEvent {
 		Identifier $userId,
 		Identifier $siteId,
 		public readonly string $handler,
+		public readonly ?string $mimeType,
 		public readonly array $details,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
@@ -47,7 +49,8 @@ class MediaFileAdded extends ContentEvent {
 	public function getPayload(): array {
 		return [
 			'handler' => $this->handler,
-			'info' => $this->details,
+			'mimeType' => $this->mimeType,
+			'details' => $this->details,
 		];
 	}
 }

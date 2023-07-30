@@ -12,6 +12,7 @@ final class HandleUploadedMediaTest extends TestCase {
 			file: $this->createStub(UploadedFileInterface::class),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
+			accessibilityText: 'A thing.'
 		);
 
 		$query = new UserHasPermissionForSite(
