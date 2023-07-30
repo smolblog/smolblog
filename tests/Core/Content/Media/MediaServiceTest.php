@@ -14,10 +14,10 @@ final class MediaServiceTest extends TestCase {
 		$file = $this->createStub(UploadedFileInterface::class);
 		$file->method('getClientFilename')->willReturn('IMG_90108.jpg');
 
-		$uploadInfo = new UploadedMediaInfo(
+		$fileInfo = new MediaFile(
+			id: $this->randomId(),
 			handler: 'default',
-			type: MediaType::Image,
-			info: ['key' => 'value'],
+			details: ['key' => 'value'],
 		);
 
 		$command = new HandleUploadedMedia(
@@ -31,7 +31,7 @@ final class MediaServiceTest extends TestCase {
 			$this->equalTo($command->file),
 			$this->equalTo($command->userId),
 			$this->equalTo($command->siteId),
-		)->willReturn($uploadInfo);
+		)->willReturn($fileInfo);
 
 		$registry = $this->createStub(MediaHandlerRegistry::class);
 		$registry->method('get')->willReturn($handler);
@@ -58,10 +58,10 @@ final class MediaServiceTest extends TestCase {
 	}
 
 	public function testItHandlesUploadedMediaWithGivenValues() {
-		$uploadInfo = new UploadedMediaInfo(
+		$fileInfo = new MediaFile(
+			id: $this->randomId(),
 			handler: 'default',
-			type: MediaType::Image,
-			info: ['key' => 'value'],
+			details: ['key' => 'value'],
 		);
 
 		$command = new HandleUploadedMedia(
@@ -78,7 +78,7 @@ final class MediaServiceTest extends TestCase {
 			$this->equalTo($command->file),
 			$this->equalTo($command->userId),
 			$this->equalTo($command->siteId),
-		)->willReturn($uploadInfo);
+		)->willReturn($fileInfo);
 
 		$registry = $this->createStub(MediaHandlerRegistry::class);
 		$registry->method('get')->willReturn($handler);

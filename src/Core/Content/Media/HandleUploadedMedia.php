@@ -7,6 +7,7 @@ use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -21,7 +22,7 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	 * @param Identifier            $siteId            Site file is being uploaded to.
 	 * @param string                $title             Title of the media.
 	 * @param string                $accessibilityText Alt text.
-	 * @param string                $attribution       Any required attribution for the image.
+	 * @param Identifier            $contentId         ID for the new media; will auto-generate if not given.
 	 */
 	public function __construct(
 		public readonly UploadedFileInterface $file,
@@ -29,7 +30,7 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 		public readonly Identifier $siteId,
 		public readonly ?string $title = null,
 		public readonly ?string $accessibilityText = null,
-		public readonly ?string $attribution = null,
+		public readonly ?Identifier $contentId = new DateIdentifier(),
 	) {
 	}
 

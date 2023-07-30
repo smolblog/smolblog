@@ -11,6 +11,24 @@ use Smolblog\Framework\Objects\DateIdentifier;
  */
 class MediaService implements Listener {
 	/**
+	 * Translate a filetype into a MediaType
+	 *
+	 * @see https://developer.mozilla.org/en-US/docs/Glossary/MIME_type
+	 *
+	 * @param string $mimeType Given MIME type.
+	 * @return MediaType
+	 */
+	public static function typeFromMimeType(string $mimeType): MediaType {
+		return match (strstr($mimeType, '/', true)) {
+			false => MediaType::File, // Short-circuit when $mimeType does not have a '/' character.
+			'image' => MediaType::Image,
+			'video' => MediaType::Video,
+			'audio' => MediaType::Audio,
+			default => MediaType::File,
+		};
+	}
+
+	/**
 	 * Create the service.
 	 *
 	 * @param MessageBus           $bus      MessageBus to dispatch events.
@@ -30,36 +48,31 @@ class MediaService implements Listener {
 	 */
 	public function onHandleUploadedMedia(HandleUploadedMedia $command) {
 		$handler = $this->registry->get();
-		$mediaInfo = $handler->handleUploadedFile(
+		$file = $handler->handleUploadedFile(
 			file: $command->file,
 			userId: $command->userId,
 			siteId: $command->siteId,
 		);
 
-		$newMedia = new Media(
-			id: new DateIdentifier(),
+		$this->bus->dispatch(new MediaFileAdded(
+			contentId: $file->id,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			title: $command->title ?? $command->file->getClientFilename() ?? $mediaInfo->type->name,
-			accessibilityText: $command->accessibilityText ?? 'Uploaded file',
-			type: $mediaInfo->type,
-			handler: $mediaInfo->handler,
-			attribution: $command->attribution,
-			info: $mediaInfo->info,
-		);
+			handler: $file->handler,
+			details: $file->details,
+		));
 
 		$this->bus->dispatch(new MediaAdded(
-			contentId: $newMedia->id,
-			userId: $newMedia->userId,
-			siteId: $newMedia->siteId,
-			title: $newMedia->title,
-			accessibilityText: $newMedia->accessibilityText,
-			type: $newMedia->type,
-			handler: $newMedia->handler,
-			attribution: $newMedia->attribution,
-			info: $newMedia->info,
+			contentId: $command->contentId,
+			userId: $command->userId,
+			siteId: $command->siteId,
+			title: $command->title,
+			accessibilityText: $command->accessibilityText,
+			type: self::typeFromMimeType($command->file->getClientMediaType()),
+			thumbnailUrl: $handler->getThumbnailUrlFor(file: $file),
+			defaultUrl: $handler->getUrlFor(file: $file),
+			defaultHtml: $handler->getHtmlFor(file: $file),
+			file: $file,
 		));
-		$command->createdMedia = $newMedia;
-		$command->urlToOriginal = $handler->getUrlFor($newMedia);
 	}
 }
