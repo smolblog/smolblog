@@ -74,7 +74,6 @@ class MediaService implements Listener {
 			type: $type,
 			thumbnailUrl: $handler->getThumbnailUrlFor(file: $file),
 			defaultUrl: $handler->getUrlFor(file: $file),
-			defaultHtml: $handler->getHtmlFor(file: $file),
 			file: $file,
 		));
 	}

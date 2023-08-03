@@ -84,7 +84,7 @@ class MicropubService extends MicropubAdapter {
 			) ?? [];
 
 			foreach ($siteChannels[$site->id->toString()] as $channel) {
-				$allChannels[$channel->id->toString] = $channel;
+				$allChannels[$channel->id->toString()] = $channel;
 			}
 		}
 
@@ -372,12 +372,13 @@ class MicropubService extends MicropubAdapter {
 		$command = new HandleUploadedMedia(
 			file: $file,
 			userId: $this->user['id'],
-			siteId: $this->bus->fetch(new UserSites($this->user['id']))[0]->id
+			siteId: $this->bus->fetch(new UserSites($this->user['id']))[0]->id,
+			accessibilityText: '',
 		);
 
 		$this->bus->dispatch($command);
 
-		return $command->urlToOriginal ?? 500;
+		return $command->contentId;
 	}
 
 	/**

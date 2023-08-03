@@ -73,4 +73,13 @@ class Reblog implements ContentType {
 	public function setCommentHtml(string $html): void {
 		$this->commentHtml = $html;
 	}
+
+	/**
+	 * Get the HTML for just the comment if it exists.
+	 *
+	 * @return string|null
+	 */
+	public function getCommentHtml(): ?string {
+		return $this->commentHtml ?? null;
+	}
 }

@@ -21,7 +21,6 @@ class Media extends Entity {
 	 * @param MediaType  $type              Broad type of media (image, video, etc).
 	 * @param string     $thumbnailUrl      URL for a thumbnail image.
 	 * @param string     $defaultUrl        URL for a default version of the media.
-	 * @param string     $defaultHtml       Default HTML for the media.
 	 * @param MediaFile  $file              Information about the actual file.
 	 */
 	public function __construct(
@@ -33,7 +32,6 @@ class Media extends Entity {
 		public readonly MediaType $type,
 		public readonly string $thumbnailUrl,
 		public readonly string $defaultUrl,
-		public readonly string $defaultHtml,
 		public readonly MediaFile $file,
 	) {
 		parent::__construct($id);

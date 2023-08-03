@@ -57,22 +57,4 @@ interface MediaHandler {
 	 * @return string
 	 */
 	public function getUrlFor(MediaFile $file, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
-
-	/**
-	 * Get the HTML to display this media given the parameters.
-	 *
-	 * While `getUrl` provides a raw URL, this provides the full HTML code. If this media has an attribution, this
-	 * function should return a `figure` with the required attribution as a caption.
-	 *
-	 * All parameters can be ignored on both sides, but they may be used to provide the optimal file. Any unrecognized
-	 * extra props should be ignored. Ideally, the media handler will use this to provide the url to a copy of the media
-	 * that will fit in the box provided.
-	 *
-	 * @param MediaFile    $file      Media object being shown.
-	 * @param integer|null $maxWidth  Max width of the media needed.
-	 * @param integer|null $maxHeight Max height of the media needed.
-	 * @param mixed        ...$props  Any additional props needed.
-	 * @return string
-	 */
-	public function getHtmlFor(MediaFile $file, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
 }

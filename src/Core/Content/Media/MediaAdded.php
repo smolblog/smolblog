@@ -21,7 +21,6 @@ class MediaAdded extends ContentEvent {
 	 * @param MediaType              $type              Broad type of the media.
 	 * @param string                 $thumbnailUrl      URL for a thumbnail image.
 	 * @param string                 $defaultUrl        URL for a default version of the media.
-	 * @param string                 $defaultHtml       Default HTML for the media.
 	 * @param MediaFile              $file              Information on the corresponding file.
 	 * @param Identifier|null        $id                ID of the event.
 	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
@@ -35,7 +34,6 @@ class MediaAdded extends ContentEvent {
 		public readonly MediaType $type,
 		public readonly string $thumbnailUrl,
 		public readonly string $defaultUrl,
-		public readonly string $defaultHtml,
 		public readonly MediaFile $file,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
@@ -61,7 +59,6 @@ class MediaAdded extends ContentEvent {
 			'type' => $this->type->value,
 			'thumbnailUrl' => $this->thumbnailUrl,
 			'defaultUrl' => $this->defaultUrl,
-			'defaultHtml' => $this->defaultHtml,
 			'file' => $this->file->toArray(),
 		];
 	}
