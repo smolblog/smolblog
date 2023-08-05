@@ -19,9 +19,9 @@ class MediaAdded extends ContentEvent {
 	 * @param string                 $title             Title of the media.
 	 * @param string                 $accessibilityText Text-only description of the media.
 	 * @param MediaType              $type              Broad type of the media.
-	 * @param string                 $handler           Handler for this media.
-	 * @param string|null            $attribution       Optional attribution text for this media.
-	 * @param array                  $info              Handler-specific info for this media.
+	 * @param string                 $thumbnailUrl      URL for a thumbnail image.
+	 * @param string                 $defaultUrl        URL for a default version of the media.
+	 * @param MediaFile              $file              Information on the corresponding file.
 	 * @param Identifier|null        $id                ID of the event.
 	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
 	 */
@@ -32,9 +32,9 @@ class MediaAdded extends ContentEvent {
 		public readonly string $title,
 		public readonly string $accessibilityText,
 		public readonly MediaType $type,
-		public readonly string $handler,
-		public readonly ?string $attribution = null,
-		public readonly array $info = [],
+		public readonly string $thumbnailUrl,
+		public readonly string $defaultUrl,
+		public readonly MediaFile $file,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
@@ -57,9 +57,9 @@ class MediaAdded extends ContentEvent {
 			'title' => $this->title,
 			'accessibilityText' => $this->accessibilityText,
 			'type' => $this->type->value,
-			'handler' => $this->handler,
-			'attribution' => $this->attribution,
-			'info' => $this->info,
+			'thumbnailUrl' => $this->thumbnailUrl,
+			'defaultUrl' => $this->defaultUrl,
+			'file' => $this->file->toArray(),
 		];
 	}
 
@@ -71,6 +71,7 @@ class MediaAdded extends ContentEvent {
 	 */
 	protected static function payloadFromArray(array $payload): array {
 		$payload['type'] = MediaType::tryFrom($payload['type'] ?? '');
+		$payload['file'] = MediaFile::fromArray($payload['file']);
 		return $payload;
 	}
 }

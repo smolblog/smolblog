@@ -45,6 +45,8 @@
 		<exclude name="Squiz.Commenting.ClosingDeclarationComment"/>
 		<!-- We need to make use of some of these tags -->
 		<exclude name="Squiz.Commenting.ClassComment.TagNotAllowed"/>
+		<!-- Seriously? Sometimes you just need a good comment on a line. -->
+		<exclude name="Squiz.Commenting.PostStatementComment.Found"/>
 	</rule>
 
 	<!-- Make structures look nicer -->

@@ -71,4 +71,8 @@ final class ReblogTest extends TestCase {
 			$reblog->getBodyContent()
 		);
 	}
+
+	public function testItsTypeKeyIsReblog() {
+		$this->assertEquals('reblog', (new Reblog('a'))->getTypeKey());
+	}
 }

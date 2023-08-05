@@ -55,11 +55,17 @@ class MicroformatsConverter {
 		switch (get_class($content->type)) {
 			case Note::class:
 				unset($props['name']);
-				$props['content'][0]['value'] = $content->type->text;
+				$props['content'][0] = [
+					'value' => $content->type->text,
+					'html' => $content->type->getBodyContent(),
+				];
 				break;
 
 			case Reblog::class:
-				$props['content'][0] = ['value' => $content->type->comment ?? ''];
+				$props['content'][0] = [
+					'value' => $content->type->comment ?? '',
+					'html' => $content->type->getCommentHtml(),
+				];
 				$props['repost-of'] = [$content->type->url];
 				break;
 		}

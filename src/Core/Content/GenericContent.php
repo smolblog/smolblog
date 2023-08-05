@@ -13,14 +13,14 @@ class GenericContent implements ContentType {
 	/**
 	 * Create the content
 	 *
-	 * @param string      $title     Content title.
-	 * @param string      $body      HTML-formatted content body.
-	 * @param string|null $typeClass Tag with the original content's type.
+	 * @param string      $title           Content title.
+	 * @param string      $body            HTML-formatted content body.
+	 * @param string|null $originalTypeKey Tag with the original content's type.
 	 */
 	public function __construct(
 		private string $title,
 		private string $body,
-		public readonly ?string $typeClass = null
+		public readonly ?string $originalTypeKey = null
 	) {
 	}
 

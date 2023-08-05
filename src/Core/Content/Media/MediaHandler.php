@@ -22,15 +22,26 @@ interface MediaHandler {
 	 * Save the uploaded file and return the resulting Media object.
 	 *
 	 * @param UploadedFileInterface $file   Uploaded file information.
-	 * @param Identifier            $userId ID of the user uploading the file.
-	 * @param Identifier            $siteId Site the file is being uploaded to.
-	 * @return UploadedMediaInfo
+	 * @param Identifier|null       $userId ID of the user uploading the file.
+	 * @param Identifier|null       $siteId Site the file is being uploaded to.
+	 * @return MediaFile
 	 */
 	public function handleUploadedFile(
 		UploadedFileInterface $file,
-		Identifier $userId,
-		Identifier $siteId
-	): UploadedMediaInfo;
+		?Identifier $userId = null,
+		?Identifier $siteId = null,
+	): MediaFile;
+
+	/**
+	 * Get the URL for a thumbnail image for the media.
+	 *
+	 * For images, this should be a small version of the image. For videos, a still image. For others, something
+	 * representative.
+	 *
+	 * @param MediaFile $file File to query.
+	 * @return string
+	 */
+	public function getThumbnailUrlFor(MediaFile $file): string;
 
 	/**
 	 * Get the URL for this media given the parameters.
@@ -39,29 +50,11 @@ interface MediaHandler {
 	 * extra props should be ignored. Ideally, the media handler will use this to provide the url to a copy of the media
 	 * that will fit in the box provided.
 	 *
-	 * @param Media        $media     Media object being shown.
+	 * @param MediaFile    $file      Media object being shown.
 	 * @param integer|null $maxWidth  Max width of the media needed.
 	 * @param integer|null $maxHeight Max height of the media needed.
 	 * @param mixed        ...$props  Any additional props needed.
 	 * @return string
 	 */
-	public function getUrlFor(Media $media, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
-
-	/**
-	 * Get the HTML to display this media given the parameters.
-	 *
-	 * While `getUrl` provides a raw URL, this provides the full HTML code. If this media has an attribution, this
-	 * function should return a `figure` with the required attribution as a caption.
-	 *
-	 * All parameters can be ignored on both sides, but they may be used to provide the optimal file. Any unrecognized
-	 * extra props should be ignored. Ideally, the media handler will use this to provide the url to a copy of the media
-	 * that will fit in the box provided.
-	 *
-	 * @param Media        $media     Media object being shown.
-	 * @param integer|null $maxWidth  Max width of the media needed.
-	 * @param integer|null $maxHeight Max height of the media needed.
-	 * @param mixed        ...$props  Any additional props needed.
-	 * @return string
-	 */
-	public function getHtmlFor(Media $media, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
+	public function getUrlFor(MediaFile $file, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
 }

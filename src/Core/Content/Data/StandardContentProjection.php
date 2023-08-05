@@ -5,7 +5,6 @@ namespace Smolblog\Core\Content\Data;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\ContentBuilder;
 use Smolblog\Core\Content\Events\{

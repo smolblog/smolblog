@@ -7,6 +7,7 @@ use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
+use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -19,33 +20,19 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	 * @param UploadedFileInterface $file              Uploaded file.
 	 * @param Identifier            $userId            User uploading the file.
 	 * @param Identifier            $siteId            Site file is being uploaded to.
-	 * @param string                $title             Title of the media.
 	 * @param string                $accessibilityText Alt text.
-	 * @param string                $attribution       Any required attribution for the image.
+	 * @param string|null           $title             Title of the media.
+	 * @param Identifier|null       $contentId         ID for the new media; will auto-generate if not given.
 	 */
 	public function __construct(
 		public readonly UploadedFileInterface $file,
 		public readonly Identifier $userId,
 		public readonly Identifier $siteId,
+		public readonly ?string $accessibilityText,
 		public readonly ?string $title = null,
-		public readonly ?string $accessibilityText = null,
-		public readonly ?string $attribution = null,
+		public readonly ?Identifier $contentId = new DateIdentifier(),
 	) {
 	}
-
-	/**
-	 * Store the created Media object for communication back to the application.
-	 *
-	 * @var Media|null
-	 */
-	public ?Media $createdMedia = null;
-
-	/**
-	 * Send the final URL to the uploaded, unaltered file. Used primarily for the micropub endpoint.
-	 *
-	 * @var string|null
-	 */
-	public ?string $urlToOriginal = null;
 
 	/**
 	 * Get the authorization query: user must have authorship permissions.
