@@ -2,7 +2,9 @@
 
 namespace Smolblog\IndieWeb\Micropub;
 
+use DateTimeInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Content\Content;
@@ -45,12 +47,14 @@ class MicropubService extends MicropubAdapter {
 	 * @param MessageBus            $bus     For sending queries and commands.
 	 * @param MicroformatsConverter $mf      Handle converting Smolblog objects to their Microformats counterparts.
 	 * @param ContentTypeRegistry   $typeReg For getting content type information.
+	 * @param LoggerInterface       $log     Logger for debug info.
 	 */
 	public function __construct(
 		private ApiEnvironment $env,
 		private MessageBus $bus,
 		private MicroformatsConverter $mf,
 		private ContentTypeRegistry $typeReg,
+		private LoggerInterface $log,
 	) {
 	}
 
@@ -159,11 +163,10 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function createCallback(array $data, array $uploadedFiles) {
-		wp_insert_post([
-			'post_title' => 'Micropub create ' . date(\DateTimeInterface::COOKIE),
-			'post_content' => '<pre>' . print_r($data, true) . '</pre>',
-			'post_type' => 'log',
-		], true);
+		$this->log->debug(
+			message: 'Micropub create ' . date(DateTimeInterface::COOKIE),
+			context: $data,
+		);
 
 		if (!in_array('h-entry', $data['type'])) {
 			return [
@@ -234,11 +237,10 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function updateCallback(string $url, array $actions) {
-		wp_insert_post([
-			'post_title' => 'Micropub update ' . date(\DateTimeInterface::COOKIE),
-			'post_content' => print_r(['url' => $url, 'actions' => $actions], true),
-			'post_type' => 'log',
-		], true);
+		$this->log->debug(
+			message: 'Micropub update ' . date(DateTimeInterface::COOKIE),
+			context: ['url' => $url, 'actions' => $actions],
+		);
 
 		$content = $this->contentByUrl($url);
 		if (!isset($content)) {

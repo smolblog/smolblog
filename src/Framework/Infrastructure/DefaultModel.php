@@ -16,7 +16,7 @@ use Smolblog\Markdown\SmolblogMarkdown;
 class DefaultModel extends DomainModel {
 	public const SERVICES = [
 		MessageBus::class => DefaultMessageBus::class,
-		DefaultMessageBus::class => ['provider' => ListenerProviderInterface::class],
+		DefaultMessageBus::class => ['provider' => ListenerProviderInterface::class, 'log' => LoggerInterface::class],
 		ListenerProviderInterface::class => ListenerRegistry::class,
 		ListenerRegistry::class => ['container' => ContainerInterface::class],
 		QueryMemoizationService::class => [],

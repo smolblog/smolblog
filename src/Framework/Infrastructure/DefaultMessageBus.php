@@ -5,6 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Crell\Tukio\Dispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query;
@@ -27,11 +28,13 @@ class DefaultMessageBus implements MessageBus {
 	 * Create the MessageBus with a given listener provider.
 	 *
 	 * @param ListenerProviderInterface $provider PSR-14-compliant provider.
+	 * @param LoggerInterface           $log      PSR-3 logger.
 	 */
 	public function __construct(
-		ListenerProviderInterface $provider = null
+		ListenerProviderInterface $provider,
+		private LoggerInterface $log,
 	) {
-		$this->internal = new Dispatcher($provider);
+		$this->internal = new Dispatcher($provider, $log);
 	}
 
 	/**
@@ -41,6 +44,10 @@ class DefaultMessageBus implements MessageBus {
 	 * @return mixed Message potentially modified by listeners.
 	 */
 	public function dispatch(object $message): mixed {
+		$this->log->debug(
+			'Dispatching message ' . get_class($message),
+			method_exists($message, 'toArray') ? $message->toArray() : get_object_vars($message),
+		);
 		return $this->internal->dispatch($message);
 	}
 
@@ -51,6 +58,7 @@ class DefaultMessageBus implements MessageBus {
 	 * @return mixed Results of the query.
 	 */
 	public function fetch(Query $query): mixed {
+		$this->log->debug('Fetching query ' . get_class($query), $query->toArray());
 		return $this->internal->dispatch($query)->results();
 	}
 
@@ -65,6 +73,7 @@ class DefaultMessageBus implements MessageBus {
 	 * @return void
 	 */
 	public function dispatchAsync(Message $message): void {
+		$this->log->debug('Dispatching async message ' . get_class($message), $message->toArray());
 		$this->internal->dispatch(new AsyncWrappedMessage($message));
 	}
 }
