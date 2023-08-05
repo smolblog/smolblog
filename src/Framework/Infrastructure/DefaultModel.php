@@ -4,6 +4,8 @@ namespace Smolblog\Framework\Infrastructure;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -22,5 +24,7 @@ class DefaultModel extends DomainModel {
 		SmolblogMarkdown::class => [],
 		HttpSigner::class => [],
 		KeypairGenerator::class => [],
+		LoggerInterface::class => NullLogger::class,
+		NullLogger::class => [],
 	];
 }
