@@ -15,6 +15,7 @@ use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
+use Smolblog\Core\Content\Media\MediaById;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Core\Content\Types\Note\CreateNote;
@@ -369,16 +370,23 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function mediaEndpointCallback(UploadedFileInterface $file) {
+		$siteId = $this->bus->fetch(new UserSites($this->user['id']))[0]->id;
 		$command = new HandleUploadedMedia(
 			file: $file,
 			userId: $this->user['id'],
-			siteId: $this->bus->fetch(new UserSites($this->user['id']))[0]->id,
+			siteId: $siteId,
 			accessibilityText: '',
 		);
 
 		$this->bus->dispatch($command);
 
-		return $command->contentId;
+		$newMedia = $this->bus->fetch(new MediaById(
+			siteId: $siteId,
+			contentId: $command->contentId,
+			userId: $this->user['id'],
+		));
+
+		return $newMedia->defaultUrl;
 	}
 
 	/**

@@ -84,6 +84,9 @@ class Model extends DomainModel {
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
+		Content\Media\MediaProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
 		Content\Types\Note\NoteProjection::class => [
 			'db' => ConnectionInterface::class,
 		],

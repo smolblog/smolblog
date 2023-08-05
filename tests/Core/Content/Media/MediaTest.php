@@ -16,7 +16,6 @@ final class MediaTest extends TestCase {
 			type: MediaType::Image,
 			thumbnailUrl: '//img/thumb.jpg',
 			defaultUrl: '//img/orig.jpg',
-			defaultHtml: '<img src="orig.jpg">',
 			file: new MediaFile(
 				id: Identifier::fromString('55d7d2e5-107d-4c35-9118-453f5973a88b'),
 				handler: 'default',
@@ -33,7 +32,6 @@ final class MediaTest extends TestCase {
 			'type' => 'image',
 			'thumbnailUrl' => '//img/thumb.jpg',
 			'defaultUrl' => '//img/orig.jpg',
-			'defaultHtml' => '<img src="orig.jpg">',
 			'file' => [
 				'id' => '55d7d2e5-107d-4c35-9118-453f5973a88b',
 				'handler' => 'default',

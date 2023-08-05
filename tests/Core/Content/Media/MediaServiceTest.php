@@ -36,7 +36,6 @@ final class MediaServiceTest extends TestCase {
 		)->willReturn($fileInfo);
 		$handler->method('getThumbnailUrlFor')->willReturn('//img/thumb.jpg');
 		$handler->method('getUrlFor')->willReturn('//img/orig.png');
-		$handler->method('getHtmlFor')->willReturn('<img src="//img/orig.png">');
 
 		$registry = $this->createStub(MediaHandlerRegistry::class);
 		$registry->method('get')->willReturn($handler);
@@ -60,7 +59,6 @@ final class MediaServiceTest extends TestCase {
 				type: MediaType::Image,
 				thumbnailUrl: '//img/thumb.jpg',
 				defaultUrl: '//img/orig.png',
-				defaultHtml: '<img src="//img/orig.png">',
 				file: $fileInfo,
 			))],
 		);
@@ -94,7 +92,6 @@ final class MediaServiceTest extends TestCase {
 		)->willReturn($fileInfo);
 		$handler->method('getThumbnailUrlFor')->willReturn('//img/thumb.jpg');
 		$handler->method('getUrlFor')->willReturn('//img/orig.png');
-		$handler->method('getHtmlFor')->willReturn('<img src="//img/orig.png">');
 
 		$registry = $this->createStub(MediaHandlerRegistry::class);
 		$registry->method('get')->willReturn($handler);
@@ -118,7 +115,6 @@ final class MediaServiceTest extends TestCase {
 				type: MediaType::Image,
 				thumbnailUrl: '//img/thumb.jpg',
 				defaultUrl: '//img/orig.png',
-				defaultHtml: '<img src="//img/orig.png">',
 				file: $fileInfo,
 			))],
 		);

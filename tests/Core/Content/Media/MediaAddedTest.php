@@ -18,7 +18,6 @@ final class MediaAddedTest extends TestCase {
 			type: MediaType::Audio,
 			thumbnailUrl: '//media/thing.png',
 			defaultUrl: '//media/thing.ogg',
-			defaultHtml: '<audio src="//media/thing.ogg">',
 			file: new MediaFile(
 				id: Identifier::fromString('fc9b6791-0bfa-48cf-baa1-849ad4d4d8f0'),
 				handler: 'default',
@@ -42,7 +41,6 @@ final class MediaAddedTest extends TestCase {
 				'type' => 'audio',
 				'thumbnailUrl' => '//media/thing.png',
 				'defaultUrl' => '//media/thing.ogg',
-				'defaultHtml' => '<audio src="//media/thing.ogg">',
 				'file' => [
 					'id' => 'fc9b6791-0bfa-48cf-baa1-849ad4d4d8f0',
 					'handler' => 'default',
