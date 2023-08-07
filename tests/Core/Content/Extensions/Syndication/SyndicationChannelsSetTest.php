@@ -52,7 +52,7 @@ final class SyndicationChannelsSetTest extends TestCase {
 			channels: [$this->randomId()],
 		);
 
-		$event->setState($state);
+		$event->setSyndicationState($state);
 		$this->assertEquals($state, $event->getNewExtension());
 	}
 }

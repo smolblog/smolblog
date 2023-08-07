@@ -9,7 +9,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Indicates the channels content should syndicate to are set.
  */
-class SyndicationChannelsSet extends ContentExtensionEdited {
+class SyndicationChannelsSet extends ContentExtensionEdited implements NeedsSyndicationState {
 	/**
 	 * Store the state of syndication on this content.
 	 *
@@ -39,12 +39,21 @@ class SyndicationChannelsSet extends ContentExtensionEdited {
 	}
 
 	/**
+	 * Get the ID of the content in question.
+	 *
+	 * @return Identifier
+	 */
+	public function getContentId(): Identifier {
+		return $this->contentId;
+	}
+
+	/**
 	 * Store the current state of Syndication on this content.
 	 *
 	 * @param Syndication $state Current Syndication info.
 	 * @return void
 	 */
-	public function setState(Syndication $state) {
+	public function setSyndicationState(Syndication $state) {
 		$this->state = $state;
 	}
 

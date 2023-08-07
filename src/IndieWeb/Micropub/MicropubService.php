@@ -187,7 +187,7 @@ class MicropubService extends MicropubAdapter {
 		];
 
 		if (isset($props['repost-of'])) {
-			$comment = is_array($props['content'] ?? null) ? $props['content'][0] : null;
+			$comment = is_array($props['content'] ?? null) ? $this->getContentFromRequest($props['content']) : null;
 			$createCommand = new CreateReblog(
 				...$commonProps,
 				url: $props['repost-of'][0],
@@ -198,7 +198,7 @@ class MicropubService extends MicropubAdapter {
 		} else {
 			$createCommand = new CreateNote(
 				...$commonProps,
-				text: $props['content'][0],
+				text: $this->getContentFromRequest($props['content']),
 				publish: false,
 			);
 			$publishCommand = new PublishNote(...$commonProps);
@@ -220,7 +220,7 @@ class MicropubService extends MicropubAdapter {
 			));
 		}
 
-		if (!isset($props['post-status']) || $props['post-status'][0] == 'publish') {
+		if (!isset($props['post-status']) || $props['post-status'][0] == 'published') {
 			$this->bus->dispatch($publishCommand);
 		}
 
@@ -434,5 +434,14 @@ class MicropubService extends MicropubAdapter {
 			default:
 				return null;
 		}
+	}
+
+	private function getContentFromRequest(array $content): string {
+		if (empty($content)) {
+			return '';
+		}
+
+		$pieces = array_is_list($content) ? $content : [$content];
+		return join("\n\n", array_map(fn($item) => is_array($item) ? $item['text'] ?? $item['html'] : $item, $pieces));
 	}
 }
