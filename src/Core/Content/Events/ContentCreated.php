@@ -14,8 +14,6 @@ abstract class ContentCreated extends ContentEvent {
 	/**
 	 * Create the event
 	 *
-	 * @throws InvalidContentException Thrown if an invalid state is given.
-	 *
 	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.

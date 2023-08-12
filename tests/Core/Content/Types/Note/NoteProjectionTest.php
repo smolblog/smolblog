@@ -29,7 +29,7 @@ final class NoteProjectionTest extends TestCase {
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 		);
-		$event->setHtml('<p>But <em>why?</em></p>');
+		$event->setMarkdownHtml(['<p>But <em>why?</em></p>']);
 
 		$this->projection->onNoteCreated($event);
 
@@ -55,7 +55,7 @@ final class NoteProjectionTest extends TestCase {
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 		);
-		$event->setHtml('<p>Seriously?</p>');
+		$event->setMarkdownHtml(['<p>Seriously?</p>']);
 
 		$this->projection->onNoteBodyEdited($event);
 

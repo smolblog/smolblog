@@ -35,20 +35,20 @@ trait ReblogEventKit {
 	/**
 	 * Get the unrendered Markdown.
 	 *
-	 * @return string
+	 * @return string[]
 	 */
-	public function getMarkdown(): string {
-		return $this->comment ?? '';
+	public function getMarkdown(): array {
+		return isset($this->comment) ? [$this->comment] : [];
 	}
 
 	/**
 	 * Store the rendered HTML.
 	 *
-	 * @param string $html Rendered HTML.
+	 * @param string[] $html Rendered HTML.
 	 * @return void
 	 */
-	public function setHtml(string $html): void {
-		$this->rendered = $html;
+	public function setMarkdownHtml(array $html): void {
+		$this->rendered = $html[0] ?? '';
 	}
 
 	/**

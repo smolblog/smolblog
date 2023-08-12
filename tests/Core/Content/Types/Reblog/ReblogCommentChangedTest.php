@@ -16,8 +16,8 @@ class ReblogCommentChangedTest extends TestCase {
 
 		$event->setInfo(new ExternalContentInfo(title: 'Do not', embed: '<iframe></iframe>'));
 
-		$this->assertEquals('Hello', $event->getMarkdown());
-		$event->setHtml('<p>Hello</p>');
+		$this->assertEquals(['Hello'], $event->getMarkdown());
+		$event->setMarkdownHtml(['<p>Hello</p>']);
 
 		$this->assertEquals("<iframe></iframe>\n\n<p>Hello</p>", $event->getNewBody());
 	}

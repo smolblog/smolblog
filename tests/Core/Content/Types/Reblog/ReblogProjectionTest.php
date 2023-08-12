@@ -49,7 +49,7 @@ final class ReblogProjectionTest extends TestCase {
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 		);
-		$event->setHtml('<p>But <em>why?</em></p>');
+		$event->setMarkdownHtml(['<p>But <em>why?</em></p>']);
 
 		$this->projection->onReblogCreated($event);
 
@@ -72,7 +72,7 @@ final class ReblogProjectionTest extends TestCase {
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 		);
-		$event->setHtml('<p>Seriously?</p>');
+		$event->setMarkdownHtml(['<p>Seriously?</p>']);
 
 		$this->projection->onReblogCommentChanged($event);
 

@@ -26,6 +26,11 @@ class MarkdownMessageRenderer implements Listener {
 	 */
 	#[ContentBuildLayerListener(earlier: 10)]
 	public function onNeedsMarkdownRendered(NeedsMarkdownRendered $message) {
-		$message->setHtml($this->md->parse($message->getMarkdown()));
+		$message->setMarkdownHtml(
+			array_map(
+				fn($md) => $this->md->parse($md),
+				$message->getMarkdown()
+			)
+		);
 	}
 }
