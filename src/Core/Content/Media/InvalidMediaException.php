@@ -15,13 +15,13 @@ class InvalidMediaException extends Exception implements SmolblogException {
 	 *
 	 * @param string                     $message  Message to give. Required.
 	 * @param string|null                $url      URL of failed sideload if applicable.
-	 * @param UploadedFileInterface|null $file     Info for failed upload if applicable.
+	 * @param UploadedFileInterface|null $upload   Info for failed upload if applicable.
 	 * @param mixed                      ...$props Remaining Exception props.
 	 */
 	public function __construct(
 		string $message,
 		public readonly ?string $url = null,
-		public readonly ?UploadedFileInterface $file = null,
+		public readonly ?UploadedFileInterface $upload = null,
 		mixed ...$props,
 	) {
 		parent::__construct($message, ...$props);

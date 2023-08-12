@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Media;
 
+use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DateIdentifier;
@@ -38,6 +39,38 @@ class MediaService implements Listener {
 		private MessageBus $bus,
 		private MediaHandlerRegistry $registry,
 	) {
+	}
+
+	/**
+	 * Add HTML to messages that need it.
+	 *
+	 * @param NeedsMediaRendered $message Message with media to render.
+	 * @return void
+	 */
+	#[ContentBuildLayerListener(earlier: 5)]
+	public function onNeedsMediaRendered(NeedsMediaRendered $message) {
+		$message->setMediaHtml(
+			array_map(
+				fn($media) => $this->htmlForMedia($media),
+				$message->getMediaObjects()
+			)
+		);
+	}
+
+	/**
+	 * Get the HTML for the given media.
+	 *
+	 * @param Media $media Media to render.
+	 * @return string HTML for given Media.
+	 */
+	public function htmlForMedia(Media $media): string {
+		// TODO: Better HTML rendering with srcset and such. Will need this from the handler, likely.
+		return match ($media->type) {
+			MediaType::Image => "<img src='$media->defaultUrl' alt='$media->accessibilityText'>",
+			MediaType::Video => "<video src='$media->defaultUrl' alt='$media->accessibilityText'></video>",
+			MediaType::Audio => "<audio src='$media->defaultUrl' alt='$media->accessibilityText'></audio>",
+			default => "<a href='$media->defaultUrl'>$media->title</a>"
+		};
 	}
 
 	/**
