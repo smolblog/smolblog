@@ -17,7 +17,7 @@ class Picture implements ContentType {
 	/**
 	 * Create the content.
 	 *
-	 * @throws InvalidContentException When $media is empty.
+	 * @throws InvalidContentException When $media is empty or contains something other than images.
 	 *
 	 * @param Media[]       $media       Media to display.
 	 * @param string|null   $caption     Caption for the picture.
@@ -34,6 +34,11 @@ class Picture implements ContentType {
 	) {
 		if (empty($media)) {
 			throw new InvalidContentException('A Picture must have at least one media attached.');
+		}
+		foreach ($media as $item) {
+			if ($item->type !== MediaType::Image) {
+				throw new InvalidContentException('A Picture can only contain images.');
+			}
 		}
 	}
 
@@ -52,7 +57,7 @@ class Picture implements ContentType {
 	 * @return string
 	 */
 	public function getBodyContent(): string {
-		$mediaHtmlBlocks = $this->mediaHtml ?? $this->createBasicHtmlForMedia();
+		$mediaHtmlBlocks = $this->mediaHtml ?? self::createBasicHtmlForImageMedia($this->media);
 
 		return join("\n\n", $mediaHtmlBlocks) . "\n\n" . $this->captionHtml;
 	}
@@ -67,16 +72,12 @@ class Picture implements ContentType {
 	}
 
 	/**
-	 * Create basic HTML from the content's $media array
+	 * Create basic HTML for a Picture's media array.
 	 *
-	 * @return string[]
+	 * @param array $media Array of images.
+	 * @return array
 	 */
-	private function createBasicHtmlForMedia(): array {
-		return array_map(fn($m) => match ($m->type) {
-			MediaType::Image => "<img src='$m->defaultUrl' alt='$m->accessabilityText'>",
-			MediaType::Video => "<video src='$m->defaultUrl' alt='$m->accessabilityText'></video>",
-			MediaType::Audio => "<audio src='$m->defaultUrl' alt='$m->accessabilityText'></audio>",
-			default => "<a href='$m->defaultUrl'>$m->title</a>"
-		}, $this->media);
+	public static function createBasicHtmlForImageMedia(array $media): array {
+		return array_map(fn($m) => "<img src='$m->defaultUrl' alt='$m->accessabilityText'>", $media);
 	}
 }
