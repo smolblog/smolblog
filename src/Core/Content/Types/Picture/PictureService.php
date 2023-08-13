@@ -50,6 +50,54 @@ class PictureService implements Listener {
 	}
 
 	/**
+	 * Update a picture's media.
+	 *
+	 * @param EditPictureMedia $command Command to execute.
+	 * @return void
+	 */
+	public function onEditPictureMedia(EditPictureMedia $command) {
+		$contentParams = [
+			'contentId' => $command->contentId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$picture = $this->bus->fetch(new PictureById(...$contentParams));
+
+		$this->bus->dispatch(new PictureMediaEdited(
+			...$command->toArray(),
+		));
+
+		if ($picture->visibility === ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicPictureEdited(...$contentParams));
+		}
+	}
+
+	/**
+	 * Update a picture's caption.
+	 *
+	 * @param EditPictureCaption $command Command to execute.
+	 * @return void
+	 */
+	public function onEditPictureCaption(EditPictureCaption $command) {
+		$contentParams = [
+			'contentId' => $command->contentId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
+		$picture = $this->bus->fetch(new PictureById(...$contentParams));
+
+		$this->bus->dispatch(new PictureCaptionEdited(
+			...$command->toArray(),
+		));
+
+		if ($picture->visibility === ContentVisibility::Published) {
+			$this->bus->dispatch(new PublicPictureEdited(...$contentParams));
+		}
+	}
+
+	/**
 	 * Delete a note
 	 *
 	 * @param DeletePicture $command Command information.
