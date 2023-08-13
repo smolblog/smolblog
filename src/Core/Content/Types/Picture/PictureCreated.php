@@ -94,9 +94,7 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 * @return string
 	 */
 	public function getNewBody(): string {
-		$mediaHtmlBlocks = $this->mediaHtml ?? Picture::createBasicHtmlForImageMedia($this->mediaObjects);
-
-		return join("\n\n", $mediaHtmlBlocks) . "\n\n" . $this->captionHtml;
+		return join("\n\n", $this->mediaHtml) . "\n\n" . $this->captionHtml;
 	}
 
 	/**
@@ -128,6 +126,15 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 */
 	public function setMarkdownHtml(array $html): void {
 		$this->captionHtml = $html[0] ?? '';
+	}
+
+	/**
+	 * Get the rendered HTML for the caption.
+	 *
+	 * @return string
+	 */
+	public function getCaptionHtml(): string {
+		return $this->captionHtml;
 	}
 
 	/**
@@ -166,5 +173,14 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 */
 	public function setMediaHtml(array $html): void {
 		$this->mediaHtml = $html;
+	}
+
+	/**
+	 * Get the rendered HTML for the media.
+	 *
+	 * @return string[]
+	 */
+	public function getMediaHtml(): array {
+		return $this->mediaHtml;
 	}
 }

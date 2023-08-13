@@ -116,6 +116,15 @@ class PictureCaptionEdited extends ContentBodyEdited implements NeedsMarkdownRen
 	}
 
 	/**
+	 * Get the rendered HTML for the caption.
+	 *
+	 * @return string
+	 */
+	public function getCaptionHtml(): string {
+		return $this->captionHtml;
+	}
+
+	/**
 	 * Save the rendered Media HTML.
 	 *
 	 * @param string $html Rendered media objects.

@@ -56,9 +56,7 @@ class Picture implements ContentType {
 	 * @return string
 	 */
 	public function getBodyContent(): string {
-		$mediaHtmlBlocks = $this->mediaHtml ?? self::createBasicHtmlForImageMedia($this->media);
-
-		return join("\n\n", $mediaHtmlBlocks) . "\n\n" . $this->captionHtml;
+		return join("\n\n", $this->mediaHtml) . "\n\n" . $this->captionHtml;
 	}
 
 	/**
@@ -68,15 +66,5 @@ class Picture implements ContentType {
 	 */
 	public function getTypeKey(): string {
 		return 'picture';
-	}
-
-	/**
-	 * Create basic HTML for a Picture's media array.
-	 *
-	 * @param array $media Array of images.
-	 * @return array
-	 */
-	public static function createBasicHtmlForImageMedia(array $media): array {
-		return array_map(fn($m) => "<img src='$m->defaultUrl' alt='$m->accessabilityText'>", $media);
 	}
 }
