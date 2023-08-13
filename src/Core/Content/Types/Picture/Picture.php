@@ -7,6 +7,7 @@ use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Core\Content\Media\MediaType;
 use Smolblog\Framework\Objects\SerializableKit;
 use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\Content\Types\Note\Note;
 
 /**
  * For showing visual art.
@@ -21,14 +22,12 @@ class Picture implements ContentType {
 	 *
 	 * @param Media[]       $media       Media to display.
 	 * @param string|null   $caption     Caption for the picture.
-	 * @param string|null   $givenTitle  Optional title.
 	 * @param string[]|null $mediaHtml   Rendered HTML for the media.
 	 * @param string|null   $captionHtml Rendered HTML for the caption.
 	 */
 	public function __construct(
 		public readonly array $media,
 		public readonly ?string $caption = null,
-		private ?string $givenTitle = null,
 		private ?array $mediaHtml = null,
 		private ?string $captionHtml = null,
 	) {
@@ -48,7 +47,7 @@ class Picture implements ContentType {
 	 * @return string
 	 */
 	public function getTitle(): string {
-		return $this->givenTitle ?? $this->media[0]->title;
+		return isset($this->caption) ? Note::truncateText($this->caption) : $this->media[0]->title;
 	}
 
 	/**

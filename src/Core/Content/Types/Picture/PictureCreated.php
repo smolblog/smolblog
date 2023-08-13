@@ -7,6 +7,7 @@ use Smolblog\Core\Content\Events\ContentCreated;
 use Smolblog\Core\Content\Markdown\NeedsMarkdownRendered;
 use Smolblog\Core\Content\Media\NeedsMediaObjects;
 use Smolblog\Core\Content\Media\NeedsMediaRendered;
+use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Framework\Objects\Identifier;
 
 /**
@@ -39,7 +40,6 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 *
 	 * @param Identifier[]           $mediaIds         Media to display.
 	 * @param string|null            $caption          Caption for the picture.
-	 * @param string|null            $givenTitle       Optional title.
 	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
@@ -51,7 +51,6 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	public function __construct(
 		public readonly array $mediaIds,
 		public readonly ?string $caption = null,
-		public readonly ?string $givenTitle = null,
 		Identifier $authorId,
 		Identifier $contentId,
 		Identifier $userId,
@@ -86,7 +85,7 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 * @return string
 	 */
 	public function getNewTitle(): string {
-		return $this->givenTitle ?? $this->mediaObjects[0]->title;
+		return isset($this->caption) ? Note::truncateText($this->caption) : $this->mediaObjects[0]->title;
 	}
 
 	/**
@@ -109,7 +108,6 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 		return [
 			'mediaIds' => array_map(fn($id) => $id->toString(), $this->mediaIds),
 			'caption' => $this->caption,
-			'givenTitle' => $this->givenTitle,
 		];
 	}
 
