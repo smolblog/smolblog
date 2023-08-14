@@ -95,17 +95,6 @@ class PictureMediaEdited extends ContentBodyEdited implements NeedsMediaObjects,
 	}
 
 	/**
-	 * Get properties specific to this event.
-	 *
-	 * @return array
-	 */
-	protected function getContentPayload(): array {
-		return [
-			'mediaIds' => array_map(fn($id) => $id->toString(), $this->mediaIds),
-		];
-	}
-
-	/**
 	 * Set the computed title for the content at this point.
 	 *
 	 * @param string $title Computed title.

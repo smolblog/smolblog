@@ -28,8 +28,8 @@ class Picture implements ContentType {
 	public function __construct(
 		public readonly array $media,
 		public readonly ?string $caption = null,
-		private ?array $mediaHtml = null,
-		private ?string $captionHtml = null,
+		private ?array $mediaHtml = [],
+		private ?string $captionHtml = '',
 	) {
 		if (empty($media)) {
 			throw new InvalidContentException('A Picture must have at least one media attached.');

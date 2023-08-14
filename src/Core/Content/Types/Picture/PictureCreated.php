@@ -39,22 +39,22 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 * Construct the event.
 	 *
 	 * @param Identifier[]           $mediaIds         Media to display.
-	 * @param string|null            $caption          Caption for the picture.
 	 * @param Identifier             $authorId         ID of the user that authored/owns this content.
 	 * @param Identifier             $contentId        Identifier for the content this event is about.
 	 * @param Identifier             $userId           User responsible for this event.
 	 * @param Identifier             $siteId           Site this content belongs to.
+	 * @param string|null            $caption          Caption for the picture.
 	 * @param DateTimeInterface      $publishTimestamp Date and time this content was first published.
 	 * @param Identifier|null        $id               Optional identifier for this event.
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
 	 */
 	public function __construct(
 		public readonly array $mediaIds,
-		public readonly ?string $caption = null,
 		Identifier $authorId,
 		Identifier $contentId,
 		Identifier $userId,
 		Identifier $siteId,
+		public readonly ?string $caption = null,
 		?DateTimeInterface $publishTimestamp = null,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null

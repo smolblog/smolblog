@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\EndpointConfig;
+use Smolblog\Core\Content\Events\ContentEvent;
+use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\Content\Media\NeedsMediaObjects;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MessageBus;
@@ -21,6 +24,8 @@ use Smolblog\Framework\Objects\RandomIdentifier;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 class TestCase extends PHPUnitTestCase {
+	protected mixed $subject;
+
 	protected function randomId(bool $scrub = false): Identifier {
 		$id = new RandomIdentifier();
 
@@ -141,5 +146,67 @@ trait DatabaseTestKit {
 
 	protected function assertTableEmpty(Builder $table) {
 		$this->assertEquals(0, $table->count(), 'Table not empty: found ' . print_r($table->first(), true));
+	}
+}
+
+trait NeedsMarkdownRenderedTestKit {
+	/** @testdox It implements the NeedsMarkdownRendered interface. */
+	public function testNeedsMarkdownRendered() {
+		$result = [];
+		$actual = $this->subject->getMarkdown();
+		$this->assertIsArray($actual);
+		foreach ($actual as $md) {
+			$this->assertIsString($md);
+			$result[] = "<div>$md</div>";
+		}
+
+		// Test this does not throw an error.
+		$this->subject->setMarkdownHtml($result);
+	}
+}
+
+trait NeedsMediaObjectsTestKit {
+	/** @testdox It implements the NeedsMediaObjects interface. */
+	public function testNeedsMediaObjects() {
+		$result = [];
+		$actual = $this->subject->getMediaIds();
+		$this->assertIsArray($actual);
+		foreach ($actual as $md) {
+			$this->assertInstanceOf(Identifier::class, $md);
+			$result[] = $this->createStub(Media::class);
+		}
+
+		// Test this does not throw an error.
+		$this->subject->setMediaObjects($result);
+	}
+}
+
+trait NeedsMediaRenderedTestKit {
+	/** @testdox It implements the NeedsMediaRendered interface. */
+	public function testNeedsMediaRendered() {
+		if (in_array(NeedsMediaObjects::class, class_implements($this->subject))) {
+			$this->subject->setMediaObjects([
+				$this->createStub(Media::class),
+				$this->createStub(Media::class),
+				$this->createStub(Media::class),
+			]);
+		}
+
+		$result = [];
+		$actual = $this->subject->getMediaObjects();
+		$this->assertIsArray($actual);
+		foreach ($actual as $md) {
+			$this->assertInstanceOf(Media::class, $md);
+			$result[] = '<img src="sonk.jpg">';
+		}
+
+		// Test this does not throw an error.
+		$this->subject->setMediaHtml($result);
+	}
+}
+
+trait ContentEventTestKit {
+	public function testItWillSerializeAndDeserializeToItself() {
+		$this->assertEquals($this->subject, ContentEvent::fromTypedArray($this->subject->toArray()));
 	}
 }

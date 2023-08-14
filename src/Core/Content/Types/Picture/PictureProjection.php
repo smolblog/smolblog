@@ -8,7 +8,6 @@ use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Store Picture-specific state.
@@ -110,7 +109,9 @@ class PictureProjection implements Projection {
 		$row = $this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->first();
 
 		if (method_exists($event, 'setTitle')) {
-			$event->setTitle(isset($row->caption) ? Note::truncateText($row->caption) : json_decode($row->media)[0]->title);
+			$event->setTitle(
+				isset($row->caption) ? Note::truncateText($row->caption) : json_decode($row->media)[0]->title
+			);
 		}
 		if (method_exists($event, 'setCaptionHtml')) {
 			$event->setCaptionHtml($row->caption_html);
