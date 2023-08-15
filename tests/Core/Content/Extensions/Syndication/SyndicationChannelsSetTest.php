@@ -54,5 +54,6 @@ final class SyndicationChannelsSetTest extends TestCase {
 
 		$event->setSyndicationState($state);
 		$this->assertEquals($state, $event->getNewExtension());
+		$this->assertEquals($event->contentId, $event->getContentId());
 	}
 }

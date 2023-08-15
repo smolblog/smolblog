@@ -50,6 +50,7 @@ final class ReblogTest extends TestCase {
 			'<iframe src="//youtu.be/video/embed"></iframe>' . "\n\n<p>Bamboozled again...</p>\n",
 			$reblog->getBodyContent()
 		);
+		$this->assertEquals("<p>Bamboozled again...</p>\n", $reblog->getCommentHtml());
 	}
 
 	public function testExternalInfoAndCommentHtmlCanBeAddedLater() {

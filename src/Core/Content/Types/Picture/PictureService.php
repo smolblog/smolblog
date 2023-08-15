@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Content\Types\Picture;
 
+use Smolblog\Core\Content\ContentTypeConfiguration;
+use Smolblog\Core\Content\ContentTypeService;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
@@ -9,7 +11,22 @@ use Smolblog\Framework\Messages\MessageBus;
 /**
  * Handle Picture-related commands.
  */
-class PictureService implements Listener {
+class PictureService implements Listener, ContentTypeService {
+	/**
+	 * Get configuration for the content type.
+	 *
+	 * @return ContentTypeConfiguration
+	 */
+	public static function getConfiguration(): ContentTypeConfiguration {
+		return new ContentTypeConfiguration(
+			handle: 'picture',
+			displayName: 'Picture',
+			typeClass: Picture::class,
+			singleItemQuery: PictureById::class,
+			deleteItemCommand: DeletePicture::class,
+		);
+	}
+
 	/**
 	 * Construct the service.
 	 *

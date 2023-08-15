@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\EndpointConfig;
+use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\NeedsMediaObjects;
@@ -208,5 +209,11 @@ trait NeedsMediaRenderedTestKit {
 trait ContentEventTestKit {
 	public function testItWillSerializeAndDeserializeToItself() {
 		$this->assertEquals($this->subject, ContentEvent::fromTypedArray($this->subject->toArray()));
+	}
+}
+
+trait ContentTypeServiceTestKit {
+	public function testItProvidesAValidContentTypeConfiguration() {
+		$this->assertInstanceOf(ContentTypeConfiguration::class, get_class($this->subject)::getConfiguration());
 	}
 }
