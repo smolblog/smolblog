@@ -2,7 +2,9 @@
 
 namespace Smolblog\IndieWeb\Micropub;
 
+use DateTimeInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Content\Content;
@@ -15,12 +17,17 @@ use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
+use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\Content\Media\MediaByDefaultUrl;
 use Smolblog\Core\Content\Media\MediaById;
+use Smolblog\Core\Content\Media\SideloadMedia;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Core\Content\Types\Note\CreateNote;
 use Smolblog\Core\Content\Types\Note\EditNote;
 use Smolblog\Core\Content\Types\Note\PublishNote;
+use Smolblog\Core\Content\Types\Picture\CreatePicture;
+use Smolblog\Core\Content\Types\Picture\PublishPicture;
 use Smolblog\Core\Content\Types\Reblog\CreateReblog;
 use Smolblog\Core\Content\Types\Reblog\EditReblogComment;
 use Smolblog\Core\Content\Types\Reblog\EditReblogUrl;
@@ -45,12 +52,14 @@ class MicropubService extends MicropubAdapter {
 	 * @param MessageBus            $bus     For sending queries and commands.
 	 * @param MicroformatsConverter $mf      Handle converting Smolblog objects to their Microformats counterparts.
 	 * @param ContentTypeRegistry   $typeReg For getting content type information.
+	 * @param LoggerInterface       $log     Logger for debug info.
 	 */
 	public function __construct(
 		private ApiEnvironment $env,
 		private MessageBus $bus,
 		private MicroformatsConverter $mf,
 		private ContentTypeRegistry $typeReg,
+		private LoggerInterface $log,
 	) {
 	}
 
@@ -110,6 +119,8 @@ class MicropubService extends MicropubAdapter {
 			'post-types' => [
 				['type' => 'note', 'name' => 'Note'],
 				['type' => 'repost', 'name' => 'Reblog'],
+				['type' => 'photo', 'name' => 'Picture'],
+				['type' => 'multi-photo', 'name' => 'Multiple Pictures'],
 			],
 			'syndicate-to' => array_map(
 				fn($channel) => [
@@ -159,16 +170,15 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function createCallback(array $data, array $uploadedFiles) {
-		wp_insert_post([
-			'post_title' => 'Micropub create ' . date(\DateTimeInterface::COOKIE),
-			'post_content' => '<pre>' . print_r($data, true) . '</pre>',
-			'post_type' => 'log',
-		], true);
+		$this->log->debug(
+			message: 'Micropub create ' . date(DateTimeInterface::COOKIE),
+			context: $data,
+		);
 
 		if (!in_array('h-entry', $data['type'])) {
 			return [
 				'error' => 400,
-				'error_description' => 'Unsupported type; must be Note or Repost.',
+				'error_description' => 'Unsupported type; must be Note, Photo, or Repost.',
 			];
 		}
 
@@ -184,7 +194,7 @@ class MicropubService extends MicropubAdapter {
 		];
 
 		if (isset($props['repost-of'])) {
-			$comment = is_array($props['content'] ?? null) ? $props['content'][0] : null;
+			$comment = is_array($props['content'] ?? null) ? $this->getContentFromRequest($props['content']) : null;
 			$createCommand = new CreateReblog(
 				...$commonProps,
 				url: $props['repost-of'][0],
@@ -192,10 +202,21 @@ class MicropubService extends MicropubAdapter {
 				publish: false,
 			);
 			$publishCommand = new PublishReblog(...$commonProps);
+		} elseif (isset($props['photo'])) {
+			$mediaIds = array_filter(array_map(
+				fn($url) => $this->getOrLoadImageFromUrl($url, $commonProps)->id,
+				$props['photo']
+			));
+			$createCommand = new CreatePicture(
+				...$commonProps,
+				mediaIds: $mediaIds,
+				caption: is_array($props['content'] ?? null) ? $this->getContentFromRequest($props['content']) : null,
+			);
+			$publishCommand = new PublishPicture(...$commonProps);
 		} else {
 			$createCommand = new CreateNote(
 				...$commonProps,
-				text: $props['content'][0],
+				text: $this->getContentFromRequest($props['content']),
 				publish: false,
 			);
 			$publishCommand = new PublishNote(...$commonProps);
@@ -217,7 +238,7 @@ class MicropubService extends MicropubAdapter {
 			));
 		}
 
-		if (!isset($props['post-status']) || $props['post-status'][0] == 'publish') {
+		if (!isset($props['post-status']) || $props['post-status'][0] == 'published') {
 			$this->bus->dispatch($publishCommand);
 		}
 
@@ -234,11 +255,10 @@ class MicropubService extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function updateCallback(string $url, array $actions) {
-		wp_insert_post([
-			'post_title' => 'Micropub update ' . date(\DateTimeInterface::COOKIE),
-			'post_content' => print_r(['url' => $url, 'actions' => $actions], true),
-			'post_type' => 'log',
-		], true);
+		$this->log->debug(
+			message: 'Micropub update ' . date(DateTimeInterface::COOKIE),
+			context: ['url' => $url, 'actions' => $actions],
+		);
 
 		$content = $this->contentByUrl($url);
 		if (!isset($content)) {
@@ -432,5 +452,47 @@ class MicropubService extends MicropubAdapter {
 			default:
 				return null;
 		}
+	}
+
+	/**
+	 * Get text content from the content property
+	 *
+	 * @param array $content Content property.
+	 * @return string
+	 */
+	private function getContentFromRequest(array $content): string {
+		if (empty($content)) {
+			return '';
+		}
+
+		$pieces = array_is_list($content) ? $content : [$content];
+		return join("\n\n", array_map(fn($item) => is_array($item) ? $item['text'] ?? $item['html'] : $item, $pieces));
+	}
+
+	/**
+	 * Get the media object if the URL is in the database or sideload the media if not.
+	 *
+	 * @param string $url         URL to load or sideload.
+	 * @param array  $commonProps Common content props.
+	 * @return Media
+	 */
+	private function getOrLoadImageFromUrl(string $url, array $commonProps): Media {
+		$existing = $this->bus->fetch(new MediaByDefaultUrl($url));
+		if (isset($existing)) {
+			return $existing;
+		}
+
+		$contentProps = [
+			'userId' => $commonProps['userId'],
+			'siteId' => $commonProps['siteId'],
+			'contentId' => new DateIdentifier(),
+		];
+
+		$this->bus->dispatch(new SideloadMedia(
+			...$contentProps,
+			url: $url,
+			accessibilityText: '',
+		));
+		return $this->bus->fetch(new MediaById(...$contentProps));
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Media;
 
+use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DateIdentifier;
@@ -41,6 +42,38 @@ class MediaService implements Listener {
 	}
 
 	/**
+	 * Add HTML to messages that need it.
+	 *
+	 * @param NeedsMediaRendered $message Message with media to render.
+	 * @return void
+	 */
+	#[ContentBuildLayerListener(earlier: 5)]
+	public function onNeedsMediaRendered(NeedsMediaRendered $message) {
+		$message->setMediaHtml(
+			array_map(
+				fn($media) => $this->htmlForMedia($media),
+				$message->getMediaObjects()
+			)
+		);
+	}
+
+	/**
+	 * Get the HTML for the given media.
+	 *
+	 * @param Media $media Media to render.
+	 * @return string HTML for given Media.
+	 */
+	public function htmlForMedia(Media $media): string {
+		// TODO: Better HTML rendering with srcset and such. Will need this from the handler, likely.
+		return match ($media->type) {
+			MediaType::Image => "<img src='$media->defaultUrl' alt='$media->accessibilityText'>",
+			MediaType::Video => "<video src='$media->defaultUrl' alt='$media->accessibilityText'></video>",
+			MediaType::Audio => "<audio src='$media->defaultUrl' alt='$media->accessibilityText'></audio>",
+			default => "<a href='$media->defaultUrl'>$media->title</a>"
+		};
+	}
+
+	/**
 	 * Handle the HandleUploadMedia command.
 	 *
 	 * @param HandleUploadedMedia $command Command to execute.
@@ -54,6 +87,51 @@ class MediaService implements Listener {
 			siteId: $command->siteId,
 		);
 
+		$this->createEntities(
+			command: $command,
+			file: $file,
+			thumbnailUrl: $handler->getThumbnailUrlFor(file: $file),
+			defaultUrl: $handler->getUrlFor(file: $file),
+		);
+	}
+
+	/**
+	 * Handle the SideloadMedia command.
+	 *
+	 * @param SideloadMedia $command Command to execute.
+	 * @return void
+	 */
+	public function onSideloadMedia(SideloadMedia $command) {
+		$handler = $this->registry->get();
+		$file = $handler->sideloadFile(
+			url: $command->url,
+			userId: $command->userId,
+			siteId: $command->siteId,
+		);
+
+		$this->createEntities(
+			command: $command,
+			file: $file,
+			thumbnailUrl: $handler->getThumbnailUrlFor(file: $file),
+			defaultUrl: $handler->getUrlFor(file: $file),
+		);
+	}
+
+	/**
+	 * Do the actual work of creating entities.
+	 *
+	 * @param HandleUploadedMedia|SideloadMedia $command      Command being executed.
+	 * @param MediaFile                         $file         Handled file.
+	 * @param string                            $thumbnailUrl URL to the thumbnail file.
+	 * @param string                            $defaultUrl   URL to the actual file.
+	 * @return void
+	 */
+	private function createEntities(
+		HandleUploadedMedia|SideloadMedia $command,
+		MediaFile $file,
+		string $thumbnailUrl,
+		string $defaultUrl,
+	) {
 		$this->bus->dispatch(new MediaFileAdded(
 			contentId: $file->id,
 			userId: $command->userId,
@@ -63,17 +141,28 @@ class MediaService implements Listener {
 			details: $file->details,
 		));
 
-		$type = self::typeFromMimeType($file->mimeType ?? $command->file->getClientMediaType() ?? '');
+		$mime = $file->mimeType;
+		if (!isset($mime) && property_exists($command, 'file')) {
+			$mime = $command->file->getClientMediaType() ?? '';
+		}
+		$type = self::typeFromMimeType($mime ?? '');
+
+		$title = $type->name . strval($command->contentId);
+		if (isset($command->title)) {
+			$title = $command->title;
+		} elseif (property_exists($command, 'file')) {
+			$title = $command->file->getClientFilename();
+		}
 
 		$this->bus->dispatch(new MediaAdded(
 			contentId: $command->contentId,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			title: $command->title ?? $command->file->getClientFilename() ?? $type->name . strval($command->contentId),
+			title: $title,
 			accessibilityText: $command->accessibilityText,
 			type: $type,
-			thumbnailUrl: $handler->getThumbnailUrlFor(file: $file),
-			defaultUrl: $handler->getUrlFor(file: $file),
+			thumbnailUrl: $thumbnailUrl,
+			defaultUrl: $defaultUrl,
 			file: $file,
 		));
 	}

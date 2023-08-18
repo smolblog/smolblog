@@ -49,9 +49,9 @@ final class NoteCreatedTest extends TestCase {
 			contentId: $this->randomId(),
 			userId: $this->randomId(),
 		);
-		$note->setHtml($this->simpleTextFormatted);
+		$note->setMarkdownHtml([$this->simpleTextFormatted]);
 
-		$this->assertEquals($this->simpleTextMd, $note->getMarkdown());
+		$this->assertEquals([$this->simpleTextMd], $note->getMarkdown());
 		$this->assertEquals($this->simpleTextFormatted, $note->getNewBody());
 	}
 

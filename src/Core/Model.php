@@ -93,6 +93,12 @@ class Model extends DomainModel {
 		Content\Types\Note\NoteService::class => [
 			'bus' => MessageBus::class,
 		],
+		Content\Types\Picture\PictureProjection::class => [
+			'db' => ConnectionInterface::class,
+		],
+		Content\Types\Picture\PictureService::class => [
+			'bus' => MessageBus::class,
+		],
 		Content\Types\Reblog\ReblogService ::class => [
 			'bus' => MessageBus::class,
 			'embedService' => Content\Types\Reblog\ExternalContentService::class,

@@ -21,6 +21,8 @@ interface MediaHandler {
 	/**
 	 * Save the uploaded file and return the resulting Media object.
 	 *
+	 * @throws InvalidMediaException If the file cannot be processed.
+	 *
 	 * @param UploadedFileInterface $file   Uploaded file information.
 	 * @param Identifier|null       $userId ID of the user uploading the file.
 	 * @param Identifier|null       $siteId Site the file is being uploaded to.
@@ -28,6 +30,22 @@ interface MediaHandler {
 	 */
 	public function handleUploadedFile(
 		UploadedFileInterface $file,
+		?Identifier $userId = null,
+		?Identifier $siteId = null,
+	): MediaFile;
+
+	/**
+	 * Sideload the result of the given URL and return the resulting Media object.
+	 *
+	 * @throws InvalidMediaException If the file at the URL cannot be processed.
+	 *
+	 * @param string          $url    URL of media to sideload.
+	 * @param Identifier|null $userId ID of the user uploading the file.
+	 * @param Identifier|null $siteId Site the file is being uploaded to.
+	 * @return MediaFile
+	 */
+	public function sideloadFile(
+		string $url,
 		?Identifier $userId = null,
 		?Identifier $siteId = null,
 	): MediaFile;

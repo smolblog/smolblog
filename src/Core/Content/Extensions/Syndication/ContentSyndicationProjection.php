@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\ConnectionInterface;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Projection;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\NamedIdentifier;
@@ -79,6 +80,7 @@ class ContentSyndicationProjection implements Projection {
 	 * @param NeedsSyndicationState $message Message to handle.
 	 * @return void
 	 */
+	#[ExecutionLayerListener(later: 1)]
 	public function onNeedsSyndicationState(NeedsSyndicationState $message) {
 		$rows = $this->db->table(self::TABLE)->where('content_uuid', '=', $message->getContentId()->toString())->get();
 

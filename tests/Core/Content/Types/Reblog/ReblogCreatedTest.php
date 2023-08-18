@@ -81,7 +81,7 @@ class ReblogCreatedTest extends TestCase {
 			id: Identifier::fromString('61859efd-7c77-4daa-99b4-7b57d70b8606'),
 			timestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
 		);
-		$event->setHtml('<p>Another thing.</p>');
+		$event->setMarkdownHtml(['<p>Another thing.</p>']);
 
 		$this->assertEquals('Hello', $event->getNewTitle());
 		$this->assertEquals('<p>Another thing.</p>', $event->getCommentHtml());

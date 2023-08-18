@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Media;
 
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Content\Queries\ContentVisibleToUser;
+use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Projection;
 use Smolblog\Framework\Objects\Identifier;
@@ -70,6 +71,38 @@ class MediaProjection implements Projection {
 			$query->setResults(true);
 			$query->stopMessage();
 		}
+	}
+
+	/**
+	 * Turn media IDs into actual entities.
+	 *
+	 * @param NeedsMediaObjects $message Message with Media IDs.
+	 * @return void
+	 */
+	#[ContentBuildLayerListener(earlier: 10)]
+	public function onNeedsMediaObjects(NeedsMediaObjects $message) {
+		$results = $this->db->table(self::TABLE)->whereIn('content_uuid', $message->getMediaIds())->get();
+
+		$message->setMediaObjects(
+			array_map(
+				fn($id) => self::mediaFromRow($results->firstWhere('content_uuid', $id->toString())),
+				$message->getMediaIds()
+			)
+		);
+	}
+
+	/**
+	 * Handle finding Media by its default URL.
+	 *
+	 * This is used when the API receives a URL instead of an ID.
+	 *
+	 * @param MediaByDefaultUrl $query Query to execute.
+	 * @return void
+	 */
+	public function onMediaByDefaultUrl(MediaByDefaultUrl $query) {
+		$row = $this->db->table(self::TABLE)->where('default_url', '=', $query->url)->first();
+
+		$query->setResults(isset($row) ? self::mediaFromRow($row) : null);
 	}
 
 	/**

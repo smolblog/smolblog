@@ -5,6 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
+use Psr\Log\NullLogger;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Objects\Identifier;
@@ -18,7 +19,7 @@ final class DefaultMessageBusTest extends TestCase {
 			fn($event) => $event->trace[] = 'third',
 		]);
 
-		$bus = new DefaultMessageBus($providerStub);
+		$bus = new DefaultMessageBus($providerStub, new NullLogger());
 
 		$message = new class() { public $trace = []; };
 		$bus->dispatch($message);
@@ -34,7 +35,7 @@ final class DefaultMessageBusTest extends TestCase {
 			fn($event) => $event->trace[] = 'third',
 		]);
 
-		$bus = new DefaultMessageBus($providerStub);
+		$bus = new DefaultMessageBus($providerStub, new NullLogger());
 
 		$message = new class() implements StoppableEventInterface {
 			public $trace = [];
@@ -54,7 +55,7 @@ final class DefaultMessageBusTest extends TestCase {
 			fn($event) => $event->setResults($expected),
 		]);
 
-		$bus = new DefaultMessageBus($providerStub);
+		$bus = new DefaultMessageBus($providerStub, new NullLogger());
 
 		$message = new class() extends Query {};
 		$actual = $bus->fetch($message);
@@ -71,7 +72,7 @@ final class DefaultMessageBusTest extends TestCase {
 			fn($event) => $this->assertEquals($asyncMessage, $event),
 		]);
 
-		$bus = new DefaultMessageBus($providerStub);
+		$bus = new DefaultMessageBus($providerStub, new NullLogger());
 
 		$bus->dispatchAsync($message);
 	}
