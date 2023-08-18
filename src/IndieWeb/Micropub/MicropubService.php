@@ -17,12 +17,17 @@ use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\Extensions\Tags\SetTags;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
+use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\Content\Media\MediaByDefaultUrl;
 use Smolblog\Core\Content\Media\MediaById;
+use Smolblog\Core\Content\Media\SideloadMedia;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Core\Content\Types\Note\CreateNote;
 use Smolblog\Core\Content\Types\Note\EditNote;
 use Smolblog\Core\Content\Types\Note\PublishNote;
+use Smolblog\Core\Content\Types\Picture\CreatePicture;
+use Smolblog\Core\Content\Types\Picture\PublishPicture;
 use Smolblog\Core\Content\Types\Reblog\CreateReblog;
 use Smolblog\Core\Content\Types\Reblog\EditReblogComment;
 use Smolblog\Core\Content\Types\Reblog\EditReblogUrl;
@@ -114,6 +119,8 @@ class MicropubService extends MicropubAdapter {
 			'post-types' => [
 				['type' => 'note', 'name' => 'Note'],
 				['type' => 'repost', 'name' => 'Reblog'],
+				['type' => 'photo', 'name' => 'Picture'],
+				['type' => 'multi-photo', 'name' => 'Multiple Pictures'],
 			],
 			'syndicate-to' => array_map(
 				fn($channel) => [
@@ -171,7 +178,7 @@ class MicropubService extends MicropubAdapter {
 		if (!in_array('h-entry', $data['type'])) {
 			return [
 				'error' => 400,
-				'error_description' => 'Unsupported type; must be Note or Repost.',
+				'error_description' => 'Unsupported type; must be Note, Photo, or Repost.',
 			];
 		}
 
@@ -195,6 +202,17 @@ class MicropubService extends MicropubAdapter {
 				publish: false,
 			);
 			$publishCommand = new PublishReblog(...$commonProps);
+		} elseif (isset($props['photo'])) {
+			$mediaIds = array_filter(array_map(
+				fn($url) => $this->getOrLoadImageFromUrl($url, $commonProps)->id,
+				$props['photo']
+			));
+			$createCommand = new CreatePicture(
+				...$commonProps,
+				mediaIds: $mediaIds,
+				caption: is_array($props['content'] ?? null) ? $this->getContentFromRequest($props['content']) : null,
+			);
+			$publishCommand = new PublishPicture(...$commonProps);
 		} else {
 			$createCommand = new CreateNote(
 				...$commonProps,
@@ -436,6 +454,12 @@ class MicropubService extends MicropubAdapter {
 		}
 	}
 
+	/**
+	 * Get text content from the content property
+	 *
+	 * @param array $content Content property.
+	 * @return string
+	 */
 	private function getContentFromRequest(array $content): string {
 		if (empty($content)) {
 			return '';
@@ -443,5 +467,32 @@ class MicropubService extends MicropubAdapter {
 
 		$pieces = array_is_list($content) ? $content : [$content];
 		return join("\n\n", array_map(fn($item) => is_array($item) ? $item['text'] ?? $item['html'] : $item, $pieces));
+	}
+
+	/**
+	 * Get the media object if the URL is in the database or sideload the media if not.
+	 *
+	 * @param string $url         URL to load or sideload.
+	 * @param array  $commonProps Common content props.
+	 * @return Media
+	 */
+	private function getOrLoadImageFromUrl(string $url, array $commonProps): Media {
+		$existing = $this->bus->fetch(new MediaByDefaultUrl($url));
+		if (isset($existing)) {
+			return $existing;
+		}
+
+		$contentProps = [
+			'userId' => $commonProps['userId'],
+			'siteId' => $commonProps['siteId'],
+			'contentId' => new DateIdentifier(),
+		];
+
+		$this->bus->dispatch(new SideloadMedia(
+			...$contentProps,
+			url: $url,
+			accessibilityText: '',
+		));
+		return $this->bus->fetch(new MediaById(...$contentProps));
 	}
 }

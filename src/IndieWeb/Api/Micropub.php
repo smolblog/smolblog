@@ -42,6 +42,7 @@ class Micropub implements Endpoint {
 	 * Construct the endpoint.
 	 *
 	 * @param MicropubService $micropub MicropubService which extends MicropubAdapter.
+	 * @param LoggerInterface $log      PSR-compliant logging service.
 	 */
 	public function __construct(
 		private MicropubService $micropub,

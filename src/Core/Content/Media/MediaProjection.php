@@ -92,6 +92,20 @@ class MediaProjection implements Projection {
 	}
 
 	/**
+	 * Handle finding Media by its default URL.
+	 *
+	 * This is used when the API receives a URL instead of an ID.
+	 *
+	 * @param MediaByDefaultUrl $query Query to execute.
+	 * @return void
+	 */
+	public function onMediaByDefaultUrl(MediaByDefaultUrl $query) {
+		$row = $this->db->table(self::TABLE)->where('default_url', '=', $query->url)->first();
+
+		$query->setResults(isset($row) ? self::mediaFromRow($row) : null);
+	}
+
+	/**
 	 * Create a Media object from a database row.
 	 *
 	 * @param stdClass $row Database data.
