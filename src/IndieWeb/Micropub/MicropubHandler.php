@@ -42,9 +42,12 @@ use Smolblog\IndieWeb\MicroformatsConverter;
 use Taproot\Micropub\MicropubAdapter;
 
 /**
- * Handle the Micropub endpoint
+ * Handle the Micropub endpoint.
+ *
+ * This is a "handler" and not a "service" because it does contain its own state and thus should be re-created on
+ * every request.
  */
-class MicropubService extends MicropubAdapter {
+class MicropubHandler extends MicropubAdapter {
 	/**
 	 * Construct the service.
 	 *
