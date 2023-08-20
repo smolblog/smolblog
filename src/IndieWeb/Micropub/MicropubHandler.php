@@ -207,7 +207,7 @@ class MicropubHandler extends MicropubAdapter {
 			$publishCommand = new PublishReblog(...$commonProps);
 		} elseif (isset($props['photo'])) {
 			$mediaIds = array_filter(array_map(
-				fn($url) => $this->getOrLoadImageFromUrl($url, $commonProps)->id,
+				fn($imageProp) => $this->getOrLoadImageFromProp($imageProp, $commonProps)->id,
 				$props['photo']
 			));
 			$createCommand = new CreatePicture(
@@ -475,11 +475,13 @@ class MicropubHandler extends MicropubAdapter {
 	/**
 	 * Get the media object if the URL is in the database or sideload the media if not.
 	 *
-	 * @param string $url         URL to load or sideload.
-	 * @param array  $commonProps Common content props.
+	 * @param string|array $prop        URL to load or sideload or an array with a 'value' and 'alt' prop.
+	 * @param array        $commonProps Common content props.
 	 * @return Media
 	 */
-	private function getOrLoadImageFromUrl(string $url, array $commonProps): Media {
+	private function getOrLoadImageFromProp(string|array $prop, array $commonProps): Media {
+		['value' => $url, 'alt' => $alt] = is_array($prop) ? $prop : ['value' => $prop, 'alt' => null];
+
 		$existing = $this->bus->fetch(new MediaByDefaultUrl($url));
 		if (isset($existing)) {
 			return $existing;
@@ -494,7 +496,7 @@ class MicropubHandler extends MicropubAdapter {
 		$this->bus->dispatch(new SideloadMedia(
 			...$contentProps,
 			url: $url,
-			accessibilityText: '',
+			accessibilityText: $alt ?? '',
 		));
 		return $this->bus->fetch(new MediaById(...$contentProps));
 	}
