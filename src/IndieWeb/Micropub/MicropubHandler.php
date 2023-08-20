@@ -172,10 +172,10 @@ class MicropubHandler extends MicropubAdapter {
 	 * @param array $uploadedFiles Uploaded images.
 	 * @return mixed
 	 */
-	public function createCallback(array $data, array $uploadedFiles) {
+	public function createCallback(array $data, array $uploadedFiles = []) {
 		$this->log->debug(
 			message: 'Micropub create ' . date(DateTimeInterface::COOKIE),
-			context: $data,
+			context: ['data' => $data, 'uploadedFiles' => $uploadedFiles],
 		);
 
 		if (!in_array('h-entry', $data['type'])) {
@@ -205,11 +205,23 @@ class MicropubHandler extends MicropubAdapter {
 				publish: false,
 			);
 			$publishCommand = new PublishReblog(...$commonProps);
-		} elseif (isset($props['photo'])) {
-			$mediaIds = array_filter(array_map(
-				fn($imageProp) => $this->getOrLoadImageFromProp($imageProp, $commonProps)->id,
-				$props['photo']
-			));
+		} elseif (isset($props['photo']) || !empty($uploadedFiles)) {
+			$filesArray = [];
+			if (is_array($uploadedFiles) && isset($uploadedFiles['photo'])) {
+				$filesArray = is_array($uploadedFiles['photo']) ? $uploadedFiles['photo'] : [$uploadedFiles['photo']];
+			}
+
+			$mediaIds = array_merge(
+				array_filter(array_map(
+					fn($imageProp) => $this->getOrLoadImageFromProp($imageProp, $commonProps)->id,
+					$props['photo'] ?? []
+				)),
+				array_map(
+					fn($file) => $this->handleUploadedFile($file, $site->id)->id,
+					$filesArray
+				),
+			);
+
 			$createCommand = new CreatePicture(
 				...$commonProps,
 				mediaIds: $mediaIds,
@@ -394,6 +406,20 @@ class MicropubHandler extends MicropubAdapter {
 	 */
 	public function mediaEndpointCallback(UploadedFileInterface $file) {
 		$siteId = $this->bus->fetch(new UserSites($this->user['id']))[0]->id;
+		$newMedia = $this->handleUploadedFile($file, $siteId);
+
+		return $newMedia->defaultUrl;
+	}
+
+	/**
+	 * Send an UploadedFileInterface into the system.
+	 *
+	 * @param UploadedFileInterface $file   File uploaded.
+	 * @param Identifier|null       $siteId Site being used.
+	 * @return Media
+	 */
+	private function handleUploadedFile(UploadedFileInterface $file, ?Identifier $siteId = null): Media {
+		$siteId ??= $this->bus->fetch(new UserSites($this->user['id']))[0]->id;
 		$command = new HandleUploadedMedia(
 			file: $file,
 			userId: $this->user['id'],
@@ -403,13 +429,11 @@ class MicropubHandler extends MicropubAdapter {
 
 		$this->bus->dispatch($command);
 
-		$newMedia = $this->bus->fetch(new MediaById(
+		return $this->bus->fetch(new MediaById(
 			siteId: $siteId,
 			contentId: $command->contentId,
 			userId: $this->user['id'],
 		));
-
-		return $newMedia->defaultUrl;
 	}
 
 	/**
