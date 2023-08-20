@@ -39,4 +39,26 @@ final class PictureCreatedTest extends TestCase {
 	public function testItCreatesPictures() {
 		$this->assertEquals('picture', $this->subject->getContentType());
 	}
+
+	public function testItWillStripArrayKeys() {
+		$event = new PictureCreated(
+			mediaIds: [
+				'photo' => Identifier::fromString('d2655068-427e-40e3-bbd4-83154da2d443'),
+				'image' => Identifier::fromString('9fcfde4b-63f6-41a1-a521-d2bcd7e50ffb'),
+			],
+			authorId: $this->randomId(true),
+			contentId: $this->randomId(true),
+			userId: $this->randomId(true),
+			siteId: $this->randomId(true),
+			caption: 'Well then.',
+			publishTimestamp: new DateTimeImmutable('2022-02-02 22:22:22.222'),
+			id: $this->randomId(true),
+			timestamp: new DateTimeImmutable('2011-11-11 11:11:11.111'),
+		);
+
+		$this->assertEquals([
+			Identifier::fromString('d2655068-427e-40e3-bbd4-83154da2d443'),
+			Identifier::fromString('9fcfde4b-63f6-41a1-a521-d2bcd7e50ffb'),
+		], $event->mediaIds);
+	}
 }

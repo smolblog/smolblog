@@ -73,4 +73,20 @@ final class CreatePictureTest extends TestCase {
 
 		$this->assertJsonStringEqualsJsonString($expected, json_encode($command));
 	}
+
+	public function testItWillStripArrayKeys() {
+		$command = new CreatePicture(
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			mediaIds: [
+				'photo' => Identifier::fromString('d2655068-427e-40e3-bbd4-83154da2d443'),
+				'image' => Identifier::fromString('9fcfde4b-63f6-41a1-a521-d2bcd7e50ffb'),
+			]
+		);
+
+		$this->assertEquals([
+			Identifier::fromString('d2655068-427e-40e3-bbd4-83154da2d443'),
+			Identifier::fromString('9fcfde4b-63f6-41a1-a521-d2bcd7e50ffb'),
+		], $command->mediaIds);
+	}
 }

@@ -14,6 +14,13 @@ class EditPictureMedia extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**
+	 * Media to display; will replace existing value.
+	 *
+	 * @var Identifier[]
+	 */
+	public readonly array $mediaIds;
+
+	/**
 	 * Construct the command.
 	 *
 	 * @param Identifier[] $mediaIds  Media to display; will replace existing value.
@@ -22,10 +29,11 @@ class EditPictureMedia extends Command implements AuthorizableMessage {
 	 * @param Identifier   $userId    User authoring this picture.
 	 */
 	public function __construct(
-		public readonly array $mediaIds,
+		array $mediaIds,
 		public readonly Identifier $contentId,
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
 	) {
+		$this->mediaIds = array_values($mediaIds);
 	}
 }
