@@ -33,6 +33,7 @@ use Smolblog\Core\Content\Types\Reblog\EditReblogComment;
 use Smolblog\Core\Content\Types\Reblog\EditReblogUrl;
 use Smolblog\Core\Content\Types\Reblog\PublishReblog;
 use Smolblog\Core\Federation\SiteByResourceUri;
+use Smolblog\Core\Site\SiteById;
 use Smolblog\Core\User\UserById;
 use Smolblog\Core\User\UserSites;
 use Smolblog\Framework\Messages\MessageBus;
@@ -77,6 +78,7 @@ class MicropubHandler extends MicropubAdapter {
 	public function verifyAccessTokenCallback(string $token) {
 		return [
 			'id' => $this->request->getAttribute('smolblogUserId'),
+			'siteId' => Identifier::fromString($this->request->getAttribute('smolblogPathVars', [])['site']),
 		];
 	}
 
@@ -87,22 +89,19 @@ class MicropubHandler extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function configurationQueryCallback(array $params) {
+		$currentSiteId = $this->user['siteId'];
+
 		$sites = $this->bus->fetch(new UserSites($this->user['id'])) ?? [];
-		$allChannels = [];
-		$sitechannels = [];
+		$siteChannels = [];
 
 		foreach ($sites as $site) {
 			$siteChannels[$site->id->toString()] = $this->bus->fetch(
 				new ChannelsForSite(siteId: $site->id, canPush: true)
 			) ?? [];
-
-			foreach ($siteChannels[$site->id->toString()] as $channel) {
-				$allChannels[$channel->id->toString()] = $channel;
-			}
 		}
 
 		return [
-			'media-endpoint' => $this->env->getApiUrl('/micropub/media'),
+			'media-endpoint' => $this->env->getApiUrl("/site/$currentSiteId/micropub/media"),
 			'destination' => array_map(
 				fn($site) => [
 					'uid' => $site->id->toString(),
@@ -130,7 +129,7 @@ class MicropubHandler extends MicropubAdapter {
 					'uid' => $channel->id->toString(),
 					'name' => $channel->displayName,
 				],
-				array_values($allChannels),
+				array_values($siteChannels[strval($currentSiteId)]),
 			),
 		];
 	}
@@ -186,7 +185,7 @@ class MicropubHandler extends MicropubAdapter {
 		}
 
 		$props = $data['properties'];
-		$site = $this->bus->fetch(new UserSites($this->user['id']))[0];
+		$site = $this->bus->fetch(new SiteById($this->user['siteId']));
 		$createCommand = null;
 		$publishCommand = null;
 
@@ -405,7 +404,7 @@ class MicropubHandler extends MicropubAdapter {
 	 * @return mixed
 	 */
 	public function mediaEndpointCallback(UploadedFileInterface $file) {
-		$siteId = $this->bus->fetch(new UserSites($this->user['id']))[0]->id;
+		$siteId = $this->user['siteId'];
 		$newMedia = $this->handleUploadedFile($file, $siteId);
 
 		return $newMedia->defaultUrl;
@@ -419,7 +418,7 @@ class MicropubHandler extends MicropubAdapter {
 	 * @return Media
 	 */
 	private function handleUploadedFile(UploadedFileInterface $file, ?Identifier $siteId = null): Media {
-		$siteId ??= $this->bus->fetch(new UserSites($this->user['id']))[0]->id;
+		$siteId ??= $this->user['siteId'];
 		$command = new HandleUploadedMedia(
 			file: $file,
 			userId: $this->user['id'],

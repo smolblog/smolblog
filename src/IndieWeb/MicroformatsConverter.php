@@ -7,6 +7,7 @@ use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Types\Note\Note;
+use Smolblog\Core\Content\Types\Picture\Picture;
 use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Core\User\User;
 
@@ -56,19 +57,27 @@ class MicroformatsConverter {
 			case Note::class:
 				unset($props['name']);
 				$props['content'][0] = [
-					'value' => $content->type->text,
-					'html' => $content->type->getBodyContent(),
+					$content->type->text,
 				];
 				break;
 
 			case Reblog::class:
 				$props['content'][0] = [
-					'value' => $content->type->comment ?? '',
-					'html' => $content->type->getCommentHtml(),
+					$content->type->comment ?? '',
 				];
 				$props['repost-of'] = [$content->type->url];
 				break;
-		}
+
+			case Picture::class:
+				$props['content'][0] = [
+					$content->type->caption ?? '',
+				];
+				$props['photo'] = array_map(
+					fn($media) => ['value' => $media->defaultUrl, 'alt' => $media->accessibilityText],
+					$content->type->media,
+				);
+				break;
+		}//end switch
 
 		return $props;
 	}
