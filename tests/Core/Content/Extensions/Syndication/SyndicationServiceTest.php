@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
+use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
@@ -25,6 +26,7 @@ final class SyndicationServiceTest extends TestCase {
 		);
 
 		$bus = $this->createMock(MessageBus::class);
+		$bus->method('fetch')->willReturn(new class() { public $visibility = ContentVisibility::Draft; });
 		$bus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($expectedEvent));
 
 		$service = new SyndicationService(bus: $bus);
@@ -43,6 +45,7 @@ final class SyndicationServiceTest extends TestCase {
 		);
 
 		$bus = $this->createMock(MessageBus::class);
+		$bus->method('fetch')->willReturn(new class() { public $visibility = ContentVisibility::Draft; });
 		$bus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo(
 			new SyndicationChannelsSet(
 				channels: $command->channels,

@@ -5,6 +5,7 @@ namespace Smolblog\Core\Content\Types\Note;
 use DateTimeImmutable;
 use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentTypeService;
+use Smolblog\Core\Content\ContentUtilityKit;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
@@ -13,6 +14,8 @@ use Smolblog\Framework\Messages\MessageBus;
  * Service to handle Note-related commands.
  */
 class NoteService implements Listener, ContentTypeService {
+	use ContentUtilityKit;
+
 	/**
 	 * Get the Note configuration.
 	 *
@@ -76,16 +79,15 @@ class NoteService implements Listener, ContentTypeService {
 			'siteId' => $command->siteId,
 		];
 
-		$note = $this->bus->fetch(new NoteById(...$contentParams));
-
 		$this->bus->dispatch(new NoteBodyEdited(
 			...$contentParams,
 			text: $command->text,
 		));
 
-		if ($note->visibility === ContentVisibility::Published) {
-			$this->bus->dispatch(new PublicNoteEdited(...$contentParams));
-		}
+		$this->dispatchIfContentPublic(
+			new PublicNoteEdited(...$contentParams),
+			$contentParams,
+		);
 	}
 
 	/**
@@ -121,11 +123,10 @@ class NoteService implements Listener, ContentTypeService {
 			'siteId' => $command->siteId,
 		];
 
-		$note = $this->bus->fetch(new NoteById(...$contentParams));
-
-		if ($note->visibility === ContentVisibility::Published) {
-			$this->bus->dispatch(new PublicNoteRemoved(...$contentParams));
-		}
+		$this->dispatchIfContentPublic(
+			new PublicNoteRemoved(...$contentParams),
+			$contentParams,
+		);
 
 		$this->bus->dispatch(new NoteDeleted(...$contentParams));
 	}

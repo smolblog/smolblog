@@ -20,9 +20,8 @@ use Smolblog\Core\Content\Events\{
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Core\Content\Queries\{
 	ContentByPermalink,
-	ContentList,
 	ContentVisibleToUser,
-	GenericContentById,
+	GenericContentBuilder,
 	UserCanEditContent
 };
 use Smolblog\Core\Site\UserHasPermissionForSite;
@@ -212,13 +211,13 @@ class StandardContentProjection implements Projection {
 	/**
 	 * Add the GenericContent type to a GenericContentById query.
 	 *
-	 * @param GenericContentById $query Query to handle.
+	 * @param GenericContentBuilder $query Query to handle.
 	 * @return void
 	 */
 	#[ContentBuildLayerListener]
-	public function onGenericContentById(GenericContentById $query) {
+	public function onGenericContentBuilder(GenericContentBuilder $query) {
 		$results = $this->db->table(self::TABLE)->
-			where('content_uuid', '=', $query->contentId->toString())->first();
+			where('content_uuid', '=', $query->getContentId()->toString())->first();
 
 		$query->setContentType(new GenericContent(title: $results->title, body: $results->body));
 	}

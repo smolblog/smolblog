@@ -423,7 +423,7 @@ final class StandardContentProjectionTest extends TestCase {
 			public function getContentType() { return $this->contentProps['type']; }
 		};
 
-		$this->projection->onGenericContentById($message);
+		$this->projection->onGenericContentBuilder($message);
 		$this->assertEquals(
 			new GenericContent(title: 'poTAYtos', body: '<p>Boil them, mash them</p>'),
 			$message->getContentType(),
