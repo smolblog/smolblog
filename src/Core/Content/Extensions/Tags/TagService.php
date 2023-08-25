@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
+use Smolblog\Core\Content\ContentUtilityKit;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
@@ -9,6 +10,8 @@ use Smolblog\Framework\Messages\MessageBus;
  * Handle Tag commands.
  */
 class TagService implements Listener {
+	use ContentUtilityKit;
+
 	/**
 	 * Construct the service.
 	 *
@@ -26,11 +29,20 @@ class TagService implements Listener {
 	 * @return void
 	 */
 	public function onSetTags(SetTags $command): void {
+		$contentParams = [
+			'contentId' => $command->contentId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
 		$this->bus->dispatch(new TagsSet(
+			...$contentParams,
 			tagText: $command->tags,
-			contentId: $command->contentId,
-			userId: $command->userId,
-			siteId: $command->siteId,
 		));
+
+		$this->dispatchIfContentPublic(
+			message: new PublicContentTagsChanged(...$contentParams),
+			contentParams: $contentParams,
+		);
 	}
 }

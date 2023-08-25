@@ -15,6 +15,13 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, NeedsMediaObjects, NeedsMediaRendered {
 	/**
+	 * Media to display.
+	 *
+	 * @var Identifier[]
+	 */
+	public readonly array $mediaIds;
+
+	/**
 	 * Store the objects indicated by $mediaIds
 	 *
 	 * @var array
@@ -49,7 +56,7 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 * @param DateTimeInterface|null $timestamp        Optional timestamp for this event.
 	 */
 	public function __construct(
-		public readonly array $mediaIds,
+		array $mediaIds,
 		Identifier $authorId,
 		Identifier $contentId,
 		Identifier $userId,
@@ -59,6 +66,8 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
+		$this->mediaIds = array_values($mediaIds);
+
 		parent::__construct(
 			authorId: $authorId,
 			contentId: $contentId,

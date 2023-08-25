@@ -14,6 +14,13 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class CreatePicture extends Command implements AuthorizableMessage {
 	/**
+	 * Media to display.
+	 *
+	 * @var Identifier[]
+	 */
+	public readonly array $mediaIds;
+
+	/**
 	 * Construct the command.
 	 *
 	 * @param Identifier   $siteId    Site for this picture.
@@ -25,10 +32,11 @@ class CreatePicture extends Command implements AuthorizableMessage {
 	public function __construct(
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
-		public readonly array $mediaIds,
+		array $mediaIds,
 		public readonly ?string $caption = null,
 		public readonly Identifier $contentId = new DateIdentifier(),
 	) {
+		$this->mediaIds = array_values($mediaIds);
 	}
 
 	/**

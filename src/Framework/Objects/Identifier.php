@@ -3,6 +3,7 @@
 namespace Smolblog\Framework\Objects;
 
 use DateTimeInterface;
+use JsonSerializable;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
 use Stringable;
@@ -15,7 +16,7 @@ use Stringable;
  *
  * Essentially a wrapper around Ramsey\Uuid.
  */
-class Identifier implements Stringable {
+class Identifier implements Stringable, JsonSerializable {
 	/**
 	 * Re-create an Identifier instance from a string representation.
 	 *
@@ -78,6 +79,17 @@ class Identifier implements Stringable {
 	 * @return string
 	 */
 	public function __toString(): string {
+		return $this->toString();
+	}
+
+	/**
+	 * A serialized Identifier is just a string.
+	 *
+	 * This feels risky. Is this risky?
+	 *
+	 * @return mixed
+	 */
+	public function jsonSerialize(): mixed {
 		return $this->toString();
 	}
 }

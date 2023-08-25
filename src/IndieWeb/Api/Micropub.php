@@ -26,7 +26,10 @@ class Micropub implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/micropub',
+			route: '/site/{site}/micropub',
+			pathVariables: [
+				'site' => ParameterType::identifier(),
+			],
 			verb: [Verb::GET, Verb::POST],
 			queryVariables: [
 				'q' => ParameterType::required(ParameterType::string(pattern: '^(?:config|source|syndicate-to)$')),

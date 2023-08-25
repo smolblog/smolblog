@@ -13,6 +13,13 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class PictureMediaEdited extends ContentBodyEdited implements NeedsMediaObjects, NeedsMediaRendered {
 	/**
+	 * Media to display.
+	 *
+	 * @var Identifier[]
+	 */
+	public readonly array $mediaIds;
+
+	/**
 	 * Store the objects indicated by $mediaIds
 	 *
 	 * @var array
@@ -51,13 +58,15 @@ class PictureMediaEdited extends ContentBodyEdited implements NeedsMediaObjects,
 	 * @param DateTimeInterface|null $timestamp Optional timestamp for this event.
 	 */
 	public function __construct(
-		public readonly array $mediaIds,
+		array $mediaIds,
 		Identifier $contentId,
 		Identifier $userId,
 		Identifier $siteId,
 		?Identifier $id = null,
 		?DateTimeInterface $timestamp = null
 	) {
+		$this->mediaIds = array_values($mediaIds);
+
 		parent::__construct(
 			contentId: $contentId,
 			userId: $userId,

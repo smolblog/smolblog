@@ -22,7 +22,10 @@ class MicropubMedia implements Endpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/micropub/media',
+			route: '/site/{site}/micropub/media',
+			pathVariables: [
+				'site' => ParameterType::identifier(),
+			],
 			verb: Verb::POST,
 			responseShape: ParameterType::string(),
 			requiredScopes: [AuthScope::Create],

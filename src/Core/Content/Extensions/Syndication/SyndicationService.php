@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
+use Smolblog\Core\Content\ContentUtilityKit;
+use Smolblog\Core\Content\ContentUtilityService;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
@@ -9,13 +11,15 @@ use Smolblog\Framework\Messages\MessageBus;
  * Handle Syndication commands.
  */
 class SyndicationService implements Listener {
+	use ContentUtilityKit;
+
 	/**
 	 * Construct the service
 	 *
 	 * @param MessageBus $bus For dispatching Events.
 	 */
 	public function __construct(
-		private MessageBus $bus
+		private MessageBus $bus,
 	) {
 	}
 
@@ -26,12 +30,21 @@ class SyndicationService implements Listener {
 	 * @return void
 	 */
 	public function onAddSyndicationLink(AddSyndicationLink $command) {
+		$contentParams = [
+			'contentId' => $command->contentId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
 		$this->bus->dispatch(new ContentSyndicated(
+			...$contentParams,
 			url: $command->url,
-			contentId: $command->contentId,
-			userId: $command->userId,
-			siteId: $command->siteId,
 		));
+
+		$this->dispatchIfContentPublic(
+			message: new PublicContentSyndicationChanged(...$contentParams),
+			contentParams: $contentParams
+		);
 	}
 
 	/**
@@ -41,11 +54,20 @@ class SyndicationService implements Listener {
 	 * @return void
 	 */
 	public function onSetSyndicationChannels(SetSyndicationChannels $command) {
+		$contentParams = [
+			'contentId' => $command->contentId,
+			'userId' => $command->userId,
+			'siteId' => $command->siteId,
+		];
+
 		$this->bus->dispatch(new SyndicationChannelsSet(
+			...$contentParams,
 			channels: $command->channels,
-			contentId: $command->contentId,
-			userId: $command->userId,
-			siteId: $command->siteId,
 		));
+
+		$this->dispatchIfContentPublic(
+			message: new PublicContentSyndicationChanged(...$contentParams),
+			contentParams: $contentParams
+		);
 	}
 }
