@@ -2,26 +2,29 @@
 
 namespace Smolblog\ContentProvenance;
 
-use Crell\Tukio\Listener;
+use smolblog\Framework\Messages\Listener;
 use Psr\Log\LoggerInterface;
 use Smolblog\ContentProvenance\Actions\Published;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Core\Content\Media\MediaService;
 use Smolblog\Core\Content\Media\MediaType;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Elephox\Mimey\MimeTypesInterface;
 
 /**
  * Service that intercepts an uploaded file command and attaches a manifest to it.
  */
-class ManifestService extends Listener {
+class ManifestService implements Listener {
 	/**
 	 * Create the service.
 	 *
-	 * @param ContentProvenanceEnvironment $env  Environment with the c2patool path.
-	 * @param LoggerInterface              $logs PSR-3 logger.
+	 * @param ContentProvenanceEnvironment $env   Environment with the c2patool path.
+	 * @param MimeTypesInterface           $mimes MIME-file extension converter.
+	 * @param LoggerInterface              $logs  PSR-3 logger.
 	 */
 	public function __construct(
 		private ContentProvenanceEnvironment $env,
+		private MimeTypesInterface $mimes,
 		private LoggerInterface $logs,
 	) {
 	}
@@ -36,12 +39,23 @@ class ManifestService extends Listener {
 	public function applyManifest(ProvenanceManifest $manifest, string $pathToMedia) {
 		$toolPath = $this->env->getPathToC2patool();
 		$manifestJson = str_replace("'", "\\'", json_encode($manifest));
-		$result = shell_exec("$toolPath '$pathToMedia' --config '$manifestJson' --output '$pathToMedia' --force");
+
+		$this->logs->debug("ManifestService::applyManifest", [
+			'command' => "$toolPath $pathToMedia --config '$manifestJson' --output $pathToMedia --force",
+		]);
+
+		$output = [];
+		$resultCode = 0;
+		$result = exec(
+			"$toolPath $pathToMedia --config '$manifestJson' --output $pathToMedia --force",
+			$output,
+			$resultCode
+		);
 
 		if (!$result) {
 			$this->logs->error("Could not apply manifest", [
-				'manifest' => $manifest->toArray(),
-				'pathToMedia' => $pathToMedia,
+				'result_code' => $resultCode,
+				'output' => $output,
 			]);
 		}
 	}
@@ -56,13 +70,27 @@ class ManifestService extends Listener {
 	 */
 	#[ExecutionLayerListener(earlier: 5)]
 	public function onHandleUploadedMedia(HandleUploadedMedia $command) {
+		$this->logs->debug('ManifestService::onHandleUploadedMedia', [
+			'command' => $command->toArray(),
+			'Media type' => $command->file->getClientMediaType(),
+			'Expected file' => $command->file->getStream()->getMetadata('uri'),
+		]);
+
 		if (MediaService::typeFromMimeType($command->file->getClientMediaType() ?? '') === MediaType::File) {
 			return;
 		}
 
+		$fileName = $command->file->getClientFilename();
+		$oldPath = $command->file->getStream()->getMetadata('uri');
+		$newPath = isset($fileName) ? "/tmp/$fileName" : $oldPath . '.' .
+			$this->mimes->getExtension($command->file->getClientMediaType() ?? mime_content_type($oldPath));
+		shell_exec("mv $oldPath $newPath");
+
 		$this->applyManifest(
 			manifest: new ProvenanceManifest(actions: [new Published()]),
-			pathToMedia: $command->file->getStream()->getMetadata('uri'),
+			pathToMedia: $newPath,
 		);
+
+		shell_exec("mv $newPath $oldPath");
 	}
 }
