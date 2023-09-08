@@ -4,9 +4,14 @@ namespace Smolblog\Tumblr;
 
 use Smolblog\Core\Connector\Connector;
 use Smolblog\Core\Connector\ConnectorInitData;
-use Tumblr\API\Client as TumblrClient;
+use Smolblog\Core\Connector\Entities\AuthRequestState;
+use Smolblog\Core\Connector\Entities\Channel;
+use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connector\NoRefreshKit;
 
 class TumblrConnector implements Connector {
+	use NoRefreshKit;
+
 	/**
 	 * Get the string this Connector should be registered under.
 	 *
@@ -18,7 +23,7 @@ class TumblrConnector implements Connector {
 		return 'tumblr';
 	}
 
-	public function __construct(private TumblrClient $tumblr) {
+	public function __construct(private TumblrClientFactory $factory) {
 	}
 
 	/**
@@ -28,7 +33,7 @@ class TumblrConnector implements Connector {
 	 * @return ConnectorInitData
 	 */
 	public function getInitializationData(string $callbackUrl): ConnectorInitData {
-		$handler = $this->tumblr->getRequestHandler();
+		$handler = $this->factory->getAppClient()->getRequestHandler();
 		$handler->setBaseUrl('https://www.tumblr.com/');
 
 		$resp = $handler->request('POST', 'oauth/request_token', ['oauth_callback' => $callbackUrl]);
@@ -37,8 +42,9 @@ class TumblrConnector implements Connector {
 
 		return new ConnectorInitData(
 			url: 'https://www.tumblr.com/oauth/authorize?oauth_token=' . $data['oauth_token'],
-			state:
-		)
+			state: $data['oauth_token'],
+			info: ['secret' => $data['oauth_token_secret']],
+		);
 	}
 
 	/**
@@ -48,7 +54,32 @@ class TumblrConnector implements Connector {
 	 * @param AuthRequestState $info Info from the original request.
 	 * @return null|Connection Created credential, null on failure
 	 */
-	public function createConnection(string $code, AuthRequestState $info): ?Connection;
+	public function createConnection(string $code, AuthRequestState $info): ?Connection {
+		$handler = $this->factory->getUserClient(key: $info->key, secret: $info->info['secret'])->getRequestHandler();
+		$handler->setBaseUrl('https://www.tumblr.com/');
+
+		$accessResponse = $handler->request('POST', 'oauth/access_token', ['oauth_verifier' => $code]);
+
+		$accessInfo = [];
+		parse_str($accessResponse->body, $accessInfo);
+
+		$client = $this->factory->getUserClient(
+			key: $accessInfo['oauth_token'],
+			secret: $accessInfo['oauth_token_secret']
+		);
+		$user = $client->getUserInfo()->user;
+
+		return new Connection(
+			userId: $info->userId,
+			provider: self::getSlug(),
+			providerKey: $this->findPrimaryBlogId($user->blogs),
+			displayName: $user->name,
+			details: [
+				'key' => $accessInfo['oauth_token'],
+				'secret' => $accessInfo['oauth_token_secret']
+			],
+		);
+	}
 
 	/**
 	 * Get the channels enabled by the Connection.
@@ -56,21 +87,27 @@ class TumblrConnector implements Connector {
 	 * @param Connection $connection Account to get Channels for.
 	 * @return Channel[] Array of Channels this Connection can use
 	 */
-	public function getChannels(Connection $connection): array;
+	public function getChannels(Connection $connection): array {
+		$client = $this->factory->getUserClient(...$connection->details);
+		$user = $client->getUserInfo()->user;
 
-	/**
-	 * Check the connection to see if it needs to be refreshed.
-	 *
-	 * @param Connection $connection Connection object to check.
-	 * @return boolean true if Connection requires a refresh.
-	 */
-	public function connectionNeedsRefresh(Connection $connection): bool;
+		return array_map(
+			fn($blog) => new Channel(
+				connectionId: $connection->id,
+				channelKey: $blog->uuid,
+				displayName: "$blog->title ($blog->name)",
+				details: []
+			),
+			$user->blogs
+		);
+	}
 
-	/**
-	 * Refresh the given Connection and return the updated object.
-	 *
-	 * @param Connection $connection Connection object to refresh.
-	 * @return Connection Refreshed Connection.
-	 */
-	public function refreshConnection(Connection $connection): Connection;
+	private function findPrimaryBlogId(array $blogs): string {
+		foreach ($blogs as $blog) {
+			if ($blog->primary) {
+				return $blog->uuid;
+			}
+		}
+		return $blogs[0]->uuid;
+	}
 }
