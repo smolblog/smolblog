@@ -8,6 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 use PDO;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Framework\Infrastructure\QueryMemoizationService;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 
 class Model extends DomainModel {
@@ -20,6 +21,7 @@ class Model extends DomainModel {
 			AuthRequestStateRepo::class => Transients::class,
 			Transients::class => ['db' => ConnectionInterface::class],
 			ConnectionInterface::class => fn() => self::makeDatabase(),
+			PermalinkService::class => ['bus' => MessageBus::class],
 		];
 	}
 
