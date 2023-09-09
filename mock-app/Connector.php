@@ -12,6 +12,10 @@ use Smolblog\Core\Connector\NoRefreshKit;
 class Connector implements ConnectorConnector {
 	use NoRefreshKit;
 
+	public static function getSlug(): string {
+		return 'smolblog';
+	}
+
 	public function getInitializationData(string $callbackUrl): ConnectorInitData {
 		return new ConnectorInitData(
 			url: 'https://smol.blog/oauth2/auth',

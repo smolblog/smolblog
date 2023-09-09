@@ -5,13 +5,14 @@ namespace Smolblog\Mock;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Illuminate\Database\ConnectionInterface;
 use PDO;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Framework\Objects\Identifier;
 
 class Transients implements AuthRequestStateRepo {
-	public function __construct(private PDO $db) {}
+	public function __construct(private ConnectionInterface $db) {}
 
 	/**
 	 * Save the given AuthRequestState
@@ -20,11 +21,10 @@ class Transients implements AuthRequestStateRepo {
 	 * @return void
 	 */
 	public function saveAuthRequestState(AuthRequestState $state): void {
-		$query = $this->db->prepare('INSERT INTO temp_options ("key", "value", "expires") VALUES (?, ?, ?)');
-		$query->execute([
-			'authRequest-' . $state->key,
-			json_encode($state),
-			(new DateTimeImmutable())->add(new DateInterval('P15M'))->format(DateTimeInterface::RFC3339_EXTENDED),
+		$this->db->table('temp_options')->insert([
+			'key' => 'authRequest-' . $state->key,
+			'value' => json_encode($state),
+			'expires' => (new DateTimeImmutable())->add(new DateInterval('P15M'))->format(DateTimeInterface::RFC3339_EXTENDED),
 		]);
 	}
 
@@ -35,10 +35,8 @@ class Transients implements AuthRequestStateRepo {
 	 * @return AuthRequestState
 	 */
 	public function getAuthRequestState(string $key): ?AuthRequestState {
-		$query = $this->db->prepare('SELECT "value" FROM temp_options WHERE "key" = ?');
-		$query->execute(['authRequest-' . $key]);
-		$json = $query->fetchColumn();
-		if (false === $json) { return null; }
+		$json = $this->db->table('temp_options')->where('key', '=', 'authRequest-' . $key)->value('value');
+		if (!$json) { return null; }
 		return AuthRequestState::jsonDeserialize($json);
 	}
 }
