@@ -2,10 +2,6 @@
 
 namespace Smolblog\Mock;
 
-use Illuminate\Database\ConnectionInterface;
-use PDO;
-use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
-use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Core\Site\SiteUserLink;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\Listener;

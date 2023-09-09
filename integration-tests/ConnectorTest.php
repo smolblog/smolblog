@@ -2,7 +2,6 @@
 
 namespace Smolblog\Test;
 
-use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
