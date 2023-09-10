@@ -6,6 +6,7 @@ use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Schema\Blueprint;
 use PDO;
+use Psr\EventDispatcher\ListenerProviderInterface;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Framework\Infrastructure\QueryMemoizationService;
 use Smolblog\Framework\Messages\MessageBus;
@@ -22,6 +23,11 @@ class Model extends DomainModel {
 			Transients::class => ['db' => ConnectionInterface::class],
 			ConnectionInterface::class => fn() => self::makeDatabase(),
 			PermalinkService::class => ['bus' => MessageBus::class],
+			MessageBus::class => MockMessageBus::class,
+			MockMessageBus::class => [
+				'provider' => ListenerProviderInterface::class,
+				'log' => LoggerInterface::class,
+			],
 		];
 	}
 
