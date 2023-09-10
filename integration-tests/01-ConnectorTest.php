@@ -2,7 +2,6 @@
 
 namespace Smolblog\Test;
 
-use PHPUnit\Framework\TestCase;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
@@ -56,13 +55,13 @@ final class ConnectorTest extends TestCase {
 		));
 
 		$expected = new Channel(
-			connectionId: $connectionId,
+			connectionId: Identifier::fromString($connectionId->toString()),
 			channelKey: 'snek.smol.blog',
 			displayName: 'snek.smol.blog',
 			details: [],
 		);
 		$results = App::fetch(new ChannelsForConnection($connectionId));
-		$this->assertEquals($expected, $results[0]);
+		$this->assertEquals($expected->toArray(), $results[0]->toArray());
 	}
 
 	/** @depends testAuthRequest */
