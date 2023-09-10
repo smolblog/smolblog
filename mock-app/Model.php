@@ -7,6 +7,7 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Schema\Blueprint;
 use PDO;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Framework\Infrastructure\QueryMemoizationService;
 use Smolblog\Framework\Messages\MessageBus;
@@ -28,6 +29,7 @@ class Model extends DomainModel {
 				'provider' => ListenerProviderInterface::class,
 				'log' => LoggerInterface::class,
 			],
+			MediaHandler::class => [],
 		];
 	}
 

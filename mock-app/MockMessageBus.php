@@ -19,6 +19,7 @@ class MockMessageBus extends DefaultMessageBus {
 
 		if ($this->indent <= 0) {
 			$this->indent = 0;
+			if (empty($this->queue)) { return; }
 
 			$next = array_shift($this->queue);
 			$this->dispatch($next);
@@ -27,14 +28,16 @@ class MockMessageBus extends DefaultMessageBus {
 
 	public function dispatch(object $message): mixed {
 		$this->startDispatch();
-		parent::dispatch($message);
+		$val = parent::dispatch($message);
 		$this->endDispatch();
+		return $val;
 	}
 
 	public function fetch(Query $query): mixed {
 		$this->startDispatch();
-		parent::fetch($query);
+		$val = parent::fetch($query);
 		$this->endDispatch();
+		return $val;
 	}
 
 	public function dispatchAsync(Message $message): void {
