@@ -9,6 +9,9 @@ use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\NoRefreshKit;
 
+/**
+ * Connect to Tumblr.
+ */
 class TumblrConnector implements Connector {
 	use NoRefreshKit;
 
@@ -23,6 +26,11 @@ class TumblrConnector implements Connector {
 		return 'tumblr';
 	}
 
+	/**
+	 * Create the service.
+	 *
+	 * @param TumblrClientFactory $factory Generate Tumblr clients.
+	 */
 	public function __construct(private TumblrClientFactory $factory) {
 	}
 
@@ -102,6 +110,12 @@ class TumblrConnector implements Connector {
 		);
 	}
 
+	/**
+	 * Get the primary blog from the user's list of blogs.
+	 *
+	 * @param array $blogs User's blogs.
+	 * @return string Primary blog UUID
+	 */
 	private function findPrimaryBlogId(array $blogs): string {
 		foreach ($blogs as $blog) {
 			if ($blog->primary) {
