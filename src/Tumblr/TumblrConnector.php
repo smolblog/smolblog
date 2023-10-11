@@ -103,7 +103,7 @@ class TumblrConnector implements Connector {
 			fn($blog) => new Channel(
 				connectionId: $connection->id,
 				channelKey: $blog->uuid,
-				displayName: "$blog->title ($blog->name)",
+				displayName: "$blog->name",
 				details: []
 			),
 			$user->blogs

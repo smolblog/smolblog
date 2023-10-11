@@ -87,7 +87,10 @@ abstract class BasicEndpoint implements Endpoint {
 		} catch (ErrorResponse $ex) {
 			return new HttpResponse(code: $ex->getHttpCode(), body: $ex);
 		} catch (MessageNotAuthorizedException $ex) {
-			return new HttpResponse(code: 403, body: $ex);
+			return new HttpResponse(code: 403, body: [
+				'code' => 403,
+				'error' => 'You are not authorized to perform this action.'
+			]);
 		} catch (Throwable $ex) {
 			return new HttpResponse(
 				code: 500,
