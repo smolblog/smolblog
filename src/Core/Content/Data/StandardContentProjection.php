@@ -5,6 +5,7 @@ namespace Smolblog\Core\Content\Data;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
+use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\ContentBuilder;
 use Smolblog\Core\Content\Events\{
@@ -20,6 +21,7 @@ use Smolblog\Core\Content\Events\{
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Core\Content\Queries\{
 	ContentByPermalink,
+	ContentList,
 	ContentVisibleToUser,
 	GenericContentBuilder,
 	UserCanEditContent
@@ -282,46 +284,49 @@ class StandardContentProjection implements Projection {
 		}
 	}
 
-	/*
-		Commenting out until this is needed. Because I don't want to test this yet.
-		public function onContentList(ContentList $query) {
-			$isAdmin = isset($query->userId) && $this->bus->fetch(
-				new UserHasPermissionForSite(siteId: $query->siteId, userId: $query->userId, mustBeAdmin: true)
+	/**
+	 * Get a list of available content.
+	 *
+	 * @param ContentList $query Query to execute.
+	 * @return void
+	 */
+	public function onContentList(ContentList $query) {
+		$isAdmin = isset($query->userId) && $this->bus->fetch(
+			new UserHasPermissionForSite(siteId: $query->siteId, userId: $query->userId, mustBeAdmin: true)
+		);
+
+		$builder = $this->db->table(self::TABLE)
+			->where('site_uuid', '=', $query->siteId->toString())
+			->orderByDesc('publish_timestamp')
+			->skip(($query->page - 1) * $query->pageSize)->take($query->pageSize);
+
+		if (!$isAdmin) {
+			$builder = $builder->where(
+				fn($q) => $q->where('visibility', '=', ContentVisibility::Published->value)
+										->orWhere('author_uuid', '=', $query->userId?->toString())
 			);
-
-			$builder = $this->db->table(self::TABLE)
-				->where('site_uuid', '=', $query->siteId->toString())
-				->orderByDesc('publish_timestamp')
-				->skip(($query->page - 1) * $query->pageSize)->take($query->pageSize);
-
-			if (!$isAdmin) {
-				$builder = $builder->where(
-					fn($q) => $q->where('author_uuid', '=', $query->userId->toString())
-											->orWhere('visibility', '=', ContentVisibility::Published->value)
-				);
-			}
-
-			if (isset($query->types)) {
-				$builder = $builder->whereIn('type', $query->types);
-			}
-			if (isset($query->visibility)) {
-				$builder = $builder->whereIn('visibility', $query->visibility);
-			}
-
-			$query->setResults($builder->get()->map(
-				fn($row) => new Content(
-					id: Identifier::fromString($row->content_uuid),
-					type: new GenericContent(title: $row->title, body: $row->body, typeClass: $row->type),
-					siteId: Identifier::fromString($row->site_uuid),
-					authorId: Identifier::fromString($row->author_uuid),
-					permalink: $row->permalink ?? null,
-					publishTimestamp: isset($row->publish_timestamp) ?
-						new DateTimeImmutable($row->publish_timestamp) : null,
-					visibility: ContentVisibility::tryFrom($row->visibility),
-				)
-			));
 		}
-	*/
+
+		if (isset($query->types)) {
+			$builder = $builder->whereIn('type', $query->types);
+		}
+		if (isset($query->visibility)) {
+			$builder = $builder->whereIn('visibility', $query->visibility);
+		}
+
+		$query->setResults($builder->get()->map(
+			fn($row) => new Content(
+				id: Identifier::fromString($row->content_uuid),
+				type: new GenericContent(title: $row->title, body: $row->body, originalTypeKey: $row->type),
+				siteId: Identifier::fromString($row->site_uuid),
+				authorId: Identifier::fromString($row->author_uuid),
+				permalink: $row->permalink ?? null,
+				publishTimestamp: isset($row->publish_timestamp) ?
+					new DateTimeImmutable($row->publish_timestamp) : null,
+				visibility: ContentVisibility::tryFrom($row->visibility),
+			)
+		)->toArray());
+	}
 
 	/**
 	 * Check if the given user either owns the content or has admin priveleges.
