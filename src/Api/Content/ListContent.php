@@ -36,6 +36,7 @@ class ListContent extends BasicEndpoint {
 				'type' => ParameterType::string(),
 			],
 			responseShape: ParameterType::object(
+				count: ParameterType::integer(),
 				content: ParameterType::required(ParameterType::array(
 					items: ParameterType::fromClass(GenericContent::class)
 				))
@@ -80,9 +81,13 @@ class ListContent extends BasicEndpoint {
 			$opts['types'] = [$opts['types']];
 		}
 
+		$query = new ContentList(...array_filter($opts), siteId: $params['site']);
+		$this->bus->dispatch($query);
+
 		try {
 			return new GenericResponse(
-				content: $this->bus->fetch(new ContentList(...array_filter($opts), siteId: $params['site']))
+				count: $query->count,
+				content: $query->results(),
 			);
 		} catch (InvalidMessageAttributesException $e) {
 			throw new BadRequest(previous: $e);

@@ -297,8 +297,7 @@ class StandardContentProjection implements Projection {
 
 		$builder = $this->db->table(self::TABLE)
 			->where('site_uuid', '=', $query->siteId->toString())
-			->orderByDesc('publish_timestamp')
-			->skip(($query->page - 1) * $query->pageSize)->take($query->pageSize);
+			->orderByDesc('publish_timestamp');
 
 		if (!$isAdmin) {
 			$builder = $builder->where(
@@ -313,6 +312,10 @@ class StandardContentProjection implements Projection {
 		if (isset($query->visibility)) {
 			$builder = $builder->whereIn('visibility', $query->visibility);
 		}
+
+		$query->count = $builder->count();
+
+		$builder = $builder->skip(($query->page - 1) * $query->pageSize)->take($query->pageSize);
 
 		$query->setResults($builder->get()->map(
 			fn($row) => new Content(
