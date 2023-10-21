@@ -59,6 +59,8 @@ class NewContent extends BasicEndpoint {
 	/**
 	 * Execute the endpoint.
 	 *
+	 * @throws BadRequest When a valid content type is not given.
+	 *
 	 * @param Identifier|null $userId Required; user making the change.
 	 * @param array|null      $params Expectes site parameter.
 	 * @param object|null     $body   Instance of ContentPayload.
@@ -73,7 +75,7 @@ class NewContent extends BasicEndpoint {
 			'userId' => $userId,
 		];
 
-		switch ($body->typeKey) {
+		switch ($body->type->type) {
 			case 'note':
 				$this->bus->dispatch(new CreateNote(...$contentParams, text: $body->type->text));
 				break;
@@ -95,9 +97,9 @@ class NewContent extends BasicEndpoint {
 				break;
 
 			default:
-				throw new BadRequest("Invalid content type $body->typeKey");
+				throw new BadRequest("Invalid content type $body->type->type");
 				break;
-		}
+		}//end switch
 
 		if (!empty($body->meta)) {
 			$this->bus->dispatch(new EditContentBaseAttributes(
@@ -129,7 +131,7 @@ class NewContent extends BasicEndpoint {
 		}
 
 		if ($body->publishNow) {
-			$this->bus->dispatch(match ($body->typeKey) {
+			$this->bus->dispatch(match ($body->type->type) {
 				'note' => new PublishNote(...$contentParams),
 				'reblog' => new PublishReblog(...$contentParams),
 				'picture' => new PublishPicture(...$contentParams),

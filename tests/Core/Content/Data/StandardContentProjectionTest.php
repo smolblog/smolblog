@@ -20,6 +20,7 @@ use Smolblog\Core\Content\Events\PublicContentRemoved;
 use Smolblog\Core\Content\Extensions\Tags\Tag;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\GenericContent;
+use Smolblog\Core\Content\Queries\ContentById;
 use Smolblog\Core\Content\Queries\ContentByPermalink;
 use Smolblog\Core\Content\Queries\ContentList;
 use Smolblog\Core\Content\Queries\ContentVisibleToUser;
@@ -668,6 +669,24 @@ final class StandardContentProjectionTest extends TestCase {
 		$this->assertEquals('spud', $query->getContentType());
 	}
 
+	public function testItWillFindContentById() {
+		$this->setUpSampleRow();
+		$this->db->table('standard_content')->update([
+			'permalink' => '/ask/whats-taters-precious.html',
+			'publish_timestamp' => '2022-02-02T22:22:22.000+00:00',
+			'visibility' => ContentVisibility::Published->value,
+		]);
+
+		$query = new ContentById(
+			id: Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'),
+			siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'),
+		);
+		$this->projection->onContentById($query);
+
+		$this->assertEquals(Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'), $query->getContentId());
+		$this->assertEquals('spud', $query->getContentType());
+	}
+
 	public function testContentCanBeQueriedAnonymously() {
 		$this->setUpManySampleRows();
 		$query = new ContentList(siteId: Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463'));
@@ -694,6 +713,7 @@ final class StandardContentProjectionTest extends TestCase {
 				visibility: ContentVisibility::Published,
 			),
 		], $query->results());
+		$this->assertEquals($query->count, 2);
 	}
 
 	public function testAuthorsSeeAllTheirOwnContent() {
@@ -739,6 +759,7 @@ final class StandardContentProjectionTest extends TestCase {
 				visibility: ContentVisibility::Draft,
 			),
 		], $query->results());
+		$this->assertEquals($query->count, 4);
 	}
 
 	public function testAdminsSeeAllContent() {
@@ -801,6 +822,7 @@ final class StandardContentProjectionTest extends TestCase {
 				visibility: ContentVisibility::Draft,
 			),
 		], $query->results());
+		$this->assertEquals($query->count, 6);
 	}
 
 	public function testTheContentListCanBePaged() {
@@ -833,6 +855,7 @@ final class StandardContentProjectionTest extends TestCase {
 				visibility: ContentVisibility::Draft,
 			),
 		], $query->results());
+		$this->assertEquals($query->count, 6);
 	}
 
 	public function testTheContentListCanBeFilteredByVisibility() {
@@ -878,6 +901,7 @@ final class StandardContentProjectionTest extends TestCase {
 				visibility: ContentVisibility::Draft,
 			),
 		], $query->results());
+		$this->assertEquals($query->count, 4);
 	}
 
 	public function testTheContentListCanBeFilteredByType() {
@@ -918,5 +942,6 @@ final class StandardContentProjectionTest extends TestCase {
 				visibility: ContentVisibility::Draft,
 			),
 		], $query->results());
+		$this->assertEquals($query->count, 3);
 	}
 }

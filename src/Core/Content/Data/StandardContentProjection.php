@@ -20,6 +20,7 @@ use Smolblog\Core\Content\Events\{
 };
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Core\Content\Queries\{
+	ContentById,
 	ContentByPermalink,
 	ContentList,
 	ContentVisibleToUser,
@@ -281,6 +282,23 @@ class StandardContentProjection implements Projection {
 
 		if (isset($result)) {
 			$query->setContentInfo(id: Identifier::fromString($result->content_uuid), type: $result->type);
+		}
+	}
+
+	/**
+	 * Find info for a Content piece by ID.
+	 *
+	 * This is an AdaptableQuery, so it will be picked up by the ContentService after this which will dispatch the
+	 * query for the content's particular type.
+	 *
+	 * @param ContentById $query Query to execute.
+	 * @return void
+	 */
+	public function onContentById(ContentById $query) {
+		$result = $this->db->table('standard_content')->where('content_uuid', '=', $query->id)->value('type');
+
+		if (isset($result)) {
+			$query->setContentInfo(id: $query->id, type: $result);
 		}
 	}
 

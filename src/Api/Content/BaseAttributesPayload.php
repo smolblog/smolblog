@@ -23,4 +23,15 @@ class BaseAttributesPayload extends Value {
 		public readonly ?Identifier $authorId = null,
 	) {
 	}
+
+	/**
+	 * Serialize the payload.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$arr = parent::toArray();
+		$arr['publishTimestamp'] = $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED);
+		return $arr;
+	}
 }
