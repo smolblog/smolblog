@@ -9,6 +9,7 @@ use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Content\GenericContent;
+use Smolblog\Core\Content\Media\MediaList;
 use Smolblog\Core\Content\Queries\ContentList;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Messages\MessageBus;
@@ -17,7 +18,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Get a list of recent content.
  */
-class ListContent extends BasicEndpoint {
+class ListMedia extends BasicEndpoint {
 	/**
 	 * Get the endpoint's configuration.
 	 *
@@ -25,20 +26,19 @@ class ListContent extends BasicEndpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/site/{site}/content',
+			route: '/site/{site}/content/media',
 			pathVariables: [
 				'site' => ParameterType::identifier(),
 			],
 			queryVariables: [
 				'page' => ParameterType::integer(),
 				'pageSize' => ParameterType::integer(),
-				'visibility' => ParameterType::string(),
-				'types' => ParameterType::array(ParameterType::string()),
+				'type' => ParameterType::string(),
 			],
 			responseShape: ParameterType::object(
 				count: ParameterType::integer(),
-				content: ParameterType::required(ParameterType::array(
-					items: ParameterType::fromClass(GenericContent::class)
+				media: ParameterType::required(ParameterType::array(
+					items: ParameterType::fromClass(Media::class)
 				))
 			),
 			requiredScopes: [AuthScope::Identified],
@@ -70,18 +70,14 @@ class ListContent extends BasicEndpoint {
 			'page' => $params['page'] ?? null,
 			'pageSize' => $params['pageSize'] ?? null,
 			'userId' => $userId ?? null,
-			'visibility' => $params['visibility'] ?? null,
-			'types' => $params['types'] ?? null,
+			'type' => $params['type'] ?? null,
 		];
 
-		if (is_string($opts['visibility'])) {
-			$opts['visibility'] = [$opts['visibility']];
-		}
-		if (is_string($opts['types'])) {
-			$opts['types'] = [$opts['types']];
+		if (is_string($opts['type'])) {
+			$opts['type'] = [$opts['type']];
 		}
 
-		$query = new ContentList(...array_filter($opts), siteId: $params['site']);
+		$query = new MediaList(...array_filter($opts), siteId: $params['site']);
 		$this->bus->dispatch($query);
 
 		try {

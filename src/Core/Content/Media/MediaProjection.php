@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Media;
 
+use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Content\Queries\ContentVisibleToUser;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
@@ -43,6 +44,7 @@ class MediaProjection implements Projection {
 			'thumbnail_url' => $event->thumbnailUrl,
 			'default_url' => $event->defaultUrl,
 			'file' => json_encode($event->file),
+			'uploaded_at' => $event->timestamp->format(DateTimeInterface::RFC3339_EXTENDED),
 		]);
 	}
 
@@ -56,6 +58,30 @@ class MediaProjection implements Projection {
 		$row = $this->db->table(self::TABLE)->where('content_uuid', '=', $query->contentId->toString())->first();
 
 		$query->setResults(isset($row) ? self::mediaFromRow($row) : null);
+	}
+
+	/**
+	 * Get the list of available media.
+	 *
+	 * @param MediaList $query Query to execute.
+	 * @return void
+	 */
+	public function onMediaList(MediaList $query) {
+		$builder = $this->db->table(self::TABLE)
+			->where('site_uuid', '=', $query->siteId->toString())
+			->orderByDesc('uploaded_at');
+
+		if (isset($query->types)) {
+			$builder = $builder->whereIn('type', $query->types);
+		}
+
+		$query->count = $builder->count();
+
+		$builder = $builder->skip(($query->page - 1) * $query->pageSize)->take($query->pageSize);
+
+		$query->setResults($builder->get()->map(
+			fn($row) => $this->mediaFromRow($row)
+		)->toArray());
 	}
 
 	/**

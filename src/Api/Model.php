@@ -44,6 +44,7 @@ class Model extends DomainModel {
 		Connector\SiteAndAvailableChannels::class => ['bus' => MessageBus::class],
 
 		Content\ListContent::class => ['bus' => MessageBus::class],
+		Content\ListMedia::class => ['bus' => MessageBus::class],
 		Content\NewContent::class => ['bus' => MessageBus::class],
 		Content\GetContent::class => ['bus' => MessageBus::class],
 
