@@ -75,11 +75,29 @@ class GetContent extends BasicEndpoint {
 				publishTimestamp: $content->publishTimestamp,
 				authorId: $content->authorId,
 			),
-			extensions: $content->extensions,
+			extensions: $this->swapExtensionKeys($content->extensions),
 			published: match ($content->visibility) {
 				ContentVisibility::Published => true,
 				default => false,
 			}
 		);
+	}
+
+	/**
+	 * Turn the extension class names into keys.
+	 *
+	 * @deprecated 0.2 Need to replace this hack.
+	 *
+	 * @param array $extensions Class-keyed array of extensions.
+	 * @return array
+	 */
+	private function swapExtensionKeys(array $extensions): array {
+		$swapped = [];
+
+		foreach ($extensions as $className => $value) {
+			$swapped[$className::KEY] = $value;
+		}
+
+		return $swapped;
 	}
 }

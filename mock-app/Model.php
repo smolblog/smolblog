@@ -110,6 +110,7 @@ class Model extends DomainModel {
 			$table->string('thumbnail_url');
 			$table->string('default_url');
 			$table->jsonb('file');
+			$table->string('uploaded_at');
 		});
 		$schema->create('notes', function(Blueprint $table) {
 			$table->uuid('content_uuid')->primary();
