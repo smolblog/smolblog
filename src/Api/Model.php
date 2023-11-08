@@ -47,6 +47,7 @@ class Model extends DomainModel {
 		Content\ListMedia::class => ['bus' => MessageBus::class],
 		Content\NewContent::class => ['bus' => MessageBus::class],
 		Content\GetContent::class => ['bus' => MessageBus::class],
+		Content\EditContent::class => ['bus' => MessageBus::class],
 		Content\GetMedia::class => ['bus' => MessageBus::class],
 
 		Preview\PreviewEmbed::class => ['embed' => ExternalContentService::class],
