@@ -65,6 +65,129 @@ final class MediaProjectionTest extends TestCase {
 		);
 	}
 
+	public function testItWillEditAllMediaAttributes() {
+		$this->db->table('media')->insert([
+			'content_uuid' => '52ec4e4d-eecd-4095-a846-aa1139247145',
+			'user_uuid' => '06bacbd3-45ed-464a-988b-163dcd4b6018',
+			'site_uuid' => '680208fa-76c9-4774-8d1d-589229cc051a',
+			'title' => 'But Why',
+			'accessibility_text' => 'A young Ryan Reynolds lowers his surgical mask and asks, "But why?"',
+			'type' => 'image',
+			'thumbnail_url' => '//cdn.smol.blog/thumb.gif',
+			'default_url' => '//cdn.smol.blog/scene.gif',
+			'file' => '{"id":"139496e8-e6b7-412a-9d6e-08b96dedfc47","handler":"netflare","mimeType":"image/gif","details":{"one":"two"}}',
+			'uploaded_at' => '2022-02-02T02:02:02.000T0:00',
+		]);
+
+		$this->projection->onMediaAttributesEdited(
+			new MediaAttributesEdited(
+				contentId: Identifier::fromString('52ec4e4d-eecd-4095-a846-aa1139247145'),
+				userId: Identifier::fromString('06bacbd3-45ed-464a-988b-163dcd4b6018'),
+				siteId: Identifier::fromString('680208fa-76c9-4774-8d1d-589229cc051a'),
+				title: 'That is why',
+				accessibilityText: 'Something else.',
+			)
+		);
+		$this->assertOnlyTableEntryEquals(
+			table: $this->db->table('media'),
+			content_uuid: '52ec4e4d-eecd-4095-a846-aa1139247145',
+			user_uuid: '06bacbd3-45ed-464a-988b-163dcd4b6018',
+			site_uuid: '680208fa-76c9-4774-8d1d-589229cc051a',
+			title: 'That is why',
+			accessibility_text: 'Something else.',
+			type: 'image',
+			thumbnail_url: '//cdn.smol.blog/thumb.gif',
+			default_url: '//cdn.smol.blog/scene.gif',
+			file: '{"id":"139496e8-e6b7-412a-9d6e-08b96dedfc47","handler":"netflare","mimeType":"image/gif","details":{"one":"two"}}',
+			uploaded_at: '2022-02-02T02:02:02.000T0:00',
+		);
+	}
+
+	public function testItWillEditOnlyGivenMediaAttributes() {
+		$this->db->table('media')->insert([
+			'content_uuid' => '52ec4e4d-eecd-4095-a846-aa1139247145',
+			'user_uuid' => '06bacbd3-45ed-464a-988b-163dcd4b6018',
+			'site_uuid' => '680208fa-76c9-4774-8d1d-589229cc051a',
+			'title' => 'But Why',
+			'accessibility_text' => 'A young Ryan Reynolds lowers his surgical mask and asks, "But why?"',
+			'type' => 'image',
+			'thumbnail_url' => '//cdn.smol.blog/thumb.gif',
+			'default_url' => '//cdn.smol.blog/scene.gif',
+			'file' => '{"id":"139496e8-e6b7-412a-9d6e-08b96dedfc47","handler":"netflare","mimeType":"image/gif","details":{"one":"two"}}',
+			'uploaded_at' => '2022-02-02T02:02:02.000T0:00',
+		]);
+
+		$this->projection->onMediaAttributesEdited(
+			new MediaAttributesEdited(
+				contentId: Identifier::fromString('52ec4e4d-eecd-4095-a846-aa1139247145'),
+				userId: Identifier::fromString('06bacbd3-45ed-464a-988b-163dcd4b6018'),
+				siteId: Identifier::fromString('680208fa-76c9-4774-8d1d-589229cc051a'),
+				title: null,
+				accessibilityText: 'Something else.',
+			)
+		);
+		$this->assertOnlyTableEntryEquals(
+			table: $this->db->table('media'),
+			content_uuid: '52ec4e4d-eecd-4095-a846-aa1139247145',
+			user_uuid: '06bacbd3-45ed-464a-988b-163dcd4b6018',
+			site_uuid: '680208fa-76c9-4774-8d1d-589229cc051a',
+			title: 'But Why',
+			accessibility_text: 'Something else.',
+			type: 'image',
+			thumbnail_url: '//cdn.smol.blog/thumb.gif',
+			default_url: '//cdn.smol.blog/scene.gif',
+			file: '{"id":"139496e8-e6b7-412a-9d6e-08b96dedfc47","handler":"netflare","mimeType":"image/gif","details":{"one":"two"}}',
+			uploaded_at: '2022-02-02T02:02:02.000T0:00',
+		);
+
+		$this->projection->onMediaAttributesEdited(
+			new MediaAttributesEdited(
+				contentId: Identifier::fromString('52ec4e4d-eecd-4095-a846-aa1139247145'),
+				userId: Identifier::fromString('06bacbd3-45ed-464a-988b-163dcd4b6018'),
+				siteId: Identifier::fromString('680208fa-76c9-4774-8d1d-589229cc051a'),
+				title: 'That is why',
+				accessibilityText: null,
+			)
+		);
+		$this->assertOnlyTableEntryEquals(
+			table: $this->db->table('media'),
+			content_uuid: '52ec4e4d-eecd-4095-a846-aa1139247145',
+			user_uuid: '06bacbd3-45ed-464a-988b-163dcd4b6018',
+			site_uuid: '680208fa-76c9-4774-8d1d-589229cc051a',
+			title: 'That is why',
+			accessibility_text: 'Something else.',
+			type: 'image',
+			thumbnail_url: '//cdn.smol.blog/thumb.gif',
+			default_url: '//cdn.smol.blog/scene.gif',
+			file: '{"id":"139496e8-e6b7-412a-9d6e-08b96dedfc47","handler":"netflare","mimeType":"image/gif","details":{"one":"two"}}',
+			uploaded_at: '2022-02-02T02:02:02.000T0:00',
+		);
+	}
+
+	public function testItWillDeleteMedia() {
+		$this->db->table('media')->insert([
+			'content_uuid' => '52ec4e4d-eecd-4095-a846-aa1139247145',
+			'user_uuid' => '06bacbd3-45ed-464a-988b-163dcd4b6018',
+			'site_uuid' => '680208fa-76c9-4774-8d1d-589229cc051a',
+			'title' => 'But Why',
+			'accessibility_text' => 'A young Ryan Reynolds lowers his surgical mask and asks, "But why?"',
+			'type' => 'image',
+			'thumbnail_url' => '//cdn.smol.blog/thumb.gif',
+			'default_url' => '//cdn.smol.blog/scene.gif',
+			'file' => '{"id":"139496e8-e6b7-412a-9d6e-08b96dedfc47","handler":"netflare","mimeType":"image/gif","details":{"one":"two"}}',
+			'uploaded_at' => '2022-02-02T02:02:02.000T0:00',
+		]);
+
+		$this->projection->onMediaDeleted(
+			new MediaDeleted(
+				contentId: Identifier::fromString('52ec4e4d-eecd-4095-a846-aa1139247145'),
+				userId: Identifier::fromString('06bacbd3-45ed-464a-988b-163dcd4b6018'),
+				siteId: Identifier::fromString('680208fa-76c9-4774-8d1d-589229cc051a'),
+			)
+		);
+		$this->assertTableEmpty($this->db->table('media'));
+	}
+
 	public function testItWillRetrieveMediaById() {
 		$this->db->table('media')->insert([
 			'content_uuid' => '52ec4e4d-eecd-4095-a846-aa1139247145',

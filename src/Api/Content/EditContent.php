@@ -85,7 +85,9 @@ class EditContent extends BasicEndpoint {
 		);
 		$content = $this->bus->fetch($query);
 
-		throw new NotFound("No editable content exists with that ID.");
+		if (!$content) {
+			throw new NotFound("No editable content exists with that ID.");
+		}
 
 		$contentParams = [
 			'contentId' => $params['id'],

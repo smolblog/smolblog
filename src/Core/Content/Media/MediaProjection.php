@@ -49,6 +49,33 @@ class MediaProjection implements Projection {
 	}
 
 	/**
+	 * Handle editing media attributes.
+	 *
+	 * @param MediaAttributesEdited $event Event to handle.
+	 * @return void
+	 */
+	public function onMediaAttributesEdited(MediaAttributesEdited $event) {
+		$this->db->table(self::TABLE)->
+			where('content_uuid', '=', $event->contentId->toString())->
+			update(array_filter([
+				'title' => $event->title,
+				'accessibility_text' => $event->accessibilityText,
+			]));
+	}
+
+	/**
+	 * Handle deleting media.
+	 *
+	 * @param MediaDeleted $event Event to handle.
+	 * @return void
+	 */
+	public function onMediaDeleted(MediaDeleted $event) {
+		$this->db->table(self::TABLE)->
+			where('content_uuid', '=', $event->contentId->toString())->
+			delete();
+	}
+
+	/**
 	 * Handle the MediaById query
 	 *
 	 * @param MediaById $query Query to answer.

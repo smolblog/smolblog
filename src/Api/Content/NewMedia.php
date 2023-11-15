@@ -31,7 +31,7 @@ class NewMedia implements Endpoint {
 			],
 			queryVariables: [
 				'title' => ParameterType::string(),
-				'accessabilityText' => ParameterType::string(),
+				'accessibilityText' => ParameterType::string(),
 			],
 			responseShape: ParameterType::object(id: ParameterType::string()),
 			requiredScopes: [AuthScope::Create],
