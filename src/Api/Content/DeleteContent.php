@@ -21,7 +21,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Endpoint to delete media.
  */
-class DeleteMedia extends BasicEndpoint {
+class DeleteContent extends BasicEndpoint {
 	/**
 	 * Get the endpoint configuration.
 	 *
