@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\EndpointConfig;
+use Smolblog\Core\Content\ContentExtensionConfiguration;
 use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Core\Content\Media\Media;
@@ -215,5 +216,11 @@ trait ContentEventTestKit {
 trait ContentTypeServiceTestKit {
 	public function testItProvidesAValidContentTypeConfiguration() {
 		$this->assertInstanceOf(ContentTypeConfiguration::class, get_class($this->subject)::getConfiguration());
+	}
+}
+
+trait ContentExtensionServiceTestKit {
+	public function testItProvidesAValidContentExtensionConfiguration() {
+		$this->assertInstanceOf(ContentExtensionConfiguration::class, get_class($this->subject)::getConfiguration());
 	}
 }

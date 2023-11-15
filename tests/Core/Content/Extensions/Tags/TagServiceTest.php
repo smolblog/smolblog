@@ -7,10 +7,20 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Test\ContentExtensionServiceTestKit;
 use Smolblog\Test\EventComparisonTestKit;
 
 final class TagServiceTest extends TestCase {
 	use EventComparisonTestKit;
+	use ContentExtensionServiceTestKit;
+
+	private MessageBus $bus;
+
+	protected function setUp(): void
+	{
+		$this->bus = $this->createMock(MessageBus::class);
+		$this->subject = new TagService(bus: $this->bus);
+	}
 
 	public function testItHandlesTheSetTagsCommand() {
 		$command = new SetTags(
