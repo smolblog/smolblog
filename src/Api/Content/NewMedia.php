@@ -12,6 +12,7 @@ use Smolblog\Api\Verb;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\HttpResponse;
+use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Endpoint to create a new media object.
@@ -28,10 +29,6 @@ class NewMedia implements Endpoint {
 			verb: Verb::POST,
 			pathVariables: [
 				'site' => ParameterType::identifier(),
-			],
-			queryVariables: [
-				'title' => ParameterType::string(),
-				'accessibilityText' => ParameterType::string(),
 			],
 			responseShape: ParameterType::object(id: ParameterType::string()),
 			requiredScopes: [AuthScope::Create],
@@ -65,12 +62,13 @@ class NewMedia implements Endpoint {
 		$bodyParams = $request->getParsedBody();
 
 		$command = new HandleUploadedMedia(
-			file: $uploadedFiles[0],
+			file: $uploadedFiles['file'],
 			userId: $userId,
-			siteId: $requestParams['site'],
+			siteId: Identifier::fromString($requestParams['site']),
 			accessibilityText: $bodyParams['accessibilityText'],
 			title: $bodyParams['title'],
 		);
+		$this->bus->dispatch($command);
 
 		return new HttpResponse(body: ['id' => $command->contentId]);
 	}
