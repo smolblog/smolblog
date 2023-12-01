@@ -113,7 +113,7 @@ class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, Ne
 	 */
 	protected function getContentPayload(): array {
 		return [
-			'mediaIds' => array_map(fn($id) => $id->toString(), $this->mediaIds),
+			'mediaIds' => array_map(fn($id) => strval($id), $this->mediaIds),
 			'caption' => $this->caption,
 		];
 	}

@@ -6,6 +6,8 @@ use Smolblog\Api\ArrayType;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Content\ContentExtension;
 use Smolblog\Core\Content\ContentType;
+use Smolblog\Core\Content\Extensions\Syndication\Syndication;
+use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 
@@ -29,5 +31,27 @@ class ContentPayload extends Value {
 		#[ParameterType(type: 'object')] public readonly array $extensions = [],
 		public readonly bool $published = false,
 	) {
+	}
+
+	/**
+	 * Deserialize the payload
+	 *
+	 * @param array $data Serialized array.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		if (isset($data['extensions']['syndication'])) {
+			$data['extensions']['syndication'] = Syndication::fromArray($data['extensions']['syndication']);
+		}
+		$published = $data['published'] ?? false;
+		unset($data['published']);
+
+		return new ContentPayload(
+			id: $data['id'] ?? null,
+			type: ContentTypePayload::fromArray($data['type']),
+			meta: BaseAttributesPayload::fromArray($data['meta']),
+			extensions: $data['extensions'],
+			published: $published,
+		);
 	}
 }

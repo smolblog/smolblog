@@ -91,7 +91,7 @@ class NewContent extends BasicEndpoint {
 			case 'picture':
 				$this->bus->dispatch(new CreatePicture(
 					...$contentParams,
-					mediaIds: $body->type->mediaIds,
+					mediaIds: array_map(fn($id) => Identifier::fromString($id), $body->type->media),
 					caption: $body->type->caption,
 				));
 				break;
@@ -112,7 +112,7 @@ class NewContent extends BasicEndpoint {
 		if (isset($body->extensions['tags'])) {
 			$this->bus->dispatch(new SetTags(
 				...$contentParams,
-				tags: $body->extensions['tags']->tags,
+				tags: $body->extensions['tags']['tags'],
 			));
 		}
 
