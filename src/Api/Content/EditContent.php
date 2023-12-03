@@ -148,22 +148,22 @@ class EditContent extends BasicEndpoint {
 		if (isset($body->extensions['tags'])) {
 			$this->bus->dispatch(new SetTags(
 				...$contentParams,
-				tags: $body->extensions['tags']->tags,
+				tags: $body->extensions['tags']['tags'],
 			));
 		}
 
 		if (isset($body->extensions['syndication'])) {
-			if ($body->extensions['syndication']->channels) {
+			if ($body->extensions['syndication']['channels']) {
 				$this->bus->dispatch(new SetSyndicationChannels(
 					...$contentParams,
-					channels: $body->extensions['syndication']->channels,
+					channels: $body->extensions['syndication']['channels'],
 				));
 			}
 
-			if ($body->extensions['syndication']->links) {
+			if ($body->extensions['syndication']['links']) {
 				$existing = array_map(fn($link) => $link->url, $content->extensions[Syndication::class]->links);
 
-				foreach ($body->extensions['syndication']->links as $url) {
+				foreach ($body->extensions['syndication']['links'] as $url) {
 					if (!in_array($url, $existing)) {
 						$this->bus->dispatch(new AddSyndicationLink(
 							...$contentParams,

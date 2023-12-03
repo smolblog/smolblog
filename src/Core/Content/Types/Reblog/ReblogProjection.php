@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Types\Reblog;
 
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Projection;
 
 /**
@@ -44,10 +45,14 @@ class ReblogProjection implements Projection {
 	 * @param ReblogInfoChanged $event Event to handle.
 	 * @return void
 	 */
+	#[ExecutionLayerListener(earlier: 1)]
 	public function onReblogInfoChanged(ReblogInfoChanged $event) {
 		$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->update([
 			'url' => $event->url,
 			'url_info' => json_encode($event->info),
+		]);
+		$event->setMarkdownHtml([
+			$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->value('comment_html')
 		]);
 	}
 
@@ -57,11 +62,17 @@ class ReblogProjection implements Projection {
 	 * @param ReblogCommentChanged $event Event to handle.
 	 * @return void
 	 */
+	#[ExecutionLayerListener(earlier: 1)]
 	public function onReblogCommentChanged(ReblogCommentChanged $event) {
 		$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->update([
 			'comment' => $event->comment,
 			'comment_html' => $event->getCommentHtml(),
 		]);
+		$event->setInfo(
+			ExternalContentInfo::jsonDeserialize(
+				$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->value('url_info')
+			)
+		);
 	}
 
 	/**

@@ -7,6 +7,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Content\ContentExtension;
 use Smolblog\Core\Content\ContentType;
 use Smolblog\Core\Content\Extensions\Syndication\Syndication;
+use Smolblog\Core\Content\Extensions\Syndication\SyndicationLink;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
@@ -41,13 +42,16 @@ class ContentPayload extends Value {
 	 */
 	public static function fromArray(array $data): static {
 		if (isset($data['extensions']['syndication'])) {
-			$data['extensions']['syndication'] = Syndication::fromArray($data['extensions']['syndication']);
+			$data['extensions']['syndication']['channels'] = array_map(
+				fn($id) => Identifier::fromString($id),
+				$data['extensions']['syndication']['channels'] ?? []
+			);
 		}
 		$published = $data['published'] ?? false;
 		unset($data['published']);
 
 		return new ContentPayload(
-			id: $data['id'] ?? null,
+			id: self::safeDeserializeIdentifier($data['id'] ?? ''),
 			type: ContentTypePayload::fromArray($data['type']),
 			meta: BaseAttributesPayload::fromArray($data['meta']),
 			extensions: $data['extensions'],

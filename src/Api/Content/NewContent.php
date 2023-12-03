@@ -119,10 +119,10 @@ class NewContent extends BasicEndpoint {
 		if (isset($body->extensions['syndication'])) {
 			$this->bus->dispatch(new SetSyndicationChannels(
 				...$contentParams,
-				channels: $body->extensions['syndication']->channels,
+				channels: $body->extensions['syndication']['channels'],
 			));
 
-			foreach ($body->extensions['syndication']->links as $url) {
+			foreach ($body->extensions['syndication']['links'] as $url) {
 				$this->bus->dispatch(new AddSyndicationLink(
 					...$contentParams,
 					url: $url,
