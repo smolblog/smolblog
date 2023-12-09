@@ -130,7 +130,7 @@ class NewContent extends BasicEndpoint {
 			}
 		}
 
-		if ($body->publishNow) {
+		if ($body->published) {
 			$this->bus->dispatch(match ($body->type->type) {
 				'note' => new PublishNote(...$contentParams),
 				'reblog' => new PublishReblog(...$contentParams),
