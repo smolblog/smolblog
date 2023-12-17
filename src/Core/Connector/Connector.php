@@ -5,6 +5,7 @@ namespace Smolblog\Core\Connector;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Content\Content;
 
 /**
  * Class to handle authenticating against an external provider.
@@ -17,7 +18,7 @@ interface Connector {
 	 *
 	 * @return string
 	 */
-	public static function getSlug(): string;
+	public static function getConfiguration(): ConnectorConfiguration;
 
 	/**
 	 * Get the information needed to start an OAuth session with the provider
@@ -59,4 +60,16 @@ interface Connector {
 	 * @return Connection Refreshed Connection.
 	 */
 	public function refreshConnection(Connection $connection): Connection;
+
+	/**
+	 * Push the given content to the given channel.
+	 *
+	 * For now, if the connector does not support pushing, just end the function.
+	 *
+	 * @param Content    $content        Content to syndicate.
+	 * @param Channel    $toChannel      Channel to syndicate to.
+	 * @param Connection $withConnection Connection to authorize the syndication.
+	 * @return void
+	 */
+	public function push(Content $content, Channel $toChannel, Connection $withConnection): void;
 }

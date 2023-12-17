@@ -40,4 +40,16 @@ class Channel extends Entity {
 	) {
 		parent::__construct(id: self::buildId(connectionId: $connectionId, channelKey: $channelKey));
 	}
+
+	/**
+	 * Deserialize from an array.
+	 *
+	 * @param array $data Serialized array.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		unset($data['id']);
+		$data['connectionId'] = Identifier::fromString($data['connectionId']);
+		return new Channel(...$data);
+	}
 }

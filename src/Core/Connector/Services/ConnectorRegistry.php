@@ -16,6 +16,20 @@ class ConnectorRegistry implements Registry {
 	}
 
 	/**
+	 * Available connectors with push capabilities.
+	 *
+	 * @var string[]
+	 */
+	public readonly array $pushConnectors;
+
+	/**
+	 * Available connectors with pull capabilities.
+	 *
+	 * @var string[]
+	 */
+	public readonly array $pullConnectors;
+
+	/**
 	 * This Registry is for Connectors.
 	 *
 	 * @return string
@@ -33,10 +47,23 @@ class ConnectorRegistry implements Registry {
 	public function __construct(ContainerInterface $container, array $configuration) {
 		$this->container = $container;
 		$this->interface = Connector::class;
+		$pushConnectors = [];
+		$pullConnectors = [];
 
 		foreach ($configuration as $className) {
-			$this->library[$className::getSlug()] = $className;
+			$config = $className::getConfiguration();
+			$this->library[$config->key] = $className;
+
+			if ($config->pushEnabled) {
+				$pushConnectors[] = $config->key;
+			}
+			if ($config->pullEnabled) {
+				$pullConnectors[] = $config->key;
+			}
 		}
+
+		$this->pushConnectors = $pushConnectors;
+		$this->pullConnectors = $pullConnectors;
 	}
 
 	/**
