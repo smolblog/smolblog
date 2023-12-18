@@ -38,13 +38,21 @@ class PushContentToChannel extends Command implements AuthorizableMessage {
 				message: 'Only published content can be pushed to channels.'
 			);
 		}
-		if ($channel->connectionId !== $connection->id) {
+		if (strval($channel->connectionId) !== strval($connection->id)) {
 			throw new InvalidCommandParametersException(
 				command: $this,
 				message: 'Channel and connection do not match.'
 			);
 		}
-		if (!in_array($channel->id, $content->extensions[Syndication::class]?->channels ?? [])) {
+		if (
+			!in_array(
+				strval($channel->id),
+				array_map(
+					fn($val) => strval($val),
+					$content->extensions[Syndication::class]?->channels ?? []
+				)
+			)
+		) {
 			throw new InvalidCommandParametersException(
 				command: $this,
 				message: 'Content syndication does not include this channel.'
@@ -62,6 +70,15 @@ class PushContentToChannel extends Command implements AuthorizableMessage {
 			siteId: $this->content->siteId,
 			channelId: $this->channel->id,
 			mustPush: true,
+		);
+	}
+
+	public static function fromArray(array $data): static
+	{
+		return new PushContentToChannel(
+			content: Content::fromArray($data['content']),
+			channel: Channel::fromArray($data['channel']),
+			connection: Connection::fromArray($data['connection']),
 		);
 	}
 }

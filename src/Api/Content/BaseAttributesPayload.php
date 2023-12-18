@@ -43,7 +43,7 @@ class BaseAttributesPayload extends Value {
 	 */
 	public static function fromArray(array $data): static {
 		return new BaseAttributesPayload(
-			permalink: $data['permalink'],
+			permalink: $data['permalink'] ?? null,
 			publishTimestamp: self::safeDeserializeDate($data['publishTimestamp'] ?? ''),
 			authorId: self::safeDeserializeIdentifier($data['authorId']),
 		);
