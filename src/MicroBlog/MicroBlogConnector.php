@@ -3,11 +3,13 @@
 namespace Smolblog\MicroBlog;
 
 use Smolblog\Core\Connector\Connector;
+use Smolblog\Core\Connector\ConnectorConfiguration;
 use Smolblog\Core\Connector\ConnectorInitData;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\NoRefreshKit;
+use Smolblog\Core\Content\Content;
 use Smolblog\Framework\Objects\RandomIdentifier;
 
 /**
@@ -19,12 +21,14 @@ class MicroBlogConnector implements Connector {
 	use NoRefreshKit;
 
 	/**
-	 * Get the configuration for this Connector.
+	 * Get the configuration for this connector.
 	 *
-	 * @return string
+	 * @return ConnectorConfiguration
 	 */
-	public static function getSlug(): string {
-		return 'microblog';
+	public static function getConfiguration(): ConnectorConfiguration {
+		return new ConnectorConfiguration(
+			key: 'microblog',
+		);
 	}
 
 	/**
@@ -106,5 +110,17 @@ class MicroBlogConnector implements Connector {
 			),
 			$config?->destination ?? []
 		);
+	}
+
+	/**
+	 * Push a new blog post to a blog. Currently blank.
+	 *
+	 * @param Content    $content        Content to syndicate.
+	 * @param Channel    $toChannel      Blog to post to.
+	 * @param Connection $withConnection Connection to use.
+	 * @return void
+	 */
+	public function push(Content $content, Channel $toChannel, Connection $withConnection): void {
+		// Need to send a properly-formatted Micropub request.
 	}
 }
