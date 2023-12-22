@@ -67,4 +67,19 @@ class Picture implements ContentType {
 	public function getTypeKey(): string {
 		return 'picture';
 	}
+
+	/**
+	 * Deserialize the object.
+	 *
+	 * @param array $data Serialized object.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		return new Picture(
+			media: array_map(fn($arr) => Media::fromArray($arr), $data['media']),
+			caption: $data['caption'] ?? null,
+			mediaHtml: $data['mediaHtml'] ?? null,
+			captionHtml: $data['captionHtml'] ?? '',
+		);
+	}
 }

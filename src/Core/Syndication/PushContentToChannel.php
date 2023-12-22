@@ -73,8 +73,13 @@ class PushContentToChannel extends Command implements AuthorizableMessage {
 		);
 	}
 
-	public static function fromArray(array $data): static
-	{
+	/**
+	 * Deserialize the object.
+	 *
+	 * @param array $data Serialized object.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
 		return new PushContentToChannel(
 			content: Content::fromArray($data['content']),
 			channel: Channel::fromArray($data['channel']),

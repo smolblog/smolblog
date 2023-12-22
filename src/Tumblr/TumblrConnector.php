@@ -110,7 +110,9 @@ class TumblrConnector implements Connector {
 				connectionId: $connection->id,
 				channelKey: $blog->uuid,
 				displayName: "$blog->name",
-				details: []
+				details: [
+					'url' => $blog->url,
+				]
 			),
 			$user->blogs
 		);
@@ -142,8 +144,11 @@ class TumblrConnector implements Connector {
 			$this->getPostInfo($content->type->url, $client) :
 			null;
 		if (isset($tumblrPostInfo)) {
-			$payload['caption'] = $content->type->comment;
-			$client->reblogPost($toChannel->channelKey, $tumblrPostInfo['id'], $tumblrPostInfo['key'], $payload);
+			$payload['comment'] = $content->type->comment;
+			$payload['id'] = $tumblrPostInfo['id'];
+			$payload['reblog_key'] = $tumblrPostInfo['key'];
+
+			$client->postRequest("v2/blog/$toChannel->channelKey/post/reblog", $payload, false);
 			return;
 		}
 
@@ -166,7 +171,12 @@ class TumblrConnector implements Connector {
 				$payload['embed'] = $content->type->info?->embed ?? $content->type->url;
 		}
 
-		$client->createPost($toChannel->channelKey, $payload);
+		try {
+			// $client->createPost($toChannel->details['url'], $payload);
+			$client->postRequest("v2/blog/$toChannel->channelKey/post", $payload, false);
+		} catch (\Throwable $ex) {
+			throw new \Exception($ex->getMessage() . ' in ' . $ex->getFile() . ' line ' . $ex->getLine());
+		}
 	}
 
 	/**
@@ -209,14 +219,14 @@ class TumblrConnector implements Connector {
 		try {
 			$data = $client->getBlogPosts($blogName, ['id' => $postId]);
 
-			if (empty($data)) {
+			if (empty($data->posts)) {
 				// No data, probably not a Tumblr url.
 				return null;
 			}
 
 			return [
-				'id' => $data[0]['id'],
-				'key' => $data[0]['reblog_key'],
+				'id' => $data->posts[0]->id,
+				'key' => $data->posts[0]->reblog_key,
 			];
 		} catch (RequestException) {
 			// Bad request, probably not a Tumblr url.

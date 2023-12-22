@@ -82,4 +82,19 @@ class Reblog implements ContentType {
 	public function getCommentHtml(): ?string {
 		return $this->commentHtml ?? null;
 	}
+
+	/**
+	 * Deserialize the object.
+	 *
+	 * @param array $data Serialized object.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		return new Reblog(
+			url: $data['url'],
+			comment: $data['comment'] ?? null,
+			info: isset($data['info']) ? ExternalContentInfo::fromArray($data['info']) : null,
+			commentHtml: $data['commentHtml'] ?? null,
+		);
+	}
 }
