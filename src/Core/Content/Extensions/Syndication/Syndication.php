@@ -15,6 +15,11 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class Syndication implements ContentExtension {
 	/**
+	 * @deprecated 0.1 This is a hack to reduce the footprint of a code change.
+	 */
+	public const KEY = 'syndication';
+
+	/**
 	 * Store the list of links.
 	 *
 	 * @var SyndicationLink[]

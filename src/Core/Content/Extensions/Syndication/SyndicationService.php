@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
+use Smolblog\Core\Content\ContentExtensionConfiguration;
+use Smolblog\Core\Content\ContentExtensionService;
 use Smolblog\Core\Content\ContentUtilityKit;
 use Smolblog\Core\Content\ContentUtilityService;
 use Smolblog\Framework\Messages\Listener;
@@ -10,8 +12,21 @@ use Smolblog\Framework\Messages\MessageBus;
 /**
  * Handle Syndication commands.
  */
-class SyndicationService implements Listener {
+class SyndicationService implements Listener, ContentExtensionService {
 	use ContentUtilityKit;
+
+	/**
+	 * Get the extension configuration.
+	 *
+	 * @return ContentExtensionConfiguration
+	 */
+	public static function getConfiguration(): ContentExtensionConfiguration {
+		return new ContentExtensionConfiguration(
+			handle: 'syndication',
+			displayName: 'Syndication',
+			extensionClass: Syndication::class,
+		);
+	}
 
 	/**
 	 * Construct the service

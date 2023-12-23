@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Media;
 
+use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Content\Queries\ContentVisibleToUser;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
@@ -43,7 +44,35 @@ class MediaProjection implements Projection {
 			'thumbnail_url' => $event->thumbnailUrl,
 			'default_url' => $event->defaultUrl,
 			'file' => json_encode($event->file),
+			'uploaded_at' => $event->timestamp->format(DateTimeInterface::RFC3339_EXTENDED),
 		]);
+	}
+
+	/**
+	 * Handle editing media attributes.
+	 *
+	 * @param MediaAttributesEdited $event Event to handle.
+	 * @return void
+	 */
+	public function onMediaAttributesEdited(MediaAttributesEdited $event) {
+		$this->db->table(self::TABLE)->
+			where('content_uuid', '=', $event->contentId->toString())->
+			update(array_filter([
+				'title' => $event->title,
+				'accessibility_text' => $event->accessibilityText,
+			]));
+	}
+
+	/**
+	 * Handle deleting media.
+	 *
+	 * @param MediaDeleted $event Event to handle.
+	 * @return void
+	 */
+	public function onMediaDeleted(MediaDeleted $event) {
+		$this->db->table(self::TABLE)->
+			where('content_uuid', '=', $event->contentId->toString())->
+			delete();
 	}
 
 	/**
@@ -56,6 +85,30 @@ class MediaProjection implements Projection {
 		$row = $this->db->table(self::TABLE)->where('content_uuid', '=', $query->contentId->toString())->first();
 
 		$query->setResults(isset($row) ? self::mediaFromRow($row) : null);
+	}
+
+	/**
+	 * Get the list of available media.
+	 *
+	 * @param MediaList $query Query to execute.
+	 * @return void
+	 */
+	public function onMediaList(MediaList $query) {
+		$builder = $this->db->table(self::TABLE)
+			->where('site_uuid', '=', $query->siteId->toString())
+			->orderByDesc('uploaded_at');
+
+		if (isset($query->types)) {
+			$builder = $builder->whereIn('type', $query->types);
+		}
+
+		$query->count = $builder->count();
+
+		$builder = $builder->skip(($query->page - 1) * $query->pageSize)->take($query->pageSize);
+
+		$query->setResults($builder->get()->map(
+			fn($row) => $this->mediaFromRow($row)
+		)->toArray());
 	}
 
 	/**

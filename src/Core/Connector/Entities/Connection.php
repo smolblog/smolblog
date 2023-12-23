@@ -42,4 +42,16 @@ class Connection extends Entity {
 	) {
 		parent::__construct(self::BuildId(provider: $provider, providerKey: $providerKey));
 	}
+
+	/**
+	 * Deserialize from an array.
+	 *
+	 * @param array $data Serialized array.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		unset($data['id']);
+		$data['userId'] = Identifier::fromString($data['userId']);
+		return new Connection(...$data);
+	}
 }

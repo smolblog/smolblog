@@ -6,10 +6,20 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Test\ContentExtensionServiceTestKit;
 use Smolblog\Test\EventComparisonTestKit;
 
 final class SyndicationServiceTest extends TestCase {
 	use EventComparisonTestKit;
+	use ContentExtensionServiceTestKit;
+
+	private MessageBus $bus;
+
+	protected function setUp(): void
+	{
+		$this->bus = $this->createMock(MessageBus::class);
+		$this->subject = new SyndicationService(bus: $this->bus);
+	}
 
 	public function testItHandlesTheAddSyndicationLinkCommand() {
 		$command = new AddSyndicationLink(

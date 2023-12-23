@@ -7,6 +7,7 @@ use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
+use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Projection;
 
 /**
@@ -47,6 +48,7 @@ class PictureProjection implements Projection {
 	 * @param PictureMediaEdited $event Event to handle.
 	 * @return void
 	 */
+	#[ExecutionLayerListener(earlier: 1)]
 	public function onPictureMediaEdited(PictureMediaEdited $event) {
 		$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->update([
 			'media' => json_encode($event->getMediaObjects()),
@@ -62,6 +64,7 @@ class PictureProjection implements Projection {
 	 * @param PictureCaptionEdited $event Event to handle.
 	 * @return void
 	 */
+	#[ExecutionLayerListener(earlier: 1)]
 	public function onPictureCaptionEdited(PictureCaptionEdited $event) {
 		$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->update([
 			'caption' => $event->caption,

@@ -62,6 +62,7 @@
     "illuminate/database": "^9.0",
     "taproot/micropub-adapter": "^0.1.1",
     "psr/log": "^3.0",
-    "elephox/mimey": "^4.0"
+    "elephox/mimey": "^4.0",
+    "tumblr/tumblr": "^0.4.2"
   }
 }

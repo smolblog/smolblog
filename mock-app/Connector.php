@@ -3,17 +3,21 @@
 namespace Smolblog\Mock;
 
 use Smolblog\Core\Connector\Connector as ConnectorConnector;
+use Smolblog\Core\Connector\ConnectorConfiguration;
 use Smolblog\Core\Connector\ConnectorInitData;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\NoRefreshKit;
+use Smolblog\Core\Content\Content;
 
 class Connector implements ConnectorConnector {
 	use NoRefreshKit;
 
-	public static function getSlug(): string {
-		return 'smolblog';
+	public static function getConfiguration(): ConnectorConfiguration {
+		return new ConnectorConfiguration(
+			key: 'smolblog',
+		);
 	}
 
 	public function getInitializationData(string $callbackUrl): ConnectorInitData {
@@ -44,4 +48,6 @@ class Connector implements ConnectorConnector {
 			)
 		];
 	}
+
+	public function push(Content $content, Channel $toChannel, Connection $withConnection): void {}
 }

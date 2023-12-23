@@ -27,7 +27,7 @@ class CreateReblog extends Command implements AuthorizableMessage {
 		public readonly string $url,
 		public readonly Identifier $userId,
 		public readonly Identifier $siteId,
-		public readonly bool $publish,
+		public readonly bool $publish = false,
 		public readonly ?string $comment = null,
 		public readonly Identifier $contentId = new DateIdentifier(),
 	) {

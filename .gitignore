@@ -4,3 +4,4 @@
 .phpdoc
 coverage.txt
 test-coverage
+.DS_Store

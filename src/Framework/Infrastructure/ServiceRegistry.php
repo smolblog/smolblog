@@ -49,9 +49,9 @@ class ServiceRegistry implements ContainerInterface {
 	 * @param array $configuration Properly-formatted configuration.
 	 */
 	public function __construct(private array $configuration = []) {
-		$this->library = array_fill_keys(keys: array_keys($this->configuration), value: null);
+		$this->configuration[self::class] ??= [];
+		$this->configuration[ContainerInterface::class] ??= self::class;
 		$this->library[self::class] = $this;
-		$this->library[ContainerInterface::class] = $this;
 	}
 
 	/**
@@ -93,7 +93,7 @@ class ServiceRegistry implements ContainerInterface {
 	 * @return boolean
 	 */
 	public function has(string $id): bool {
-		return array_key_exists($id, $this->library);
+		return array_key_exists($id, $this->configuration);
 	}
 
 	/**
