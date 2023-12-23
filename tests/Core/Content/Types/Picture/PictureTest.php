@@ -7,36 +7,54 @@ use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\MediaFile;
 use Smolblog\Core\Content\Media\MediaTest;
 use Smolblog\Core\Content\Media\MediaType;
+use Smolblog\Test\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class PictureTest extends TestCase {
+	use SerializableTestKit;
+
 	private array $mediaList;
 	protected function setUp(): void
 	{
 		$this->mediaList = [
 			new Media(
-				id: $this->randomId(),
-				userId: $this->randomId(),
-				siteId: $this->randomId(),
+				id: $this->randomId(true),
+				userId: $this->randomId(true),
+				siteId: $this->randomId(true),
 				title: 'One',
 				accessibilityText: 'One',
 				type: MediaType::Image,
 				thumbnailUrl: '//.jpg',
 				defaultUrl: '//.gif',
-				file: $this->createStub(MediaFile::class)
+				file: new MediaFile(
+					id: $this->randomId(true),
+					handler: 'wp',
+					details: ['one' => 'two'],
+					mimeType: 'picture/jpeg',
+				)
 			),
 			new Media(
-				id: $this->randomId(),
-				userId: $this->randomId(),
-				siteId: $this->randomId(),
+				id: $this->randomId(true),
+				userId: $this->randomId(true),
+				siteId: $this->randomId(true),
 				title: 'Two',
 				accessibilityText: 'Two',
 				type: MediaType::Image,
 				thumbnailUrl: '//.jpg',
 				defaultUrl: '//.gif',
-				file: $this->createStub(MediaFile::class)
+				file: new MediaFile(
+					id: $this->randomId(true),
+					handler: 'wp',
+					details: ['one' => 'two'],
+					mimeType: 'picture/jpeg',
+				)
 			),
 		];
+
+		$this->subject = new Picture(
+			media: $this->mediaList,
+			caption: 'Now I **really** mean it.',
+		);
 	}
 
 	public function testItRequiresANonemptyArray() {

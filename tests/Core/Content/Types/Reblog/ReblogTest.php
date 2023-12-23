@@ -2,9 +2,19 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
+use Smolblog\Test\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class ReblogTest extends TestCase {
+	use SerializableTestKit;
+
+	protected function setUp(): void {
+		$this->subject = new Reblog(
+			url: '//echoing.green/',
+			comment: 'You should check this out.',
+		);
+	}
+
 	public function testTheTitleIsTheExternalContentTitle() {
 		$external = new ExternalContentInfo(
 			title: 'An innocuous YouTube video',

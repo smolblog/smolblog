@@ -13,9 +13,12 @@ use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Test\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class PushContentToChannelTest extends TestCase {
+	use SerializableTestKit;
+
 	private Connection $connection;
 	private Channel $channel;
 	private Content $content;
@@ -23,41 +26,42 @@ final class PushContentToChannelTest extends TestCase {
 	protected function setUp(): void
 	{
 		$this->connection = new Connection(
-			userId: $this->randomId(),
+			userId: $this->randomId(true),
 			provider: 'smoltest',
 			providerKey: '12345',
 			displayName: 'Test5678',
 			details: [],
 		);
 		$this->channel = new Channel(
-			connectionId: $this->connection->id,
+			connectionId: Identifier::fromString($this->connection->id->toString()),
 			channelKey: '67890',
 			displayName: 'Test1234',
 			details: [],
 		);
 		$this->content = new Content(
+			id: $this->randomId(true),
 			type: new GenericContent('one', '<p>two</p>', 'test'),
-			siteId: $this->randomId(),
-			authorId: $this->randomId(),
-			permalink: $this->randomId()->toString(),
-			publishTimestamp: new DateTimeImmutable(),
+			siteId: $this->randomId(true),
+			authorId: $this->randomId(true),
+			permalink: $this->randomId(true)->toString(),
+			publishTimestamp: new DateTimeImmutable('2023-12-23T20:53:49.090000+0000'),
 			visibility: ContentVisibility::Published,
 			extensions: [
 				Syndication::class => new Syndication(
 					links: [],
-					channels: [$this->channel->id],
+					channels: [Identifier::fromString($this->channel->id->toString())],
 				),
 			],
 		);
-	}
 
-	public function testItIsAuthorizedBySiteAndChannel() {
-		$subject = new PushContentToChannel(
+		$this->subject = new PushContentToChannel(
 			content: $this->content,
 			channel: $this->channel,
 			connection: $this->connection
 		);
+	}
 
+	public function testItIsAuthorizedBySiteAndChannel() {
 		$expected = new SiteHasPermissionForChannel(
 			siteId: $this->content->siteId,
 			channelId: $this->channel->id,
@@ -65,7 +69,7 @@ final class PushContentToChannelTest extends TestCase {
 			mustPull: false,
 		);
 
-		$this->assertEquals($expected, $subject->getAuthorizationQuery());
+		$this->assertEquals($expected, $this->subject->getAuthorizationQuery());
 	}
 
 	public function testItChecksForPublicContent() {

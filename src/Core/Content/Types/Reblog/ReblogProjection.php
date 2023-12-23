@@ -52,7 +52,9 @@ class ReblogProjection implements Projection {
 			'url_info' => json_encode($event->info),
 		]);
 		$event->setMarkdownHtml([
-			$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->value('comment_html')
+			$this->db->table(self::TABLE)->
+				where('content_uuid', '=', $event->contentId->toString())->
+				value('comment_html')
 		]);
 	}
 
@@ -70,7 +72,9 @@ class ReblogProjection implements Projection {
 		]);
 		$event->setInfo(
 			ExternalContentInfo::jsonDeserialize(
-				$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->value('url_info')
+				$this->db->table(self::TABLE)->
+					where('content_uuid', '=', $event->contentId->toString())->
+					value('url_info')
 			)
 		);
 	}

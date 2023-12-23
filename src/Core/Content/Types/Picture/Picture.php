@@ -13,7 +13,9 @@ use Smolblog\Core\Content\Types\Note\Note;
  * For showing visual art.
  */
 class Picture implements ContentType {
-	use SerializableKit;
+	use SerializableKit {
+		toArray as private baseToArray;
+	}
 
 	/**
 	 * Create the content.
@@ -69,6 +71,18 @@ class Picture implements ContentType {
 	}
 
 	/**
+	 * Serialize the object.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		return [
+			...$this->baseToArray(),
+			'media' => array_map(fn($media) => $media->toArray(), $this->media),
+		];
+	}
+
+	/**
 	 * Deserialize the object.
 	 *
 	 * @param array $data Serialized object.
@@ -78,7 +92,7 @@ class Picture implements ContentType {
 		return new Picture(
 			media: array_map(fn($arr) => Media::fromArray($arr), $data['media']),
 			caption: $data['caption'] ?? null,
-			mediaHtml: $data['mediaHtml'] ?? null,
+			mediaHtml: $data['mediaHtml'] ?? [],
 			captionHtml: $data['captionHtml'] ?? '',
 		);
 	}

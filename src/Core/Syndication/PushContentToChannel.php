@@ -74,6 +74,19 @@ class PushContentToChannel extends Command implements AuthorizableMessage {
 	}
 
 	/**
+	 * Serialize the object.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		return [
+			'content' => $this->content->toArray(),
+			'channel' => $this->channel->toArray(),
+			'connection' => $this->connection->toArray(),
+		];
+	}
+
+	/**
 	 * Deserialize the object.
 	 *
 	 * @param array $data Serialized object.

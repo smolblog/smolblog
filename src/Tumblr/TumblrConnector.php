@@ -171,12 +171,7 @@ class TumblrConnector implements Connector {
 				$payload['embed'] = $content->type->info?->embed ?? $content->type->url;
 		}
 
-		try {
-			// $client->createPost($toChannel->details['url'], $payload);
-			$client->postRequest("v2/blog/$toChannel->channelKey/post", $payload, false);
-		} catch (\Throwable $ex) {
-			throw new \Exception($ex->getMessage() . ' in ' . $ex->getFile() . ' line ' . $ex->getLine());
-		}
+		$client->postRequest("v2/blog/$toChannel->channelKey/post", $payload, false);
 	}
 
 	/**
