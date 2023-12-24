@@ -30,7 +30,7 @@ class FederationService implements Listener {
 	 */
 	public function onPublicContentAdded(PublicContentAdded $event) {
 		$content = $event->getContent();
-		$siteFollowers = $this->bus->fetch(new GetFollowersForSiteByProvider($event->siteId));
+		$siteFollowers = $this->bus->fetch(new GetFollowersForSiteByProvider($content->siteId));
 
 		foreach ($siteFollowers as $provider => $followers) {
 			$this->bus->dispatchAsync(new FederateContentToFollowers(
