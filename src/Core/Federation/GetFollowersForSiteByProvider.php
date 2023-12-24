@@ -8,7 +8,7 @@ use Smolblog\Framework\Objects\Identifier;
 /**
  * Get the array of followers for the given site.
  */
-class GetFollowersForSite extends MemoizableQuery {
+class GetFollowersForSiteByProvider extends MemoizableQuery {
 	/**
 	 * Construct the query.
 	 *

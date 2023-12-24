@@ -51,9 +51,10 @@ final class FollowerProjectionTest extends TestCase {
 
 	public function testItWillFindFollowersForASite() {
 		$siteId = $this->randomId(scrub: true);
-		$expected = [
+		$allFollowers = [
 			new Follower(siteId: $siteId, provider: 'abc', providerKey: '123', displayName: 'A', details: ['p' => 'q']),
 			new Follower(siteId: $siteId, provider: 'xyz', providerKey: '987', displayName: 'B', details: ['w' => 'o']),
+			new Follower(siteId: $siteId, provider: 'xyz', providerKey: '654', displayName: 'C', details: ['r' => 's']),
 		];
 		$other = new Follower(siteId: $this->randomId(), provider: 'g', providerKey: '5', displayName: 'C', details: []);
 
@@ -64,10 +65,13 @@ final class FollowerProjectionTest extends TestCase {
 			'provider_key' => $f->providerKey,
 			'display_name' => $f->displayName,
 			'details' => json_encode($f->details),
-		], $expected, [$other]));
+		], $allFollowers, [$other]));
 
-		$query = new GetFollowersForSite(siteId: $siteId);
+		$query = new GetFollowersForSiteByProvider(siteId: $siteId);
 		$this->projection->onFollowersForSite($query);
-		$this->assertEquals($expected, $query->results());
+		$this->assertEquals(
+			['abc' => [$allFollowers[0]], 'xyz' => [$allFollowers[1], $allFollowers[2]]],
+			$query->results()
+		);
 	}
 }

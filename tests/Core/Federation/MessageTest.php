@@ -6,13 +6,13 @@ use Smolblog\Core\Federation\Commands\ProcessFollowRequest;
 use Smolblog\Test\TestCase;
 
 final class MessageTest extends TestCase {
-	public function testGetFollowersForSite() {
-		$query = new GetFollowersForSite($this->randomId());
-		$this->assertInstanceOf(GetFollowersForSite::class, $query);
+	public function testGetFollowersForSiteByProvider() {
+		$query = new GetFollowersForSiteByProvider($this->randomId());
+		$this->assertInstanceOf(GetFollowersForSiteByProvider::class, $query);
 
-		$query->setResults([$this->createStub(Follower::class)]);
+		$query->setResults(['abc' => [$this->createStub(Follower::class)]]);
 		$this->assertIsArray($query->results());
-		$this->assertInstanceOf(Follower::class, $query->results()[0]);
+		$this->assertInstanceOf(Follower::class, $query->results()['abc'][0]);
 	}
 
 	public function testSiteByResourceUri() {

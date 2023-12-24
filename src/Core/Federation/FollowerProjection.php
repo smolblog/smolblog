@@ -48,13 +48,20 @@ class FollowerProjection implements Projection {
 	/**
 	 * Get followers for a given site.
 	 *
-	 * @param GetFollowersForSite $query Query to fetch.
+	 * @param GetFollowersForSiteByProvider $query Query to fetch.
 	 * @return void
 	 */
-	public function onFollowersForSite(GetFollowersForSite $query) {
+	public function onFollowersForSite(GetFollowersForSiteByProvider $query) {
 		$results = $this->db->table(self::TABLE)->where('site_uuid', '=', $query->siteId->toString())->get();
 
-		$query->setResults($results->map(fn($row) => self::followerFromRow($row))->all());
+		$query->setResults(
+			array_map(
+				fn($grp) => $grp->all(),
+				$results->map(fn($row) => self::followerFromRow($row))
+					->groupBy(fn($fl) => $fl->provider)
+					->all()
+			)
+		);
 	}
 
 	/**
