@@ -52,8 +52,7 @@ class Follower extends Entity {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array
-	{
+	public function toArray(): array {
 		$base = parent::toArray();
 		$base['siteId'] = $this->siteId->toString();
 		return $base;
@@ -65,8 +64,7 @@ class Follower extends Entity {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static
-	{
+	public static function fromArray(array $data): static {
 		unset($data['id']);
 		$data['siteId'] = Identifier::fromString($data['siteId']);
 		return new Follower(...$data);

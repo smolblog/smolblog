@@ -54,7 +54,7 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 			provider: ActivityPubFollowerProvider::SLUG,
 			providerKey: new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, $this->request->actor->id),
 			displayName: $displayName,
-			data: [
+			details: [
 				'actor' => $this->request->actor->id,
 				'inbox' => $this->request->actor->inbox,
 				'sharedInbox' => $this->request->actor->sharedInbox ?? null,

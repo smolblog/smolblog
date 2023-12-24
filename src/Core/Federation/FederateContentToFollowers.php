@@ -38,8 +38,12 @@ class FederateContentToFollowers extends Command {
 		}
 	}
 
-	public function toArray(): array
-	{
+	/**
+	 * Serialize the object.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
 		return [
 			'content' => $this->content->toArray(),
 			'followers' => array_map(fn($fl) => $fl->toArray(), $this->followers),
@@ -47,8 +51,13 @@ class FederateContentToFollowers extends Command {
 		];
 	}
 
-	public static function fromArray(array $data): static
-	{
+	/**
+	 * Deserialize the object.
+	 *
+	 * @param array $data Serialized object.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
 		return new FederateContentToFollowers(
 			content: Content::fromArray($data['content']),
 			followers: array_map(fn($fl) => Follower::fromArray($fl), $data['followers']),
