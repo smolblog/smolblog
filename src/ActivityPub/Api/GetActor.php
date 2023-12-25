@@ -2,8 +2,10 @@
 
 namespace Smolblog\ActivityPub\Api;
 
+use DateTimeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\ActivityPhp\Type\Extended\Actor\Person;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\Endpoint;
@@ -51,12 +53,14 @@ class GetActor implements Endpoint {
 	/**
 	 * Construct the endpoint
 	 *
-	 * @param MessageBus     $bus MessageBus for queries.
-	 * @param ApiEnvironment $env API environment.
+	 * @param MessageBus      $bus MessageBus for queries.
+	 * @param ApiEnvironment  $env API environment.
+	 * @param LoggerInterface $log Logger to log requests.
 	 */
 	public function __construct(
 		private MessageBus $bus,
 		private ApiEnvironment $env,
+		private LoggerInterface $log,
 	) {
 	}
 
@@ -70,6 +74,15 @@ class GetActor implements Endpoint {
 	 * @return ResponseInterface
 	 */
 	public function handle(ServerRequestInterface $request): ResponseInterface {
+		$this->log->debug(
+			message: 'ActivityPub Actor endpoint ' . date(DateTimeInterface::COOKIE),
+			context: [
+				'method' => $request->getMethod(),
+				'query' => $request->getQueryParams(),
+				'body' => $request->getBody()->getContents(),
+			],
+		);
+
 		$site = $this->bus->fetch(new SiteById(
 			Identifier::fromString($request->getAttribute('smolblogPathVars', [])['site'])
 		));

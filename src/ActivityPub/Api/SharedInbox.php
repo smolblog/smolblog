@@ -2,6 +2,8 @@
 
 namespace Smolblog\ActivityPub\Api;
 
+use DateTimeInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
 use Smolblog\ActivityPub\InboxService;
 use Smolblog\Api\ApiEnvironment;
@@ -34,12 +36,14 @@ class SharedInbox extends BasicEndpoint {
 	/**
 	 * Create the endpoint.
 	 *
-	 * @param InboxService   $service Service to handle the request.
-	 * @param ApiEnvironment $env     Environment for the request.
+	 * @param InboxService    $service Service to handle the request.
+	 * @param ApiEnvironment  $env     Environment for the request.
+	 * @param LoggerInterface $log     Logger to log requests.
 	 */
 	public function __construct(
 		private InboxService $service,
 		private ApiEnvironment $env,
+		private LoggerInterface $log,
 	) {
 	}
 
@@ -52,13 +56,13 @@ class SharedInbox extends BasicEndpoint {
 	 * @return SuccessResponse
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
-		if (function_exists('wp_insert_post')) {
-			wp_insert_post([
-				'post_author' => 1,
-				'post_content' => '<pre>' . print_r($body, true) . '</pre>',
-				'post_title' => 'Hit on shared inbox',
-			]);
-		}
+		$this->log->debug(
+			message: 'ActivityPub Site Inbox' . date(DateTimeInterface::COOKIE),
+			context: [
+				'params' => $params,
+				'body' => $body,
+			],
+		);
 
 		switch (get_class($body)) {
 			case Follow::class:
