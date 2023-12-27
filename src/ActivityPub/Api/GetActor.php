@@ -106,6 +106,12 @@ class GetActor implements Endpoint {
 			'publicKeyPem' => $site->publicKey,
 		];
 
-		return new HttpResponse(body: $response->toArray());
+		return new HttpResponse(body: [
+			...$response->toArray(),
+			'@context' => [
+				"https://www.w3.org/ns/activitystreams",
+				"https://w3id.org/security/v1",
+			],
+		]);
 	}
 }

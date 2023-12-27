@@ -10,7 +10,10 @@ use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Federation\FollowerProvider;
+use Smolblog\Core\Site\GetSiteKeypair;
 use Smolblog\Core\Site\SiteById;
+use Smolblog\Core\User\User;
+use Smolblog\Framework\Infrastructure\HttpSigner;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\HttpRequest;
@@ -38,12 +41,14 @@ class ActivityPubFollowerProvider implements FollowerProvider {
 	 * @param ClientInterface        $fetcher For sending content.
 	 * @param ApiEnvironment         $env     For creating links.
 	 * @param ActivityTypesConverter $at      For creating ActivityTypes objects.
+	 * @param HttpSigner             $signer  For signing HTTP requests.
 	 */
 	public function __construct(
 		private MessageBus $bus,
 		private ClientInterface $fetcher,
 		private ApiEnvironment $env,
 		private ActivityTypesConverter $at,
+		private HttpSigner $signer,
 	) {
 	}
 
@@ -72,6 +77,13 @@ class ActivityPubFollowerProvider implements FollowerProvider {
 
 		foreach ($inboxes as $inbox) {
 			$request = new HttpRequest(verb: HttpVerb::POST, url: $inbox, body: $apMessage->toArray());
+
+			$keypair = $this->bus->fetch(new GetSiteKeypair(siteId: $site->id, userId: User::internalSystemUser()->id));
+			$request = $this->signer->sign(
+				request: $request,
+				keyId: "$apMessage->actor#publicKey",
+				keyPem: $keypair->privateKey,
+			);
 
 			$acceptResponse = $this->fetcher->sendRequest($request);
 			$resCode = $acceptResponse->getStatusCode();

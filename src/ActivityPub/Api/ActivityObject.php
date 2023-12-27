@@ -20,4 +20,14 @@ class ActivityObject {
 		TypeConfiguration::set('undefined_properties', 'ignore');
 		return Type::create($data);
 	}
+
+	/**
+	 * Deserialize from JSON
+	 *
+	 * @param string $json JSON-encoded object.
+	 * @return AbstractObject
+	 */
+	public static function jsonDeserialize(string $json): AbstractObject {
+		return self::fromArray(json_decode($json, associative: true));
+	}
 }

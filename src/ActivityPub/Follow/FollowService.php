@@ -6,6 +6,7 @@ use Exception;
 use Psr\Http\Client\ClientInterface;
 use Smolblog\ActivityPhp\Type\Extended\Activity\Accept;
 use Smolblog\Api\ApiEnvironment;
+use Smolblog\Core\Site\GetSiteKeypair;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Infrastructure\HttpSigner;
@@ -61,14 +62,12 @@ class FollowService implements Listener {
 			body: $body->toArray(),
 		);
 
-		/*
-			Signer is not working.
-			$this->fetcher->sendRequest($this->signer->sign(
-				request: $request,
-				keyId: "$body->actor#publicKey",
-				keyPem: $site->publicKey,
-			));
-		*/
+		$keypair = $this->bus->fetch(new GetSiteKeypair(siteId: $site->id, userId: User::internalSystemUser()->id));
+		$request = $this->signer->sign(
+			request: $request,
+			keyId: "$body->actor#publicKey",
+			keyPem: $keypair->privateKey,
+		);
 
 		$acceptResponse = $this->fetcher->sendRequest($request);
 		$resCode = $acceptResponse->getStatusCode();

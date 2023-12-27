@@ -60,7 +60,7 @@ class SharedInbox extends BasicEndpoint {
 			message: 'ActivityPub Site Inbox' . date(DateTimeInterface::COOKIE),
 			context: [
 				'params' => $params,
-				'body' => $body,
+				'body' => $body->toArray(),
 			],
 		);
 

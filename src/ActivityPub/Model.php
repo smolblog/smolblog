@@ -45,6 +45,7 @@ class Model extends DomainModel {
 			'fetcher' => ClientInterface::class,
 			'env' => ApiEnvironment::class,
 			'at' => ActivityTypesConverter::class,
+			'signer' => HttpSigner::class,
 		],
 
 		ActivityTypesConverter::class => [
