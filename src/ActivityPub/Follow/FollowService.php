@@ -58,8 +58,8 @@ class FollowService implements Listener {
 
 		$request = new HttpRequest(
 			verb: HttpVerb::POST,
-			url: $command->request->actor->inbox,
-			body: $body->toArray(),
+			url: $command->actor->inbox,
+			body: [...$body->toArray(), '@context' => 'https://www.w3.org/ns/activitystreams'],
 		);
 
 		$keypair = $this->bus->fetch(new GetSiteKeypair(siteId: $site->id, userId: User::internalSystemUser()->id));

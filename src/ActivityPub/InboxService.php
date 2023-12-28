@@ -40,6 +40,7 @@ class InboxService {
 	 * @return void
 	 */
 	public function handleFollow(Follow $request, Identifier $siteId): void {
+		$actor = $request->actor;
 		if (is_string($request->actor)) {
 			$actorResponse = $this->fetcher->sendRequest(new HttpRequest(
 				verb: HttpVerb::GET,
@@ -47,11 +48,12 @@ class InboxService {
 				headers: ['accept' => 'application/json'],
 			));
 
-			$request->actor = Type::fromJson($actorResponse->getBody()->getContents());
+			$actor = Type::fromJson($actorResponse->getBody()->getContents());
 		}
 
 		$this->bus->dispatch(new ActivityPubFollowerAdded(
 			request: $request,
+			actor: $actor,
 			siteId: $siteId,
 		));
 
@@ -59,6 +61,7 @@ class InboxService {
 			site: $this->bus->fetch(new SiteById($siteId)),
 			userId: Identifier::fromString(User::INTERNAL_SYSTEM_USER_ID),
 			request: $request,
+			actor: $actor,
 		));
 	}
 }

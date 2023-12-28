@@ -4,6 +4,7 @@ namespace Smolblog\ActivityPub\Follow;
 
 use DateTimeInterface;
 use Smolblog\ActivityPhp\Type;
+use Smolblog\ActivityPhp\Type\Extended\AbstractActor;
 use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
 use Smolblog\Core\Federation\Follower;
 use Smolblog\Core\Federation\FollowerAdded;
@@ -19,6 +20,7 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * Construct the event.
 	 *
 	 * @param Follow                 $request   Parsed Follow activity received.
+	 * @param AbstractActor          $actor     Actor giving the request.
 	 * @param Identifier             $siteId    Site being followed.
 	 * @param Identifier|null        $userId    User making the request; default Smolbot.
 	 * @param Identifier|null        $id        ID of the event.
@@ -26,6 +28,7 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 */
 	public function __construct(
 		public readonly Follow $request,
+		public readonly AbstractActor $actor,
 		Identifier $siteId,
 		?Identifier $userId = null,
 		?Identifier $id = null,
@@ -45,19 +48,19 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * @return Follower
 	 */
 	public function getFollower(): Follower {
-		$displayName = (isset($this->request->actor->name) ? $this->request->actor->name : '') .
-			' (@' . $this->request->actor->preferredUsername .
-			'@' . parse_url($this->request->actor->inbox, PHP_URL_HOST) . ')';
+		$displayName = (isset($this->actor->name) ? $this->actor->name : '') .
+			' (@' . $this->actor->preferredUsername .
+			'@' . parse_url($this->actor->inbox, PHP_URL_HOST) . ')';
 
 		return new Follower(
 			siteId: $this->siteId,
 			provider: ActivityPubFollowerProvider::SLUG,
-			providerKey: new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, $this->request->actor->id),
+			providerKey: new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, $this->actor->id),
 			displayName: $displayName,
 			details: [
-				'actor' => $this->request->actor->id,
-				'inbox' => $this->request->actor->inbox,
-				'sharedInbox' => $this->request->actor->sharedInbox ?? null,
+				'actor' => $this->actor->id,
+				'inbox' => $this->actor->inbox,
+				'sharedInbox' => $this->actor->sharedInbox ?? null,
 			],
 		);
 	}
@@ -68,7 +71,7 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * @return array
 	 */
 	public function getPayload(): array {
-		return ['request' => $this->request->toArray()];
+		return ['request' => $this->request->toArray(), 'actor' => $this->actor->toArray()];
 	}
 
 	/**
@@ -78,6 +81,6 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * @return array
 	 */
 	protected static function payloadFromArray(array $payload): array {
-		return ['request' => Type::create($payload['request'])];
+		return ['request' => Type::create($payload['request']), 'actor' => Type::create($payload['actor'])];
 	}
 }

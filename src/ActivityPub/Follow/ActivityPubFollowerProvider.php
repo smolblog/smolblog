@@ -76,7 +76,10 @@ class ActivityPubFollowerProvider implements FollowerProvider {
 		)));
 
 		foreach ($inboxes as $inbox) {
-			$request = new HttpRequest(verb: HttpVerb::POST, url: $inbox, body: $apMessage->toArray());
+			$request = new HttpRequest(verb: HttpVerb::POST, url: $inbox, body: [
+				...$apMessage->toArray(),
+				'@context' => 'https://www.w3.org/ns/activitystreams',
+			]);
 
 			$keypair = $this->bus->fetch(new GetSiteKeypair(siteId: $site->id, userId: User::internalSystemUser()->id));
 			$request = $this->signer->sign(
