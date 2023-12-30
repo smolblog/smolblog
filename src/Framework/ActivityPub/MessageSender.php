@@ -23,14 +23,19 @@ class MessageSender {
 	/**
 	 * Construct the service.
 	 *
-	 * @param ClientInterface      $fetcher PSR HTTP client.
-	 * @param MessageSigner|null   $signer  Optional PSR logger.
-	 * @param LoggerInterface|null $log     Optional PSR logger to use.
+	 * Set throwOnError: true to have the service throw an ActivityPubException when the remote server gives an
+	 * error response; default (false) is to log the error.
+	 *
+	 * @param ClientInterface      $fetcher      PSR HTTP client.
+	 * @param MessageSigner|null   $signer       Optional PSR logger.
+	 * @param LoggerInterface|null $log          Optional PSR logger to use.
+	 * @param boolean              $throwOnError True to throw exceptions when the remote server gives an error.
 	 */
 	public function __construct(
 		private ClientInterface $fetcher,
 		private ?MessageSigner $signer = null,
-		?LoggerInterface $log = null
+		?LoggerInterface $log = null,
+		private bool $throwOnError = false,
 	) {
 		$this->log = $log ?? new NullLogger();
 	}
@@ -64,7 +69,7 @@ class MessageSender {
 			body: $message,
 		);
 
-		if ($signedWithPrivateKey) {
+		if ($signedWithPrivateKey && $this->signer) {
 			$request = $this->signer->sign(
 				request: $request,
 				keyId: $withKeyId,
@@ -72,10 +77,23 @@ class MessageSender {
 			);
 		}
 
+		$this->log->debug("Sending $message->type to $toInbox");
+
 		$acceptResponse = $this->fetcher->sendRequest($request);
 		$resCode = $acceptResponse->getStatusCode();
 		if ($resCode >= 300 || $resCode < 200) {
-			throw new ActivityPubException('Error from federated server: ' . $acceptResponse->getBody()->getContents());
+			$errorMessage = 'Error from federated server: ' . $acceptResponse->getBody()->getContents();
+
+			if ($this->throwOnError) {
+				throw new ActivityPubException($errorMessage);
+			}
+
+			$this->log->error($errorMessage, [
+				'message' => $message->toArray(),
+				'inbox' => $toInbox,
+				'key ID' => $withKeyId,
+				'key PEM present' => empty($signedWithPrivateKey) ? 'absent' : 'present',
+			]);
 		}
 	}
 }

@@ -38,17 +38,4 @@ readonly class Activity extends ActivityPubObject {
 	public function type(): string {
 		return 'Activity';
 	}
-
-	public static function fromArray(array $data): static
-	{
-		unset($data['@context']);
-		unset($data['type']);
-		if (is_array($data['actor'])) {
-			$data['actor'] = Actor::fromArray($data['actor']);
-		}
-		if (is_array($data['object'])) {
-			$data['object'] = ActivityPubBase::typedObjectFromArray($data['object']);
-		}
-		return new static(...$data);
-	}
 }

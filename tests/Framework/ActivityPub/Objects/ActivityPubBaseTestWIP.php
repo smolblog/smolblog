@@ -12,13 +12,7 @@ use Smolblog\Framework\Objects\SerializableKit;
  */
 abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerializable {
 	use SerializableKit;
-
-	/**
-	 * Array to store ad-hoc fields.
-	 *
-	 * @var array
-	 */
-	private array $extendedFields;
+	use ExtendableValueKit;
 
 	/**
 	 * Construct the object.
@@ -64,31 +58,5 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 			...$definedFields,
 			...$this->extendedFields,
 		];
-	}
-
-	public static function fromArray(array $data): static {
-		unset($data['@context']);
-		unset($data['type']);
-
-		return new static(...$data);
-	}
-
-	public static function typedObjectFromArray(array $data): ?ActivityPubBase {
-		$givenType = $data['type'];
-		unset($data['@context']);
-		unset($data['type']);
-
-		switch (strtolower($givenType)) {
-			case 'follow':
-				return Follow::fromArray($data);
-
-			case 'undo':
-				return Undo::fromArray($data);
-
-			case 'delete':
-				return Delete::fromArray($data);
-		}
-
-		return null;
 	}
 }

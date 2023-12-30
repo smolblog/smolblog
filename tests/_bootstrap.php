@@ -236,3 +236,11 @@ trait SerializableTestKit {
 		$this->assertEquals($this->subject, $class::jsonDeserialize(json_encode($this->subject)));
 	}
 }
+
+trait ActivityPubActivityTestKit {
+	use SerializableTestKit;
+
+	public function testItGivesTheCorrectType() {
+		$this->assertEquals($this->subject->type(), static::EXPECTED_TYPE);
+	}
+}
