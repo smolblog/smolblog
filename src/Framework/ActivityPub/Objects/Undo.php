@@ -10,12 +10,4 @@ namespace Smolblog\Framework\ActivityPub\Objects;
  * The target and origin typically have no defined meaning.
  */
 readonly class Undo extends Activity {
-	/**
-	 * Get the object type.
-	 *
-	 * @return string
-	 */
-	public function type(): string {
-		return 'Undo';
-	}
 }

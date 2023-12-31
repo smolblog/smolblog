@@ -7,12 +7,4 @@ namespace Smolblog\Framework\ActivityPub\Objects;
  * object was deleted.
  */
 readonly class Delete extends Activity {
-	/**
-	 * Get the object type.
-	 *
-	 * @return string
-	 */
-	public function type(): string {
-		return 'Delete';
-	}
 }

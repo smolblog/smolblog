@@ -8,12 +8,4 @@ namespace Smolblog\Framework\ActivityPub\Objects;
  * origin typically have no defined meaning.
  */
 readonly class Follow extends Activity {
-	/**
-	 * Get the object type.
-	 *
-	 * @return string
-	 */
-	public function type(): string {
-		return 'Follow';
-	}
 }

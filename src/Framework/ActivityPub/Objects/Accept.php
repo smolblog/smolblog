@@ -7,12 +7,4 @@ namespace Smolblog\Framework\ActivityPub\Objects;
  * the context into which the object has been accepted.
  */
 readonly class Accept extends Activity {
-	/**
-	 * Get the object type.
-	 *
-	 * @return string
-	 */
-	public function type(): string {
-		return 'Accept';
-	}
 }

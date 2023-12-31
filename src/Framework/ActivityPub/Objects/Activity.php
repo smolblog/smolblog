@@ -31,16 +31,12 @@ readonly class Activity extends ActivityPubObject {
 	}
 
 	/**
-	 * Get the object type.
+	 * Deserialize the object.
 	 *
-	 * @return string
+	 * @param array $data Serialized data.
+	 * @return static
 	 */
-	public function type(): string {
-		return 'Activity';
-	}
-
-	public static function fromArray(array $data): static
-	{
+	public static function fromArray(array $data): static {
 		unset($data['@context']);
 		unset($data['type']);
 		if (is_array($data['actor'])) {
@@ -50,5 +46,22 @@ readonly class Activity extends ActivityPubObject {
 			$data['object'] = ActivityPubBase::typedObjectFromArray($data['object']);
 		}
 		return new static(...$data);
+	}
+
+	/**
+	 * Serialize the object.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$base = parent::toArray();
+		if (is_object($this->actor)) {
+			$base['actor'] = $this->actor->toArray();
+		}
+		if (is_object($this->object)) {
+			$base['object'] = $this->object->toArray();
+		}
+
+		return $base;
 	}
 }

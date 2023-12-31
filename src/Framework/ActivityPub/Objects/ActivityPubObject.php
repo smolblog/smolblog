@@ -3,14 +3,11 @@
 namespace Smolblog\Framework\ActivityPub\Objects;
 
 use JsonSerializable;
-use Smolblog\Framework\Objects\ArraySerializable;
-use Smolblog\Framework\Objects\ExtendableValueKit;
-use Smolblog\Framework\Objects\SerializableKit;
 
 /**
  * Base object for ActivityPub objects.
  */
-abstract readonly class ActivityPubObject extends ActivityPubBase {
+readonly class ActivityPubObject extends ActivityPubBase {
 	/**
 	 * Construct the object.
 	 *
@@ -30,6 +27,7 @@ abstract readonly class ActivityPubObject extends ActivityPubBase {
 	 * @return string
 	 */
 	public function type(): string {
-		return 'Object';
+		// Only modify if this is an actual ActivityPubObject instance.
+		return self::class === static::class ? 'Object' : parent::type();
 	}
 }

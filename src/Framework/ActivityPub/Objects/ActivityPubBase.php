@@ -38,7 +38,9 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 	 *
 	 * @return string
 	 */
-	abstract public function type(): string|array;
+	public function type(): string|array {
+		return substr(static::class, strrpos(static::class, '\\') + 1);
+	}
 
 	/**
 	 * Get the @context attribute for this object.
@@ -58,14 +60,20 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 		$definedFields = get_object_vars($this);
 		unset($definedFields['extendedFields']);
 
-		return [
+		return array_filter([
 			'@context' => $this->context(),
 			'type' => $this->type(),
 			...$definedFields,
 			...$this->extendedFields,
-		];
+		], fn($i) => isset($i));
 	}
 
+	/**
+	 * Deserialize the object.
+	 *
+	 * @param array $data Serialized data.
+	 * @return static
+	 */
 	public static function fromArray(array $data): static {
 		unset($data['@context']);
 		unset($data['type']);
@@ -73,22 +81,26 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 		return new static(...$data);
 	}
 
+	/**
+	 * Deserialize an ActivityPub object from an unknown array.
+	 *
+	 * @param array $data Serialized unknown ActivityPub object.
+	 * @return ActivityPubBase|null
+	 */
 	public static function typedObjectFromArray(array $data): ?ActivityPubBase {
-		$givenType = $data['type'];
+		$givenType = ucfirst(strtolower($data['type']));
 		unset($data['@context']);
 		unset($data['type']);
 
-		switch (strtolower($givenType)) {
-			case 'follow':
-				return Follow::fromArray($data);
+		$potentialClass = __NAMESPACE__ . "\\$givenType";
 
-			case 'undo':
-				return Undo::fromArray($data);
-
-			case 'delete':
-				return Delete::fromArray($data);
-		}
-
-		return null;
+		return match (true) {
+			$givenType === 'Object' => ActivityPubObject::fromArray($data),
+			// Check if this is a type of Actor.
+			ActorType::tryFrom($givenType) !== null => Actor::fromArray([...$data, 'type' => $givenType]),
+			// Check for a class with this type.
+			class_exists($potentialClass) => $potentialClass::fromArray($data),
+			default => null,
+		};
 	}
 }
