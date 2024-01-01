@@ -77,7 +77,7 @@ class MessageSender {
 			);
 		}
 
-		$this->log->debug("Sending $message->type to $toInbox");
+		$this->log->debug("Sending {$message->type()} to $toInbox");
 
 		$acceptResponse = $this->fetcher->sendRequest($request);
 		$resCode = $acceptResponse->getStatusCode();
