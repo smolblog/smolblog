@@ -261,11 +261,15 @@ class HttpMessageIsEquivalent extends Constraint {
 	protected function failureDescription($other): string { return $this->toString(); }
 
 	private function makeArray(RequestInterface|ResponseInterface $message): array {
-		$data = [
-			'type' => '',
-			...$message->getHeaders()
-		];
-		$data['body'] = $message->getBody()->getContents();
+		$data = ['type' => ''];
+
+		foreach($message->getHeaders() as $key => $value) {
+			$lowerKey = strtolower($key);
+			$data[$lowerKey] = $value;
+		}
+
+		$bodyString = $message->getBody()->__toString();
+		$data['body'] = empty($bodyString) ? null : $bodyString;
 
 		if (is_a($message, RequestInterface::class)) {
 			$data['type'] .= 'Request';

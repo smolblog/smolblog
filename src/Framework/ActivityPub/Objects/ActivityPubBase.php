@@ -88,7 +88,7 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 	 * @return ActivityPubBase|null
 	 */
 	public static function typedObjectFromArray(array $data): ?ActivityPubBase {
-		$givenType = ucfirst(strtolower($data['type']));
+		$givenType = ucfirst(strtolower($data['type'] ?? ''));
 		unset($data['@context']);
 		unset($data['type']);
 

@@ -9,6 +9,7 @@ use Psr\Log\NullLogger;
 use Smolblog\Framework\ActivityPub\Objects\{ActivityPubBase, Actor, Delete, Follow, Undo};
 use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpVerb;
+use stdClass;
 
 /**
  * Framework for implementing an ActivityPub inbox in a PHP app.
@@ -54,10 +55,11 @@ abstract class InboxAdapter {
 			!$this->verifyRequest($request)
 		) {
 			$this->log->info('Request provided invalid signature', ['request' => $request]);
+			return;
 		}
 
 		$inboxKey = $this->determineInbox($request);
-		$bodyArray = json_decode($request->getBody()->getContents(), associative: true);
+		$bodyArray = json_decode($request->getBody()->__toString(), associative: true);
 		$body = ActivityPubBase::typedObjectFromArray($bodyArray);
 
 		switch (get_class($body)) {
@@ -85,13 +87,13 @@ abstract class InboxAdapter {
 	 * @param ServerRequestInterface $request Incoming request.
 	 * @return boolean
 	 */
-	protected function verifyRequest(ServerRequestInterface $request): bool {
+	private function verifyRequest(ServerRequestInterface $request): bool {
 		$sigMatches = [];
 		preg_match('/keyId="([^"]*)"/', $request->getHeaderLine('signature'), $sigMatches);
 		$sigUrl = $sigMatches[1] ?? '';
 		$idParts = parse_url($sigUrl);
 
-		if (!$idParts) {
+		if (!$idParts || !(isset($idParts['scheme']) && isset($idParts['host']))) {
 			return false;
 		}
 
@@ -148,6 +150,7 @@ abstract class InboxAdapter {
 	 */
 	protected function handleUndo(Undo $message, mixed $inboxKey): void {
 		$object = is_string($message->object) ? $this->getRemoteObject($message->object) : $message->object;
+		$object ??= new stdClass();
 
 		switch (get_class($object)) {
 			case Follow::class:
@@ -172,6 +175,7 @@ abstract class InboxAdapter {
 	 */
 	protected function handleDelete(Delete $message, mixed $inboxKey): void {
 		$object = is_string($message->object) ? $this->getRemoteObject($message->object) : $message->object;
+		$object ??= new stdClass();
 
 		switch (get_class($object)) {
 			case Actor::class:
