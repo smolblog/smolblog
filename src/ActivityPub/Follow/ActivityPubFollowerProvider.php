@@ -3,21 +3,17 @@
 namespace Smolblog\ActivityPub\Follow;
 
 use Exception;
-use Psr\Http\Client\ClientInterface;
-use Smolblog\ActivityPhp\Type\Extended\Activity\Create;
 use Smolblog\ActivityPub\ActivityTypesConverter;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Federation\FollowerProvider;
 use Smolblog\Core\Site\GetSiteKeypair;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Core\User\User;
-use Smolblog\Framework\Infrastructure\HttpSigner;
+use Smolblog\Framework\ActivityPub\MessageSender;
+use Smolblog\Framework\ActivityPub\Objects\Create;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\HttpRequest;
-use Smolblog\Framework\Objects\HttpVerb;
 
 /**
  * Service that handles posting content to ActivityPub.
@@ -37,18 +33,16 @@ class ActivityPubFollowerProvider implements FollowerProvider {
 	/**
 	 * Construct the service.
 	 *
-	 * @param MessageBus             $bus     For sending internal messages.
-	 * @param ClientInterface        $fetcher For sending content.
-	 * @param ApiEnvironment         $env     For creating links.
-	 * @param ActivityTypesConverter $at      For creating ActivityTypes objects.
-	 * @param HttpSigner             $signer  For signing HTTP requests.
+	 * @param MessageBus             $bus    For sending internal messages.
+	 * @param ApiEnvironment         $env    For creating links.
+	 * @param ActivityTypesConverter $at     For creating ActivityTypes objects.
+	 * @param MessageSender          $sender For sending ActivityPub messages.
 	 */
 	public function __construct(
 		private MessageBus $bus,
-		private ClientInterface $fetcher,
 		private ApiEnvironment $env,
 		private ActivityTypesConverter $at,
-		private HttpSigner $signer,
+		private MessageSender $sender,
 	) {
 	}
 
@@ -63,12 +57,14 @@ class ActivityPubFollowerProvider implements FollowerProvider {
 	 */
 	public function sendContentToFollowers(Content $content, array $followers): void {
 		$site = $this->bus->fetch(new SiteById($content->siteId));
+		$keypair = $this->bus->fetch(new GetSiteKeypair(siteId: $site->id, userId: User::internalSystemUser()->id));
 		$eventId = new DateIdentifier();
 
-		$apMessage = new Create();
-		$apMessage->id = $this->env->getApiUrl("/site/$content->siteId/activitypub/outbox/$eventId");
-		$apMessage->actor = $this->env->getApiUrl("/site/$content->siteId/activitypub/actor");
-		$apMessage->object = $this->at->activityObjectFromContent(content: $content, site: $site);
+		$apMessage = new Create(
+			id: $this->env->getApiUrl("/site/$content->siteId/activitypub/outbox/$eventId"),
+			actor: $this->env->getApiUrl("/site/$content->siteId/activitypub/actor"),
+			object: $this->at->activityObjectFromContent(content: $content, site: $site),
+		);
 
 		$inboxes = array_values(array_unique(array_map(
 			fn($follower) => $follower->details['sharedInbox'] ?? $follower->details['inbox'],
@@ -76,23 +72,12 @@ class ActivityPubFollowerProvider implements FollowerProvider {
 		)));
 
 		foreach ($inboxes as $inbox) {
-			$request = new HttpRequest(verb: HttpVerb::POST, url: $inbox, body: [
-				...$apMessage->toArray(),
-				'@context' => 'https://www.w3.org/ns/activitystreams',
-			]);
-
-			$keypair = $this->bus->fetch(new GetSiteKeypair(siteId: $site->id, userId: User::internalSystemUser()->id));
-			$request = $this->signer->sign(
-				request: $request,
-				keyId: "$apMessage->actor#publicKey",
-				keyPem: $keypair->privateKey,
+			$this->sender->send(
+				message: $apMessage,
+				toInbox: $inbox,
+				signedWithPrivateKey: $keypair->privateKey,
+				withKeyId: "$apMessage->actor#publicKey",
 			);
-
-			$acceptResponse = $this->fetcher->sendRequest($request);
-			$resCode = $acceptResponse->getStatusCode();
-			if ($resCode >= 300 || $resCode < 200) {
-				throw new Exception('Error from federated server: ' . $acceptResponse->getBody()->getContents());
-			}
 		}
 	}
 }

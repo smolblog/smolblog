@@ -3,12 +3,11 @@
 namespace Smolblog\ActivityPub\Follow;
 
 use DateTimeInterface;
-use Smolblog\ActivityPhp\Type;
-use Smolblog\ActivityPhp\Type\Extended\AbstractActor;
-use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
 use Smolblog\Core\Federation\Follower;
 use Smolblog\Core\Federation\FollowerAdded;
 use Smolblog\Core\User\User;
+use Smolblog\Framework\ActivityPub\Objects\Actor;
+use Smolblog\Framework\ActivityPub\Objects\Follow;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\NamedIdentifier;
 
@@ -20,7 +19,7 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * Construct the event.
 	 *
 	 * @param Follow                 $request   Parsed Follow activity received.
-	 * @param AbstractActor          $actor     Actor giving the request.
+	 * @param Actor                  $actor     Actor giving the request.
 	 * @param Identifier             $siteId    Site being followed.
 	 * @param Identifier|null        $userId    User making the request; default Smolbot.
 	 * @param Identifier|null        $id        ID of the event.
@@ -28,7 +27,7 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 */
 	public function __construct(
 		public readonly Follow $request,
-		public readonly AbstractActor $actor,
+		public readonly Actor $actor,
 		Identifier $siteId,
 		?Identifier $userId = null,
 		?Identifier $id = null,
@@ -60,7 +59,8 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 			details: [
 				'actor' => $this->actor->id,
 				'inbox' => $this->actor->inbox,
-				'sharedInbox' => $this->actor->sharedInbox ?? null,
+				'sharedInbox' =>
+					isset($this->actor->endpoints) ? ($this->actor->endpoints['sharedInbox'] ?? null) : null,
 			],
 		);
 	}
@@ -81,6 +81,6 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * @return array
 	 */
 	protected static function payloadFromArray(array $payload): array {
-		return ['request' => Type::create($payload['request']), 'actor' => Type::create($payload['actor'])];
+		return ['request' => Follow::fromArray($payload['request']), 'actor' => Actor::fromArray($payload['actor'])];
 	}
 }

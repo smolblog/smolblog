@@ -3,11 +3,11 @@
 namespace Smolblog\ActivityPub;
 
 use DateTimeInterface;
-use Smolblog\ActivityPhp\Type\Core\ObjectType;
-use Smolblog\ActivityPhp\Type\Extended\Object\Note;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Site\Site;
+use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
+use Smolblog\Framework\ActivityPub\Objects\Note;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
@@ -33,18 +33,28 @@ class ActivityTypesConverter {
 	 *
 	 * @param Content   $content Content to convert.
 	 * @param Site|null $site    Optionally provide a site object for creating permalinks.
-	 * @return ObjectType
+	 * @return ActivityPubObject
 	 */
-	public function activityObjectFromContent(Content $content, ?Site $site): ObjectType {
-		$apObject = new ObjectType();
+	public function activityObjectFromContent(Content $content, ?Site $site): ActivityPubObject {
+		$props = [
+			'id' => $this->env->getApiUrl("/site/$content->siteId/activitypub/content/$content->id"),
+			'published' => $content->publishTimestamp->format(DateTimeInterface::W3C),
+			'attributedTo' => $this->env->getApiUrl("/site/$content->siteId/activitypub/actor"),
+			'to' => 'https://www.w3.org/ns/activitystreams#Public',
+		];
+
+		$apObject = null;
 		switch ($content->type->getTypeKey()) {
 			case 'note':
-				$apObject = new Note();
-				$apObject->content = $this->md->parse($content->type->text);
-				$apObject->mediaType = 'text/html';
-				$apObject->source = new ObjectType();
-				$apObject->source->content = $content->type->text;
-				$apObject->source->mediaType = 'text/markdown';
+				$apObject = new Note(
+					...$props,
+					content: $this->md->parse($content->type->text),
+					mediaType: 'text/html',
+					source: [
+						'content' => $content->type->text,
+						'mediaType' => 'text/markdown',
+					]
+				);
 				break;
 
 			// TODO: Reverse-engineer Mastodon's reblog.
@@ -53,12 +63,15 @@ class ActivityTypesConverter {
 					'](' . $content->type->url . ")\n\n" .
 					($content->type->comment ?? '');
 
-				$apObject = new Note();
-				$apObject->content = $this->md->parse($generatedMarkdown);
-				$apObject->mediaType = 'text/html';
-				$apObject->source = new ObjectType();
-				$apObject->source->content = $generatedMarkdown;
-				$apObject->source->mediaType = 'text/markdown';
+				$apObject = new Note(
+					...$props,
+					content: $this->md->parse($generatedMarkdown),
+					mediaType: 'text/html',
+					source: [
+						'content' => $generatedMarkdown,
+						'mediaType' => 'text/markdown',
+					],
+				);
 				break;
 
 			case 'picture':
@@ -66,31 +79,32 @@ class ActivityTypesConverter {
 				$generatedMarkdown = (isset($content->type->caption) ? $content->type->caption . "\n\n" : '') .
 					"[View picture]($permalink)";
 
-				$apObject = new Note();
-				$apObject->content = $this->md->parse($generatedMarkdown);
-				$apObject->mediaType = 'text/html';
-				$apObject->source = new ObjectType();
-				$apObject->source->content = $generatedMarkdown;
-				$apObject->source->mediaType = 'text/markdown';
+					$apObject = new Note(
+						...$props,
+						content: $this->md->parse($generatedMarkdown),
+						mediaType: 'text/html',
+						source: [
+							'content' => $generatedMarkdown,
+							'mediaType' => 'text/markdown',
+						],
+					);
 				break;
 
 			default:
 				$permalink = rtrim($site?->baseUrl ?? '', '/') . $content->permalink;
 				$generatedMarkdown = "[{$content->type->getTitle()}]($permalink)";
 
-				$apObject = new Note();
-				$apObject->content = $this->md->parse($generatedMarkdown);
-				$apObject->mediaType = 'text/html';
-				$apObject->source = new ObjectType();
-				$apObject->source->content = $generatedMarkdown;
-				$apObject->source->mediaType = 'text/markdown';
+				$apObject = new Note(
+					...$props,
+					content: $this->md->parse($generatedMarkdown),
+					mediaType: 'text/html',
+					source: [
+						'content' => $generatedMarkdown,
+						'mediaType' => 'text/markdown',
+					],
+				);
 				break;
 		}//end switch
-
-		$apObject->id = $this->env->getApiUrl("/site/$content->siteId/activitypub/content/$content->id");
-		$apObject->published = $content->publishTimestamp->format(DateTimeInterface::W3C);
-		$apObject->attributedTo = $this->env->getApiUrl("/site/$content->siteId/activitypub/actor");
-		$apObject->to = 'https://www.w3.org/ns/activitystreams#Public';
 
 		return $apObject;
 	}

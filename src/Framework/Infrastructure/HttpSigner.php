@@ -5,11 +5,13 @@ namespace Smolblog\Framework\Infrastructure;
 use DateTimeInterface;
 use HttpSignatures\Context;
 use Psr\Http\Message\RequestInterface;
+use Smolblog\Framework\ActivityPub\MessageSigner;
+use Smolblog\Framework\ActivityPub\MessageVerifier;
 
 /**
  * Service to sign a PSR-7 request with a given key.
  */
-class HttpSigner {
+class HttpSigner implements MessageSigner, MessageVerifier {
 	/**
 	 * Sign a PSR-7 Request.
 	 *

@@ -2,11 +2,9 @@
 
 namespace Smolblog\ActivityPub\Follow;
 
-use Smolblog\ActivityPhp\Type;
-use Smolblog\ActivityPhp\Type\Extended\AbstractActor;
-use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
-use Smolblog\ActivityPhp\Type\TypeConfiguration;
 use Smolblog\Core\Site\Site;
+use Smolblog\Framework\ActivityPub\Objects\Actor;
+use Smolblog\Framework\ActivityPub\Objects\Follow;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
@@ -27,14 +25,14 @@ class ApproveFollowRequest extends Command implements AuthorizableMessage {
 	 *
 	 * @param Identifier      $userId  User approving the request.
 	 * @param Follow          $request Request being approved.
-	 * @param AbstractActor   $actor   Actor giving the request.
+	 * @param Actor           $actor   Actor giving the request.
 	 * @param Identifier|null $siteId  ID of site being followed.
 	 * @param Site|null       $site    Full object of site being followed.
 	 */
 	public function __construct(
 		public readonly Identifier $userId,
 		public readonly Follow $request,
-		public readonly AbstractActor $actor,
+		public readonly Actor $actor,
 		public readonly ?Identifier $siteId = null,
 		public readonly ?Site $site = null,
 	) {
@@ -80,12 +78,10 @@ class ApproveFollowRequest extends Command implements AuthorizableMessage {
 	 * @return static
 	 */
 	public static function fromArray(array $data): static {
-		TypeConfiguration::set('undefined_properties', 'ignore');
-
 		return new self(
 			userId: Identifier::fromString($data['userId']),
-			request: Type::create($data['request']),
-			actor: Type::create($data['actor']),
+			request: Follow::fromArray($data['request']),
+			actor: Actor::fromArray($data['actor']),
 			siteId: isset($data['siteId']) ? Identifier::fromString($data['siteId']) : null,
 			site: isset($data['site']) ? Site::fromArray($data['site']) : null,
 		);

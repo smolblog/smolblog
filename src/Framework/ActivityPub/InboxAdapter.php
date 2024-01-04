@@ -34,8 +34,8 @@ abstract class InboxAdapter {
 	 * @param LoggerInterface|null $log      Optional PSR logger to use.
 	 */
 	public function __construct(
-		private ?ClientInterface $fetcher = null,
-		private ?MessageVerifier $verifier = null,
+		protected ?ClientInterface $fetcher = null,
+		protected ?MessageVerifier $verifier = null,
 		?LoggerInterface $log = null
 	) {
 		$this->log = $log ?? new NullLogger();
