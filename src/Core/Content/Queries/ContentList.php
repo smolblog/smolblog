@@ -23,6 +23,13 @@ use Smolblog\Framework\Objects\Identifier;
  */
 class ContentList extends MemoizableQuery {
 	/**
+	 * Upon completion, will get the total number of content items for the given query.
+	 *
+	 * @var integer
+	 */
+	public int $count = 0;
+
+	/**
 	 * Construct the query.
 	 *
 	 * @throws InvalidMessageAttributesException Thown when invalid arguments are provided.

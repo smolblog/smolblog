@@ -166,4 +166,24 @@ class MediaService implements Listener {
 			file: $file,
 		));
 	}
+
+	/**
+	 * Handle the EditMediaAttributes command.
+	 *
+	 * @param EditMediaAttributes $command Command to execute.
+	 * @return void
+	 */
+	public function onEditMediaAttributes(EditMediaAttributes $command) {
+		$this->bus->dispatch(new MediaAttributesEdited(...$command->toArray()));
+	}
+
+	/**
+	 * Handle the DeleteMedia command.
+	 *
+	 * @param DeleteMedia $command Command to execute.
+	 * @return void
+	 */
+	public function onDeleteMedia(DeleteMedia $command) {
+		$this->bus->dispatch(new MediaDeleted(...$command->toArray()));
+	}
 }

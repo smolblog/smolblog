@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core\Content\Media;
 
-use Smolblog\Core\Content\ContentType;
 use Smolblog\Framework\Objects\Entity;
 use Smolblog\Framework\Objects\Identifier;
 

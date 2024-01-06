@@ -14,6 +14,7 @@ use Smolblog\Api\Exceptions\ErrorResponse;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
+use Smolblog\Core\Content\ContentTypeRegistry;
 use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -44,14 +45,15 @@ class Model extends DomainModel {
 		Connector\SiteAndAvailableChannels::class => ['bus' => MessageBus::class],
 
 		Content\ListContent::class => ['bus' => MessageBus::class],
-		Content\GetReblog::class => ['bus' => MessageBus::class],
-		Content\CreateReblog::class => ['bus' => MessageBus::class],
-		Content\UpdateReblog::class => ['bus' => MessageBus::class],
-		Content\DeleteReblog::class => ['bus' => MessageBus::class],
-		Content\GetNote::class => ['bus' => MessageBus::class],
-		Content\CreateNote::class => ['bus' => MessageBus::class],
-		Content\UpdateNote::class => ['bus' => MessageBus::class],
-		Content\DeleteNote::class => ['bus' => MessageBus::class],
+		Content\ListMedia::class => ['bus' => MessageBus::class],
+		Content\NewContent::class => ['bus' => MessageBus::class],
+		Content\GetContent::class => ['bus' => MessageBus::class],
+		Content\EditContent::class => ['bus' => MessageBus::class],
+		Content\DeleteContent::class => ['bus' => MessageBus::class, 'typeReg' => ContentTypeRegistry::class],
+		Content\NewMedia::class => ['bus' => MessageBus::class],
+		Content\GetMedia::class => ['bus' => MessageBus::class],
+		Content\EditMedia::class => ['bus' => MessageBus::class],
+		Content\DeleteMedia::class => ['bus' => MessageBus::class],
 
 		Preview\PreviewEmbed::class => ['embed' => ExternalContentService::class],
 		Preview\PreviewMarkdown::class => ['md' => SmolblogMarkdown::class],

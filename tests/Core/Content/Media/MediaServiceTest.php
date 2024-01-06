@@ -7,6 +7,8 @@ use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\EventComparisonTestKit;
 use Smolblog\Test\TestCase;
 
+use function Symfony\Component\String\b;
+
 final class MediaServiceTest extends TestCase {
 	use EventComparisonTestKit;
 
@@ -177,6 +179,44 @@ final class MediaServiceTest extends TestCase {
 
 		$service = new MediaService($bus, $registry);
 		$service->onSideloadMedia($command);
+	}
+
+	public function testItHandlesUpdatingMediaAttributes() {
+		$params = [
+			'contentId' => $this->randomId(),
+			'userId' => $this->randomId(),
+			'siteId' => $this->randomId(),
+			'title' => 'Something',
+			'accessibilityText' => 'A screenshot of something.com that says something.',
+		];
+
+		$bus = $this->createMock(MessageBus::class);
+		$bus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo(
+			new MediaAttributesEdited(...$params)
+		));
+
+		$service = new MediaService(bus: $bus, registry: $this->createStub(MediaHandlerRegistry::class));
+		$service->onEditMediaAttributes(
+			new EditMediaAttributes(...$params)
+		);
+	}
+
+	public function testItHandlesDeletingMedia() {
+		$params = [
+			'contentId' => $this->randomId(),
+			'userId' => $this->randomId(),
+			'siteId' => $this->randomId(),
+		];
+
+		$bus = $this->createMock(MessageBus::class);
+		$bus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo(
+			new MediaDeleted(...$params)
+		));
+
+		$service = new MediaService(bus: $bus, registry: $this->createStub(MediaHandlerRegistry::class));
+		$service->onDeleteMedia(
+			new DeleteMedia(...$params)
+		);
 	}
 
 	public function testItCreatesHtmlForMedia() {

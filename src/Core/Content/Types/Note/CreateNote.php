@@ -26,7 +26,7 @@ class CreateNote extends Command implements AuthorizableMessage {
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
 		public readonly string $text,
-		public readonly bool $publish,
+		public readonly bool $publish = false,
 		public readonly Identifier $contentId = new DateIdentifier(),
 	) {
 	}

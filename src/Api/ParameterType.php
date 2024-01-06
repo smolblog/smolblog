@@ -160,8 +160,9 @@ class ParameterType {
 		}
 
 		if ($this->type === 'object') {
-			$base['properties'] = array_map(fn($p) => $p->schema(), $this->properties);
-			$base['required'] = array_keys(array_filter($this->properties, fn($p) => $p->required));
+			$props = $this->properties ?? [];
+			$base['properties'] = array_map(fn($p) => $p->schema(), $props);
+			$base['required'] = array_keys(array_filter($props, fn($p) => $p->required));
 		}
 
 		if (isset($base['items'])) {

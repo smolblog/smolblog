@@ -14,6 +14,11 @@ use Smolblog\Framework\Objects\SerializableKit;
  */
 class Tags implements ContentExtension {
 	/**
+	 * @deprecated 0.1 This is a hack to reduce the footprint of a code change.
+	 */
+	public const KEY = 'tags';
+
+	/**
 	 * Transform the tag text into a normalized format.
 	 *
 	 * @param string $text Original tag text.

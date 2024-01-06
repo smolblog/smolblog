@@ -116,5 +116,9 @@ class Model extends DomainModel {
 		Site\SiteEventStream::class => [
 			'db' => ConnectionInterface::class,
 		],
+		Syndication\SyndicationService::class => [
+			'bus' => MessageBus::class,
+			'connectors' => Connector\Services\ConnectorRegistry::class,
+		]
 	];
 }

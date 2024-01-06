@@ -23,4 +23,29 @@ class BaseAttributesPayload extends Value {
 		public readonly ?Identifier $authorId = null,
 	) {
 	}
+
+	/**
+	 * Serialize the payload.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$arr = parent::toArray();
+		$arr['publishTimestamp'] = $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED);
+		return $arr;
+	}
+
+	/**
+	 * Deserialize the payload
+	 *
+	 * @param array $data Serialized object.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		return new BaseAttributesPayload(
+			permalink: $data['permalink'] ?? null,
+			publishTimestamp: self::safeDeserializeDate($data['publishTimestamp'] ?? ''),
+			authorId: self::safeDeserializeIdentifier($data['authorId']),
+		);
+	}
 }
