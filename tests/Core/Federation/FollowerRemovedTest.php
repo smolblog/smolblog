@@ -3,7 +3,6 @@
 namespace Smolblog\Core\Federation;
 
 use DateTimeImmutable;
-use Smolblog\Test\SerializableTestKit;
 use Smolblog\Test\SiteEventTestKit;
 use Smolblog\Test\TestCase;
 

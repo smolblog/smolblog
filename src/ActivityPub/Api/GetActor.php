@@ -75,15 +75,6 @@ class GetActor implements Endpoint {
 	 * @return ResponseInterface
 	 */
 	public function handle(ServerRequestInterface $request): ResponseInterface {
-		$this->log->debug(
-			message: 'ActivityPub Actor endpoint ' . date(DateTimeInterface::COOKIE),
-			context: [
-				'method' => $request->getMethod(),
-				'query' => $request->getQueryParams(),
-				'body' => $request->getBody()->getContents(),
-			],
-		);
-
 		$site = $this->bus->fetch(new SiteById(
 			Identifier::fromString($request->getAttribute('smolblogPathVars', [])['site'])
 		));

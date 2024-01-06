@@ -15,6 +15,10 @@ use Smolblog\Markdown\SmolblogMarkdown;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
+		Api\ActorFollowers::class => [
+			'bus' => MessageBus::class,
+			'env' => ApiEnvironment::class,
+		],
 		Api\GetActor::class => [
 			'bus' => MessageBus::class,
 			'env' => ApiEnvironment::class,
@@ -24,6 +28,10 @@ class Model extends DomainModel {
 			'service' => InboxService::class,
 			'env' => ApiEnvironment::class,
 			'log' => LoggerInterface::class,
+		],
+		Api\SiteFollowers::class => [
+			'bus' => MessageBus::class,
+			'env' => ApiEnvironment::class,
 		],
 		Api\SiteInbox::class => [
 			'service' => InboxService::class,
