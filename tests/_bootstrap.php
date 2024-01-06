@@ -20,6 +20,7 @@ use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\NeedsMediaObjects;
+use Smolblog\Core\Site\SiteEvent;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MessageBus;
@@ -237,6 +238,12 @@ trait SerializableTestKit {
 	public function testItWillSerializeToJsonAndDeserializeToItself() {
 		$class = get_class($this->subject);
 		$this->assertEquals($this->subject, $class::jsonDeserialize(json_encode($this->subject)));
+	}
+}
+
+trait SiteEventTestKit {
+	public function testItWillSerializeAndDeserializeToItself() {
+		$this->assertEquals($this->subject, SiteEvent::fromTypedArray($this->subject->toArray()));
 	}
 }
 

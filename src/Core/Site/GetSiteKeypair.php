@@ -40,6 +40,7 @@ class GetSiteKeypair extends MemoizableQuery implements AuthorizableMessage {
 			 * @param Identifier $userId ID of the user.
 			 */
 			public function __construct(public readonly Identifier $userId) {
+				$this->stopMessage();
 			}
 
 			/**

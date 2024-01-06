@@ -46,6 +46,22 @@ class FollowerProjection implements Projection {
 	}
 
 	/**
+	 * Remove the given follower.
+	 *
+	 * @param FollowerRemoved $event Event to handle.
+	 * @return void
+	 */
+	public function onFollowerRemoved(FollowerRemoved $event) {
+		$followerId = Follower::buildId(
+			siteId: $event->siteId,
+			provider: $event->provider,
+			providerKey: $event->providerKey,
+		);
+
+		$this->db->table(self::TABLE)->where('follower_uuid', '=', $followerId->toString())->delete();
+	}
+
+	/**
 	 * Get followers for a given site.
 	 *
 	 * @param GetFollowersForSiteByProvider $query Query to fetch.
@@ -62,6 +78,21 @@ class FollowerProjection implements Projection {
 					->all()
 			)
 		);
+	}
+
+	/**
+	 * Get all followers for the given provider and key.
+	 *
+	 * @param FollowersByProviderAndKey $query Query to execute.
+	 * @return void
+	 */
+	public function onFollowersByProviderAndKey(FollowersByProviderAndKey $query) {
+		$results = $this->db->table(self::TABLE)->
+			where('provider', '=', $query->provider)->
+			where('provider_key', '=', $query->providerKey)->
+			get();
+
+		$query->setResults($results->map(fn($row) => self::followerFromRow($row))->all());
 	}
 
 	/**
