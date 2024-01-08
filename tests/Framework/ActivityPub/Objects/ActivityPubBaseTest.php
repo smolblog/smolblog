@@ -29,4 +29,8 @@ final class ActivityPubBaseTest extends TestCase {
 			new TestObject(id: '//smol.blog/athing'),
 		);
 	}
+
+	public function testAdditionalPropertiesAreAccessable() {
+		$this->assertEquals('hullo', $this->subject->randomProperty);
+	}
 }

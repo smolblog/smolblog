@@ -16,16 +16,16 @@ readonly class Activity extends ActivityPubObject {
 	/**
 	 * Construct the object.
 	 *
-	 * @param string                        $id       ID of the object.
-	 * @param string|Actor                  $actor    Actor performing the activity.
-	 * @param string|ActivityPubObject      $object   Object the activity is being performed on.
-	 * @param string|array|JsonSerializable ...$props Additional properties.
+	 * @param string                             $id       ID of the object.
+	 * @param string|Actor                       $actor    Actor performing the activity.
+	 * @param string|ActivityPubObject           $object   Object the activity is being performed on.
+	 * @param null|string|array|JsonSerializable ...$props Additional properties.
 	 */
 	public function __construct(
 		string $id,
 		public string|Actor $actor,
 		public string|ActivityPubObject $object,
-		string|array|JsonSerializable ...$props,
+		null|string|array|JsonSerializable ...$props,
 	) {
 		parent::__construct(...$props, id: $id);
 	}

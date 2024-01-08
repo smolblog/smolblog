@@ -23,12 +23,12 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 	/**
 	 * Construct the object.
 	 *
-	 * @param string                        $id       ID of the object.
-	 * @param string|array|JsonSerializable ...$props Any additional properties.
+	 * @param string                             $id       ID of the object.
+	 * @param null|string|array|JsonSerializable ...$props Any additional properties.
 	 */
 	public function __construct(
 		public string $id,
-		string|array|JsonSerializable ...$props,
+		null|string|array|JsonSerializable ...$props,
 	) {
 		$this->extendedFields = $props ?? [];
 	}
@@ -49,6 +49,16 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 	 */
 	public function context(): string|array {
 		return 'https://www.w3.org/ns/activitystreams';
+	}
+
+	/**
+	 * Quick access for any added variables.
+	 *
+	 * @param string $name Variable to get.
+	 * @return mixed Value of the variable or null if not found.
+	 */
+	public function __get(string $name): mixed {
+		return $this->extendedFields[$name] ?? null;
 	}
 
 	/**

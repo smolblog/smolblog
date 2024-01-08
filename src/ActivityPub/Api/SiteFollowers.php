@@ -24,7 +24,7 @@ class SiteFollowers extends BasicEndpoint {
 	 */
 	public static function getConfiguration(): EndpointConfig {
 		return new EndpointConfig(
-			route: '/site/{site}/activitypub/followers',
+			route: '/site/{site}/followers',
 			pathVariables: ['site' => ParameterType::identifier()],
 			requiredScopes: [AuthScope::Create],
 			responseShape: ParameterType::object(

@@ -18,18 +18,18 @@ readonly class Actor extends ActivityPubObject {
 	/**
 	 * Construct the object.
 	 *
-	 * @param string                        $id           Globally unique ID for the object. Usually a URL.
-	 * @param ActorType                     $type         Type of this Actor.
-	 * @param string|null                   $publicKeyPem PEM-formatted public key for this actor.
-	 * @param ActorPublicKey|null           $publicKey    Full public key object.
-	 * @param string|array|JsonSerializable ...$props     Any additional properties.
+	 * @param string                             $id           Globally unique ID for the object. Usually a URL.
+	 * @param ActorType                          $type         Type of this Actor.
+	 * @param string|null                        $publicKeyPem PEM-formatted public key for this actor.
+	 * @param ActorPublicKey|null                $publicKey    Full public key object.
+	 * @param null|string|array|JsonSerializable ...$props     Any additional properties.
 	 */
 	public function __construct(
 		string $id,
 		public ActorType $type,
 		?string $publicKeyPem = null,
 		?ActorPublicKey $publicKey = null,
-		string|array|JsonSerializable ...$props,
+		null|string|array|JsonSerializable ...$props,
 	) {
 		$this->publicKey = $publicKey ?? (isset($publicKeyPem) ? new ActorPublicKey(
 			id: "$id#publicKey",

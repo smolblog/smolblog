@@ -54,7 +54,7 @@ abstract class InboxAdapter {
 			isset($this->fetcher) &&
 			!$this->verifyRequest($request)
 		) {
-			$this->log->info('Request provided invalid signature', ['request' => $request]);
+			$this->log->info('ActivityPub message rejected for invalid signature.', ['request' => $request]);
 			return;
 		}
 
@@ -94,19 +94,38 @@ abstract class InboxAdapter {
 		$idParts = parse_url($sigUrl);
 
 		if (!$idParts || !(isset($idParts['scheme']) && isset($idParts['host']))) {
+			$this->log->debug('***No signature URL', [$sigMatches, $sigUrl, $idParts]);
 			return false;
 		}
 
 		$response = $this->getRemoteObject($sigUrl);
 		if (!isset($response->publicKey)) {
+			$this->log->debug('***No public key', ['response' => $response]);
 			return false;
 		}
 
-		return $this->verifier->verify(
+		$results = $this->verifier->verify(
 			request: $request,
 			keyId: $sigUrl,
 			keyPem: $response->publicKey->publicKeyPem,
 		);
+
+		if (!$results) {
+			$this->log->debug('Signature verification failed.', [
+				'id URL parts' => $idParts,
+				'actor' => $response,
+				'message' => $request->getMethod() . ' ' . $request->getRequestTarget() . ' HTTP/' .
+					$request->getProtocolVersion() . "\n" . implode(
+						"\n",
+						array_map(
+							fn($key) => "$key: " . $request->getHeaderLine($key),
+							array_keys($request->getHeaders())
+						)
+					) . "\n\n" . $request->getBody()->__toString(),
+			]);
+		}
+
+		return $results;
 	}
 
 	/**

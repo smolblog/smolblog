@@ -18,14 +18,14 @@ readonly class Collection extends ActivityPubObject {
 	/**
 	 * Construct the object.
 	 *
-	 * @param string                        $id         ID (URL) for this object.
-	 * @param integer|null                  $totalItems Optional total number of items in the collection.
-	 * @param string|array|JsonSerializable ...$props   Additional properties.
+	 * @param string                             $id         ID (URL) for this object.
+	 * @param integer|null                       $totalItems Optional total number of items in the collection.
+	 * @param null|string|array|JsonSerializable ...$props   Additional properties.
 	 */
 	public function __construct(
 		string $id,
 		public ?int $totalItems = null,
-		string|array|JsonSerializable ...$props,
+		null|string|array|JsonSerializable ...$props,
 	) {
 		parent::__construct(...$props, id: $id);
 	}

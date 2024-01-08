@@ -11,12 +11,12 @@ readonly class ActivityPubObject extends ActivityPubBase {
 	/**
 	 * Construct the object.
 	 *
-	 * @param string                        $id       ID of the object.
-	 * @param string|array|JsonSerializable ...$props Any additional properties.
+	 * @param string                             $id       ID of the object.
+	 * @param null|string|array|JsonSerializable ...$props Any additional properties.
 	 */
 	public function __construct(
 		string $id,
-		string|array|JsonSerializable ...$props,
+		null|string|array|JsonSerializable ...$props,
 	) {
 		parent::__construct(...$props, id: $id);
 	}

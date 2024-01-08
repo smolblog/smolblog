@@ -196,6 +196,14 @@ class Model extends DomainModel {
 					];
 					break;
 
+				case 'null':
+					if (!isset($config->responseShape)) {
+						$responses[204] = [
+							'description' => 'Successful response',
+						];
+						break;
+					}
+					// No break, fall through.
 				default:
 					$responses[200] = [
 						'description' => 'Successful response',
