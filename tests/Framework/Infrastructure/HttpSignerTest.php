@@ -2,6 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
+use DateTimeImmutable;
 use DateTimeInterface;
 use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpVerb;
@@ -49,14 +50,15 @@ final class HttpSignerTest extends TestCase {
 		);
 
 		$service = new HttpSigner();
-		$dateString = date(DateTimeInterface::RFC7231);
+		$now = new DateTimeImmutable();
 		$request = $service->sign(
 			request: $request,
 			keyId: 'https://smolblog.localhost/api/site/0c2f2fe8-8098-4868-a6f7-7a37dc679662/activitypub/actor#publicKey',
 			keyPem: $this->keypair->privateKey
 		);
 
-		// TODO: This test can fail if the previous line takes place in the previous second.
-		$this->assertEquals($dateString, $request->getHeaderLine('Date'));
+		$reqTime = new DateTimeImmutable($request->getHeaderLine('Date'));
+		$timeDiff = abs($reqTime->getTimestamp() - $now->getTimestamp());
+		$this->assertLessThanOrEqual(30, $timeDiff);
 	}
 }
