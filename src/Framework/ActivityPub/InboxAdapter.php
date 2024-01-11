@@ -54,7 +54,16 @@ abstract class InboxAdapter {
 			isset($this->fetcher) &&
 			!$this->verifyRequest($request)
 		) {
-			$this->log->info('ActivityPub message rejected for invalid signature.', ['request' => $request]);
+			$this->log->info('ActivityPub message rejected for invalid signature.', [
+				'message' => $request->getMethod() . ' ' . $request->getRequestTarget() . ' HTTP/' .
+					$request->getProtocolVersion() . "\n" . implode(
+						"\n",
+						array_map(
+							fn($key) => "$key: " . $request->getHeaderLine($key),
+							array_keys($request->getHeaders())
+						)
+					) . "\n\n" . $request->getBody()->__toString(),
+			]);
 			return;
 		}
 
@@ -100,7 +109,7 @@ abstract class InboxAdapter {
 
 		$response = $this->getRemoteObject($sigUrl);
 		if (!isset($response->publicKey)) {
-			$this->log->debug('***No public key', ['response' => $response]);
+			$this->log->debug('***No public key', ['response' => $response, 'url' => $sigUrl]);
 			return false;
 		}
 
@@ -111,17 +120,9 @@ abstract class InboxAdapter {
 		);
 
 		if (!$results) {
-			$this->log->debug('Signature verification failed.', [
+			$this->log->debug('***Signature verification failed.', [
 				'id URL parts' => $idParts,
 				'actor' => $response,
-				'message' => $request->getMethod() . ' ' . $request->getRequestTarget() . ' HTTP/' .
-					$request->getProtocolVersion() . "\n" . implode(
-						"\n",
-						array_map(
-							fn($key) => "$key: " . $request->getHeaderLine($key),
-							array_keys($request->getHeaders())
-						)
-					) . "\n\n" . $request->getBody()->__toString(),
 			]);
 		}
 
