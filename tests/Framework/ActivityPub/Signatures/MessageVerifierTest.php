@@ -50,24 +50,26 @@ final class MessageVerifierTest extends TestCase {
 	}
 
 	public function testItVerifiesARealRequest() {
-		$this->assertTrue($this->subject->verify(
-			keyPem: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzOQXkYZN7LoATFNQ3mm/\nSeBxRiI0BKpoRLSELCZR9U4GcZ2wHGTENvc++3h63vgIVXzgjWHSaMj1w+LvG3c4\nJV4FrOFGzrxtQvyFDUyNmihRU2+cxqLQiKuZbUxrKFtyA6hdmiCi8IX41UZiA9QB\nhmXMP0REj/OSth0FS8+o8iMN4kB0Qvq9JSrIkV0Lwv3jJs/LP9QLjX5fgJUVTbdP\npVus9AhLUJjZ3i/KIGehn9bbwg8PnEQOHuEO7lxO0YXetbv7+HQEV+jJAWY/5nJv\nFUTQTIOeGFa8FkdDgYwAxyXDzumrjY69DzXcXxkzro1spagh5wsRC08o3Cyi1mTm\n6QIDAQAB\n-----END PUBLIC KEY-----\n",
-			request: new HttpRequest(
-				verb: HttpVerb::POST,
-				url: 'https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/inbox',
-				headers: [
-					'User-Agent' => 'http.rb/5.1.1 (Mastodon/4.1.4; +https://activitypub.academy/)',
-					'Content-Length' => '469',
-					'Accept-Encoding' => 'gzip',
-					'Content-Type' => 'application/activity+json',
-					'Date' => 'Sun, 14 Jan 2024 21:58:31 GMT',
-					'Digest' => 'SHA-256=drOoNpGTdRGU12Y9fJx0ebwNlD0ZJmD7x63da6cb4PI=',
-					'Signature' => 'keyId="https://activitypub.academy/users/beguca_dedashul#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest content-type",signature="UxXnyOOMRiKwyQD0xTlnA8rch+c732GymNf7/EBlu3z9l2WA971bgE8KM3QwWINE9R1iMRhx5xwtbViFQwxmxSDWKmvTpMej5QZNXmKcxxRSm3zD2DSimN8G6uGfWt31lPd0PqRR34VvD6Gm3IQDgtFDjSmEvJbsxedpQZaR2/Cs1Kqubs9ok/YzN4zMS2kvj0y+T71Db1KPPPEzvo6n+eOJRT44IofwS8z1qxA20h5DubZ2DXLqjKgsW7OVDJTZxzS7oGeubvisABzTEYkOvvDGa95b7vzSCjcmEvAOBdgbeBfHPOeWrmfW2fZyKKfrlyoYNX0fg3WBYU2mzTMQcw=="',
-					'X-Forwarded-Host' => 'smol.blog',
-					'X-Forwarded-Proto' => 'https',
-				],
-				body: '{"@context":"https://www.w3.org/ns/activitystreams","id":"https://activitypub.academy/users/beguca_dedashul#follows/1726/undo","type":"Undo","actor":"https://activitypub.academy/users/beguca_dedashul","object":{"id":"https://activitypub.academy/f3b123fe-c52a-4b51-a095-aa18043744e6","type":"Follow","actor":"https://activitypub.academy/users/beguca_dedashul","object":"https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/actor"}}',
-			)
-		));
+		$key = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzOQXkYZN7LoATFNQ3mm/\nSeBxRiI0BKpoRLSELCZR9U4GcZ2wHGTENvc++3h63vgIVXzgjWHSaMj1w+LvG3c4\nJV4FrOFGzrxtQvyFDUyNmihRU2+cxqLQiKuZbUxrKFtyA6hdmiCi8IX41UZiA9QB\nhmXMP0REj/OSth0FS8+o8iMN4kB0Qvq9JSrIkV0Lwv3jJs/LP9QLjX5fgJUVTbdP\npVus9AhLUJjZ3i/KIGehn9bbwg8PnEQOHuEO7lxO0YXetbv7+HQEV+jJAWY/5nJv\nFUTQTIOeGFa8FkdDgYwAxyXDzumrjY69DzXcXxkzro1spagh5wsRC08o3Cyi1mTm\n6QIDAQAB\n-----END PUBLIC KEY-----\n";
+		$request = new HttpRequest(
+			verb: HttpVerb::POST,
+			url: 'https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/inbox',
+			headers: [
+				'User-Agent' => 'http.rb/5.1.1 (Mastodon/4.1.4; +https://activitypub.academy/)',
+				'Content-Length' => '469',
+				'Accept-Encoding' => 'gzip',
+				'Content-Type' => 'application/activity+json',
+				'Date' => 'Sun, 14 Jan 2024 21:58:31 GMT',
+				'Digest' => 'SHA-256=drOoNpGTdRGU12Y9fJx0ebwNlD0ZJmD7x63da6cb4PI=',
+				'Signature' => 'keyId="https://activitypub.academy/users/beguca_dedashul#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest content-type",signature="UxXnyOOMRiKwyQD0xTlnA8rch+c732GymNf7/EBlu3z9l2WA971bgE8KM3QwWINE9R1iMRhx5xwtbViFQwxmxSDWKmvTpMej5QZNXmKcxxRSm3zD2DSimN8G6uGfWt31lPd0PqRR34VvD6Gm3IQDgtFDjSmEvJbsxedpQZaR2/Cs1Kqubs9ok/YzN4zMS2kvj0y+T71Db1KPPPEzvo6n+eOJRT44IofwS8z1qxA20h5DubZ2DXLqjKgsW7OVDJTZxzS7oGeubvisABzTEYkOvvDGa95b7vzSCjcmEvAOBdgbeBfHPOeWrmfW2fZyKKfrlyoYNX0fg3WBYU2mzTMQcw=="',
+				'X-Forwarded-Host' => 'smol.blog',
+				'X-Forwarded-Proto' => 'https',
+			],
+			body: '{"@context":"https://www.w3.org/ns/activitystreams","id":"https://activitypub.academy/users/beguca_dedashul#follows/1726/undo","type":"Undo","actor":"https://activitypub.academy/users/beguca_dedashul","object":{"id":"https://activitypub.academy/f3b123fe-c52a-4b51-a095-aa18043744e6","type":"Follow","actor":"https://activitypub.academy/users/beguca_dedashul","object":"https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/actor"}}',
+		);
+
+		$this->assertTrue($this->subject->verifyDigest($request));
+		$this->assertEquals('https://activitypub.academy/users/beguca_dedashul#main-key', $this->subject->getKeyId($request));
+		$this->assertTrue($this->subject->verify($request, $key));
 	}
 }
