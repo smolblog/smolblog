@@ -4,18 +4,75 @@ namespace Smolblog\Framework\Infrastructure;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpVerb;
 use Smolblog\Framework\Objects\Keypair;
 use Smolblog\Test\TestCase;
 
 final class HttpSignerTest extends TestCase {
+	private RequestInterface $request;
 	private Keypair $keypair;
+	private string $signature;
+	private LoggerInterface $logger;
+
+	/**
+	 * Test values from https://dinochiesa.github.io/httpsig/
+	 */
 	public function setUp(): void {
-		$this->keypair = Keypair::jsonDeserialize('{"privateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCfQilRaBBSsYft\nXohIBL6QVoCB4zGaIGxSo7bfGTKnC3oZw/PkSSE3g3J8uG/b28fdAvSZKUv5sCrq\nnxPFw1s+IuKeMzunLo39FnkRcpP08jZno7A1oe49GI6HTK2XINXszymfSuEuKpcw\nlpBUAu8Vbr6dtYgsjIIjvBx48uXaAO61dGSVR0Aaxq7BW1yDIaXByXbE+iXG/Sx2\nntg0ol4VEy+uk5ncbFTkKd6BnJ42FPBilESbRhUxI8n2+iDCnXkZtkFs6C8E2WNQ\nkDvpzLutCpRl2FgIrH4RagXqLqfxajQC9rmlI9n9IkYljqgETKPoG2opXnwmMhsQ\nIkv5X3FhAgMBAAECggEAQlLOXD2nVpjij8MnpD59kiTEHdOdC5/nHL9bYCvhQVnx\nPpuxjWe7MqBGZJR22Sv9Xxhk/wgIwPJR3SXkmR6TeBwVHmcdt7EWpsjeIJsD7SWV\n7LFpp9xJGB6K9OPFA0REcvuPTOxlPNG15yE8+A/Eu7tEHO/Fxy+43uLvRJt7h77l\nesDo3dtF1HODmf/al4iCX9AJPHeyE8vbWantW1HWknP9fJ5nMyELR2kU7cIHu+Xc\nGsRJK/SBzh6AlTbgvhqb8HXyvLJ7pPt5tb+5unNc4AR6YJZp9lA49wnQPrjaoDtI\nsXkxGG1mOIoU8MusKVx3OqvYyRdj6rh/xQZ79ow4dQKBgQDL3EoLYIwiKcHoYbT/\nv4euuAOVLXw3oJXn1KMLqtHIrDMOCdTFKqx39TWHDIyt8X754MStAq90sSsR5ry1\nLen9CJfQ0vA0EKvUiGkcW7/aFn8/8I4X9IpJSuO1oUibSR6xCSXZNjfWRzK+ScWm\no9l9DGawMDHys6DprUJ7WTHA5wKBgQDH/ZB6ZyU95Cy0Ka8nq96udubg5v6uI2vY\nETlix6wKlmPQQnTm25lwoZZdAI61utuxCQGTv4RivPSYQAs9QTWLBt4yS6MEDDnz\ngh60h+pGxcu8kBIuxpI5qOynHfBOvI5S6qQCHo1UbGyV7eHaQ1uE0DcSYKYsNlrh\nQCX01yRKdwKBgAYPOjQ0XnX1f8oEfXjMnJ/Y4GJiw7pzj4EglOgX37xzQeE88ZIa\nvp2iMEEfYl8ZOoj64V2zIrv5OCqEDT/laXsX8ktGudUSWckrdNRe9cjpukaQQ+j6\nX9Hl4/bWIG5dMghZGULnlalM3HlDgBh/7ksFP1glVpa8OCA6AivgbtYpAoGBAI74\nC0gl4q7LJtYpEolWyduJLuZK3Hia4+bT8WVXfvsWpgZk6/N5u8iUC80yr9Lk4Vc/\nK/x2pmp70JPi/OXubxuTblcgUUp8fxVAyTigDXBIyKxlhkogNLq5s2yI75kqHMjT\n6ymEs95NoJbSN2p0SsG4pBYkN8dVmER9OmU9RDljAoGBALbSg8f/Y1YGAM4ilpw1\nO4t1M9AfaP9ezqC67CwMI2E0k36AP8cM7OqEZG1BBup3K3U6L9yDnH0ND6LZXUnZ\n8ySPr1jpOYo0NYAwwLHUyL2u5GxYTGPiSuEPOHQ3QT94kOaugho/lmnLia8pbcVd\npCoZvHStMlNiu7hZoYFkD946\n-----END PRIVATE KEY-----","publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn0IpUWgQUrGH7V6ISAS+\nkFaAgeMxmiBsUqO23xkypwt6GcPz5EkhN4NyfLhv29vH3QL0mSlL+bAq6p8TxcNb\nPiLinjM7py6N/RZ5EXKT9PI2Z6OwNaHuPRiOh0ytlyDV7M8pn0rhLiqXMJaQVALv\nFW6+nbWILIyCI7wcePLl2gDutXRklUdAGsauwVtcgyGlwcl2xPolxv0sdp7YNKJe\nFRMvrpOZ3GxU5CnegZyeNhTwYpREm0YVMSPJ9vogwp15GbZBbOgvBNljUJA76cy7\nrQqUZdhYCKx+EWoF6i6n8Wo0Ava5pSPZ/SJGJY6oBEyj6BtqKV58JjIbECJL+V9x\nYQIDAQAB\n-----END PUBLIC KEY-----"}');
+		$this->request = new HttpRequest(
+			verb: HttpVerb::POST,
+			url: 'https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/inbox',
+			headers: [
+				'Host' => 'smol.blog, smol.blog',
+				'User-Agent' => 'http.rb/5.1.1 (Mastodon/4.1.4; +https://activitypub.academy/)',
+				'Content-Length' => '309',
+				'Accept-Encoding' => 'gzip',
+				'Content-Type' => 'application/activity+json',
+				'Date' => 'Thu, 11 Jan 2024 23:37:52 GMT',
+				'Digest' => 'SHA-256=yxwaFwNXclumUjv8VZ6d+C8OS6uWi4dBxHc9LnYC2uU=',
+				'Signature' => 'keyId="https://activitypub.academy/users/beguca_dedashul#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest content-type",signature="Saa8Y6O037bjYCjvW49GM6yPqwWSPsdlXYG8WdD3KG0AzM3ankL2Vvgp/Ofq0ykidvN6DzoYgInza68/QfJrhv6jxjkdkOsyRr3gHBvIK8OUpBfTjsFemUBmYJQx8Klocc+MEObjh9Txs/XrTjPQI4fcnBd3/1095uzMOInlTcrXziGF3io5Wkdhj6cr/0dOEK+d0ItiUhSS6JjkXjAcGXgCyZFy/04hqOn0FsM3awz5OoMm6PbDrYBywlDv4QjqVw1mpgczmYdrfRW3EcMwlXaN1hnlA3kWmyHeE7QwyoFw27pkbIJfzB2AOakQdBcLA5FWJyN2r8KBWaT10PBeJA=="',
+				'X-Forwarded-Host' => 'smol.blog',
+				'X-Forwarded-Proto' => 'https',
+			],
+			body: '{"@context":"https://www.w3.org/ns/activitystreams","id":"https://activitypub.academy/f3b123fe-c52a-4b51-a095-aa18043744e6","type":"Follow","actor":"https://activitypub.academy/users/beguca_dedashul","object":"https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/actor"}',
+		);
+
+		$this->keypair = new Keypair(
+			publicKey: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzOQXkYZN7LoATFNQ3mm/\nSeBxRiI0BKpoRLSELCZR9U4GcZ2wHGTENvc++3h63vgIVXzgjWHSaMj1w+LvG3c4\nJV4FrOFGzrxtQvyFDUyNmihRU2+cxqLQiKuZbUxrKFtyA6hdmiCi8IX41UZiA9QB\nhmXMP0REj/OSth0FS8+o8iMN4kB0Qvq9JSrIkV0Lwv3jJs/LP9QLjX5fgJUVTbdP\npVus9AhLUJjZ3i/KIGehn9bbwg8PnEQOHuEO7lxO0YXetbv7+HQEV+jJAWY/5nJv\nFUTQTIOeGFa8FkdDgYwAxyXDzumrjY69DzXcXxkzro1spagh5wsRC08o3Cyi1mTm\n6QIDAQAB\n-----END PUBLIC KEY-----\n",
+			privateKey: 'invalid',
+		);
+
+		// $this->signature = 'keyId="abcdefg-123", algorithm="rsa-sha256", headers="x-request-id tpp-redirect-uri digest psu-id", signature="H2hAPwRXjVS4ikp/FnqPaJHLNnuLuLmMv0vEsrozPO7CfDu/zSaH0GJU6nKimKtrgkFSwttNd+KoRLQv/OHSk6OICXscc934BiviwrzMBdk3owLZQGllsoDiyOEtlgHsqZsVKKCtDfdY6LpopdZOlzOE1kBrRIlTMxxEYeefWgY+RUH6zPEz9F5cdCYXRDuYZ+NYtKtKzdao0kXriNZeTvj9ls4CNWjRfEEowQF+l+r1x+zi++iO0OmQmkRIDRmkv1YIrYtK6B0BJnngLR358qqORqr9m8qmXPTXA/3GqbmK8INzXuXHf9Zpt7Vs2bNVfqe+Zew5P6doxVplowUkeA=="';
+
+		$this->logger = $this->createMock(LoggerInterface::class);
+		$this->subject = new HttpSigner(logger: $this->logger);
 	}
 
-	public function testItAddsAValidSignatureToAHttpRequest() {
+	public function testItSplitsASignatureHeader() {
+		$expected = [
+			'keyId' => 'https://activitypub.academy/users/beguca_dedashul#main-key',
+			'algorithm' => 'rsa-sha256',
+			'headers' => '(request-target) host date digest content-type',
+			'signature' => 'Saa8Y6O037bjYCjvW49GM6yPqwWSPsdlXYG8WdD3KG0AzM3ankL2Vvgp/Ofq0ykidvN6DzoYgInza68/QfJrhv6jxjkdkOsyRr3gHBvIK8OUpBfTjsFemUBmYJQx8Klocc+MEObjh9Txs/XrTjPQI4fcnBd3/1095uzMOInlTcrXziGF3io5Wkdhj6cr/0dOEK+d0ItiUhSS6JjkXjAcGXgCyZFy/04hqOn0FsM3awz5OoMm6PbDrYBywlDv4QjqVw1mpgczmYdrfRW3EcMwlXaN1hnlA3kWmyHeE7QwyoFw27pkbIJfzB2AOakQdBcLA5FWJyN2r8KBWaT10PBeJA==',
+		];
+
+		$this->assertEquals($expected, $this->subject->getSignatureParts($this->request->getHeaderLine('signature')));
+	}
+
+	public function testItValidatesAGivenSignature() {
+		$signedRequest = $this->request;
+
+		$service = new HttpSigner();
+		$this->assertTrue($service->verify(
+			request: $signedRequest,
+			keyId: 'https://activitypub.academy/users/beguca_dedashul#main-key',
+			keyPem: $this->keypair->publicKey
+		));
+	}
+
+	public function notestItAddsAValidSignatureToAHttpRequest() {
 		$request = (new HttpRequest(
 			verb: HttpVerb::POST,
 			url: 'https://smol.blog/activitypub/inbox',
@@ -42,7 +99,7 @@ final class HttpSignerTest extends TestCase {
 		));
 	}
 
-	public function testItAddsADateHeaderIfNoneExists() {
+	public function notestItAddsADateHeaderIfNoneExists() {
 		$request = new HttpRequest(
 			verb: HttpVerb::POST,
 			url: 'https://smol.blog/activitypub/inbox',
