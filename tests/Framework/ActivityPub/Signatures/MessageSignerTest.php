@@ -8,76 +8,93 @@ use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpVerb;
 use Smolblog\Test\TestCase;
 
+/**
+ * Some tests use the spec from
+ * https://codeberg.org/helge/fediverse-features/src/branch/main/fedi/http_signatures.feature
+ */
 final class MessageSignerTest extends TestCase {
 	private RequestInterface $getRequest;
 	private RequestInterface $postRequest;
 	private Follow $postRequestBody;
+	private string $publicKeyPem;
 	private string $privateKeyPem;
 
 	protected function setUp(): void {
-		$this->getRequest = new HttpRequest(
-			verb: HttpVerb::GET,
-			url: 'https://smol.blog/site/c88e0395-cece-4037-8a2c-7be481a3c1fe/activitypub/actor',
-			headers: ['Accept' => 'application/json'],
-		);
-
-		$this->postRequestBody = new Follow(
-			id: 'https://smol.blog/site/9abfcd19-fbc3-4ca7-bc92-506c1e599b36/activitypub/outbox/c06abf71-9084-4b92-9b29-0d15d7c0cbc7',
-			actor: 'https://smol.blog/site/9abfcd19-fbc3-4ca7-bc92-506c1e599b36/activitypub/actor',
-			object: 'https://smol.blog/site/c88e0395-cece-4037-8a2c-7be481a3c1fe/activitypub/actor',
-		);
-		$this->postRequest = new HttpRequest(
-			verb: HttpVerb::POST,
-			url: 'https://smol.blog/site/c88e0395-cece-4037-8a2c-7be481a3c1fe/activitypub/inbox',
-			body: $this->postRequestBody,
-		);
+		$this->publicKeyPem = <<<EOF
+		-----BEGIN PUBLIC KEY-----
+		MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA15vhFdK272bbGDzLtypo
+		4Nn8mNFY3YSLnrAOX4zZKkNmWmgypgDP8qXjNiVsBf8f+Yk3tHDs58LMf8QDSP09
+		A+zrlWBHN1rLELn0JBgqT9xj8WSobDIjOjFBAy4FKUko7k/IsYwTl/Vnx1tykhPR
+		1UzbaNqN1yQSy0zGbIce/Xhqlzm6u+twyuHVCtbGPcPh7for5o0avKdMwhAXpWMr
+		Noc9L2L/9h3UgoePgAvCE6HTPXEBPesUBlTULcRxMXIZJ7P6eMkb2pGUCDlVF4EN
+		vcxZAG8Pb7HQp9nzVwK4OXZclKsH1YK0G8oBGTxnroBtq7cJbrJvqNMNOO5Yg3cu
+		6QIDAQAB
+		-----END PUBLIC KEY-----
+		EOF;
 
 		$this->privateKeyPem = <<<EOF
 		-----BEGIN PRIVATE KEY-----
-		MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDHo1zjVKkcP9I+
-		jITZX2FVXNSoue5hVJvr5S53bxX/PzznJJO9WlotM02ZiT3fF1HfZPrHVojma7Lk
-		ccXxfXsTYCuH2nvwwXRVpme89ZBugyUwYFFjl3Gy7aHOdQtLL4geaID5OTy+zrhS
-		mDXNSxd8a4ug2uDDv/l2ueMiAcIXzGcS4/afJw03rIycGJrDAlfbwI3ar38l4MCN
-		WdyDDiD+PiYgQDhk59OTFq73ReO7RaNbPAhqHyNURHv3aU8jWEcpz+ET4xGJ1E5m
-		4bYZSCw1IlPzWT0p7Guqu6Jay/UBphlJaKmMVT3keRSj7wTSM7eWtFTtCYwzCRqI
-		tPcqdYrjAgMBAAECggEAFdHiJiqrrR3AofuDzapiHg1eZO6lglfYDulmscEfe11z
-		D6RszWZhss0Hrz9T1t1aonsL+duYbO7ah6Nzyhg36n85YsjbgQ3z5CSi9AE2/w0w
-		dGAipSr5T2AvrjwWtuoEC6bKafL6k7ROayCdyMlrULsEcNlbdam232Yj0CS3DRil
-		nr+VupAtAXNJQPNNTbdSpUcmSvQP2FfEazkwnAZWuvH8zQ6eqXpRAs4hLjzw7F91
-		N6kiRbe2EYWxheQNSMTi6Hq32RxFlFW9LD2DO4FmmKPpZZksMmsMbR61gVrMn6fb
-		2uGXGkaW4xcsqSbm7HcC43FntAnkldIytvb36BHqYQKBgQD0L0aUdOyG52DM3Euw
-		gma33lfvbFGLhiLISTJN/63rJT+4qeTdUQhRarcy4KT9/G8UE+V3UKWWD0uTWOqF
-		HgeA5JmSj7UCP2XWo/iCojb6A6b6YX4iBYiBgpFceZUMjwUgUPr5tgU/D3zbmfyr
-		Z4gwhEZ2DTyNVPbLwCehxn7OswKBgQDRTEmhIdVTnPIydrGjDyh++yoXMLRE4Wir
-		Nnr6XdDVV3MEmhS+wDVWKIvx3ygqI5vtICfJW7xkTc7y/5QDESOcldpo05aSgOL+
-		yO0mtJ+Krp9Wg4EM7rypJChSGavrQUF1h+fO72Bt/gwiudXBVUzgp2pc6Rt+Ca5c
-		m9FiuEdrEQKBgGncRQD/X7tse+7UYov3PIjh/8VwdDnEwTeLZB+khMW4tFNedDXu
-		d2i0lw+bjGwAEDfoGEcN03umzeDnX2SujBo5AMslOhfrXD8dfxNDOApTowRRV9lw
-		BKoA7PvmSdPT/SjxcpznaIbaNAsQSxYUIFrIPbPYMTQkbYoPmB7uavM5AoGAEyye
-		AjkLRiG2vpDJLVsSJq/z5zP7D+RmpmjTU2SM4T6ltuI2zFLnkAEe8QW0tEeW3V54
-		xqW02KuYLgLkGHPVg17nJ3ta7AkKwrS9pTIe+6GLz200wW6NsiEx4HOhoGfWC2Js
-		BjU/7FO94OCNiKy74kj0IZbpgd55LtrHj/e580ECgYEAikgRz3kLhQJ0IjBs1mL+
-		Ocs6e8raigsiONEN0Kqz66gR63dHC1aY/RGjjBelmfLU0j/ocirekU5U64uZSFvW
-		FncWb8OAtqBvxxsmuPeNhJbByqkuX60eqpwG1WdROV9IE1NjPuRc/RgOyNwHwOrU
-		/XTNPCTswV4QAAsfIrRWJbM=
+		MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDXm+EV0rbvZtsY
+		PMu3Kmjg2fyY0VjdhIuesA5fjNkqQ2ZaaDKmAM/ypeM2JWwF/x/5iTe0cOznwsx/
+		xANI/T0D7OuVYEc3WssQufQkGCpP3GPxZKhsMiM6MUEDLgUpSSjuT8ixjBOX9WfH
+		W3KSE9HVTNto2o3XJBLLTMZshx79eGqXObq763DK4dUK1sY9w+Ht+ivmjRq8p0zC
+		EBelYys2hz0vYv/2HdSCh4+AC8ITodM9cQE96xQGVNQtxHExchkns/p4yRvakZQI
+		OVUXgQ29zFkAbw9vsdCn2fNXArg5dlyUqwfVgrQbygEZPGeugG2rtwlusm+o0w04
+		7liDdy7pAgMBAAECggEAS9TtY4mLAcSBRpMLa06lOIAy0WTABpk5qgRt6blWIAE4
+		nI+NUMl0WflyYnbi+XDzxAY462PUTuc6ma1NIny+2wSXDyCfq55pUWa1sYQ2TYRM
+		OniWrAcuUKdGIGItOooatUamZZvIwGd1qq5FK4+A+65edRB5VrO/UHWeTElx4t+z
+		0SUyfbpeCHvuEEK3OyY464V4ZW/D/zAAONaCF3n+FY9uBS0+9LEme0xvaBq24oF9
+		zmbFJ5DjFSRpNVouGRmO03Uh9+uNrTYkcylDNgQaFCt7WcQO/3lCs+dqNf2psIht
+		PCbLRqfXQSjQ6gQbnYPGmIFesVVwJpSyMXpFMcgISQKBgQDfBsmCBN0pFib4vaMf
+		1KSLVxg7DFFiELf1D0ok4rSa7H5eo5flNND9xu+ESWQpcq9J0PVGZqfX7pen9EJV
+		HmNPMYsAejTqHM/1bg3TdW3A4Xn0I2ShlZlNK0AzLYZRIBF0ZiCWunZBt8xjSLTm
+		BGHZxvho1TZIffuudcxP5olY3wKBgQD3fFjQQt/bw/2JYUBFvjPiVOJ5j5MzaGLx
+		gtpDMUFTuG/DPXUvTWp6xIkQj4xO5D9SfkTqBEPOGH/zc7CVoTMsh5vHDJ9fKE/l
+		FynQaCzBOrU+zKeHvBscS91orF0nNrD3JYtb4GUe1oSZ/BlbwHjZMZQOAssaLDs1
+		Bdq5SpLJNwKBgDXiU+k/95cnrP7IApN8Ms0fm9EYZslEtM1WhllnFK+hl96Rs+9C
+		1YOa/t99Q9/nv4YcIEaEIuU+1hFUKHqcPu4xUB4raIFvuKbZkimW44+IaoibzIJl
+		vIYyfu5ef2c2UkFHM3R3VH8IQy9xr5MrV+Df+8CIUvcsyRQbjeN4FZMNAoGBAOKB
+		NxPcsN+FYC11CYsLSpcyE1koc5PQTQY3OaXXla+XFQr+25qgYvzblYrHpqWptt68
+		XDxGDPy6ZZieYJaBw8FUl9k0j0RbM8w7R/TK83MiVTGVwxqyqalbMdgUMOmr34lD
+		HmnHVSVFNnVsSpUz8ibufk/YdKSOqN2dbxK40uE/AoGBALGrR5FU2u1vcsUj1IvT
+		epfA5+8kiQ5MdUWU+E7ORM+SRlnicsdS/IPT4KREBck/+GvXY/XZdMYT+T3a4o3P
+		R4O3/2egqTchuPkwfSAy7L8jt2GNzFvxmcrvpKYAZzjh1KCrZ15OYr7ZhlEWs6MQ
+		RbdDq36O45uplOe0heeOsPhj
 		-----END PRIVATE KEY-----
 		EOF;
 
 		$this->subject = new MessageSigner();
 	}
 
-	public function testItSignsAPostRequest() {
-		$request = $this->postRequest->
-			withAddedHeader('Date', 'Tue, 14 Jan 2014 18:50:38 GMT')->
-			withAddedHeader('Digest', 'SHA256=un7b964+PCST/h56Qvz9ejegIi6idGxvmwvrFP4DKcY=');
-		$keyId = 'https://smol.blog/site/c88e0395-cece-4037-8a2c-7be481a3c1fe/activitypub/actor';
-		$expected = 'keyId="https://smol.blog/site/c88e0395-cece-4037-8a2c-7be481a3c1fe/activitypub/actor",algorithm="rsa-sha256",headers="(request-target) host date digest content-type",signature="GJif5eYBq3eaQ+AOh5IRc5xzG0RoDwBGqQXJzpJkflvWblE9GHqx55Wb9WhmKUmuNLAkshoZ5DvF21zb0xo1iu/i/WJGRDpUo2TMxBaoyKR16WD+0uWkR+AX2+QSEK2SjZ8WwK7aHULPxWJMRnZ3E5TUREOhc5BZHid2UdhFUS5p/9KdmCcz503QNbKrqiUuXUxcZ75alWjJtKTn5x4E2JPGGUJ/5oyKJAsyrQeS3cabDy2wpWXI6//wTZPDMgrVab8Vvkhi34ErxKPXp96SZp9O4i1RzPTCNcbOIFaUyquxkv0rhrWTO/4II/jIlT5tLVg9rL7iqDqm08Nu+eWKvw=="';
-
-		echo (new class() { use SignatureKit { generateSignatureSource as public; }})->generateSignatureSource(
-			$request,
-			['(request-target)', 'host', 'date', 'digest', 'content-type'],
+	public function testItSignsTheGetRequestFromTheFediSpec() {
+		$request = new HttpRequest(
+			verb: HttpVerb::GET,
+			url: 'https://myhost.example/path/to/resource',
+			headers: ['Date' => 'Wed, 15 Mar 2023 17:28:15 GMT'],
 		);
+		$keyId = 'https://remote.example/actor#key';
+		$expected = 'keyId="https://remote.example/actor#key",algorithm="rsa-sha256",headers="(request-target) host date",signature="hUW2jMUkhiKTmAoqgq7CDz0l4nYiulbVNZflKu0Rxs34FyBs0zkBKLZLUnR35ptOvsZA7hyFOZbmK9VTw2VnoCvUYDPUb5VyO3MRpLv0pfXNExQEWuBMEcdvXTo30A0WIDSL95u7a6sQREjKKHD5+edW85WhhkqhPMtGpHe95cMItIBv6K5gACrsOYf8TyhtYqBxz8Et0iwoHnMzMCAHN4C+0nsGjqIfxlSqUSMrptjjov3EBEnVii9SEaWCH8AUE9kfh3FeZkT+v9eIDZdhj4+opnJlb9q2+7m/7YH0lxaXmqro0fhRFTd832wY/81LULix/pWTOmuJthpUF9w6jw=="';
 
-		$this->assertEquals($expected, $this->subject->sign($request, $keyId, $this->privateKeyPem)->getHeaderLine('signature'));
+		$signed = $this->subject->sign($request, $keyId, $this->privateKeyPem);
+
+		$this->assertEquals($expected, $signed->getHeaderLine('signature'));
+	}
+
+	public function testItDigestsAndSignsThePostRequestFromTheFediSpec() {
+		$request = new HttpRequest(
+			verb: HttpVerb::POST,
+			url: 'https://myhost.example/path/to/resource',
+			headers: ['Date' => 'Wed, 15 Mar 2023 17:28:15 GMT'],
+			body: '{"cows": "are the best"}',
+		);
+		$keyId = 'https://remote.example/actor#key';
+
+		$expectedHash = 'sha-256=VOV9b4OFUAdF0mGBVK62bE+PT3t0UtTEfq7hNT3zv9U=';
+		$expected = 'keyId="https://remote.example/actor#key",algorithm="rsa-sha256",headers="(request-target) host date digest",signature="gat6knmRUKkFUT2Pz66fjPXfhmUPx8peccozPFeGDrOixfjgmmyvaVgknnINlC7k9xE67//rVy5On7esftVuSzL4z39tbFd9WsPvQ+nDuFynD1q8vPRt4BLNDr4WbxG+jLPQJBPoHReaZqPe/nPSzpfTU9qNKpLWx78yoYkW1ag71on74M8K/X7x6DNq0TBJQqxsADsfyiOeDftPv3AonBZOQBYP9fucBKmCurRNXyn3jdaYGW+cDlMQECBI78yd32VKIAJUZVHbVn7l7qcNLfywwetMfQbdoJtHrpt8JT0cbZSpe7D4Rn6eNBmTr5DVIW+V0M4TMhoWwAzAv6Ka/w=="';
+
+		$signed = $this->subject->sign($request, $keyId, $this->privateKeyPem);
+
+		$this->assertEquals($expectedHash, $signed->getHeaderLine('digest'));
+		$this->assertEquals($expected, $signed->getHeaderLine('signature'));
 	}
 }

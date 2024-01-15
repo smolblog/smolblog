@@ -29,7 +29,7 @@ trait SignatureKit {
 		}
 
 		$digest = base64_encode(hash('sha256', $request->getBody()->__toString(), true));
-		return $request->withAddedHeader('Digest', "SHA-256=$digest");
+		return $request->withAddedHeader('Digest', "sha-256=$digest");
 	}
 
 	/**

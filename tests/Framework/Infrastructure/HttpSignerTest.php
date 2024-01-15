@@ -47,18 +47,7 @@ final class HttpSignerTest extends TestCase {
 		// $this->signature = 'keyId="abcdefg-123", algorithm="rsa-sha256", headers="x-request-id tpp-redirect-uri digest psu-id", signature="H2hAPwRXjVS4ikp/FnqPaJHLNnuLuLmMv0vEsrozPO7CfDu/zSaH0GJU6nKimKtrgkFSwttNd+KoRLQv/OHSk6OICXscc934BiviwrzMBdk3owLZQGllsoDiyOEtlgHsqZsVKKCtDfdY6LpopdZOlzOE1kBrRIlTMxxEYeefWgY+RUH6zPEz9F5cdCYXRDuYZ+NYtKtKzdao0kXriNZeTvj9ls4CNWjRfEEowQF+l+r1x+zi++iO0OmQmkRIDRmkv1YIrYtK6B0BJnngLR358qqORqr9m8qmXPTXA/3GqbmK8INzXuXHf9Zpt7Vs2bNVfqe+Zew5P6doxVplowUkeA=="';
 
 		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->subject = new HttpSigner(logger: $this->logger);
-	}
-
-	public function testItSplitsASignatureHeader() {
-		$expected = [
-			'keyId' => 'https://activitypub.academy/users/beguca_dedashul#main-key',
-			'algorithm' => 'rsa-sha256',
-			'headers' => '(request-target) host date digest content-type',
-			'signature' => 'Saa8Y6O037bjYCjvW49GM6yPqwWSPsdlXYG8WdD3KG0AzM3ankL2Vvgp/Ofq0ykidvN6DzoYgInza68/QfJrhv6jxjkdkOsyRr3gHBvIK8OUpBfTjsFemUBmYJQx8Klocc+MEObjh9Txs/XrTjPQI4fcnBd3/1095uzMOInlTcrXziGF3io5Wkdhj6cr/0dOEK+d0ItiUhSS6JjkXjAcGXgCyZFy/04hqOn0FsM3awz5OoMm6PbDrYBywlDv4QjqVw1mpgczmYdrfRW3EcMwlXaN1hnlA3kWmyHeE7QwyoFw27pkbIJfzB2AOakQdBcLA5FWJyN2r8KBWaT10PBeJA==',
-		];
-
-		$this->assertEquals($expected, $this->subject->getSignatureParts($this->request->getHeaderLine('signature')));
+		$this->subject = new HttpSigner();
 	}
 
 	public function testItValidatesAGivenSignature() {
