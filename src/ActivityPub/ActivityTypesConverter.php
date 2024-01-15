@@ -7,6 +7,8 @@ use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Site\Site;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
+use Smolblog\Framework\ActivityPub\Objects\Actor;
+use Smolblog\Framework\ActivityPub\Objects\ActorType;
 use Smolblog\Framework\ActivityPub\Objects\Note;
 use Smolblog\Markdown\SmolblogMarkdown;
 
@@ -107,5 +109,26 @@ class ActivityTypesConverter {
 		}//end switch
 
 		return $apObject;
+	}
+
+	/**
+	 * Create an Actor from a Site.
+	 *
+	 * @param Site $site Site to convert.
+	 * @return Actor
+	 */
+	public function actorFromSite(Site $site): Actor {
+		return new Actor(
+			id: $this->env->getApiUrl("/site/$site->id/activitypub/actor"),
+			type: ActorType::Person,
+			inbox: $this->env->getApiUrl("/site/$site->id/activitypub/inbox"),
+			outbox: $this->env->getApiUrl("/site/$site->id/activitypub/outbox"),
+			preferredUsername: $site->handle,
+			url: $site->baseUrl,
+			name: $site->displayName,
+			summary: $site->description,
+			endpoints: ['sharedInbox' => $this->env->getApiUrl("/activitypub/inbox")],
+			publicKeyPem: $site->publicKey,
+		);
 	}
 }

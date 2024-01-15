@@ -6,6 +6,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Framework\ActivityPub\MessageSender;
+use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\Infrastructure\HttpSigner;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
@@ -58,7 +59,8 @@ class Model extends DomainModel {
 		],
 		InboxService::class => [
 			'bus' => MessageBus::class,
-			'fetcher' => ClientInterface::class,
+			'at' => ActivityTypesConverter::class,
+			'getter' => ObjectGetter::class,
 			'signer' => HttpSigner::class,
 			'log' => LoggerInterface::class,
 		],

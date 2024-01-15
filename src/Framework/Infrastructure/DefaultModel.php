@@ -10,6 +10,7 @@ use Psr\Log\NullLogger;
 use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\MessageSigner;
 use Smolblog\Framework\ActivityPub\MessageVerifier;
+use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -47,5 +48,9 @@ class DefaultModel extends DomainModel {
 		],
 		MessageSigner::class => HttpSigner::class,
 		MessageVerifier::class => HttpSigner::class,
+		ObjectGetter::class => [
+			'fetcher' => ClientInterface::class,
+			'signer' => MessageSigner::class,
+		],
 	];
 }
