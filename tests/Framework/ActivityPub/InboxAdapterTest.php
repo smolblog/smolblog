@@ -12,6 +12,7 @@ use Smolblog\Framework\ActivityPub\Objects\ActorType;
 use Smolblog\Framework\ActivityPub\Objects\Delete;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
 use Smolblog\Framework\ActivityPub\Objects\Undo;
+use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\HttpVerb;
@@ -22,19 +23,19 @@ use Smolblog\Test\TestCase;
 final class InboxAdapterTest extends TestCase {
 	use HttpMessageComparisonTestKit;
 
-	private ClientInterface $httpClient;
+	private ObjectGetter $getter;
 	private MessageVerifier $verifier;
 	private LoggerInterface $logger;
 	private Identifier $inboxKey;
 
 	protected function setUp(): void {
-		$this->httpClient = $this->createMock(ClientInterface::class);
+		$this->getter = $this->createMock(ObjectGetter::class);
 		$this->verifier = $this->createMock(MessageVerifier::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->inboxKey = $this->randomId();
 
 		$this->subject = new class(
-			fetcher: $this->httpClient,
+			getter: $this->getter,
 			verifier: $this->verifier,
 			log: $this->logger,
 			inbox: new InboxRequestContext(inboxKey: $this->inboxKey),
@@ -66,7 +67,7 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->httpClient->expects($this->once())->method('sendRequest')->with(
+		$this->getter->expects($this->once())->method('get')->with(
 			$this->httpMessageEqualTo(new HttpRequest(
 				verb: HttpVerb::GET,
 				url: "$message->actor#publicKey",
@@ -144,9 +145,9 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
-		(new class(fetcher: $this->httpClient) extends InboxAdapter {})->handleRequest($request);
+		(new class(fetcher: $this->getter) extends InboxAdapter {})->handleRequest($request);
 	}
 
 	public function testItWillFailVerificationIfTheKeyIdIsNotAUrl() {
@@ -162,7 +163,7 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
 		$this->verifier->expects($this->never())->method('verify');
 
@@ -188,7 +189,7 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->httpClient->expects($this->once())->method('sendRequest')->with(
+		$this->getter->expects($this->once())->method('get')->with(
 			$this->httpMessageEqualTo(new HttpRequest(
 				verb: HttpVerb::GET,
 				url: "$message->actor#publicKey",
@@ -227,7 +228,7 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->httpClient->expects($this->once())->method('sendRequest')->with(
+		$this->getter->expects($this->once())->method('get')->with(
 			$this->httpMessageEqualTo(new HttpRequest(
 				verb: HttpVerb::GET,
 				url: "$message->actor#publicKey",
@@ -259,7 +260,7 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->httpClient->expects($this->once())->method('sendRequest')->with(
+		$this->getter->expects($this->once())->method('get')->with(
 			$this->httpMessageEqualTo(new HttpRequest(
 				verb: HttpVerb::GET,
 				url: "$message->actor#publicKey",
@@ -303,7 +304,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Follow request received',
@@ -327,7 +328,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Undo Follow request received',
@@ -352,7 +353,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->once())->method('sendRequest')->with(
+		$this->getter->expects($this->once())->method('get')->with(
 			$this->httpMessageEqualTo(new HttpRequest(
 				verb: HttpVerb::GET,
 				url: $follow->id,
@@ -402,7 +403,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unhandled Undo request received',
@@ -425,7 +426,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Delete Actor request received',
@@ -449,15 +450,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->once())->method('sendRequest')->with(
-			$this->httpMessageEqualTo(new HttpRequest(
-				verb: HttpVerb::GET,
-				url: $actor->id,
-				headers: ['Accept' => 'application/json'],
-			))
-		)->willReturn(new HttpResponse(
-			body: $actor
-		));
+		$this->getter->expects($this->once())->method('get')->with($actor->id)->willReturn($actor);
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Delete Actor request received',
@@ -499,7 +492,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unhandled Delete request received',
@@ -522,7 +515,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->httpClient->expects($this->never())->method('sendRequest');
+		$this->getter->expects($this->never())->method('get');
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unknown ActivityPub message received',

@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Smolblog\Framework\ActivityPub\Objects\Accept;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
+use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
 use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\HttpVerb;

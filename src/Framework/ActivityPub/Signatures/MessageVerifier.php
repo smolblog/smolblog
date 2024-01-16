@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\ActivityPub\Signatures;
 
-use phpseclib3\Crypt\PublicKeyLoader;
+use DateTimeImmutable;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -15,31 +15,48 @@ class MessageVerifier {
 	use SignatureKit;
 
 	/**
+	 * Seconds until an incoming request is considered "expired." Currently 1 day.
+	 */
+	public const SECONDS_UNTIL_REQUEST_EXPIRED = 60 * 60 * 24;
+
+	/**
+	 * Verify the request date, digest, and signature.
+	 *
+	 * @param RequestInterface $request Request that has a signature.
+	 * @param string           $keyPem  Public key to use to verify the request.
+	 * @return boolean
+	 */
+	public function verify(RequestInterface $request, string $keyPem): bool {
+		if ($request->hasHeader('date')) {
+			$headerDate = new DateTimeImmutable($request->getHeaderLine('date'));
+			if (time() - $headerDate->getTimestamp() > self::SECONDS_UNTIL_REQUEST_EXPIRED) {
+				return false;
+			}
+		}
+
+		return $this->verifyDigest($request) && $this->verifySignature($request, $keyPem);
+	}
+
+	/**
 	 * Verify that the given request is signed by the given key.
 	 *
 	 * If the request is not signed, this function will return false.
 	 *
-	 * @param RequestInterface $request Request that needs a signature.
+	 * @param RequestInterface $request Request that has a signature.
 	 * @param string           $keyPem  Public key to use to verify the request.
 	 * @return RequestInterface
 	 */
-	public function verify(RequestInterface $request, string $keyPem): bool {
+	public function verifySignature(RequestInterface $request, string $keyPem): bool {
 		if (!$request->hasHeader('signature')) {
 			// This function answers the question "Is this request signed by this key?"
 			// If the request is not signed, then the answer is "no".
 			return false;
 		}
 
-		if (!$this->verifyDigest($request)) {
-			// If the digest does not match, the signature is invalid anyway.
-			return false;
-		}
-
 		$parts = $this->getSignatureHeaderParts($request->getHeaderLine('signature'));
 		$signingString = $this->generateSignatureSource($request, explode(' ', $parts['headers']));
 
-		$key = PublicKeyLoader::loadPublicKey($keyPem);
-		return $key->verify($signingString, $parts['signature']);
+		return 1 === openssl_verify($signingString, base64_decode($parts['signature']), $keyPem, OPENSSL_ALGO_SHA256);
 	}
 
 	/**

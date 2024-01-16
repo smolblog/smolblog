@@ -2,12 +2,11 @@
 
 namespace Smolblog\ActivityPub;
 
-use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
-use Smolblog\Framework\Infrastructure\HttpSigner;
+use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -61,7 +60,7 @@ class Model extends DomainModel {
 			'bus' => MessageBus::class,
 			'at' => ActivityTypesConverter::class,
 			'getter' => ObjectGetter::class,
-			'signer' => HttpSigner::class,
+			'signer' => MessageSigner::class,
 			'log' => LoggerInterface::class,
 		],
 	];

@@ -8,8 +8,8 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Smolblog\Framework\ActivityPub\MessageSender;
-use Smolblog\Framework\ActivityPub\MessageSigner;
-use Smolblog\Framework\ActivityPub\MessageVerifier;
+use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
+use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
@@ -36,7 +36,6 @@ class DefaultModel extends DomainModel {
 		QueryMemoizationService::class => [],
 		SecurityCheckService::class => ['messageBus' => MessageBus::class],
 		SmolblogMarkdown::class => [],
-		HttpSigner::class => [],
 		KeypairGenerator::class => [],
 		LoggerInterface::class => NullLogger::class,
 		NullLogger::class => [],
@@ -46,8 +45,8 @@ class DefaultModel extends DomainModel {
 			'log' => LoggerInterface::class,
 			// 'throwOnError' => self::class . '::false',
 		],
-		MessageSigner::class => HttpSigner::class,
-		MessageVerifier::class => HttpSigner::class,
+		MessageSigner::class => [],
+		MessageVerifier::class => [],
 		ObjectGetter::class => [
 			'fetcher' => ClientInterface::class,
 			'signer' => MessageSigner::class,

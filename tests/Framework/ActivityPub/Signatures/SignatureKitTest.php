@@ -58,7 +58,7 @@ final class SignatureKitTest extends TestCase {
 		$expected = 'un7b964+PCST/h56Qvz9ejegIi6idGxvmwvrFP4DKcY=';
 
 		$this->assertEquals(
-			"SHA-256=$expected",
+			"sha-256=$expected",
 			$this->subject->addDigest($this->postRequest)->getHeaderLine('digest')
 		);
 	}

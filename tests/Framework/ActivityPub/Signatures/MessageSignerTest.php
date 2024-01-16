@@ -13,25 +13,9 @@ use Smolblog\Test\TestCase;
  * https://codeberg.org/helge/fediverse-features/src/branch/main/fedi/http_signatures.feature
  */
 final class MessageSignerTest extends TestCase {
-	private RequestInterface $getRequest;
-	private RequestInterface $postRequest;
-	private Follow $postRequestBody;
-	private string $publicKeyPem;
 	private string $privateKeyPem;
 
 	protected function setUp(): void {
-		$this->publicKeyPem = <<<EOF
-		-----BEGIN PUBLIC KEY-----
-		MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA15vhFdK272bbGDzLtypo
-		4Nn8mNFY3YSLnrAOX4zZKkNmWmgypgDP8qXjNiVsBf8f+Yk3tHDs58LMf8QDSP09
-		A+zrlWBHN1rLELn0JBgqT9xj8WSobDIjOjFBAy4FKUko7k/IsYwTl/Vnx1tykhPR
-		1UzbaNqN1yQSy0zGbIce/Xhqlzm6u+twyuHVCtbGPcPh7for5o0avKdMwhAXpWMr
-		Noc9L2L/9h3UgoePgAvCE6HTPXEBPesUBlTULcRxMXIZJ7P6eMkb2pGUCDlVF4EN
-		vcxZAG8Pb7HQp9nzVwK4OXZclKsH1YK0G8oBGTxnroBtq7cJbrJvqNMNOO5Yg3cu
-		6QIDAQAB
-		-----END PUBLIC KEY-----
-		EOF;
-
 		$this->privateKeyPem = <<<EOF
 		-----BEGIN PRIVATE KEY-----
 		MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDXm+EV0rbvZtsY
