@@ -59,8 +59,8 @@ final class MessageVerifierTest extends TestCase {
 		$this->assertTrue($this->subject->verifySignature($request, $this->publicKeyPem));
 	}
 
-	public function xtestItVerifiesARealRequest() {
-		$key = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzOQXkYZN7LoATFNQ3mm/\nSeBxRiI0BKpoRLSELCZR9U4GcZ2wHGTENvc++3h63vgIVXzgjWHSaMj1w+LvG3c4\nJV4FrOFGzrxtQvyFDUyNmihRU2+cxqLQiKuZbUxrKFtyA6hdmiCi8IX41UZiA9QB\nhmXMP0REj/OSth0FS8+o8iMN4kB0Qvq9JSrIkV0Lwv3jJs/LP9QLjX5fgJUVTbdP\npVus9AhLUJjZ3i/KIGehn9bbwg8PnEQOHuEO7lxO0YXetbv7+HQEV+jJAWY/5nJv\nFUTQTIOeGFa8FkdDgYwAxyXDzumrjY69DzXcXxkzro1spagh5wsRC08o3Cyi1mTm\n6QIDAQAB\n-----END PUBLIC KEY-----\n";
+	public function testItVerifiesARealRequest() {
+		$key = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsONgyQbTwQRBCPL6jtQy\nQfs9Zz8M+XcdTdnMxuoCR88gD3ikdcjwtYH3qWtR2O8wA6Z8PRouNr5quom7pAUt\nixMHdeQIw+aA/ja2ndO7aGZfjcZ7xTGDhE/mwrh6IpH4rCXqs5IFa+h80j3PS2Ab\n4oRGbORL+uI9qjHCzwFUCxjIpqklzwA6lkqQEgvaCgnc6RNrzC075wM7JWqsLmOq\nfecNaj+H624OseeO1GApU3EOOL+qZX+13m/sQanZ6GvDZZhlh81tO6/sqMOOWiZA\nEL8+ZXoGkF7B9deAyHRdm17zFolzydlFgl/X/CX6ZNcREUAsbibP8QoO5+4HmUEK\nowIDAQAB\n-----END PUBLIC KEY-----";
 		$request = new HttpRequest(
 			verb: HttpVerb::POST,
 			url: 'https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/inbox',
@@ -69,17 +69,17 @@ final class MessageVerifierTest extends TestCase {
 				'Content-Length' => '469',
 				'Accept-Encoding' => 'gzip',
 				'Content-Type' => 'application/activity+json',
-				'Date' => 'Sun, 14 Jan 2024 21:58:31 GMT',
-				'Digest' => 'SHA-256=drOoNpGTdRGU12Y9fJx0ebwNlD0ZJmD7x63da6cb4PI=',
-				'Signature' => 'keyId="https://activitypub.academy/users/beguca_dedashul#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest content-type",signature="UxXnyOOMRiKwyQD0xTlnA8rch+c732GymNf7/EBlu3z9l2WA971bgE8KM3QwWINE9R1iMRhx5xwtbViFQwxmxSDWKmvTpMej5QZNXmKcxxRSm3zD2DSimN8G6uGfWt31lPd0PqRR34VvD6Gm3IQDgtFDjSmEvJbsxedpQZaR2/Cs1Kqubs9ok/YzN4zMS2kvj0y+T71Db1KPPPEzvo6n+eOJRT44IofwS8z1qxA20h5DubZ2DXLqjKgsW7OVDJTZxzS7oGeubvisABzTEYkOvvDGa95b7vzSCjcmEvAOBdgbeBfHPOeWrmfW2fZyKKfrlyoYNX0fg3WBYU2mzTMQcw=="',
+				'Date' => 'Tue, 16 Jan 2024 02:22:36 GMT',
+				'Digest' => 'SHA-256=2iM6tHWBVUf+dXrjvU5dFwPd0kvPeW22Bzxv85MYyqA=',
+				'Signature' => 'keyId="https://activitypub.academy/users/anules_vaabis#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest content-type",signature="eb170loU3zsZn/gbze1xorpEsCtroyp/vrVEBOj7P2XaV1X89vbFyAnFaod3d1F9A+J48aB0fN067yBDcp/wVVDwnVKdOLknrl37zd7RlF7R+TWEWesMJqLOmRKHlbK8eNXOlMbMuionMlqr0VuwjcqyXXd9uWseHpEHjnoLNn2CqGILCzQfAsTDBiiYiBADOLuxR/PfsuJzsHmKi7++os9QrjJ5Q9GI3mkn3YfEW5HTfc136Z4W3EEp6zMxTGBZ7YFJKtmfZFVCRwQI31dkv4a5jpPPZE+fGbCipFe59+v0WKgPGlW02YOwDZMeJRT1omFqijYqepHrFyT9HJUfKA=="',
 				'X-Forwarded-Host' => 'smol.blog',
 				'X-Forwarded-Proto' => 'https',
 			],
-			body: '{"@context":"https://www.w3.org/ns/activitystreams","id":"https://activitypub.academy/users/beguca_dedashul#follows/1726/undo","type":"Undo","actor":"https://activitypub.academy/users/beguca_dedashul","object":{"id":"https://activitypub.academy/f3b123fe-c52a-4b51-a095-aa18043744e6","type":"Follow","actor":"https://activitypub.academy/users/beguca_dedashul","object":"https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/actor"}}',
+			body: '{"@context":"https://www.w3.org/ns/activitystreams","id":"https://activitypub.academy/users/anules_vaabis#follows/1749/undo","type":"Undo","actor":"https://activitypub.academy/users/anules_vaabis","object":{"id":"https://activitypub.academy/f636a5fd-4629-47c8-b134-45dd4945eda1","type":"Follow","actor":"https://activitypub.academy/users/anules_vaabis","object":"https://smol.blog/wp-json/smolblog/v2/site/426a9e54-435f-4135-9252-0d0a6ddd1dba/activitypub/actor"}}',
 		);
 
 		$this->assertTrue($this->subject->verifyDigest($request));
-		$this->assertEquals('https://activitypub.academy/users/beguca_dedashul#main-key', $this->subject->getKeyId($request));
-		$this->assertTrue($this->subject->verify($request, $key));
+		$this->assertEquals('https://activitypub.academy/users/anules_vaabis#main-key', $this->subject->getKeyId($request));
+		$this->assertTrue($this->subject->verifySignature($request, $key));
 	}
 }

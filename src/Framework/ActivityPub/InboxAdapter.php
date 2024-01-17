@@ -58,15 +58,11 @@ abstract class InboxAdapter {
 			!$this->verifyRequest($request, $inboxContext)
 		) {
 			$this->log->info('ActivityPub message rejected for invalid signature.', [
-				'message' => $request->getMethod() . ' ' . $request->getRequestTarget() . ' HTTP/' .
-					$request->getProtocolVersion() . "\n" . implode(
-						"\n",
-						array_map(
-							fn($key) => "$key: " . $request->getHeaderLine($key),
-							array_keys($request->getHeaders())
-						)
-					) . "\n\n" . $request->getBody()->__toString(),
-			]);
+					'method' => $request->getMethod(),
+					'target' => $request->getRequestTarget(),
+					'headers' => $request->getHeaders(),
+					'body' => $request->getBody()->__toString(),
+				]);
 			return;
 		}
 
@@ -106,17 +102,15 @@ abstract class InboxAdapter {
 		$idParts = parse_url($sigUrl);
 
 		if (!$idParts || !(isset($idParts['scheme']) && isset($idParts['host']))) {
-			$this->log->debug('***No signature URL', [$sigMatches, $sigUrl, $idParts]);
 			return false;
 		}
 
-		$response = $this->getter->get(
+		$response = $this->getter?->get(
 			url: $sigUrl,
 			signedWithPrivateKey: $inboxContext->privateKeyPem,
 			withKeyId: $inboxContext->inboxActor?->publicKey->id,
 		);
 		if (!isset($response->publicKey)) {
-			$this->log->debug('***No public key', ['response' => $response, 'url' => $sigUrl]);
 			return false;
 		}
 
@@ -124,13 +118,6 @@ abstract class InboxAdapter {
 			request: $request,
 			keyPem: $response->publicKey->publicKeyPem,
 		);
-
-		if (!$results) {
-			$this->log->debug('***Signature verification failed.', [
-				'id URL parts' => $idParts,
-				'actor' => $response,
-			]);
-		}
 
 		return $results;
 	}
@@ -142,7 +129,7 @@ abstract class InboxAdapter {
 	 * @return InboxRequestContext Object identifying the inbox being hit.
 	 */
 	protected function determineInbox(ServerRequestInterface $request): ?InboxRequestContext {
-		return null;
+		return new InboxRequestContext(inboxKey: null);
 	}
 
 	/**
@@ -153,7 +140,7 @@ abstract class InboxAdapter {
 	 * @return void
 	 */
 	protected function handleUndo(Undo $message, InboxRequestContext $inboxContext): void {
-		$object = is_string($message->object) ? $this->getter->get(
+		$object = is_string($message->object) ? $this->getter?->get(
 			url: $message->object,
 			signedWithPrivateKey: $inboxContext->privateKeyPem,
 			withKeyId: $inboxContext->inboxActor?->publicKey->id,
@@ -182,7 +169,7 @@ abstract class InboxAdapter {
 	 * @return void
 	 */
 	protected function handleDelete(Delete $message, InboxRequestContext $inboxContext): void {
-		$object = is_string($message->object) ? $this->getter->get(
+		$object = is_string($message->object) ? $this->getter?->get(
 			url: $message->object,
 			signedWithPrivateKey: $inboxContext->privateKeyPem,
 			withKeyId: $inboxContext->inboxActor?->publicKey->id,

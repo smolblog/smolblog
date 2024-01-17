@@ -7,6 +7,7 @@ use Smolblog\Api\ApiEnvironment;
 use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
+use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -60,7 +61,7 @@ class Model extends DomainModel {
 			'bus' => MessageBus::class,
 			'at' => ActivityTypesConverter::class,
 			'getter' => ObjectGetter::class,
-			'signer' => MessageSigner::class,
+			'signer' => MessageVerifier::class,
 			'log' => LoggerInterface::class,
 		],
 	];

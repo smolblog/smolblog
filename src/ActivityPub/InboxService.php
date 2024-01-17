@@ -16,6 +16,8 @@ use Smolblog\Framework\ActivityPub\InboxAdapter;
 use Smolblog\Framework\ActivityPub\InboxRequestContext;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\ActivityPub\Objects\{Actor, Delete, Follow, Undo};
+use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
+use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\Infrastructure\HttpSigner;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
@@ -31,14 +33,14 @@ class InboxService extends InboxAdapter {
 	 * @param MessageBus             $bus    MessageBus for sending messages.
 	 * @param ActivityTypesConverter $at     For creating ActivityTypes objects.
 	 * @param ObjectGetter|null      $getter Optional ObjectGetter for getting remote objects.
-	 * @param HttpSigner             $signer Service to verify signed HTTP messages.
+	 * @param MessageVerifier        $signer Service to verify signed HTTP messages.
 	 * @param LoggerInterface        $log    PSR logger to use.
 	 */
 	public function __construct(
 		private MessageBus $bus,
 		private ActivityTypesConverter $at,
 		ObjectGetter $getter,
-		HttpSigner $signer,
+		MessageVerifier $signer,
 		LoggerInterface $log,
 	) {
 		parent::__construct(getter: $getter, verifier: $signer, log: $log);

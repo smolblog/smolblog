@@ -82,9 +82,12 @@ class MessageVerifier {
 		if ($request->getBody()->getSize() === 0 && !$request->hasHeader('digest')) {
 			return true;
 		}
+		$headerLine = $request->getHeaderLine('digest');
 
-		$digest = base64_encode(hash('sha256', $request->getBody()->__toString(), true));
+		$equalPosition = strpos($headerLine, '=');
+		$expected = substr($headerLine, $equalPosition === false ? 0 : $equalPosition + 1);
+		$actual = base64_encode(hash('sha256', $request->getBody()->__toString(), true));
 
-		return "SHA256=$digest" === $request->getHeaderLine('digest');
+		return $expected === $actual;
 	}
 }

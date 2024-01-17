@@ -67,29 +67,15 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->getter->expects($this->once())->method('get')->with(
-			$this->httpMessageEqualTo(new HttpRequest(
-				verb: HttpVerb::GET,
-				url: "$message->actor#publicKey",
-				headers: ['Accept' => 'application/json']
-			))
-		)->willReturn(new HttpResponse(body: [
-			'@context' => [
-				'https://www.w3.org/ns/activitystreams',
-				'https://w3id.org/security/v1'
-			],
-			'type' => 'Person',
-			'id' => $message->actor,
-			'publicKey' => [
-				'id' => "$message->actor#publicKey",
-				'owner' => $message->actor,
-				'publicKeyPem' => 'PUBLIC_KEY',
-			],
-		]));
+		$this->getter->expects($this->once())->method('get')->with("$message->actor#publicKey")->
+		willReturn(new Actor(
+			type: ActorType::Person,
+			id: $message->actor,
+			publicKeyPem: 'PUBLIC_KEY',
+		));
 
 		$this->verifier->expects($this->once())->method('verify')->with(
 			request: $this->httpMessageEqualTo($request),
-			keyId: "$message->actor#publicKey",
 			keyPem: 'PUBLIC_KEY',
 		)->willReturn(true);
 
@@ -147,7 +133,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->getter->expects($this->never())->method('get');
 
-		(new class(fetcher: $this->getter) extends InboxAdapter {})->handleRequest($request);
+		(new class(getter: $this->getter) extends InboxAdapter {})->handleRequest($request);
 	}
 
 	public function testItWillFailVerificationIfTheKeyIdIsNotAUrl() {
@@ -168,8 +154,13 @@ final class InboxAdapterTest extends TestCase {
 		$this->verifier->expects($this->never())->method('verify');
 
 		$this->logger->expects($this->once())->method('info')->with(
-			'Request provided invalid signature',
-			['request' => $request]
+			'ActivityPub message rejected for invalid signature.',
+			[
+				'method' => $request->getMethod(),
+				'target' => $request->getRequestTarget(),
+				'headers' => $request->getHeaders(),
+				'body' => $request->getBody()->__toString(),
+			]
 		);
 		$this->logger->expects($this->never())->method('debug');
 
@@ -189,26 +180,22 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->getter->expects($this->once())->method('get')->with(
-			$this->httpMessageEqualTo(new HttpRequest(
-				verb: HttpVerb::GET,
-				url: "$message->actor#publicKey",
-				headers: ['Accept' => 'application/json']
-			))
-		)->willReturn(new HttpResponse(body: [
-			'@context' => [
-				'https://www.w3.org/ns/activitystreams',
-				'https://w3id.org/security/v1'
-			],
-			'type' => 'Person',
-			'id' => $message->actor,
-		]));
+		$this->getter->expects($this->once())->method('get')->with("$message->actor#publicKey")->
+			willReturn(new Actor(
+				type: ActorType::Person,
+				id: $message->actor,
+			));
 
 		$this->verifier->expects($this->never())->method('verify');
 
 		$this->logger->expects($this->once())->method('info')->with(
-			'Request provided invalid signature',
-			['request' => $request]
+			'ActivityPub message rejected for invalid signature.',
+			[
+				'method' => $request->getMethod(),
+				'target' => $request->getRequestTarget(),
+				'headers' => $request->getHeaders(),
+				'body' => $request->getBody()->__toString(),
+			]
 		);
 		$this->logger->expects($this->never())->method('debug');
 
@@ -228,19 +215,18 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->getter->expects($this->once())->method('get')->with(
-			$this->httpMessageEqualTo(new HttpRequest(
-				verb: HttpVerb::GET,
-				url: "$message->actor#publicKey",
-				headers: ['Accept' => 'application/json']
-			))
-		)->willReturn(new HttpResponse(body: ['smol' => 'blog']));
+		$this->getter->expects($this->once())->method('get')->with("$message->actor#publicKey")->willReturn(null);
 
 		$this->verifier->expects($this->never())->method('verify');
 
 		$this->logger->expects($this->once())->method('info')->with(
-			'Request provided invalid signature',
-			['request' => $request]
+			'ActivityPub message rejected for invalid signature.',
+			[
+				'method' => $request->getMethod(),
+				'target' => $request->getRequestTarget(),
+				'headers' => $request->getHeaders(),
+				'body' => $request->getBody()->__toString(),
+			]
 		);
 		$this->logger->expects($this->never())->method('debug');
 
@@ -260,35 +246,26 @@ final class InboxAdapterTest extends TestCase {
 			json_encode($message)
 		);
 
-		$this->getter->expects($this->once())->method('get')->with(
-			$this->httpMessageEqualTo(new HttpRequest(
-				verb: HttpVerb::GET,
-				url: "$message->actor#publicKey",
-				headers: ['Accept' => 'application/json']
-			))
-		)->willReturn(new HttpResponse(body: [
-			'@context' => [
-				'https://www.w3.org/ns/activitystreams',
-				'https://w3id.org/security/v1'
-			],
-			'type' => 'Person',
-			'id' => $message->actor,
-			'publicKey' => [
-				'id' => "$message->actor#publicKey",
-				'owner' => $message->actor,
-				'publicKeyPem' => 'PUBLIC_KEY',
-			],
-		]));
+		$this->getter->expects($this->once())->method('get')->with("$message->actor#publicKey")->
+			willReturn(new Actor(
+				type: ActorType::Person,
+				id: $message->actor,
+				publicKeyPem: 'PUBLIC_KEY',
+			));
 
 		$this->verifier->expects($this->once())->method('verify')->with(
 			request: $this->httpMessageEqualTo($request),
-			keyId: "$message->actor#publicKey",
 			keyPem: 'PUBLIC_KEY',
 		)->willReturn(false);
 
 		$this->logger->expects($this->once())->method('info')->with(
-			'Request provided invalid signature',
-			['request' => $request]
+			'ActivityPub message rejected for invalid signature.',
+			[
+				'method' => $request->getMethod(),
+				'target' => $request->getRequestTarget(),
+				'headers' => $request->getHeaders(),
+				'body' => $request->getBody()->__toString(),
+			]
 		);
 		$this->logger->expects($this->never())->method('debug');
 
@@ -353,15 +330,7 @@ final class InboxAdapterTest extends TestCase {
 		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode($message));
 
 		$this->verifier->expects($this->never())->method('verify');
-		$this->getter->expects($this->once())->method('get')->with(
-			$this->httpMessageEqualTo(new HttpRequest(
-				verb: HttpVerb::GET,
-				url: $follow->id,
-				headers: ['Accept' => 'application/json'],
-			))
-		)->willReturn(new HttpResponse(
-			body: $follow
-		));
+		$this->getter->expects($this->once())->method('get')->with($follow->id)->willReturn($follow);
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Undo Follow request received',

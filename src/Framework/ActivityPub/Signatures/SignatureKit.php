@@ -55,15 +55,13 @@ trait SignatureKit {
 	 * @return string
 	 */
 	private function generateSignatureSource(RequestInterface $request, array $headers): string {
-		$sigLines = [];
-		foreach ($headers as $key) {
-			if (strtolower($key) === '(request-target)') {
-				$sigLines[] = $key . ': ' . strtolower($request->getMethod()) . ' ' . $request->getRequestTarget();
-				continue;
-			}
-
-			$sigLines[] = strtolower($key) . ': ' . $request->getHeaderLine($key);
-		}
+		$sigLines = array_map(
+			fn($key) => strtolower($key) . ': ' . match (strtolower($key)) {
+				'(request-target)' => strtolower($request->getMethod()) . ' ' . $request->getRequestTarget(),
+				default => $request->getHeaderLine($key)
+			},
+			$headers,
+		);
 
 		return implode(separator: "\n", array: $sigLines);
 	}
