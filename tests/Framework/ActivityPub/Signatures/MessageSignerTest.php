@@ -81,4 +81,17 @@ final class MessageSignerTest extends TestCase {
 		$this->assertEquals($expectedHash, $signed->getHeaderLine('digest'));
 		$this->assertEquals($expected, $signed->getHeaderLine('signature'));
 	}
+
+	public function testItSignsTheContentTypeHeaderIfItExists() {
+		$request = new HttpRequest(
+			verb: HttpVerb::POST,
+			url: 'https://smol.blog/api/preview/markdown',
+			headers: ['Content-type' => 'text/markdown'],
+			body: 'And you may ask yourself: _Well, how did I get here?_',
+		);
+
+		$signed = $this->subject->sign($request, 'key', $this->privateKeyPem);
+
+		$this->assertStringContainsString('content-type', $signed->getHeaderLine('signature'));
+	}
 }

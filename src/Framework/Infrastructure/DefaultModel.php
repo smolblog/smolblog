@@ -19,15 +19,6 @@ use Smolblog\Markdown\SmolblogMarkdown;
  * Default model with services provided by the Framework.
  */
 class DefaultModel extends DomainModel {
-	/**
-	 * Basic function to return false.
-	 *
-	 * @return boolean
-	 */
-	public function false(): bool {
-		return false;
-	}
-
 	public const SERVICES = [
 		MessageBus::class => DefaultMessageBus::class,
 		DefaultMessageBus::class => ['provider' => ListenerProviderInterface::class, 'log' => LoggerInterface::class],
@@ -43,7 +34,6 @@ class DefaultModel extends DomainModel {
 			'fetcher' => ClientInterface::class,
 			'signer' => MessageSigner::class,
 			'log' => LoggerInterface::class,
-			// 'throwOnError' => self::class . '::false',
 		],
 		MessageSigner::class => [],
 		MessageVerifier::class => [],
