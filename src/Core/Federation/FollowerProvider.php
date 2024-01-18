@@ -22,8 +22,8 @@ interface FollowerProvider {
 	/**
 	 * Send the given content to the given followers.
 	 *
-	 * @param Content $content   Content being created.
-	 * @param array   $followers Array of followers to be notified.
+	 * @param Content    $content   Content being created.
+	 * @param Follower[] $followers Array of followers to be notified.
 	 * @return void
 	 */
 	public function sendContentToFollowers(Content $content, array $followers): void;

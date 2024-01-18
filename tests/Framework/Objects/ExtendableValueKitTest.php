@@ -17,6 +17,12 @@ final class ConcreteExtendableValue extends Value {
 }
 
 final class ExtendableValueKitTest extends TestCase {
+	public function testArbitraryValuesAreNotRequired() {
+		$cev = new ConcreteExtendableValue(definedKey: 'dictionary');
+
+		$this->assertEquals('dictionary', $cev->definedKey);
+	}
+
 	public function testSettingRuntimePropertyGivesError() {
 		$this->expectException(Exception::class);
 		$cev = new ConcreteExtendableValue(definedKey: 'dictionary', someKey: 'someValue');

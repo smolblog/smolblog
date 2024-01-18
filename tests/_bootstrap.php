@@ -9,6 +9,9 @@ use Illuminate\Database\Query\Builder;
 use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Psr\Http\Message\MessageInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\EndpointConfig;
@@ -17,6 +20,7 @@ use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\NeedsMediaObjects;
+use Smolblog\Core\Site\SiteEvent;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MessageBus;
@@ -234,5 +238,87 @@ trait SerializableTestKit {
 	public function testItWillSerializeToJsonAndDeserializeToItself() {
 		$class = get_class($this->subject);
 		$this->assertEquals($this->subject, $class::jsonDeserialize(json_encode($this->subject)));
+	}
+}
+
+trait SiteEventTestKit {
+	public function testItWillSerializeAndDeserializeToItself() {
+		$this->assertEquals($this->subject, SiteEvent::fromTypedArray($this->subject->toArray()));
+	}
+}
+
+trait ActivityPubActivityTestKit {
+	use SerializableTestKit;
+
+	public function testItGivesTheCorrectType() {
+		$this->assertEquals($this->subject->type(), static::EXPECTED_TYPE);
+	}
+}
+
+trait HttpMessageComparisonTestKit {
+	private function httpMessageEqualTo(RequestInterface|ResponseInterface $expected): Constraint {
+		return new HttpMessageIsEquivalent($expected);
+	}
+}
+
+class HttpMessageIsEquivalent extends Constraint {
+	public function __construct(private RequestInterface|ResponseInterface $expected) {}
+
+	public function toString(): string { return 'two HTTP messages are equivalent'; }
+	protected function failureDescription($other): string { return $this->toString(); }
+
+	private function makeArray(RequestInterface|ResponseInterface $message): array {
+		$data = ['type' => ''];
+
+		foreach($message->getHeaders() as $key => $value) {
+			$lowerKey = strtolower($key);
+			$data[$lowerKey] = $value;
+		}
+
+		$bodyString = $message->getBody()->__toString();
+		$data['body'] = empty($bodyString) ? null : $bodyString;
+
+		if (is_a($message, RequestInterface::class)) {
+			$data['type'] .= 'Request';
+			$data['url'] = $message->getUri()->__toString();
+			$data['method'] = $message->getMethod();
+		}
+
+		if (is_a($message, ResponseInterface::class)) {
+			$data['type'] .= 'Response';
+			$data['code'] = $message->getStatusCode();
+		}
+
+		return $data;
+	}
+
+	protected function matches($other): bool {
+		if (!is_a($other, MessageInterface::class)) {
+			throw new InvalidArgumentException('Object is not an HTTP Message.');
+		}
+
+		$expectedData = $this->makeArray($this->expected);
+		$actualData = $this->makeArray($other);
+
+		return $expectedData == $actualData;
+	}
+
+	protected function fail($other, $description, ?ComparisonFailure $comparisonFailure = null): void
+	{
+		if ($comparisonFailure === null) {
+			$expectedData = $this->makeArray($this->expected);
+			$actualData = $this->makeArray($other);
+
+			$comparisonFailure = new ComparisonFailure(
+				$this->expected,
+				$other,
+				$this->exporter()->export($expectedData),
+				$this->exporter()->export($actualData),
+				false,
+				'Failed asserting that two HTTP messages are equivalent.'
+			);
+		}
+
+		parent::fail($other, $description, $comparisonFailure);
 	}
 }

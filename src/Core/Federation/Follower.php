@@ -46,4 +46,27 @@ class Follower extends Entity {
 	) {
 		parent::__construct(id: self::buildId(siteId: $siteId, provider: $provider, providerKey: $providerKey));
 	}
+
+	/**
+	 * Serialize the object.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$base = parent::toArray();
+		$base['siteId'] = $this->siteId->toString();
+		return $base;
+	}
+
+	/**
+	 * Deserialize the object.
+	 *
+	 * @param array $data Serialized object.
+	 * @return static
+	 */
+	public static function fromArray(array $data): static {
+		unset($data['id']);
+		$data['siteId'] = Identifier::fromString($data['siteId']);
+		return new Follower(...$data);
+	}
 }

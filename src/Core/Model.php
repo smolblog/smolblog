@@ -106,6 +106,10 @@ class Model extends DomainModel {
 		Content\Types\Reblog\ReblogProjection::class => [
 			'db' => ConnectionInterface::class,
 		],
+		Federation\FederationService::class => [
+			'bus' => MessageBus::class,
+			'followerProviders' => Federation\FollowerProviderRegistry::class,
+		],
 		Federation\FollowerProjection::class => [
 			'db' => ConnectionInterface::class,
 		],

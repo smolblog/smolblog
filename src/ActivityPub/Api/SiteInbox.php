@@ -2,20 +2,20 @@
 
 namespace Smolblog\ActivityPub\Api;
 
-use Smolblog\ActivityPhp\Type\Extended\Activity\Follow;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Smolblog\ActivityPub\InboxService;
-use Smolblog\Api\BasicEndpoint;
+use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
-use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\ParameterType;
-use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
+use Smolblog\Framework\Objects\HttpResponse;
 
 /**
  * ActivityPub Inbox endpoint.
  */
-class SiteInbox extends BasicEndpoint {
+class SiteInbox implements Endpoint {
 	/**
 	 * Get endpoint configuration.
 	 *
@@ -26,7 +26,7 @@ class SiteInbox extends BasicEndpoint {
 			route: '/site/{site}/activitypub/inbox',
 			verb: Verb::POST,
 			pathVariables: ['site' => ParameterType::identifier()],
-			bodyClass: ActivityObject::class,
+			bodyClass: ActivityPubObject::class,
 			requiredScopes: [],
 		);
 	}
@@ -42,37 +42,13 @@ class SiteInbox extends BasicEndpoint {
 	}
 
 	/**
-	 * Execute the endpoint.
+	 * Handle the incoming request.
 	 *
-	 * @throws BadRequest When the object does not match the site.
-	 *
-	 * @param Identifier|null $userId User making the request. Ignored.
-	 * @param array|null      $params Site expected.
-	 * @param object|null     $body   Some ActivityPub object expected.
-	 * @return SuccessResponse
+	 * @param ServerRequestInterface $request Incoming request.
+	 * @return ResponseInterface
 	 */
-	public function run(?Identifier $userId, ?array $params, ?object $body): SuccessResponse {
-		if (function_exists('wp_insert_post')) {
-			wp_insert_post([
-				'post_author' => 1,
-				'post_content' => '<pre>' . print_r($body, true) . '</pre>',
-				'post_title' => 'Hit on inbox ' . $params['site'],
-			]);
-		}
-
-		switch (get_class($body)) {
-			case Follow::class:
-				if (is_string($body->object) && !str_contains($body->object, $params['site'])) {
-					throw new BadRequest('Request sent to site inbox that does not target site.');
-				}
-
-				$this->service->handleFollow(request: $body, siteId: $params['site']);
-				break;
-
-			default:
-				break;
-		}
-
-		return new SuccessResponse();
+	public function handle(ServerRequestInterface $request): ResponseInterface {
+		$this->service->handleRequest($request);
+		return new HttpResponse(code: 204);
 	}
 }

@@ -23,19 +23,10 @@
       "email": "me@eph.me"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/oddevan/http-signatures-php"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/smolblog/activitypub-types"
-    }
-  ],
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
-    "phpunit/phpunit": "^9"
+    "phpunit/phpunit": "^9",
+    "nyholm/psr7": "^1.4"
   },
   "scripts": {
     "test": "phpunit --testsuite core",
@@ -47,7 +38,7 @@
     "swagger": "Smolblog\\Api\\Model::printSpec"
   },
   "require": {
-    "php": "^8.1",
+    "php": "^8.2",
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
     "ramsey/uuid": "^4.6",
@@ -57,8 +48,6 @@
     "phpseclib/phpseclib": "^3.0",
     "guzzlehttp/psr7": "^2.5",
     "psr/http-client": "^1.0",
-    "liamdennehy/http-signatures-php": "dev-use-upstream-phpseclib",
-    "smolblog/activitypub-types": "^1.0",
     "illuminate/database": "^9.0",
     "taproot/micropub-adapter": "^0.1.1",
     "psr/log": "^3.0",

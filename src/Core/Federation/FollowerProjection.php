@@ -46,13 +46,51 @@ class FollowerProjection implements Projection {
 	}
 
 	/**
-	 * Get followers for a given site.
+	 * Remove the given follower.
 	 *
-	 * @param GetFollowersForSite $query Query to fetch.
+	 * @param FollowerRemoved $event Event to handle.
 	 * @return void
 	 */
-	public function onFollowersForSite(GetFollowersForSite $query) {
+	public function onFollowerRemoved(FollowerRemoved $event) {
+		$followerId = Follower::buildId(
+			siteId: $event->siteId,
+			provider: $event->provider,
+			providerKey: $event->providerKey,
+		);
+
+		$this->db->table(self::TABLE)->where('follower_uuid', '=', $followerId->toString())->delete();
+	}
+
+	/**
+	 * Get followers for a given site.
+	 *
+	 * @param GetFollowersForSiteByProvider $query Query to fetch.
+	 * @return void
+	 */
+	public function onFollowersForSite(GetFollowersForSiteByProvider $query) {
 		$results = $this->db->table(self::TABLE)->where('site_uuid', '=', $query->siteId->toString())->get();
+
+		$query->setResults(
+			array_map(
+				fn($grp) => $grp->all(),
+				$results->map(fn($row) => self::followerFromRow($row))
+					->groupBy(fn($fl) => $fl->provider)
+					->all()
+			)
+		);
+	}
+
+	/**
+	 * Get all followers for the given provider and key.
+	 *
+	 * @param FollowersByProviderAndKey $query Query to execute.
+	 * @return void
+	 */
+	public function onFollowersByProviderAndKey(FollowersByProviderAndKey $query) {
+		$results = $this->db->table(self::TABLE)->
+			where('provider', '=', $query->provider)->
+			where('provider_key', '=', $query->providerKey)->
+			get();
 
 		$query->setResults($results->map(fn($row) => self::followerFromRow($row))->all());
 	}

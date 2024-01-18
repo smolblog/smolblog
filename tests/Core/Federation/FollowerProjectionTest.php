@@ -49,11 +49,81 @@ final class FollowerProjectionTest extends TestCase {
 		);
 	}
 
+	public function testItWillRemoveFollowersFromTheDatabase() {
+		$siteId = $this->randomId();
+		$follower1 = Follower::buildId(siteId: $siteId, provider: 'abc', providerKey: '123');
+		$follower2 = Follower::buildId(siteId: $siteId, provider: 'abc', providerKey: '456');
+
+		$this->db->table('followers')->insert([
+			[
+				'follower_uuid' => $follower1->toString(),
+				'site_uuid' => $siteId->toString(),
+				'provider' => 'abc',
+				'provider_key' => '123',
+				'display_name' => 'def',
+				'details' => '{}',
+			],
+			[
+				'follower_uuid' => $follower2->toString(),
+				'site_uuid' => $siteId->toString(),
+				'provider' => 'abc',
+				'provider_key' => '456',
+				'display_name' => 'ghi',
+				'details' => '{}',
+			],
+		]);
+
+		$this->projection->onFollowerRemoved(new FollowerRemoved(
+			siteId: $siteId,
+			userId: $this->randomId(),
+			provider: 'abc',
+			providerKey: '123',
+		));
+
+		$this->assertOnlyTableEntryEquals(
+			table: $this->db->table('followers'),
+			follower_uuid: $follower2->toString(),
+			site_uuid: $siteId->toString(),
+			provider: 'abc',
+			provider_key: '456',
+			display_name: 'ghi',
+			details: '{}',
+		);
+	}
+
+	public function testItWillFindFollowersForAnActor() {
+		$site1 = $this->randomId(scrub: true);
+		$site2 = $this->randomId(scrub: true);
+		$allFollowers = [
+			new Follower(siteId: $site1, provider: 'abc', providerKey: '987', displayName: 'A', details: ['p' => 'q']),
+			new Follower(siteId: $site1, provider: 'xyz', providerKey: '987', displayName: 'B', details: ['w' => 'o']),
+			new Follower(siteId: $site2, provider: 'xyz', providerKey: '987', displayName: 'C', details: ['r' => 's']),
+		];
+		$other = new Follower(siteId: $this->randomId(), provider: 'xyz', providerKey: '5', displayName: 'C', details: []);
+
+		$this->db->table('followers')->insert(array_map(fn($f) => [
+			'follower_uuid' => $f->id->toString(),
+			'site_uuid' => $f->siteId->toString(),
+			'provider' => $f->provider,
+			'provider_key' => $f->providerKey,
+			'display_name' => $f->displayName,
+			'details' => json_encode($f->details),
+		], $allFollowers, [$other]));
+
+		$query = new FollowersByProviderAndKey(provider: 'xyz', providerKey: '987');
+		$this->projection->onFollowersByProviderAndKey($query);
+		$this->assertEquals(
+			[$allFollowers[1], $allFollowers[2]],
+			$query->results()
+		);
+	}
+
 	public function testItWillFindFollowersForASite() {
-		$siteId = $this->randomId(scrub: true);
-		$expected = [
-			new Follower(siteId: $siteId, provider: 'abc', providerKey: '123', displayName: 'A', details: ['p' => 'q']),
-			new Follower(siteId: $siteId, provider: 'xyz', providerKey: '987', displayName: 'B', details: ['w' => 'o']),
+		$site1 = $this->randomId(scrub: true);
+		$allFollowers = [
+			new Follower(siteId: $site1, provider: 'abc', providerKey: '123', displayName: 'A', details: ['p' => 'q']),
+			new Follower(siteId: $site1, provider: 'xyz', providerKey: '987', displayName: 'B', details: ['w' => 'o']),
+			new Follower(siteId: $site1, provider: 'xyz', providerKey: '654', displayName: 'C', details: ['r' => 's']),
 		];
 		$other = new Follower(siteId: $this->randomId(), provider: 'g', providerKey: '5', displayName: 'C', details: []);
 
@@ -64,10 +134,13 @@ final class FollowerProjectionTest extends TestCase {
 			'provider_key' => $f->providerKey,
 			'display_name' => $f->displayName,
 			'details' => json_encode($f->details),
-		], $expected, [$other]));
+		], $allFollowers, [$other]));
 
-		$query = new GetFollowersForSite(siteId: $siteId);
+		$query = new GetFollowersForSiteByProvider(siteId: $site1);
 		$this->projection->onFollowersForSite($query);
-		$this->assertEquals($expected, $query->results());
+		$this->assertEquals(
+			['abc' => [$allFollowers[0]], 'xyz' => [$allFollowers[1], $allFollowers[2]]],
+			$query->results()
+		);
 	}
 }

@@ -2,14 +2,17 @@
 
 namespace Smolblog\ActivityPub\Api;
 
+use DateTimeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Smolblog\ActivityPhp\Type\Extended\Actor\Person;
+use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Site\SiteById;
+use Smolblog\Framework\ActivityPub\Objects\Actor;
+use Smolblog\Framework\ActivityPub\Objects\ActorType;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\Identifier;
@@ -51,12 +54,14 @@ class GetActor implements Endpoint {
 	/**
 	 * Construct the endpoint
 	 *
-	 * @param MessageBus     $bus MessageBus for queries.
-	 * @param ApiEnvironment $env API environment.
+	 * @param MessageBus      $bus MessageBus for queries.
+	 * @param ApiEnvironment  $env API environment.
+	 * @param LoggerInterface $log Logger to log requests.
 	 */
 	public function __construct(
 		private MessageBus $bus,
 		private ApiEnvironment $env,
+		private LoggerInterface $log,
 	) {
 	}
 
@@ -78,21 +83,19 @@ class GetActor implements Endpoint {
 			return new HttpResponse(code: 302, headers: ['Location' => $site->baseUrl]);
 		}
 
-		$response = new Person();
-		$response->id = $this->env->getApiUrl("/site/$site->id/activitypub/actor");
-		$response->inbox = $this->env->getApiUrl("/site/$site->id/activitypub/inbox");
-		$response->outbox = $this->env->getApiUrl("/site/$site->id/activitypub/outbox");
-		$response->preferredUsername = $site->handle;
-		$response->url = $site->baseUrl;
-		$response->name = $site->displayName;
-		$response->summary = $site->description;
-		$response->endpoints = ['sharedInbox' => $this->env->getApiUrl("/activitypub/inbox")];
-		$response->publicKey = [
-			'id' => $response->id . '#publicKey',
-			'owner' => $response->id,
-			'publicKeyPem' => $site->publicKey,
-		];
+		$response = new Actor(
+			id: $this->env->getApiUrl("/site/$site->id/activitypub/actor"),
+			type: ActorType::Person,
+			inbox: $this->env->getApiUrl("/site/$site->id/activitypub/inbox"),
+			outbox: $this->env->getApiUrl("/site/$site->id/activitypub/outbox"),
+			preferredUsername: $site->handle,
+			url: $site->baseUrl,
+			name: $site->displayName,
+			summary: $site->description,
+			endpoints: ['sharedInbox' => $this->env->getApiUrl("/activitypub/inbox")],
+			publicKeyPem: $site->publicKey,
+		);
 
-		return new HttpResponse(body: $response->toArray());
+		return new HttpResponse(body: $response);
 	}
 }

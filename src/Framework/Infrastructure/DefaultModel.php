@@ -4,8 +4,13 @@ namespace Smolblog\Framework\Infrastructure;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Smolblog\Framework\ActivityPub\MessageSender;
+use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
+use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
+use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -22,9 +27,19 @@ class DefaultModel extends DomainModel {
 		QueryMemoizationService::class => [],
 		SecurityCheckService::class => ['messageBus' => MessageBus::class],
 		SmolblogMarkdown::class => [],
-		HttpSigner::class => [],
 		KeypairGenerator::class => [],
 		LoggerInterface::class => NullLogger::class,
 		NullLogger::class => [],
+		MessageSender::class => [
+			'fetcher' => ClientInterface::class,
+			'signer' => MessageSigner::class,
+			'log' => LoggerInterface::class,
+		],
+		MessageSigner::class => [],
+		MessageVerifier::class => [],
+		ObjectGetter::class => [
+			'fetcher' => ClientInterface::class,
+			'signer' => MessageSigner::class,
+		],
 	];
 }
