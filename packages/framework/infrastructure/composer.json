@@ -11,7 +11,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Smolblog\\FrameworkInfrastructure\\": "src/"
+			"Smolblog\\Framework\\Infrastructure\\": "src/"
 		}
 	},
 	"require": {
