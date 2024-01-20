@@ -1,4 +1,4 @@
-/vendor/
+vendor/
 .phpunit.result.cache
 .phpunit-cache
 .phpdoc
