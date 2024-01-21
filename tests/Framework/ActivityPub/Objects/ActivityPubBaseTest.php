@@ -33,4 +33,41 @@ final class ActivityPubBaseTest extends TestCase {
 	public function testAdditionalPropertiesAreAccessable() {
 		$this->assertEquals('hullo', $this->subject->randomProperty);
 	}
+
+	public function testItDeserializesAnObjectWithNoTypeToNull() {
+		$this->assertNull(ActivityPubBase::typedObjectFromArray(['id' => 'https://smol.blog/actor']));
+	}
+
+	public function testItDeserializesAnObjectOfUnknownTypeToNull() {
+		$this->assertNull(ActivityPubBase::typedObjectFromArray(['id' => 'https://smol.blog/actor', 'type' => 'Snek']));
+	}
+
+	public function testItDeserializesAnObjectWithTypeObjectToActivityPubObject() {
+		$this->assertInstanceOf(
+			ActivityPubObject::class,
+			ActivityPubBase::typedObjectFromArray([
+				'id' => 'https://smol.blog/actor',
+				'type' => 'Object',
+			])
+		);
+	}
+
+	public function testItDeserializesAnObjectWithAnActorTypeToActor() {
+		foreach (ActorType::cases() as $type) {
+			$this->assertInstanceOf(Actor::class, ActivityPubBase::typedObjectFromArray([
+				'id' => 'https://smol.blog/actor',
+				'type' => $type->value,
+			]), "Did not deserialize ActorType $type->value correctly.");
+		}
+	}
+
+	public function testItDeserializesAnObjectWithAKnownTypeToThatObject() {
+		$this->assertInstanceOf(
+			Note::class,
+			ActivityPubBase::typedObjectFromArray([
+				'id' => 'https://smol.blog/thing',
+				'type' => 'Note',
+			])
+		);
+	}
 }

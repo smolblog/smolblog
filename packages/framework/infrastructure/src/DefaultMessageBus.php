@@ -6,6 +6,7 @@ use Crell\Tukio\Dispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query;
@@ -32,7 +33,7 @@ class DefaultMessageBus implements MessageBus {
 	 */
 	public function __construct(
 		ListenerProviderInterface $provider,
-		private LoggerInterface $log,
+		private LoggerInterface $log = new NullLogger(),
 	) {
 		$this->internal = new Dispatcher($provider, $log);
 	}
@@ -44,10 +45,6 @@ class DefaultMessageBus implements MessageBus {
 	 * @return mixed Message potentially modified by listeners.
 	 */
 	public function dispatch(object $message): mixed {
-		$this->log->debug(
-			'Dispatching message ' . get_class($message),
-			method_exists($message, 'toArray') ? $message->toArray() : get_object_vars($message),
-		);
 		return $this->internal->dispatch($message);
 	}
 
@@ -58,7 +55,6 @@ class DefaultMessageBus implements MessageBus {
 	 * @return mixed Results of the query.
 	 */
 	public function fetch(Query $query): mixed {
-		$this->log->debug('Fetching query ' . get_class($query), $query->toArray());
 		return $this->internal->dispatch($query)->results();
 	}
 
@@ -73,7 +69,6 @@ class DefaultMessageBus implements MessageBus {
 	 * @return void
 	 */
 	public function dispatchAsync(Message $message): void {
-		$this->log->debug('Dispatching async message ' . get_class($message), $message->toArray());
 		$this->internal->dispatch(new AsyncWrappedMessage($message));
 	}
 }

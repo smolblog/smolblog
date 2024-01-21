@@ -85,7 +85,12 @@ class MessageVerifier {
 		$headerLine = $request->getHeaderLine('digest');
 
 		$equalPosition = strpos($headerLine, '=');
-		$expected = substr($headerLine, $equalPosition === false ? 0 : $equalPosition + 1);
+		if ($equalPosition === false) {
+			// No '=' means this isn't even base64 encoded much less contains the sha-256 opener. Bail out!
+			return false;
+		}
+
+		$expected = substr($headerLine, $equalPosition + 1);
 		$actual = base64_encode(hash('sha256', $request->getBody()->__toString(), true));
 
 		return $expected === $actual;

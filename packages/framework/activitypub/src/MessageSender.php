@@ -92,8 +92,7 @@ class MessageSender {
 			$this->log->error($errorMessage, [
 				'message' => $message->toArray(),
 				'inbox' => $toInbox,
-				'key ID' => $withKeyId,
-				'key PEM present' => empty($signedWithPrivateKey) ? 'absent' : 'present',
+				'signed' => $request->hasHeader('signature') ? "With key $withKeyId" : 'NO',
 			]);
 		}
 	}

@@ -7,8 +7,8 @@ use SebastianBergmann\CodeCoverage\Node\File;
 
 class CoverageReport {
 	public static function report() {
-		$report = require __DIR__ . '/../coverage.php';
-		$baseDirCharCount = strlen(dirname(__DIR__) . '/src/');
+		$report = require __DIR__ . '/../../../../coverage.php';
+		$baseDirCharCount = strlen(dirname(dirname(dirname(__DIR__))));
 
 		$score = $report->getReport()->numberOfExecutedBranches() / $report->getReport()->numberOfExecutableBranches();
 

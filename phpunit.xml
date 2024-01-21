@@ -23,6 +23,9 @@
 			<directory>packages/framework/*/src</directory>
 			<directory>packages/product/core/src</directory>
 		</include>
+		<exclude>
+			<directory>packages/framework/test-utils/src</directory>
+		</exclude>
 		<report>
 			<text outputFile="coverage.txt" showOnlySummary="true" />
 			<html outputDirectory="test-coverage" />

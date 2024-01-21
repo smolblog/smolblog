@@ -105,7 +105,7 @@ final class MessageSenderTest extends TestCase {
 		);
 	}
 
-	public function testItLogsRemoteServerErrorsByDefault() {
+	public function testItLogsRemoteServerErrorsByDefaultAndGivesTheSigningKeyId() {
 		$actorId = '//smol.blog/' . $this->randomId() . '/actor.json';
 		$object = new Accept(
 			id: '//smol.blog/outbox/' . $this->randomId(),
@@ -117,7 +117,7 @@ final class MessageSenderTest extends TestCase {
 			),
 		);
 
-		$this->signer->method('sign')->willReturnArgument(0);
+		$this->signer->method('sign')->willReturnCallback(fn($req) => $req->withAddedHeader('Signature', 'Me!'));
 		$this->httpClient->method('sendRequest')->willReturn(
 			new HttpResponse(code: 404, body: ['error' => 'inbox does not exist'])
 		);
@@ -127,8 +127,7 @@ final class MessageSenderTest extends TestCase {
 			[
 				'message' => $object->toArray(),
 				'inbox' => 'https://smol.blog/inbox',
-				'key ID' => "$actorId#publicKey",
-				'key PEM present' => 'present',
+				'signed' => "With key $actorId#publicKey",
 			]
 		);
 
@@ -137,6 +136,37 @@ final class MessageSenderTest extends TestCase {
 			toInbox: 'https://smol.blog/inbox',
 			signedWithPrivateKey: 'B00',
 			withKeyId: "$actorId#publicKey"
+		);
+	}
+
+	public function testItLogsRemoteServerErrorsAndNotesTheLackOfSignature() {
+		$actorId = '//smol.blog/' . $this->randomId() . '/actor.json';
+		$object = new Accept(
+			id: '//smol.blog/outbox/' . $this->randomId(),
+			actor: $actorId,
+			object: new Follow(
+				id: '//smol.blog/outbox/' . $this->randomId(),
+				actor: '//smol.blog/' . $this->randomId() . '/actor.json',
+				object: $actorId,
+			),
+		);
+
+		$this->httpClient->method('sendRequest')->willReturn(
+			new HttpResponse(code: 404, body: ['error' => 'inbox does not exist'])
+		);
+
+		$this->logger->expects($this->once())->method('error')->with(
+			'Error from federated server: {"error":"inbox does not exist"}',
+			[
+				'message' => $object->toArray(),
+				'inbox' => 'https://smol.blog/inbox',
+				'signed' => 'NO',
+			]
+		);
+
+		$this->subject->send(
+			message: $object,
+			toInbox: 'https://smol.blog/inbox',
 		);
 	}
 

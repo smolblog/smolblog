@@ -134,6 +134,20 @@ final class MessageVerifierTest extends TestCase {
 		$this->assertTrue($this->subject->verifyDigest($request, $this->publicKeyPem));
 	}
 
+	public function testItReturnsFalseIfTheDigestHeaderHasNoEqualsSign() {
+		$request = new HttpRequest(
+			verb: HttpVerb::POST,
+			url: 'https://myhost.example/path/to/resource',
+			headers: [
+				'date' => 'Wed, 15 Mar 2023 17:28:15 GMT',
+				'digest' => 'VOV9b4OFUAdF0mGBVK62bE+PT3t0UtTEfq7hNT3zv9U',
+			],
+			body: '{"cows": "are the best"}',
+		);
+
+		$this->assertFalse($this->subject->verifyDigest($request));
+	}
+
 	public function testItRejectsMessagesOlderThanTwentyFourHours() {
 		$request = new HttpRequest(
 			verb: HttpVerb::POST,
