@@ -19,6 +19,7 @@ use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\MediaById;
 use Smolblog\Core\Content\Media\MediaType;
+use Smolblog\Core\Content\Queries\ContentById;
 use Smolblog\Core\Content\Types\Note\CreateNote;
 use Smolblog\Core\Content\Types\Note\EditNote;
 use Smolblog\Core\Content\Types\Note\Note;
@@ -28,6 +29,10 @@ use Smolblog\Core\Content\Types\Picture\CreatePicture;
 use Smolblog\Core\Content\Types\Picture\Picture;
 use Smolblog\Core\Content\Types\Picture\PictureById;
 use Smolblog\Core\Content\Types\Picture\PublishPicture;
+use Smolblog\Core\Content\Types\Reblog\CreateReblog;
+use Smolblog\Core\Content\Types\Reblog\ExternalContentInfo;
+use Smolblog\Core\Content\Types\Reblog\PublishReblog;
+use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Mock\App;
 use Smolblog\Mock\SecurityService;
@@ -235,6 +240,53 @@ class ContentTest extends TestCase {
 					new Tag('tfw'),
 					new Tag('relatable'),
 					new Tag('community'),
+				]),
+			]
+		);
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	public function testReblogCreation() {
+		$contentParams = [
+			'contentId' => Identifier::fromString(self::REBLOG),
+			'siteId' => Identifier::fromString(SecurityService::SITE1),
+			'userId' => Identifier::fromString(SecurityService::SITE1AUTHOR),
+		];
+
+		App::dispatch(new CreateReblog(
+			...$contentParams,
+			url: 'https://eph.me/',
+		));
+		App::dispatch(new SetTags(
+			...$contentParams,
+			tags: ['Rick Astley', 'dead dove do not eat'],
+		));
+		App::dispatch(new PublishReblog(...$contentParams));
+
+		// Don't use $contentParams here since it should be published and available to anonymous requests.
+		$actual = App::fetch(new ContentById(
+			id: Identifier::fromString(self::REBLOG),
+			siteId: Identifier::fromString(SecurityService::SITE1),
+		));
+		$expected = new Content(
+			id: Identifier::fromString(self::REBLOG),
+			type: new Reblog(
+				url: 'https://eph.me/',
+				info: new ExternalContentInfo(
+					title: 'A Webpage',
+					embed: '<a href="https://eph.me/" target="_blank">A Webpage</a>',
+				)
+			),
+			siteId: Identifier::fromString(SecurityService::SITE1),
+			authorId: Identifier::fromString(SecurityService::SITE1AUTHOR),
+			permalink: '/post/' . $contentParams['contentId'],
+			publishTimestamp: $actual->publishTimestamp ?? 'error', // Only concerned that this property exists.
+			visibility: ContentVisibility::Published,
+			extensions: [
+				Tags::class => new Tags(tags: [
+					new Tag('Rick Astley'),
+					new Tag('dead dove do not eat'),
 				]),
 			]
 		);

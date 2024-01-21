@@ -1,28 +1,46 @@
-# Smolblog Core
+# Smolblog #
 
-A library of common code for Smolblog. This is where the core tenants of the platform should be expressed. The code in this repo should adhere to these ideals:
+Blogging for the social web.
 
-1. Zero dependencies on outside platforms and frameworks.
-2. Minimal dependencies on outside libraries, but use where appropriate.
-3. All classes should have full test coverage.
-4. A class' dependency should be declared as an `interface` wherever possible to allow for future changes.
-5. Use documentation comments so that documentation can be generated.
+## Features For Users ##
 
-Especially in these early stages, it is assumed that there will be an underlying platform or framework. Translation between these classes and said platform is the responsibility of another project.
+- Post short text notes or pictures
+- Reblog any webpage that offers oEmbed
+- Connect to other social media and cross-post automatically
+- Others can follow your blog directly on the fediverse
 
-By the same token, if a feature would work better as its own library that depends on this library, we should do that.
+## Features For Developers ##
 
----
+- Architected with SOLID, Domain-Driven Design, and Event Sourcing principles.
+- Utilizes PSR standards and interfaces whenever possible.
+- Immutable value objects powering stateless services.
+- 100% test coverage of lines and branches in Framework and Core libraries.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+## Want to help? ##
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
+This is still a work in progress. If a part of the code would be valuable to you
+as a standalone library, get in touch. If you're interested in helping build out
+the product, get in touch!
 
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+### Licensing ###
+
+**Each package is goverened by the license it contains.** As a general rule, this
+means the general-purpose code in the `frameworks` subfolders is under [Apache 2.0][ap]
+and the Smolblog-specific code in the `product` subfolders is under the [AGPL 3.0][agpl].
+
+[ap]: https://choosealicense.com/licenses/apache-2.0/
+[agpl]: https://choosealicense.com/licenses/agpl-3.0/
+
+- Contributions under the Apache license are welcome under that license.
+- Contributions under the AGPL are subject to a CLA (to be written) that allows Smolblog to
+  1. enforce the AGPL on your copyrighted code, and
+  2. license the code privately for a fee
+
+**At no point will Smolblog require copyright assignment or permission to change
+the public license for contributions.**
+
+## Contact ##
+
+Smolblog is currently [Evan Hildreth][https://oddevan.com/].
+
+The project email is <dev@smolblog.org>.
