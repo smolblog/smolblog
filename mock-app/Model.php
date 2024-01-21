@@ -9,6 +9,7 @@ use PDO;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
+use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Infrastructure\QueryMemoizationService;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
@@ -30,6 +31,8 @@ class Model extends DomainModel {
 				'log' => LoggerInterface::class,
 			],
 			MediaHandler::class => [],
+			EmbedService::class => [],
+			ExternalContentService::class => EmbedService::class,
 		];
 	}
 
@@ -127,9 +130,9 @@ class Model extends DomainModel {
 		$schema->create('reblogs', function(Blueprint $table) {
 			$table->uuid('content_uuid')->primary();
 			$table->string('url');
-			$table->text('comment');
-			$table->text('comment_html');
-			$table->text('url_info');
+			$table->text('comment')->nullable();
+			$table->text('comment_html')->nullable();
+			$table->text('url_info')->nullable();
 		});
 		$schema->create('followers', function(Blueprint $table) {
 			$table->uuid('follower_uuid')->primary();
