@@ -196,8 +196,8 @@ class StandardContentProjection implements Projection {
 
 		$message->setContentProperty(
 			id: $message->getContentId(),
-			siteId: isset($results->site_uuid) ? Identifier::fromString($results->site_uuid) : null,
-			authorId: isset($results->author_uuid) ? Identifier::fromString($results->author_uuid) : null,
+			siteId: Identifier::fromString($results->site_uuid),
+			authorId: Identifier::fromString($results->author_uuid),
 			permalink: $results->permalink ?? null,
 			publishTimestamp: isset($results->publish_timestamp) ?
 				new DateTimeImmutable($results->publish_timestamp) : null,

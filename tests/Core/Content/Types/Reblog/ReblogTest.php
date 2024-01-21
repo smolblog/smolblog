@@ -15,6 +15,18 @@ final class ReblogTest extends TestCase {
 		);
 	}
 
+	public function testContentInfoCanBeSerializedAndDeserialized() {
+		$object = new Reblog(
+			url: '//echoing.green',
+			info: new ExternalContentInfo(
+				title: 'The Echoing Green',
+				embed: '<iframe src="//youtu.be/254"></iframe>',
+			),
+		);
+
+		$this->assertEquals($object, Reblog::fromArray($object->toArray()));
+	}
+
 	public function testTheTitleIsTheExternalContentTitle() {
 		$external = new ExternalContentInfo(
 			title: 'An innocuous YouTube video',

@@ -9,7 +9,9 @@ use Smolblog\Framework\Objects\SerializableKit;
  * For reblogging interesting things from around the web.
  */
 class Reblog implements ContentType {
-	use SerializableKit;
+	use SerializableKit {
+		toArray as private parentToArray;
+	}
 
 	/**
 	 * Undocumented function
@@ -81,6 +83,20 @@ class Reblog implements ContentType {
 	 */
 	public function getCommentHtml(): ?string {
 		return $this->commentHtml ?? null;
+	}
+
+	/**
+	 * Serialize the object.
+	 *
+	 * @return array
+	 */
+	public function toArray(): array {
+		$data = $this->parentToArray();
+		if (isset($this->info)) {
+			$data['info'] = $this->info->toArray();
+		}
+
+		return $data;
 	}
 
 	/**

@@ -12,6 +12,14 @@ use function Symfony\Component\String\b;
 final class MediaServiceTest extends TestCase {
 	use EventComparisonTestKit;
 
+	public function testItCreatesTypesFromMimeTypes() {
+		$this->assertEquals(MediaType::File, MediaService::typeFromMimeType('text'));
+		$this->assertEquals(MediaType::File, MediaService::typeFromMimeType('application/pdf'));
+		$this->assertEquals(MediaType::Image, MediaService::typeFromMimeType('image/jpeg'));
+		$this->assertEquals(MediaType::Audio, MediaService::typeFromMimeType('audio/mp3'));
+		$this->assertEquals(MediaType::Video, MediaService::typeFromMimeType('video/quicktime'));
+	}
+
 	public function testItHandlesUploadedMediaWithSaneDefaults() {
 		$file = $this->createStub(UploadedFileInterface::class);
 		$file->method('getClientFilename')->willReturn('IMG_90108.jpg');
@@ -225,20 +233,32 @@ final class MediaServiceTest extends TestCase {
 			registry: $this->createStub(MediaHandlerRegistry::class),
 		);
 
-		$image = new Media(
-			id: $this->randomId(),
-			userId: $this->randomId(),
-			siteId: $this->randomId(),
-			title: 'Image',
-			accessibilityText: 'Description of the thing.',
-			type: MediaType::Image,
-			thumbnailUrl: '//cdn.smol.blog/thumb.png',
-			defaultUrl: '//cdn.smol.blog/thing.png',
-			file: $this->createStub(MediaFile::class),
-		);
+		$standardProps = [
+			'id' => $this->randomId(),
+			'userId' => $this->randomId(),
+			'siteId' => $this->randomId(),
+			'title' => 'Thing',
+			'accessibilityText' => 'Description of the thing.',
+			'thumbnailUrl' => '//cdn.smol.blog/thumb.png',
+			'defaultUrl' => '//cdn.smol.blog/thing.png',
+			'file' => $this->createStub(MediaFile::class),
+		];
+
 		$this->assertEquals(
 			"<img src='//cdn.smol.blog/thing.png' alt='Description of the thing.'>",
-			$service->htmlForMedia($image),
+			$service->htmlForMedia(new Media(...$standardProps, type: MediaType::Image)),
+		);
+		$this->assertEquals(
+			"<video src='//cdn.smol.blog/thing.png' alt='Description of the thing.'></video>",
+			$service->htmlForMedia(new Media(...$standardProps, type: MediaType::Video)),
+		);
+		$this->assertEquals(
+			"<audio src='//cdn.smol.blog/thing.png' alt='Description of the thing.'></audio>",
+			$service->htmlForMedia(new Media(...$standardProps, type: MediaType::Audio)),
+		);
+		$this->assertEquals(
+			"<a href='//cdn.smol.blog/thing.png'>Thing</a>",
+			$service->htmlForMedia(new Media(...$standardProps, type: MediaType::File)),
 		);
 	}
 

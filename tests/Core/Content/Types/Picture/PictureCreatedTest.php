@@ -3,7 +3,10 @@
 namespace Smolblog\Core\Content\Types\Picture;
 
 use DateTimeImmutable;
+use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\Content\Media\MediaFile;
+use Smolblog\Core\Content\Media\MediaType;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\Kits\ContentEventTestKit;
 use Smolblog\Test\Kits\NeedsMarkdownRenderedTestKit;
@@ -34,6 +37,32 @@ final class PictureCreatedTest extends TestCase {
 			id: $this->randomId(true),
 			timestamp: new DateTimeImmutable('2011-11-11 11:11:11.111'),
 		);
+	}
+
+	public function testItPullsTheTitleFromTheCaption() {
+		$this->assertEquals('Well then.', $this->subject->getNewTitle());
+	}
+
+	public function testItPullsTheTitleFromTheMediaIfThereIsNoCaption() {
+		$titleless = new PictureCreated(
+			mediaIds: [Identifier::fromString('e24604cb-74a7-46ee-b53d-4ad61093a0ee')],
+			authorId: $this->randomId(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+		);
+		$titleless->setMediaObjects([new Media(
+			id: Identifier::fromString('e24604cb-74a7-46ee-b53d-4ad61093a0ee'),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+			title: 'That so.',
+			accessibilityText: 'Really.',
+			type: MediaType::Image,
+			thumbnailUrl: '//smol.blog/thumb.jpg',
+			defaultUrl: '//smol.blog/img.png',
+			file: $this->createStub(MediaFile::class),
+		)]);
+		$this->assertEquals('That so.', $titleless->getNewTitle());
 	}
 
 	public function testItCreatesPictures() {

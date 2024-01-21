@@ -227,6 +227,29 @@ final class MediaProjectionTest extends TestCase {
 		$this->assertEquals($expected, $query->results());
 	}
 
+	public function testItWillGiveNullIfNoMediaIsFound() {
+		$this->db->table('media')->insert([
+			'content_uuid' => '52ec4e4d-eecd-4095-a846-aa1139247145',
+			'user_uuid' => '06bacbd3-45ed-464a-988b-163dcd4b6018',
+			'site_uuid' => '680208fa-76c9-4774-8d1d-589229cc051a',
+			'title' => 'But Why',
+			'accessibility_text' => 'A young Ryan Reynolds lowers his surgical mask and asks, "But why?"',
+			'type' => 'image',
+			'thumbnail_url' => '//cdn.smol.blog/thumb.gif',
+			'default_url' => '//cdn.smol.blog/scene.gif',
+			'file' => '{"id":"139496e8-e6b7-412a-9d6e-08b96dedfc47","handler":"netflare","mimeType":"image/gif","details":{"one":"two"}}',
+			'uploaded_at' => '2022-02-02T02:02:02.000T0:00',
+		]);
+		$query = new MediaById(
+			contentId: Identifier::fromString('f60300c1-1787-4366-8d74-c1991a897327'),
+			siteId: Identifier::fromString('680208fa-76c9-4774-8d1d-589229cc051a'),
+		);
+
+		$this->projection->onMediaById($query);
+
+		$this->assertNull($query->results());
+	}
+
 	public function testItWillApproveVisibilityChecksForMedia() {
 		$this->db->table('media')->insert([
 			'content_uuid' => '52ec4e4d-eecd-4095-a846-aa1139247145',
