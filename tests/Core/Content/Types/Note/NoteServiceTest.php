@@ -8,7 +8,7 @@ use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 class NoteServiceTest extends TestCase {
 	use EventComparisonTestKit;

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\ActivityPub\Objects;
 
-use Smolblog\Test\SerializableTestKit;
+use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final readonly class TestObject extends ActivityPubBase {

@@ -8,7 +8,7 @@ use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DateIdentifierTestKit;
+use Smolblog\Test\Kits\DateIdentifierTestKit;
 
 final class EventTest extends TestCase {
 	use DateIdentifierTestKit;

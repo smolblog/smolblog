@@ -8,7 +8,7 @@ use Smolblog\Core\Connector\Events\ChannelDeleted;
 use Smolblog\Core\Connector\Events\ChannelSaved;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class ChannelProjectionTest extends TestCase {

@@ -7,7 +7,7 @@ use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Test\SerializableTestKit;
+use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class FederateContentToFollowersTest extends TestCase {

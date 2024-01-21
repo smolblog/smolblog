@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\ActivityPub\Objects;
 
-use Smolblog\Test\ActivityPubActivityTestKit;
+use Smolblog\Test\Kits\ActivityPubActivityTestKit;
 use Smolblog\Test\TestCase;
 
 final class DeleteTest extends TestCase {

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Reblog;
 
 use Illuminate\Database\Schema\Blueprint;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class ReblogProjectionTest extends TestCase {

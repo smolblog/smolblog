@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use Illuminate\Database\Schema\Blueprint;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class FollowerProjectionTest extends TestCase {

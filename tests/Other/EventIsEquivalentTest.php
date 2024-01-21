@@ -5,6 +5,7 @@ namespace Smolblog\Test;
 use InvalidArgumentException;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\Event;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class TestEvent extends Event {
 	public function __construct(public readonly string $property) { parent::__construct(); }

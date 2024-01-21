@@ -12,8 +12,8 @@ use Smolblog\Core\Content\Types\Picture\PictureService;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\ContentTypeServiceTestKit;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\ContentTypeServiceTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class PictureServiceTest extends TestCase {
 	use EventComparisonTestKit;

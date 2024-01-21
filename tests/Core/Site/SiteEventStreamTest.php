@@ -9,7 +9,7 @@ use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Core\Connector\Events\ConnectorEvent;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 use stdClass;
 

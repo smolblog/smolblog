@@ -2,8 +2,8 @@
 
 namespace Smolblog\Test\Constraints;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\InvalidArgumentException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Smolblog\Framework\Messages\Event;
 

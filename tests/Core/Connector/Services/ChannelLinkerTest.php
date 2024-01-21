@@ -9,7 +9,7 @@ use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ChannelLinkerTest extends TestCase {
 	use EventComparisonTestKit;

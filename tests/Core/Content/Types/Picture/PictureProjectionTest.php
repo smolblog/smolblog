@@ -7,7 +7,7 @@ use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\MediaFile;
 use Smolblog\Core\Content\Media\MediaType;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class PictureProjectionTest extends TestCase {

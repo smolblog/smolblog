@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use Smolblog\Test\SerializableTestKit;
+use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class ReblogTest extends TestCase {

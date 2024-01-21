@@ -13,7 +13,7 @@ use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\SerializableTestKit;
+use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class PushContentToChannelTest extends TestCase {

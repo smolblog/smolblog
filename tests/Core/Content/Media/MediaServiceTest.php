@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Media;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 use Smolblog\Test\TestCase;
 
 use function Symfony\Component\String\b;

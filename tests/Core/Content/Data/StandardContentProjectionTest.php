@@ -31,7 +31,7 @@ use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\ExtendableValueKit;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class StandardContentProjectionTest extends TestCase {

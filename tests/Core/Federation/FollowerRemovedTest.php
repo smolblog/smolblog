@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use DateTimeImmutable;
-use Smolblog\Test\SiteEventTestKit;
+use Smolblog\Test\Kits\SiteEventTestKit;
 use Smolblog\Test\TestCase;
 
 final class FollowerRemovedTest extends TestCase {

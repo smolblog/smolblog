@@ -2,8 +2,8 @@
 
 namespace Smolblog\Test\Constraints;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\InvalidArgumentException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

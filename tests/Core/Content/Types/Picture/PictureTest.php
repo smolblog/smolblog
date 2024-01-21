@@ -7,7 +7,7 @@ use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\MediaFile;
 use Smolblog\Core\Content\Media\MediaTest;
 use Smolblog\Core\Content\Media\MediaType;
-use Smolblog\Test\SerializableTestKit;
+use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class PictureTest extends TestCase {

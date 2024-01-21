@@ -6,7 +6,7 @@ use DateTimeInterface;
 use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Core\Content\Queries\ContentVisibleToUser;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class MediaProjectionTest extends TestCase {

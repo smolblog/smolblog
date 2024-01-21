@@ -4,7 +4,7 @@ namespace Smolblog\Api\Connector;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Api\GenericResponse;
-use Smolblog\Test\EndpointTestToolkit;
+use Smolblog\Test\Kits\EndpointTestToolkit;
 use Smolblog\Core\Connector\Entities\Channel as ChannelEntity;
 use Smolblog\Core\Connector\Entities\Connection as ConnectionEntity;
 use Smolblog\Framework\Messages\MessageBus;
