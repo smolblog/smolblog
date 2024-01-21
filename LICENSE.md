@@ -4,8 +4,8 @@ Smolblog Project License
 Each package in the `packages/framework` and `packages/product` folders are
 goverened exclusively by the `LICENSE.md` file in that package.
 
-If no license is provided for a package, it is goverened by the GNU AGPL
-version 3 or later, provided below.
+If no license is provided for a package or if the code is outside of a
+package, it is goverened by the GNU AGPL version 3 or later, provided below.
 
 GNU Affero General Public License
 ---------------------------------

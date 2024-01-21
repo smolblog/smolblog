@@ -75,14 +75,15 @@
     "scripts": {
         "test": "phpunit --testsuite core",
         "test-coverage": [
-          "@putenv XDEBUG_MODE=coverage",
-          "phpunit --testsuite core",
-          "Smolblog\\Test\\CoverageReport::report"
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --testsuite core",
+            "Smolblog\\Test\\CoverageReport::report"
         ],
         "integration": "phpunit --testsuite integration",
         "integration-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite integration; cat coverage.txt",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-        "swagger": "Smolblog\\Api\\Model::printSpec"
+        "swagger": "Smolblog\\Api\\Model::printSpec",
+        "monorepo-merge": "./vendor/bin/monorepo-builder merge"
     }
 }
