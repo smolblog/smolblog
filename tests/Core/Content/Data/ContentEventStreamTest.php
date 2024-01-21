@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class ContentEventStreamTest extends TestCase {

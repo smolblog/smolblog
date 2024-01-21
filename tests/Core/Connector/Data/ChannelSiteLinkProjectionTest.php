@@ -14,7 +14,7 @@ use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class ChannelSiteLinkProjectionTest extends TestCase {

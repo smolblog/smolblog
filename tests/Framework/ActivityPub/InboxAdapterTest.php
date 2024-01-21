@@ -17,7 +17,7 @@ use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\HttpVerb;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\HttpMessageComparisonTestKit;
+use Smolblog\Test\Kits\HttpMessageComparisonTestKit;
 use Smolblog\Test\TestCase;
 
 final class InboxAdapterTest extends TestCase {

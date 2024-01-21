@@ -17,7 +17,7 @@ use Smolblog\Core\Connector\Queries\connectionsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionsForUser;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class ConnectionProjectionTest extends TestCase {

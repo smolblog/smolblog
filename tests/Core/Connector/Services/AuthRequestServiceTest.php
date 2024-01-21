@@ -13,7 +13,7 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class AuthRequestServiceTest extends TestCase {
 	use EventComparisonTestKit;

@@ -1,0 +1,29 @@
+{
+	"name": "smolblog/c2pa",
+	"description": "Content Credentials implementation for Smolblog",
+	"type": "smolblog-plugin",
+	"license": "AGPL-3.0-only",
+	"autoload": {
+		"psr-4": {
+			"Smolblog\\ContentProvenance\\": "src/"
+		}
+	},
+  "authors": [
+    {
+      "name": "Smolblog",
+      "email": "dev@smolblog.org"
+    },
+    {
+      "name": "Evan Hildreth",
+      "email": "me@eph.me"
+    }
+  ],
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.8"
+  },
+  "require": {
+    "php": "^8.2",
+    "elephox/mimey": "^4.0",
+    "psr/log": "^3.0"
+  }
+}

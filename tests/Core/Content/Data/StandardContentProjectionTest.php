@@ -31,7 +31,7 @@ use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\ExtendableValueKit;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class StandardContentProjectionTest extends TestCase {
@@ -500,7 +500,28 @@ final class StandardContentProjectionTest extends TestCase {
 		);
 	}
 
-	public function testItAddsStandardAttributesToAContentBuilder() {
+	public function testItAddsStandardAttributesOnDraftContentToAContentBuilder() {
+		$this->setUpSampleRow();
+		$ext = new class(one: 'two', three: 'four') extends Value implements ContentExtension {
+			use ExtendableValueKit;
+			public function __construct(mixed ...$props) { $this->extendedFields = $props; }
+		};
+
+		$message = $this->createMock(ContentBuilder::class);
+		$message->method('getContentId')->willReturn(Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d'));
+		$message->expects($this->once())->method('setContentProperty')->with(
+			id: $this->equalTo(Identifier::fromString('3a694a6b-9540-45e6-8ec1-2a02a92d955d')),
+			siteId: $this->equalTo(Identifier::fromString('27ccd497-acac-4196-9b9a-70b95e49f463')),
+			authorId: $this->equalTo(Identifier::fromString('81721bdc-2c22-4c3a-90ca-d34194557767')),
+			permalink: null,
+			publishTimestamp: null,
+			visibility: $this->equalTo(ContentVisibility::Draft),
+		);
+
+		$this->projection->onContentBuilder($message);
+	}
+
+	public function testItAddsStandardAttributesOnPublishedContentToAContentBuilder() {
 		$this->setUpSampleRow();
 		$ext = new class(one: 'two', three: 'four') extends Value implements ContentExtension {
 			use ExtendableValueKit;

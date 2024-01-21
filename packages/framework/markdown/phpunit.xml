@@ -1,0 +1,26 @@
+<phpunit
+	bootstrap="vendor/autoload.php"
+	colors="true"
+	testdox="true"
+>
+	<testsuites>
+		<testsuite name="markdown">
+			<directory>tests</directory>
+		</testsuite>
+	</testsuites>
+	<coverage
+		cacheDirectory=".phpunit-cache"
+		ignoreDeprecatedCodeUnits="true"
+	>
+    <include>
+			<directory>src</directory>
+		</include>
+		<report>
+			<text outputFile="coverage.txt" />
+			<html outputDirectory="test-coverage" />
+		</report>
+	</coverage>
+	<php>
+		<ini name="xdebug.mode" value="coverage"/>
+	</php>
+</phpunit>

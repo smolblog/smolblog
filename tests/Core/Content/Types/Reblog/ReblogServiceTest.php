@@ -9,7 +9,7 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ReblogServiceTest extends TestCase {
 	use EventComparisonTestKit;

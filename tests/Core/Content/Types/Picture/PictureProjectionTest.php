@@ -7,7 +7,7 @@ use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\MediaFile;
 use Smolblog\Core\Content\Media\MediaType;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class PictureProjectionTest extends TestCase {
@@ -113,6 +113,7 @@ final class PictureProjectionTest extends TestCase {
 
 	public function testItWillUpdateTheMediaForAnExistingPicture() {
 		$contentId = $this->setUpSampleRow();
+		$this->db->table('pictures')->where(['content_uuid' => $contentId])->update(['caption' => null]);
 
 		$newMedia = new Media(
 			id: $this->randomId(true),
@@ -149,11 +150,11 @@ final class PictureProjectionTest extends TestCase {
 			$this->db->table('pictures'),
 			content_uuid: $event->contentId->toString(),
 			media: json_encode([...$this->mediaList, $newMedia]),
-			caption: 'Something.',
 			media_html: json_encode([...$this->mediaHtml, '<img src="three">']),
 			caption_html: '<p>Something.</p>',
+			caption: null,
 		);
-		$this->assertEquals('Something.', $event->getNewTitle());
+		$this->assertEquals('One', $event->getNewTitle());
 		$this->assertEquals(
 			'<img src="one">' . "\n\n" . '<img src="two">' . "\n\n" . '<img src="three">' . "\n\n" . '<p>Something.</p>',
 			$event->getNewBody()

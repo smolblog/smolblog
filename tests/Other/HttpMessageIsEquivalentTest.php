@@ -7,6 +7,7 @@ use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\HttpVerb;
+use Smolblog\Test\Kits\HttpMessageComparisonTestKit;
 
 final class HttpMessageIsEquivalentTest extends TestCase {
 	use HttpMessageComparisonTestKit;

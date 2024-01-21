@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b5373c4d1fc64c0b8a3785a64fb89fb",
+    "content-hash": "cfb94d66c6d27f08ee7d2f4561129a54",
     "packages": [
         {
             "name": "brick/math",
@@ -4088,16 +4088,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.15",
+            "version": "9.6.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "05017b80304e0eb3f31d90194a563fd53a6021f1"
+                "reference": "3767b2c56ce02d01e3491046f33466a1ae60a37f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/05017b80304e0eb3f31d90194a563fd53a6021f1",
-                "reference": "05017b80304e0eb3f31d90194a563fd53a6021f1",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3767b2c56ce02d01e3491046f33466a1ae60a37f",
+                "reference": "3767b2c56ce02d01e3491046f33466a1ae60a37f",
                 "shasum": ""
             },
             "require": {
@@ -4171,7 +4171,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.15"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.16"
             },
             "funding": [
                 {
@@ -4187,7 +4187,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-01T16:55:19+00:00"
+            "time": "2024-01-19T07:03:14+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -5232,6 +5232,58 @@
                 }
             ],
             "time": "2024-01-11T20:47:48+00:00"
+        },
+        {
+            "name": "symplify/monorepo-builder",
+            "version": "11.2.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symplify/monorepo-builder.git",
+                "reference": "444efe08701776cb1a03b9f3600e715697519aa6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symplify/monorepo-builder/zipball/444efe08701776cb1a03b9f3600e715697519aa6",
+                "reference": "444efe08701776cb1a03b9f3600e715697519aa6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "bin": [
+                "bin/monorepo-builder"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "10.3-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Prefixed version of Not only Composer tools to build a Monorepo.",
+            "support": {
+                "issues": "https://github.com/symplify/monorepo-builder/issues",
+                "source": "https://github.com/symplify/monorepo-builder/tree/11.2.20"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/rectorphp",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-11-17T08:30:16+00:00"
         },
         {
             "name": "theseer/tokenizer",

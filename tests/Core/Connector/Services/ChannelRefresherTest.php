@@ -15,7 +15,7 @@ use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ChannelRefresherTest extends TestCase {
 	use EventComparisonTestKit;

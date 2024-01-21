@@ -51,4 +51,11 @@ final class IdentifierTest extends TestCase {
 
 		$this->assertEquals('1d1413ca-33d8-4c2d-8029-ea41e38654cf', $actual->toString());
 	}
+
+	public function testTheJsonRepresentationIsJustTheString() {
+		$expected = 'fb0914b3-0224-4150-bd4b-2934aaddf9be';
+		$actual = Identifier::fromString($expected);
+
+		$this->assertEquals("\"$expected\"", json_encode($actual));
+	}
 }

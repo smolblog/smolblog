@@ -7,7 +7,7 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\SuccessResponse;
 use Smolblog\Core\Connector\Commands\DeleteConnection as DeleteConnectionCommand;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Test\EndpointTestToolkit;
+use Smolblog\Test\Kits\EndpointTestToolkit;
 
 final class DeleteConnectionTest extends TestCase {
 	use EndpointTestToolkit;

@@ -7,7 +7,7 @@ use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EndpointTestToolkit;
+use Smolblog\Test\Kits\EndpointTestToolkit;
 use stdClass;
 
 final class ChannelLinkTest extends TestCase {

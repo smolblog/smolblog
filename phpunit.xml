@@ -1,5 +1,5 @@
 <phpunit
-	bootstrap="tests/_bootstrap.php"
+	bootstrap="vendor/autoload.php"
 	colors="true"
 	testdox="true"
 >
@@ -17,16 +17,23 @@
 	<coverage
 		cacheDirectory=".phpunit-cache"
 		ignoreDeprecatedCodeUnits="true"
+		pathCoverage="true"
 	>
     <include>
-			<directory>src</directory>
+			<directory>packages/framework/*/src</directory>
+			<directory>packages/product/core/src</directory>
 		</include>
+		<exclude>
+			<directory>packages/framework/test-utils/src</directory>
+		</exclude>
 		<report>
-			<text outputFile="coverage.txt" />
+			<text outputFile="coverage.txt" showOnlySummary="true" />
 			<html outputDirectory="test-coverage" />
+			<php outputFile="coverage.php" />
 		</report>
 	</coverage>
 	<php>
 		<ini name="xdebug.mode" value="coverage"/>
+		<ini name="memory_limit" value="1024M"/>
 	</php>
 </phpunit>

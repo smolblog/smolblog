@@ -7,8 +7,8 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\ContentExtensionServiceTestKit;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\ContentExtensionServiceTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class TagServiceTest extends TestCase {
 	use EventComparisonTestKit;

@@ -40,8 +40,8 @@ jobs:
     - name: Run PHPCS
       run: composer run-script lint
 
-    - name: Run unit test suite
-      run: composer run-script test
+    - name: Run unit test suite with code coverage
+      run: composer run-script test-coverage
 
     - name: Run integration test suite
       run: composer run-script integration

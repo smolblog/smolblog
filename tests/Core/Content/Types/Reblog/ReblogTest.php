@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
-use Smolblog\Test\SerializableTestKit;
+use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
 final class ReblogTest extends TestCase {
@@ -13,6 +13,18 @@ final class ReblogTest extends TestCase {
 			url: '//echoing.green/',
 			comment: 'You should check this out.',
 		);
+	}
+
+	public function testContentInfoCanBeSerializedAndDeserialized() {
+		$object = new Reblog(
+			url: '//echoing.green',
+			info: new ExternalContentInfo(
+				title: 'The Echoing Green',
+				embed: '<iframe src="//youtu.be/254"></iframe>',
+			),
+		);
+
+		$this->assertEquals($object, Reblog::fromArray($object->toArray()));
 	}
 
 	public function testTheTitleIsTheExternalContentTitle() {

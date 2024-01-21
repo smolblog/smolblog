@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use Illuminate\Database\Schema\Blueprint;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class ContentSyndicationProjectionTest extends TestCase{

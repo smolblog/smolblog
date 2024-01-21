@@ -14,7 +14,7 @@ use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\RandomIdentifier;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ContentServiceTest extends TestCase {
 	use EventComparisonTestKit;

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Reblog;
 
 use Illuminate\Database\Schema\Blueprint;
-use Smolblog\Test\DatabaseTestKit;
+use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
 final class ReblogProjectionTest extends TestCase {
@@ -15,9 +15,9 @@ final class ReblogProjectionTest extends TestCase {
 		$this->initDatabaseWithTable('reblogs', function(Blueprint $table) {
 			$table->uuid('content_uuid')->primary();
 			$table->string('url');
-			$table->text('comment');
-			$table->text('comment_html');
-			$table->text('url_info');
+			$table->text('comment')->nullable();
+			$table->text('comment_html')->nullable();
+			$table->text('url_info')->nullable();
 		});
 
 		$this->projection = new ReblogProjection(db: $this->db);
@@ -60,6 +60,28 @@ final class ReblogProjectionTest extends TestCase {
 			url_info: '{"title":"Rick Astley - Never Gonna Give You Up (Pianoforte) (Performance)","embed":"<iframe src=\"https:\/\/www.youtube.com\/embed\/rTga41r3a4s\" allowfullscreen><\/iframe>"}',
 			comment: 'But *why?*',
 			comment_html: '<p>But <em>why?</em></p>',
+		);
+	}
+
+	public function testItWillAddANewReblogWithoutInfo() {
+		$event = new ReblogCreated(
+			url: 'https://youtu.be/rTga41r3a4s',
+			comment: 'But *why?*',
+			authorId: $this->randomId(),
+			contentId: $this->randomId(),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+		);
+
+		$this->projection->onReblogCreated($event);
+
+		$this->assertOnlyTableEntryEquals(
+			$this->db->table('reblogs'),
+			content_uuid: $event->contentId->toString(),
+			url: 'https://youtu.be/rTga41r3a4s',
+			comment: 'But *why?*',
+			comment_html: '',
+			url_info: null,
 		);
 	}
 
@@ -140,6 +162,25 @@ final class ReblogProjectionTest extends TestCase {
 				),
 				comment: 'But *why?*',
 				commentHtml: '<p>But <em>why?</em></p>',
+			)
+		));
+
+		$this->projection->buildReblog($message);
+	}
+
+	public function testItWillAddReblogDataWithoutInfoToAReblogBuilder() {
+		$contentId = $this->setUpSampleRow();
+		$this->db->table('reblogs')->where('content_uuid', '=', $contentId)->update([
+			'comment_html' => '',
+			'url_info' => null,
+		]);
+
+		$message = $this->createMock(ReblogBuilder::class);
+		$message->method('getContentId')->willReturn($contentId);
+		$message->expects($this->once())->method('setContentType')->with($this->equalTo(
+			new Reblog(
+				url: 'https://youtu.be/rTga41r3a4s',
+				comment: 'But *why?*',
 			)
 		));
 

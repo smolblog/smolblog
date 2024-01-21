@@ -8,7 +8,7 @@ use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EndpointTestToolkit;
+use Smolblog\Test\Kits\EndpointTestToolkit;
 
 final class AuthInitTest extends TestCase {
 	use EndpointTestToolkit;

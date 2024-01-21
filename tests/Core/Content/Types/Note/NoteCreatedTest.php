@@ -4,12 +4,9 @@ namespace Smolblog\Core\Content\Types\Note;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\NoteTestKit;
-
-include_once __DIR__ . '/_NoteTestKit.php';
+use Smolblog\Test\Kits\NoteTestKit;
 
 final class NoteCreatedTest extends TestCase {
 	use NoteTestKit;

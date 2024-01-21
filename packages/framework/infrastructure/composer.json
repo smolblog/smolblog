@@ -1,0 +1,28 @@
+{
+	"name": "smolblog/framework-infrastructure",
+	"description": "Framework built around Domain Driven Design and Event Sourcing",
+	"type": "library",
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "Evan Hildreth",
+			"email": "me@eph.me"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Smolblog\\Framework\\Infrastructure\\": "src/"
+		}
+	},
+	"require": {
+		"php": "^8.2",
+		"psr/container": "^2.0",
+		"psr/event-dispatcher": "^1.0",
+		"crell/tukio": "^1.6",
+		"phpseclib/phpseclib": "^3.0",
+		"psr/log": "^3.0"
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.8"
+	}
+}

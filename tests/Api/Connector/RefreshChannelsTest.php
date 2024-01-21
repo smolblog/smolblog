@@ -9,7 +9,7 @@ use Smolblog\Core\Connector\Entities\Channel as ChannelEntity;
 use Smolblog\Core\Connector\Entities\Connection as ConnectionEntity;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EndpointTestToolkit;
+use Smolblog\Test\Kits\EndpointTestToolkit;
 
 final class RefreshChannelsTest extends TestCase {
 	use EndpointTestToolkit;

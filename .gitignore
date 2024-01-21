@@ -1,7 +1,8 @@
-/vendor/
+vendor/
 .phpunit.result.cache
 .phpunit-cache
 .phpdoc
 coverage.txt
+coverage.php
 test-coverage
 .DS_Store

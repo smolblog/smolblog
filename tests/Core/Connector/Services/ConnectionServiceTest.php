@@ -7,7 +7,7 @@ use Smolblog\Core\Connector\Commands\DeleteConnection;
 use Smolblog\Core\Connector\Events\ConnectionDeleted;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Test\EventComparisonTestKit;
+use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ConnectionServiceTest extends TestCase {
 	use EventComparisonTestKit;
