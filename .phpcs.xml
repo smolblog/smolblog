@@ -5,6 +5,7 @@
 	<file>./src</file>
 
 	<exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>./packages/framework/test-utils/*</exclude-pattern>
 	<exclude-pattern>./integration-tests/*</exclude-pattern>
 	<exclude-pattern>./mock-app/*</exclude-pattern>
 
