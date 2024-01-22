@@ -17,7 +17,6 @@
     "require": {
         "woocommerce/action-scheduler": "^3.1",
         "guzzlehttp/guzzle": "^7.6",
-        "papertower/wp-rest-api-psr7": "dev-master",
         "nyholm/psr7-server": "dev-master",
         "monolog/monolog": "^3.0"
     }

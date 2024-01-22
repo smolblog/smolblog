@@ -83,7 +83,7 @@ class EndpointRegistrar implements Registry
 
 	/**
 	 * Remove terminators from the parameter pattern.
-	 * 
+	 *
 	 * OpenAPI calls for ^ and $ to ensure that the regular expression matches the entire string. WordPress doesn't need
 	 * this or even like it all that much.
 	 *
@@ -100,7 +100,7 @@ class EndpointRegistrar implements Registry
 
 	/**
 	 * Find out if the endpoint is public.
-	 * 
+	 *
 	 * OAuth scopes do not match cleanly to the permission checks WordPress would handle here. Fine-grained security is
 	 * handled at the Model level (by authorized queries).
 	 *
@@ -142,8 +142,8 @@ class EndpointRegistrar implements Registry
 
 				$request = $request->withAttribute('smolblogUserId', $smolblog_user_id);
 				$request = $request->withAttribute('smolblogPathVars', $incoming->get_url_params());
-				
-				if($request->hasHeader('x-forwarded-host')) {
+
+				if ($request->hasHeader('x-forwarded-host')) {
 					$request = $request->withHeader('host', $request->getHeaderLine('x-forwarded-host'));
 				}
 

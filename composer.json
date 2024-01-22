@@ -16,7 +16,8 @@
             "Smolblog\\IndieWeb\\": "packages/product/indieweb/src/",
             "Smolblog\\Markdown\\": "packages/framework/markdown/src/",
             "Smolblog\\MicroBlog\\": "packages/product/micro-blog/src/",
-            "Smolblog\\Tumblr\\": "packages/product/tumblr/src/"
+            "Smolblog\\Tumblr\\": "packages/product/tumblr/src/",
+            "Smolblog\\WP\\": "application/wordpress/src/"
         }
     },
     "autoload-dev": {
@@ -45,8 +46,12 @@
         "cebe/markdown": "^1.2",
         "crell/tukio": "^1.6",
         "elephox/mimey": "^4.0",
+        "guzzlehttp/guzzle": "^7.6",
         "guzzlehttp/psr7": "^2.6",
         "illuminate/database": "^9.0",
+        "monolog/monolog": "^3.0",
+        "nyholm/psr7-server": "dev-master",
+        "papertower/wp-rest-api-psr7": "dev-master",
         "php": "^8.2",
         "phpseclib/phpseclib": "^3.0",
         "psr/container": "^2.0",
@@ -56,7 +61,8 @@
         "psr/log": "^3.0",
         "ramsey/uuid": "^4.7",
         "taproot/micropub-adapter": "^0.1.1",
-        "tumblr/tumblr": "^0.4.2"
+        "tumblr/tumblr": "^0.4.2",
+        "woocommerce/action-scheduler": "^3.1"
     },
     "replace": {
         "smolblog/activitypub": "self.version",
@@ -69,6 +75,7 @@
         "smolblog/micro-blog": "self.version",
         "smolblog/rest-api": "self.version",
         "smolblog/smolblog-markdown": "self.version",
+        "smolblog/smolblog-wp": "self.version",
         "smolblog/test-utils": "self.version",
         "smolblog/tumblr": "self.version"
     },
