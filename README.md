@@ -22,6 +22,10 @@ This is still a work in progress. If a part of the code would be valuable to you
 as a standalone library, get in touch. If you're interested in helping build out
 the product, get in touch!
 
+[You can see and vote on ideas for new features on our Productboard.][pb]
+
+[pb]: https://eph.me/sbkanban
+
 ### Licensing ###
 
 **Each package is goverened by the license it contains.** As a general rule, this
@@ -41,6 +45,6 @@ the public license for contributions.**
 
 ## Contact ##
 
-Smolblog is currently [Evan Hildreth][https://oddevan.com/].
+Smolblog is currently [Evan Hildreth](https://oddevan.com/).
 
 The project email is <dev@smolblog.org>.

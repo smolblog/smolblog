@@ -18,7 +18,6 @@ use \WP_REST_Request;
 use \WP_REST_Response;
 use JsonException;
 use Smolblog\Api\Server\Spec;
-use WPRestApi\PSR7\WP_REST_PSR7_ServerRequest;
 
 /**
  * Class to handle registering the Smolblog endpoints with WordPress.
@@ -125,7 +124,7 @@ class EndpointRegistrar implements Registry
 	private function get_callback( EndpointConfig $config, string $endpoint ): callable {
 		return function( WP_REST_Request $incoming ) use ( $config, $endpoint ) {
 			$outgoing = new WP_REST_Response();
-			$wp_user_id = get_current_user_id();
+			$wp_user_id = UserHelper::IntToUuid(get_current_user_id());
 			$smolblog_user_id = UserHelper::IntToUuid($wp_user_id);
 
 			try {
