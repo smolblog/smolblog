@@ -39,16 +39,19 @@ $default_cpt_args = [
 add_action( 'init', fn() => register_post_type( 'sb-note', [
 	'label'                 => __( 'Note', 'smolblog' ),
 	'description'           => __( 'A short text post', 'smolblog' ),
+	'rewrite'               => [ 'slug' => 'note' ],
 	...$default_cpt_args,
 ] ), 0 );
 add_action( 'init', fn() => register_post_type( 'sb-reblog', [
 	'label'                 => __( 'Reblog', 'smolblog' ),
 	'description'           => __( 'A webpage from off-site', 'smolblog' ),
+	'rewrite'               => [ 'slug' => 'reblog' ],
 	...$default_cpt_args,
 ] ), 0 );
 add_action( 'init', fn() => register_post_type( 'sb-picture', [
 	'label'                 => __( 'Picture', 'smolblog' ),
 	'description'           => __( 'A visual medium', 'smolblog' ),
+	'rewrite'               => [ 'slug' => 'picture' ],
 	...$default_cpt_args,
 ] ), 0 );
 
@@ -60,6 +63,19 @@ add_action( 'pre_get_posts', function($query) {
 });
 
 // Remove the title display for post types
+add_filter( 'the_title', function($title, $post_id) {
+	// Method from Title Remover by WP Gurus, licened under GPL 2
+	// https://wordpress.org/plugins/title-remover/
+	if (
+		! is_admin() &&
+		in_the_loop() &&
+		in_array( get_post_type( $post_id ), [ 'sb-note', 'sb-reblog', 'sb-picture' ] )
+	) {
+		return '';
+	}
+
+	return $title;
+}, 10, 2);
 add_filter( 'the_title_rss', function($title) {
 	global $wp_query;
 	$type = $wp_query->post->post_type;
@@ -68,6 +84,25 @@ add_filter( 'the_title_rss', function($title) {
 	}
 	return $title;
 });
+
+// Put a notice on Smolblog CPTs
+add_action( 'admin_notices', function() {
+	if ( ! (
+		function_exists( 'get_current_screen' ) &&
+		in_array( get_current_screen()?->post_type ?? '', [ 'sb-note', 'sb-reblog', 'sb-picture' ] )
+	) ) {
+		return;
+	}
+
+	?>
+	<div class="notice notice-warning">
+	<p>
+		<strong>Editing Smolblog content inside WordPress is not supported!</strong> Any changes made here might be
+		overwritten by Smolblog at any time or could prevent Smolblog from operating correctly.
+	</p>
+	</div>
+	<?php
+} );
 
 // Add Webfinger alias at expected location.
 add_action( 'init',  function() {
@@ -89,19 +124,19 @@ if ( get_current_blog_id() !== 1 ) {
 				'callback'            => function(WP_REST_Request $request) {
 					switch_to_blog( 1 );
 
-					require_once __DIR__ . '/../smolblog/vendor/autoload.php';
+					require_once __DIR__ . '/../../vendor/autoload.php';
 					$app = new Smolblog();
 
-					$endpoint = $app->container->get(Webfinger::class);
+					$endpoint = $app->container->get( Webfinger::class );
 					$outgoing = new WP_REST_Response();
 
 					try {
 						$response = $endpoint->run( null, $request->get_params(), null );
-						$outgoing->set_status(200);
-						$outgoing->set_data($response);
+						$outgoing->set_status( 200 );
+						$outgoing->set_data( $response );
 					} catch( NotFound $e ) {
-						$outgoing->set_status(404);
-						$outgoing->set_data($e);
+						$outgoing->set_status( 404 );
+						$outgoing->set_data( $e );
 					}
 
 					restore_current_blog();

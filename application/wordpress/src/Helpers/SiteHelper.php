@@ -23,7 +23,7 @@ class SiteHelper implements Listener {
 	public function onLinkSiteAndUser(LinkSiteAndUser $command) {
 		$user_id = UserHelper::UuidToInt($command->linkedUserId);
 		$site_id = self::UuidToInt($command->siteId);
-		
+
 		$wp_role = 'subscriber';
 		if ($command->isAuthor) {
 			$wp_role = 'author';
@@ -89,12 +89,12 @@ class SiteHelper implements Listener {
 			case 'acct':
 				$domain = str_replace('@', '.', $parts['path']);
 				break;
-			
+
 			case 'http':
 			case 'https':
 				$domain = $parts['host'];
 				break;
-			
+
 			default:
 				throw new \Exception('Unknown scheme ' . $parts['scheme'] . "; given $query->resource");
 		}
@@ -106,7 +106,9 @@ class SiteHelper implements Listener {
 			)
 		);
 
-		$query->setResults(self::SiteFromWpId($wpid));
+		if ($wpid) {
+			$query->setResults(self::SiteFromWpId($wpid));
+		}
 	}
 
 	public static function SiteFromWpId(int $site_id, ?Identifier $site_uuid = null): Site {
@@ -135,7 +137,7 @@ class SiteHelper implements Listener {
 
 	public static function IntToUuid(int $dbid) {
 		$meta_value = get_site_meta( $dbid, 'smolblog_site_id', true );
-	
+
 		if (empty($meta_value)) {
 			// If the site does not have an ID, give it one.
 			$new_id = new RandomIdentifier();
@@ -149,7 +151,7 @@ class SiteHelper implements Listener {
 
 	private static function getSiteKeypair(int $dbid): Keypair {
 		$meta_value = get_site_meta( $dbid, 'smolblog_keypair', true );
-	
+
 		if (empty($meta_value)) {
 			// If the site does not have a keypair, give it one.
 			$new_key = (new KeypairGenerator())->generate();

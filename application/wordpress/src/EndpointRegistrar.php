@@ -124,8 +124,7 @@ class EndpointRegistrar implements Registry
 	private function get_callback( EndpointConfig $config, string $endpoint ): callable {
 		return function( WP_REST_Request $incoming ) use ( $config, $endpoint ) {
 			$outgoing = new WP_REST_Response();
-			$wp_user_id = UserHelper::IntToUuid(get_current_user_id());
-			$smolblog_user_id = UserHelper::IntToUuid($wp_user_id);
+			$smolblog_user_id = UserHelper::IntToUuid(get_current_user_id());
 
 			try {
 				$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
@@ -167,7 +166,7 @@ class EndpointRegistrar implements Registry
 			} catch (Throwable $ex) {
 				$outgoing->set_data(['code' => 500, 'error' => $ex->getMessage(), 'debug' => [
 					'user' => [
-						'wpid' => $wp_user_id,
+						'wpid' => get_current_user_id(),
 						'uuid' => $smolblog_user_id?->toString(),
 					],
 					'params' => $incoming->get_params(),
