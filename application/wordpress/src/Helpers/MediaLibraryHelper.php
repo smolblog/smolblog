@@ -26,7 +26,7 @@ class MediaLibraryHelper implements MediaHandler {
 		require_once( ABSPATH . 'wp-admin/includes/image.php' );
 		require_once( ABSPATH . 'wp-admin/includes/file.php' );
 		require_once( ABSPATH . 'wp-admin/includes/media.php' );
-		
+
 		$file_key = $this->getFilesKeyForGivenPsrFile($file);
 		$this->log->debug("WordPress MediaLibraryHelper handling upload", [
 			'File Key' => $file_key,
@@ -34,18 +34,24 @@ class MediaLibraryHelper implements MediaHandler {
 			'Files Array' => $_FILES,
 		]);
 
+		$blog_id = isset($siteId) ? SiteHelper::UuidToInt($siteId) : 1;
+		switch_to_blog( $blog_id );
+
 		$wp_id = media_handle_upload( $file_key, 0 );
 
 		if (is_wp_error($wp_id)) {
 			throw new InvalidMediaException('Error saving to library: ' . $wp_id->get_error_message(), upload: $file);
 		}
 
-		return new MediaFile(
+		$file = new MediaFile(
 			id: new DateIdentifier(),
 			handler: 'wordpress',
 			mimeType: get_post( $wp_id )->post_mime_type,
-			details: [ 'wp_id' => $wp_id ],
+			details: [ 'wp_id' => $wp_id, 'wp_site' => $blog_id ],
 		);
+
+		restore_current_blog();
+		return $file;
 	}
 
 	public function sideloadFile(
@@ -74,6 +80,9 @@ class MediaLibraryHelper implements MediaHandler {
 		$file_array['name']     = basename( $matches[0] );
 		$file_array['tmp_name'] = $tmp;
 
+		$blog_id = isset($siteId) ? SiteHelper::UuidToInt($siteId) : 1;
+		switch_to_blog( $blog_id );
+
 		// do the validation and storage stuff.
 		$wp_id = media_handle_sideload( $file_array, $post_id, $desc );
 
@@ -83,24 +92,33 @@ class MediaLibraryHelper implements MediaHandler {
 			throw new InvalidMediaException('Error saving downloaded file: ' . $tmp->get_error_message(), url: $url);
 		}
 
-		return new MediaFile(
+		$file = new MediaFile(
 			id: new DateIdentifier(),
 			handler: 'wordpress',
 			mimeType: get_post( $wp_id )->post_mime_type,
-			details: [ 'wp_id' => $wp_id ],
+			details: [ 'wp_id' => $wp_id, 'wp_site' => $blog_id ],
 		);
+
+		restore_current_blog();
+		return $file;
 	}
 
 	public function getThumbnailUrlFor(MediaFile $file): string {
+		switch_to_blog( $file->details['wp_site'] ?? 1 );
+
 		$info = wp_get_attachment_image_src( $file->details['wp_id'], 'thumbnail', true );
 
+		restore_current_blog();
 		return $info[0];
 	}
 
 	public function getUrlFor(MediaFile $file, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string {
+		switch_to_blog( $file->details['wp_site'] ?? 1 );
+
 		$size = isset($maxWidth) || isset($maxHeight) ? [$maxWidth ?? 9999, $maxHeight ?? 9999] : 'full';
 		$info = wp_get_attachment_image_src( $file->details['wp_id'], $size, true );
 
+		restore_current_blog();
 		return $info[0];
 	}
 
