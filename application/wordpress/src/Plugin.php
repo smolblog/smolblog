@@ -36,8 +36,18 @@ class Plugin {
 			if (!isset($_POST['subscription_key'])) {
 				$errors->add( 'no_sub_key', 'Smolblog is in private beta; a subscription key is required.' );
 			}
-			if ($_POST['subscription_key'] !== '**something**') {
+
+			$codes = [];
+			if (is_readable(__DIR__ . '../../../registration.json')) {
+				$registrationJson = file_get_contents(__DIR__ . '../../../registration.json');
+				$codes = json_validate($registrationJson) ? json_decode($registrationJson, associative: true) : [];
+			}
+
+			if (!in_array($_POST['subscription_key'], array_keys($codes))) {
 				$errors->add( 'bad_sub_key', 'Could not validate subscription key.' );
+			}
+			if (!in_array($user_email, $codes[$_POST['subscription_key']])) {
+				$errors->add( 'bad_email', 'Email is not valid for given subscription key.' );
 			}
 		}, 10, 3);
 	}
