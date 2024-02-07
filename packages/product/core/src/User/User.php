@@ -74,6 +74,7 @@ class User extends Entity {
 	 * @param string     $displayName Preferred displayed name for the user.
 	 * @param string     $pronouns    Preferred pronouns for the user.
 	 * @param string     $email       User's email address.
+	 * @param string[]   $features    Account-level features enabled for the user.
 	 */
 	public function __construct(
 		Identifier $id,
@@ -81,6 +82,7 @@ class User extends Entity {
 		string $displayName,
 		string $pronouns,
 		string $email,
+		public readonly array $features = []
 	) {
 		$this->handle = $handle;
 		$this->displayName = $displayName;
