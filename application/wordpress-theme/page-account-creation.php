@@ -1,8 +1,8 @@
 <?php
-	$success = false;
-	$errors = [];
+	namespace Smolblog\WP;
 
-	if ( ! empty( $_POST['wp-submit'] ) ) {
+	function validate_registration_form(): array {
+		$errors = [];
 		if ( ! wp_verify_nonce( $_POST['_signup_form'], 'signup_form_' . $_POST['signup_form_id'] ) ) {
 			$errors[] = 'Unable to submit this form; please try again.';
 		}
@@ -24,15 +24,17 @@
 		}
 
 		// Check the email address.
-		if ( '' ===  $_POST['email'] ) {
+		if ( '' === $_POST['email'] ) {
 			$errors[] = 'Please type your email address.';
-		} elseif ( ! is_email(  $_POST['email'] ) ) {
+		} elseif ( ! is_email( $_POST['email'] ) ) {
 			$errors[] = 'The email address is not correct.';
-		} elseif ( email_exists(  $_POST['email'] ) ) {
+		} elseif ( email_exists( $_POST['email'] ) ) {
 			$errors[] = 'This email address is already registered. <a href="/wp-login.php">Log in</a> with this address or choose another one.';
 		}
 
-		if ( $_POST['pwd'] !== $_POST['pwd-confirm'] ) {
+		if ( empty( $_POST['pwd'] ) ) {
+			$errors[] = 'No password provided.';
+		} elseif ( $_POST['pwd'] !== $_POST['pwd-confirm'] ) {
 			$errors[] = 'Passwords do not match.';
 		}
 
@@ -40,15 +42,33 @@
 			$errors[] = 'Smolblog is in private beta; a subscription key is required.';
 		} else {
 			$codes = [];
-			if ( is_readable(__DIR__ . '../../../registration.json' ) ) {
-				$registrationJson = file_get_contents(__DIR__ . '../../../registration.json');
+			if ( is_readable(__DIR__ . '/../../registration.json' ) ) {
+				$registrationJson = file_get_contents(__DIR__ . '/../../registration.json');
 				$codes = json_validate($registrationJson) ? json_decode($registrationJson, associative: true) : [];
 			}
 
 			if ( ! in_array( $_POST['key'], array_keys( $codes ) ) ) {
 				$errors[] = 'Could not validate subscription key.';
-			} elseif ( ! in_array( $user_email, $codes[ $_POST['key'] ] ) ) {
+			} elseif ( ! in_array( $_POST['email'], $codes[ $_POST['key'] ] ) ) {
 				$errors[] = 'Email is not valid for given subscription key.';
+			}
+		}
+
+		return $errors;
+	}
+
+	$errors = [];
+	$success = false;
+
+	if ( ! empty( $_POST['wp-submit'] ) ) {
+		$errors = validate_registration_form();
+
+		if ( empty( $errors ) ) {
+			$result = wp_create_user( $_POST['log'], $_POST['pwd'], $_POST['email'] );
+			if ( is_wp_error( $result ) ) {
+				$errors = $result->get_error_messages();
+			} else {
+				$success = true;
 			}
 		}
 	}
