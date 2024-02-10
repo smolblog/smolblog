@@ -11,7 +11,7 @@
 		$sanitized_user_login = sanitize_user( $_POST['log'] );
 		if ( '' === $sanitized_user_login ) {
 			$errors[] = 'Please enter a username.';
-		} elseif ( ! validate_username( $user_login ) ) {
+		} elseif ( ! validate_username( $_POST['log'] ) ) {
 			$errors[] = 'This username is invalid because it uses illegal characters. Please enter a valid username.';
 			$sanitized_user_login = '';
 		} elseif ( username_exists( $sanitized_user_login ) ) {
@@ -30,6 +30,26 @@
 			$errors[] = 'The email address is not correct.';
 		} elseif ( email_exists(  $_POST['email'] ) ) {
 			$errors[] = 'This email address is already registered. <a href="/wp-login.php">Log in</a> with this address or choose another one.';
+		}
+
+		if ( $_POST['pwd'] !== $_POST['pwd-confirm'] ) {
+			$errors[] = 'Passwords do not match.';
+		}
+
+		if ( empty( $_POST['key'])) {
+			$errors[] = 'Smolblog is in private beta; a subscription key is required.';
+		} else {
+			$codes = [];
+			if ( is_readable(__DIR__ . '../../../registration.json' ) ) {
+				$registrationJson = file_get_contents(__DIR__ . '../../../registration.json');
+				$codes = json_validate($registrationJson) ? json_decode($registrationJson, associative: true) : [];
+			}
+
+			if ( ! in_array( $_POST['key'], array_keys( $codes ) ) ) {
+				$errors[] = 'Could not validate subscription key.';
+			} elseif ( ! in_array( $user_email, $codes[ $_POST['key'] ] ) ) {
+				$errors[] = 'Email is not valid for given subscription key.';
+			}
 		}
 	}
 ?>
@@ -100,7 +120,7 @@
 
 			<form name="loginform" id="loginform" method="post">
 				<p>
-					<label for="registration_key">Registration Key</label>
+					<label for="registration_key">Subscription Key</label>
 					<input type="text" name="key" value="<?= esc_attr( $_POST['key'] ?? '' ) ?>" id="registration_key" class="input" size="20" autocapitalize="off" autocomplete="username" required="required" />
 				</p>
 				<p>
