@@ -194,3 +194,15 @@ add_action( 'login_enqueue_scripts', function() {
 });
 add_filter( 'login_headerurl', fn() => 'https://smolblog.com/' );
 add_filter( 'login_headertext', fn() => 'Smolblog' );
+
+// Add a Smolblog Dashboard link to the admin bar.
+add_action('admin_bar_menu', function($admin_bar) {
+	$admin_bar->add_menu( array(
+			'id'    => 'smolblog-dashboard',
+			'title' => 'Smolblog Dashboard',
+			'href'  => 'https://dashboard.smol.blog/',
+			'meta'  => array(
+					'title' => 'Return to the Smolblog Dashboard',
+			),
+	));
+}, 100);
