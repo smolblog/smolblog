@@ -62,8 +62,14 @@ class ObjectGetter {
 
 		$response = $this->fetcher->sendRequest($request);
 
-		return ActivityPubBase::typedObjectFromArray(
+		$result = ActivityPubBase::typedObjectFromArray(
 			json_decode($response->getBody()->getContents(), associative: true)
 		);
+
+		if ($result->id !== $url) {
+			throw new ActivityPubException("ID mismatch: object at '$url' has ID '$result->id'");
+		}
+
+		return $result;
 	}
 }
