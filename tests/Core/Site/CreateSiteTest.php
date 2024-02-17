@@ -3,19 +3,19 @@
 namespace Smolblog\Core\Site;
 
 use InvalidArgumentException;
+use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\TestCase;
 
 final class CreateSiteTest extends TestCase {
-	public function testItCanBeInstantiated() {
-		$this->assertInstanceOf(
-			CreateSite::class,
-			new CreateSite(
-				userId: $this->randomId(),
-				handle: 'something',
-				displayName: 'Something.com',
-				baseUrl: 'https://something.com/',
-			)
+	public function testItCreatesASiteIdIfNoneIsGiven() {
+		$command = new CreateSite(
+			userId: $this->randomId(),
+			handle: 'something',
+			displayName: 'Something.com',
+			baseUrl: 'https://something.com/',
 		);
+
+		$this->assertInstanceOf(Identifier::class, $command->siteId);
 	}
 
 	public function testItThrowsExceptionIfBaseUrlIsNotValid() {
@@ -51,5 +51,19 @@ final class CreateSiteTest extends TestCase {
 
 		$this->assertEquals($command->commandUser, $command->getAuthorizationQuery()->userId);
 		$this->assertNotEquals($command->userId, $command->getAuthorizationQuery()->userId);
+	}
+
+	public function testItCanAcceptAnIdInsteadOfCreatingOne() {
+		$newId = $this->randomId();
+
+		$command = new CreateSite(
+			userId: $this->randomId(),
+			handle: 'something',
+			displayName: 'Something.com',
+			baseUrl: 'https://something.com/',
+			siteId: $newId
+		);
+
+		$this->assertEquals($newId, $command->siteId);
 	}
 }
