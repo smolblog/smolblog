@@ -53,6 +53,7 @@ class Webfinger extends BasicEndpoint {
 	/**
 	 * Run the endpoint.
 	 *
+	 * @throws BadRequest When no resource is provided.
 	 * @throws NotFound When the resource does not exist here.
 	 *
 	 * @param Identifier  $userId Ignored.
