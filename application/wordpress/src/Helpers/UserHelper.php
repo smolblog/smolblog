@@ -78,6 +78,7 @@ class UserHelper implements Listener {
 			displayName: $wp_user->display_name,
 			pronouns: $wp_user->smolblog_pronouns ?? '',
 			email: $wp_user->user_email,
+			features: ['create-site'],
 		);
 	}
 
@@ -98,7 +99,7 @@ class UserHelper implements Listener {
 		}
 
 		$meta_value = get_user_meta( $dbid, 'smolblog_user_id', true );
-	
+
 		if (empty($meta_value)) {
 			$new_id = new RandomIdentifier();
 			update_user_meta( $dbid, 'smolblog_user_id', $new_id->toString() );

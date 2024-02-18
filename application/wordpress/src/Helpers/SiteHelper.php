@@ -3,15 +3,37 @@
 namespace Smolblog\WP\Helpers;
 
 use Smolblog\Core\Federation\SiteByResourceUri;
-use Smolblog\Core\Site\{GetSiteKeypair, GetSiteSettings, LinkSiteAndUser, Site, SiteById, SiteSettings, SiteUsers, UpdateSettings, UserHasPermissionForSite};
+use Smolblog\Core\Site\{CreateSite, GetSiteKeypair, GetSiteSettings, LinkSiteAndUser, Site, SiteById, SiteSettings, SiteUsers, UpdateSettings, UserCanCreateSites, UserHasPermissionForSite};
 use Smolblog\Framework\Infrastructure\KeypairGenerator;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Objects\{Identifier, Keypair, RandomIdentifier};
 
 class SiteHelper implements Listener {
+	public function onCreateSite(CreateSite $command) {
+		$user_id = UserHelper::UuidToInt($command->userId);
+
+		$site_id = wpmu_create_blog(
+			$command->handle . '.smol.blog',
+			'/',
+			$command->displayName,
+			$user_id,
+			[],
+			get_current_network_id()
+		);
+
+		if (is_wp_error( $site_id )) {
+			throw new \Exception( $site_id->get_error_message() );
+		}
+
+		update_site_meta( $site_id, 'smolblog_site_id', $command->siteId->toString() );
+	}
+
+	public function onUserCanCreateSites(UserCanCreateSites $query) {
+		$query->setResults(true);
+	}
+
 	public function onGetSiteSettings(GetSiteSettings $query) {
 		$site_id = self::UuidToInt($query->siteId);
-		$site_info = get_site( $site_id );
 
 		$query->setResults(new SiteSettings(
 			siteId: $query->siteId,
