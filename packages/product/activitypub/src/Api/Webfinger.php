@@ -5,6 +5,7 @@ namespace Smolblog\ActivityPub\Api;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
+use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Federation\SiteByResourceUri;
@@ -52,6 +53,7 @@ class Webfinger extends BasicEndpoint {
 	/**
 	 * Run the endpoint.
 	 *
+	 * @throws BadRequest When no resource is provided.
 	 * @throws NotFound When the resource does not exist here.
 	 *
 	 * @param Identifier  $userId Ignored.
@@ -60,6 +62,10 @@ class Webfinger extends BasicEndpoint {
 	 * @return WebfingerResponse
 	 */
 	public function run(?Identifier $userId, ?array $params, ?object $body = null): WebfingerResponse {
+		if (empty($params['resource'])) {
+			throw new BadRequest('No resource was provided.');
+		}
+
 		$site = $this->bus->fetch(new SiteByResourceUri($params['resource']));
 
 		if (!isset($site)) {

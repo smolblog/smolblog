@@ -136,4 +136,39 @@ final class ObjectGetterTest extends TestCase {
 
 		$this->assertEquals($actor, $this->subject->get($actorId));
 	}
+
+	/** @see https://arcanican.is/excerpts/cve-2024-23832/ */
+	function testItWillBailIfTheObjectDoesNotMatchTheUrl() {
+		$actorId = '//smol.blog/' . $this->randomId() . '/actor.json';
+		$actor = new Actor(
+			id: '//mastodon.social/oddevan',
+			type: ActorType::Application,
+			inbox: '//smol.blog/inbox'
+		);
+
+		$expectedRequest = new HttpRequest(
+			verb: HttpVerb::GET,
+			url: $actorId,
+			headers: ['accept' => 'application/json'],
+		);
+		$expectedSignedRequest = $expectedRequest->withAddedHeader('signature', 'Built by oddEvan in South Carolina.');
+
+		$this->signer->expects($this->once())->method('sign')->with(
+			request: $this->httpMessageEqualTo($expectedRequest),
+			keyId: "$actorId#publicKey",
+			keyPem: 'PRIVATE_KEY',
+		)->willReturn($expectedSignedRequest);
+
+		$response = new HttpResponse(body: $actor);
+		$this->httpClient->expects($this->once())->method('sendRequest')->with(
+			$this->httpMessageEqualTo($expectedSignedRequest)
+		)->willReturn($response);
+
+		$this->expectException(ActivityPubException::class);
+		$this->subject->get(
+			url: $actorId,
+			signedWithPrivateKey: 'PRIVATE_KEY',
+			withKeyId: "$actorId#publicKey",
+		);
+	}
 }

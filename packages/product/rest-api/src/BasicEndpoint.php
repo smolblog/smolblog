@@ -98,7 +98,7 @@ abstract class BasicEndpoint implements Endpoint {
 					'code' => 500,
 					'error' => $ex->getMessage(),
 					'debug' => [
-						'user' => $userId->toString(),
+						'user' => $userId?->toString() ?? '-- anonymous --',
 						'params' => $requestParams,
 						'body' => $request->getBody()->getContents(),
 					],
