@@ -200,7 +200,7 @@ add_action('admin_bar_menu', function($admin_bar) {
 	$admin_bar->add_menu( array(
 			'id'    => 'smolblog-dashboard',
 			'title' => 'Smolblog Dashboard',
-			'href'  => 'https://dashboard.smol.blog/',
+			'href'  => 'https://dashboard.smolblog.com/',
 			'meta'  => array(
 					'title' => 'Return to the Smolblog Dashboard',
 			),
