@@ -23,8 +23,8 @@ class ActivityPubHandleCreated extends SiteEvent {
 	public function __construct(
 		public readonly Identifier $handleId,
 		public readonly string $handle,
-		public readonly Identifier $siteId,
-		public readonly Identifier $userId,
+		Identifier $siteId,
+		Identifier $userId,
 		Identifier $id = null,
 		DateTimeInterface $timestamp = null,
 	) {
