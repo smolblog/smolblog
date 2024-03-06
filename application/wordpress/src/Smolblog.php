@@ -75,7 +75,7 @@ class Smolblog {
 								return ABSPATH . 'c2patool';
 							}
 						},
-					EndpointRegistrar::class => [ 'container' => ContainerInterface::class ],
+					EndpointRegistrar::class => [ 'log' => LoggerInterface::class, 'container' => ContainerInterface::class ],
 					wpdb::class => fn() => $wpdb,
 					ConnectionInterface::class => fn() => DatabaseHelper::getLaravelConnection(),
 					\Elephox\Mimey\MimeTypesInterface::class => \Elephox\Mimey\MimeTypes::class,
@@ -90,7 +90,7 @@ class Smolblog {
 					Helpers\PostProjection::class => ['bus' => MessageBus::class, 'log' => LoggerInterface::class],
 					Helpers\AsyncHelper::class => [],
 					Helpers\AuthRequestStateHelper::class => [],
-					Helpers\SiteHelper::class => [],
+					Helpers\SiteHelper::class => ['log' => LoggerInterface::class],
 					Helpers\UserHelper::class => [],
 					Helpers\EmbedHelper::class => [],
 					Helpers\MediaLibraryHelper::class => ['log' => LoggerInterface::class],

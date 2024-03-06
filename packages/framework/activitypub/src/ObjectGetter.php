@@ -66,8 +66,9 @@ class ObjectGetter {
 			json_decode($response->getBody()->getContents(), associative: true)
 		);
 
-		if ($result->id !== $url) {
-			throw new ActivityPubException("ID mismatch: object at '$url' has ID '$result->id'");
+		$urlWithoutFragment = str_contains($url, '#') ? substr($url, 0, strpos($url, '#')) : $url;
+		if ($result->id !== $urlWithoutFragment) {
+			throw new ActivityPubException("ID mismatch: object at $urlWithoutFragment has ID $result->id");
 		}
 
 		return $result;

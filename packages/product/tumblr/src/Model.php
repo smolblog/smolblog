@@ -2,6 +2,7 @@
 
 namespace Smolblog\Tumblr;
 
+use Psr\Log\LoggerInterface;
 use Smolblog\Framework\Objects\DomainModel;
 
 /**
@@ -11,6 +12,7 @@ class Model extends DomainModel {
 	public const SERVICES = [
 		TumblrConnector::class => [
 			'factory' => TumblrClientFactory::class,
+			'log' => LoggerInterface::class,
 		],
 	];
 

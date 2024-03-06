@@ -2,6 +2,7 @@
 
 namespace Smolblog\ActivityPub;
 
+use Illuminate\Database\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Framework\ActivityPub\MessageSender;
@@ -51,6 +52,13 @@ class Model extends DomainModel {
 			'env' => ApiEnvironment::class,
 			'at' => ActivityTypesConverter::class,
 			'sender' => MessageSender::class,
+		],
+
+		Handles\ActivityPubHandleService::class => [
+			'bus' => MessageBus::class,
+		],
+		Handles\HandleProjection::class => [
+			'db' => ConnectionInterface::class,
 		],
 
 		ActivityTypesConverter::class => [

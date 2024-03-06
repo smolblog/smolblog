@@ -7,6 +7,7 @@
 
 namespace Smolblog\WP;
 
+use Illuminate\Support\Facades\Log;
 use Psr\Container\ContainerInterface;
 use Smolblog\Api\AuthScope;
 use Smolblog\Api\Endpoint;
@@ -17,6 +18,7 @@ use Throwable;
 use \WP_REST_Request;
 use \WP_REST_Response;
 use JsonException;
+use Psr\Log\LoggerInterface;
 use Smolblog\Api\Server\Spec;
 
 /**
@@ -30,6 +32,7 @@ class EndpointRegistrar implements Registry
 	}
 
 	public function __construct(
+		private LoggerInterface $log,
 		private ContainerInterface $container,
 		private array $configuration
 	){
@@ -164,7 +167,7 @@ class EndpointRegistrar implements Registry
 					$outgoing->set_data($response->getBody()->getContents());
 				}
 			} catch (Throwable $ex) {
-				$outgoing->set_data(['code' => 500, 'error' => $ex->getMessage(), 'debug' => [
+				$debugData = ['code' => 500, 'error' => $ex->getMessage(), 'debug' => [
 					'user' => [
 						'wpid' => get_current_user_id(),
 						'uuid' => $smolblog_user_id?->toString(),
@@ -172,8 +175,13 @@ class EndpointRegistrar implements Registry
 					'params' => $incoming->get_params(),
 					'body' => $incoming->get_json_params(),
 				], 'file' => $ex->getFile(), 'line' => $ex->getLine(), 'trace' => $ex->getTraceAsString(),
-			'previous' => $ex->getPrevious()?->getMessage()]);
+			'previous' => $ex->getPrevious()?->getMessage()];
+
+				$this->log->error('500 error', $debugData);
+
+				$outgoing->set_data($debugData);
 				$outgoing->set_status( 500 );
+
 			}
 
 			return $outgoing;
