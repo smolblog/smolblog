@@ -60,6 +60,9 @@ class Model extends DomainModel {
 		Content\Data\ContentEventStream::class => [
 			'db' => ConnectionInterface::class,
 		],
+		Content\Data\ContentStateRepo::class => [
+			'db' => ConnectionInterface::class,
+		],
 		Content\Data\StandardContentProjection::class => [
 			'db' => ConnectionInterface::class,
 			'bus' => MessageBus::class,
