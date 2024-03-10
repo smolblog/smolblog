@@ -66,7 +66,7 @@ class Base extends BasicEndpoint {
 		return new ServerInfo(
 			serverVersion: '0.2.0-alpha',
 			specHref: $this->env->getApiUrl('/spec'),
-			license: $userId ? self::LICENSE : null,
+			license: self::LICENSE,
 		);
 	}
 }
