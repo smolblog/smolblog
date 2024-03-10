@@ -171,4 +171,37 @@ final class ObjectGetterTest extends TestCase {
 			withKeyId: "$actorId#publicKey",
 		);
 	}
+
+	public function testItWillIgnoreTheFragmentWhenMatchingTheObjectUrl() {
+		$actorId = '//smol.blog/' . $this->randomId() . '/actor.json';
+		$actor = new Actor(
+			id: $actorId,
+			type: ActorType::Application,
+			inbox: '//smol.blog/inbox'
+		);
+
+		$expectedRequest = new HttpRequest(
+			verb: HttpVerb::GET,
+			url: "$actorId#publicKey",
+			headers: ['accept' => 'application/json'],
+		);
+		$expectedSignedRequest = $expectedRequest->withAddedHeader('signature', 'Built by oddEvan in South Carolina.');
+
+		$this->signer->expects($this->once())->method('sign')->with(
+			request: $this->httpMessageEqualTo($expectedRequest),
+			keyId: "$actorId#signingKey",
+			keyPem: 'PRIVATE_KEY',
+		)->willReturn($expectedSignedRequest);
+
+		$response = new HttpResponse(body: $actor);
+		$this->httpClient->expects($this->once())->method('sendRequest')->with(
+			$this->httpMessageEqualTo($expectedSignedRequest)
+		)->willReturn($response);
+
+		$this->assertEquals($actor, $this->subject->get(
+			url: "$actorId#publicKey",
+			signedWithPrivateKey: 'PRIVATE_KEY',
+			withKeyId: "$actorId#signingKey",
+		));
+	}
 }

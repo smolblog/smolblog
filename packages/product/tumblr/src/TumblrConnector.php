@@ -45,6 +45,8 @@ class TumblrConnector implements Connector {
 	/**
 	 * Get the information needed to start an OAuth session with the provider
 	 *
+	 * @throws \Exception When no oauth_token is given.
+	 *
 	 * @param string $callbackUrl URL of the callback endpoint.
 	 * @return ConnectorInitData
 	 */
