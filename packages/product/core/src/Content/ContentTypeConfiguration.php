@@ -21,7 +21,7 @@ class ContentTypeConfiguration extends Value {
 		public readonly string $handle,
 		public readonly string $displayName,
 		public readonly string $typeClass,
-		public readonly string $singleItemQuery,
+		public readonly ?string $singleItemQuery = null,
 		public readonly ?string $deleteItemCommand = null,
 	) {
 	}
