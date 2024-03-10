@@ -34,7 +34,7 @@ class PostProjection implements Projection {
 
 		$wp_site_id = SiteHelper::UuidToInt( $content->siteId );
 		switch_to_blog( $wp_site_id );
-		
+
 		$wp_author_id = SiteHelper::UuidToInt( $content->authorId );
 		$wp_post_id = wp_insert_post( [
 			'post_author' => $wp_author_id,
@@ -52,13 +52,15 @@ class PostProjection implements Projection {
 			throw new Exception($wp_post_id);
 		}
 
+		set_post_format( $wp_post_id, $content->type->getTypeKey() === 'note' ? 'status' : 'aside' );
+
 		$permalink_parts = parse_url( get_permalink( $wp_post_id ) );
 		$permalink = $permalink_parts['path'] .
 			(isset($permalink_parts['query']) ? '?' . $permalink_parts['query'] : '') .
 			(isset($permalink_parts['fragment']) ? '#' . $permalink_parts['fragment'] : '');
 
 		restore_current_blog();
-		
+
 		$this->bus->dispatch(new PermalinkAssigned(
 			contentId: $event->contentId,
 			userId: $event->userId,
