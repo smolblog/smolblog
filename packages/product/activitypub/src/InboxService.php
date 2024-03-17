@@ -150,7 +150,7 @@ class InboxService extends InboxAdapter {
 
 		$this->log->debug("Received a Delete request for $actor->id", $message->toArray());
 
-		$followers = $this->bus->dispatch(new FollowersByProviderAndKey(
+		$followers = $this->bus->fetch(new FollowersByProviderAndKey(
 			provider: 'activitypub',
 			providerKey: $actorKey,
 		));

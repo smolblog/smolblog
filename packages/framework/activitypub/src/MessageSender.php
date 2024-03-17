@@ -68,6 +68,9 @@ class MessageSender {
 			verb: HttpVerb::POST,
 			url: $toInbox,
 			body: $message,
+			headers: [
+				'Content-type' => 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+			]
 		);
 
 		if ($signedWithPrivateKey && $this->signer) {
@@ -92,6 +95,7 @@ class MessageSender {
 			$this->log->error($errorMessage, [
 				'message' => $message->toArray(),
 				'inbox' => $toInbox,
+				'headers' => $request->getHeaders(),
 				'signed' => $request->hasHeader('signature') ? "With key $withKeyId" : 'NO',
 			]);
 		}

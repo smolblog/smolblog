@@ -40,6 +40,8 @@ class DefaultModel extends DomainModel {
 		ObjectGetter::class => [
 			'fetcher' => ClientInterface::class,
 			'signer' => MessageSigner::class,
+			'log' => LoggerInterface::class,
+			'throwOnError' => false,
 		],
 	];
 }
