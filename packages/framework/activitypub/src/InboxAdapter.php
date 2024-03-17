@@ -68,6 +68,10 @@ abstract class InboxAdapter {
 
 		$bodyArray = json_decode($request->getBody()->__toString(), associative: true);
 		$body = ActivityPubBase::typedObjectFromArray($bodyArray);
+		if (!$body) {
+			$this->handleUnknownMessage(body: $bodyArray, inboxContext: $inboxContext);
+			return;
+		}
 
 		switch (get_class($body)) {
 			case Follow::class:
@@ -110,7 +114,7 @@ abstract class InboxAdapter {
 			signedWithPrivateKey: $inboxContext->privateKeyPem,
 			withKeyId: $inboxContext->inboxActor?->publicKey->id,
 		);
-		if (!isset($response->publicKey)) {
+		if (!isset($response?->publicKey)) {
 			return false;
 		}
 

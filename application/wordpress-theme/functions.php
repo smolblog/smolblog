@@ -36,3 +36,5 @@ function smolblog_registration_errors($errors, $sanitized_user_login, $user_emai
 	return $errors;
 }
 add_filter( 'registration_errors', 'smolblog_registration_errors', 5, 3);
+
+add_filter( 'wp_mail_smtp_tasks_admin_hide_as_menu', '__return_false' );

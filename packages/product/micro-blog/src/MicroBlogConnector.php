@@ -41,7 +41,7 @@ class MicroBlogConnector implements Connector {
 		$state = (new RandomIdentifier())->toString();
 		$args = [
 			'redirect_uri' => $callbackUrl,
-			'client_id' => 'https://smolblog.localhost/',
+			'client_id' => 'https://smolblog.com/',
 			'state' => $state,
 			'scope' => 'create',
 			'response_type' => 'code',

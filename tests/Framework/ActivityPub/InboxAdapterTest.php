@@ -494,4 +494,22 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->subject->handleRequest($request);
 	}
+
+	public function testItWillLogAnErrorForABodyThatIsNotAnActivityPubObject() {
+		$request = new ServerRequest('POST', 'https://smol.blog/inbox', [], json_encode([
+			'ping' => 'pong',
+			'smol' => 'blog',
+		]));
+
+		$this->verifier->expects($this->never())->method('verify');
+		$this->getter->expects($this->never())->method('get');
+
+		$this->logger->expects($this->once())->method('error')->with(
+			'Unknown ActivityPub message received',
+			['inbox' => $this->inboxKey, 'body' => ['ping' => 'pong', 'smol' => 'blog']]
+		);
+		$this->logger->expects($this->never())->method('debug');
+
+		$this->subject->handleRequest($request);
+	}
 }

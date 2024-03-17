@@ -96,6 +96,9 @@ class GetActor implements Endpoint {
 			publicKeyPem: $site->publicKey,
 		);
 
-		return new HttpResponse(body: $response);
+		return new HttpResponse(
+			body: $response,
+			headers: ['Content-Type' => 'application/ld+json; profile="https://www.w3.org/ns/activitystreams']
+		);
 	}
 }

@@ -80,6 +80,7 @@ final class MessageSenderTest extends TestCase {
 			verb: HttpVerb::POST,
 			url: $inboxUrl,
 			body: $object->toArray(),
+			headers: ['content-type' => 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"']
 		);
 		$expectedSignedRequest = $expectedRequest->withAddedHeader('Signature', 'Built by oddEvan in South Carolina.');
 
@@ -128,6 +129,11 @@ final class MessageSenderTest extends TestCase {
 				'message' => $object->toArray(),
 				'inbox' => 'https://smol.blog/inbox',
 				'signed' => "With key $actorId#publicKey",
+				'headers' => [
+					'Signature' => ['Me!'],
+					'content-type' => ['application/ld+json; profile="https://www.w3.org/ns/activitystreams"'],
+					'Host' => ['smol.blog'],
+				],
 			]
 		);
 
@@ -161,6 +167,10 @@ final class MessageSenderTest extends TestCase {
 				'message' => $object->toArray(),
 				'inbox' => 'https://smol.blog/inbox',
 				'signed' => 'NO',
+				'headers' => [
+					'content-type' => ['application/ld+json; profile="https://www.w3.org/ns/activitystreams"'],
+					'Host' => ['smol.blog'],
+				],
 			]
 		);
 
@@ -219,6 +229,7 @@ final class MessageSenderTest extends TestCase {
 			verb: HttpVerb::POST,
 			url: $inboxUrl,
 			body: $object->toArray(),
+			headers: ['content-type' => 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"'],
 		);
 
 		$this->logger->expects($this->once())->method('debug')->with(
@@ -254,6 +265,7 @@ final class MessageSenderTest extends TestCase {
 			verb: HttpVerb::POST,
 			url: $inboxUrl,
 			body: $object->toArray(),
+			headers: ['content-type' => 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"'],
 		);
 
 		$this->signer->expects($this->never())->method('sign');

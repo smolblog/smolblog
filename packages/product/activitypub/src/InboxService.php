@@ -55,6 +55,10 @@ class InboxService extends InboxAdapter {
 	protected function determineInbox(ServerRequestInterface $request): InboxRequestContext {
 		$vars = $request->getAttribute('smolblogPathVars', []);
 		if (!isset($vars['site'])) {
+			$this->log->debug(
+				'Hit to shared inbox',
+				['body' => $request->getBody()->__toString(), ...$request->getHeaders()]
+			);
 			return new InboxRequestContext(inboxKey: null);
 		}
 
@@ -62,6 +66,10 @@ class InboxService extends InboxAdapter {
 		$site = $this->bus->fetch(new SiteById($siteId));
 		$keypair = $this->bus->fetch(new GetSiteKeypair(siteId: $siteId, userId: User::internalSystemUser()->id));
 
+		$this->log->debug(
+			'Hit to inbox for site ' . $siteId,
+			['body' => $request->getBody()->__toString(), ...$request->getHeaders()]
+		);
 		return new InboxRequestContext(
 			inboxKey: $siteId,
 			inboxActor: $this->at->actorFromSite($site),
@@ -87,6 +95,8 @@ class InboxService extends InboxAdapter {
 				withKeyId: $inboxContext->inboxActor?->publicKey->id,
 			);
 		}
+
+		$this->log->debug("Received a Follow request from $actor->id for $inboxContext->inboxKey", $request->toArray());
 
 		$this->bus->dispatch(new ActivityPubFollowerAdded(
 			request: $request,
@@ -114,6 +124,11 @@ class InboxService extends InboxAdapter {
 		$actorId = is_string($request->actor) ? $request->actor : $request->actor->id;
 		$siteId = $this->getSiteIdFromProperty($request->object);
 
+		$this->log->debug(
+			"Received an UndoFollow request from $actorId for $inboxContext->inboxKey",
+			$message->toArray()
+		);
+
 		$this->bus->dispatch(new FollowerRemoved(
 			siteId: $siteId,
 			userId: Identifier::fromString(User::INTERNAL_SYSTEM_USER_ID),
@@ -133,7 +148,9 @@ class InboxService extends InboxAdapter {
 	protected function deleteActor(Delete $message, Actor $actor, InboxRequestContext $inboxContext): void {
 		$actorKey = new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, $actor->id);
 
-		$followers = $this->bus->dispatch(new FollowersByProviderAndKey(
+		$this->log->debug("Received a Delete request for $actor->id", $message->toArray());
+
+		$followers = $this->bus->fetch(new FollowersByProviderAndKey(
 			provider: 'activitypub',
 			providerKey: $actorKey,
 		));

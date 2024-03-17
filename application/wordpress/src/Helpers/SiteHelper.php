@@ -2,6 +2,7 @@
 
 namespace Smolblog\WP\Helpers;
 
+use Psr\Log\LoggerInterface;
 use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Core\Site\{CreateSite, GetSiteKeypair, GetSiteSettings, LinkSiteAndUser, Site, SiteById, SiteSettings, SiteUsers, UpdateSettings, UserCanCreateSites, UserHasPermissionForSite};
 use Smolblog\Framework\Infrastructure\KeypairGenerator;
@@ -9,6 +10,9 @@ use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Objects\{Identifier, Keypair, RandomIdentifier};
 
 class SiteHelper implements Listener {
+	public function __construct(private LoggerInterface $log) {
+	}
+
 	public function onCreateSite(CreateSite $command) {
 		$user_id = UserHelper::UuidToInt($command->userId);
 
@@ -26,6 +30,7 @@ class SiteHelper implements Listener {
 		}
 
 		update_site_meta( $site_id, 'smolblog_site_id', $command->siteId->toString() );
+		update_site_meta( $site_id, 'smolblog_site_handle', $command->handle );
 	}
 
 	public function onUserCanCreateSites(UserCanCreateSites $query) {
@@ -87,15 +92,13 @@ class SiteHelper implements Listener {
 	}
 
 	public function onUserHasPermissionForSite(UserHasPermissionForSite $query) {
-		//throw new Exception('Hello!');
-
 		$site_id = self::UuidToInt($query->siteId);
 		$user_id = UserHelper::UuidToInt($query->userId);
 		switch_to_blog( $site_id );
 
 		$query->setResults(
 			(!$query->mustBeAuthor || user_can( $user_id, 'edit_posts' )) &&
-			(!$query->mustBeAdmin || user_can( $user_id, 'activate_plugins'))
+			(!$query->mustBeAdmin || user_can( $user_id, 'manage_options'))
 		);
 
 		restore_current_blog();
@@ -104,33 +107,85 @@ class SiteHelper implements Listener {
 	public function onSiteByResourceUri(SiteByResourceUri $query) {
 		global $wpdb;
 
-		$domain = '';
+		$wpid = null;
 		$parts = parse_url($query->resource);
 
 		switch ($parts['scheme']) {
 			case 'acct':
-				$domain = str_replace('@', '.', $parts['path']);
+				$wpid = $this->getDbIdFromActivityPubHandle($parts['path']) ?? $this->getDbIdFromSiteHandle($parts['path']);
 				break;
 
 			case 'http':
 			case 'https':
-				$domain = $parts['host'];
+				$wpid = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT blog_id FROM $wpdb->blogs WHERE domain LIKE %s",
+						$parts['host'],
+					)
+				);
 				break;
 
 			default:
 				throw new \Exception('Unknown scheme ' . $parts['scheme'] . "; given $query->resource");
 		}
 
-		$wpid = $wpdb->get_var(
+		if (is_int($wpid)) {
+			$query->setResults(self::SiteFromWpId($wpid));
+		}
+	}
+
+	private function getDbIdFromActivityPubHandle(string $handle): ?int {
+		global $wpdb;
+
+		$table_name = $wpdb->base_prefix . 'sb_activitypub_handles';
+		$siteId = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT blog_id FROM $wpdb->blogs WHERE domain LIKE %s",
-				$domain,
+				"SELECT site_uuid FROM $table_name WHERE handle = %s",
+				$handle,
 			)
 		);
 
-		if ($wpid) {
-			$query->setResults(self::SiteFromWpId($wpid));
+		if (is_wp_error( $siteId )) {
+			$this->log->error('Could not find site for ActivityPub handle ' . $handle, $siteId->get_error_messages());
+			return null;
 		}
+
+		return isset($siteId) ? self::UuidToInt($siteId) : null;
+	}
+
+	/**
+	 * This function exists because Mastodon will always do a Webfinger search for the Actor's `preferredUsername` at the
+	 * actor's domain. Since Smolblog sites can be hosted on any domain, this function will find the site based on the
+	 * handle if the domain is the same as the base domain.
+	 */
+	private function getDbIdFromSiteHandle(string $handle): ?int {
+		global $wpdb;
+
+		$atIndex = strpos($handle, '@');
+		if ($atIndex === false) {
+			return null;
+		}
+
+		$domain = substr($handle, $atIndex + 1);
+		$base = get_site( 1 )->domain;
+		if ($domain !== $base) {
+			return null;
+		}
+
+		$slug = substr($handle, 0, $atIndex);
+		$siteId = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT blog_id FROM $wpdb->blogmeta WHERE meta_key = 'smolblog_site_handle' AND meta_value LIKE %s",
+				$slug
+			)
+		);
+
+		if (is_wp_error( $siteId )) {
+			$this->log->error('Could not find site for site handle ' . $handle, $siteId->get_error_messages());
+			return null;
+		}
+
+		return $siteId;
 	}
 
 	public static function SiteFromWpId(int $site_id, ?Identifier $site_uuid = null): Site {
@@ -139,20 +194,20 @@ class SiteHelper implements Listener {
 
 		return new Site(
 			id: $site_uuid,
-			handle: self::slugFromDomain($details->domain),
+			handle: get_site_meta( $site_id, 'smolblog_site_handle', true ),
 			displayName: $details->blogname,
 			baseUrl: $details->home,
 			publicKey: self::getSiteKeypair($site_id)->publicKey,
 		);
 	}
 
-	public static function UuidToInt(Identifier $uuid) {
+	public static function UuidToInt(Identifier|string $uuid) {
 		global $wpdb;
 
 		return $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT blog_id FROM $wpdb->blogmeta WHERE meta_key = 'smolblog_site_id' AND meta_value = %s",
-				$uuid->toString()
+				strval($uuid)
 			)
 		);
 	}
@@ -183,15 +238,5 @@ class SiteHelper implements Listener {
 		}
 
 		return Keypair::jsonDeserialize( base64_decode( $meta_value ) );
-	}
-
-	private static function slugFromDomain(string $domain) {
-		$base = get_site( 1 )->domain;
-
-		if ($domain === $base) {
-			return 'smolblog';
-		}
-
-		return str_replace(".$base", '', $domain);
 	}
 }

@@ -3,6 +3,8 @@
 namespace Smolblog\Framework\ActivityPub;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubBase;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
 use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
@@ -16,13 +18,19 @@ class ObjectGetter {
 	/**
 	 * Construct the service.
 	 *
-	 * @param ClientInterface $fetcher Client to send HTTP messages.
-	 * @param MessageSigner   $signer  Service to sign the HTTP message.
+	 * @param ClientInterface $fetcher      Client to send HTTP messages.
+	 * @param MessageSigner   $signer       Optional service to sign the HTTP message.
+	 * @param LoggerInterface $log          PSR logger to use.
+	 * @param boolean         $throwOnError True to throw exceptions when the remote server gives an error or IDs do
+	 *                                      not match.
 	 */
 	public function __construct(
 		private ClientInterface $fetcher,
 		private ?MessageSigner $signer = null,
+		private ?LoggerInterface $log = null,
+		private bool $throwOnError = false,
 	) {
+		$this->log ??= new NullLogger();
 	}
 
 	/**
@@ -35,7 +43,7 @@ class ObjectGetter {
 	 * @param string      $url                  URL to retrieve.
 	 * @param string|null $signedWithPrivateKey PEM-formatted private key.
 	 * @param string|null $withKeyId            ID of the key.
-	 * @return ActivityPubObject
+	 * @return ActivityPubObject|null
 	 */
 	public function get(
 		string $url,
@@ -49,7 +57,7 @@ class ObjectGetter {
 		$request = new HttpRequest(
 			verb: HttpVerb::GET,
 			url: $url,
-			headers: ['accept' => 'application/json'],
+			headers: ['accept' => 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"'],
 		);
 
 		if ($signedWithPrivateKey && $this->signer) {
@@ -66,8 +74,14 @@ class ObjectGetter {
 			json_decode($response->getBody()->getContents(), associative: true)
 		);
 
-		if ($result->id !== $url) {
-			throw new ActivityPubException("ID mismatch: object at '$url' has ID '$result->id'");
+		$urlWithoutFragment = str_contains($url, '#') ? substr($url, 0, strpos($url, '#')) : $url;
+		if (isset($result?->id) && $result->id !== $urlWithoutFragment) {
+			if ($this->throwOnError) {
+				throw new ActivityPubException("ID mismatch: object at $urlWithoutFragment has ID $result->id");
+			}
+
+			$this->log->error("ID mismatch: object at $urlWithoutFragment has ID $result->id", $result->toArray());
+			return null;
 		}
 
 		return $result;

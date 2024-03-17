@@ -34,13 +34,15 @@ class HttpRequest implements RequestInterface {
 		array $headers = [],
 		string|array|JsonSerializable|null $body = null,
 	) {
+		$casedHeaders = array_change_key_case($headers, CASE_LOWER);
+
 		$parsedBody = $body;
 		if (isset($body) && (is_array($body) || is_object($body))) {
 			$parsedBody = json_encode($body);
-			$headers['Content-Type'] ??= 'application/json';
+			$casedHeaders['content-type'] ??= 'application/json';
 		}
 
-		$this->internal = new Request($verb->value, $url, $headers, $parsedBody);
+		$this->internal = new Request($verb->value, $url, $casedHeaders, $parsedBody);
 	}
 
   /**

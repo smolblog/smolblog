@@ -2,6 +2,7 @@
 
 namespace Smolblog\ActivityPub\Api;
 
+use Smolblog\ActivityPub\Handles\GetHandleForSite;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
@@ -72,8 +73,13 @@ class Webfinger extends BasicEndpoint {
 			throw new NotFound('Could not find resource.');
 		}
 
+		$subject = match (parse_url($params['resource'], PHP_URL_SCHEME)) {
+			'acct' => $this->bus->fetch(new GetHandleForSite($site->id)),
+			default => $site->baseUrl,
+		};
+
 		return new WebfingerResponse(
-			subject: $params['resource'],
+			subject: $subject,
 			links: [
 				new WebfingerLink(
 					rel: 'http://webfinger.net/rel/profile-page',

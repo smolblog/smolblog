@@ -25,6 +25,11 @@ class DatabaseHelper {
 	}
 
 	public const SCHEMA = [
+		'activitypub_handles' => <<<EOF
+			handle_uuid varchar(40) NOT NULL UNIQUE,
+			handle varchar(40) NOT NULL,
+			site_uuid varchar(40) NOT NULL,
+		EOF,
 		'channels' => <<<EOF
 			channel_uuid varchar(40) NOT NULL UNIQUE,
 			connection_uuid varchar(40) NOT NULL,

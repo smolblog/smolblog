@@ -3,6 +3,7 @@
 namespace Smolblog\Tumblr;
 
 use DateTimeInterface;
+use Psr\Log\LoggerInterface;
 use Smolblog\Core\Connector\Connector;
 use Smolblog\Core\Connector\ConnectorConfiguration;
 use Smolblog\Core\Connector\ConnectorInitData;
@@ -36,12 +37,15 @@ class TumblrConnector implements Connector {
 	 * Create the service.
 	 *
 	 * @param TumblrClientFactory $factory Generate Tumblr clients.
+	 * @param LoggerInterface     $log     Logger for debug info.
 	 */
-	public function __construct(private TumblrClientFactory $factory) {
+	public function __construct(private TumblrClientFactory $factory, private LoggerInterface $log) {
 	}
 
 	/**
 	 * Get the information needed to start an OAuth session with the provider
+	 *
+	 * @throws \Exception When no oauth_token is given.
 	 *
 	 * @param string $callbackUrl URL of the callback endpoint.
 	 * @return ConnectorInitData
@@ -53,6 +57,9 @@ class TumblrConnector implements Connector {
 		$resp = $handler->request('POST', 'oauth/request_token', ['oauth_callback' => $callbackUrl]);
 		$data = [];
 		parse_str($resp->body, $data);
+		if (!isset($data['oauth_token'])) {
+			throw new \Exception('No oauth_token in response from Tumblr.');
+		}
 
 		return new ConnectorInitData(
 			url: 'https://www.tumblr.com/oauth/authorize?oauth_token=' . $data['oauth_token'],
@@ -85,7 +92,7 @@ class TumblrConnector implements Connector {
 
 		return new Connection(
 			userId: $info->userId,
-			provider: self::getSlug(),
+			provider: 'tumblr',
 			providerKey: $this->findPrimaryBlogId($user->blogs),
 			displayName: $user->name,
 			details: [
