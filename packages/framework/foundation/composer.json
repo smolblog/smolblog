@@ -1,0 +1,36 @@
+{
+    "name": "smolblog/framework-foundation",
+    "description": "Foundational base objects for building a system",
+    "type": "library",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\Framework\\Foundation\\": "src/"
+        }
+    },
+	"authors": [
+		{
+			"name": "Smolblog",
+			"email": "dev@smolblog.org"
+		},
+		{
+			"name": "Evan Hildreth",
+			"email": "me@eph.me"
+		}
+	],
+	"require": {
+		"php": "^8.2",
+		"psr/http-message": "^1.0"
+	},
+    "require-dev": {
+        "pestphp/pest": "^2.34"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+	"scripts": {
+        "test": "pest"
+    }
+}
