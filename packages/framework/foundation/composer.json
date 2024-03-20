@@ -20,7 +20,8 @@
 	],
 	"require": {
 		"php": "^8.2",
-		"psr/http-message": "^1.0"
+		"psr/http-message": "^1.0",
+        "ramsey/uuid": "^4.7"
 	},
     "require-dev": {
         "pestphp/pest": "^2.34"
@@ -31,6 +32,6 @@
         }
     },
 	"scripts": {
-        "test": "pest"
+        "test": "XDEBUG_MODE=coverage pest --coverage --min=100"
     }
 }

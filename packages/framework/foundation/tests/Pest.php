@@ -1,4 +1,5 @@
 <?php
+use Smolblog\Framework\Foundation\Value;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,11 @@
 
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
+});
+
+expect()->extend('toMatchValue', function(Value|string $expected) {
+	expect(strval($this->value))->toEqual(strval($expected));
+	return $this;
 });
 
 /*

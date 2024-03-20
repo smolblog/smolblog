@@ -8,6 +8,7 @@ use ReflectionProperty;
 use ReflectionNamedType;
 use ReflectionAttribute;
 use Smolblog\Framework\Foundation\Attributes\ArrayType;
+use Smolblog\Framework\Foundation\Exceptions\CodePathNotSupported;
 
 /**
  * Read-only data structure.
@@ -22,10 +23,10 @@ abstract readonly class Value implements JsonSerializable {
 	/**
 	 * Serialize the object to an array. This can be used to serialize to JSON.
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function serialize(): array {
-		$props = self::propertyInfo();
+	public function serialize(): mixed {
+		$props = static::propertyInfo();
 		$data = [];
 		foreach ($props as $name => $type) {
 			if (!isset($type)) {
@@ -54,12 +55,9 @@ abstract readonly class Value implements JsonSerializable {
 	 */
 	public static function deserialize(array $data): static {
 		$parsedData = [];
-		$props = self::propertyInfo();
-		foreach ($props as $name => $type) {
-			if (!isset($data[$name])) {
-				continue;
-			}
+		$props = static::propertyInfo();
 
+		foreach ($props as $name => $type) {
 			if (!isset($type)) {
 				$parsedData[$name] = $data[$name] ?? null;
 				continue;
@@ -79,9 +77,9 @@ abstract readonly class Value implements JsonSerializable {
 	/**
 	 * Serialize the object.
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function jsonSerialize(): array {
+	public function jsonSerialize(): mixed {
 		return $this->serialize();
 	}
 
@@ -114,23 +112,31 @@ abstract readonly class Value implements JsonSerializable {
 	 * Determine the type of a property if it is an object or array of objects. Will return null if the property is
 	 * a built-in type.
 	 *
+	 * @throws CodePathNotSupported If the property is a union/intersection type.
+	 *
 	 * @param ReflectionProperty $prop Property to check.
 	 * @return string|ArrayType|null
 	 */
 	private static function determinePropertyType(ReflectionProperty $prop): string|ArrayType|null {
 		$type = $prop->getType();
-		if (get_class($type) === ReflectionNamedType::class) {
-			$typeName = $type->getName();
-			if ($type->isBuiltin() && $typeName !== 'array') {
-				return null;
-			}
-
-			if ($typeName === 'array') {
-				$attributeReflections = $prop->getAttributes(ArrayType::class, ReflectionAttribute::IS_INSTANCEOF);
-				return ($attributeReflections[0] ?? null)?->newInstance() ?? null;
-			}
-
-			return class_exists($typeName) ? $typeName : null;
+		if (get_class($type) !== ReflectionNamedType::class) {
+			throw new CodePathNotSupported(
+				message: 'Union/intersection types are not supported; ' .
+					'change the type or override the propertyInfo() method.',
+				location: 'Value::determinePropertyType via' . static::class,
+			);
 		}
+
+		$typeName = $type->getName();
+		if ($type->isBuiltin() && $typeName !== 'array') {
+			return null;
+		}
+
+		if ($typeName === 'array') {
+			$attributeReflections = $prop->getAttributes(ArrayType::class, ReflectionAttribute::IS_INSTANCEOF);
+			return ($attributeReflections[0] ?? null)?->newInstance() ?? null;
+		}
+
+		return class_exists($typeName) ? $typeName : null;
 	}
 }
