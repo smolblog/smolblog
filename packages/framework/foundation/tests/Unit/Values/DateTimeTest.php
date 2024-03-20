@@ -1,5 +1,6 @@
 <?php
 
+use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Framework\Foundation\Values\DateTime;
 
 it('can be created with a string', function() {
@@ -29,4 +30,9 @@ it('will serialize to and deserialize from a string', function() {
 
 	expect(DateTime::fromString($dateString)->toString())->toMatchValue($dateObject);
 	expect(DateTime::deserialize($dateString)->toString())->toMatchValue($dateObject);
+});
+
+it('will throw an exception when the serialized string is invalid', function() {
+	$dateString = '2022-02-22T25:22:22.000+00:00';
+	expect(fn() => DateTime::fromString($dateString))->toThrow(InvalidValueProperties::class);
 });

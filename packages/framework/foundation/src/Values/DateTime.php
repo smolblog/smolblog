@@ -6,9 +6,11 @@ use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
+use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Framework\Foundation\StringableValue;
 use Smolblog\Framework\Foundation\StringableValueKit;
 use Smolblog\Framework\Foundation\Value;
+use Throwable;
 
 /**
  * A DateTime object.
@@ -28,6 +30,8 @@ readonly class DateTime extends Value implements StringableValue {
 	/**
 	 * Create the DateTime.
 	 *
+	 * @throws InvalidValueProperties Thrown if the string is not a valid DateTime.
+	 *
 	 * @param string            $datetime Date and time to create the DateTime from.
 	 * @param DateTimeZone|null $timezone Timezone to use for the DateTime.
 	 * @param DateTimeInterface $object   Pass this to create a DateTime from an existing object.
@@ -37,9 +41,16 @@ readonly class DateTime extends Value implements StringableValue {
 		?DateTimeZone $timezone = null,
 		DateTimeInterface $object = null
 	) {
-		$this->object = isset($object) ?
-			DateTimeImmutable::createFromInterface($object) :
-			new DateTimeImmutable($datetime, $timezone);
+		try {
+			$this->object = isset($object) ?
+				DateTimeImmutable::createFromInterface($object) :
+				new DateTimeImmutable($datetime, $timezone);
+		} catch (Throwable $e) {
+			throw new InvalidValueProperties(
+				message: "Could not create DateTime from string `$datetime`",
+				previous: $e
+			);
+		}
 	}
 
 	/**

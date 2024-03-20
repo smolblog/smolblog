@@ -5,9 +5,11 @@ namespace Smolblog\Framework\Foundation\Values;
 use Override;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
+use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Framework\Foundation\StringableValue;
 use Smolblog\Framework\Foundation\StringableValueKit;
 use Smolblog\Framework\Foundation\Value;
+use Throwable;
 
 /**
  * A unique identifier, or UUID.
@@ -27,11 +29,20 @@ readonly class Identifier extends Value implements StringableValue {
 	 * Not to be confused with the create* methods; this creates an instance from an existing ID's representation. The
 	 * string is expected to be the standard Uuid format, such as "f68e15e6-a402-4b33-b6ae-84236d90d661".
 	 *
+	 * @throws InvalidValueProperties Thrown if the string is not a valid UUID.
+	 *
 	 * @param mixed $idString Uuid string to create instance from.
 	 * @return static Identifier equal to the given string.
 	 */
 	public static function fromString(mixed $idString): static {
-		return new self(internal: Uuid::fromString($idString));
+		try {
+			return new self(internal: Uuid::fromString($idString));
+		} catch (Throwable $e) {
+			throw new InvalidValueProperties(
+				message: "Could not create Identifier from string $idString",
+				previous: $e
+			);
+		}
 	}
 
 	/**
@@ -40,11 +51,21 @@ readonly class Identifier extends Value implements StringableValue {
 	 * Not to be confused with the create* methods; this creates an instance from an existing ID's representation. A
 	 * byte string is typed as a string but is in actuality the 16 bytes unencoded.
 	 *
+	 * @throws InvalidValueProperties Thrown if the string is not a valid UUID.
+	 *
 	 * @param string $byteString Uuid string to create instance from.
 	 * @return self Identifier equal to the given string.
 	 */
 	public static function fromByteString(string $byteString): self {
-		return new self(internal: Uuid::fromBytes($byteString));
+		try {
+			return new self(internal: Uuid::fromBytes($byteString));
+		} catch (Throwable $e) {
+			$idString = bin2hex($byteString);
+			throw new InvalidValueProperties(
+				message: "Could not create Identifier from string $idString",
+				previous: $e
+			);
+		}
 	}
 
 	/**

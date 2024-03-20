@@ -3,6 +3,8 @@
 namespace Smolblog\Framework\Foundation\Values;
 
 use Ramsey\Uuid\Uuid;
+use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
+use Throwable;
 
 /**
  * A name-based (version 5) UUID.
@@ -23,10 +25,19 @@ readonly class NamedIdentifier extends Identifier {
 	/**
 	 * Create the UUID
 	 *
+	 * @throws InvalidValueProperties Thrown if the namespace is not a valid UUID.
+	 *
 	 * @param string $namespace UUID-formatted string to namespace the ID.
 	 * @param string $name      String to build the UUID from.
 	 */
 	public function __construct(string $namespace, string $name) {
-		parent::__construct(internal: Uuid::uuid5($namespace, $name));
+		try {
+			parent::__construct(internal: Uuid::uuid5($namespace, $name));
+		} catch (Throwable $e) {
+			throw new InvalidValueProperties(
+				message: "Could not create NamedIdentifier from namespace $namespace and name $name",
+				previous: $e
+			);
+		}
 	}
 }
