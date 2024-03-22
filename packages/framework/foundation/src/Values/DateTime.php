@@ -2,7 +2,6 @@
 
 namespace Smolblog\Framework\Foundation\Values;
 
-use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
