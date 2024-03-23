@@ -1,8 +1,9 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Values;
+namespace Smolblog\Framework\Foundation\Messages;
 
-use Smolblog\Framework\Foundation\RuntimeValueKit;
+use Smolblog\Framework\Foundation\Values\DateTime;
+use Smolblog\Framework\Foundation\Values\Identifier;
 
 /**
  * A domain event that is not known to the system.
@@ -10,7 +11,7 @@ use Smolblog\Framework\Foundation\RuntimeValueKit;
  * Used when deserializing an event where class_exists($type) returns false. This allows processing of events that
  * no longer have a class definition, or at least prevents throwing an error in those cases.
  */
-readonly class UnknownDomainEvent extends DomainEvent {
+final readonly class UnknownDomainEvent extends DomainEvent {
 	/**
 	 * Construct the event
 	 *
@@ -32,11 +33,26 @@ readonly class UnknownDomainEvent extends DomainEvent {
 		parent::__construct($id, $timestamp, $userId, $aggregateId, $entityId);
 	}
 
+	/**
+	 * Deserialize the object. Any unknown fields are put in the `props` array.
+	 *
+	 * @param array $data Serialized object.
+	 * @return static
+	 */
 	public static function deserialize(array $data): static {
-		if (!isset($data['props'])) {
-			// remove all unknown fields and put them in $data['props']
+		if (isset($data['props'])) {
+			return parent::deserialize($data);
 		}
 
-		return parent::deserialize($data);
+		$modified = [
+			'id' => $data['id'],
+			'timestamp' => $data['timestamp'],
+			'userId' => $data['userId'],
+			'aggregateId' => $data['aggregateId'] ?? null,
+			'entityId' => $data['entityId'] ?? null,
+		];
+		$modified['props'] = array_diff_key($data, $modified);
+
+		return parent::deserialize($modified);
 	}
 }

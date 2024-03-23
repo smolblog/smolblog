@@ -9,25 +9,21 @@ readonly class TestMessage extends Value implements Message {
 	public function __construct(public string $message) { $this->meta = new MessageMetadata(); }
 }
 
-test('MessageKit will implement Message', function() {
-	$message = new TestMessage('hello');
-	expect($message)->toBeInstanceOf(TestMessage::class);
+test('MessageKit will implement Message', function(Message $message) {
 	expect($message)->toHaveMethods(['stopMessage', 'getMetaValue', 'setMetaValue', 'isPropagationStopped']);
-});
+})->with('messages');
 
-test('MessageKit will stop propagation', function() {
-	$message = new TestMessage('hello');
+test('MessageKit will stop propagation', function(Message $message) {
 	expect($message->isPropagationStopped())->toBeFalse();
 
 	$message->stopMessage();
 	expect($message->isPropagationStopped())->toBeTrue();
-});
+})->with('messages');
 
-test('MessageKit will get and set meta values', function() {
-	$message = new TestMessage('hello');
+test('MessageKit will get and set meta values', function(Message $message) {
 	$message->setMetaValue('one', 'two');
 	expect($message->getMetaValue('one'))->toBe('two');
-});
+})->with('messages');
 
 test('The message meatadata will not serialize by default', function() {
 	$message = new TestMessage('hello');
