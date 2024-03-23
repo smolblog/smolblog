@@ -11,7 +11,7 @@ namespace Smolblog\Framework\Foundation\Messages;
  * Kind of a cache, but as there's no real way to invalidate it and it does not persist between requests, it's not
  * called that.
  */
-abstract class MemoizableQuery extends Query {
+readonly abstract class MemoizableQuery extends Query {
 	/**
 	 * Create a memo key for this object by hashing the class name and its JSON-encoded properties.
 	 *

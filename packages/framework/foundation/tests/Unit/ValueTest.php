@@ -15,7 +15,7 @@ readonly class SimpleValueTest extends ValueTestBase {
 }
 
 readonly class ManyScalarsValueTest extends ValueTestBase {
-	public function __construct(public string $one, public int $two, public bool $three) {}
+	public function __construct(public string $one, public ?int $two = null, public ?bool $three = null) {}
 }
 
 readonly class RecursiveValueTest extends ValueTestBase {
@@ -64,6 +64,12 @@ dataset('valueExamples', [
 		'object' => new ManyScalarsValueTest('one', 2, true),
 		'array' => ['one' => 'one', 'two' => 2, 'three' => true],
 		'json' => '{"one":"one","two":2,"three":true}',
+		'info' => ['one' => null, 'two' => null, 'three' => null],
+	],
+	'many scalars with nulls' => [
+		'object' => new ManyScalarsValueTest('one'),
+		'array' => ['one' => 'one'],
+		'json' => '{"one":"one"}',
 		'info' => ['one' => null, 'two' => null, 'three' => null],
 	],
 	'recursive' => [

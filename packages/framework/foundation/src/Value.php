@@ -29,6 +29,10 @@ abstract readonly class Value implements JsonSerializable {
 		$props = static::propertyInfo();
 		$data = [];
 		foreach ($props as $name => $type) {
+			if (!isset($this->$name)) {
+				continue;
+			}
+
 			if (!isset($type)) {
 				$data[$name] = $this->$name;
 				continue;
@@ -58,6 +62,10 @@ abstract readonly class Value implements JsonSerializable {
 		$props = static::propertyInfo();
 
 		foreach ($props as $name => $type) {
+			if (!isset($data[$name])) {
+				continue;
+			}
+
 			if (!isset($type)) {
 				$parsedData[$name] = $data[$name] ?? null;
 				continue;

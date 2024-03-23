@@ -68,10 +68,10 @@ abstract readonly class DomainEvent extends Entity implements Message {
 	 * @return static
 	 */
 	public static function deserializeWithType(array $data): static {
-		$type = $data['type'];
-		unset($data['type']);
+		$type = $data['type'] ?? null;
 
-		if (class_exists($type)) {
+		if (isset($type) && class_exists($type) && is_subclass_of($type, self::class)) {
+			unset($data['type']);
 			return $type::deserialize($data);
 		}
 
