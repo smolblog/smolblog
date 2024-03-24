@@ -1,6 +1,7 @@
 <?php
 
 namespace Smolblog\Framework\Foundation\Messages;
+
 use Smolblog\Framework\Foundation\Message;
 use Smolblog\Framework\Foundation\MessageKit;
 use Smolblog\Framework\Foundation\MessageMetadata;
