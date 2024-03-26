@@ -1,14 +1,14 @@
 <?php
 
-use Smolblog\Framework\Foundation\Message;
-use Smolblog\Framework\Foundation\MessageKit;
-use Smolblog\Framework\Foundation\MessageMetadata;
-use Smolblog\Framework\Foundation\Messages\Command;
-use Smolblog\Framework\Foundation\Messages\DomainEvent;
-use Smolblog\Framework\Foundation\Messages\Query;
+use Smolblog\Framework\Foundation\Value\Traits\Message;
+use Smolblog\Framework\Foundation\Value\Traits\MessageKit;
+use Smolblog\Framework\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Framework\Foundation\Value\Messages\Command;
+use Smolblog\Framework\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Framework\Foundation\Value\Messages\Query;
 use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Values\DateTime;
-use Smolblog\Framework\Foundation\Values\RandomIdentifier;
+use Smolblog\Framework\Foundation\Value\Fields\DateTime;
+use Smolblog\Framework\Foundation\Value\Fields\RandomIdentifier;
 
 /**
  * Objects that use MessageKit and should have that functionality tested.

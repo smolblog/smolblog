@@ -47,11 +47,11 @@ it('will serialize to and deserialize from a string', function() {
 
 	expect($idObject)->toBeInstanceOf(Identifier::class);
 	expect($idObject->toString())->toBe($idString);
-	expect($idObject->serialize())->toBe($idString);
+	expect($idObject->toArray())->toBe($idString);
 
 	expect($idString)->toBeUuid();
 	expect(Identifier::fromString($idString)->toString())->toMatchValue($idObject);
-	expect(Identifier::deserialize($idString)->toString())->toMatchValue($idObject);
+	expect(Identifier::fromArray($idString)->toString())->toMatchValue($idObject);
 });
 
 it('will serialize to and deserialize from a byte string', function() {

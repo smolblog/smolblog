@@ -28,5 +28,5 @@ test('The message meatadata will not serialize by default', function() {
 	$message->setMetaValue('one', 'two');
 	$message->setMetaValue('three', 'four');
 
-	expect($message->serialize())->toEqual(['message' => 'hello']);
+	expect($message->toArray())->toEqual(['message' => 'hello']);
 });

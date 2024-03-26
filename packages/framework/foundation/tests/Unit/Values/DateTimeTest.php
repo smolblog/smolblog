@@ -26,10 +26,10 @@ it('will serialize to and deserialize from a string', function() {
 	$dateObject = new DateTime(datetime: $dateString);
 
 	expect($dateObject->toString())->toBe($dateString);
-	expect($dateObject->serialize())->toBe($dateString);
+	expect($dateObject->toArray())->toBe($dateString);
 
 	expect(DateTime::fromString($dateString)->toString())->toMatchValue($dateObject);
-	expect(DateTime::deserialize($dateString)->toString())->toMatchValue($dateObject);
+	expect(DateTime::fromArray($dateString)->toString())->toMatchValue($dateObject);
 });
 
 it('will throw an exception when the serialized string is invalid', function() {

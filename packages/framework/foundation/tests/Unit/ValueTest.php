@@ -109,14 +109,14 @@ dataset('valueExamples', [
 ]);
 
 it('will serialize to an array', function(Value $object, array $array, string $json) {
-	expect($object->serialize())->toEqual($array);
+	expect($object->toArray())->toEqual($array);
 	expect(json_encode($object))->toEqual($json);
 })->with('valueExamples');
 
 it('will deserialize from an array', function(Value $object, array $array, string $json) {
 	$class = get_class($object);
-	expect($class::deserialize($array))->toEqual($object);
-	expect($class::jsonDeserialize($json))->toEqual($object);
+	expect($class::fromArray($array))->toEqual($object);
+	expect($class::fromJson($json))->toEqual($object);
 })->with('valueExamples');
 
 test('the class provides the expected property info',
@@ -145,7 +145,7 @@ it('will ignore fields that are not defined in the propertyInfo when serializing
 	expect(json_encode($value))->toEqual('{"one":"one","two":2,"three":{"value":"three"}}');
 
 	$jsonWithExtra = '{"one":"one","two":2,"three":{"value":"three"},"five":true}';
-	expect(get_class($value)::jsonDeserialize($jsonWithExtra))->toEqual($value);
+	expect(get_class($value)::fromJson($jsonWithExtra))->toEqual($value);
 });
 
 it('will throw an exception when default serialization is used with a union type', function() {
@@ -157,5 +157,5 @@ it('will throw an exception when default serialization is used with a union type
 		) {}
 	};
 
-	expect(fn() => $value->serialize())->toThrow(CodePathNotSupported::class);
+	expect(fn() => $value->toArray())->toThrow(CodePathNotSupported::class);
 });

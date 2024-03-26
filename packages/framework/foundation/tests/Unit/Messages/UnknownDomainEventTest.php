@@ -27,7 +27,7 @@ it('will deserialize an array with props like any value', function() {
 		entityId: Identifier::fromString('676941e7-09bb-4aa9-bf05-ff20f03f9fe4'),
 		props: ['one' => 'two', 'three' => 'four'],
 	);
-	$actual = UnknownDomainEvent::deserialize($array);
+	$actual = UnknownDomainEvent::fromArray($array);
 
 	expect($actual)->toBeInstanceOf(UnknownDomainEvent::class);
 	expect($actual)->toEqual($expected);
@@ -57,14 +57,14 @@ it('will deserialize any non-DomainEvent values to props', function() {
 			'canIHave' => 'aLittleMore'
 		],
 	);
-	$actual = UnknownDomainEvent::deserialize($array);
+	$actual = UnknownDomainEvent::fromArray($array);
 
 	expect($actual)->toBeInstanceOf(UnknownDomainEvent::class);
 	expect($actual)->toEqual($expected);
 });
 
 it('will catch errors and throw an exception', function(array $array) {
-	expect(fn() => UnknownDomainEvent::deserialize($array))->toThrow(InvalidValueProperties::class);
+	expect(fn() => UnknownDomainEvent::fromArray($array))->toThrow(InvalidValueProperties::class);
 })->with([
 	'missing DomainEvent properties' => [[
 		'timestamp' => '2022-02-22T22:22:22.000+00:00',

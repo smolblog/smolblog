@@ -44,15 +44,15 @@ it('will add a type field to the serialization and deserialize without it', func
 		'content' => 'hello'
 	];
 
-	expect($object->serialize())->toEqual($array);
-	expect(DomainEventTest::deserialize($array))->toEqual($object);
+	expect($object->toArray())->toEqual($array);
+	expect(DomainEventTest::fromArray($array))->toEqual($object);
 });
 
 test('the parent class can deserialize any domain event', function(DomainEvent $object) {
-	$deserialized = DomainEvent::deserializeWithType($object->serialize());
+	$deserialized = DomainEvent::deserializeWithType($object->toArray());
 
 	expect($deserialized)->toBeInstanceOf(get_class($object));
-	expect($deserialized->serialize())->toEqual($object->serialize());
+	expect($deserialized->toArray())->toEqual($object->toArray());
 })->with([
 	'the test class' => new DomainEventTest(
 		id: Identifier::fromString('87642fa1-9fd0-41e0-9f08-022a231576e6'),
@@ -150,7 +150,7 @@ test(
 		};
 		return [
 			'serialized' => [
-				...$original->serialize(),
+				...$original->toArray(),
 				'type' => get_class($original),
 			],
 			'expected' => new UnknownDomainEvent(
