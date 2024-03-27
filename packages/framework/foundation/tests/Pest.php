@@ -1,5 +1,6 @@
 <?php
 use Smolblog\Framework\Foundation\Value;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +13,8 @@ use Smolblog\Framework\Foundation\Value;
 |
 */
 
-// uses(Tests\TestCase::class)->in('Feature');
+require_once __DIR__ . '/TestCase.php';
+// uses(\Tests\TestCase::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +31,8 @@ expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
 
-expect()->extend('toMatchValue', function(Value|string $expected) {
-	expect(strval($this->value))->toEqual(strval($expected));
+expect()->extend('toMatchValue', function(mixed $expected) {
+	expect(json_encode($this->value))->toEqual(json_encode($expected));
 	return $this;
 });
 

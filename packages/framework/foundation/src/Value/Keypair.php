@@ -3,11 +3,15 @@
 namespace Smolblog\Framework\Foundation\Value;
 
 use Smolblog\Framework\Foundation\Value;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Represents a public key and optionally its corresponding private key.
  */
-class Keypair extends Value {
+readonly class Keypair extends Value implements SerializableValue {
+	use SerializableValueKit;
+
 	/**
 	 * Construct the object.
 	 *

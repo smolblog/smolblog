@@ -15,9 +15,7 @@ use Throwable;
  * Declaring `readonly` properties in a defined object allows PHP to typecheck the object instead of relying on arrays
  * with specific keys.
  */
-abstract readonly class Value implements SerializableValue {
-	use SerializableValueKit;
-
+abstract readonly class Value {
 	/**
 	 * Create a copy of the object with the given properties replacing existing ones.
 	 *
@@ -27,7 +25,9 @@ abstract readonly class Value implements SerializableValue {
 	 * @return static
 	 */
 	public function with(mixed ...$props): static {
-		$base = array_intersect_key(get_object_vars($this), static::propertyInfo());
+		// Calling get_object_vars from outside context so that we only get public properties.
+		// see https://stackoverflow.com/questions/13124072/
+		$base = get_object_vars(...)->__invoke($this);
 
 		try {
 			return new static(...array_merge($base, $props));

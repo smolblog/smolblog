@@ -1,161 +1,48 @@
 <?php
-
-use Smolblog\Framework\Foundation\Exceptions\CodePathNotSupported;
+use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Attributes\ArrayType;
 
-readonly class ValueTestBase extends Value {
-	public static function getPropertyInfo(): array {
-		return static::propertyInfo();
-	}
-}
+describe('Value::with', function() {
+	it('creates a new object', function() {
+		$first = new readonly class('world') extends Value {
+			public function __construct(public string $hello) {}
+		};
+		$second = $first->with();
 
-readonly class SimpleValueTest extends ValueTestBase {
-	public function __construct(public string $value) {}
-}
+		expect($second)->toBeInstanceOf(get_class($first));
+		expect($first->hello)->toBe($second->hello);
+		expect($first)->not->toBe($second);
+	});
 
-readonly class ManyScalarsValueTest extends ValueTestBase {
-	public function __construct(public string $one, public ?int $two = null, public ?bool $three = null) {}
-}
+	it('will replace the given fields', function() {
+		$first = new readonly class('one', 'five') extends Value {
+			public function __construct(public string $one, public string $three) {}
+		};
+		$second = $first->with(three: 'three');
 
-readonly class RecursiveValueTest extends ValueTestBase {
-	public function __construct(public SimpleValueTest $outside) {}
-}
+		expect($first->one)->toBe('one');
+		expect($second->one)->toBe('one');
+		expect($first->three)->toBe('five');
+		expect($second->three)->toBe('three');
+	});
 
-readonly class ArrayWithScalarsValueTest extends ValueTestBase {
-	public function __construct(public array $array) {}
-}
+	it('will ignore private values', function() {
+		$first = new readonly class('given', 'given') extends Value {
+			public function __construct(public string $public = 'default', private string $private = 'default') {}
+			public function getPrivate() { return $this->private; }
+		};
+		$second = $first->with();
 
-readonly class ArrayWithObjectsValueTest extends ValueTestBase {
-	public function __construct(#[ArrayType(SimpleValueTest::class)] public array $array) {}
-}
+		expect($first->public)->toBe('given');
+		expect($second->public)->toBe('given');
+		expect($first->getPrivate())->toBe('given');
+		expect($second->getPrivate())->toBe('default');
+	});
 
-readonly class PrivatePropertyValueTest extends ValueTestBase {
-	private string $private;
-	protected string $protected;
-	public function __construct(public string $public) {
-		$this->private = 'private';
-		$this->protected = 'protected';
-	}
-}
-
-readonly class OverriddenPropertyInfoValueTest extends ValueTestBase {
-	public function __construct(public string $one, public int $two, public Value $three) {}
-	public static function propertyInfo(): array {
-		$base = parent::propertyInfo();
-		$base['three'] = SimpleValueTest::class;
-		return $base;
-	}
-}
-
-it('can be used as the base for a simple value', function() {
-	$value = new SimpleValueTest('hello');
-	expect($value->value)->toBe('hello');
-});
-
-dataset('valueExamples', [
-	'simple' => [
-		'object' => new SimpleValueTest('hello'),
-		'array' => ['value' => 'hello'],
-		'json' => '{"value":"hello"}',
-		'info' => ['value' => null],
-	],
-	'many scalars' => [
-		'object' => new ManyScalarsValueTest('one', 2, true),
-		'array' => ['one' => 'one', 'two' => 2, 'three' => true],
-		'json' => '{"one":"one","two":2,"three":true}',
-		'info' => ['one' => null, 'two' => null, 'three' => null],
-	],
-	'many scalars with nulls' => [
-		'object' => new ManyScalarsValueTest('one'),
-		'array' => ['one' => 'one'],
-		'json' => '{"one":"one"}',
-		'info' => ['one' => null, 'two' => null, 'three' => null],
-	],
-	'recursive' => [
-		'object' => new RecursiveValueTest(new SimpleValueTest('inside')),
-		'array' => ['outside' => ['value' => 'inside']],
-		'json' => '{"outside":{"value":"inside"}}',
-		'info' => ['outside' => SimpleValueTest::class],
-	],
-	'array with scalars' => [
-		'object' => new ArrayWithScalarsValueTest(['one', 'two', 'three']),
-		'array' => ['array' => ['one', 'two', 'three']],
-		'json' => '{"array":["one","two","three"]}',
-		'info' => ['array' => null],
-	],
-	'array with objects' => [
-		'object' => new ArrayWithObjectsValueTest([
-			new SimpleValueTest('one'),
-			new SimpleValueTest('two'),
-			new SimpleValueTest('three'),
-		]),
-		'array' => ['array' => [['value' => 'one'], ['value' => 'two'], ['value' => 'three']]],
-		'json' => '{"array":[{"value":"one"},{"value":"two"},{"value":"three"}]}',
-		'info' => ['array' => new ArrayType(SimpleValueTest::class)],
-	],
-	'private property' => [
-		'object' => new PrivatePropertyValueTest('hello'),
-		'array' => ['public' => 'hello'],
-		'json' => '{"public":"hello"}',
-		'info' => ['public' => null],
-	],
-	'overridden property info' => [
-		'object' => new OverriddenPropertyInfoValueTest('one', 2, new SimpleValueTest('three')),
-		'array' => ['one' => 'one', 'two' => 2, 'three' => ['value' => 'three']],
-		'json' => '{"one":"one","two":2,"three":{"value":"three"}}',
-		'info' => ['one' => null, 'two' => null, 'three' => SimpleValueTest::class],
-	],
-]);
-
-it('will serialize to an array', function(Value $object, array $array, string $json) {
-	expect($object->toArray())->toEqual($array);
-	expect(json_encode($object))->toEqual($json);
-})->with('valueExamples');
-
-it('will deserialize from an array', function(Value $object, array $array, string $json) {
-	$class = get_class($object);
-	expect($class::fromArray($array))->toEqual($object);
-	expect($class::fromJson($json))->toEqual($object);
-})->with('valueExamples');
-
-test('the class provides the expected property info',
-	function(ValueTestBase $object, array $_1, string $_2, array $info) {
-		expect($object::getPropertyInfo())->toEqual($info);
-	}
-)->with('valueExamples');
-
-it('will ignore fields that are not defined in the propertyInfo when serializing and deserializing', function() {
-	$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
-		public function __construct(
-			public string $one,
-			public int $two,
-			public Value $three,
-			public bool $five = false,
-		) {}
-		public static function propertyInfo(): array {
-			return [
-				'one' => null,
-				'two' => null,
-				'three' => SimpleValueTest::class,
-			];
-		}
-	};
-
-	expect(json_encode($value))->toEqual('{"one":"one","two":2,"three":{"value":"three"}}');
-
-	$jsonWithExtra = '{"one":"one","two":2,"three":{"value":"three"},"five":true}';
-	expect(get_class($value)::fromJson($jsonWithExtra))->toEqual($value);
-});
-
-it('will throw an exception when default serialization is used with a union type', function() {
-	$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
-		public function __construct(
-			public string $one,
-			public int $two,
-			public SimpleValueTest|ManyScalarsValueTest $three,
-		) {}
-	};
-
-	expect(fn() => $value->toArray())->toThrow(CodePathNotSupported::class);
+	it('will throw an exception on error', function () {
+		$first = new readonly class('camelot') extends Value {
+			public function __construct(public string $camelot) {}
+		};
+		$second = $first->with(itIsOnly: 'a model');
+	})->throws(InvalidValueProperties::class);
 });

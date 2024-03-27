@@ -1,6 +1,7 @@
 <?php
 
 namespace Smolblog\Framework\Foundation\Service;
+use Smolblog\Framework\Foundation\Service;
 
 /**
  * A class that registers services for a specific purpose.
@@ -10,7 +11,7 @@ namespace Smolblog\Framework\Foundation\Service;
  *
  * If a Registry does not require this, it probably shouldn't implement this interface.
  */
-interface Registry {
+interface Registry extends Service {
 	/**
 	 * Get the interface this Registry tracks.
 	 *

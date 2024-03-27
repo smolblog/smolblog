@@ -15,9 +15,11 @@ trait SerializableValueKit {
 	/**
 	 * Serialize the object to an array. This can be used to serialize to JSON.
 	 *
-	 * @return array
+	 * Return type is `mixed` to allow for scalar values in subclasses.
+	 *
+	 * @return mixed
 	 */
-	public function toArray(): array {
+	public function toArray(): mixed {
 		$props = static::propertyInfo();
 		$data = [];
 		foreach ($props as $name => $type) {
@@ -77,9 +79,9 @@ trait SerializableValueKit {
 	/**
 	 * Serialize the object.
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function jsonSerialize(): array {
+	public function jsonSerialize(): mixed {
 		return $this->toArray();
 	}
 

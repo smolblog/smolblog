@@ -9,14 +9,14 @@ use JsonSerializable;
  */
 interface SerializableValue extends JsonSerializable {
 	/**
-	 * Serialize this object to a key/value array.
+	 * Serialize this object to a key/value array or a scalar value.
 	 *
 	 * All object properties should be fully serialized themselves such that the values are either scalar values or
 	 * key/value arrays themselves. The object should be able to be re-created in full from this serialized version.
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function toArray(): array;
+	public function toArray(): mixed;
 
 	/**
 	 * Create an object from an array.
@@ -32,9 +32,9 @@ interface SerializableValue extends JsonSerializable {
 	/**
 	 * Serialize the object to an array that can be converted to JSON.
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function jsonSerialize(): array;
+	public function jsonSerialize(): mixed;
 
 	/**
 	 * Serialize the object to JSON.
