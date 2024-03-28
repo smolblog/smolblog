@@ -2,9 +2,12 @@
 
 use Smolblog\Framework\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Attributes\ArrayType;
+use Smolblog\Framework\Foundation\Value\Traits\ArrayType;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
 
-readonly class ValueTestBase extends Value {
+readonly class ValueTestBase extends Value implements SerializableValue {
+	use SerializableValueKit;
 	public static function getPropertyInfo(): array {
 		return static::propertyInfo();
 	}
@@ -47,11 +50,6 @@ readonly class OverriddenPropertyInfoValueTest extends ValueTestBase {
 		return $base;
 	}
 }
-
-it('can be used as the base for a simple value', function() {
-	$value = new SimpleValueTest('hello');
-	expect($value->value)->toBe('hello');
-});
 
 dataset('valueExamples', [
 	'simple' => [
@@ -108,54 +106,68 @@ dataset('valueExamples', [
 	],
 ]);
 
-it('will serialize to an array', function(Value $object, array $array, string $json) {
-	expect($object->toArray())->toEqual($array);
-	expect(json_encode($object))->toEqual($json);
-})->with('valueExamples');
+describe('SerializableValueKit::toArray', function() {
+	it('will serialize to an array', function(SerializableValue $object, array $array, string $json) {
+		expect($object->toArray())->toEqual($array);
+	})->with('valueExamples');
 
-it('will deserialize from an array', function(Value $object, array $array, string $json) {
-	$class = get_class($object);
-	expect($class::fromArray($array))->toEqual($object);
-	expect($class::fromJson($json))->toEqual($object);
-})->with('valueExamples');
+	it('will serialize to JSON', function(SerializableValue $object, array $array, string $json) {
+		expect($object->toJson())->toEqual($json);
+		expect(json_encode($object))->toEqual($json);
+	})->with('valueExamples');
 
-test('the class provides the expected property info',
-	function(ValueTestBase $object, array $_1, string $_2, array $info) {
-		expect($object::getPropertyInfo())->toEqual($info);
-	}
-)->with('valueExamples');
+	it('will throw an exception when default serialization is used with a union type', function() {
+		$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
+			public function __construct(
+				public string $one,
+				public int $two,
+				public SimpleValueTest|ManyScalarsValueTest $three,
+			) {}
+		};
 
-it('will ignore fields that are not defined in the propertyInfo when serializing and deserializing', function() {
-	$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
-		public function __construct(
-			public string $one,
-			public int $two,
-			public Value $three,
-			public bool $five = false,
-		) {}
-		public static function propertyInfo(): array {
-			return [
-				'one' => null,
-				'two' => null,
-				'three' => SimpleValueTest::class,
-			];
-		}
-	};
-
-	expect(json_encode($value))->toEqual('{"one":"one","two":2,"three":{"value":"three"}}');
-
-	$jsonWithExtra = '{"one":"one","two":2,"three":{"value":"three"},"five":true}';
-	expect(get_class($value)::fromJson($jsonWithExtra))->toEqual($value);
+		expect(fn() => $value->toArray())->toThrow(CodePathNotSupported::class);
+	});
 });
 
-it('will throw an exception when default serialization is used with a union type', function() {
-	$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
-		public function __construct(
-			public string $one,
-			public int $two,
-			public SimpleValueTest|ManyScalarsValueTest $three,
-		) {}
-	};
+describe('SerializableValueKit::fromArray', function() {
+	it('will deserialize from an array', function(SerializableValue $object, array $array, string $json) {
+		$class = get_class($object);
+		expect($class::fromArray($array))->toEqual($object);
+	})->with('valueExamples');
 
-	expect(fn() => $value->toArray())->toThrow(CodePathNotSupported::class);
+	it('will deserialize from JSON', function(SerializableValue $object, array $array, string $json) {
+		$class = get_class($object);
+		expect($class::fromJson($json))->toEqual($object);
+	})->with('valueExamples');
+});
+
+describe('SerializableValueKit::propertyInfo', function() {
+	it('provides property info for the class',
+		function(ValueTestBase $object, array $_1, string $_2, array $info) {
+			expect($object::getPropertyInfo())->toEqual($info);
+		}
+	)->with('valueExamples');
+
+	it('will ignore fields that are not defined in the propertyInfo when serializing and deserializing', function() {
+		$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
+			public function __construct(
+				public string $one,
+				public int $two,
+				public Value $three,
+				public bool $five = false,
+			) {}
+			public static function propertyInfo(): array {
+				return [
+					'one' => null,
+					'two' => null,
+					'three' => SimpleValueTest::class,
+				];
+			}
+		};
+
+		expect(json_encode($value))->toEqual('{"one":"one","two":2,"three":{"value":"three"}}');
+
+		$jsonWithExtra = '{"one":"one","two":2,"three":{"value":"three"},"five":true}';
+		expect(get_class($value)::fromJson($jsonWithExtra))->toEqual($value);
+	});
 });
