@@ -10,7 +10,7 @@ use Stringable;
  * This is useful for values that are not entire objects but still need to conform to a pattern. For example, a UUID or
  * a date.
  */
-interface Field extends Stringable {
+interface Field extends Stringable, SerializableValue {
 	/**
 	 * Provide the serialized value as the string representation.
 	 *

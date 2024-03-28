@@ -10,11 +10,17 @@ use Smolblog\Framework\Foundation\Value\Traits\EntityKit;
 use Smolblog\Framework\Foundation\Value\Traits\Message;
 use Smolblog\Framework\Foundation\Value\Traits\MessageKit;
 use Smolblog\Framework\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * A domain event represents a change in state in the system.
  */
-readonly class DomainEvent extends Value implements Entity, Message {
+readonly class DomainEvent extends Value implements Entity, Message, SerializableValue {
+	use SerializableValueKit {
+		toArray as protected parentToArray;
+		fromArray as protected parentFromArray;
+	}
 	use MessageKit;
 	use EntityKit;
 
@@ -46,7 +52,7 @@ readonly class DomainEvent extends Value implements Entity, Message {
 	 * @return array
 	 */
 	public function toArray(): array {
-		$base = parent::toArray();
+		$base = $this->parentToArray();
 		$base['type'] = get_class($this);
 		return $base;
 	}
@@ -61,7 +67,7 @@ readonly class DomainEvent extends Value implements Entity, Message {
 	 */
 	public static function fromArray(array $data): static {
 		unset($data['type']);
-		return parent::fromArray($data);
+		return static::parentFromArray($data);
 	}
 
 	/**

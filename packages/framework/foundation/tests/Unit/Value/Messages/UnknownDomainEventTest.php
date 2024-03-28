@@ -1,8 +1,8 @@
 <?php
 use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Framework\Foundation\Messages\UnknownDomainEvent;
-use Smolblog\Framework\Foundation\Values\DateTime;
-use Smolblog\Framework\Foundation\Values\Identifier;
+use Smolblog\Framework\Foundation\Value\Fields\DateTimeField;
+use Smolblog\Framework\Foundation\Value\Fields\Identifier;
+use Smolblog\Framework\Foundation\Value\Messages\UnknownDomainEvent;
 
 it('will deserialize an array with props like any value', function() {
 	$array = [
@@ -21,7 +21,7 @@ it('will deserialize an array with props like any value', function() {
 
 	$expected = new UnknownDomainEvent(
 		id: Identifier::fromString('fb0914b3-0224-4150-bd4b-2934aaddf9be'),
-		timestamp: new DateTime('2022-02-22 22:22:22'),
+		timestamp: new DateTimeField('2022-02-22 22:22:22'),
 		userId: Identifier::fromString('659b4726-6d67-4e7d-b5ac-09df89c6ed25'),
 		aggregateId: Identifier::fromString('8e27d1dd-4dc8-437a-bcf5-44fd94fbdcd2'),
 		entityId: Identifier::fromString('676941e7-09bb-4aa9-bf05-ff20f03f9fe4'),
@@ -47,7 +47,7 @@ it('will deserialize any non-DomainEvent values to props', function() {
 
 	$expected = new UnknownDomainEvent(
 		id: Identifier::fromString('fb0914b3-0224-4150-bd4b-2934aaddf9be'),
-		timestamp: new DateTime('2022-02-22 22:22:22'),
+		timestamp: new DateTimeField('2022-02-22 22:22:22'),
 		userId: Identifier::fromString('659b4726-6d67-4e7d-b5ac-09df89c6ed25'),
 		props: [
 			'type' => 'ClassThatDoesNotExist',

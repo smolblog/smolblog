@@ -1,8 +1,11 @@
 <?php
-use Smolblog\Framework\Foundation\Message;
-use Smolblog\Framework\Foundation\MessageKit;
-use Smolblog\Framework\Foundation\MessageMetadata;
+
 use Smolblog\Framework\Foundation\Value;
+use Smolblog\Framework\Foundation\Value\Traits\Message;
+use Smolblog\Framework\Foundation\Value\Traits\MessageKit;
+use Smolblog\Framework\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
 
 test('MessageKit will implement Message', function(Message $message) {
 	expect($message)->toHaveMethods(['stopMessage', 'getMetaValue', 'setMetaValue', 'isPropagationStopped']);
@@ -20,8 +23,9 @@ test('MessageKit will get and set meta values', function(Message $message) {
 	expect($message->getMetaValue('one'))->toBe('two');
 })->with('messages');
 
-test('The message meatadata will not serialize by default', function() {
-	$message = new readonly class('hello') extends Value implements Message {
+test('The message metadata will not serialize by default', function() {
+	$message = new readonly class('hello') extends Value implements Message, SerializableValue {
+		use SerializableValueKit;
 		use MessageKit;
 		public function __construct(public string $message) { $this->meta = new MessageMetadata(); }
 	};

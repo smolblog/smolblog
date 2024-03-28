@@ -25,7 +25,8 @@
         "psr/event-dispatcher": "^1.0",
         "crell/tukio": "^1.6",
         "psr/container": "^2.0",
-        "phpseclib/phpseclib": "^3.0"
+        "phpseclib/phpseclib": "^3.0",
+        "guzzlehttp/psr7": "^2.6"
 	},
     "require-dev": {
         "pestphp/pest": "^2.34",

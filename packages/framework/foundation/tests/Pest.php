@@ -1,6 +1,5 @@
 <?php
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Framework\Foundation\Value\Traits\Field;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +31,11 @@ expect()->extend('toBeOne', function () {
 });
 
 expect()->extend('toMatchValue', function(mixed $expected) {
+	if(is_a($expected, Field::class)) {
+		expect(strval($this->value))->toEqual(strval($expected));
+		return $this;
+	}
+
 	expect(json_encode($this->value))->toEqual(json_encode($expected));
 	return $this;
 });

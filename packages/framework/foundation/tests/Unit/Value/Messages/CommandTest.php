@@ -1,5 +1,5 @@
 <?php
-use Smolblog\Framework\Foundation\Messages\Command;
+use Smolblog\Framework\Foundation\Value\Messages\Command;
 
 readonly class CommandTest extends Command {
 	public function __construct(public string $name) {

@@ -6,6 +6,8 @@ namespace Smolblog\Framework\Foundation\Value\Traits;
  * Trait to proivde string methods for Values that are scalars. Pair with the Field interface.
  */
 trait FieldKit {
+	use SerializableValueKit;
+
 	/**
 	 * Provide the serialized value as the string representation.
 	 *
