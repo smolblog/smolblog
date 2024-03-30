@@ -29,7 +29,7 @@
         "guzzlehttp/psr7": "^2.6"
 	},
     "require-dev": {
-        "pestphp/pest": "^2.34",
+        "phpunit/phpunit":"^11.0",
         "squizlabs/php_codesniffer": "^3.9",
         "mockery/mockery": "^1.6"
     },
@@ -39,7 +39,7 @@
         }
     },
 	"scripts": {
-        "test": "XDEBUG_MODE=coverage pest --coverage --min=100 --path-coverage",
+        "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
     }

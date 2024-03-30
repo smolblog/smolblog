@@ -1,34 +1,46 @@
 <?php
-use Smolblog\Framework\Foundation\Exceptions\CodePathNotSupported;
 
-describe('CodePathNotSupported::__construct', function () {
-	it('can be created with a message', function() {
+namespace Smolblog\Framework\Foundation\Exceptions;
+use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(CodePathNotSupported::class)]
+final class CodePathNotSupportedTest extends TestCase {
+	#[TestDox('It can be created with a message.')]
+	public function testWithMessage() {
 		$exception = new CodePathNotSupported('message');
-		expect($exception->getMessage())->toBe('message');
-	});
+		$this->assertEquals('message', $exception->getMessage());
+	}
 
-	it('can be created with a code', function() {
-		expect(new CodePathNotSupported(code: 123))->toBeInstanceOf(CodePathNotSupported::class);
-	});
+	#[TestDox('It can be created with a code.')]
+	public function testWithCode() {
+		$this->assertInstanceOf(CodePathNotSupported::class, new CodePathNotSupported(code: 123));
+	}
 
-	it('can be created with a previous exception', function() {
+	#[TestDox('It can be created with a previous exception.')]
+	public function testWithPrevious() {
 		$previous = new Exception('previous');
 		$exception = new CodePathNotSupported(previous: $previous);
-		expect($exception->getPrevious())->toBe($previous);
-	});
+		$this->assertEquals($previous, $exception->getPrevious());
+	}
 
-	it('can be created with a location and message', function() {
+	#[TestDox('It can be created with a location and message.')]
+	public function testWithLocationAndMessage() {
 		$exception = new CodePathNotSupported('message', location: 'location');
-		expect($exception->getMessage())->toBe('In location: message');
-	});
+		$this->assertEquals('In location: message', $exception->getMessage());
+	}
 
-	it('can be created with a location and no message', function() {
+	#[TestDox('It can be created with a location and no message.')]
+	public function testWithLocation() {
 		$exception = new CodePathNotSupported(location: 'location');
-		expect($exception->getMessage())->toBe('In location: The code path is not supported.');
-	});
+		$this->assertEquals('In location: The code path is not supported.', $exception->getMessage());
+	}
 
-	it('can be created without a message', function() {
+	#[TestDox('It can be created without a message.')]
+	public function testBlank() {
 		$exception = new CodePathNotSupported();
-		expect($exception->getMessage())->toBe('The code path is not supported.');
-	});
-});
+		$this->assertEquals('The code path is not supported.', $exception->getMessage());
+	}
+}
