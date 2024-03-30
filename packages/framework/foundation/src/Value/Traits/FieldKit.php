@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Traits;
+namespace Smolblog\Foundation\Value\Traits;
 
 /**
  * Trait to proivde string methods for Values that are scalars. Pair with the Field interface.

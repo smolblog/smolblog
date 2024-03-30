@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Traits;
+namespace Smolblog\Foundation\Value\Traits;
 
-use Smolblog\Framework\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Default implementation of an Entity.

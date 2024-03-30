@@ -1,10 +1,10 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Messages;
+namespace Smolblog\Foundation\Value\Messages;
 
-use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Framework\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Framework\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Throwable;
 
 /**

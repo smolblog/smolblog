@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Traits;
+namespace Smolblog\Foundation\Value\Traits;
 
 /**
  * A class to store metadata on a message.

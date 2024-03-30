@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Traits;
+namespace Smolblog\Foundation\Value\Traits;
 
-use Smolblog\Framework\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * A "thing" that has a unique identifier and is often serialized to a database.

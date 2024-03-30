@@ -1,10 +1,10 @@
 <?php
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Http\HttpResponse;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Http\HttpResponse;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 describe('HttpResponse', function() {
 	it('conforms to PSR-7', function() {

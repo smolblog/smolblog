@@ -1,27 +1,32 @@
 <?php
-use Smolblog\Framework\Foundation\Service\KeypairGenerator;
 
-describe('KeypairGenerator::generate', function() {
-	it('creates a new keypair each time', function() {
+namespace Smolblog\Foundation\Service;
+
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(KeypairGenerator::class)]
+final class KeypairGeneratorTest extends TestCase {
+	public function testItReturnsANewKeypairEachTime() {
 		$service = new KeypairGenerator();
 
 		$key1 = $service->generate();
 		$key2 = $service->generate();
 
-		expect($key1->publicKey)->toStartWith("-----BEGIN PUBLIC KEY-----");
-		expect($key1->privateKey)->toStartWith("-----BEGIN PRIVATE KEY-----");
-		expect($key1->publicKey)->toEndWith("-----END PUBLIC KEY-----");
-		expect($key1->privateKey)->toEndWith("-----END PRIVATE KEY-----");
-		expect($key1)->not->toMatchValue($key2);
-	});
+		$this->assertTrue(str_starts_with($key1->publicKey, "-----BEGIN PUBLIC KEY-----"));
+		$this->assertTrue(str_starts_with($key1->privateKey, "-----BEGIN PRIVATE KEY-----"));
+		$this->assertTrue(str_ends_with($key1->publicKey, "-----END PUBLIC KEY-----"));
+		$this->assertTrue(str_ends_with($key1->privateKey, "-----END PRIVATE KEY-----"));
+		$this->assertNotEquals($key1, $key2);
+	}
 
-	it('normalizes line endings', function() {
+	public function testItNormalizesLineEndings() {
 		$service = new KeypairGenerator();
 		$key = $service->generate();
 
-		expect($key->publicKey)->not->toContain("\r");
-		expect($key->publicKey)->toContain("\n");
-		expect($key->privateKey)->not->toContain("\r");
-		expect($key->privateKey)->toContain("\n");
-	});
-});
+		$this->assertStringNotContainsString("\r", $key->publicKey);
+		$this->assertStringContainsString("\n", $key->publicKey);
+		$this->assertStringNotContainsString("\r", $key->privateKey);
+		$this->assertStringContainsString("\n", $key->privateKey);
+	}
+}

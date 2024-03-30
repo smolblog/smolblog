@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Exceptions;
+namespace Smolblog\Foundation\Exceptions;
 
 use InvalidArgumentException;
 use Throwable;

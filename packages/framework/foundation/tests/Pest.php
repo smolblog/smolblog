@@ -1,5 +1,5 @@
 <?php
-use Smolblog\Framework\Foundation\Value\Traits\Field;
+use Smolblog\Foundation\Value\Traits\Field;
 
 /*
 |--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Service;
-use Smolblog\Framework\Foundation\Service;
+namespace Smolblog\Foundation\Service;
+use Smolblog\Foundation\Service;
 
 /**
  * A class that registers services for a specific purpose.

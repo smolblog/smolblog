@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Service\Messaging;
+namespace Smolblog\Foundation\Service\Messaging;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Framework\Foundation\Messages\Query;
+use Smolblog\Foundation\Messages\Query;
 
 /**
  * Handles the sending of messages to the appropriate objects.

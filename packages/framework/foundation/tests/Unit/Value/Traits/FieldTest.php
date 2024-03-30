@@ -1,9 +1,9 @@
 <?php
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Traits\Field;
-use Smolblog\Framework\Foundation\Value\Traits\FieldKit;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Field;
+use Smolblog\Foundation\Value\Traits\FieldKit;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 final readonly class TestField extends Value implements Field {
 	use FieldKit;

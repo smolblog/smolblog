@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Service;
+namespace Smolblog\Foundation\Service;
 
 use Psr\Container\ContainerInterface;
 

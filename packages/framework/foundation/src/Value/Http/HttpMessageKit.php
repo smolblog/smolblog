@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Http;
+namespace Smolblog\Foundation\Value\Http;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;

@@ -1,22 +1,30 @@
 <?php
 
-use Crell\Tukio\ListenerPriority;
-use Smolblog\Framework\Foundation\Service\Messaging\CheckMemoListener;
-use Smolblog\Framework\Foundation\Service\Messaging\DownstreamListener;
-use Smolblog\Framework\Foundation\Service\Messaging\ExecutionListener;
-use Smolblog\Framework\Foundation\Service\Messaging\PersistEventListener;
-use Smolblog\Framework\Foundation\Service\Messaging\SaveMemoListener;
-use Smolblog\Framework\Foundation\Service\Messaging\SecurityListener;
-use Smolblog\Framework\Foundation\Service\Messaging\ValidateEventListener;
+namespace Smolblog\Foundation\Service\Messaging;
 
-it('creates a ListenerPriority instance', function(string $class) {
-	expect(new $class())->toBeInstanceOf(ListenerPriority::class);
-})->with([
-	CheckMemoListener::class,
-	DownstreamListener::class,
-	ExecutionListener::class,
-	PersistEventListener::class,
-	SaveMemoListener::class,
-	SecurityListener::class,
-	ValidateEventListener::class,
-]);
+use Crell\Tukio\ListenerPriority;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(CheckMemoListener::class)]
+#[CoversClass(DownstreamListener::class)]
+#[CoversClass(ExecutionListener::class)]
+#[CoversClass(PersistEventListener::class)]
+#[CoversClass(SaveMemoListener::class)]
+#[CoversClass(SecurityListener::class)]
+#[CoversClass(ValidateEventListener::class)]
+final class EventHandlerAttributesTest extends TestCase {
+	#[TestDox('$attribute is a ListenerPriority instance.')]
+	#[TestWith([CheckMemoListener::class])]
+	#[TestWith([DownstreamListener::class])]
+	#[TestWith([ExecutionListener::class])]
+	#[TestWith([PersistEventListener::class])]
+	#[TestWith([SaveMemoListener::class])]
+	#[TestWith([SecurityListener::class])]
+	#[TestWith([ValidateEventListener::class])]
+	public function testAttributes($attribute) {
+		$this->assertInstanceOf(ListenerPriority::class, new $attribute());
+	}
+}

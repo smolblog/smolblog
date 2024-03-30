@@ -1,11 +1,11 @@
 <?php
 
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Traits\Message;
-use Smolblog\Framework\Foundation\Value\Traits\MessageKit;
-use Smolblog\Framework\Foundation\Value\Traits\MessageMetadata;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Foundation\Value\Traits\MessageKit;
+use Smolblog\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 final readonly class TestMessage extends Value implements Message {
 	use MessageKit;

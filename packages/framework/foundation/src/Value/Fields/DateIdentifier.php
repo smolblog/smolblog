@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Fields;
+namespace Smolblog\Foundation\Value\Fields;
 
 use DateTimeInterface;
 use Ramsey\Uuid\Uuid;

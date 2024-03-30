@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Service\Messaging;
+namespace Smolblog\Foundation\Service\Messaging;
 
-use Smolblog\Framework\Foundation\Service;
+use Smolblog\Foundation\Service;
 
 /**
  * A service that listens for and reacts to messages.

@@ -1,14 +1,14 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Fields;
+namespace Smolblog\Foundation\Value\Fields;
 
 use Override;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
-use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Traits\Field;
-use Smolblog\Framework\Foundation\Value\Traits\FieldKit;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Field;
+use Smolblog\Foundation\Value\Traits\FieldKit;
 use Throwable;
 
 /**

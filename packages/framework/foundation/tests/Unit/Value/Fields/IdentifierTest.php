@@ -1,6 +1,6 @@
 <?php
-use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Framework\Foundation\Value\Fields\{
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Fields\{
 	Identifier,
 	DateIdentifier,
 	NamedIdentifier,

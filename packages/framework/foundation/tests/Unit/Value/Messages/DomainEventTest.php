@@ -1,13 +1,13 @@
 <?php
 
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Framework\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Foundation\Value\Fields\RandomIdentifier;
-use Smolblog\Framework\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Framework\Foundation\Value\Messages\UnknownDomainEvent;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Messages\UnknownDomainEvent;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 readonly class DomainEventTest extends DomainEvent {
 	public function __construct(

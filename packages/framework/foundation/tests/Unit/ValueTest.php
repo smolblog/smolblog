@@ -1,6 +1,6 @@
 <?php
-use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Framework\Foundation\Value;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value;
 
 describe('Value::with', function() {
 	it('creates a new object', function() {

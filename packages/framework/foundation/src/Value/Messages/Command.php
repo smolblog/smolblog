@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Messages;
+namespace Smolblog\Foundation\Value\Messages;
 
-use Smolblog\Framework\Foundation\Value\Traits\Message;
-use Smolblog\Framework\Foundation\Value\Traits\MessageKit;
-use Smolblog\Framework\Foundation\Value\Traits\MessageMetadata;
-use Smolblog\Framework\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Foundation\Value\Traits\MessageKit;
+use Smolblog\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Foundation\Value;
 
 /**
  * A command is a message that is sent to a service to perform an action.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Exceptions;
+namespace Smolblog\Foundation\Exceptions;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;

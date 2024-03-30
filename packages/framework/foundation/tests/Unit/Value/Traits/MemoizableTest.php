@@ -1,9 +1,9 @@
 <?php
 
-use Smolblog\Framework\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Foundation\Value\Messages\Query;
-use Smolblog\Framework\Foundation\Value\Traits\Memoizable;
-use Smolblog\Framework\Foundation\Value\Traits\MemoizableKit;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Memoizable;
+use Smolblog\Foundation\Value\Traits\MemoizableKit;
 
 readonly class TestMemoizableQuery extends Query implements Memoizable {
 	use MemoizableKit;

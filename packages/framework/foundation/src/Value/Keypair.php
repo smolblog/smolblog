@@ -1,10 +1,10 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value;
+namespace Smolblog\Foundation\Value;
 
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Represents a public key and optionally its corresponding private key.

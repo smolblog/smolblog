@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Http;
+namespace Smolblog\Foundation\Value\Http;
 
 use GuzzleHttp\Psr7\Request;
 use JsonSerializable;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Framework\Foundation;
+namespace Smolblog\Foundation;
 
-use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Framework\Foundation\Value\Traits\{SerializableValue, SerializableValueKit};
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Traits\{SerializableValue, SerializableValueKit};
 use Throwable;
 
 /**

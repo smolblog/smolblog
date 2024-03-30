@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Traits;
+namespace Smolblog\Foundation\Value\Traits;
 
-use Smolblog\Framework\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 
 /**
  * Indicates that an object provides a Query to check whether it can be executed.

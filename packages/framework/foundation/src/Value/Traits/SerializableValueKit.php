@@ -1,12 +1,12 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Traits;
+namespace Smolblog\Foundation\Value\Traits;
 
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionProperty;
-use Smolblog\Framework\Foundation\Exceptions\CodePathNotSupported;
+use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 
 /**
  * Default serializing functions.

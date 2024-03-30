@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Fields;
+namespace Smolblog\Foundation\Value\Fields;
 
 use Ramsey\Uuid\Uuid;
-use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Throwable;
 
 /**

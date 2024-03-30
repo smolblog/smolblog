@@ -1,10 +1,10 @@
 <?php
 
-use Smolblog\Framework\Foundation\Exceptions\CodePathNotSupported;
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Traits\ArrayType;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Exceptions\CodePathNotSupported;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 readonly class ValueTestBase extends Value implements SerializableValue {
 	use SerializableValueKit;

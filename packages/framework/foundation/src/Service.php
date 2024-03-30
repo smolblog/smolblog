@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation;
+namespace Smolblog\Foundation;
 
 /**
  * A service is a class that performs a function or small set of functions. It does not contain state and can function

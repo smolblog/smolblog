@@ -1,5 +1,5 @@
 <?php
-use Smolblog\Framework\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 
 describe('Query::setResults and Query::results', function() {
 	it('can store and retrieve a result', function() {

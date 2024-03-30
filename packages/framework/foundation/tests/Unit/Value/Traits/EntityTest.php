@@ -1,10 +1,10 @@
 <?php
 
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Foundation\Value\Fields\RandomIdentifier;
-use Smolblog\Framework\Foundation\Value\Traits\Entity;
-use Smolblog\Framework\Foundation\Value\Traits\EntityKit;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 
 readonly class EntityTest extends Value implements Entity {
 	use EntityKit;

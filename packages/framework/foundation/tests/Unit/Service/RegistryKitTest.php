@@ -1,7 +1,12 @@
 <?php
+
+namespace Smolblog\Foundation\Service;
+
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use Smolblog\Framework\Foundation\Service\Registry;
-use Smolblog\Framework\Foundation\Service\RegistryKit;
+use stdClass;
 
 final class TestRegistry implements Registry {
 	use RegistryKit;
@@ -11,85 +16,108 @@ final class TestRegistry implements Registry {
 	public function getLibrary(): array { return $this->library; }
 }
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
-{
+trait ServiceTestKit {
 	/**
 	 * Store (mock) dependencies for the service.
 	 *
-	 * @var array
+	 * @var stdClass
 	 */
-	protected array $deps = [];
+	private stdClass $deps;
 
 	/**
 	 * Store a
 	 *
 	 * @var mixed
 	 */
-	protected mixed $service;
+	private mixed $service;
 
 	/**
-	 * Build the given service using $this->deps.
+	 * Build the given service with mocks for each dependency.
+	 *
+	 * Dependencies will be added to $this->deps according to the parameter names on the constructor. If you want to
+	 * override with your own mocks, pass them as additional named parameters to this method.
 	 *
 	 * @param string $class Fully-qualified class name of service to instantiate.
+	 * @param mixed ...$overrides Any constructor parameters to override.
 	 * @return mixed
 	 */
-	protected function buildService(string $class): mixed {
-		return new $class(...$this->deps);
+	private function setUpService(string $class, mixed ...$overrides): mixed {
+		$params = (new \ReflectionClass($class))->getConstructor()->getParameters();
+		$this->deps = new stdClass();
+		foreach($params as $param) {
+			$name = $param->getName();
+			if (isset($overrides[$name])) {
+				$this->deps->$name = $overrides[$name];
+				continue;
+			}
+
+			$this->deps->$name = $this->createMock($param->getType()->__toString());
+		}
+
+		return new $class(...(array)$this->deps);
 	}
 }
 
-beforeEach(function() {
-	$this->deps['container'] = Mockery::mock(ContainerInterface::class);
-	$this->service = $this->buildService(TestRegistry::class);
-	$this->service->configure(['ServiceOne', 'ServiceTwo']);
-});
+#[CoversClass(RegistryKit::class)]
+final class RegistryKitTest extends TestCase {
+	use ServiceTestKit;
 
-describe('RegistryKit::configure', function() {
-	it('will configure the Registry', fn() =>
-		expect($this->service->getLibrary())->
-		toBe(['ServiceOne_key' => 'ServiceOne', 'ServiceTwo_key' => 'ServiceTwo'])
-	);
-});
+	protected function setUp(): void {
+		$this->service = $this->setUpService(TestRegistry::class);
+		$this->service->configure(['ServiceOne', 'ServiceTwo']);
+	}
 
-describe('RegistryKit::has', function() {
-	it('will return true if the given key is present and the class is in the container', function() {
-		$this->deps['container']->shouldReceive('has')->andReturn(true);
+	#[TestDox('::configure will configure the Registry')]
+	function testConfigure() {
+		$this->assertEquals(
+			['ServiceOne_key' => 'ServiceOne', 'ServiceTwo_key' => 'ServiceTwo'],
+			$this->service->getLibrary()
+		);
+	}
 
-		expect($this->service->has('ServiceOne_key'))->toBeTrue();
-	});
+	#[TestDox('::has will return true if the given key is present and the class is in the container')]
+	function testHasWithKeyAndContainer() {
+		$this->deps->container->method('has')->willReturn(true);
 
-	it('will return false if the given key is not present', function() {
-		$this->deps['container']->shouldReceive('has')->zeroOrMoreTimes()->andReturn(true);
+		$this->assertTrue($this->service->has('ServiceOne_key'));
+	}
 
-		expect($this->service->has('ServiceOne'))->toBeFalse();
-	});
+	#[TestDox('::has will return false if the given key is not present')]
+	function testHasWithNoKey() {
+		$this->deps->container->method('has')->willReturn(true);
 
-	it('will return false if the given key is present but the class is not in the container', function() {
-		$this->deps['container']->shouldReceive('has')->andReturn(false);
+		$this->assertFalse($this->service->has('ServiceOne'));
+	}
 
-		expect($this->service->has('ServiceOne_key'))->toBeFalse();
-	});
-});
+	#[TestDox('::has will return false if the given key is present but the class is not in the container')]
+	function testHasWithNoContainer() {
+		$this->deps->container->method('has')->willReturn(false);
 
-describe('RegistryKit::get', function() {
-	it('will return an instance of the class if the given key is present and the class is in the container', function() {
-		$this->deps['container']->shouldReceive('has')->andReturn(true);
-		$this->deps['container']->shouldReceive('get')->andReturn('ServiceOne_class_instance');
+		$this->assertFalse($this->service->has('ServiceOne_key'));
+	}
 
-		expect($this->service->get('ServiceOne_key'))->toBe('ServiceOne_class_instance');
-	});
+	#[TestDox('::get will return an instance of the class if the given key is present and the class is in the container')]
+	function testGetWithContainerAndKey() {
+		$this->deps->container->method('has')->willReturn(true);
+		$this->deps->container->method('get')->willReturn('ServiceOne_class_instance');
 
-	it('will return null if the given key is not present', function() {
-		$this->deps['container']->shouldReceive('has')->zeroOrMoreTimes()->andReturn(true);
-		$this->deps['container']->shouldReceive('get')->zeroOrMoreTimes()->andReturn('ServiceOne_class_instance');
+		$this->assertEquals('ServiceOne_class_instance', $this->service->get('ServiceOne_key'));
+	}
 
-		expect($this->service->get('ServiceOne'))->toBeNull();
-	});
+	#[TestDox('::get will return null if the given key is not present')]
+	function testGetWithNoKey() {
+		$this->deps->container->method('has')->willReturn(true);
+		$this->deps->container->method('get')->willReturn('ServiceOne_class_instance');
 
-	it('will return false if the given key is present but the class is not in the container', function() {
-		$this->deps['container']->shouldReceive('has')->andReturn(false);
-		$this->deps['container']->shouldNotReceive('get');
+		$this->assertNull($this->service->get('ServiceOne'));
+	}
 
-		expect($this->service->get('ServiceOne_key'))->toBeNull();
-	});
-});
+	#[TestDox('::get will return false if the given key is present but the class is not in the container')]
+	function testGetWithNoContainer() {
+		$this->deps->container->method('has')->willReturn(false);
+		$this->deps->container->expects($this->never())->method('get');
+
+		$this->assertNull($this->service->get('ServiceOne_key'));
+	}
+}
+

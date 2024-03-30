@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Service\Messaging;
+namespace Smolblog\Foundation\Service\Messaging;
 
 /**
  * Denotes a projection-style listener service that reacts to Events and updates its own data accordingly.

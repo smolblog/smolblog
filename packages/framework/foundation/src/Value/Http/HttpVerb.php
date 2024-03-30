@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Http;
+namespace Smolblog\Foundation\Value\Http;
 
 /**
  * Standard definition of HTTP verbs.

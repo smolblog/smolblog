@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Value\Messages;
+namespace Smolblog\Foundation\Value\Messages;
 
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Traits\Message;
-use Smolblog\Framework\Foundation\Value\Traits\MessageKit;
-use Smolblog\Framework\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Foundation\Value\Traits\MessageKit;
+use Smolblog\Foundation\Value\Traits\MessageMetadata;
 
 /**
  * An object that asks the domain model a thing.

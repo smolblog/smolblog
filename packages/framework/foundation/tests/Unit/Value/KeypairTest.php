@@ -1,5 +1,5 @@
 <?php
-use Smolblog\Framework\Foundation\Value\Keypair;
+use Smolblog\Foundation\Value\Keypair;
 
 describe('Keypair::__construct()', function() {
 	it('can be created with a public and private key', fn() =>

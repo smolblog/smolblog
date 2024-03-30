@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation;
+namespace Smolblog\Foundation;
 
 /**
  * Class to centralize services (with dependencies) for a domain.

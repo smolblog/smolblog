@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Service\Messaging;
+namespace Smolblog\Foundation\Service\Messaging;
 
 use Attribute;
 use Crell\Tukio\ListenerPriority;

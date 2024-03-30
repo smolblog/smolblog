@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Framework\Foundation\Service;
+namespace Smolblog\Foundation\Service;
 
 use phpseclib3\Crypt\RSA;
-use Smolblog\Framework\Foundation\Value\Keypair;
+use Smolblog\Foundation\Value\Keypair;
 
 /**
  * Service to generate an RSA public/private keypair.

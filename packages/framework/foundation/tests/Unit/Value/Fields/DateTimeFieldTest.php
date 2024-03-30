@@ -1,7 +1,7 @@
 <?php
 
-use Smolblog\Framework\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Framework\Foundation\Value\Fields\DateTimeField;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
 
 describe('DateTimeField::__construct', function() {
 	it('can be created with a string', function() {

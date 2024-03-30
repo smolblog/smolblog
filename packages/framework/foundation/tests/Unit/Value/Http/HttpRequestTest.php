@@ -2,11 +2,11 @@
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use Smolblog\Framework\Foundation\Value;
-use Smolblog\Framework\Foundation\Value\Http\HttpRequest;
-use Smolblog\Framework\Foundation\Value\Http\HttpVerb;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Http\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpVerb;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 describe('HttpRequest', function () {
 	it('conforms to PSR-7', function() {

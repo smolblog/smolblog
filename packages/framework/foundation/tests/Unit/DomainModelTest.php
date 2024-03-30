@@ -1,5 +1,5 @@
 <?php
-use Smolblog\Framework\Foundation\DomainModel;
+use Smolblog\Foundation\DomainModel;
 
 describe('DomainModel::getDependencyMap', function () {
 	it('provides the SERVICES constant by default', function () {
