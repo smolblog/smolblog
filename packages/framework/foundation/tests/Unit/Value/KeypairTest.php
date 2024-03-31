@@ -1,12 +1,19 @@
 <?php
-use Smolblog\Foundation\Value\Keypair;
 
-describe('Keypair::__construct()', function() {
-	it('can be created with a public and private key', fn() =>
-		expect(new Keypair(publicKey: 'public', privateKey: 'private'))->toBeInstanceOf(Keypair::class)
-	);
+namespace Smolblog\Foundation\Value;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use Smolblog\Test\TestCase;
 
-	it('can be created with just a public key', fn() =>
-		expect(new Keypair(publicKey: 'public'))->toBeInstanceOf(Keypair::class)
-	);
-});
+#[CoversClass(Keypair::class)]
+final class KeypairTest extends TestCase {
+	#[TestDox('can be created with a public and private key')]
+	public function testBoth() {
+		$this->assertInstanceOf(Keypair::class, new Keypair(publicKey: 'public', privateKey: 'private'));
+	}
+
+	#[TestDox('can be created with just a public key')]
+	public function testJustPublic() {
+		$this->assertInstanceOf(Keypair::class, new Keypair(publicKey: 'public'));
+	}
+}

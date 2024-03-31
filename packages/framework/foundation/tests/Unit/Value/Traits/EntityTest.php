@@ -1,24 +1,27 @@
 <?php
 
+namespace Smolblog\Foundation\Value\Traits;
+
+use PHPUnit\Framework\Attributes\CoversClass;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\RandomIdentifier;
-use Smolblog\Foundation\Value\Traits\Entity;
-use Smolblog\Foundation\Value\Traits\EntityKit;
+use Smolblog\Test\TestCase;
 
-readonly class EntityTest extends Value implements Entity {
+readonly class ExampleEntity extends Value implements Entity {
 	use EntityKit;
 	public function __construct(Identifier $id, public string $name) {
 		$this->id = $id;
 	}
 }
 
-describe('EntityKit::getId', function() {
-	it('will correctly retrieve the ID', function() {
+#[CoversClass(EntityKit::class)]
+final class EntityTest extends TestCase {
+	public function testItWillCorrectlyRetrieveTheId() {
 		$id = new RandomIdentifier();
-		$entity = new EntityTest($id, 'test');
+		$entity = new ExampleEntity($id, 'test');
 
-		expect($entity->id)->toMatchValue($id);
-		expect($entity->getId())->toMatchValue($id);
-	});
-});
+		$this->assertEquals($id, $entity->id);
+		$this->assertEquals($id, $entity->getId());
+	}
+}

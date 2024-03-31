@@ -1,48 +1,61 @@
 <?php
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value;
 
-describe('Value::with', function() {
-	it('creates a new object', function() {
+namespace Smolblog\Foundation;
+
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Test\TestCase;
+
+#[CoversClass(Value::class)]
+#[CoversClass(InvalidValueProperties::class)]
+final class ValueTest extends TestCase {
+	#[TestDox('with() creates a new object')]
+	public function testWithCreatesNew() {
 		$first = new readonly class('world') extends Value {
 			public function __construct(public string $hello) {}
 		};
 		$second = $first->with();
 
-		expect($second)->toBeInstanceOf(get_class($first));
-		expect($first->hello)->toBe($second->hello);
-		expect($first)->not->toBe($second);
-	});
+		$this->assertInstanceOf(get_class($first), $second);
+		$this->assertEquals($second->hello, $first->hello);
+		$this->assertNotSame($second, $first);
+	}
 
-	it('will replace the given fields', function() {
+	#[TestDox('with() will replace the given fields')]
+	public function testWithReplacesGiven() {
 		$first = new readonly class('one', 'five') extends Value {
 			public function __construct(public string $one, public string $three) {}
 		};
 		$second = $first->with(three: 'three');
 
-		expect($first->one)->toBe('one');
-		expect($second->one)->toBe('one');
-		expect($first->three)->toBe('five');
-		expect($second->three)->toBe('three');
-	});
+		$this->assertEquals('one', $first->one);
+		$this->assertEquals('one', $second->one);
+		$this->assertEquals('five', $first->three);
+		$this->assertEquals('three', $second->three);
+	}
 
-	it('will ignore private values', function() {
+	#[TestDox('with() will ignore private values')]
+	public function testWithIgnoresPrivate() {
 		$first = new readonly class('given', 'given') extends Value {
 			public function __construct(public string $public = 'default', private string $private = 'default') {}
 			public function getPrivate() { return $this->private; }
 		};
 		$second = $first->with();
 
-		expect($first->public)->toBe('given');
-		expect($second->public)->toBe('given');
-		expect($first->getPrivate())->toBe('given');
-		expect($second->getPrivate())->toBe('default');
-	});
+		$this->assertEquals('given', $first->public);
+		$this->assertEquals('given', $second->public);
+		$this->assertEquals('given', $first->getPrivate());
+		$this->assertEquals('default', $second->getPrivate());
+	}
 
-	it('will throw an exception on error', function () {
+	#[TestDox('with() will throw an exception on error')]
+	public function testWithThrowsException() {
+		$this->expectException(InvalidValueProperties::class);
+
 		$first = new readonly class('camelot') extends Value {
 			public function __construct(public string $camelot) {}
 		};
-		$second = $first->with(itIsOnly: 'a model');
-	})->throws(InvalidValueProperties::class);
-});
+		$first->with(itIsOnly: 'a model');
+	}
+}

@@ -4,7 +4,7 @@ namespace Smolblog\Foundation\Exceptions;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 #[CoversClass(CodePathNotSupported::class)]
 final class CodePathNotSupportedTest extends TestCase {

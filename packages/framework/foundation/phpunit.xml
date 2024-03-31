@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
+         testdox="true"
 >
     <testsuites>
         <testsuite name="Test Suite">
@@ -15,9 +16,9 @@
         </include>
     </source>
     <coverage pathCoverage="true">
-        <!-- <include>
-			<directory>src</directory>
-		</include> -->
+        <report>
+            <html outputDirectory="html-coverage" lowUpperBound="70" highLowerBound="100"/>
+        </report>
     </coverage>
 	<php>
 		<ini name="xdebug.mode" value="coverage"/>

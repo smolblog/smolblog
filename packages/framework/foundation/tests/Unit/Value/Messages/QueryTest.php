@@ -1,8 +1,12 @@
 <?php
-use Smolblog\Foundation\Value\Messages\Query;
 
-describe('Query::setResults and Query::results', function() {
-	it('can store and retrieve a result', function() {
+namespace Smolblog\Foundation\Value\Messages;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Smolblog\Test\TestCase;
+
+#[CoversClass(Query::class)]
+final class QueryTest extends TestCase {
+	public function testItCanStoreAndREtrieveAResult() {
 		$query = new readonly class('say') extends Query {
 			public function __construct(public string $name) {
 				parent::__construct();
@@ -10,6 +14,7 @@ describe('Query::setResults and Query::results', function() {
 		};
 
 		$query->setResults('hello');
-		expect($query->results())->toBe('hello');
-	});
-});
+
+		$this->assertEquals('hello', $query->results());
+	}
+}

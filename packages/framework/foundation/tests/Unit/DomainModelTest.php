@@ -1,21 +1,26 @@
 <?php
-use Smolblog\Foundation\DomainModel;
 
-describe('DomainModel::getDependencyMap', function () {
-	it('provides the SERVICES constant by default', function () {
+namespace Smolblog\Foundation;
+
+use PHPUnit\Framework\Attributes\CoversClass;
+use Smolblog\Test\TestCase;
+
+#[CoversClass(DomainModel::class)]
+final class DomainModelTest extends TestCase {
+	public function testItProvidesTheServicesConstantByDefault() {
 		$model = new class() extends DomainModel {
 			public const SERVICES = ['one', 'two'];
 		};
 
-		expect(get_class($model)::getDependencyMap())->toBe(['one', 'two']);
-	});
+		$this->assertEquals(['one', 'two'], get_class($model)::getDependencyMap());
+	}
 
-	it('can be overridden with runtime values', function() {
+	public function testItCanBeOverriddenWithRuntimeValues() {
 		$model = new class() extends DomainModel {
 			public const SERVICES = ['one', 'two'];
 			public static function getDependencyMap(): array { return ['three', ['four']]; }
 		};
 
-		expect(get_class($model)::getDependencyMap())->toBe(['three', ['four']]);
-	});
-});
+		$this->assertEquals(['three', ['four']], get_class($model)::getDependencyMap());
+	}
+}

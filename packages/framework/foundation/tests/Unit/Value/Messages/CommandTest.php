@@ -1,19 +1,25 @@
 <?php
-use Smolblog\Foundation\Value\Messages\Command;
 
-readonly class CommandTest extends Command {
+namespace Smolblog\Foundation\Value\Messages;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Smolblog\Test\TestCase;
+
+readonly class ExampleCommand extends Command {
 	public function __construct(public string $name) {
 		parent::__construct();
 	}
 }
 
-it('can be instantiated', function() {
-	$command = new CommandTest('test');
-	expect($command)->toBeInstanceOf(Command::class);
-});
+#[CoversClass(Command::class)]
+final class CommandTest extends TestCase {
+	public function testItCanBeInstantiated() {
+		$this->assertInstanceOf(Command::class, new ExampleCommand('test'));
+	}
 
-it('can have message metadata', function() {
-	$command = new CommandTest('test');
-	$command->setMetaValue('one', 'two');
-	expect($command->getMetaValue('one'))->toBe('two');
-});
+	public function testItCanHaveMessageMetadata() {
+		$command = new ExampleCommand('test');
+		$command->setMetaValue('one', 'two');
+
+		$this->assertEquals('two', $command->getMetaValue('one'));
+	}
+}

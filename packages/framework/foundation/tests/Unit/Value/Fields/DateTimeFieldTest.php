@@ -1,47 +1,58 @@
 <?php
 
+namespace Smolblog\Foundation\Value\Fields;
+
+use DateTimeImmutable;
+use DateTimeInterface;
+use DateTimeZone;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
+use Smolblog\Test\TestCase;
 
-describe('DateTimeField::__construct', function() {
-	it('can be created with a string', function() {
-		$date = new DateTimeField(datetime:'2022-02-22 22:22:22');
-		expect($date)->toBeInstanceOf(DateTimeField::class);
-		expect($date->object->format(DateTimeInterface::RFC3339_EXTENDED))->toBe('2022-02-22T22:22:22.000+00:00');
-	});
+#[CoversClass(DateTimeField::class)]
+final class DateTimeFieldTest extends TestCase {
+	public static function constructorTypes() {
+		return [
+			'a string' => [
+				new DateTimeField(datetime:'2022-02-22 22:22:22'),
+				'2022-02-22T22:22:22.000+00:00'
+			],
+			'a string and a timezone' => [
+				new DateTimeField(datetime:'2022-02-22 22:22:22', timezone: new DateTimeZone('America/New_York')),
+				'2022-02-22T22:22:22.000-05:00'
+			]
+		];
+	}
 
-	it('can be created with a string and a timezone', function() {
-		$date = new DateTimeField(datetime:'2022-02-22 22:22:22', timezone: new DateTimeZone('America/New_York'));
-		expect($date)->toBeInstanceOf(DateTimeField::class);
-		expect($date->object->format(DateTimeInterface::RFC3339_EXTENDED))->toBe('2022-02-22T22:22:22.000-05:00');
-	});
+	#[DataProvider('constructorTypes')]
+	#[TestDox('can be created with $_dataName')]
+	public function testConstructor(DateTimeField $date, string $expected) {
+		$this->assertInstanceOf(DateTimeField::class, $date);
+		$this->assertEquals($expected, $date->object->format(DateTimeInterface::RFC3339_EXTENDED));
+	}
 
-	it('can be created with a DateTime object', function() {
-		$date = new DateTimeField(object: new DateTimeImmutable('2022-02-22 22:22:22'));
-		expect($date)->toBeInstanceOf(DateTimeField::class);
-		expect($date->object->format(DateTimeInterface::RFC3339_EXTENDED))->toBe('2022-02-22T22:22:22.000+00:00');
-	});
-});
+	#[TestDox('will serialize to and deserialize from a string')]
+	public function testSerialization() {
+		$dateString = '2022-02-22T22:22:22.000+00:00';
+		$dateObject = new DateTimeField(datetime: $dateString);
 
-describe('DateTimeField::toString', function() {
-	$dateString = '2022-02-22T22:22:22.000+00:00';
-	$dateObject = new DateTimeField(datetime: $dateString);
+		$this->assertEquals($dateString, $dateObject->toString());
+		$this->assertEquals($dateObject, DateTimeField::fromString($dateString));
+	}
 
-	it('will serialize to a string', fn() =>
-		expect($dateObject->toString())->toBe($dateString)
-	);
-});
+	#[TestDox('will throw an exception when the given string is invalid')]
+	public function testConstructionException() {
+		$this->expectException(InvalidValueProperties::class);
 
-describe('DateTimeField::fromString', function() {
-	$dateString = '2022-02-22T22:22:22.000+00:00';
-	$dateObject = new DateTimeField(datetime: $dateString);
+		new DateTimeField(datetime: '2022-02-22T25:22:22.000+00:00');
+	}
 
-	it('will deserialize from a string', fn() =>
-		expect(DateTimeField::fromString($dateString)->toString())->toMatchValue($dateObject)
-	);
+	#[TestDox('will throw an exception when the serialized string is invalid')]
+	public function testSerializationException() {
+		$this->expectException(InvalidValueProperties::class);
 
-	it('will throw an exception when the serialized string is invalid', function() {
-		$badDateString = '2022-02-22T25:22:22.000+00:00';
-		expect(fn() => DateTimeField::fromString($badDateString))->toThrow(InvalidValueProperties::class);
-	});
-});
+		DateTimeField::fromString('2022-02-22T25:22:22.000+00:00');
+	}
+}

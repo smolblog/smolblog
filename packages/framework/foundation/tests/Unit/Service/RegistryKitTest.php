@@ -4,7 +4,8 @@ namespace Smolblog\Foundation\Service;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\Kits\ServiceTestKit;
+use Smolblog\Test\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
 
@@ -14,48 +15,6 @@ final class TestRegistry implements Registry {
 	public static function getInterfaceToRegister(): string { return 'Interface'; }
 	private function getKeyForClass(string $class): string { return $class . '_key'; }
 	public function getLibrary(): array { return $this->library; }
-}
-
-trait ServiceTestKit {
-	/**
-	 * Store (mock) dependencies for the service.
-	 *
-	 * @var stdClass
-	 */
-	private stdClass $deps;
-
-	/**
-	 * Store a
-	 *
-	 * @var mixed
-	 */
-	private mixed $service;
-
-	/**
-	 * Build the given service with mocks for each dependency.
-	 *
-	 * Dependencies will be added to $this->deps according to the parameter names on the constructor. If you want to
-	 * override with your own mocks, pass them as additional named parameters to this method.
-	 *
-	 * @param string $class Fully-qualified class name of service to instantiate.
-	 * @param mixed ...$overrides Any constructor parameters to override.
-	 * @return mixed
-	 */
-	private function setUpService(string $class, mixed ...$overrides): mixed {
-		$params = (new \ReflectionClass($class))->getConstructor()->getParameters();
-		$this->deps = new stdClass();
-		foreach($params as $param) {
-			$name = $param->getName();
-			if (isset($overrides[$name])) {
-				$this->deps->$name = $overrides[$name];
-				continue;
-			}
-
-			$this->deps->$name = $this->createMock($param->getType()->__toString());
-		}
-
-		return new $class(...(array)$this->deps);
-	}
 }
 
 #[CoversClass(RegistryKit::class)]

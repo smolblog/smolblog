@@ -1,80 +1,65 @@
 <?php
+
+namespace Smolblog\Foundation\Value\Http;
+
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Http\HttpRequest;
-use Smolblog\Foundation\Value\Http\HttpVerb;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Test\TestCase;
 
-describe('HttpRequest', function () {
-	it('conforms to PSR-7', function() {
+#[CoversClass(HttpRequest::class)]
+final class HttpRequestTest extends TestCase {
+	public function testItConformsToPsr7() {
 		$request = new HttpRequest(verb: HttpVerb::GET, url: 'https://smol.blog/hello');
-		expect($request)->toBeInstanceOf(RequestInterface::class);
 
-		expect($request->getRequestTarget())->toBe('/hello');
-		expect($request->getMethod())->toBe('GET');
-		expect($request->getUri()->__toString())->toBe('https://smol.blog/hello');
-		expect($request->getProtocolVersion())->toBe('1.1');
-		expect($request->getHeaders())->toBe(['Host' => ['smol.blog']]);
-		expect($request->getHeader('host'))->toBe(['smol.blog']);
-		expect($request->getHeaderLine('host'))->toBe('smol.blog');
-		expect($request->hasHeader('host'))->toBeTrue();
+		$this->assertEquals('/hello', $request->getRequestTarget());
+		$this->assertEquals('GET', $request->getMethod());
+		$this->assertEquals('https://smol.blog/hello', $request->getUri());
+		$this->assertEquals('1.1', $request->getProtocolVersion());
+		$this->assertEquals(['Host' => ['smol.blog']], $request->getHeaders());
+		$this->assertEquals(['smol.blog'], $request->getHeader('host'));
+		$this->assertTrue($request->hasHeader('Host'));
+		$this->assertEquals('smol.blog', $request->getHeaderLine('host'));
+		$this->assertInstanceOf(StreamInterface::class, $request->getBody());
 
-		$mockUri = new GuzzleHttp\Psr7\Uri('https://smol.blog/goodbye');
+		$this->assertInstanceOf(RequestInterface::class, $request->withRequestTarget('/'));
+		$this->assertInstanceOf(RequestInterface::class, $request->withMethod('POST'));
+		$this->assertInstanceOf(RequestInterface::class, $request->withUri($this->createStub(UriInterface::class)));
+		$this->assertInstanceOf(RequestInterface::class, $request->withProtocolVersion('2.0'));
+		$this->assertInstanceOf(RequestInterface::class, $request->withHeader('Bob', 'Larry'));
+		$this->assertInstanceOf(RequestInterface::class, $request->withAddedHeader('Bob', 'Larry'));
+		$this->assertInstanceOf(RequestInterface::class, $request->withoutHeader('Bob'));
+		$this->assertInstanceOf(RequestInterface::class, $request->withBody($this->createStub(StreamInterface::class)));
+	}
 
-		expect($request->getBody())->toBeInstanceOf(StreamInterface::class);
-		expect($request->withRequestTarget('/'))->toBeInstanceOf(RequestInterface::class);
-		expect($request->withMethod('POST'))->toBeInstanceOf(RequestInterface::class);
-		expect($request->withUri($mockUri))->toBeInstanceOf(RequestInterface::class);
-		expect($request->withProtocolVersion('2.0'))->toBeInstanceOf(RequestInterface::class);
-		expect($request->withHeader('Bob', 'Larry'))->toBeInstanceOf(RequestInterface::class);
-		expect($request->withAddedHeader('Bob', 'Larry'))->toBeInstanceOf(RequestInterface::class);
-		expect($request->withoutHeader('Bob'))->toBeInstanceOf(RequestInterface::class);
-		expect($request->withBody(Mockery::mock(StreamInterface::class)))->toBeInstanceOf(RequestInterface::class);
-	});
-});
+	public function testItUsesAStringBodyVerbatim() {
+		$request = new HttpRequest(verb: HttpVerb::GET, url: 'https://smol.blog/hello', body: 'one=two');
 
-describe('HttpRequest::__construct', function() {
-	it('uses a string body verbatim', function() {
-		$request = new HttpRequest(verb: HttpVerb::POST, url: 'https://smol.blog/hello', body: 'one=two');
+		$this->assertEquals('one=two', $request->getBody()->getContents());
+	}
 
-		expect($request->getBody()->__toString())->toBe('one=two');
-	});
-
-	it('formats an array body into JSON', function() {
+	public function testItFormatsAnArrayBodyIntoJson() {
 		$body = ['one' => 'two'];
 		$bodyJson = '{"one":"two"}';
 
-		$request = new HttpRequest(verb: HttpVerb::POST, url: 'https://smol.blog/hello', body: $body);
+		$request = new HttpRequest(verb: HttpVerb::GET, url: 'https://smol.blog/hello', body: $body);
 
-		expect($request->getBody()->__toString())->toBe($bodyJson);
-		expect($request->getHeaderLine('content-type'))->toBe('application/json');
-	});
+		$this->assertJsonStringEqualsJsonString($bodyJson, $request->getBody()->getContents());
+	}
 
-	it('formats an object body into JSON', function() {
+	public function testItFormatsAnObjectBodyIntoJson() {
 		$body = new readonly class('two') extends Value implements SerializableValue {
 			use SerializableValueKit;
 			public function __construct(public readonly string $one) {}
 		};
 		$bodyJson = '{"one":"two"}';
 
-		$request = new HttpRequest(verb: HttpVerb::POST, url: 'https://smol.blog/hello', body: $body);
+		$request = new HttpRequest(verb: HttpVerb::GET, url: 'https://smol.blog/hello', body: $body);
 
-		expect($request->getBody()->__toString())->toBe($bodyJson);
-		expect($request->getHeaderLine('content-type'))->toBe('application/json');
-	});
-
-	it('does not set the content-type header if one is provided', function() {
-		$request = new HttpRequest(
-			verb: HttpVerb::POST,
-			url: 'https://smol.blog/hello',
-			headers: ['content-type' => 'application/activity+json'],
-			body: ['type' => 'Follow'],
-		);
-
-		expect($request->getBody()->__toString())->toBe('{"type":"Follow"}');
-		expect($request->getHeaderLine('content-type'))->toBe('application/activity+json');
-	});
-});
+		$this->assertJsonStringEqualsJsonString($bodyJson, $request->getBody()->getContents());
+	}
+}

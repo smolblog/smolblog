@@ -3,7 +3,7 @@
 namespace Smolblog\Foundation\Service;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 #[CoversClass(KeypairGenerator::class)]
 final class KeypairGeneratorTest extends TestCase {

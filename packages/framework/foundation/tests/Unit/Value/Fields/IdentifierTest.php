@@ -1,94 +1,93 @@
 <?php
+
+namespace Smolblog\Foundation\Value\Fields;
+
+use DateTime;
+use DateTimeImmutable;
+use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\{
-	Identifier,
-	DateIdentifier,
-	NamedIdentifier,
-	RandomIdentifier,
-	DateTimeField
-};
+use Smolblog\Test\TestCase;
 
-describe('RandomIdentifier::__construct', function() {
-	it('can be a random identifier', function() {
-		expect(new RandomIdentifier())->toBeInstanceOf(Identifier::class);
-	});
-});
+#[CoversClass(Identifier::class)]
+#[CoversClass(RandomIdentifier::class)]
+#[CoversClass(DateIdentifier::class)]
+#[CoversClass(NamedIdentifier::class)]
+final class IdentifierTest extends TestCase {
+	#[TestDox('RandomIdentifier is a random identifier')]
+	public function testRandom() {
+		$this->assertInstanceOf(Identifier::class, new RandomIdentifier());
+	}
 
-describe('DateIdentifier::__construct', function() {
-	it('can be created with a specfic date', function() {
+	#[TestDox('DateIdentifier can be created with a specfic date')]
+	public function testDateString() {
 		$date = new DateTimeImmutable('2022-02-22 22:22:22');
-		expect(new DateIdentifier($date))->toBeInstanceOf(Identifier::class);
-	});
+		$this->assertInstanceOf(Identifier::class, new DateIdentifier($date));
+	}
 
-	it('can be created with a DateTime object', function() {
-		$date = new DateTime('2022-02-22 22:22:22');
-		expect(new DateIdentifier($date))->toBeInstanceOf(Identifier::class);
-	});
+	#[TestDox('DateIdentifier can be created with a DateTimeField object')]
+	public function testDateObject() {
+		$date = new DateTimeField('2022-02-22 22:22:22');
+		$this->assertInstanceOf(Identifier::class, new DateIdentifier($date));
+	}
 
-	it('will be created with the current date by default', function() {
-		expect(new DateIdentifier())->toBeInstanceOf(Identifier::class);
-	});
-});
+	#[TestDox('DateIdentifier will be created with the current date by default')]
+	public function testDateDefault() {
+		$this->assertInstanceOf(Identifier::class, new DateIdentifier());
+	}
 
-describe('NamedIdentifier::__construct', function() {
-	it('can be created with a namespace and name', function() {
-		expect(new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123'))
-			->toBeInstanceOf(Identifier::class);
-	});
+	#[TestDox('NamedIdentifier can be created with a namespace and name')]
+	public function testNamedGood() {
+		$this->assertInstanceOf(
+			Identifier::class,
+			new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123')
+		);
+	}
 
-	test('the namespace must be a UUID string', function() {
-		expect(fn() => new NamedIdentifier('not-a-uuid', 'https://smol.blog/post/123'))
-			->toThrow(InvalidArgumentException::class);
-	});
+	#[TestDox('The namespace in a NamedIdentifier must be a UUID string')]
+	public function testNamedBad() {
+		$this->expectException(InvalidArgumentException::class);
 
-	it('is created deterministically', function() {
+		new NamedIdentifier('not-a-uuid', 'https://smol.blog/post/123');
+	}
+
+	#[TestDox('NamedIdentifier is created deterministically')]
+	public function testNamedEqual() {
 		$id1 = new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123');
 		$id2 = new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123');
-		expect($id1)->toEqual($id2);
-	});
-});
+		$this->assertEquals($id1, $id2);
+	}
 
-describe('Identifier::toString', function() {
-	$idString = '10a353e4-0ccf-5f74-a77b-067262bfc588';
-	$idObject = new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123');
+	#[TestDox('Identifiers will serialize to and deserialize from a string')]
+	public function testSerialization() {
+		$idString = '10a353e4-0ccf-5f74-a77b-067262bfc588';
+		$idObject = new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123');
 
-	it('will serialize to a string', fn() =>
-		expect($idObject->toString())->toBe($idString)
-	);
-});
+		$this->assertEquals($idString, $idObject->toString());
+		$this->assertEquals(strval($idObject), strval(Identifier::fromString($idString)));
+	}
 
-describe('Identifier::fromString', function() {
-	$idString = '10a353e4-0ccf-5f74-a77b-067262bfc588';
-	$idObject = new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123');
+	#[TestDox('Identifiers will serialize to and deserialize from a byte-compressed string')]
+	public function testByteSerialization() {
+		$idObject = new NamedIdentifier(NamedIdentifier::NAMESPACE_URL, 'https://smol.blog/post/123');
+		$byteString = hex2bin('10a353e40ccf5f74a77b067262bfc588');
 
-	it('will deserialize from a string', fn() =>
-		expect(Identifier::fromString($idString)->toString())->toMatchValue($idObject)
-	);
+		$this->assertEquals($byteString, $idObject->toByteString());
+		$this->assertEquals(strval($idObject), strval(Identifier::fromByteString($byteString)));
+	}
 
-	it('will throw an exception if the serialized string is invalid', fn() =>
-		expect(fn() => Identifier::fromString($idString.'0'))->toThrow(InvalidValueProperties::class)
-	);
-});
+	#[TestDox('It will throw an exception if it can\'t deserialize the string')]
+	public function testStringException() {
+		$this->expectException(InvalidValueProperties::class);
 
-describe('Identifier::toByteString', function() {
-	$idString = 'b6520d39-66e5-4ff7-b799-5a9674b17502';
-	$byteString = hex2bin('b6520d3966e54ff7b7995a9674b17502');
+		Identifier::fromString('not-an-id');
+	}
 
-	it('will serialize to a byte string', fn() =>
-		expect($byteString)->toMatchValue(Identifier::fromString($idString)->toByteString())
-	);
-});
+	#[TestDox('It will throw an exception if it can\'t deserialize the byte-compressed string')]
+	public function testByteException() {
+		$this->expectException(InvalidValueProperties::class);
 
-describe('Identifier::fromByteString', function() {
-	$idString = 'b6520d39-66e5-4ff7-b799-5a9674b17502';
-	$byteString = hex2bin('b6520d3966e54ff7b7995a9674b17502');
-
-	it('will deserialize from a byte string', fn() =>
-		expect($byteString)->toMatchValue(Identifier::fromString($idString)->toByteString())
-	);
-
-	it('will throw an exception if the serialized byte string is invalid', function() {
-		$badByteString = hex2bin('10a353e40ccf5f74a77b067262bfc58888');
-		expect(fn() => Identifier::fromByteString($badByteString))->toThrow(InvalidValueProperties::class);
-	});
-});
+		Identifier::fromByteString(hex2bin('10a353e40ccf5f74a77b067262bfc58888'));
+	}
+}

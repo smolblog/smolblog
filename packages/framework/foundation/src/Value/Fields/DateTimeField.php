@@ -33,17 +33,13 @@ readonly class DateTimeField extends Value implements Field {
 	 *
 	 * @param string            $datetime Date and time to create the DateTime from.
 	 * @param DateTimeZone|null $timezone Timezone to use for the DateTime.
-	 * @param DateTimeInterface $object   Pass this to create a DateTime from an existing object.
 	 */
 	public function __construct(
 		string $datetime = 'now',
-		?DateTimeZone $timezone = null,
-		DateTimeInterface $object = null
+		?DateTimeZone $timezone = null
 	) {
 		try {
-			$this->object = isset($object) ?
-				DateTimeImmutable::createFromInterface($object) :
-				new DateTimeImmutable($datetime, $timezone);
+			$this->object = new DateTimeImmutable($datetime, $timezone);
 		} catch (Throwable $e) {
 			throw new InvalidValueProperties(
 				message: "Could not create DateTime from string `$datetime`",

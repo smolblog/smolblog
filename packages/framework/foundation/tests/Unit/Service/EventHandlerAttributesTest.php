@@ -6,7 +6,7 @@ use Crell\Tukio\ListenerPriority;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestWith;
-use PHPUnit\Framework\TestCase;
+use Smolblog\Test\TestCase;
 
 #[CoversClass(CheckMemoListener::class)]
 #[CoversClass(DownstreamListener::class)]
