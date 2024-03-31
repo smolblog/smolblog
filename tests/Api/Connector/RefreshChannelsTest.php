@@ -45,7 +45,7 @@ final class RefreshChannelsTest extends TestCase {
 		);
 
 		$bus = $this->mockBusExpects($command);
-		$bus->method('fetch')->will($this->onConsecutiveCalls($connection, $channels));
+		$bus->method('fetch')->willReturn($connection, $channels);
 
 		$endpoint = new RefreshChannels($bus);
 		$result = $endpoint->run(userId: $command->userId, params: ['id' => $command->connectionId]);

@@ -1,39 +1,48 @@
+<?xml version="1.0"?>
 <phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	bootstrap="vendor/autoload.php"
 	colors="true"
-	testdox="true"
+	testdox="false"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
 >
-	<testsuites>
-		<testsuite name="core">
-			<directory>tests</directory>
-		</testsuite>
-		<testsuite name="framework">
-			<directory>tests/Framework</directory>
-		</testsuite>
-		<testsuite name="integration">
-			<directory>integration-tests</directory>
-		</testsuite>
-	</testsuites>
-	<coverage
+  <testsuites>
+    <testsuite name="core">
+      <directory>tests</directory>
+      <directory>packages/framework/foundation/tests</directory>
+    </testsuite>
+    <testsuite name="framework">
+      <directory>tests/Framework</directory>
+    </testsuite>
+    <testsuite name="integration">
+      <directory>integration-tests</directory>
+    </testsuite>
+    <testsuite name="foundation">
+      <directory>packages/framework/foundation/tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage
 		cacheDirectory=".phpunit-cache"
 		ignoreDeprecatedCodeUnits="true"
 		pathCoverage="true"
 	>
+    <report>
+      <text outputFile="coverage.txt" showOnlySummary="true"/>
+      <html outputDirectory="test-coverage"/>
+      <php outputFile="coverage.php"/>
+    </report>
+  </coverage>
+  <php>
+    <ini name="xdebug.mode" value="coverage"/>
+    <ini name="memory_limit" value="1024M"/>
+  </php>
+  <source>
     <include>
-			<directory>packages/framework/*/src</directory>
-			<directory>packages/product/core/src</directory>
-		</include>
-		<exclude>
-			<directory>packages/framework/test-utils/src</directory>
-		</exclude>
-		<report>
-			<text outputFile="coverage.txt" showOnlySummary="true" />
-			<html outputDirectory="test-coverage" />
-			<php outputFile="coverage.php" />
-		</report>
-	</coverage>
-	<php>
-		<ini name="xdebug.mode" value="coverage"/>
-		<ini name="memory_limit" value="1024M"/>
-	</php>
+      <directory>packages/framework/*/src</directory>
+      <directory>packages/product/core/src</directory>
+    </include>
+    <exclude>
+      <directory>packages/framework/test-utils/src</directory>
+    </exclude>
+  </source>
 </phpunit>

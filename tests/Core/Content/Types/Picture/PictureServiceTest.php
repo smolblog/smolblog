@@ -9,6 +9,7 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Types\Picture\CreatePicture;
 use Smolblog\Core\Content\Types\Picture\PictureCreated;
 use Smolblog\Core\Content\Types\Picture\PictureService;
+use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
@@ -18,6 +19,7 @@ use Smolblog\Test\Kits\EventComparisonTestKit;
 final class PictureServiceTest extends TestCase {
 	use EventComparisonTestKit;
 	use ContentTypeServiceTestKit;
+	use MessageBusMockKit;
 
 	private MessageBus $bus;
 
@@ -105,9 +107,9 @@ final class PictureServiceTest extends TestCase {
 			'siteId' => $command->siteId,
 		];
 
-		$this->bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new PublicPictureRemoved(...$contentArgs))],
-			[$this->eventEquivalentTo(new PictureDeleted(...$contentArgs))],
+		$this->messageBusShouldDispatch($this->bus,
+			$this->eventEquivalentTo(new PublicPictureRemoved(...$contentArgs)),
+			$this->eventEquivalentTo(new PictureDeleted(...$contentArgs)),
 		);
 
 		$this->subject->onDeletePicture($command);
@@ -147,9 +149,9 @@ final class PictureServiceTest extends TestCase {
 			'siteId' => $command->siteId,
 		];
 
-		$this->bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new PictureCaptionEdited(...$contentArgs, caption: 'Another day'))],
-			[$this->eventEquivalentTo(new PublicPictureEdited(...$contentArgs))],
+		$this->messageBusShouldDispatch($this->bus,
+			$this->eventEquivalentTo(new PictureCaptionEdited(...$contentArgs, caption: 'Another day')),
+			$this->eventEquivalentTo(new PublicPictureEdited(...$contentArgs)),
 		);
 
 		$this->subject->onEditPictureCaption($command);
@@ -189,9 +191,9 @@ final class PictureServiceTest extends TestCase {
 			'siteId' => $command->siteId,
 		];
 
-		$this->bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new PictureMediaEdited(...$contentArgs, mediaIds: $command->mediaIds))],
-			[$this->eventEquivalentTo(new PublicPictureEdited(...$contentArgs))],
+		$this->messageBusShouldDispatch($this->bus,
+			$this->eventEquivalentTo(new PictureMediaEdited(...$contentArgs, mediaIds: $command->mediaIds)),
+			$this->eventEquivalentTo(new PublicPictureEdited(...$contentArgs)),
 		);
 
 		$this->subject->onEditPictureMedia($command);

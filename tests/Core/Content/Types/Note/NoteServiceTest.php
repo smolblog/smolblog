@@ -6,12 +6,14 @@ use DateTimeImmutable;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 class NoteServiceTest extends TestCase {
 	use EventComparisonTestKit;
+	use MessageBusMockKit;
 
 	public function testItHasAValidConfiguration() {
 		$this->assertInstanceOf(ContentTypeConfiguration::class, NoteService::getConfiguration());
@@ -49,9 +51,9 @@ class NoteServiceTest extends TestCase {
 		);
 
 		$messageBus = $this->createMock(MessageBus::class);
-		$messageBus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->isInstanceOf(NoteCreated::class)],
-			[$this->isInstanceOf(PublicNoteCreated::class)],
+		$this->messageBusShouldDispatch($messageBus,
+			$this->isInstanceOf(NoteCreated::class),
+			$this->isInstanceOf(PublicNoteCreated::class),
 		);
 
 		$service = new NoteService(bus: $messageBus);
@@ -122,9 +124,9 @@ class NoteServiceTest extends TestCase {
 		];
 
 		$messageBus = $this->createMock(MessageBus::class);
-		$messageBus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new NoteBodyEdited(...$contentArgs, text: "What's happening?"))],
-			[$this->eventEquivalentTo(new PublicNoteEdited(...$contentArgs))],
+		$this->messageBusShouldDispatch($messageBus,
+			$this->eventEquivalentTo(new NoteBodyEdited(...$contentArgs, text: "What's happening?")),
+			$this->eventEquivalentTo(new PublicNoteEdited(...$contentArgs)),
 		);
 		$messageBus->method('fetch')->willReturn(new Content(
 			type: new Note(text: 'Hello'),
@@ -176,9 +178,9 @@ class NoteServiceTest extends TestCase {
 		];
 
 		$messageBus = $this->createMock(MessageBus::class);
-		$messageBus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new PublicNoteRemoved(...$contentArgs))],
-			[$this->eventEquivalentTo(new NoteDeleted(...$contentArgs))],
+		$this->messageBusShouldDispatch($messageBus,
+			$this->eventEquivalentTo(new PublicNoteRemoved(...$contentArgs)),
+			$this->eventEquivalentTo(new NoteDeleted(...$contentArgs)),
 		);
 		$messageBus->method('fetch')->willReturn(new Content(
 			type: new Note(text: 'Hello'),

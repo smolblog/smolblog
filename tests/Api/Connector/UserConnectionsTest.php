@@ -29,7 +29,7 @@ final class UserConnectionsTest extends TestCase {
 		];
 
 		$bus = $this->createStub(MessageBus::class);
-		$bus->method('fetch')->will($this->onConsecutiveCalls([$connection], $channels));
+		$bus->method('fetch')->willReturn([$connection], $channels);
 
 		$endpoint = new UserConnections($bus);
 		$result = $endpoint->run(userId: $connection->userId);

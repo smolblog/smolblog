@@ -1,9 +1,10 @@
 <?php
 
 namespace Smolblog\Test\Kits;
+use PHPUnit\Framework\Attributes\TestDox;
 
 trait NeedsMarkdownRenderedTestKit {
-	/** @testdox It implements the NeedsMarkdownRendered interface. */
+	#[TestDox('It implements the NeedsMarkdownRendered interface.')]
 	public function testNeedsMarkdownRendered() {
 		$result = [];
 		$actual = $this->subject->getMarkdown();

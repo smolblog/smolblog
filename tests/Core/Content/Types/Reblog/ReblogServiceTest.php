@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
@@ -13,6 +14,7 @@ use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ReblogServiceTest extends TestCase {
 	use EventComparisonTestKit;
+	use MessageBusMockKit;
 
 	private Content $reblog;
 	private MessageBus $bus;
@@ -88,9 +90,9 @@ final class ReblogServiceTest extends TestCase {
 			comment: 'Hello.'
 		);
 
-		$this->bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->isInstanceOf(ReblogCreated::class)],
-			[$this->isInstanceOf(PublicReblogCreated::class)],
+		$this->messageBusShouldDispatch($this->bus,
+			$this->isInstanceOf(ReblogCreated::class),
+			$this->isInstanceOf(PublicReblogCreated::class),
 		);
 
 		$this->service->onCreateReblog($command);
@@ -129,9 +131,9 @@ final class ReblogServiceTest extends TestCase {
 			'siteId' => $command->siteId,
 		];
 
-		$this->bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new PublicReblogRemoved(...$contentArgs))],
-			[$this->eventEquivalentTo(new ReblogDeleted(...$contentArgs))],
+		$this->messageBusShouldDispatch($this->bus,
+			$this->eventEquivalentTo(new PublicReblogRemoved(...$contentArgs)),
+			$this->eventEquivalentTo(new ReblogDeleted(...$contentArgs)),
 		);
 
 		$this->service->onDeleteReblog($command);
@@ -173,9 +175,9 @@ final class ReblogServiceTest extends TestCase {
 			'siteId' => $command->siteId,
 		];
 
-		$this->bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new ReblogCommentChanged(...$contentArgs, comment: 'Another day'))],
-			[$this->eventEquivalentTo(new PublicReblogEdited(...$contentArgs))],
+		$this->messageBusShouldDispatch($this->bus,
+			$this->eventEquivalentTo(new ReblogCommentChanged(...$contentArgs, comment: 'Another day')),
+			$this->eventEquivalentTo(new PublicReblogEdited(...$contentArgs)),
 		);
 
 		$this->service->onEditReblogComment($command);
@@ -218,9 +220,9 @@ final class ReblogServiceTest extends TestCase {
 			'siteId' => $command->siteId,
 		];
 
-		$this->bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new ReblogInfoChanged(...$contentArgs, url: '//smol.blog/', info: $this->info))],
-			[$this->eventEquivalentTo(new PublicReblogEdited(...$contentArgs))],
+		$this->messageBusShouldDispatch($this->bus,
+			$this->eventEquivalentTo(new ReblogInfoChanged(...$contentArgs, url: '//smol.blog/', info: $this->info)),
+			$this->eventEquivalentTo(new PublicReblogEdited(...$contentArgs)),
 		);
 
 		$this->service->onEditReblogUrl($command);
