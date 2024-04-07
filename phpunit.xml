@@ -7,18 +7,12 @@
 	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
 >
   <testsuites>
-    <testsuite name="core">
+    <testsuite name="all">
       <directory>tests</directory>
-      <directory>packages/framework/foundation/tests</directory>
-    </testsuite>
-    <testsuite name="framework">
-      <directory>tests/Framework</directory>
+      <directory>packages/*/*/tests</directory>
     </testsuite>
     <testsuite name="integration">
       <directory>integration-tests</directory>
-    </testsuite>
-    <testsuite name="foundation">
-      <directory>packages/framework/foundation/tests</directory>
     </testsuite>
   </testsuites>
   <coverage

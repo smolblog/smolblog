@@ -82,14 +82,13 @@
         "smolblog/tumblr": "self.version"
     },
     "scripts": {
-        "test": "phpunit --testsuite core",
+        "test": "phpunit --testdox",
+        "test-fast": "phpunit --testsuite all --no-coverage",
         "test-coverage": [
             "@putenv XDEBUG_MODE=coverage",
-            "phpunit --testsuite core",
+            "phpunit --testsuite all",
             "Smolblog\\Test\\CoverageReport::report"
         ],
-        "integration": "phpunit --testsuite integration",
-        "integration-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite integration; cat coverage.txt",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
         "swagger": "Smolblog\\Api\\Model::printSpec",
