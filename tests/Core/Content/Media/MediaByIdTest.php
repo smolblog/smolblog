@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content\Media;
+namespace Smolblog\Core\ContentV1\Media;
 
-use Smolblog\Core\Content\Queries\ContentVisibleToUser;
+use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\TestCase;
 

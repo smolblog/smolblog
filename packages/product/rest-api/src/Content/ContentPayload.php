@@ -4,11 +4,11 @@ namespace Smolblog\Api\Content;
 
 use Smolblog\Api\ArrayType;
 use Smolblog\Api\ParameterType;
-use Smolblog\Core\Content\ContentExtension;
-use Smolblog\Core\Content\ContentType;
-use Smolblog\Core\Content\Extensions\Syndication\Syndication;
-use Smolblog\Core\Content\Extensions\Syndication\SyndicationLink;
-use Smolblog\Core\Content\Extensions\Tags\Tags;
+use Smolblog\Core\ContentV1\ContentExtension;
+use Smolblog\Core\ContentV1\ContentType;
+use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
+use Smolblog\Core\ContentV1\Extensions\Syndication\SyndicationLink;
+use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\Value;
 

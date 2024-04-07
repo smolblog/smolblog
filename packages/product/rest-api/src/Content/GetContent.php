@@ -7,8 +7,8 @@ use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\Queries\ContentById;
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\Queries\ContentById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 

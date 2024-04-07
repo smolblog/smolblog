@@ -1,17 +1,17 @@
 <?php
 
-namespace Smolblog\Core\Content\Queries;
+namespace Smolblog\Core\ContentV1\Queries;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentBuilder;
-use Smolblog\Core\Content\ContentBuilderKit;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\ContentBuilder;
+use Smolblog\Core\ContentV1\ContentBuilderKit;
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\ContentExtension;
-use Smolblog\Core\Content\ContentType;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\GenericContent;
-use Smolblog\Core\Content\InvalidContentException;
+use Smolblog\Core\ContentV1\ContentExtension;
+use Smolblog\Core\ContentV1\ContentType;
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\GenericContent;
+use Smolblog\Core\ContentV1\InvalidContentException;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;

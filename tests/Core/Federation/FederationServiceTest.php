@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Federation;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentType;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\Events\PublicContentAdded;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\ContentType;
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;

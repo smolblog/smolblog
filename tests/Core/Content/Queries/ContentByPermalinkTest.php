@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Queries;
+namespace Smolblog\Core\ContentV1\Queries;
 
 use Smolblog\Test\TestCase;
 

@@ -2,8 +2,8 @@
 
 namespace Smolblog\Mock;
 
-use Smolblog\Core\Content\Events\PermalinkAssigned;
-use Smolblog\Core\Content\Events\PublicContentAdded;
+use Smolblog\Core\ContentV1\Events\PermalinkAssigned;
+use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;

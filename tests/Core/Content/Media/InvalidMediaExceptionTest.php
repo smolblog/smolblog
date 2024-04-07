@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Media;
+namespace Smolblog\Core\ContentV1\Media;
 
 use Exception;
 use Psr\Http\Message\UploadedFileInterface;

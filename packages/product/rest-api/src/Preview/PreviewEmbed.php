@@ -7,8 +7,8 @@ use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\ParameterType;
-use Smolblog\Core\Content\Types\Reblog\ExternalContentInfo;
-use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
+use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentInfo;
+use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Objects\Identifier;
 
 /**

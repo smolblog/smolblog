@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content\Queries;
+namespace Smolblog\Core\ContentV1\Queries;
 
-use Smolblog\Core\Content\Content;
+use Smolblog\Core\ContentV1\Content;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;
 

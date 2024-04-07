@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\ContentV1;
 
-use Smolblog\Core\Content\Queries\BaseContentById;
+use Smolblog\Core\ContentV1\Queries\BaseContentById;
 use Smolblog\Test\TestCase;
 
 final class ContentTypeRegistryTest extends TestCase {

@@ -10,8 +10,8 @@ use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\NoRefreshKit;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\Extensions\Tags\Tags;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
 use Tumblr\API\Client as TumblrClient;
 use Tumblr\API\RequestException;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Picture;
+namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\Kits\ContentEventTestKit;
 use Smolblog\Test\Kits\NeedsMarkdownRenderedTestKit;

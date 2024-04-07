@@ -5,7 +5,7 @@ namespace Smolblog\WP\Helpers;
 use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Log\LoggerInterface;
-use Smolblog\Core\Content\Media\{MediaHandler, MediaFile, InvalidMediaException};
+use Smolblog\Core\ContentV1\Media\{MediaHandler, MediaFile, InvalidMediaException};
 use Smolblog\Framework\Objects\DateIdentifier;
 use Smolblog\Framework\Objects\Identifier;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\Syndication;
+namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
 use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Test\Kits\DatabaseTestKit;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Note;
+namespace Smolblog\Core\ContentV1\Types\Note;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\Events\ContentEvent;
+use Smolblog\Core\ContentV1\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\Kits\NoteTestKit;
 

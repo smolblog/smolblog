@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Events;
+namespace Smolblog\Core\ContentV1\Events;
 
 use Smolblog\Test\TestCase;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Smolblog\Core\Content\Media;
+namespace Smolblog\Core\ContentV1\Media;
 
 use DateTimeInterface;
 use Illuminate\Database\Schema\Blueprint;
-use Smolblog\Core\Content\Queries\ContentVisibleToUser;
+use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Reblog;
+namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\Queries\UserCanEditContent;
+use Smolblog\Core\ContentV1\Queries\UserCanEditContent;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;
 

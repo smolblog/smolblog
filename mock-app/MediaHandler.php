@@ -3,8 +3,8 @@
 namespace Smolblog\Mock;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Smolblog\Core\Content\Media\MediaFile;
-use Smolblog\Core\Content\Media\MediaHandler as MediaHandlerInterface;
+use Smolblog\Core\ContentV1\Media\MediaFile;
+use Smolblog\Core\ContentV1\Media\MediaHandler as MediaHandlerInterface;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Framework\Objects\RandomIdentifier;
 

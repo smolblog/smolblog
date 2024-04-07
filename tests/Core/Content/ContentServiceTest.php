@@ -1,15 +1,15 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\ContentV1;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\Commands\ChangeContentVisibility;
-use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
-use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
-use Smolblog\Core\Content\Events\ContentVisibilityChanged;
-use Smolblog\Core\Content\Queries\AdaptableContentQuery;
-use Smolblog\Core\Content\Queries\BaseContentById;
+use Smolblog\Core\ContentV1\Commands\ChangeContentVisibility;
+use Smolblog\Core\ContentV1\Commands\EditContentBaseAttributes;
+use Smolblog\Core\ContentV1\Events\ContentBaseAttributeEdited;
+use Smolblog\Core\ContentV1\Events\ContentVisibilityChanged;
+use Smolblog\Core\ContentV1\Queries\AdaptableContentQuery;
+use Smolblog\Core\ContentV1\Queries\BaseContentById;
 use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;

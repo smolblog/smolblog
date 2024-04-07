@@ -9,11 +9,11 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\Events\PublicContentAdded;
-use Smolblog\Core\Content\Extensions\Syndication\Syndication;
-use Smolblog\Core\Content\GenericContent;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\Events\PublicContentAdded;
+use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
+use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\TestCase;
 

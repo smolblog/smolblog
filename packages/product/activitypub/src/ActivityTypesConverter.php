@@ -4,7 +4,7 @@ namespace Smolblog\ActivityPub;
 
 use DateTimeInterface;
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Core\Content\Content;
+use Smolblog\Core\ContentV1\Content;
 use Smolblog\Core\Site\Site;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
 use Smolblog\Framework\ActivityPub\Objects\Actor;

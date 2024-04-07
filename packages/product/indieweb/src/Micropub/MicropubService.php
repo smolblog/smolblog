@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Core\Content\ContentTypeRegistry;
+use Smolblog\Core\ContentV1\ContentTypeRegistry;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\IndieWeb\MicroformatsConverter;
 

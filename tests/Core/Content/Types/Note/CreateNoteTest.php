@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Note;
+namespace Smolblog\Core\ContentV1\Types\Note;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;

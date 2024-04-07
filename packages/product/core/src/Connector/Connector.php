@@ -5,7 +5,7 @@ namespace Smolblog\Core\Connector;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
-use Smolblog\Core\Content\Content;
+use Smolblog\Core\ContentV1\Content;
 
 /**
  * Class to handle authenticating against an external provider.

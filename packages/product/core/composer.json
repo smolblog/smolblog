@@ -3,6 +3,12 @@
   "description": "Core features for Smolblog",
   "type": "library",
   "license": "AGPL-3.0-only",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../../framework/foundation"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Smolblog\\Core\\": "src/"
@@ -44,6 +50,7 @@
     "taproot/micropub-adapter": "^0.1.1",
     "psr/log": "^3.0",
     "elephox/mimey": "^4.0",
-    "tumblr/tumblr": "^0.4.2"
+    "tumblr/tumblr": "^0.4.2",
+    "smolblog/framework-foundation": "*"
   }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Reblog;
+namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\Events\ContentEvent;
+use Smolblog\Core\ContentV1\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
 
 class ReblogCreatedTest extends TestCase {

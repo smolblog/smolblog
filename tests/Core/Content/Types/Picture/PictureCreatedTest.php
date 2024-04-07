@@ -1,12 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Picture;
+namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Events\ContentEvent;
-use Smolblog\Core\Content\Media\Media;
-use Smolblog\Core\Content\Media\MediaFile;
-use Smolblog\Core\Content\Media\MediaType;
+use Smolblog\Core\ContentV1\Events\ContentEvent;
+use Smolblog\Core\ContentV1\Media\Media;
+use Smolblog\Core\ContentV1\Media\MediaFile;
+use Smolblog\Core\ContentV1\Media\MediaType;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\Kits\ContentEventTestKit;
 use Smolblog\Test\Kits\NeedsMarkdownRenderedTestKit;

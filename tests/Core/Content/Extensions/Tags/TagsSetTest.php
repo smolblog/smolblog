@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\Tags;
+namespace Smolblog\Core\ContentV1\Extensions\Tags;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Objects\Identifier;

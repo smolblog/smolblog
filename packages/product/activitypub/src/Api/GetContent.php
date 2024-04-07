@@ -7,7 +7,7 @@ use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
-use Smolblog\Core\Content\Queries\ContentById;
+use Smolblog\Core\ContentV1\Queries\ContentById;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
 use Smolblog\Framework\Messages\MessageBus;

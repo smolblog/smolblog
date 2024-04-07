@@ -9,7 +9,7 @@ use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\Verb;
-use Smolblog\Core\Content\Media\HandleUploadedMedia;
+use Smolblog\Core\ContentV1\Media\HandleUploadedMedia;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\Identifier;

@@ -2,8 +2,8 @@
 
 namespace Smolblog\Mock;
 
-use Smolblog\Core\Content\Types\Reblog\ExternalContentInfo;
-use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
+use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentInfo;
+use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentService;
 
 class EmbedService implements ExternalContentService {
 	public function getExternalContentInfo(string $url): ExternalContentInfo {

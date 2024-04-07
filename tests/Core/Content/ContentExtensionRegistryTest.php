@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\ContentV1;
 
 use Smolblog\Test\TestCase;
 

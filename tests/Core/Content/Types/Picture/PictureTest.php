@@ -1,12 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Picture;
+namespace Smolblog\Core\ContentV1\Types\Picture;
 
-use Smolblog\Core\Content\InvalidContentException;
-use Smolblog\Core\Content\Media\Media;
-use Smolblog\Core\Content\Media\MediaFile;
-use Smolblog\Core\Content\Media\MediaTest;
-use Smolblog\Core\Content\Media\MediaType;
+use Smolblog\Core\ContentV1\InvalidContentException;
+use Smolblog\Core\ContentV1\Media\Media;
+use Smolblog\Core\ContentV1\Media\MediaFile;
+use Smolblog\Core\ContentV1\Media\MediaTest;
+use Smolblog\Core\ContentV1\Media\MediaType;
 use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 

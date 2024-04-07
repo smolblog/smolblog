@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content\Media;
+namespace Smolblog\Core\ContentV1\Media;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Events\ContentEvent;
+use Smolblog\Core\ContentV1\Events\ContentEvent;
 use Smolblog\Framework\Objects\Identifier;
 use Smolblog\Test\TestCase;
 

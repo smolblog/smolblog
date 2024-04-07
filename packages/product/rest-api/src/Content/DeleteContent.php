@@ -10,11 +10,11 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
-use Smolblog\Core\Content\ContentTypeRegistry;
-use Smolblog\Core\Content\Media\DeleteMedia as DeleteMediaCommand;
-use Smolblog\Core\Content\Media\MediaById;
-use Smolblog\Core\Content\Queries\ContentById;
-use Smolblog\Core\Content\Queries\GenericContentById;
+use Smolblog\Core\ContentV1\ContentTypeRegistry;
+use Smolblog\Core\ContentV1\Media\DeleteMedia as DeleteMediaCommand;
+use Smolblog\Core\ContentV1\Media\MediaById;
+use Smolblog\Core\ContentV1\Queries\ContentById;
+use Smolblog\Core\ContentV1\Queries\GenericContentById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 

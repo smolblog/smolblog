@@ -5,7 +5,7 @@ namespace Smolblog\ActivityPub\Follow;
 use Exception;
 use Smolblog\ActivityPub\ActivityTypesConverter;
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Core\Content\Content;
+use Smolblog\Core\ContentV1\Content;
 use Smolblog\Core\Federation\FollowerProvider;
 use Smolblog\Core\Site\GetSiteKeypair;
 use Smolblog\Core\Site\SiteById;

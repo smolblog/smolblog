@@ -1,14 +1,14 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Picture;
+namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentTypeConfiguration;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\Types\Picture\CreatePicture;
-use Smolblog\Core\Content\Types\Picture\PictureCreated;
-use Smolblog\Core\Content\Types\Picture\PictureService;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\ContentTypeConfiguration;
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\Types\Picture\CreatePicture;
+use Smolblog\Core\ContentV1\Types\Picture\PictureCreated;
+use Smolblog\Core\ContentV1\Types\Picture\PictureService;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;

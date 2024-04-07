@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Markdown;
+namespace Smolblog\Core\ContentV1\Markdown;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Markdown\SmolblogMarkdown;

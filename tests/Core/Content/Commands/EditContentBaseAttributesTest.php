@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Commands;
+namespace Smolblog\Core\ContentV1\Commands;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;

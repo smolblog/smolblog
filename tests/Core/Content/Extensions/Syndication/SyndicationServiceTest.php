@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\Syndication;
+namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
-use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;

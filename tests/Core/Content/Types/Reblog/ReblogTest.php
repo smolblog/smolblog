@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Reblog;
+namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;

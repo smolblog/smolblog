@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Picture;
+namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;

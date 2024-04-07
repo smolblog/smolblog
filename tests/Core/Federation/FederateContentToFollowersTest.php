@@ -3,9 +3,9 @@
 namespace Smolblog\Core\Federation;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\GenericContent;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;

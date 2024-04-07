@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Note;
+namespace Smolblog\Core\ContentV1\Types\Note;
 
 use DateTimeImmutable;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentTypeConfiguration;
-use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\ContentTypeConfiguration;
+use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;

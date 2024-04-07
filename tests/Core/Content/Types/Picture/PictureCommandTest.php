@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Picture;
+namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\Queries\UserCanEditContent;
+use Smolblog\Core\ContentV1\Queries\UserCanEditContent;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Objects\Identifier;
 

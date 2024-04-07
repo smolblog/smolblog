@@ -5,8 +5,8 @@ namespace Smolblog\WP\Helpers;
 use DateTimeInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\Events\{
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\Events\{
 	ContentCreated,
 	PermalinkAssigned,
 	PublicContentAdded,
@@ -14,10 +14,10 @@ use Smolblog\Core\Content\Events\{
     PublicContentEvent,
     PublicContentRemoved
 };
-use Smolblog\Core\Content\Extensions\Tags\Tags;
-use Smolblog\Core\Content\Types\Note\Note;
-use Smolblog\Core\Content\Types\Picture\Picture;
-use Smolblog\Core\Content\Types\Reblog\Reblog;
+use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
+use Smolblog\Core\ContentV1\Types\Note\Note;
+use Smolblog\Core\ContentV1\Types\Picture\Picture;
+use Smolblog\Core\ContentV1\Types\Reblog\Reblog;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Projection;
@@ -34,7 +34,7 @@ class PostProjection implements Projection {
 
 		$wp_site_id = SiteHelper::UuidToInt( $content->siteId );
 		switch_to_blog( $wp_site_id );
-		
+
 		$wp_author_id = SiteHelper::UuidToInt( $content->authorId );
 		$wp_post_id = wp_insert_post( [
 			'post_author' => $wp_author_id,
@@ -58,7 +58,7 @@ class PostProjection implements Projection {
 			(isset($permalink_parts['fragment']) ? '#' . $permalink_parts['fragment'] : '');
 
 		restore_current_blog();
-		
+
 		$this->bus->dispatch(new PermalinkAssigned(
 			contentId: $event->contentId,
 			userId: $event->userId,

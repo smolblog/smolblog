@@ -3,12 +3,12 @@
 namespace Smolblog\IndieWeb;
 
 use DateTimeInterface;
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\Extensions\Syndication\Syndication;
-use Smolblog\Core\Content\Extensions\Tags\Tags;
-use Smolblog\Core\Content\Types\Note\Note;
-use Smolblog\Core\Content\Types\Picture\Picture;
-use Smolblog\Core\Content\Types\Reblog\Reblog;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
+use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
+use Smolblog\Core\ContentV1\Types\Note\Note;
+use Smolblog\Core\ContentV1\Types\Picture\Picture;
+use Smolblog\Core\ContentV1\Types\Reblog\Reblog;
 use Smolblog\Core\User\User;
 
 /**

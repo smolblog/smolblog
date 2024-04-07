@@ -3,7 +3,7 @@
 namespace Smolblog\Test\Kits;
 
 use PHPUnit\Framework\Attributes\TestDox;
-use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Framework\Objects\Identifier;
 
 trait NeedsMediaObjectsTestKit {

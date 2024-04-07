@@ -1,12 +1,12 @@
 <?php
 
-namespace Smolblog\Core\Content\Events;
+namespace Smolblog\Core\ContentV1\Events;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Core\Content\GenericContent;
-use Smolblog\Core\Content\InvalidContentException;
+use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\ContentV1\GenericContent;
+use Smolblog\Core\ContentV1\InvalidContentException;
 use Smolblog\Framework\Objects\Identifier;
 
 final class TestContentCreated extends ContentCreated {

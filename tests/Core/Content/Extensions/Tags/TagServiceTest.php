@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content\Extensions\Tags;
+namespace Smolblog\Core\ContentV1\Extensions\Tags;
 
-use Smolblog\Core\Content\Content;
-use Smolblog\Core\Content\ContentVisibility;
+use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Note;
+namespace Smolblog\Core\ContentV1\Types\Note;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Core\Content\InvalidContentException;
+use Smolblog\Core\ContentV1\InvalidContentException;
 use Smolblog\Test\Kits\NoteTestKit;
 
 final class NoteTest extends TestCase {

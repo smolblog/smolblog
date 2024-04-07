@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Reblog;
+namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Test\Kits\DatabaseTestKit;

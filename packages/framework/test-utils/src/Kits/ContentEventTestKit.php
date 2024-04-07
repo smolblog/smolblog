@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test\Kits;
 
-use Smolblog\Core\Content\Events\ContentEvent;
+use Smolblog\Core\ContentV1\Events\ContentEvent;
 
 trait ContentEventTestKit {
 	public function testItWillSerializeAndDeserializeToItself() {

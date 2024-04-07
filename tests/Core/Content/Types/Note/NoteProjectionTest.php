@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Types\Note;
+namespace Smolblog\Core\ContentV1\Types\Note;
 
 use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Test\Kits\DatabaseTestKit;

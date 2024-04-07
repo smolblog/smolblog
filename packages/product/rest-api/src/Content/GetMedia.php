@@ -7,8 +7,8 @@ use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
-use Smolblog\Core\Content\Media\Media;
-use Smolblog\Core\Content\Media\MediaById;
+use Smolblog\Core\ContentV1\Media\Media;
+use Smolblog\Core\ContentV1\Media\MediaById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 

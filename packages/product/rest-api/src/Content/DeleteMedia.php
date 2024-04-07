@@ -9,8 +9,8 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
-use Smolblog\Core\Content\Media\DeleteMedia as DeleteMediaCommand;
-use Smolblog\Core\Content\Media\MediaById;
+use Smolblog\Core\ContentV1\Media\DeleteMedia as DeleteMediaCommand;
+use Smolblog\Core\ContentV1\Media\MediaById;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\Identifier;
 

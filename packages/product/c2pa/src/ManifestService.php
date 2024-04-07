@@ -5,9 +5,9 @@ namespace Smolblog\ContentProvenance;
 use smolblog\Framework\Messages\Listener;
 use Psr\Log\LoggerInterface;
 use Smolblog\ContentProvenance\Actions\Published;
-use Smolblog\Core\Content\Media\HandleUploadedMedia;
-use Smolblog\Core\Content\Media\MediaService;
-use Smolblog\Core\Content\Media\MediaType;
+use Smolblog\Core\ContentV1\Media\HandleUploadedMedia;
+use Smolblog\Core\ContentV1\Media\MediaService;
+use Smolblog\Core\ContentV1\Media\MediaType;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Elephox\Mimey\MimeTypesInterface;
 
