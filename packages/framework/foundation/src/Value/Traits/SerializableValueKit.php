@@ -19,7 +19,7 @@ trait SerializableValueKit {
 	 *
 	 * @return mixed
 	 */
-	public function toArray(): mixed {
+	public function serializeValue(): mixed {
 		$props = static::propertyInfo();
 		$data = [];
 		foreach ($props as $name => $type) {
@@ -33,12 +33,20 @@ trait SerializableValueKit {
 			}
 
 			if (is_array($this->$name)) {
-				$data[$name] = isset($type) ? array_map(fn($item) => $item->toArray(), $this->$name) : $this->$name;
+				$data[$name] = isset($type) ? array_map(fn($item) => $item->serializeValue(), $this->$name) : $this->$name;
 				continue;
 			}
 
 			if (is_object($this->$name)) {
-				$data[$name] = $this->$name->toArray();
+				if (!is_a($this->$name, SerializableValue::class)) {
+
+					throw new CodePathNotSupported(
+						message: get_class($this->$name) . ' is not a SerializableValue. ' .
+							'Change the type or override serializeValue()',
+						location: 'SerializableValueKit::serializeValue via ' . static::class
+					);
+				}
+				$data[$name] = $this->$name->serializeValue();
 				continue;
 			}
 		}
@@ -51,7 +59,7 @@ trait SerializableValueKit {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		$parsedData = [];
 		$props = static::propertyInfo();
 
@@ -66,11 +74,11 @@ trait SerializableValueKit {
 			}
 
 			if (is_a($type, ArrayType::class)) {
-				$parsedData[$name] = array_map(fn($item) => ($type->type)::fromArray($item), $data[$name]);
+				$parsedData[$name] = array_map(fn($item) => self::deserializeDataToType($item, $type->type), $data[$name]);
 				continue;
 			}
 
-			$parsedData[$name] = $type::fromArray($data[$name]);
+			$parsedData[$name] = self::deserializeDataToType($data[$name], $type);
 		}
 
 		return new static(...$parsedData);
@@ -82,13 +90,13 @@ trait SerializableValueKit {
 	 * @return mixed
 	 */
 	public function jsonSerialize(): mixed {
-		return $this->toArray();
+		return $this->serializeValue();
 	}
 
 	/**
 	 * Serialize the object to JSON.
 	 *
-	 * Mostly provided as a symmetry to to/fromArray.
+	 * Mostly provided as a symmetry to to/deserializeValue.
 	 *
 	 * @return string
 	 */
@@ -104,7 +112,7 @@ trait SerializableValueKit {
 	 */
 	public static function fromJson(string $json): static {
 		$data = json_decode($json, true);
-		return static::fromArray($data);
+		return static::deserializeValue($data);
 	}
 
 	/**
@@ -136,7 +144,7 @@ trait SerializableValueKit {
 			throw new CodePathNotSupported(
 				message: 'Union/intersection types are not supported; ' .
 					'change the type or override the propertyInfo() method.',
-				location: 'Value::determinePropertyType via' . static::class,
+				location: 'SerializableValueKit::propertyInfo via' . static::class,
 			);
 		}
 
@@ -151,5 +159,26 @@ trait SerializableValueKit {
 		}
 
 		return class_exists($typeName) ? $typeName : null;
+	}
+
+	/**
+	 * Check the class to deserialize has a known interface and exists.
+	 *
+	 * @throws CodePathNotSupported If $type is unknown or not deserializable.
+	 *
+	 * @param array $data Data to deserialize.
+	 * @param string $type Type to deserialize to.
+	 * @return mixed Deserialized object of type $type or unmodified $data.
+	 */
+	private static function deserializeDataToType(mixed $data, string $type): mixed {
+		// If $type isn't a SerializableValue, don't touch.
+		if (class_exists($type) && is_subclass_of($type, SerializableValue::class, allow_string: true)) {
+			return $type::deserializeValue($data);
+		}
+
+		throw new CodePathNotSupported(
+			message: "$type is not a SerializableValue. Change the type or override deserializeValue()",
+			location: 'SerializableValueKit::deserializeValue via ' . static::class
+		);
 	}
 }

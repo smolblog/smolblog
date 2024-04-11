@@ -54,6 +54,14 @@ readonly class OverriddenPropertyInfoValueTest extends ValueTestBase {
 	}
 }
 
+readonly class NonSerializableValueTest extends Value {
+	public function __construct(public array $contents) {}
+}
+
+readonly class SerializedWithNonSerializedValueTest extends ValueTestBase {
+	public function __construct(public NonSerializableValueTest $contents) {}
+}
+
 #[CoversClass(SerializableValueKit::class)]
 #[CoversClass(ArrayType::class)]
 final class SerializableValueTest extends TestCase {
@@ -110,7 +118,7 @@ final class SerializableValueTest extends TestCase {
 				'array' => ['one' => 'one', 'two' => 2, 'three' => ['value' => 'three']],
 				'json' => '{"one":"one","two":2,"three":{"value":"three"}}',
 				'info' => ['one' => null, 'two' => null, 'three' => SimpleValueTest::class],
-			],
+			]
 		];
 	}
 
@@ -118,7 +126,7 @@ final class SerializableValueTest extends TestCase {
 	#[TestDox('will serialize to an array')]
 	#[DataProvider('valueExamples')]
 	public function testToArray(SerializableValue $object, array $array, string $json, array $info) {
-		$this->assertEquals($array, $object->toArray());
+		$this->assertEquals($array, $object->serializeValue());
 	}
 
 	#[TestDox('will serialize to JSON')]
@@ -132,7 +140,7 @@ final class SerializableValueTest extends TestCase {
 	#[DataProvider('valueExamples')]
 	public function testFromArray(SerializableValue $object, array $array, string $json, array $info) {
 		$class = get_class($object);
-		$this->assertEquals($object, $class::fromArray($array));
+		$this->assertEquals($object, $class::deserializeValue($array));
 	}
 
 	#[TestDox('will deserialize from JSON')]
@@ -149,7 +157,7 @@ final class SerializableValueTest extends TestCase {
 	}
 
 	#[TestDox('It will throw an exception when default serialization is used with a union type')]
-	function testExceptionOnUnionType() {
+	public function testExceptionOnUnionType() {
 		$this->expectException(CodePathNotSupported::class);
 
 		$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
@@ -159,11 +167,11 @@ final class SerializableValueTest extends TestCase {
 				public SimpleValueTest|ManyScalarsValueTest $three,
 			) {}
 		};
-		$value->toArray();
+		$value->serializeValue();
 	}
 
 	#[TestDox('It will ignore fields that are not defined in the propertyInfo when serializing and deserializing.')]
-	function testIgnoreNotInPropertyInfo() {
+	public function testIgnoreNotInPropertyInfo() {
 		$value = new readonly class('one', 2, new SimpleValueTest('three')) extends ValueTestBase {
 			public function __construct(
 				public string $one,
@@ -188,4 +196,33 @@ final class SerializableValueTest extends TestCase {
 		$jsonWithExtra = '{"one":"one","two":2,"three":{"value":"three"},"five":true}';
 		$this->assertEquals($value, get_class($value)::fromJson($jsonWithExtra));
 	}
+
+	public function testAllObjectPropertiesMustImplementSerializableValueToSerialize() {
+		$this->expectException(CodePathNotSupported::class);
+
+		(new SerializedWithNonSerializedValueTest(new NonSerializableValueTest(['one', 'two'])))->serializeValue();
+	}
+
+	public function testAllObjectPropertiesMustImplementSerializableValueToDeserialize() {
+		$this->expectException(CodePathNotSupported::class);
+
+		SerializedWithNonSerializedValueTest::deserializeValue(['contents' => ['contents' => ['one', 'two']]]);
+	}
+
+	/*
+	Test this fails I guess
+
+			'a non-SerializableValue property' => [
+				'object' => new SerializedWithNonSerializedValueTest(
+					new NonSerializableValueTest([
+						new SimpleValueTest('one'),
+						new SimpleValueTest('two'),
+						new SimpleValueTest('three'),
+					])
+				),
+				'array' => ['contents' => ['contents' => [['value' => 'one'], ['value' => 'two'], ['value' => 'three']]]],
+				'json' => '{"contents":{"contents":[{"value":"one"},{"value":"two"},{"value":"three"}]}}',
+				'info' => ['contents' => NonSerializableValueTest::class],
+			]
+			*/
 }

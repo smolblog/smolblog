@@ -16,7 +16,7 @@ interface SerializableValue extends JsonSerializable {
 	 *
 	 * @return mixed
 	 */
-	public function toArray(): mixed;
+	public function serializeValue(): mixed;
 
 	/**
 	 * Create an object from an array.
@@ -27,7 +27,7 @@ interface SerializableValue extends JsonSerializable {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static;
+	public static function deserializeValue(array $data): static;
 
 	/**
 	 * Serialize the object to an array that can be converted to JSON.

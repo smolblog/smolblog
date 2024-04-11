@@ -43,9 +43,9 @@ final readonly class UnknownDomainEvent extends DomainEvent {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		if (isset($data['props'])) {
-			return parent::fromArray($data);
+			return self::baseDeserialize($data);
 		}
 
 		$modified = [
@@ -58,7 +58,7 @@ final readonly class UnknownDomainEvent extends DomainEvent {
 		$modified['props'] = array_diff_key($data, $modified);
 
 		try {
-			return parent::fromArray($modified);
+			return self::baseDeserialize($modified);
 		} catch (Throwable $e) {
 			throw new InvalidValueProperties(
 				message: 'Could not deserialize to a DomainEvent',

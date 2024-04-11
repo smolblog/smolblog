@@ -26,7 +26,7 @@ final class MessageTest extends TestCase {
 		$message->setMetaValue('one', 'two');
 		$message->setMetaValue('three', 'four');
 
-		$this->assertEquals(['message' => 'hello'], $message->toArray());
+		$this->assertEquals(['message' => 'hello'], $message->serializeValue());
 	}
 
 	public function testItWillStopPropagation() {

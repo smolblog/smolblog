@@ -37,7 +37,7 @@ trait FieldKit {
 	 *
 	 * @return string
 	 */
-	public function toArray(): string {
+	public function serializeValue(): string {
 		return $this->toString();
 	}
 
@@ -47,7 +47,7 @@ trait FieldKit {
 	 * @param mixed $string String to deserialize.
 	 * @return static
 	 */
-	public static function fromArray(mixed $string): static {
+	public static function deserializeValue(mixed $string): static {
 		return static::fromString(strval($string));
 	}
 }

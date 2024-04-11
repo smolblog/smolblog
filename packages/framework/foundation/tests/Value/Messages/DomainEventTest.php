@@ -54,8 +54,8 @@ final class DomainEventTest extends TestCase {
 			'content' => 'hello'
 		];
 
-		$this->assertEquals($object, ExampleDomainEvent::fromArray($array));
-		$this->assertEquals($array, $object->toArray());
+		$this->assertEquals($object, ExampleDomainEvent::deserializeValue($array));
+		$this->assertEquals($array, $object->serializeValue());
 	}
 
 	public static function knownEvents(): array {
@@ -101,10 +101,10 @@ final class DomainEventTest extends TestCase {
 	#[DataProvider('knownEvents')]
 	#[TestDox('It will deserialize $_dataName to its original class.')]
 	public function testKnownEvents(DomainEvent $object) {
-		$deserialized = DomainEvent::deserializeWithType($object->toArray());
+		$deserialized = DomainEvent::deserializeValue($object->serializeValue());
 
 		$this->assertInstanceOf(get_class($object), $deserialized);
-		$this->assertEquals($object->toArray(), $deserialized->toArray());
+		$this->assertEquals($object->serializeValue(), $deserialized->serializeValue());
 	}
 
 	public static function unknownEvents(): array {
@@ -146,7 +146,7 @@ final class DomainEventTest extends TestCase {
 			],
 			'a non-DomainEvent subclass' => [
 				'serialized' => [
-					...$anon->toArray(),
+					...$anon->serializeValue(),
 					'type' => get_class($anon),
 				],
 				'expected' => new UnknownDomainEvent(
@@ -176,7 +176,7 @@ final class DomainEventTest extends TestCase {
 	#[DataProvider('unknownEvents')]
 	#[TestDox('It will deserialize $_dataName to an UnknownDomainEvent.')]
 	public function testUnknownEvents(array $serialized, UnknownDomainEvent $expected) {
-		$deserialized = DomainEvent::deserializeWithType($serialized);
+		$deserialized = DomainEvent::deserializeValue($serialized);
 
 		$this->assertInstanceOf(UnknownDomainEvent::class, $deserialized);
 		$this->assertEquals($expected, $deserialized);

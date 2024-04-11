@@ -6,8 +6,14 @@ use LogicException;
 use Throwable;
 
 /**
- * Exception for when a code path is not supported. This could be a method that is not implemented or a property that
- * is not supported.
+ * Exception for when a code path is not supported. This indicates an issue in code that should be fixed. It does not
+ * indicate bad input.
+ *
+ * For example, if a class using SerializableValueKit has a property with a union type or a type that does not
+ * implement SerializableValue, the code in SerializableValueKit will not work. The class should either override the
+ * necessary methods or use its own implmentation of SerializableValue.
+ *
+ * This should be a HTTP 500 error if it is caught by an API layer.
  */
 class CodePathNotSupported extends LogicException {
 	/**

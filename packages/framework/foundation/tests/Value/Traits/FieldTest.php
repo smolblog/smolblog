@@ -25,8 +25,8 @@ final class FieldTest extends TestCase {
 		$object = new ExampleField(one: 'abc', two: 'xyz');
 		$string = 'abc|xyz';
 
-		$this->assertEquals($string, $object->toArray());
-		$this->assertEquals($object, ExampleField::fromArray($string));
+		$this->assertEquals($string, $object->serializeValue());
+		$this->assertEquals($object, ExampleField::deserializeValue($string));
 	}
 
 	public function testItUsesTheStringRepresentationAsTheStringableValue() {

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Messages;
 
+use PHPUnit\Framework\TestSize\Unknown;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -10,19 +11,25 @@ use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageKit;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * A domain event represents a change in state in the system.
  */
 readonly class DomainEvent extends Value implements Entity, Message, SerializableValue {
-	use SerializableValueKit {
-		toArray as protected parentToArray;
-		fromArray as protected parentFromArray;
-	}
+	use SerializableSupertypeKit;
 	use MessageKit;
 	use EntityKit;
+
+	/**
+	 * Deserialize unknown event types to UnknownDomainEvent.
+	 *
+	 * @return string
+	 */
+	public static function getFallbackClass(): string {
+		return UnknownDomainEvent::class;
+	}
 
 	/**
 	 * Construct the event
@@ -42,48 +49,5 @@ readonly class DomainEvent extends Value implements Entity, Message, Serializabl
 	) {
 		$this->meta = new MessageMetadata();
 		$this->id = $id;
-	}
-
-	/**
-	 * Serialize the object.
-	 *
-	 * Adds the `type` property to the serialized object.
-	 *
-	 * @return array
-	 */
-	public function toArray(): array {
-		$base = $this->parentToArray();
-		$base['type'] = get_class($this);
-		return $base;
-	}
-
-	/**
-	 * Deserialize the object.
-	 *
-	 * Removes the `type` property from the serialized object.
-	 *
-	 * @param array $data Serialized object.
-	 * @return static
-	 */
-	public static function fromArray(array $data): static {
-		unset($data['type']);
-		return static::parentFromArray($data);
-	}
-
-	/**
-	 * Deserialize the object using the type property.
-	 *
-	 * @param array $data Serialized object.
-	 * @return static
-	 */
-	public static function deserializeWithType(array $data): static {
-		$type = $data['type'] ?? null;
-
-		if (isset($type) && class_exists($type) && is_subclass_of($type, self::class)) {
-			unset($data['type']);
-			return $type::fromArray($data);
-		}
-
-		return UnknownDomainEvent::fromArray($data);
 	}
 }

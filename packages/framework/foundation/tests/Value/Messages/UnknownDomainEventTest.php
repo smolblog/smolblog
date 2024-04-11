@@ -22,7 +22,7 @@ final class UnknownDomainEventTest extends TestCase {
 			entityId: Identifier::fromString('676941e7-09bb-4aa9-bf05-ff20f03f9fe4'),
 			props: ['one' => 'two', 'three' => 'four'],
 		);
-		$actual = UnknownDomainEvent::fromArray([
+		$actual = UnknownDomainEvent::deserializeValue([
 			'id' => 'fb0914b3-0224-4150-bd4b-2934aaddf9be',
 			'timestamp' => '2022-02-22T22:22:22.000+00:00',
 			'userId' => '659b4726-6d67-4e7d-b5ac-09df89c6ed25',
@@ -53,7 +53,7 @@ final class UnknownDomainEventTest extends TestCase {
 				'canIHave' => 'aLittleMore'
 			],
 		);
-		$actual = UnknownDomainEvent::fromArray([
+		$actual = UnknownDomainEvent::deserializeValue([
 			'id' => 'fb0914b3-0224-4150-bd4b-2934aaddf9be',
 			'timestamp' => '2022-02-22T22:22:22.000+00:00',
 			'userId' => '659b4726-6d67-4e7d-b5ac-09df89c6ed25',
@@ -93,6 +93,6 @@ final class UnknownDomainEventTest extends TestCase {
 	public function testExceptions(array $array) {
 		$this->expectException(InvalidValueProperties::class);
 
-		UnknownDomainEvent::fromArray($array);
+		UnknownDomainEvent::deserializeValue($array);
 	}
 }
