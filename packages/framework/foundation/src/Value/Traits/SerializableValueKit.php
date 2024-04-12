@@ -17,6 +17,8 @@ trait SerializableValueKit {
 	 *
 	 * Return type is `mixed` to allow for scalar values in subclasses.
 	 *
+	 * @throws CodePathNotSupported If a property is not a SerializableValue.
+	 *
 	 * @return mixed
 	 */
 	public function serializeValue(): mixed {
@@ -33,13 +35,12 @@ trait SerializableValueKit {
 			}
 
 			if (is_array($this->$name)) {
-				$data[$name] = isset($type) ? array_map(fn($item) => $item->serializeValue(), $this->$name) : $this->$name;
+				$data[$name] = array_map(fn($item) => $item->serializeValue(), $this->$name);
 				continue;
 			}
 
 			if (is_object($this->$name)) {
 				if (!is_a($this->$name, SerializableValue::class)) {
-
 					throw new CodePathNotSupported(
 						message: get_class($this->$name) . ' is not a SerializableValue. ' .
 							'Change the type or override serializeValue()',
@@ -49,7 +50,7 @@ trait SerializableValueKit {
 				$data[$name] = $this->$name->serializeValue();
 				continue;
 			}
-		}
+		}//end foreach
 		return $data;
 	}
 
@@ -74,7 +75,10 @@ trait SerializableValueKit {
 			}
 
 			if (is_a($type, ArrayType::class)) {
-				$parsedData[$name] = array_map(fn($item) => self::deserializeDataToType($item, $type->type), $data[$name]);
+				$parsedData[$name] = array_map(
+					fn($item) => self::deserializeDataToType($item, $type->type),
+					$data[$name]
+				);
 				continue;
 			}
 
@@ -166,7 +170,7 @@ trait SerializableValueKit {
 	 *
 	 * @throws CodePathNotSupported If $type is unknown or not deserializable.
 	 *
-	 * @param array $data Data to deserialize.
+	 * @param mixed  $data Data to deserialize.
 	 * @param string $type Type to deserialize to.
 	 * @return mixed Deserialized object of type $type or unmodified $data.
 	 */

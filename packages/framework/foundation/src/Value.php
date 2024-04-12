@@ -26,7 +26,7 @@ abstract readonly class Value {
 	 */
 	public function with(mixed ...$props): static {
 		// Calling get_object_vars from outside context so that we only get public properties.
-		// see https://stackoverflow.com/questions/13124072/
+		// see https://stackoverflow.com/questions/13124072/ for source.
 		$base = get_object_vars(...)->__invoke($this);
 
 		try {

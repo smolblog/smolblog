@@ -3,8 +3,8 @@
 namespace Smolblog\Core\Content;
 
 use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\SerializableSupertype;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
 
 /**
  * A piece of data attached to every piece of content.
@@ -14,6 +14,6 @@ use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
  *
  * See: WordPress Post Meta
  */
-abstract readonly class ContentExtension extends Value implements SerializableSupertype {
+abstract readonly class ContentExtension extends Value implements SerializableValue {
 	use SerializableSupertypeKit;
 }

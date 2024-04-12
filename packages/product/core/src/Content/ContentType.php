@@ -3,15 +3,15 @@
 namespace Smolblog\Core\Content;
 
 use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\SerializableSupertype;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
 
 /**
  * Define what a Content Type needs to have, namely a title and a type.
  *
  * Even if the title isn't shown on the web or in feeds, it's still needed for administration views and such.
  */
-abstract readonly class ContentType extends Value implements SerializableSupertype {
+abstract readonly class ContentType extends Value implements SerializableValue {
 	use SerializableSupertypeKit;
 
 	/**

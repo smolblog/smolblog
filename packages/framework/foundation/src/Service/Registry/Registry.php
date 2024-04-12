@@ -1,6 +1,7 @@
 <?php
 
-namespace Smolblog\Foundation\Service;
+namespace Smolblog\Foundation\Service\Registry;
+
 use Smolblog\Foundation\Service;
 
 /**

@@ -1,6 +1,7 @@
 <?php
 
 namespace Smolblog\Foundation\Value\Traits;
+
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Throwable;
 
@@ -35,6 +36,8 @@ trait SerializableSupertypeKit {
 
 	/**
 	 * Deserialize the object using the type property.
+	 *
+	 * @throws InvalidValueProperties When the class cannot be deserialized.
 	 *
 	 * @param array $data Serialized object.
 	 * @return static
