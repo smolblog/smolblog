@@ -1,7 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\Content\Extension;
 
+use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Service\Registry\Registry;
 use Smolblog\Foundation\Service\Registry\RegistryKit;
 
@@ -23,26 +24,12 @@ class ContentExtensionRegistry implements Registry {
 	}
 
 	/**
-	 * Store the different content extension configurations.
-	 *
-	 * @var ContentExtensionConfiguration[]
-	 */
-	private array $configs = [];
-
-	private function getKeyForClass(string $class): string {
-
-	}
-
-	/**
 	 * Construct the registry.
 	 *
 	 * @param array $configuration List of ContentExtensionService classes.
 	 */
-	public function __construct(array $configuration) {
-		foreach ($configuration as $serviceClass) {
-			$config = $serviceClass::getConfiguration();
-			$this->library[$config->handle] = $config;
-		}
+	public function __construct(ContainerInterface $container) {
+		$this->container = $container;
 	}
 
 	/**
@@ -51,7 +38,7 @@ class ContentExtensionRegistry implements Registry {
 	 * @return string[]
 	 */
 	public function availableContentExtensions(): array {
-		return array_map(fn($ct) => $ct->displayName, $this->library);
+		return array_map(fn($ct) => $ct->displayName, $this->configs);
 	}
 
 	/**
@@ -61,6 +48,6 @@ class ContentExtensionRegistry implements Registry {
 	 * @return string
 	 */
 	public function extensionClassFor(string $extension): string {
-		return $this->library[$extension]->extensionClass;
+		return $this->configs[$extension]->extensionClass;
 	}
 }

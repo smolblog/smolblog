@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\Content\Type;
 
-use Smolblog\Core\Content;
+use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
 
 /**
  * Denotes a service for a particular content type.
@@ -20,26 +20,26 @@ interface ContentTypeService {
 	/**
 	 * Create the given content as a new piece of content.
 	 *
-	 * @param Content $content Content being created.
+	 * @param CreateContent $command Content being created.
 	 * @return void
 	 */
-	public function create(Content $content): void;
+	public function create(CreateContent $command): void;
 
 	/**
 	 * Update the given content to match this version.
 	 *
-	 * @param Content $content
+	 * @param UpdateContent $command Content being updated.
 	 * @return void
 	 */
-	public function update(Content $content): void;
+	public function update(UpdateContent $command): void;
 
 	/**
 	 * Delete the given content.
 	 *
 	 * The full Content object is given here in case it is needed downstream.
 	 *
-	 * @param Content $content
+	 * @param DeleteContent $command Content being deleted.
 	 * @return void
 	 */
-	public function delete(Content $content): void;
+	public function delete(DeleteContent $command): void;
 }

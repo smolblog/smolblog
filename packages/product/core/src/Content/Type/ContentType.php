@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\Content\Type;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
