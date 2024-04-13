@@ -24,13 +24,13 @@ class HttpRequest implements RequestInterface {
 	 * Create the Request.
 	 *
 	 * @param HttpVerb                           $verb    HTTP method to use.
-	 * @param string                             $url     URL of the request.
+	 * @param string|UriInterface                $url     URL of the request.
 	 * @param array                              $headers Headers of the request.
 	 * @param string|array|JsonSerializable|null $body    Request body in string or object format.
 	 */
 	public function __construct(
 		HttpVerb $verb,
-		string $url,
+		string|UriInterface $url,
 		array $headers = [],
 		string|array|JsonSerializable|null $body = null,
 	) {

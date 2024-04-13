@@ -20,7 +20,7 @@ class ContentService implements Listener {
 	/**
 	 * Construct the service
 	 *
-	 * @param ContentTypeRegistry $types Registry of content types.
+	 * @param ContentTypeRegistry      $types      Registry of content types.
 	 * @param ContentExtensionRegistry $extensions Registry of content extensions.
 	 */
 	public function __construct(
@@ -32,7 +32,7 @@ class ContentService implements Listener {
 	#[ExecutionListener(later: 5)]
 	public function createContent(CreateContent $command): void {
 		$this->getTypeServiceForContent($command->content)->create($command);
-		foreach($this->getExtensionServicesForContent($command->content) as $extServ) {
+		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
 			$extServ->create($command);
 		}
 	}
@@ -40,7 +40,7 @@ class ContentService implements Listener {
 	#[ExecutionListener(later: 5)]
 	public function updateContent(UpdateContent $command): void {
 		$this->getTypeServiceForContent($command->content)->update($command);
-		foreach($this->getExtensionServicesForContent($command->content) as $extServ) {
+		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
 			$extServ->update($command);
 		}
 	}
@@ -48,7 +48,7 @@ class ContentService implements Listener {
 	#[ExecutionListener(later: 5)]
 	public function deleteContent(DeleteContent $command): void {
 		$this->getTypeServiceForContent($command->content)->delete($command);
-		foreach($this->getExtensionServicesForContent($command->content) as $extServ) {
+		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
 			$extServ->delete($command);
 		}
 	}
@@ -60,7 +60,7 @@ class ContentService implements Listener {
 	 * @return ContentTypeService
 	 */
 	private function getTypeServiceForContent(Content $content): ContentTypeService {
-		return $this->types->get($content->type());
+		return $this->types->get(get_class($content)::KEY);
 	}
 
 	/**

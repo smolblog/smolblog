@@ -14,6 +14,8 @@ use Smolblog\Foundation\Value\Traits\SerializableValue;
 abstract readonly class ContentType extends Value implements SerializableValue {
 	use SerializableSupertypeKit;
 
+	public const KEY = '';
+
 	/**
 	 * Get the title of the content.
 	 *
@@ -22,11 +24,4 @@ abstract readonly class ContentType extends Value implements SerializableValue {
 	 * @return string
 	 */
 	abstract public function getTitle(): string;
-
-	/**
-	 * Get the key for this type.
-	 *
-	 * @return string
-	 */
-	abstract public function getTypeKey(): string;
 }

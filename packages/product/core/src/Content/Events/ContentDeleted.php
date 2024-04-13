@@ -26,7 +26,7 @@ readonly class ContentDeleted extends DomainEvent {
 
 	// run a test; we may not need this?
 	// protected static function baseDeserialize(array $data): static {
-	// 	unset($data['aggregateId'], $data['entityId']);
-	// 	return parent::baseDeserialize($data);
+	// unset($data['aggregateId'], $data['entityId']);
+	// return parent::baseDeserialize($data);
 	// }
 }

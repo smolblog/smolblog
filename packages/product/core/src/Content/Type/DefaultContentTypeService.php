@@ -22,7 +22,6 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 */
 	public function create(CreateContent $command): void {
 		// maybe check for existing ID?
-
 		$this->bus->dispatch(new (static::CREATE_EVENT)(userId: $command->userId, content: $command->content));
 	}
 
@@ -34,7 +33,6 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 */
 	public function update(UpdateContent $command): void {
 		// TODO: check for existing ID!
-
 		$this->bus->dispatch(new (static::UPDATE_EVENT)(userId: $command->userId, content: $command->content));
 	}
 
@@ -48,7 +46,6 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 */
 	public function delete(DeleteContent $command): void {
 		// TODO: check for existing ID!
-
 		$this->bus->dispatch(new (static::UPDATE_EVENT)(userId: $command->userId, content: $command->content));
 	}
 }

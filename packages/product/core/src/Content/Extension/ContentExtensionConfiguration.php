@@ -15,7 +15,7 @@ readonly class ContentExtensionConfiguration extends Value implements ServiceCon
 	/**
 	 * Construct the configuration.
 	 *
-	 * @param string $key         Unique URL-friendly name for the content extension.
+	 * @param string $key            Unique URL-friendly name for the content extension.
 	 * @param string $displayName    Human-readable name for the content extension.
 	 * @param string $extensionClass Fully-qualified class name of the content extension.
 	 */

@@ -12,9 +12,11 @@ readonly class CreateContent extends Command implements AuthorizableMessage {
 	public function __construct(
 		public Identifier $userId,
 		public Content $content,
-	) {}
+	) {
+	}
 
 	public function getAuthorizationQuery(): Query {
-		return new class() extends Query {};
+		return new class () extends Query {
+		};
 	}
 }
