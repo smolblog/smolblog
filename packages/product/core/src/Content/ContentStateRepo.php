@@ -1,11 +1,15 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Data;
+namespace Smolblog\Core\Content;
 
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Core\ContentV1\Content;
-use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Core\Content;
+use Smolblog\Core\Content\Events\ContentCreated;
+use Smolblog\Core\Content\Events\ContentUpdated;
+use Smolblog\Core\Content\Events\ContentDeleted;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
+use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Store content objects in a simple key-value store.
@@ -27,6 +31,10 @@ class ContentStateRepo implements Projection {
 	) {
 	}
 
+	public function contentExists(Identifier $id): bool {
+		return $this->db->table(self::TABLE)->where('content_uuid', $id->toString())->exists();
+	}
+
 	/**
 	 * Get a single content object.
 	 *
@@ -36,7 +44,7 @@ class ContentStateRepo implements Projection {
 	public function getSingleContent(Identifier $id): Content {
 		$row = $this->db->table(self::TABLE)->where('content_uuid', $id->toString())->value('content');
 
-		return Content::jsonDeserialize($row);
+		return Content::fromJson($row);
 	}
 
 	/**
@@ -50,7 +58,22 @@ class ContentStateRepo implements Projection {
 			whereIn('content_uuid', array_map(fn($id) => $id->toString(), $ids))->
 			get();
 
-		return array_map(fn($row) => Content::jsonDeserialize($row->content), $rows->all());
+		return array_map(fn($row) => Content::fromJson($row->content), $rows->all());
+	}
+
+	#[ExecutionListener]
+	public function onContentCreated(ContentCreated $event): void {
+		$this->setContent([$event->content]);
+	}
+
+	#[ExecutionListener]
+	public function onContentUpdated(ContentUpdated $event): void {
+		$this->setContent([$event->content]);
+	}
+
+	#[ExecutionListener]
+	public function onContentDeleted(ContentDeleted $event): void {
+		$this->db->table(self::TABLE)->where('content_uuid', $event->entityId->toString())->delete();
 	}
 
 	/**
@@ -59,10 +82,15 @@ class ContentStateRepo implements Projection {
 	 * @param Content[] $content Array of content objects to save.
 	 * @return void
 	 */
-	public function setContent(array $content): void {
+	private function setContent(array $content): void {
 		$this->db->table(self::TABLE)->upsert(
 			array_map(
-				fn($c) => ['content_uuid' => $c->id->toString(), 'content' => json_encode($c)],
+				fn($c) => [
+					'content_uuid' => $c->id->toString(),
+					'site_uuid' => $c->siteId->toString(),
+					'author_uuid' => $c->authorId->toString(),
+					'content' => json_encode($c)
+				],
 				$content,
 			),
 			'content_uuid',

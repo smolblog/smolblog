@@ -29,7 +29,7 @@ class ContentService implements Listener {
 	) {
 	}
 
-	#[ExecutionListener(later: 5)]
+	#[ExecutionListener]
 	public function createContent(CreateContent $command): void {
 		$this->getTypeServiceForContent($command->content)->create($command);
 		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
@@ -37,7 +37,7 @@ class ContentService implements Listener {
 		}
 	}
 
-	#[ExecutionListener(later: 5)]
+	#[ExecutionListener]
 	public function updateContent(UpdateContent $command): void {
 		$this->getTypeServiceForContent($command->content)->update($command);
 		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
@@ -45,7 +45,7 @@ class ContentService implements Listener {
 		}
 	}
 
-	#[ExecutionListener(later: 5)]
+	#[ExecutionListener]
 	public function deleteContent(DeleteContent $command): void {
 		$this->getTypeServiceForContent($command->content)->delete($command);
 		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
