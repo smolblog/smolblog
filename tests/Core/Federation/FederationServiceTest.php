@@ -3,10 +3,11 @@
 namespace Smolblog\Core\Federation;
 
 use DateTimeImmutable;
-use Smolblog\Core\ContentV1\Content;
-use Smolblog\Core\ContentV1\ContentType;
+use Smolblog\Core\Content;
+use Smolblog\Core\Content\Type\ContentType;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Events\PublicContentAdded;
+use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
@@ -29,12 +30,10 @@ final class FederationServiceTest extends TestCase {
 
 	public function testItDispatchesAnAsyncCommandForEachFollowerProviderWhenContentIsPublished() {
 		$content = new Content(
-			type: $this->createStub(ContentType::class),
+			body: new GenericContent(title: 'bob', body: 'larry'),
 			siteId: $this->randomId(true),
 			authorId: $this->randomId(),
-			permalink: '//smol.blog/543',
-			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
+			published: true,
 		);
 
 		$abcFollowers = [
@@ -46,7 +45,7 @@ final class FederationServiceTest extends TestCase {
 			new Follower(siteId: $content->siteId, provider: 'xyz', providerKey: '678', displayName: '678', details: []),
 		];
 
-		$event = $this->createStub(PublicContentAdded::class);
+		$event = $this->mockValue(PublicContentAdded::class);
 		$event->method('getContent')->willReturn($content);
 		$this->mockBus->method('fetch')->willReturn(['abc' => $abcFollowers, 'xyz' => $xyzFollowers]);
 
@@ -69,12 +68,10 @@ final class FederationServiceTest extends TestCase {
 
 	public function testItDelegatesFollowersToTheirProvider() {
 		$content = new Content(
-			type: $this->createStub(ContentType::class),
+			body: new GenericContent(title: 'bob', body: 'larry'),
 			siteId: $this->randomId(true),
 			authorId: $this->randomId(),
-			permalink: '//smol.blog/543',
-			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
+			published: true,
 		);
 		$abcFollowers = [
 			new Follower(siteId: $content->siteId, provider: 'abc', providerKey: '123', displayName: '123', details: []),

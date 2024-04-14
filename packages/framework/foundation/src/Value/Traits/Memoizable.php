@@ -18,4 +18,18 @@ interface Memoizable {
 	 * @return string
 	 */
 	public function getMemoKey(): string;
+
+	public function setResults(mixed $results): void;
+
+	public function results(): mixed;
+
+	/**
+	 * Tell the message to stop executing.
+	 *
+	 * Called if the query already has a value. Upon calling, the message object should set
+	 * whatever internal property needed to correctly return `false` for isPropagationStopped().
+	 *
+	 * @return void
+	 */
+	public function stopMessage(): void;
 }

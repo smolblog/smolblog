@@ -4,15 +4,16 @@ namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Entity;
-use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Represents a link between a Connection and a Site.
  */
-readonly class ChannelSiteLink extends Value implements Entity {
-	use EntityKit;
+readonly class ChannelSiteLink extends Value implements Entity, SerializableValue {
+	use SerializableValueKit;
 	public const NAMESPACE = 'ac8c2a55-53c9-4144-bc08-3c8e2b2f2064';
 
 	/**
@@ -72,7 +73,10 @@ readonly class ChannelSiteLink extends Value implements Entity {
 		$this->siteId = $siteId;
 		$this->canPush = $canPush;
 		$this->canPull = $canPull;
+	}
 
-		parent::__construct(self::buildId(channelId: $channelId, siteId: $siteId));
+	public function getId(): Identifier
+	{
+		return self::buildId(channelId: $this->channelId, siteId: $this->siteId);
 	}
 }

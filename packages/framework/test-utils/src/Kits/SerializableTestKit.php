@@ -10,6 +10,6 @@ trait SerializableTestKit {
 
 	public function testItWillSerializeToJsonAndDeserializeToItself() {
 		$class = get_class($this->subject);
-		$this->assertEquals($this->subject, $class::jsonDeserialize(json_encode($this->subject)));
+		$this->assertEquals($this->subject, $class::fromJson(json_encode($this->subject)));
 	}
 }

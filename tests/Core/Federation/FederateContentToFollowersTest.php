@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use DateTimeImmutable;
-use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\Content;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
@@ -20,12 +20,10 @@ final class FederateContentToFollowersTest extends TestCase {
 		$this->subject = new FederateContentToFollowers(
 			content: new Content(
 				id: $this->randomId(true),
-				type: new GenericContent('test', '<p>something</p>'),
+				body: new GenericContent('test', '<p>something</p>'),
 				siteId: $siteId,
 				authorId: $this->randomId(true),
-				permalink: '//smol.blog/23',
-				publishTimestamp: new DateTimeImmutable('2022-02-22 22:22:22'),
-				visibility: ContentVisibility::Published,
+				published: true,
 			),
 			followers: [
 				new Follower(

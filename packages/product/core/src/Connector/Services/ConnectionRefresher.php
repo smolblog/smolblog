@@ -56,7 +56,7 @@ class ConnectionRefresher implements Listener {
 		$refreshed = $connector->refreshConnection($connection);
 		$this->messageBus->dispatch(new ConnectionRefreshed(
 			details: $refreshed->details,
-			connectionId: $refreshed->id,
+			connectionId: $refreshed->getId(),
 			userId: $userId,
 		));
 		return $refreshed;

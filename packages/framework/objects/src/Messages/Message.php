@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Messages;
 
 use JsonSerializable;
 use Psr\EventDispatcher\StoppableEventInterface;
-use Smolblog\Framework\Objects\SerializeableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Framework\Objects\SerializableKit;
 
 /**
@@ -13,7 +13,7 @@ use Smolblog\Framework\Objects\SerializableKit;
  * Messages are essentially Value objects except for being mutable. Properties should be readonly whenever possible,
  * but messages themselves often have a need to be modified mid-flight, even if only to stop a message.
  */
-abstract class Message implements StoppableEventInterface, SerializeableValue, JsonSerializable {
+abstract class Message implements StoppableEventInterface, SerializableValue, JsonSerializable {
 	use SerializableKit;
 
 	/**

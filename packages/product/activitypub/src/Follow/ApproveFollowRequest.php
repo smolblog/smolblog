@@ -55,35 +55,4 @@ readonly class ApproveFollowRequest extends Command implements AuthorizableMessa
 			userId: $this->userId,
 		);
 	}
-
-	/**
-	 * Serialize the message.
-	 *
-	 * @return array
-	 */
-	public function serializeValue(): array {
-		return array_filter([
-			'userId' => $this->userId->toString(),
-			'request' => $this->request->serializeValue(),
-			'siteId' => $this->siteId?->toString(),
-			'site' => $this->site?->serializeValue(),
-			'actor' => $this->actor->serializeValue(),
-		], fn($i) => isset($i));
-	}
-
-	/**
-	 * Deserialize the message.
-	 *
-	 * @param array $data Seriliazed message.
-	 * @return static
-	 */
-	public static function deserializeValue(array $data): static {
-		return new self(
-			userId: Identifier::fromString($data['userId']),
-			request: Follow::deserializeValue($data['request']),
-			actor: Actor::deserializeValue($data['actor']),
-			siteId: isset($data['siteId']) ? Identifier::fromString($data['siteId']) : null,
-			site: isset($data['site']) ? Site::deserializeValue($data['site']) : null,
-		);
-	}
 }

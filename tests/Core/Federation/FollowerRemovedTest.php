@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use DateTimeImmutable;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Test\Kits\SiteEventTestKit;
 use Smolblog\Test\TestCase;
 
@@ -11,12 +12,12 @@ final class FollowerRemovedTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->subject = new FollowerRemoved(
-			siteId: $this->randomId(true),
+			aggregateId: $this->randomId(true),
 			userId: $this->randomId(true),
 			provider: 'mastofed',
 			providerKey: 'smolsnek',
 			id: $this->randomId(true),
-			timestamp: new DateTimeImmutable('2022-02-22 22:22:22.222'),
+			timestamp: new DateTimeField('2022-02-22 22:22:22.222'),
 		);
 	}
 }

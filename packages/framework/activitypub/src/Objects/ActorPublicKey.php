@@ -3,12 +3,12 @@
 namespace Smolblog\Framework\ActivityPub\Objects;
 
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
-use Smolblog\Framework\Objects\SerializeableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
 
 /**
  * A public encryption key attached to an actor.
  */
-readonly class ActorPublicKey implements SerializeableValue {
+readonly class ActorPublicKey implements SerializableValue {
 	use SerializableValueKit;
 
 	/**

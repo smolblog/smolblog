@@ -7,6 +7,8 @@ use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * An external entity that should be notified of new content.
@@ -15,8 +17,8 @@ use Smolblog\Foundation\Value\Fields\NamedIdentifier;
  * there may be other protocols like Nostr that have similar needs. This could also represent a hub server that
  * aggregates and updates feeds.
  */
-readonly class Follower extends Value implements Entity {
-	use EntityKit;
+readonly class Follower extends Value implements Entity, SerializableValue {
+	use SerializableValueKit;
 	public const NAMESPACE = 'e8b82f68-39f8-4ace-9104-abf4fdc3187e';
 
 	/**
@@ -47,29 +49,10 @@ readonly class Follower extends Value implements Entity {
 		public readonly string $displayName,
 		public readonly array $details,
 	) {
-		parent::__construct(id: self::buildId(siteId: $siteId, provider: $provider, providerKey: $providerKey));
 	}
 
-	/**
-	 * Serialize the object.
-	 *
-	 * @return array
-	 */
-	public function serializeValue(): array {
-		$base = parent::serializeValue();
-		$base['siteId'] = $this->siteId->toString();
-		return $base;
-	}
-
-	/**
-	 * Deserialize the object.
-	 *
-	 * @param array $data Serialized object.
-	 * @return static
-	 */
-	public static function deserializeValue(array $data): static {
-		unset($data['id']);
-		$data['siteId'] = Identifier::fromString($data['siteId']);
-		return new Follower(...$data);
+	public function getId(): Identifier
+	{
+		return self::buildId(siteId: $this->siteId, provider: $this->provider, providerKey: $this->providerKey);
 	}
 }

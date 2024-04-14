@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use Illuminate\Database\Schema\Blueprint;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 
@@ -33,14 +34,18 @@ final class FollowerProjectionTest extends TestCase {
 			details: ['one' => 'two'],
 		);
 
-		$event = $this->createStub(FollowerAdded::class);
-		$event->method('getFollower')->willReturn($follower);
+		$event = new readonly class($follower) extends FollowerAdded {
+			public function __construct(public Follower $follower) {
+				parent::__construct(userId: Identifier::fromString('000fefad-a061-43e6-a577-6dfa665cee99'));
+			}
+			public function getFollower(): Follower { return $this->follower; }
+		};
 
 		$this->projection->onFollowerAdded($event);
 
 		$this->assertOnlyTableEntryEquals(
 			table: $this->db->table('followers'),
-			follower_uuid: $follower->id->toString(),
+			follower_uuid: $follower->getId()->toString(),
 			site_uuid: $follower->siteId->toString(),
 			provider: 'mastoweb',
 			provider_key: 'acct:123345',
@@ -74,7 +79,7 @@ final class FollowerProjectionTest extends TestCase {
 		]);
 
 		$this->projection->onFollowerRemoved(new FollowerRemoved(
-			siteId: $siteId,
+			aggregateId: $siteId,
 			userId: $this->randomId(),
 			provider: 'abc',
 			providerKey: '123',
@@ -102,7 +107,7 @@ final class FollowerProjectionTest extends TestCase {
 		$other = new Follower(siteId: $this->randomId(), provider: 'xyz', providerKey: '5', displayName: 'C', details: []);
 
 		$this->db->table('followers')->insert(array_map(fn($f) => [
-			'follower_uuid' => $f->id->toString(),
+			'follower_uuid' => $f->getId()->toString(),
 			'site_uuid' => $f->siteId->toString(),
 			'provider' => $f->provider,
 			'provider_key' => $f->providerKey,
@@ -128,7 +133,7 @@ final class FollowerProjectionTest extends TestCase {
 		$other = new Follower(siteId: $this->randomId(), provider: 'g', providerKey: '5', displayName: 'C', details: []);
 
 		$this->db->table('followers')->insert(array_map(fn($f) => [
-			'follower_uuid' => $f->id->toString(),
+			'follower_uuid' => $f->getId()->toString(),
 			'site_uuid' => $f->siteId->toString(),
 			'provider' => $f->provider,
 			'provider_key' => $f->providerKey,

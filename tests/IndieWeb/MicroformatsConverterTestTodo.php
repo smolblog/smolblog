@@ -3,21 +3,22 @@
 namespace Smolblog\IndieWeb;
 
 use DateTimeImmutable;
-use Smolblog\Core\ContentV1\Content;
-use Smolblog\Core\ContentV1\ContentVisibility;
+use Smolblog\Core\Content;
 use Smolblog\Core\ContentV1\GenericContent;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class MicroformatsConverterTest extends TestCase {
 	public function testBasicContentCanConvertToMicroformats() {
 		$content = new Content(
-			type: new GenericContent(title: 'Test', body: '<p>Hello world!</p>'),
+			body: new GenericContent(title: 'Test', body: '<p>Hello world!</p>'),
 			siteId: Identifier::fromString('3224ba48-9d3c-4ad4-9bb6-d0337c05a257'),
 			authorId: Identifier::fromString('627ac048-c307-4b8d-bb93-f32cee5f5cb2'),
-			permalink: '/thing/one',
-			publishTimestamp: new DateTimeImmutable('2022-02-02 22:22:22 +0:00'),
-			visibility: ContentVisibility::Published,
+			// permalink: '/thing/one',
+			publishTimestamp: new DateTimeField('2022-02-02 22:22:22 +0:00'),
+			// visibility: ContentVisibility::Published,
+			published: true,
 			id: Identifier::fromString('edef89d0-d0d6-46e9-9fb0-26cdf4ad956a'),
 		);
 

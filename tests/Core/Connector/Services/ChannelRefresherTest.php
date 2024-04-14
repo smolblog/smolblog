@@ -38,31 +38,31 @@ final class ChannelRefresherTest extends TestCase {
 			details: ['something'=>'else'],
 		);
 
-		$oldMain = new Channel(connectionId: $this->connection->id, channelKey: 'main.blog.co', displayName: 'Main Blog', details: []);
-		$newMain = new Channel(connectionId: $this->connection->id, channelKey: 'main.blog.co', displayName: 'The Blog', details: []);
-		$alt = new Channel(connectionId: $this->connection->id, channelKey: 'alt.blog.co', displayName: 'Alt Blog', details: []);
-		$fake = new Channel(connectionId: $this->connection->id, channelKey: 'fake.blog.co', displayName: 'Fake Blog', details: []);
+		$oldMain = new Channel(connectionId: $this->connection->getId(), channelKey: 'main.blog.co', displayName: 'Main Blog', details: []);
+		$newMain = new Channel(connectionId: $this->connection->getId(), channelKey: 'main.blog.co', displayName: 'The Blog', details: []);
+		$alt = new Channel(connectionId: $this->connection->getId(), channelKey: 'alt.blog.co', displayName: 'Alt Blog', details: []);
+		$fake = new Channel(connectionId: $this->connection->getId(), channelKey: 'fake.blog.co', displayName: 'Fake Blog', details: []);
 
 		$this->oldChannels = [$oldMain, $alt];
 		$this->newChannels = [$newMain, $fake];
 
 		$deleteEvent = new ChannelDeleted(
 			channelKey: $alt->channelKey,
-			connectionId: $this->connection->id,
+			connectionId: $this->connection->getId(),
 			userId: $this->connection->userId
 		);
 		$saveEventFirst = new ChannelSaved(
 			channelKey: $newMain->channelKey,
 			displayName: $newMain->displayName,
 			details: $newMain->details,
-			connectionId: $this->connection->id,
+			connectionId: $this->connection->getId(),
 			userId: $this->connection->userId
 		);
 		$saveEventSecond = new ChannelSaved(
 			channelKey: $fake->channelKey,
 			displayName: $fake->displayName,
 			details: $fake->details,
-			connectionId: $this->connection->id,
+			connectionId: $this->connection->getId(),
 			userId: $this->connection->userId
 		);
 
@@ -92,13 +92,13 @@ final class ChannelRefresherTest extends TestCase {
 		);
 
 		$this->service->onRefreshChannels(
-			new RefreshChannels(connectionId: $this->connection->id, userId: $this->connection->userId)
+			new RefreshChannels(connectionId: $this->connection->getId(), userId: $this->connection->userId)
 		);
 	}
 
 	public function testItHandlesTheConnectionEstablishedEvent(): void {
 		$this->messageBus->expects($this->once())->method('fetch')->with(
-			new ChannelsForConnection(connectionId: $this->connection->id)
+			new ChannelsForConnection(connectionId: $this->connection->getId())
 		)->willReturn($this->oldChannels);
 
 		$this->service->onConnectionEstablished(new ConnectionEstablished(
@@ -106,7 +106,7 @@ final class ChannelRefresherTest extends TestCase {
 			providerKey: $this->connection->providerKey,
 			displayName: $this->connection->displayName,
 			details: $this->connection->details,
-			connectionId: $this->connection->id,
+			connectionId: $this->connection->getId(),
 			userId: $this->connection->userId
 		));
 	}

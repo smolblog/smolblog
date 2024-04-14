@@ -33,7 +33,7 @@ class FollowerProjection implements Projection {
 
 		$this->db->table(self::TABLE)->upsert(
 			[
-				'follower_uuid' => $follower->id->toString(),
+				'follower_uuid' => $follower->getId()->toString(),
 				'site_uuid' => $follower->siteId->toString(),
 				'provider' => $follower->provider,
 				'provider_key' => $follower->providerKey,
@@ -53,7 +53,7 @@ class FollowerProjection implements Projection {
 	 */
 	public function onFollowerRemoved(FollowerRemoved $event) {
 		$followerId = Follower::buildId(
-			siteId: $event->siteId,
+			siteId: $event->aggregateId,
 			provider: $event->provider,
 			providerKey: $event->providerKey,
 		);

@@ -6,6 +6,7 @@ use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Service\Messaging\Attributes\CheckMemoLayerListener;
 use Smolblog\Foundation\Service\Messaging\Attributes\SaveMemoLayerListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Foundation\Value\Traits\Memoizable;
 
 /**
  * Simple class to memoize a query for the duration of a web request.
@@ -24,11 +25,11 @@ class QueryMemoizationService implements Listener {
 	/**
 	 * Check the incoming query for an existing memo and provide the results if so.
 	 *
-	 * @param MemoizableQuery $query Incoming query to check.
+	 * @param Memoizable $query Incoming query to check.
 	 * @return void
 	 */
 	#[CheckMemoLayerListener()]
-	public function checkMemo(MemoizableQuery $query): void {
+	public function checkMemo(Memoizable $query): void {
 		$key = $query->getMemoKey();
 		if (!array_key_exists($key, $this->memos)) {
 			return;
@@ -41,11 +42,11 @@ class QueryMemoizationService implements Listener {
 	/**
 	 * Save the results of the query to be used later.
 	 *
-	 * @param MemoizableQuery $query Outgoing query to save.
+	 * @param Memoizable $query Outgoing query to save.
 	 * @return void
 	 */
 	#[SaveMemoLayerListener()]
-	public function setMemo(MemoizableQuery $query): void {
+	public function setMemo(Memoizable $query): void {
 		$key = $query->getMemoKey();
 
 		$this->memos[$key] = $query->results();

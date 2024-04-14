@@ -10,7 +10,13 @@ final class MessageTest extends TestCase {
 		$query = new GetFollowersForSiteByProvider($this->randomId());
 		$this->assertInstanceOf(GetFollowersForSiteByProvider::class, $query);
 
-		$query->setResults(['abc' => [$this->createStub(Follower::class)]]);
+		$query->setResults(['abc' => [new Follower(
+			siteId: $this->randomId(),
+			provider: 'abc',
+			providerKey: 'xyz',
+			displayName: '123',
+			details: [],
+		)]]);
 		$this->assertIsArray($query->results());
 		$this->assertInstanceOf(Follower::class, $query->results()['abc'][0]);
 	}

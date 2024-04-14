@@ -4,8 +4,6 @@ namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Foundation\Service\Messaging\Event;
-use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Service\Messaging\Attributes\SecurityLayerListener;
 use Smolblog\Foundation\Service\Messaging\Attributes\CheckMemoLayerListener;
@@ -15,6 +13,9 @@ use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
 use Smolblog\Foundation\Service\Messaging\Attributes\SaveMemoLayerListener;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Traits\Memoizable;
 
 function listenerTestTrace($add = '', $reset = false) {
 	static $trace;
@@ -35,11 +36,11 @@ final class ListenerTestMainService {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[CheckMemoLayerListener]
-	public function checkMemo(MemoizableQuery $message) {
+	public function checkMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[EventStoreLayerListener]
-	public function eventStore(Event $event) {
+	public function eventStore(DomainEvent $event) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[ContentBuildLayerListener]
@@ -50,7 +51,7 @@ final class ListenerTestMainService {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[SaveMemoLayerListener]
-	public function saveMemo(MemoizableQuery $query) {
+	public function saveMemo(Memoizable $query) {
 		listenerTestTrace(add: __METHOD__);
 	}
 }
@@ -66,29 +67,29 @@ final class ListenerTestTimingService {
 	}
 
 	#[CheckMemoLayerListener(earlier: 1)]
-	public function beforeCheckMemo(MemoizableQuery $message) {
+	public function beforeCheckMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[CheckMemoLayerListener(later: 1)]
-	public function afterCheckMemo(MemoizableQuery $message) {
+	public function afterCheckMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
 	#[EventStoreLayerListener(earlier: 1)]
-	public function beforeEventStore(Event $message) {
+	public function beforeEventStore(DomainEvent $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[EventStoreLayerListener(later: 1)]
-	public function afterEventStore(Event $message) {
+	public function afterEventStore(DomainEvent $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
 	#[ContentBuildLayerListener(earlier: 1)]
-	public function beforeContentBuild(Event $message) {
+	public function beforeContentBuild(DomainEvent $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[ContentBuildLayerListener(later: 1)]
-	public function afterContentBuild(Event $message) {
+	public function afterContentBuild(DomainEvent $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
@@ -102,11 +103,11 @@ final class ListenerTestTimingService {
 	}
 
 	#[SaveMemoLayerListener(earlier: 1)]
-	public function beforeSaveMemo(MemoizableQuery $message) {
+	public function beforeSaveMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 	#[SaveMemoLayerListener(later: 1)]
-	public function afterSaveMemo(MemoizableQuery $message) {
+	public function afterSaveMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 }
@@ -129,9 +130,9 @@ final class ListenerRegistryTest extends TestCase {
 	}
 
 	public function testListenerCanBeACallable() {
-		$this->provider->registerCallable(fn(Event $event) => listenerTestTrace(add: 'Callable 1'));
+		$this->provider->registerCallable(fn(DomainEvent $event) => listenerTestTrace(add: 'Callable 1'));
 		$this->provider->registerCallable(fn(Query $event) => listenerTestTrace(add: 'Callable 2'));
-		$event = $this->createStub(Query::class);
+		$event = new readonly class() extends Query {};
 
 		foreach ($this->provider->getListenersForEvent($event) as $listener) { $listener($event); }
 
@@ -140,7 +141,7 @@ final class ListenerRegistryTest extends TestCase {
 
 	public function testListenerCanBeAService() {
 		$this->provider->registerService(ListenerTestMainService::class);
-		$event = $this->createStub(Command::class);
+		$event = new readonly class() extends Command {};
 
 		foreach ($this->provider->getListenersForEvent($event) as $listener) { $listener($event); }
 
@@ -151,9 +152,12 @@ final class ListenerRegistryTest extends TestCase {
 	}
 
 	public function testTimingLayerCanBeSetWithAttributes() {
-		$this->provider->registerCallable(fn(Event $event) => listenerTestTrace(add: 'Callable'));
+		$this->provider->registerCallable(fn(DomainEvent $event) => listenerTestTrace(add: 'Callable'));
 		$this->provider->registerService(ListenerTestMainService::class);
-		$event = new class() extends Event implements AuthorizableMessage {
+		$event = new readonly class() extends DomainEvent implements AuthorizableMessage {
+			public function __construct() {
+				parent::__construct(userId: Identifier::fromString('33a893ad-2bab-453c-8e48-106859435aad'));
+			}
 			public function getAuthorizationQuery(): Query { return new readonly class() extends Query {}; }
 		};
 
@@ -169,7 +173,7 @@ final class ListenerRegistryTest extends TestCase {
 	public function testTimingAttributesCanBeAdjusted() {
 		$this->provider->registerService(ListenerTestMainService::class);
 		$this->provider->registerService(ListenerTestTimingService::class);
-		$event = $this->createStub(MemoizableQuery::class);
+		$event = $this->createStub(Memoizable::class);
 
 		foreach ($this->provider->getListenersForEvent($event) as $listener) { $listener($event); }
 

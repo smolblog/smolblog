@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1;
 
-use Smolblog\Framework\Objects\SerializeableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
 
 /**
  * A piece of data attached to every piece of content.

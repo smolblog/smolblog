@@ -5,7 +5,7 @@ namespace Smolblog\Core\Syndication;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Queries\SiteHasPermissionForChannel;
-use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\Content;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
@@ -32,13 +32,13 @@ readonly class PushContentToChannel extends Command implements AuthorizableMessa
 		public readonly Channel $channel,
 		public readonly Connection $connection,
 	) {
-		if ($content->visibility !== ContentVisibility::Published) {
+		if (!$content->published) {
 			throw new InvalidCommandParametersException(
 				command: $this,
 				message: 'Only published content can be pushed to channels.'
 			);
 		}
-		if (strval($channel->connectionId) !== strval($connection->id)) {
+		if (strval($channel->connectionId) !== strval($connection->getId())) {
 			throw new InvalidCommandParametersException(
 				command: $this,
 				message: 'Channel and connection do not match.'

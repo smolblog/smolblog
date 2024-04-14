@@ -3,11 +3,12 @@
 namespace Smolblog\Core\Federation;
 
 use Smolblog\Core\Site\SiteEvent;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
  * The blog has a new follower! How this looks depends on the individual module.
  */
-abstract class FollowerAdded extends SiteEvent {
+abstract readonly class FollowerAdded extends DomainEvent {
 	/**
 	 * Get the follower created by this event.
 	 *

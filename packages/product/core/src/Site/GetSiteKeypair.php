@@ -7,11 +7,13 @@ use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Traits\Memoizable;
+use Smolblog\Foundation\Value\Traits\MemoizableKit;
 
 /**
  * Query to get the public and private keypair for a Site.
  */
-readonly class GetSiteKeypair extends Query implements Memoizable AuthorizableMessage {
+readonly class GetSiteKeypair extends Query implements Memoizable, AuthorizableMessage {
 	use MemoizableKit;
 	/**
 	 * Create the query
@@ -34,13 +36,14 @@ readonly class GetSiteKeypair extends Query implements Memoizable AuthorizableMe
 	 * @return Query
 	 */
 	public function getAuthorizationQuery(): Query {
-		return new class ($this->userId) extends MemoizableQuery {
+		return new readonly class ($this->userId) extends Query {
 			/**
 			 * Create the query.
 			 *
 			 * @param Identifier $userId ID of the user.
 			 */
 			public function __construct(public readonly Identifier $userId) {
+				parent::__construct();
 				$this->stopMessage();
 			}
 

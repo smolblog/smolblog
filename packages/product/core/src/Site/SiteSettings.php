@@ -24,6 +24,6 @@ readonly class SiteSettings extends Value implements Entity {
 		public readonly string $title,
 		public readonly string $tagline,
 	) {
-		parent::__construct(id: $siteId);
+		$this->id = $siteId;
 	}
 }

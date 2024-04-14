@@ -13,11 +13,11 @@ final class NoRefreshKitTest extends TestCase {
 	public function testItsConnectionsNeverNeedRefreshing() {
 		$connector = new TestUnrefreshableConnector();
 
-		$this->assertFalse($connector->connectionNeedsRefresh($this->createStub(Connection::class)));
+		$this->assertFalse($connector->connectionNeedsRefresh($this->mockValue(Connection::class)));
 	}
 
 	public function testItAlwaysReturnsTheSameConnectionWhenRefreshing() {
-		$connection = $this->createStub(Connection::class);
+		$connection = $this->mockValue(Connection::class);
 		$connector = new TestUnrefreshableConnector();
 
 		$this->assertEquals($connection, $connector->refreshConnection($connection));

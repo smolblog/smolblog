@@ -59,21 +59,21 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 			details: ['one' => 'two'],
 		);
 		$link = new ChannelSiteLink(
-			channelId: $channel->id,
+			channelId: $channel->getId(),
 			siteId: $this->randomId(scrub: true),
 			canPull: false,
 			canPush: true,
 		);
 
 		$this->db->table('channel_site_links')->insert([
-			'link_uuid' => $link->id->toString(),
+			'link_uuid' => $link->getId()->toString(),
 			'channel_uuid' => $link->channelId->toString(),
 			'site_uuid' => $link->siteId->toString(),
 			'can_push' => true,
 			'can_pull' => false,
 		]);
 		$this->db->table('channels')->insert([
-			'channel_uuid' => $channel->id->toString(),
+			'channel_uuid' => $channel->getId()->toString(),
 			'connection_uuid' => $channel->connectionId->toString(),
 			'channel_key' => '123456',
 			'display_name' => 'Test Account',
@@ -185,7 +185,7 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 
 		$this->assertOnlyTableEntryEquals(
 			$this->db->table('channel_site_links'),
-			link_uuid: $link->id->toString(),
+			link_uuid: $link->getId()->toString(),
 			channel_uuid: $link->channelId->toString(),
 			site_uuid: $link->siteId->toString(),
 			can_push: false,
@@ -233,15 +233,15 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 	public function testItWillEvaluateSitePermissionsForChannels() {
 		[$channel, $link] = $this->setUpTestLink();
 
-		$bareQuery = new SiteHasPermissionForChannel(siteId: $link->siteId, channelId: $channel->id);
+		$bareQuery = new SiteHasPermissionForChannel(siteId: $link->siteId, channelId: $channel->getId());
 		$this->projection->onSiteHasPermissionForChannel($bareQuery);
 		$this->assertTrue($bareQuery->results());
 
-		$goodQuery = new SiteHasPermissionForChannel(siteId: $link->siteId, channelId: $channel->id, mustPush: true);
+		$goodQuery = new SiteHasPermissionForChannel(siteId: $link->siteId, channelId: $channel->getId(), mustPush: true);
 		$this->projection->onSiteHasPermissionForChannel($goodQuery);
 		$this->assertTrue($goodQuery->results(), print_r([$goodQuery, $link], true));
 
-		$badQuery = new SiteHasPermissionForChannel(siteId: $link->siteId, channelId: $channel->id, mustPull: true);
+		$badQuery = new SiteHasPermissionForChannel(siteId: $link->siteId, channelId: $channel->getId(), mustPull: true);
 		$this->projection->onSiteHasPermissionForChannel($badQuery);
 		$this->assertFalse($badQuery->results());
 	}
@@ -257,7 +257,7 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 			'details' => '{"one":"two"}',
 		]);
 
-		$query = new UserCanLinkChannelAndSite(userId: $this->randomId(), channelId: $channel->id, siteId: $this->randomId());
+		$query = new UserCanLinkChannelAndSite(userId: $this->randomId(), channelId: $channel->getId(), siteId: $this->randomId());
 		$this->projection->onUserCanLinkChannelAndSite($query);
 		$this->assertFalse($query->results());
 	}
@@ -274,7 +274,7 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 			'details' => '{"one":"two"}',
 		]);
 
-		$query = new UserCanLinkChannelAndSite(userId: $userId, channelId: $channel->id, siteId: $this->randomId());
+		$query = new UserCanLinkChannelAndSite(userId: $userId, channelId: $channel->getId(), siteId: $this->randomId());
 
 		$this->bus->expects($this->once())->method('fetch')->with($this->equalTo(
 			new UserHasPermissionForSite(siteId: $query->siteId, userId: $userId, mustBeAdmin: true)
@@ -378,7 +378,7 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 		];
 		$this->db->table('channel_site_links')->insert(array_map(
 			fn($link) => [
-				'link_uuid' => $link->id->toString(),
+				'link_uuid' => $link->getId()->toString(),
 				'channel_uuid' => $link->channelId->toString(),
 				'site_uuid' => $link->siteId->toString(),
 				'can_pull' => $link->canPull,

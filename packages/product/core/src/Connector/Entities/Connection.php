@@ -6,12 +6,16 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Information about credentials needed to authenticate against an
  * exteral API as a particular user.
  */
-readonly class Connection extends Value implements Entity {
+readonly class Connection extends Value implements Entity, SerializableValue {
+	use SerializableValueKit;
+
 	public const NAMESPACE = '3c7d4546-2086-44a0-aec8-85e64c6d2166';
 
 	/**
@@ -45,17 +49,5 @@ readonly class Connection extends Value implements Entity {
 
 	public function getId(): Identifier {
 		return self::BuildId(provider: $this->provider, providerKey: $this->providerKey);
-	}
-
-	/**
-	 * Deserialize from an array.
-	 *
-	 * @param array $data Serialized array.
-	 * @return static
-	 */
-	public static function deserializeValue(array $data): static {
-		unset($data['id']);
-		$data['userId'] = Identifier::fromString($data['userId']);
-		return new Connection(...$data);
 	}
 }

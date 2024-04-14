@@ -60,8 +60,8 @@ class HttpMessageIsEquivalent extends Constraint {
 			$comparisonFailure = new ComparisonFailure(
 				$this->expected,
 				$other,
-				$this->exporter()->export($expectedData),
-				$this->exporter()->export($actualData),
+				(new \SebastianBergmann\Exporter\Exporter())->export($expectedData),
+				(new \SebastianBergmann\Exporter\Exporter())->export($actualData),
 				'Failed asserting that two HTTP messages are equivalent.'
 			);
 		}

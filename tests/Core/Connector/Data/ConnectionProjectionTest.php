@@ -47,7 +47,7 @@ final class ConnectionProjectionTest extends TestCase {
 		);
 
 		$this->db->table('connections')->insert([
-			'connection_uuid' => $connection->id->toString(),
+			'connection_uuid' => $connection->getId()->toString(),
 			'user_uuid' => $connection->userId->toString(),
 			'provider' => 'mastofed',
 			'provider_key' => '123456',
@@ -109,13 +109,13 @@ final class ConnectionProjectionTest extends TestCase {
 
 		$this->projection->onConnectionRefreshed(new ConnectionRefreshed(
 			details: ['token' => 'c61653bb-9ac1-472e-b838-83fbaf2d26a6'],
-			connectionId: $connection->id,
+			connectionId: $connection->getId(),
 			userId: Identifier::fromString(User::INTERNAL_SYSTEM_USER_ID), //action may be taken by another actor
 		));
 
 		$this->assertOnlyTableEntryEquals(
 			table: $this->db->table('connections'),
-			connection_uuid: $connection->id->toString(),
+			connection_uuid: $connection->getId()->toString(),
 			user_uuid: $connection->userId,
 			provider: 'mastofed',
 			provider_key: '123456',
@@ -128,7 +128,7 @@ final class ConnectionProjectionTest extends TestCase {
 		$connection = $this->setUpTestConnection();
 
 		$this->projection->onConnectionDeleted(new ConnectionDeleted(
-			connectionId: $connection->id,
+			connectionId: $connection->getId(),
 			userId: $this->randomId(),
 		));
 
@@ -137,7 +137,7 @@ final class ConnectionProjectionTest extends TestCase {
 
 	public function testItWillFindASingleChannel() {
 		$connection = $this->setUpTestConnection();
-		$query = new ConnectionById($connection->id);
+		$query = new ConnectionById($connection->getId());
 
 		$this->projection->onConnectionById($query);
 
@@ -171,8 +171,8 @@ final class ConnectionProjectionTest extends TestCase {
 
 	public function testItWillEvaluateIfAConnectionBelongsToAUser() {
 		$connection = $this->setUpTestConnection();
-		$goodQuery = new ConnectionBelongsToUser(connectionId: $connection->id, userId: $connection->userId);
-		$badQuery = new ConnectionBelongsToUser(connectionId: $connection->id, userId: $this->randomId());
+		$goodQuery = new ConnectionBelongsToUser(connectionId: $connection->getId(), userId: $connection->userId);
+		$badQuery = new ConnectionBelongsToUser(connectionId: $connection->getId(), userId: $this->randomId());
 
 		$this->projection->onConnectionBelongsToUser($goodQuery);
 		$this->projection->onConnectionBelongsToUser($badQuery);

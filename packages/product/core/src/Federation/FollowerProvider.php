@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Federation;
 
-use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\Content;
 
 /**
  * Service that handles followers of a blog over a particular protocol.

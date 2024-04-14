@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Federation;
 
-use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\Content;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Foundation\Value\Messages\Command;
 

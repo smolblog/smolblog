@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1;
 
-use Smolblog\Framework\Objects\SerializeableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
 
 /**
  * Define what a Content Type needs to have, namely a title and a body.

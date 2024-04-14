@@ -17,6 +17,6 @@ final class ChannelSiteLinkTest extends TestCase {
 			canPush: false,
 		);
 
-		$this->assertEquals($expcted, $actual->id);
+		$this->assertEquals($expcted, $actual->getId());
 	}
 }

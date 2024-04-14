@@ -59,7 +59,7 @@ final class ConnectionRefresherTest extends TestCase {
 		$this->messageBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo(
 			new ConnectionRefreshed(
 				details: ['access' => '456'],
-				connectionId: $this->refreshedConnection->id,
+				connectionId: $this->refreshedConnection->getId(),
 				userId: User::internalSystemUser()->id,
 			)
 		));
@@ -87,7 +87,7 @@ final class ConnectionRefresherTest extends TestCase {
 	public function testItDoesNotChangeTheConnectionByIdQueryWhenARefreshIsNotNeeded() {
 		$this->connector->method('connectionNeedsRefresh')->willReturn(false);
 
-		$query = new ConnectionById(connectionId: $this->connection->id);
+		$query = new ConnectionById(connectionId: $this->connection->getId());
 		$query->setResults($this->connection);
 
 		$this->service->checkOnConnectionById($query);
@@ -97,7 +97,7 @@ final class ConnectionRefresherTest extends TestCase {
 	public function testItUpdatesTheConnectionByIdQueryWhenARefreshIsNeeded() {
 		$this->setUpForRefresh();
 
-		$query = new ConnectionById(connectionId: $this->connection->id);
+		$query = new ConnectionById(connectionId: $this->connection->getId());
 		$query->setResults($this->connection);
 
 		$this->service->checkOnConnectionById($query);

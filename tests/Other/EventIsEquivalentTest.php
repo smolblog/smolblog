@@ -3,14 +3,14 @@
 namespace Smolblog\Test;
 
 use InvalidArgumentException;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
-use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final readonly class TestEvent extends DomainEvent {
 	public function __construct(public readonly string $property) {
-		parent::__construct(userId: new RandomIdentifier());
+		parent::__construct(userId: Identifier::fromString('47adfd5b-4f96-4eb1-9f93-1b30ee0d17d2'));
 	}
 }
 

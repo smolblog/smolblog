@@ -9,12 +9,13 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
-use Smolblog\Core\ContentV1\Content;
+use Smolblog\Core\Content;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Test\TestCase;
 
 final class SyndicationServiceTest extends TestCase {
@@ -33,18 +34,17 @@ final class SyndicationServiceTest extends TestCase {
 			details: [],
 		);
 		$this->channel = new Channel(
-			connectionId: $this->connection->id,
+			connectionId: $this->connection->getId(),
 			channelKey: '67890',
 			displayName: 'Test1234',
 			details: [],
 		);
 		$this->content = new Content(
-			type: new GenericContent('one', '<p>two</p>', 'test'),
+			body: new GenericContent('one', '<p>two</p>', 'test'),
 			siteId: $this->randomId(),
 			authorId: $this->randomId(),
-			permalink: $this->randomId()->toString(),
-			publishTimestamp: new DateTimeImmutable(),
-			visibility: ContentVisibility::Published,
+			publishTimestamp: new DateTimeField(),
+			published: true,
 			extensions: [
 				Syndication::class => new Syndication(
 					links: [],
