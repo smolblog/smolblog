@@ -6,8 +6,8 @@ use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Queries\SiteHasPermissionForChannel;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
@@ -16,7 +16,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * This command contains full objects as it is intended to be sent asynchronously.
  */
-class ImportFromTumblr extends Command implements AuthorizableMessage {
+readonly class ImportFromTumblr extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *

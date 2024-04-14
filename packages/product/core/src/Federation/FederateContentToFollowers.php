@@ -4,12 +4,12 @@ namespace Smolblog\Core\Federation;
 
 use Smolblog\Core\ContentV1\Content;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * Async command to federate the given content to the given followers through the given provider.
  */
-class FederateContentToFollowers extends Command {
+readonly class FederateContentToFollowers extends Command {
 	/**
 	 * Construct the command.
 	 *

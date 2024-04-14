@@ -3,7 +3,7 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Foundation\Value\Messages\Query;
@@ -13,7 +13,7 @@ use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Framework\Messages\Listener;
 
 function listenerTestTrace($add = '', $reset = false) {

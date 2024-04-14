@@ -3,14 +3,14 @@
 namespace Smolblog\Core\ContentV1\Types\Note;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Delete a note and remove it from projections.
  */
-class DeleteNote extends Command implements AuthorizableMessage {
+readonly class DeleteNote extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

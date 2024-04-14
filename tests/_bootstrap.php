@@ -21,7 +21,7 @@ use Smolblog\Core\ContentV1\Events\ContentEvent;
 use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Core\ContentV1\Media\NeedsMediaObjects;
 use Smolblog\Core\Site\SiteEvent;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;

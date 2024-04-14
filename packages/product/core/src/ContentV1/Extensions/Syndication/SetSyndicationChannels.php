@@ -3,14 +3,14 @@
 namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Set the channels content should syndicate to.
  */
-class SetSyndicationChannels extends Command implements AuthorizableMessage {
+readonly class SetSyndicationChannels extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

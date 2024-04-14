@@ -3,7 +3,7 @@
 namespace Smolblog\Framework\Exceptions;
 
 use Exception;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 use Throwable;
 
 /**

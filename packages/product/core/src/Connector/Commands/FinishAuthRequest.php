@@ -2,19 +2,12 @@
 
 namespace Smolblog\Core\Connector\Commands;
 
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * Command to kick off saving data from an OAuth callback.
  */
-class FinishAuthRequest extends Command {
-	/**
-	 * URL to return the user to.
-	 *
-	 * @var string|null
-	 */
-	public ?string $returnToUrl = null;
-
+readonly class FinishAuthRequest extends Command {
 	/**
 	 * Create the command
 	 *
@@ -27,5 +20,13 @@ class FinishAuthRequest extends Command {
 		public readonly string $stateKey,
 		public readonly string $code,
 	) {
+	}
+
+	public function setReturnUrl(string $url): void {
+		$this->setMetaValue('returnUrl', $url);
+	}
+
+	public function returnToUrl(): string {
+		return $this->getMetaValue('returnUrl');
 	}
 }

@@ -9,15 +9,15 @@ use Smolblog\Core\ContentV1\Content;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 
 /**
  * Push the given content to the given channel using the given connection. Full objects as this is intended to be an
  * asynchronous operation.
  */
-class PushContentToChannel extends Command implements AuthorizableMessage {
+readonly class PushContentToChannel extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *

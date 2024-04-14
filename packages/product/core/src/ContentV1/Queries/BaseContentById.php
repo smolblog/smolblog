@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Queries;
 use Smolblog\Core\ContentV1\Content;
 use Smolblog\Core\ContentV1\ContentBuilder;
 use Smolblog\Core\ContentV1\ContentBuilderKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;

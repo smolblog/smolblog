@@ -3,8 +3,8 @@
 namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Create a Picture.
  */
-class CreatePicture extends Command implements AuthorizableMessage {
+readonly class CreatePicture extends Command implements AuthorizableMessage {
 	/**
 	 * Media to display.
 	 *

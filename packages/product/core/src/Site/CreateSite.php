@@ -3,8 +3,8 @@
 namespace Smolblog\Core\Site;
 
 use InvalidArgumentException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\RandomIdentifier;
@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 /**
  * Create a new site with the given user as primary user.
  */
-class CreateSite extends Command implements AuthorizableMessage {
+readonly class CreateSite extends Command implements AuthorizableMessage {
 	/**
 	 * Create the command.
 	 *

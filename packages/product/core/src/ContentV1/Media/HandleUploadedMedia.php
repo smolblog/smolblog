@@ -4,8 +4,8 @@ namespace Smolblog\Core\ContentV1\Media;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -13,7 +13,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Save an uploaded file to the media library
  */
-class HandleUploadedMedia extends Command implements AuthorizableMessage {
+readonly class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	/**
 	 * Create the command.
 	 *

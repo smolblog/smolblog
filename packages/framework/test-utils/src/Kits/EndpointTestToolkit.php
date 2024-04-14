@@ -4,7 +4,7 @@ namespace Smolblog\Test\Kits;
 
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\EndpointConfig;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 trait EndpointTestToolkit {

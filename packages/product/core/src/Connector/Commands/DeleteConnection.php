@@ -3,15 +3,15 @@
 namespace Smolblog\Core\Connector\Commands;
 
 use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Delete a Connection.
  */
-class DeleteConnection extends Command implements AuthorizableMessage {
+readonly class DeleteConnection extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the query.
 	 *

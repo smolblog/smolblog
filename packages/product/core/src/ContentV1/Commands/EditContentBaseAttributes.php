@@ -5,14 +5,14 @@ namespace Smolblog\Core\ContentV1\Commands;
 use DateTimeInterface;
 use Smolblog\Core\ContentV1\EditContentCommandKit;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Edit the base attributes of a piece of content.
  */
-class EditContentBaseAttributes extends Command implements AuthorizableMessage {
+readonly class EditContentBaseAttributes extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

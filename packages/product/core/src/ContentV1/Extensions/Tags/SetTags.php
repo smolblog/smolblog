@@ -3,14 +3,14 @@
 namespace Smolblog\Core\ContentV1\Extensions\Tags;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Set the tags for a piece of content.
  */
-class SetTags extends Command implements AuthorizableMessage {
+readonly class SetTags extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

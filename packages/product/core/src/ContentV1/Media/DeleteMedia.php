@@ -4,14 +4,14 @@ namespace Smolblog\Core\ContentV1\Media;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Delete a media object.
  */
-class DeleteMedia extends Command implements AuthorizableMessage {
+readonly class DeleteMedia extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

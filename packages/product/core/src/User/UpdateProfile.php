@@ -3,8 +3,8 @@
 namespace Smolblog\Core\User;
 
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
@@ -13,7 +13,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * Yes, this command has both a user ID and profile ID. Just in case an admin needs to edit a profile.
  */
-class UpdateProfile extends Command implements AuthorizableMessage {
+readonly class UpdateProfile extends Command implements AuthorizableMessage {
 	/**
 	 * Create the command.
 	 *

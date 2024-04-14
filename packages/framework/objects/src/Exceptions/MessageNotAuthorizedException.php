@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Exceptions;
 
 use Exception;
 use Throwable;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Foundation\Value\Messages\Query;
 
 /**

@@ -6,8 +6,8 @@ use Smolblog\Core\Site\Site;
 use Smolblog\Framework\ActivityPub\Objects\Actor;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -15,7 +15,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * All requests are currently auto-approved; this command exists so the response can be sent async.
  */
-class ApproveFollowRequest extends Command implements AuthorizableMessage {
+readonly class ApproveFollowRequest extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *

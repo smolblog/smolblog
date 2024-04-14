@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Media;
 
 use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
 

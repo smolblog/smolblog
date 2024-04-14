@@ -3,10 +3,10 @@
 namespace Smolblog\Framework\Exceptions;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
-final class TestInvalidCommand extends Command {}
+final readonly class TestInvalidCommand extends Command {}
 
 final class InvalidCommandParametersExceptionTest extends TestCase {
 	public function testItHasADefaultMessage() {

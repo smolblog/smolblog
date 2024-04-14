@@ -3,14 +3,14 @@
 namespace Smolblog\Core\Connector\Commands;
 
 use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Command to fetch and save an updated list of channels for a given Connection.
  */
-class RefreshChannels extends Command implements AuthorizableMessage {
+readonly class RefreshChannels extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command
 	 *

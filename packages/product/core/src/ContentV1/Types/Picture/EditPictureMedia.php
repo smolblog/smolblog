@@ -3,14 +3,14 @@
 namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Change the media on a Picture.
  */
-class EditPictureMedia extends Command implements AuthorizableMessage {
+readonly class EditPictureMedia extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

@@ -3,8 +3,8 @@
 namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * Could also be the same URL if the data needs to be refreshed.
  */
-class EditReblogUrl extends Command implements AuthorizableMessage {
+readonly class EditReblogUrl extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

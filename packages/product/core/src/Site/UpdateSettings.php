@@ -3,15 +3,15 @@
 namespace Smolblog\Core\Site;
 
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Update settings for a site.
  */
-class UpdateSettings extends Command implements AuthorizableMessage {
+readonly class UpdateSettings extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *

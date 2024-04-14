@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Site;
 
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * The user must be an admin *unless* the user is changing their own permissions and not enabling admin permissions.
  */
-class LinkSiteAndUser extends Command implements AuthorizableMessage {
+readonly class LinkSiteAndUser extends Command implements AuthorizableMessage {
 	/**
 	 * Construct the command.
 	 *

@@ -4,15 +4,15 @@ namespace Smolblog\Core\ContentV1\Media;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Change the attributes on a media object.
  */
-class EditMediaAttributes extends Command implements AuthorizableMessage {
+readonly class EditMediaAttributes extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

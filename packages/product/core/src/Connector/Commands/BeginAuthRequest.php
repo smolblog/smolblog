@@ -2,20 +2,13 @@
 
 namespace Smolblog\Core\Connector\Commands;
 
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * The indicated user is starting an OAuth request with the indicated provider.
  */
-class BeginAuthRequest extends Command {
-	/**
-	 * URL to Redirect the user to.
-	 *
-	 * @var string|null
-	 */
-	public ?string $redirectUrl = null;
-
+readonly class BeginAuthRequest extends Command {
 	/**
 	 * Create the command
 	 *
@@ -30,5 +23,13 @@ class BeginAuthRequest extends Command {
 		public readonly string $callbackUrl,
 		public readonly ?string $returnToUrl = null,
 	) {
+	}
+
+	public function setRedirectUrl(string $url): void {
+		$this->setMetaValue('redirectUrl', $url);
+	}
+
+	public function redirectUrl(): string {
+		return $this->getMetaValue('redirectUrl');
 	}
 }

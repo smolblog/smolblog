@@ -3,14 +3,14 @@
 namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Delete a reblog and remove it from projections.
  */
-class DeleteReblog extends Command implements AuthorizableMessage {
+readonly class DeleteReblog extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

@@ -3,8 +3,8 @@
 namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * This is for a situation where a user manually adds a URL to a content's links.
  */
-class AddSyndicationLink extends Command implements AuthorizableMessage {
+readonly class AddSyndicationLink extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;
 
 	/**

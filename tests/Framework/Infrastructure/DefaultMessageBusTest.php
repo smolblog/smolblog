@@ -5,9 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
@@ -66,7 +64,9 @@ final class DefaultMessageBusTest extends TestCase {
 	}
 
 	public function testItCanWrapAMessageInAnAsyncMessageWrapper() {
-		$message = new class($this->randomId()) extends Command { public function __construct(public readonly Identifier $thing) {} };
+		$message = new readonly class($this->randomId()) extends Command {
+			public function __construct(public readonly Identifier $thing) {}
+		};
 		$asyncMessage = new AsyncWrappedMessage($message);
 
 		$this->provider->method('getListenersForEvent')->willReturn([
