@@ -2,12 +2,16 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use Smolblog\Framework\Messages\Message;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Foundation\Value\Traits\MessageKit;
 
 /**
  * Wrapper to designate a message that should be enqueued to handle on a different thread.
  */
-class AsyncWrappedMessage extends Message {
+readonly class AsyncWrappedMessage extends Value implements Message {
+	use MessageKit;
+
 	/**
 	 * Construct the message wrapper.
 	 *

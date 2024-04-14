@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1\Queries;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Find a piece of content by its permalink.

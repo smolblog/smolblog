@@ -3,7 +3,7 @@
 namespace Smolblog\Foundation\Service\Messaging;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Foundation\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Service;
 
 /**

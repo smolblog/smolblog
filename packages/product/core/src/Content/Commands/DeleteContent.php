@@ -16,7 +16,7 @@ readonly class DeleteContent extends Command implements AuthorizableMessage {
 	}
 
 	public function getAuthorizationQuery(): Query {
-		return new class () extends Query {
+		return new readonly class () extends Query {
 		};
 	}
 }

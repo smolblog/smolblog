@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
 use Smolblog\Core\ContentV1\ContentExtension;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicate other places around the internet this content can be found or should be posted.

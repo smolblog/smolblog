@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Commands;
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class EditContentBaseAttributesTest extends TestCase {
 	public function testItCanBeCreatedWithAtLeastOneValidAttribute() {

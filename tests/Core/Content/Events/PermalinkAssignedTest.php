@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Events;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class PermalinkAssignedTest extends TestCase {
 	public function testItWillSerializeCorrectly() {

@@ -10,8 +10,8 @@ use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
 use Smolblog\Core\Connector\Commands\DeleteConnection as DeleteConnectionCommand;
 use Smolblog\Core\Connector\Queries\ConnectionById;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Delete a connection.

@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Events;
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class ContentBaseAttributeEditedTest extends TestCase {
 	public function testItCanBeInstantiatedWithValidFields() {

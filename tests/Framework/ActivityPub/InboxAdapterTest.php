@@ -16,7 +16,7 @@ use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\Objects\HttpRequest;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Framework\Objects\HttpVerb;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\HttpMessageComparisonTestKit;
 use Smolblog\Test\TestCase;
 

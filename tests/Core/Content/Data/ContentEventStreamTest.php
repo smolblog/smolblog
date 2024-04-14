@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Data;
 use DateTimeImmutable;
 use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Core\ContentV1\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 

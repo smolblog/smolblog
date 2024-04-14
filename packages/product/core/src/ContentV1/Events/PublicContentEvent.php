@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Events;
 
 use Smolblog\Core\ContentV1\ContentBuilderKit;
 use Smolblog\Core\ContentV1\ContentBuilder;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * For events that indicate something has changed to the public-facing content.

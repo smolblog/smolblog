@@ -6,7 +6,7 @@ use Smolblog\Core\ContentV1\Events\PermalinkAssigned;
 use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 class PermalinkService implements Listener {
 	public function __construct(private MessageBus $bus) {}

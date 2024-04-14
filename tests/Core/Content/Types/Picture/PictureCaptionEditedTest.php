@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use DateTimeImmutable;
 use Smolblog\Core\ContentV1\Media\Media;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\ContentEventTestKit;
 use Smolblog\Test\Kits\NeedsMarkdownRenderedTestKit;
 use Smolblog\Test\TestCase;

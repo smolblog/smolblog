@@ -6,7 +6,7 @@ use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Simple class to check the authorization Query of an AuthorizableMessage.

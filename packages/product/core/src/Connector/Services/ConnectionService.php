@@ -5,7 +5,7 @@ namespace Smolblog\Core\Connector\Services;
 use Smolblog\Core\Connector\Commands\DeleteConnection;
 use Smolblog\Core\Connector\Events\ConnectionDeleted;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Service for basic Connection operations.

@@ -9,7 +9,7 @@ use Illuminate\Database\ConnectionInterface;
 use PDO;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 class Transients implements AuthRequestStateRepo {
 	public function __construct(private ConnectionInterface $db) {}

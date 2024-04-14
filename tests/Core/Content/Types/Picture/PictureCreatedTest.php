@@ -7,7 +7,7 @@ use Smolblog\Core\ContentV1\Events\ContentEvent;
 use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Core\ContentV1\Media\MediaFile;
 use Smolblog\Core\ContentV1\Media\MediaType;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\ContentEventTestKit;
 use Smolblog\Test\Kits\NeedsMarkdownRenderedTestKit;
 use Smolblog\Test\Kits\NeedsMediaObjectsTestKit;

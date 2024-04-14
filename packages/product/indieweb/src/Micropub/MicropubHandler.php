@@ -36,9 +36,9 @@ use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Core\User\UserById;
 use Smolblog\Core\User\UserSites;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\IndieWeb\MicroformatsConverter;
 use Taproot\Micropub\MicropubAdapter;
 

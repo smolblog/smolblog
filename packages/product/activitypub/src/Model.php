@@ -8,7 +8,7 @@ use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
 use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
 

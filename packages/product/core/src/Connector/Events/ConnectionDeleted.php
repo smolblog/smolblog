@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Events;
 
 use DateTimeInterface;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates that a given connection should be deleted and its associated artifacts removed.

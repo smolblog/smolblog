@@ -9,7 +9,7 @@ use Smolblog\Core\ContentV1\ContentType;
 use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Core\ContentV1\Extensions\Syndication\SyndicationLink;
 use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 
 /**

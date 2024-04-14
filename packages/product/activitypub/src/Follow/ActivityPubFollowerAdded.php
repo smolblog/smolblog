@@ -8,8 +8,8 @@ use Smolblog\Core\Federation\FollowerAdded;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\ActivityPub\Objects\Actor;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\NamedIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
 /**
  * Indicate that a new ActivityPub follower has been added.

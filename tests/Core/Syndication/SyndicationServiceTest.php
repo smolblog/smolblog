@@ -14,7 +14,7 @@ use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Core\ContentV1\GenericContent;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Test\TestCase;
 
 final class SyndicationServiceTest extends TestCase {

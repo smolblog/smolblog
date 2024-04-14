@@ -5,8 +5,8 @@ namespace Smolblog\Core\ContentV1\Extensions\Tags;
 use Smolblog\Core\ContentV1\Content;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\ContentExtensionServiceTestKit;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 

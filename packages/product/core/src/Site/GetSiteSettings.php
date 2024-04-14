@@ -3,13 +3,13 @@
 namespace Smolblog\Core\Site;
 
 use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the settings for the given site.
  */
-class GetSiteSettings extends Query implements AuthorizableMessage {
+readonly class GetSiteSettings extends Query implements AuthorizableMessage {
 	/**
 	 * Construct the query
 	 *

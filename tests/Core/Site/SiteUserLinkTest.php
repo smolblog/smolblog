@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Site;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class SiteUserLinkTest extends TestCase {
 	public function testAnIdIsKnowableFromSiteAndUser() {

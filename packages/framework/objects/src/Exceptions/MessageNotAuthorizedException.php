@@ -5,7 +5,7 @@ namespace Smolblog\Framework\Exceptions;
 use Exception;
 use Throwable;
 use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 
 /**
  * Exception thrown when a message is not authorized to run.

@@ -4,7 +4,7 @@ namespace Smolblog\Core\Federation;
 
 use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Handle Federation-related tasks.

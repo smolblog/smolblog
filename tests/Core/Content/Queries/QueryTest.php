@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Queries;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Core\ContentV1\Types\Note\NoteById;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class QueryTest extends TestCase {
 	public function testGenericContentByIdCanBeInstantiated() {

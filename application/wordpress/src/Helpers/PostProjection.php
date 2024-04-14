@@ -19,9 +19,9 @@ use Smolblog\Core\ContentV1\Types\Note\Note;
 use Smolblog\Core\ContentV1\Types\Picture\Picture;
 use Smolblog\Core\ContentV1\Types\Reblog\Reblog;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\WP\Helpers\SiteHelper;
 
 class PostProjection implements Projection {

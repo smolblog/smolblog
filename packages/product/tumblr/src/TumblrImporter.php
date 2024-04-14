@@ -4,7 +4,7 @@ namespace Smolblog\Tumblr;
 
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 //phpcs:disable Generic.Files.LineLength.TooLong
 

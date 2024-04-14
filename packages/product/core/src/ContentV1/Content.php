@@ -3,9 +3,9 @@
 namespace Smolblog\Core\ContentV1;
 
 use DateTimeInterface;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Framework\Objects\Entity;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Base class for content.

@@ -8,8 +8,8 @@ use Smolblog\Core\ContentV1\ContentTypeConfiguration;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ReblogServiceTest extends TestCase {

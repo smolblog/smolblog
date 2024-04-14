@@ -7,7 +7,7 @@ use Smolblog\Core\ContentV1\ContentExtensionService;
 use Smolblog\Core\ContentV1\ContentUtilityKit;
 use Smolblog\Core\ContentV1\ContentUtilityService;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Handle Syndication commands.

@@ -4,9 +4,9 @@ namespace Smolblog\Framework\Messages;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Framework\Objects\EntityKit;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * A persistable object that tells the Domain Model that a thing happened.

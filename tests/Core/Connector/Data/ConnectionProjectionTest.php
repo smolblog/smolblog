@@ -16,7 +16,7 @@ use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\Connector\Queries\connectionsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionsForUser;
 use Smolblog\Core\User\User;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 

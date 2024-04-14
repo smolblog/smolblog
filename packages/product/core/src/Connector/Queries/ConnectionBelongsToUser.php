@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\Connector\Queries;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Returns a truthy value if the given Connection belongs to the given User.
  */
-class ConnectionBelongsToUser extends Query {
+readonly class ConnectionBelongsToUser extends Query {
 	/**
 	 * Construct the Query
 	 *

@@ -5,7 +5,7 @@ namespace Smolblog\Api\Server;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to get standard information about the server.

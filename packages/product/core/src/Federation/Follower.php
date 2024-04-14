@@ -3,8 +3,8 @@
 namespace Smolblog\Core\Federation;
 
 use Smolblog\Framework\Objects\Entity;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\NamedIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
 /**
  * An external entity that should be notified of new content.

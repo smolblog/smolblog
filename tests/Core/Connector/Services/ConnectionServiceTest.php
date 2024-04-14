@@ -5,8 +5,8 @@ namespace Smolblog\Core\Connector\Services;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Commands\DeleteConnection;
 use Smolblog\Core\Connector\Events\ConnectionDeleted;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ConnectionServiceTest extends TestCase {

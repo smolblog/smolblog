@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Connector\Queries;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Find all Channels for a Connection. Returns an array of Channel objects.
@@ -11,7 +11,7 @@ use Smolblog\Framework\Objects\Identifier;
  * If the Connection's provider and provider key are known, the Connection ID can be created using the static
  * Smolblog\Core\Connector\Entities\Connection::buildId function.
  */
-class ChannelsForConnection extends Query {
+readonly class ChannelsForConnection extends Query {
 	/**
 	 * Construct the query
 	 *

@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Types\Reblog;
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\ContentV1\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class ReblogInfoChangedTest extends TestCase {
 	public function testItWillDeserializeCorrectly() {

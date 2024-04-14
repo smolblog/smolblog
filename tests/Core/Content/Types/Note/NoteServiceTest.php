@@ -8,7 +8,7 @@ use Smolblog\Core\ContentV1\ContentTypeConfiguration;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 class NoteServiceTest extends TestCase {

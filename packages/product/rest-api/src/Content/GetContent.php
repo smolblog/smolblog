@@ -9,8 +9,8 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Queries\ContentById;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a specific piece of content.

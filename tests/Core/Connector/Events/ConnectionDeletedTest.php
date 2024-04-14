@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Events;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class ConnectionDeletedTest extends TestCase {
 	public function testItHasNoPayload() {

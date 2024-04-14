@@ -7,7 +7,7 @@ use Smolblog\Core\ContentV1\Content;
 use Smolblog\Core\ContentV1\ContentType;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Events\PublicContentAdded;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 

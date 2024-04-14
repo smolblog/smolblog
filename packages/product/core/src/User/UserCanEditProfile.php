@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\User;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Find out if the given user can edit the given profile.
  */
-class UserCanEditProfile extends Query {
+readonly class UserCanEditProfile extends Query {
 	/**
 	 * Create the query.
 	 *

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1\Queries;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class TestAdaptableContentQuery extends AdaptableContentQuery {

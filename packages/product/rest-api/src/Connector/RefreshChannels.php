@@ -10,8 +10,8 @@ use Smolblog\Api\Verb;
 use Smolblog\Core\Connector\Commands\RefreshChannels as RefreshCommand;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionById;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get an updated list of channels for the given Connection.

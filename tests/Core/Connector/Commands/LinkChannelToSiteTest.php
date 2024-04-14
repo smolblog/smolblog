@@ -4,7 +4,7 @@ namespace Smolblog\Core\Connector\Commands;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class LinkChannelToSiteTest extends TestCase {
 	public function testItIsAuthorizedByAUserCanLinkChannelAndSiteQuery() {

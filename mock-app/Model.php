@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Infrastructure\QueryMemoizationService;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 
 class Model extends DomainModel {

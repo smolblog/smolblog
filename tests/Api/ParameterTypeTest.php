@@ -3,7 +3,7 @@
 namespace Smolblog\Api;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class ParameterTypeTest extends TestCase {
 	public function testBasicDeclarativeMethods() {

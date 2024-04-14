@@ -6,7 +6,7 @@ use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
 use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
@@ -154,7 +154,7 @@ final class ListenerRegistryTest extends TestCase {
 		$this->provider->registerCallable(fn(Event $event) => listenerTestTrace(add: 'Callable'));
 		$this->provider->registerService(ListenerTestMainService::class);
 		$event = new class() extends Event implements AuthorizableMessage {
-			public function getAuthorizationQuery(): Query { return new class() extends Query {}; }
+			public function getAuthorizationQuery(): Query { return new readonly class() extends Query {}; }
 		};
 
 		foreach ($this->provider->getListenersForEvent($event) as $listener) { $listener($event); }

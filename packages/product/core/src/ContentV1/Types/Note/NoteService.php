@@ -8,7 +8,7 @@ use Smolblog\Core\ContentV1\ContentTypeService;
 use Smolblog\Core\ContentV1\ContentUtilityKit;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Service to handle Note-related commands.

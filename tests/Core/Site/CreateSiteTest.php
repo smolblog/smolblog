@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Site;
 
 use InvalidArgumentException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class CreateSiteTest extends TestCase {

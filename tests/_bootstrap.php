@@ -23,9 +23,9 @@ use Smolblog\Core\ContentV1\Media\NeedsMediaObjects;
 use Smolblog\Core\Site\SiteEvent;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Event;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\RandomIdentifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

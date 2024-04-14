@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\User;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the sites this user is attached to.
  */
-class UserSites extends Query {
+readonly class UserSites extends Query {
 	/**
 	 * Construct the query.
 	 *

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\SerializableTestKit;
 
 final class ConnectionTest extends TestCase {

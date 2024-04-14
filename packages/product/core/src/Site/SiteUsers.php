@@ -3,15 +3,15 @@
 namespace Smolblog\Core\Site;
 
 use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the users associated with a site.
  *
  * The querying user must be an author or admin on the site.
  */
-class SiteUsers extends Query implements AuthorizableMessage {
+readonly class SiteUsers extends Query implements AuthorizableMessage {
 	/**
 	 * Construct the query
 	 *

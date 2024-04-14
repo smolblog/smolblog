@@ -9,7 +9,7 @@ use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentInfo;
 use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentService;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get embed info for an external URL.

@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Extensions\Tags;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Core\ContentV1\Queries\UserCanEditContent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class SetTagsTest extends TestCase {
 	public function testItRequiresEditPermissions() {

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Media;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Service that handles media uploads.

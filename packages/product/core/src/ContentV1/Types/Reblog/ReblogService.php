@@ -7,8 +7,8 @@ use Smolblog\Core\ContentV1\ContentTypeConfiguration;
 use Smolblog\Core\ContentV1\ContentTypeService;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 
 /**
  * Service to handle Reblog commands.

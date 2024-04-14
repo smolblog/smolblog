@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Types\Reblog;
 use DateTimeInterface;
 use Smolblog\Core\ContentV1\Events\ContentBodyEdited;
 use Smolblog\Core\ContentV1\Markdown\NeedsMarkdownRendered;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates that the comment on a reblog has changed.

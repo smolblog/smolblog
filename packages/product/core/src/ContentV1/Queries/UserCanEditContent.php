@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\ContentV1\Queries;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Gives a truthy value if the given user can edit the given content on the given site.
  */
-class UserCanEditContent extends Query {
+readonly class UserCanEditContent extends Query {
 	/**
 	 * Construct the query.
 	 *

@@ -12,8 +12,8 @@ use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Core\ContentV1\Media\MediaList;
 use Smolblog\Core\ContentV1\Queries\ContentList;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a list of recent content.

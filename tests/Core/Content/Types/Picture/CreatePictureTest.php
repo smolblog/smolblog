@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Types\Picture;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class CreatePictureTest extends TestCase {

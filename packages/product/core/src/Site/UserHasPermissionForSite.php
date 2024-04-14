@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\Site;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Check if a given user can perform a given action for a given site.
  */
-class UserHasPermissionForSite extends Query {
+readonly class UserHasPermissionForSite extends Query {
 	/**
 	 * Construct the query.
 	 *

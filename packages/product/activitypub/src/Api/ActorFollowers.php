@@ -8,8 +8,8 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Federation\GetFollowersForSiteByProvider;
 use Smolblog\Framework\ActivityPub\Objects\Collection;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the number of ActivityPub followers for a given Actor.

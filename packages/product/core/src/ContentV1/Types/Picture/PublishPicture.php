@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Types\Picture;
 use Smolblog\Core\ContentV1\EditContentCommandKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Take a picture from draft to Published

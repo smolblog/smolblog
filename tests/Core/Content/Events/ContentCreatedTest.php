@@ -7,7 +7,7 @@ use Smolblog\Test\TestCase;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Core\ContentV1\InvalidContentException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class TestContentCreated extends ContentCreated {
 	public function __construct(public readonly string $one = 'two', ...$props) {

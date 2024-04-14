@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1;
 
 use Smolblog\Core\ContentV1\Queries\UserCanEditContent;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 
 /**
  * Trait to handle authorization for content editing commands.

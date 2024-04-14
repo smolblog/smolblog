@@ -8,7 +8,7 @@ use ReflectionClass;
 use ReflectionProperty;
 use ReflectionUnionType;
 use Smolblog\Framework\Objects\DomainModel;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\ErrorResponse;
 use Smolblog\Api\Exceptions\NotFound;
@@ -16,7 +16,7 @@ use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Core\ContentV1\ContentTypeRegistry;
 use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentService;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**

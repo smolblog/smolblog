@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Media;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;

@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Connector\Queries;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Find a Channel via its ID; returns a single Channel object.
@@ -11,7 +11,7 @@ use Smolblog\Framework\Objects\Identifier;
  * If the Connection ID and channel Key are known, the Channel ID can be created using the static
  * Smolblog\Core\Connector\Entities\Channel::buildId function.
  */
-class ChannelById extends Query {
+readonly class ChannelById extends Query {
 	/**
 	 * Construct the query
 	 *

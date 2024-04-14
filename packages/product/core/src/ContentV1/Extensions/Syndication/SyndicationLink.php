@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 
 /**

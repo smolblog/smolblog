@@ -8,8 +8,8 @@ use Psr\EventDispatcher\StoppableEventInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class DefaultMessageBusTest extends TestCase {
 	private ListenerProviderInterface $provider;
@@ -59,7 +59,7 @@ final class DefaultMessageBusTest extends TestCase {
 			fn($event) => $event->setResults($expected),
 		]);
 
-		$message = new class() extends Query {};
+		$message = new readonly class() extends Query {};
 		$actual = $this->subject->fetch($message);
 
 		$this->assertEquals($expected, $actual);

@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Media;
 
 use DateTimeInterface;
 use Smolblog\Core\ContentV1\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Denotes that a file has been added to a MediaHandler's store.

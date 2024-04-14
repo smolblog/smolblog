@@ -12,8 +12,8 @@ use Smolblog\Core\ContentV1\ContentType;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Core\ContentV1\InvalidContentException;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
 final class ContentBuilderKitTestExtension implements ContentExtension {

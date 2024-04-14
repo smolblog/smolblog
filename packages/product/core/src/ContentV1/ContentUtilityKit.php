@@ -3,8 +3,8 @@
 namespace Smolblog\Core\ContentV1;
 
 use Smolblog\Core\ContentV1\Queries\GenericContentById;
-use Smolblog\Framework\Messages\Message;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Utility functions for working with Content.

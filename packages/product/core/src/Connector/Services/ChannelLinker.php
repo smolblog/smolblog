@@ -7,7 +7,7 @@ use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Service to handle setting permissions for a Site and Channel.

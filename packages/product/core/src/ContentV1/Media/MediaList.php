@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Media;
 
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a list of Media objects.

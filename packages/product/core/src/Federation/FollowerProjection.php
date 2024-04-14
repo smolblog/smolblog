@@ -4,7 +4,7 @@ namespace Smolblog\Core\Federation;
 
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Track followers for a site.

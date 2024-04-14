@@ -9,8 +9,8 @@ use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Site\Site;
 use Smolblog\Core\User\UserSites;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a list of the user's sites.

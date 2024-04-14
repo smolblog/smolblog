@@ -10,8 +10,8 @@ use Smolblog\Api\Verb;
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Core\Site\SiteById;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Set permissions for a Channel and Site.

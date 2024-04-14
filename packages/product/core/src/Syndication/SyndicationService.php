@@ -10,8 +10,8 @@ use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Handle pushing content to external services.

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\User;
 
 use Smolblog\Framework\Objects\Entity;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Represents a User in the system.

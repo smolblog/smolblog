@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Connector;
 
 use Smolblog\Api\ApiEnvironment;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
@@ -12,7 +12,7 @@ use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Kick off an OAuth request to an external provider.

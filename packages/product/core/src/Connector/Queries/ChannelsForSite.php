@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\Connector\Queries;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Query to get all Connections linked to a Site.
  */
-class ChannelsForSite extends Query {
+readonly class ChannelsForSite extends Query {
 	/**
 	 * Construct the query.
 	 *

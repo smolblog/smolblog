@@ -6,7 +6,7 @@ use Smolblog\Core\ContentV1\ContentTypeConfiguration;
 use Smolblog\Core\ContentV1\ContentTypeService;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Handle Picture-related commands.

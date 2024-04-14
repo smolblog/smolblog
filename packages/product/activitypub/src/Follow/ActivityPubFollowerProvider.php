@@ -12,8 +12,8 @@ use Smolblog\Core\Site\SiteById;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\Objects\Create;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 
 /**
  * Service that handles posting content to ActivityPub.

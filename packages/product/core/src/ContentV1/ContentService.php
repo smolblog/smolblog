@@ -7,7 +7,7 @@ use Smolblog\Core\ContentV1\Events\ContentBaseAttributeEdited;
 use Smolblog\Core\ContentV1\Queries\AdaptableContentQuery;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Handle generic content commands.

@@ -7,9 +7,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Smolblog\Framework\Messages\Message;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Messages\Query;
 
 /**
  * Handles the sending of messages to the appropriate objects.

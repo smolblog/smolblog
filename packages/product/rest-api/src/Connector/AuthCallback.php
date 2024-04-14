@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Connector;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
@@ -17,7 +17,7 @@ use Smolblog\Api\SuccessResponse;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * OAuth callback hook.

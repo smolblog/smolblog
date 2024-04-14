@@ -7,8 +7,8 @@ use Smolblog\Core\ContentV1\ContentBuilder;
 use Smolblog\Core\ContentV1\ContentBuilderKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Base class for singluar content queries.

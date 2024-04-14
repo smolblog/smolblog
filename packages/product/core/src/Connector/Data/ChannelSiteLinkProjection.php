@@ -12,9 +12,9 @@ use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Connector\Queries\SiteHasPermissionForChannel;
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Track permissions for sites and channels.

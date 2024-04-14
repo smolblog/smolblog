@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Core\ContentV1\Media\MediaFile;
 use Smolblog\Core\ContentV1\Media\MediaType;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\DatabaseTestKit;
 use Smolblog\Test\TestCase;
 

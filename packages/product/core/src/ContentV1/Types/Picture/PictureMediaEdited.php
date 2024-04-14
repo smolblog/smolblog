@@ -6,7 +6,7 @@ use DateTimeInterface;
 use Smolblog\Core\ContentV1\Events\ContentBodyEdited;
 use Smolblog\Core\ContentV1\Media\NeedsMediaObjects;
 use Smolblog\Core\ContentV1\Media\NeedsMediaRendered;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates that the media on this picture has changed.

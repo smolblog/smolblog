@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class SyndicationTest extends TestCase {
 	public function testItWillSerializeCorrectly() {

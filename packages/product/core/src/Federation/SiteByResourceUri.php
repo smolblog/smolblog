@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Federation;
 
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 
 /**
  * Translate a resource URI into a Site.
@@ -16,7 +16,7 @@ use Smolblog\Framework\Messages\Query;
  * - https://alice.smol.blog
  * - https://bob.com
  */
-class SiteByResourceUri extends Query {
+readonly class SiteByResourceUri extends Query {
 	/**
 	 * Create the query.
 	 *

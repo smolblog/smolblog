@@ -6,7 +6,7 @@ use Smolblog\Core\ContentV1\ContentExtensionConfiguration;
 use Smolblog\Core\ContentV1\ContentExtensionService;
 use Smolblog\Core\ContentV1\ContentUtilityKit;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Handle Tag commands.

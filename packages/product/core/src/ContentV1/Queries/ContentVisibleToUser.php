@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\ContentV1\Queries;
 
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Find if the given content is visible to the given user.
@@ -11,7 +11,7 @@ use Smolblog\Framework\Objects\Identifier;
  * Before content is fully public (in draft or scheduled), it cannot be viewed by the public or by users other than
  * administrators and its author. This query checks for those conditions.
  */
-class ContentVisibleToUser extends Query {
+readonly class ContentVisibleToUser extends Query {
 	/**
 	 * Construct the query.
 	 *

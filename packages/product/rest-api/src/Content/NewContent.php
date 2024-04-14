@@ -21,9 +21,9 @@ use Smolblog\Core\ContentV1\Types\Picture\CreatePicture;
 use Smolblog\Core\ContentV1\Types\Picture\PublishPicture;
 use Smolblog\Core\ContentV1\Types\Reblog\CreateReblog;
 use Smolblog\Core\ContentV1\Types\Reblog\PublishReblog;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to create a minimal reblog post.

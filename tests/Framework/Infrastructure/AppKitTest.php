@@ -3,7 +3,7 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 
 final class TestApp {

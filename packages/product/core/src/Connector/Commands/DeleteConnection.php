@@ -5,8 +5,8 @@ namespace Smolblog\Core\Connector\Commands;
 use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Delete a Connection.

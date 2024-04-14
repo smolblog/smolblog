@@ -12,7 +12,7 @@ use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Core\ContentV1\GenericContent;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 

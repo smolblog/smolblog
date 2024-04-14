@@ -6,8 +6,8 @@ use Smolblog\Test\TestCase;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\EndpointTestToolkit;
 
 final class AuthInitTest extends TestCase {

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Events;
 
 use DateTimeInterface;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates that a piece of content has been marked as deleted.

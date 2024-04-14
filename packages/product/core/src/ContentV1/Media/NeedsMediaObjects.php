@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1\Media;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates that a message needs objects for its media IDs.

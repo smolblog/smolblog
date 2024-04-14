@@ -13,9 +13,9 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\ActivityPub\Objects\Actor;
 use Smolblog\Framework\ActivityPub\Objects\ActorType;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Objects\HttpResponse;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to give an ActivityPub actor for a site.

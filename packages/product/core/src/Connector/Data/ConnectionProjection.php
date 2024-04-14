@@ -7,7 +7,7 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\{ConnectionDeleted, ConnectionEstablished, ConnectionRefreshed};
 use Smolblog\Core\Connector\Queries\{ConnectionBelongsToUser, ConnectionById, ConnectionsForUser};
 use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Save a Connection with its information.

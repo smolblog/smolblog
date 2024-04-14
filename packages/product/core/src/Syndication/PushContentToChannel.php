@@ -11,7 +11,7 @@ use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
 
 /**
  * Push the given content to the given channel using the given connection. Full objects as this is intended to be an

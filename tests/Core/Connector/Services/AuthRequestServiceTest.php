@@ -11,8 +11,8 @@ use Smolblog\Core\Connector\ConnectorInitData;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class AuthRequestServiceTest extends TestCase {

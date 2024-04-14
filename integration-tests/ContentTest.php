@@ -33,7 +33,7 @@ use Smolblog\Core\ContentV1\Types\Reblog\CreateReblog;
 use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentInfo;
 use Smolblog\Core\ContentV1\Types\Reblog\PublishReblog;
 use Smolblog\Core\ContentV1\Types\Reblog\Reblog;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Mock\App;
 use Smolblog\Mock\SecurityService;
 

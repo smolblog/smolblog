@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Events;
 
 use DateTimeInterface;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a permalink has been assigned to a piece of content.

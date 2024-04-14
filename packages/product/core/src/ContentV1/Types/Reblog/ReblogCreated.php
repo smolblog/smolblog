@@ -6,7 +6,7 @@ use DateTimeInterface;
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Core\ContentV1\Events\ContentCreated;
 use Smolblog\Core\ContentV1\Markdown\NeedsMarkdownRendered;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a Reblog has been created.

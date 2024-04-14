@@ -5,8 +5,8 @@ namespace Smolblog\Mock;
 use Smolblog\Core\Model as CoreModel;
 use Smolblog\Framework\Infrastructure\AppKit;
 use Smolblog\Framework\Infrastructure\ServiceRegistry;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Mock\Model as MockModel;
 
 final class App {

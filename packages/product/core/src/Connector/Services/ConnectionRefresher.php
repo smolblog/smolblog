@@ -8,8 +8,8 @@ use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Service to check if a Connection needs a refresh and save the refreshed Connection if so.

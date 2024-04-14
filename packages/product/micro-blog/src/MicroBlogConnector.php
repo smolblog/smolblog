@@ -10,7 +10,7 @@ use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\NoRefreshKit;
 use Smolblog\Core\ContentV1\Content;
-use Smolblog\Framework\Objects\RandomIdentifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 /**
  * Connection class for Micro.blog

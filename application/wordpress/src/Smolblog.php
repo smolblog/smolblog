@@ -17,7 +17,7 @@ use Smolblog\Tumblr;
 use Smolblog\Framework\Infrastructure\AppKit;
 use Smolblog\Framework\Infrastructure\DefaultModel;
 use Smolblog\Framework\Infrastructure\ServiceRegistry;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\WP\Helpers\DatabaseHelper;
 use Smolblog\WP\Helpers\DebugEndpoint;

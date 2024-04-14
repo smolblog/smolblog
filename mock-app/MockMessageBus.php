@@ -3,8 +3,8 @@
 namespace Smolblog\Mock;
 
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
-use Smolblog\Framework\Messages\Message;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Foundation\Value\Messages\Query;
 
 class MockMessageBus extends DefaultMessageBus {
 	private int $indent = 0;

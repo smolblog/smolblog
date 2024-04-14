@@ -12,8 +12,8 @@ use Smolblog\Core\User\UserById;
 use Smolblog\Core\User\UserCanEditProfile;
 use Smolblog\Core\User\UserSites;
 use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\RandomIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 class UserHelper implements Listener {
 

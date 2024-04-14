@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Types\Note;
 use Smolblog\Core\ContentV1\EditContentCommandKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Change the text on a Note.

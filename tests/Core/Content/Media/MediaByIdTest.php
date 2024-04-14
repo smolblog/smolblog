@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Media;
 
 use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class MediaByIdTest extends TestCase {

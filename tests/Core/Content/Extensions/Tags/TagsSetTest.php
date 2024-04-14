@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Extensions\Tags;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class TagsSetTest extends TestCase {
 	public function testItGivesTheFullExtension() {
