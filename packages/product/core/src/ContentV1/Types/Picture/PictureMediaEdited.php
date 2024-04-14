@@ -11,7 +11,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates that the media on this picture has changed.
  */
-class PictureMediaEdited extends ContentBodyEdited implements NeedsMediaObjects, NeedsMediaRendered {
+readonly class PictureMediaEdited extends ContentBodyEdited implements NeedsMediaObjects, NeedsMediaRendered {
 	/**
 	 * Media to display.
 	 *

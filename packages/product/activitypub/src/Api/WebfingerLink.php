@@ -3,12 +3,12 @@
 namespace Smolblog\ActivityPub\Api;
 
 use Smolblog\Api\ArrayType;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * A link property on a Webfinger response.
  */
-class WebfingerLink extends Value {
+readonly class WebfingerLink extends Value {
 	/**
 	 * Undocumented function
 	 *
@@ -32,7 +32,7 @@ class WebfingerLink extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		return array_filter(parent::toArray(), fn($item) => isset($item));
+	public function serializeValue(): array {
+		return array_filter(parent::serializeValue(), fn($item) => isset($item));
 	}
 }

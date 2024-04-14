@@ -5,8 +5,8 @@ namespace Smolblog\Core\ContentV1\Data;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\ContentV1\Events\ContentEvent;
-use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Attributes\EventStoreLayerListener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
  * Persist the content events.

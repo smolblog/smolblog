@@ -2,12 +2,12 @@
 
 namespace Smolblog\ContentProvenance;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * A C2PA Manifest, used to track changes.
  */
-class ProvenanceManifest extends Value {
+readonly class ProvenanceManifest extends Value {
 	/**
 	 * Construct the Manifest.
 	 *
@@ -31,7 +31,7 @@ class ProvenanceManifest extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 	$arr = [
 			'ta_url' => 'http://timestamp.digicert.com',
 			'claim_generator' => 'Smolblog/0.1',
@@ -39,7 +39,7 @@ class ProvenanceManifest extends Value {
 				[
 					'label' => 'c2pa.actions',
 					'data' => [
-						'actions' => array_map(fn($a) => $a->toArray(), $this->actions),
+						'actions' => array_map(fn($a) => $a->serializeValue(), $this->actions),
 					],
 				],
 			],

@@ -75,11 +75,11 @@ readonly class Actor extends ActivityPubObject {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		$base = parent::toArray();
+	public function serializeValue(): array {
+		$base = parent::serializeValue();
 		$base['type'] = $this->type->value;
 		if (isset($this->publicKey)) {
-			$base['publicKey'] = $this->publicKey->toArray();
+			$base['publicKey'] = $this->publicKey->serializeValue();
 		}
 		return $base;
 	}
@@ -90,10 +90,10 @@ readonly class Actor extends ActivityPubObject {
 	 * @param array $data Serialized data.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		unset($data['@context']);
 		$data['type'] = ActorType::from($data['type']);
-		$data['publicKey'] = isset($data['publicKey']) ? ActorPublicKey::fromArray($data['publicKey']) : null;
+		$data['publicKey'] = isset($data['publicKey']) ? ActorPublicKey::deserializeValue($data['publicKey']) : null;
 
 		return new static(...$data);
 	}

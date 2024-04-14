@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * structure is or will be, the external system can fire this event when the permalink is assigned (usually on content
  * publish). This will allow Smolblog's projections to remain in sync with the outside system.
  */
-class PermalinkAssigned extends ContentEvent {
+readonly class PermalinkAssigned extends ContentEvent {
 	/**
 	 * Create the event
 	 *

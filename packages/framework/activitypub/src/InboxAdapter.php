@@ -155,7 +155,7 @@ abstract class InboxAdapter {
 			default:
 				$this->log->error('Unhandled Undo request received', [
 					'inbox' => $inboxContext->inboxKey,
-					'message' => $message->toArray(),
+					'message' => $message->serializeValue(),
 				]);
 				break;
 		}
@@ -184,7 +184,7 @@ abstract class InboxAdapter {
 			default:
 				$this->log->error('Unhandled Delete request received', [
 					'inbox' => $inboxContext->inboxKey,
-					'message' => $message->toArray(),
+					'message' => $message->serializeValue(),
 				]);
 				break;
 		}
@@ -200,7 +200,7 @@ abstract class InboxAdapter {
 	protected function handleFollow(Follow $request, InboxRequestContext $inboxContext): void {
 		$this->log->debug('Unhandled Follow request received', [
 			'inbox' => $inboxContext->inboxKey,
-			'message' => $request->toArray(),
+			'message' => $request->serializeValue(),
 		]);
 	}
 
@@ -215,8 +215,8 @@ abstract class InboxAdapter {
 	protected function undoFollow(Undo $message, Follow $request, InboxRequestContext $inboxContext): void {
 		$this->log->debug('Unhandled Undo Follow request received', [
 			'inbox' => $inboxContext->inboxKey,
-			'message' => $message->toArray(),
-			'request' => $request->toArray(),
+			'message' => $message->serializeValue(),
+			'request' => $request->serializeValue(),
 		]);
 	}
 
@@ -231,8 +231,8 @@ abstract class InboxAdapter {
 	protected function deleteActor(Delete $message, Actor $actor, InboxRequestContext $inboxContext): void {
 		$this->log->debug('Unhandled Delete Actor request received', [
 			'inbox' => $inboxContext->inboxKey,
-			'message' => $message->toArray(),
-			'actor' => $actor->toArray(),
+			'message' => $message->serializeValue(),
+			'actor' => $actor->serializeValue(),
 		]);
 	}
 

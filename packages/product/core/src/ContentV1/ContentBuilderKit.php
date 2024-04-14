@@ -4,29 +4,13 @@ namespace Smolblog\Core\ContentV1;
 
 use DateTimeInterface;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Traits\MessageKit;
 use Throwable;
 
 /**
  * Allow an object to build a piece of content over time.
  */
 trait ContentBuilderKit {
-	/**
-	 * Store the in-progress properties of the content.
-	 *
-	 * An associative array that will hold the different aspects of the Content until it is ready to be fully
-	 * instantiated.
-	 *
-	 * @var array
-	 */
-	protected array $contentProps = [];
-
-	/**
-	 * The full Content object as of this event.
-	 *
-	 * @var Content|null
-	 */
-	protected ?Content $contentState;
-
 	/**
 	 * Get the state of the content as of this event.
 	 *
@@ -37,9 +21,12 @@ trait ContentBuilderKit {
 	 * @return Content
 	 */
 	public function getContent(): Content {
+		$contentProps = $this->getMetaValue('props') ?? [];
 		try {
-			$this->contentState ??= new Content(...$this->contentProps);
-			return $this->contentState;
+			if (!$this->getMetaValue('state')) {
+				$this->setMetaValue('state', new Content(...$contentProps));
+			}
+			return $this->getMetaValue('state');
 		} catch (Throwable $err) {
 			throw new InvalidContentException(
 				message: 'Called getContent() before Content was complete.',
@@ -55,8 +42,11 @@ trait ContentBuilderKit {
 	 * @return void
 	 */
 	public function setContentType(ContentType $type): void {
-		$this->contentProps['type'] = $type;
-		$this->contentState = null;
+		$contentProps = $this->getMetaValue('props') ?? [];
+		$contentProps['type'] = $type;
+
+		$this->setMetaValue('props', $contentProps);
+		$this->setMetaValue('state', null);
 	}
 
 	/**
@@ -66,9 +56,12 @@ trait ContentBuilderKit {
 	 * @return void
 	 */
 	public function addContentExtension(ContentExtension $extension): void {
-		$this->contentProps['extensions'] ??= [];
-		$this->contentProps['extensions'][get_class($extension)] = $extension;
-		$this->contentState = null;
+		$contentProps = $this->getMetaValue('props') ?? [];
+		$contentProps['extensions'] ??= [];
+		$contentProps['extensions'][get_class($extension)] = $extension;
+
+		$this->setMetaValue('props', $contentProps);
+		$this->setMetaValue('state', null);
 	}
 
 	/**
@@ -90,7 +83,8 @@ trait ContentBuilderKit {
 		?DateTimeInterface $publishTimestamp = null,
 		?ContentVisibility $visibility = null,
 	): void {
-		$this->contentProps = array_merge($this->contentProps, array_filter([
+		$contentProps = $this->getMetaValue('props') ?? [];
+		$contentProps = array_merge($contentProps, array_filter([
 			'id' => $id,
 			'siteId' => $siteId,
 			'authorId' => $authorId,
@@ -98,6 +92,8 @@ trait ContentBuilderKit {
 			'publishTimestamp' => $publishTimestamp,
 			'visibility' => $visibility,
 		], fn($val) => isset($val)));
-		$this->contentState = null;
+
+		$this->setMetaValue('props', $contentProps);
+		$this->setMetaValue('state', null);
 	}
 }

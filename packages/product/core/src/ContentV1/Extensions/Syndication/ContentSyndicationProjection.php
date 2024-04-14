@@ -4,8 +4,8 @@ namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 

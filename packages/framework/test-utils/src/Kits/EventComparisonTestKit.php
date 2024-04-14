@@ -3,11 +3,12 @@
 namespace Smolblog\Test\Kits;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use Smolblog\Framework\Messages\Event;
+use Smolblog\Foundation\Service\Messaging\Event;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
 use Smolblog\Test\Constraints\EventIsEquivalent;
 
 trait EventComparisonTestKit {
-	private function eventEquivalentTo(Event $expected): Constraint {
+	private function eventEquivalentTo(DomainEvent $expected): Constraint {
 		return new EventIsEquivalent($expected);
 	}
 }

@@ -10,12 +10,12 @@ use Smolblog\Core\ContentV1\Extensions\Syndication\Syndication;
 use Smolblog\Core\ContentV1\Extensions\Syndication\SyndicationLink;
 use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * API playload for Content
  */
-class ContentPayload extends Value {
+readonly class ContentPayload extends Value {
 	/**
 	 * Construct the payload
 	 *
@@ -40,7 +40,7 @@ class ContentPayload extends Value {
 	 * @param array $data Serialized array.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		if (isset($data['extensions']['syndication'])) {
 			$data['extensions']['syndication']['channels'] = array_map(
 				fn($id) => Identifier::fromString($id),
@@ -52,8 +52,8 @@ class ContentPayload extends Value {
 
 		return new ContentPayload(
 			id: self::safeDeserializeIdentifier($data['id'] ?? ''),
-			type: ContentTypePayload::fromArray($data['type']),
-			meta: BaseAttributesPayload::fromArray($data['meta']),
+			type: ContentTypePayload::deserializeValue($data['type']),
+			meta: BaseAttributesPayload::deserializeValue($data['meta']),
 			extensions: $data['extensions'],
 			published: $published,
 		);

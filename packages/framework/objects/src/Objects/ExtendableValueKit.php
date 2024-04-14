@@ -15,7 +15,7 @@ trait ExtendableValueKit {
 	 *
 	 * @var array
 	 */
-	private array $extendedFields = [];
+	private readonly array $extendedFields;
 
 	/**
 	 * Quick access for any added variables.
@@ -50,7 +50,7 @@ trait ExtendableValueKit {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		$publicFields = get_object_vars($this);
 		unset($publicFields['extendedFields']);
 		return [...$publicFields, ...$this->extendedFields];

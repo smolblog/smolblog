@@ -3,12 +3,12 @@
 namespace Smolblog\Api\User;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Expected body for an Update Profile request.
  */
-class UpdateProfileBody extends Value {
+readonly class UpdateProfileBody extends Value {
 	/**
 	 * Construct the payload.
 	 *

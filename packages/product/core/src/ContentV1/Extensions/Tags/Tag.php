@@ -2,12 +2,12 @@
 
 namespace Smolblog\Core\ContentV1\Extensions\Tags;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * An individual tag.
  */
-class Tag extends Value {
+readonly class Tag extends Value {
 	/**
 	 * The visible text of the tag.
 	 *

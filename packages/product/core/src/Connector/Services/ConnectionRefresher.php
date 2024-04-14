@@ -6,8 +6,8 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\User\User;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;
 

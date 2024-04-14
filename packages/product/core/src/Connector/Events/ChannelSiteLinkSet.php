@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates that a Channel has been linked to a Site.
  */
-class ChannelSiteLinkSet extends ConnectorEvent {
+readonly class ChannelSiteLinkSet extends ConnectorEvent {
 	/**
 	 * Create the event.
 	 *

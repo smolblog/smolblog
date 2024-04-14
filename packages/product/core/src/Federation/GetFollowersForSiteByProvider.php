@@ -2,13 +2,14 @@
 
 namespace Smolblog\Core\Federation;
 
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the array of followers for the given site.
  */
-class GetFollowersForSiteByProvider extends MemoizableQuery {
+readonly class GetFollowersForSiteByProvider extends Query implements Memoizable {
+	use MemoizableKit;
 	/**
 	 * Construct the query.
 	 *

@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * A "base" attribute is an attribute on the Content class, like permalinkSlug and timestamp. These attributes
  * are common across all content types and are not extensions.
  */
-class ContentBaseAttributeEdited extends ContentEvent {
+readonly class ContentBaseAttributeEdited extends ContentEvent {
 	/**
 	 * Date and time this content was first published. Null indicates no change.
 	 *

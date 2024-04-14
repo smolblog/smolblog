@@ -8,5 +8,5 @@ namespace Smolblog\Core\ContentV1\Events;
  * Removing content could have a number of side-effects that it can be useful to call out. Note that "removal" does not
  * have to indicate "deleted," as this could also be triggered by making a post "private"
  */
-class PublicContentRemoved extends PublicContentEvent {
+readonly class PublicContentRemoved extends PublicContentEvent {
 }

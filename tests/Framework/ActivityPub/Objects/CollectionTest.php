@@ -20,6 +20,6 @@ final class CollectionTest extends TestCase {
 		$actual = new Collection(id: '//smol.blog/something');
 
 		$this->assertNull($actual->totalItems);
-		$this->assertArrayNotHasKey('totalItems', $actual->toArray());
+		$this->assertArrayNotHasKey('totalItems', $actual->serializeValue());
 	}
 }

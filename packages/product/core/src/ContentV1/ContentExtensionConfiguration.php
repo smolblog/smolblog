@@ -2,12 +2,12 @@
 
 namespace Smolblog\Core\ContentV1;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Store configuration information for a Content Extension.
  */
-class ContentExtensionConfiguration extends Value {
+readonly class ContentExtensionConfiguration extends Value {
 	/**
 	 * Construct the configuration.
 	 *

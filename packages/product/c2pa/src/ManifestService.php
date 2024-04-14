@@ -8,7 +8,7 @@ use Smolblog\ContentProvenance\Actions\Published;
 use Smolblog\Core\ContentV1\Media\HandleUploadedMedia;
 use Smolblog\Core\ContentV1\Media\MediaService;
 use Smolblog\Core\ContentV1\Media\MediaType;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
 use Elephox\Mimey\MimeTypesInterface;
 
 /**
@@ -71,7 +71,7 @@ class ManifestService implements Listener {
 	#[ExecutionLayerListener(earlier: 5)]
 	public function onHandleUploadedMedia(HandleUploadedMedia $command) {
 		$this->logs->debug('ManifestService::onHandleUploadedMedia', [
-			'command' => $command->toArray(),
+			'command' => $command->serializeValue(),
 			'Media type' => $command->file->getClientMediaType(),
 			'Expected file' => $command->file->getStream()->getMetadata('uri'),
 		]);

@@ -18,7 +18,7 @@ abstract class MemoizableQuery extends Query {
 	 * @return string
 	 */
 	public function getMemoKey(): string {
-		$values = $this->toArray();
+		$values = $this->serializeValue();
 		unset($values['results']);
 		return static::class . ':' . md5(json_encode($values));
 	}

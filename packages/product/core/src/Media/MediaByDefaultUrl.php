@@ -2,13 +2,14 @@
 
 namespace Smolblog\Core\ContentV1\Media;
 
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Search for a media object by its default URL.
  */
-class MediaByDefaultUrl extends MemoizableQuery {
+readonly class MediaByDefaultUrl extends Query implements Memoizable {
+	use MemoizableKit;
 	/**
 	 * Create the query.
 	 *

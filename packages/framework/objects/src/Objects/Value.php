@@ -16,7 +16,7 @@ use JsonSerializable;
  * Declaring `readonly` properties in a defined object allows PHP to typecheck the object instead of relying on arrays
  * with specific keys.
  */
-abstract class Value implements ArraySerializable, JsonSerializable {
+abstract class Value implements SerializeableValue, JsonSerializable {
 	use SerializableKit;
 
 	/**

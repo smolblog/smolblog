@@ -22,7 +22,7 @@ use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Core\ContentV1\Media\NeedsMediaObjects;
 use Smolblog\Core\Site\SiteEvent;
 use Smolblog\Foundation\Value\Messages\Command;
-use Smolblog\Framework\Messages\Event;
+use Smolblog\Foundation\Service\Messaging\Event;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\RandomIdentifier;
@@ -94,11 +94,11 @@ class EventIsEquivalent extends Constraint {
 			throw new InvalidArgumentException('Object is not an Event.');
 		}
 
-		$expectedData = $this->expected->toArray();
+		$expectedData = $this->expected->serializeValue();
 		unset($expectedData['id']);
 		unset($expectedData['timestamp']);
 
-		$actualData = $other->toArray();
+		$actualData = $other->serializeValue();
 		unset($actualData['id']);
 		unset($actualData['timestamp']);
 
@@ -108,11 +108,11 @@ class EventIsEquivalent extends Constraint {
 	protected function fail($other, $description, ?ComparisonFailure $comparisonFailure = null): void
 	{
 		if ($comparisonFailure === null) {
-			$expectedData = $this->expected->toArray();
+			$expectedData = $this->expected->serializeValue();
 			unset($expectedData['id']);
 			unset($expectedData['timestamp']);
 
-			$actualData = $other->toArray();
+			$actualData = $other->serializeValue();
 			unset($actualData['id']);
 			unset($actualData['timestamp']);
 
@@ -213,7 +213,7 @@ trait NeedsMediaRenderedTestKit {
 
 trait ContentEventTestKit {
 	public function testItWillSerializeAndDeserializeToItself() {
-		$this->assertEquals($this->subject, ContentEvent::fromTypedArray($this->subject->toArray()));
+		$this->assertEquals($this->subject, ContentEvent::fromTypedArray($this->subject->serializeValue()));
 	}
 }
 
@@ -232,7 +232,7 @@ trait ContentExtensionServiceTestKit {
 trait SerializableTestKit {
 	public function testItWillSerializeToArrayAndDeserializeToItself() {
 		$class = get_class($this->subject);
-		$this->assertEquals($this->subject, $class::fromArray($this->subject->toArray()));
+		$this->assertEquals($this->subject, $class::deserializeValue($this->subject->serializeValue()));
 	}
 
 	public function testItWillSerializeToJsonAndDeserializeToItself() {
@@ -243,7 +243,7 @@ trait SerializableTestKit {
 
 trait SiteEventTestKit {
 	public function testItWillSerializeAndDeserializeToItself() {
-		$this->assertEquals($this->subject, SiteEvent::fromTypedArray($this->subject->toArray()));
+		$this->assertEquals($this->subject, SiteEvent::fromTypedArray($this->subject->serializeValue()));
 	}
 }
 

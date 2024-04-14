@@ -3,9 +3,9 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
-use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\SecurityLayerListener;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**

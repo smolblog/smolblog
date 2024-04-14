@@ -13,7 +13,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a Picture has been created.
  */
-class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, NeedsMediaObjects, NeedsMediaRendered {
+readonly class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, NeedsMediaObjects, NeedsMediaRendered {
 	/**
 	 * Media to display.
 	 *

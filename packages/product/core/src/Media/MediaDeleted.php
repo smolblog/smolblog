@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicate that attributes have been changed on a piece of media.
  */
-class MediaDeleted extends ContentEvent {
+readonly class MediaDeleted extends ContentEvent {
 	/**
 	 * Construct the event.
 	 *

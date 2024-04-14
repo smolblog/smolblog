@@ -4,12 +4,12 @@ namespace Smolblog\Api\Connector;
 
 use Smolblog\Api\ArrayType;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * A connection to an external content service.
  */
-class Connection extends Value {
+readonly class Connection extends Value {
 	/**
 	 * Construct the Connection
 	 *

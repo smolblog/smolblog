@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates the Reblog's information about the external URL has been changed.
  */
-class ReblogInfoChanged extends ContentBodyEdited {
+readonly class ReblogInfoChanged extends ContentBodyEdited {
 	use ReblogEventKit;
 
 	/**
@@ -41,7 +41,7 @@ class ReblogInfoChanged extends ContentBodyEdited {
 	 * @return array
 	 */
 	public function getPayload(): array {
-		return [ 'url' => $this->url, 'info' => $this->info->toArray() ];
+		return [ 'url' => $this->url, 'info' => $this->info->serializeValue() ];
 	}
 
 	/**
@@ -51,6 +51,6 @@ class ReblogInfoChanged extends ContentBodyEdited {
 	 * @return array
 	 */
 	protected static function payloadFromArray(array $payload): array {
-		return [ 'url' => $payload['url'], 'info' => ExternalContentInfo::fromArray($payload['info']) ];
+		return [ 'url' => $payload['url'], 'info' => ExternalContentInfo::deserializeValue($payload['info']) ];
 	}
 }

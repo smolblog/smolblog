@@ -2,10 +2,10 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
-use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\Attributes\CheckMemoLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\SaveMemoLayerListener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
  * Simple class to memoize a query for the duration of a web request.

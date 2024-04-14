@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\ContentV1\Markdown;
 
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**

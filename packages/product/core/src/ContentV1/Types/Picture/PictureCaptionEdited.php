@@ -10,7 +10,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates that the media on this picture has changed.
  */
-class PictureCaptionEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
+readonly class PictureCaptionEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
 	/**
 	 * Store the HTML for the media at this point.
 	 *

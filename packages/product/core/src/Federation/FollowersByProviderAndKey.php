@@ -2,14 +2,15 @@
 
 namespace Smolblog\Core\Federation;
 
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 
 /**
  * Get the array of followers with the given provider+key.
  *
  * Used when something happens to the following entity, not just the single follower relationship.
  */
-class FollowersByProviderAndKey extends MemoizableQuery {
+readonly class FollowersByProviderAndKey extends Query implements Memoizable {
+	use MemoizableKit;
 	/**
 	 * Construct the query.
 	 *

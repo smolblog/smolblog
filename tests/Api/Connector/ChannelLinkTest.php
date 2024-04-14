@@ -43,7 +43,7 @@ final class ChannelLinkTest extends TestCase {
 
 		$endpoint->run(
 			userId: Identifier::fromString('f19854f0-8859-433e-80cc-562db9cc9a77'),
-			body: ChannelLinkRequest::fromArray([
+			body: ChannelLinkRequest::deserializeValue([
 				'channelId' => '33fa1634-3b14-4156-a7ae-8cfa4721d0d9',
 				'siteId' => '18d40e95-62d4-40a8-88dc-fd4e2707b6cf',
 				'push' => true,

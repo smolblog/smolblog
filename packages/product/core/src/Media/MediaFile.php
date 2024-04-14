@@ -2,14 +2,17 @@
 
 namespace Smolblog\Core\ContentV1\Media;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
 /**
  * Information on a Media's file used by the MediaHandler.
  */
-class MediaFile extends Entity {
+readonly class MediaFile extends Value implements Entity {
+	use EntityKit;
 	/**
 	 * Construct the file.
 	 *
@@ -24,6 +27,6 @@ class MediaFile extends Entity {
 		public readonly array $details,
 		public readonly ?string $mimeType = null,
 	) {
-		parent::__construct(id: $id);
+		$this->id = $id;
 	}
 }

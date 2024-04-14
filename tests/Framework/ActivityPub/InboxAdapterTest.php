@@ -285,7 +285,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Follow request received',
-			['inbox' => $this->inboxKey, 'message' => $message->toArray()]
+			['inbox' => $this->inboxKey, 'message' => $message->serializeValue()]
 		);
 
 		$this->subject->handleRequest($request);
@@ -309,7 +309,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Undo Follow request received',
-			['inbox' => $this->inboxKey, 'message' => $message->toArray(), 'request' => $follow->toArray()]
+			['inbox' => $this->inboxKey, 'message' => $message->serializeValue(), 'request' => $follow->serializeValue()]
 		);
 		$this->logger->expects($this->never())->method('error');
 
@@ -334,7 +334,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Undo Follow request received',
-			['inbox' => $this->inboxKey, 'message' => $message->toArray(), 'request' => $follow->toArray()]
+			['inbox' => $this->inboxKey, 'message' => $message->serializeValue(), 'request' => $follow->serializeValue()]
 		);
 		$this->logger->expects($this->never())->method('error');
 
@@ -353,7 +353,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unhandled Undo request received',
-			['inbox' => null, 'message' => $message->toArray()] // Inbox is null since we are not using $this->subject.
+			['inbox' => null, 'message' => $message->serializeValue()] // Inbox is null since we are not using $this->subject.
 		);
 
 		(new class(verifier: $this->verifier, log: $this->logger) extends InboxAdapter {})->handleRequest($request);
@@ -376,7 +376,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unhandled Undo request received',
-			['inbox' => $this->inboxKey, 'message' => $message->toArray()]
+			['inbox' => $this->inboxKey, 'message' => $message->serializeValue()]
 		);
 
 		$this->subject->handleRequest($request);
@@ -399,7 +399,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Delete Actor request received',
-			['inbox' => $this->inboxKey, 'message' => $message->toArray(), 'actor' => $actor->toArray()]
+			['inbox' => $this->inboxKey, 'message' => $message->serializeValue(), 'actor' => $actor->serializeValue()]
 		);
 		$this->logger->expects($this->never())->method('error');
 
@@ -423,7 +423,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('debug')->with(
 			'Unhandled Delete Actor request received',
-			['inbox' => $this->inboxKey, 'message' => $message->toArray(), 'actor' => $actor->toArray()]
+			['inbox' => $this->inboxKey, 'message' => $message->serializeValue(), 'actor' => $actor->serializeValue()]
 		);
 		$this->logger->expects($this->never())->method('error');
 
@@ -442,7 +442,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unhandled Delete request received',
-			['inbox' => null, 'message' => $message->toArray()] // Inbox is null since we are not using $this->subject.
+			['inbox' => null, 'message' => $message->serializeValue()] // Inbox is null since we are not using $this->subject.
 		);
 
 		(new class(verifier: $this->verifier, log: $this->logger) extends InboxAdapter {})->handleRequest($request);
@@ -465,7 +465,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unhandled Delete request received',
-			['inbox' => $this->inboxKey, 'message' => $message->toArray()]
+			['inbox' => $this->inboxKey, 'message' => $message->serializeValue()]
 		);
 
 		$this->subject->handleRequest($request);
@@ -488,7 +488,7 @@ final class InboxAdapterTest extends TestCase {
 
 		$this->logger->expects($this->once())->method('error')->with(
 			'Unknown ActivityPub message received',
-			['inbox' => $this->inboxKey, 'body' => $message->toArray()]
+			['inbox' => $this->inboxKey, 'body' => $message->serializeValue()]
 		);
 		$this->logger->expects($this->never())->method('debug');
 

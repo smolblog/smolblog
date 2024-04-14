@@ -32,7 +32,7 @@ final class ConnectorEventStreamTest extends TestCase {
 	}
 
 	public function testItPersistsAConnectorEvent() {
-		$event = new class() extends ConnectorEvent {
+		$event = new readonly class() extends ConnectorEvent {
 			public function __construct() {
 				parent::__construct(
 					connectionId: Identifier::fromString('3bf85790-60f7-41f5-a75f-a3b806be6a58'),

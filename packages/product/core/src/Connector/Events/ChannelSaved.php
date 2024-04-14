@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a Channel has been created from a Connection.
  */
-class ChannelSaved extends ConnectorEvent {
+readonly class ChannelSaved extends ConnectorEvent {
 	/**
 	 * Create the event.
 	 *

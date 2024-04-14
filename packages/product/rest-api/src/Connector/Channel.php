@@ -3,12 +3,12 @@
 namespace Smolblog\Api\Connector;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * An external content source or destination.
  */
-class Channel extends Value {
+readonly class Channel extends Value {
 	/**
 	 * Construct the Channel
 	 *
@@ -32,9 +32,9 @@ class Channel extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return [
-			...parent::toArray(),
+			...parent::serializeValue(),
 			'id' => $this->id->toString(),
 		];
 	}

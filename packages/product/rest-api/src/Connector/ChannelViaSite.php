@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\Connector;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * A Channel plus the permissions given on a site.

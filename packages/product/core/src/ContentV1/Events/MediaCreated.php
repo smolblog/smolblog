@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a piece of media has been added to the media library.
  */
-class MediaCreated extends ContentEvent {
+readonly class MediaCreated extends ContentEvent {
 	/**
 	 * Final URL of the media file referenced.
 	 *

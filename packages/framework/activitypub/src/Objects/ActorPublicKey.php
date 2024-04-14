@@ -2,15 +2,14 @@
 
 namespace Smolblog\Framework\ActivityPub\Objects;
 
-use JsonSerializable;
-use Smolblog\Framework\Objects\ArraySerializable;
-use Smolblog\Framework\Objects\SerializableKit;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Framework\Objects\SerializeableValue;
 
 /**
  * A public encryption key attached to an actor.
  */
-readonly class ActorPublicKey implements ArraySerializable, JsonSerializable {
-	use SerializableKit;
+readonly class ActorPublicKey implements SerializeableValue {
+	use SerializableValueKit;
 
 	/**
 	 * Construct the object.

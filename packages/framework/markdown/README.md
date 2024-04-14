@@ -69,7 +69,7 @@ The markdown:
 	$extArray = json_decode($results['extensions'] ?? '{}', associative: true);
 	$extParsed = [];
 	foreach ($extArray as $class => $data) {
-		$extParsed[$class] = $class::fromArray($data);
+		$extParsed[$class] = $class::deserializeValue($data);
 	}
 	```
 
@@ -78,7 +78,7 @@ The markup:
 	<pre><code class="language-php">$extArray = json_decode($results['extensions'] ?? '{}', associative: true);
 	$extParsed = [];
 	foreach ($extArray as $class => $data) {
-		$extParsed[$class] = $class::fromArray($data);
+		$extParsed[$class] = $class::deserializeValue($data);
 	}
 	</code></pre>
 

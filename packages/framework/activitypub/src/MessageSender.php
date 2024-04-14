@@ -90,7 +90,7 @@ class MessageSender {
 			}
 
 			$this->log->error($errorMessage, [
-				'message' => $message->toArray(),
+				'message' => $message->serializeValue(),
 				'inbox' => $toInbox,
 				'signed' => $request->hasHeader('signature') ? "With key $withKeyId" : 'NO',
 			]);

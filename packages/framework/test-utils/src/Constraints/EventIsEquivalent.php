@@ -5,24 +5,24 @@ namespace Smolblog\Test\Constraints;
 use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use Smolblog\Framework\Messages\Event;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 class EventIsEquivalent extends Constraint {
-	public function __construct(private Event $expected) {}
+	public function __construct(private DomainEvent $expected) {}
 
 	public function toString(): string { return 'two Events are equivalent'; }
 	protected function failureDescription($other): string { return $this->toString(); }
 
 	protected function matches(mixed $other): bool {
-		if (!is_a($other, Event::class)) {
+		if (!is_a($other, DomainEvent::class)) {
 			throw new InvalidArgumentException('Object is not an Event.');
 		}
 
-		$expectedData = $this->expected->toArray();
+		$expectedData = $this->expected->serializeValue();
 		unset($expectedData['id']);
 		unset($expectedData['timestamp']);
 
-		$actualData = $other->toArray();
+		$actualData = $other->serializeValue();
 		unset($actualData['id']);
 		unset($actualData['timestamp']);
 
@@ -32,11 +32,11 @@ class EventIsEquivalent extends Constraint {
 	protected function fail(mixed $other, string $description, ?ComparisonFailure $comparisonFailure = null): never
 	{
 		if ($comparisonFailure === null) {
-			$expectedData = $this->expected->toArray();
+			$expectedData = $this->expected->serializeValue();
 			unset($expectedData['id']);
 			unset($expectedData['timestamp']);
 
-			$actualData = $other->toArray();
+			$actualData = $other->serializeValue();
 			unset($actualData['id']);
 			unset($actualData['timestamp']);
 

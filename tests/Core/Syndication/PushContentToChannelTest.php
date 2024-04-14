@@ -75,8 +75,8 @@ final class PushContentToChannelTest extends TestCase {
 	public function testItChecksForPublicContent() {
 		$this->expectException(InvalidCommandParametersException::class);
 
-		$badContent = Content::fromArray([
-			...$this->content->toArray(),
+		$badContent = Content::deserializeValue([
+			...$this->content->serializeValue(),
 			'visibility' => 'draft',
 		]);
 
@@ -90,8 +90,8 @@ final class PushContentToChannelTest extends TestCase {
 	public function testItChecksForMatchingChannelAndConnection() {
 		$this->expectException(InvalidCommandParametersException::class);
 
-		$badChannel = Channel::fromArray([
-			...$this->channel->toArray(),
+		$badChannel = Channel::deserializeValue([
+			...$this->channel->serializeValue(),
 			'connectionId' => $this->randomId()->toString(),
 		]);
 
@@ -105,8 +105,8 @@ final class PushContentToChannelTest extends TestCase {
 	public function testItChecksForMatchingChannelAndContent() {
 		$this->expectException(InvalidCommandParametersException::class);
 
-		$badContent = Content::fromArray([
-			...$this->content->toArray(),
+		$badContent = Content::deserializeValue([
+			...$this->content->serializeValue(),
 			'extensions' => [],
 		]);
 

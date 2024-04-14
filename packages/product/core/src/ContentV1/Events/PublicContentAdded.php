@@ -8,5 +8,5 @@ namespace Smolblog\Core\ContentV1\Events;
  * This is called out as its own event type as there are a number of significant actions that take place when content
  * is first published, including publishing to external channels.
  */
-class PublicContentAdded extends PublicContentEvent {
+readonly class PublicContentAdded extends PublicContentEvent {
 }

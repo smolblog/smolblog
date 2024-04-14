@@ -36,11 +36,11 @@ readonly class Activity extends ActivityPubObject {
 	 * @param array $data Serialized data.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		unset($data['@context']);
 		unset($data['type']);
 		if (is_array($data['actor'])) {
-			$data['actor'] = Actor::fromArray($data['actor']);
+			$data['actor'] = Actor::deserializeValue($data['actor']);
 		}
 		if (is_array($data['object'])) {
 			$data['object'] = ActivityPubBase::typedObjectFromArray($data['object']);
@@ -53,13 +53,13 @@ readonly class Activity extends ActivityPubObject {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		$base = parent::toArray();
+	public function serializeValue(): array {
+		$base = parent::serializeValue();
 		if (is_object($this->actor)) {
-			$base['actor'] = $this->actor->toArray();
+			$base['actor'] = $this->actor->serializeValue();
 		}
 		if (is_object($this->object)) {
-			$base['object'] = $this->object->toArray();
+			$base['object'] = $this->object->serializeValue();
 		}
 
 		return $base;

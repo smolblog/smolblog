@@ -4,6 +4,7 @@ namespace Smolblog\Foundation\Value\Messages;
 
 use PHPUnit\Framework\TestSize\Unknown;
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Traits\Entity;
@@ -32,6 +33,13 @@ readonly class DomainEvent extends Value implements Entity, Message, Serializabl
 	}
 
 	/**
+	 * Timestamp of the event.
+	 *
+	 * @var DateTimeField
+	 */
+	public DateTimeField $timestamp;
+
+	/**
 	 * Construct the event
 	 *
 	 * @param Identifier      $id          ID of the event.
@@ -41,13 +49,14 @@ readonly class DomainEvent extends Value implements Entity, Message, Serializabl
 	 * @param Identifier|null $entityId    Optional ID of the entity that this event belongs to.
 	 */
 	public function __construct(
-		Identifier $id,
-		public DateTimeField $timestamp,
 		public Identifier $userId,
+		Identifier $id = null,
+		DateTimeField $timestamp = null,
 		public ?Identifier $aggregateId = null,
 		public ?Identifier $entityId = null,
 	) {
 		$this->meta = new MessageMetadata();
-		$this->id = $id;
+		$this->id = $id ?? new DateIdentifier();
+		$this->timestamp = $timestamp ?? new DateTimeField();
 	}
 }

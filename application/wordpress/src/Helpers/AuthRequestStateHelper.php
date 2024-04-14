@@ -29,7 +29,7 @@ class AuthRequestStateHelper implements AuthRequestStateRepo {
 			return null;
 		}
 
-		return AuthRequestState::fromArray($state);
+		return AuthRequestState::deserializeValue($state);
 	}
 
 	/**
@@ -39,6 +39,6 @@ class AuthRequestStateHelper implements AuthRequestStateRepo {
 	 * @return void
 	 */
 	public function saveAuthRequestState( AuthRequestState $state ): void {
-		set_transient( $state->key, $state->toArray(), 60 * 15 );
+		set_transient( $state->key, $state->serializeValue(), 60 * 15 );
 	}
 }

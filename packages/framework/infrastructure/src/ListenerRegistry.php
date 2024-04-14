@@ -5,7 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Crell\Tukio\OrderedListenerProvider;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
  * Registrar for message listeners.
@@ -74,7 +74,7 @@ class ListenerRegistry implements ListenerProviderInterface, Registry {
 	 *
 	 * A listener service contains methods either
 	 *   1. beginning with `on` or
-	 *   2. containing a timing attribute from the Smolblog\Framework\Messages\Attributes namespace
+	 *   2. containing a timing attribute from the Smolblog\Foundation\Service\Messaging\Attributes namespace
 	 * that take a message object as its single parameter. The registry will note the parameter type and wire things up
 	 * accordingly.
 	 *

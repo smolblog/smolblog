@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Denotes that a file has been added to a MediaHandler's store.
  */
-class MediaFileAdded extends ContentEvent {
+readonly class MediaFileAdded extends ContentEvent {
 	/**
 	 * Construct the event.
 	 *

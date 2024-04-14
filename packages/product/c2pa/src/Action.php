@@ -2,12 +2,12 @@
 
 namespace Smolblog\ContentProvenance;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Describes an action recorded in a ProvinanceManifest.
  */
-class Action extends Value {
+readonly class Action extends Value {
 	/**
 	 * Create the Action.
 	 *
@@ -25,7 +25,7 @@ class Action extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		$arr = ['action' => $this->type];
 		if (isset($this->description)) {
 			$arr['description'] = $this->description;

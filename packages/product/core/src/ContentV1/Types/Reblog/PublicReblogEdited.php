@@ -7,5 +7,5 @@ use Smolblog\Core\ContentV1\Events\PublicContentChanged;
 /**
  * Indicates a Reblog has been published.
  */
-class PublicReblogEdited extends PublicContentChanged implements ReblogBuilder {
+readonly class PublicReblogEdited extends PublicContentChanged implements ReblogBuilder {
 }

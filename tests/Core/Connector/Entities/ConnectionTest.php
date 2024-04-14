@@ -31,6 +31,6 @@ final class ConnectionTest extends TestCase {
 			details: ['smol' => 'snek'],
 		);
 
-		$this->assertEquals($connection->id, Connection::buildId(provider: $provider, providerKey: $key));
+		$this->assertEquals($connection->getId(), Connection::buildId(provider: $provider, providerKey: $key));
 	}
 }

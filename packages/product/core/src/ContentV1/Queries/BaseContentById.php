@@ -6,9 +6,11 @@ use Smolblog\Core\ContentV1\Content;
 use Smolblog\Core\ContentV1\ContentBuilder;
 use Smolblog\Core\ContentV1\ContentBuilderKit;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Traits\Memoizable;
+use Smolblog\Foundation\Value\Traits\MemoizableKit;
 
 /**
  * Base class for singluar content queries.
@@ -17,15 +19,9 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * Use GenericContentById for a concrete query.
  */
-abstract class BaseContentById extends MemoizableQuery implements ContentBuilder, AuthorizableMessage {
+abstract readonly class BaseContentById extends Query implements Memoizable, ContentBuilder, AuthorizableMessage {
+	use MemoizableKit;
 	use ContentBuilderKit;
-
-	/**
-	 * True if the content with given ID does not exist.
-	 *
-	 * @var boolean
-	 */
-	protected bool $notFound = false;
 
 	/**
 	 * Construct the query.
@@ -60,11 +56,11 @@ abstract class BaseContentById extends MemoizableQuery implements ContentBuilder
 	 */
 	public function setResults(mixed $results): void {
 		if (!isset($results)) {
-			$this->notFound = true;
+			$this->setMetaValue('notFound', true);
 			$this->stopMessage();
 		}
 
-		$this->results = $results;
+		$this->setResults($results);
 	}
 
 	/**
@@ -73,11 +69,11 @@ abstract class BaseContentById extends MemoizableQuery implements ContentBuilder
 	 * @return Content|null
 	 */
 	public function results(): ?Content {
-		if ($this->notFound) {
+		if ($this->getMetaValue('notFound')) {
 			return null;
 		}
 
-		return $this->results ?? $this->getContent();
+		return parent::results() ?? $this->getContent();
 	}
 
 	/**

@@ -59,9 +59,9 @@ class Syndication implements ContentExtension {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return[
-			'links' => array_map(fn($link) => $link->toArray(), $this->links),
+			'links' => array_map(fn($link) => $link->serializeValue(), $this->links),
 			'channels' => array_map(fn($channel) => $channel->toString(), $this->channels),
 		];
 	}
@@ -72,9 +72,9 @@ class Syndication implements ContentExtension {
 	 * @param array $data Serialized extension.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new static(
-			links: array_map(fn($link) => SyndicationLink::fromArray($link), $data['links'] ?? []),
+			links: array_map(fn($link) => SyndicationLink::deserializeValue($link), $data['links'] ?? []),
 			channels: array_map(fn($channel) => Identifier::fromString($channel), $data['channels'] ?? []),
 		);
 	}

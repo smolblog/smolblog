@@ -2,13 +2,16 @@
 
 namespace Smolblog\Core\Site;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Represents a site with its own URL, posts, etc.
  */
-class Site extends Entity {
+readonly class Site extends Value implements Entity {
+	use EntityKit;
 	/**
 	 * Unique subdomain or subdirectory identifier for this site.
 	 *
@@ -67,6 +70,6 @@ class Site extends Entity {
 		$this->baseUrl = $baseUrl;
 		$this->description = $description;
 		$this->publicKey = $publicKey;
-		parent::__construct(id: $id);
+		$this->id = $id;
 	}
 }

@@ -13,7 +13,7 @@ use Smolblog\Core\Connector\Queries\SiteHasPermissionForChannel;
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**

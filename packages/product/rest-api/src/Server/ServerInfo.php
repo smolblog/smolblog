@@ -2,12 +2,12 @@
 
 namespace Smolblog\Api\Server;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Describe standard information about the server.
  */
-class ServerInfo extends Value {
+readonly class ServerInfo extends Value {
 	/**
 	 * Construct the object.
 	 *

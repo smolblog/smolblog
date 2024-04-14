@@ -2,21 +2,17 @@
 
 namespace Smolblog\Core\User;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Represents a User in the system.
  */
-class User extends Entity {
+readonly class User extends Value implements Entity {
+	use EntityKit;
 	public const INTERNAL_SYSTEM_USER_ID = '4cf81e87-02ae-492c-9458-eef01a968d45';
-
-	/**
-	 * User object to represent system actions not tied to a particular user.
-	 *
-	 * @var User|null
-	 */
-	private static ?User $smolbot = null;
 
 	/**
 	 * Get the Smolblog Internal System (smolbot) account.
@@ -28,14 +24,13 @@ class User extends Entity {
 	 * @return User
 	 */
 	public static function internalSystemUser(): User {
-		self::$smolbot ??= new User(
+		return new User(
 			id: Identifier::fromString(self::INTERNAL_SYSTEM_USER_ID),
 			handle: 'smolbot',
 			displayName: 'Smolblog Internal System',
 			pronouns: 'it/its',
 			email: 'system@smolblog.org',
 		);
-		return self::$smolbot;
 	}
 
 	/**
@@ -88,6 +83,6 @@ class User extends Entity {
 		$this->displayName = $displayName;
 		$this->pronouns = $pronouns;
 		$this->email = $email;
-		parent::__construct(id: $id);
+		$this->id = $id;
 	}
 }

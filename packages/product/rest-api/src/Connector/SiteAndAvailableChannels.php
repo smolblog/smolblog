@@ -12,7 +12,7 @@ use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Connector\Queries\ConnectionsForUser;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Get both existing and available channels along with basic connection info.

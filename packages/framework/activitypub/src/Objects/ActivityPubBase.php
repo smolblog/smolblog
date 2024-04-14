@@ -3,15 +3,14 @@
 namespace Smolblog\Framework\ActivityPub\Objects;
 
 use JsonSerializable;
-use Smolblog\Framework\Objects\ArraySerializable;
-use Smolblog\Framework\Objects\ExtendableValueKit;
-use Smolblog\Framework\Objects\SerializableKit;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Base object for ActivityPub objects.
  */
-abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerializable {
-	use SerializableKit;
+abstract readonly class ActivityPubBase implements SerializableValue {
+	use SerializableValueKit;
 
 	/**
 	 * Array to store ad-hoc fields.
@@ -66,7 +65,7 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		$definedFields = get_object_vars($this);
 		unset($definedFields['extendedFields']);
 
@@ -84,7 +83,7 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 	 * @param array $data Serialized data.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		unset($data['@context']);
 		unset($data['type']);
 
@@ -105,11 +104,11 @@ abstract readonly class ActivityPubBase implements ArraySerializable, JsonSerial
 		$potentialClass = __NAMESPACE__ . "\\$givenType";
 
 		return match (true) {
-			$givenType === 'Object' => ActivityPubObject::fromArray($data),
+			$givenType === 'Object' => ActivityPubObject::deserializeValue($data),
 			// Check if this is a type of Actor.
-			ActorType::tryFrom($givenType) !== null => Actor::fromArray([...$data, 'type' => $givenType]),
+			ActorType::tryFrom($givenType) !== null => Actor::deserializeValue([...$data, 'type' => $givenType]),
 			// Check for a class with this type.
-			class_exists($potentialClass) => $potentialClass::fromArray($data),
+			class_exists($potentialClass) => $potentialClass::deserializeValue($data),
 			default => null,
 		};
 	}

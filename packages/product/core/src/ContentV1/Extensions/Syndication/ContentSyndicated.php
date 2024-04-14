@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a piece of content has been syndicated to the given URL.
  */
-class ContentSyndicated extends ContentExtensionEdited implements NeedsSyndicationState {
+readonly class ContentSyndicated extends ContentExtensionEdited implements NeedsSyndicationState {
 	/**
 	 * Store the state of syndication on this content.
 	 *

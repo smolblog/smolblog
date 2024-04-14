@@ -4,7 +4,7 @@ namespace Smolblog\Core\ContentV1\Queries;
 
 use Smolblog\Core\ContentV1\ContentVisibility;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -21,7 +21,8 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * - An empty array for `visibility` or `types` (give `null` to ignore the filter)
  * - Not including Published in `visibility` on an unauthenticated query (`userId` is null)
  */
-class ContentList extends MemoizableQuery {
+readonly class ContentList extends Query implements Memoizable {
+	use MemoizableKit;
 	/**
 	 * Upon completion, will get the total number of content items for the given query.
 	 *

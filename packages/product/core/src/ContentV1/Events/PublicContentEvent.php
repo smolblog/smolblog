@@ -16,7 +16,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * It is recommended to extend and listen to the child events, `PublicContentAdded`, `PublicContentChanged`, and
  * `PublicContentRemoved`.
  */
-abstract class PublicContentEvent extends ContentEvent implements ContentBuilder {
+abstract readonly class PublicContentEvent extends ContentEvent implements ContentBuilder {
 	use ContentBuilderKit;
 
 	/**

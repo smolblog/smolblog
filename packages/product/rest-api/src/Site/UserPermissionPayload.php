@@ -3,12 +3,12 @@
 namespace Smolblog\Api\Site;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Payload for setting user permissions on a site.
  */
-class UserPermissionPayload extends Value {
+readonly class UserPermissionPayload extends Value {
 	/**
 	 * Construct the payload.
 	 *
@@ -29,8 +29,8 @@ class UserPermissionPayload extends Value {
 	 * @param array $data Serialized array.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
-		return parent::fromArray([
+	public static function deserializeValue(array $data): static {
+		return parent::deserializeValue([
 			...$data,
 			'userId' => Identifier::fromString($data['userId']),
 		]);

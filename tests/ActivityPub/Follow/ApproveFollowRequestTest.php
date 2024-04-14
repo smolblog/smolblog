@@ -136,8 +136,8 @@ final class ApproveFollowRequestTest extends TestCase {
 			),
 		);
 
-		$this->assertEquals($object, ApproveFollowRequest::fromArray($array));
-		$this->assertEquals($array, $object->toArray());
+		$this->assertEquals($object, ApproveFollowRequest::deserializeValue($array));
+		$this->assertEquals($array, $object->serializeValue());
 		$this->assertEquals('https://activitypub.academy/users/beguca_dedashul/inbox', $object->actor->inbox);
 	}
 }

@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a Connection has been formed or re-formed between a user account and an external provider.
  */
-class ConnectionEstablished extends ConnectorEvent {
+readonly class ConnectionEstablished extends ConnectorEvent {
 	/**
 	 * Create the Event
 	 *

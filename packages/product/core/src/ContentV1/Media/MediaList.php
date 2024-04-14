@@ -3,7 +3,7 @@
 namespace Smolblog\Core\ContentV1\Media;
 
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -19,7 +19,8 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  *
  * - An empty array for `types` (give `null` to ignore the filter)
  */
-class MediaList extends MemoizableQuery {
+readonly class MediaList extends Query implements Memoizable {
+	use MemoizableKit;
 	/**
 	 * Upon completion, will get the total number of media items for the given query.
 	 *

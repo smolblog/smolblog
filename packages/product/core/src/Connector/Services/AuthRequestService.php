@@ -6,7 +6,7 @@ use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**

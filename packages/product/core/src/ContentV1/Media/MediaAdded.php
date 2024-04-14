@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicate that a new piece of media has been uploaded and processed.
  */
-class MediaAdded extends ContentEvent {
+readonly class MediaAdded extends ContentEvent {
 	/**
 	 * Construct the event.
 	 *
@@ -59,7 +59,7 @@ class MediaAdded extends ContentEvent {
 			'type' => $this->type->value,
 			'thumbnailUrl' => $this->thumbnailUrl,
 			'defaultUrl' => $this->defaultUrl,
-			'file' => $this->file->toArray(),
+			'file' => $this->file->serializeValue(),
 		];
 	}
 
@@ -71,7 +71,7 @@ class MediaAdded extends ContentEvent {
 	 */
 	protected static function payloadFromArray(array $payload): array {
 		$payload['type'] = MediaType::tryFrom($payload['type'] ?? '');
-		$payload['file'] = MediaFile::fromArray($payload['file']);
+		$payload['file'] = MediaFile::deserializeValue($payload['file']);
 		return $payload;
 	}
 }

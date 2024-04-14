@@ -3,7 +3,7 @@
 namespace Smolblog\Api;
 
 use Smolblog\Framework\Objects\ExtendableValueKit;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Value object with runtime arguments only.
@@ -11,7 +11,7 @@ use Smolblog\Framework\Objects\Value;
  * Useful for small, one-off response objects. Endpoints using this should also define the shape of the response in
  * their configuration.
  */
-class GenericResponse extends Value {
+readonly class GenericResponse extends Value {
 	use ExtendableValueKit;
 
 	/**

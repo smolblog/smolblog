@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a Note content has been created.
  */
-class NoteCreated extends ContentCreated implements NeedsMarkdownRendered {
+readonly class NoteCreated extends ContentCreated implements NeedsMarkdownRendered {
 	use NoteEventKit;
 
 	/**

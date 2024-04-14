@@ -5,9 +5,9 @@ namespace Smolblog\Core\ContentV1\Media;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use stdClass;
 
@@ -108,7 +108,7 @@ class MediaProjection implements Projection {
 
 		$query->setResults($builder->get()->map(
 			fn($row) => $this->mediaFromRow($row)
-		)->toArray());
+		)->serializeValue());
 	}
 
 	/**

@@ -2,8 +2,8 @@
 
 namespace Smolblog\Tumblr;
 
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 //phpcs:disable Generic.Files.LineLength.TooLong
@@ -56,8 +56,8 @@ class TumblrImporter implements Listener {
 		}
 
 		if (!$all_empty) {
-			$this->bus->dispatchAsync(ImportFromTumblr::fromArray([
-				...$command->toArray(),
+			$this->bus->dispatchAsync(ImportFromTumblr::deserializeValue([
+				...$command->serializeValue(),
 				'before' => ( $last_timestamp - 1 ),
 			]));
 		}

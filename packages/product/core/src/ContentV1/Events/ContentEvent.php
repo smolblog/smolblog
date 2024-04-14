@@ -3,9 +3,9 @@
 namespace Smolblog\Core\ContentV1\Events;
 
 use DateTimeInterface;
-use Smolblog\Framework\Messages\Event;
-use Smolblog\Framework\Messages\PayloadKit;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
  * Base event for Content-related events.
@@ -16,9 +16,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * allow listeners further down the chain to interact with either the the standard object or the native content at
  * the appropriate point in its lifecycle.
  */
-abstract class ContentEvent extends Event {
-	use PayloadKit;
-
+abstract readonly class ContentEvent extends DomainEvent {
 	/**
 	 * Identifier for the content this event is about.
 	 *
@@ -59,7 +57,13 @@ abstract class ContentEvent extends Event {
 		$this->contentId = $contentId;
 		$this->userId = $userId;
 		$this->siteId = $siteId;
-		parent::__construct(id: $id, timestamp: $timestamp);
+		parent::__construct(
+			id: $id,
+			timestamp: new DateTimeField($timestamp?->format(DateTimeInterface::RFC3339_EXTENDED) ?? 'now'),
+			userId: $userId,
+			aggregateId: $siteId,
+			entityId: $contentId,
+		);
 	}
 
 	/**

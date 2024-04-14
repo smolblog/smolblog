@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates that a given connection should be deleted and its associated artifacts removed.
  */
-class ConnectionDeleted extends ConnectorEvent {
+readonly class ConnectionDeleted extends ConnectorEvent {
 	/**
 	 * Create the Event
 	 *

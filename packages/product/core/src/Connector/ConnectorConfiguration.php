@@ -2,12 +2,12 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Configuration information for a Connection.
  */
-class ConnectorConfiguration extends Value {
+readonly class ConnectorConfiguration extends Value {
 	/**
 	 * Undocumented function
 	 *

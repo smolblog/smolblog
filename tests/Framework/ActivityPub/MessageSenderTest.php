@@ -79,7 +79,7 @@ final class MessageSenderTest extends TestCase {
 		$expectedRequest = new HttpRequest(
 			verb: HttpVerb::POST,
 			url: $inboxUrl,
-			body: $object->toArray(),
+			body: $object->serializeValue(),
 		);
 		$expectedSignedRequest = $expectedRequest->withAddedHeader('Signature', 'Built by oddEvan in South Carolina.');
 
@@ -125,7 +125,7 @@ final class MessageSenderTest extends TestCase {
 		$this->logger->expects($this->once())->method('error')->with(
 			'Error from federated server: {"error":"inbox does not exist"}',
 			[
-				'message' => $object->toArray(),
+				'message' => $object->serializeValue(),
 				'inbox' => 'https://smol.blog/inbox',
 				'signed' => "With key $actorId#publicKey",
 			]
@@ -158,7 +158,7 @@ final class MessageSenderTest extends TestCase {
 		$this->logger->expects($this->once())->method('error')->with(
 			'Error from federated server: {"error":"inbox does not exist"}',
 			[
-				'message' => $object->toArray(),
+				'message' => $object->serializeValue(),
 				'inbox' => 'https://smol.blog/inbox',
 				'signed' => 'NO',
 			]
@@ -218,7 +218,7 @@ final class MessageSenderTest extends TestCase {
 		$expectedRequest = new HttpRequest(
 			verb: HttpVerb::POST,
 			url: $inboxUrl,
-			body: $object->toArray(),
+			body: $object->serializeValue(),
 		);
 
 		$this->logger->expects($this->once())->method('debug')->with(
@@ -253,7 +253,7 @@ final class MessageSenderTest extends TestCase {
 		$expectedRequest = new HttpRequest(
 			verb: HttpVerb::POST,
 			url: $inboxUrl,
-			body: $object->toArray(),
+			body: $object->serializeValue(),
 		);
 
 		$this->signer->expects($this->never())->method('sign');

@@ -2,14 +2,14 @@
 
 namespace Smolblog\Core\ContentV1;
 
-use Smolblog\Framework\Objects\ArraySerializable;
+use Smolblog\Framework\Objects\SerializeableValue;
 
 /**
  * Define what a Content Type needs to have, namely a title and a body.
  *
  * Even if the title isn't shown on the web or in feeds, it's still needed for administration views and such.
  */
-interface ContentType extends ArraySerializable {
+interface ContentType extends SerializeableValue {
 	/**
 	 * Get the title of the content.
 	 *

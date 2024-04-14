@@ -8,7 +8,7 @@ use Throwable;
 /**
  * Provide simple array serialization functions to objects.
  *
- * Client classes will implement JsonSerializable and ArraySerializable.
+ * Client classes will implement JsonSerializable and SerializeableValue.
  */
 trait SerializableKit {
 	/**
@@ -20,7 +20,7 @@ trait SerializableKit {
 	 */
 	public static function jsonDeserialize(string $json): static {
 		$parsed = json_decode(json: $json, associative: true, flags: JSON_THROW_ON_ERROR);
-		return static::fromArray(data: $parsed);
+		return static::deserializeValue(data: $parsed);
 	}
 
 	/**
@@ -30,7 +30,7 @@ trait SerializableKit {
 	 * @param array $data Data to initialize class with.
 	 * @return static New instancce of this object
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new static(...$data);
 	}
 
@@ -39,7 +39,7 @@ trait SerializableKit {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return get_object_vars($this);
 	}
 
@@ -49,7 +49,7 @@ trait SerializableKit {
 	 * @return mixed
 	 */
 	public function jsonSerialize(): mixed {
-		return $this->toArray();
+		return $this->serializeValue();
 	}
 
 	// Utility functions.

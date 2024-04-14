@@ -10,5 +10,5 @@ use Smolblog\Core\ContentV1\Events\ContentDeleted;
  * There is no extra information attached to this event, but it is its own event so it can be picked up by the
  * PictureProjection (without it having to listen to *every* ContentDeleted event.)
  */
-class PictureDeleted extends ContentDeleted {
+readonly class PictureDeleted extends ContentDeleted {
 }

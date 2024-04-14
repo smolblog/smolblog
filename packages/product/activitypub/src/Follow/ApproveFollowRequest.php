@@ -61,13 +61,13 @@ readonly class ApproveFollowRequest extends Command implements AuthorizableMessa
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return array_filter([
 			'userId' => $this->userId->toString(),
-			'request' => $this->request->toArray(),
+			'request' => $this->request->serializeValue(),
 			'siteId' => $this->siteId?->toString(),
-			'site' => $this->site?->toArray(),
-			'actor' => $this->actor->toArray(),
+			'site' => $this->site?->serializeValue(),
+			'actor' => $this->actor->serializeValue(),
 		], fn($i) => isset($i));
 	}
 
@@ -77,13 +77,13 @@ readonly class ApproveFollowRequest extends Command implements AuthorizableMessa
 	 * @param array $data Seriliazed message.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new self(
 			userId: Identifier::fromString($data['userId']),
-			request: Follow::fromArray($data['request']),
-			actor: Actor::fromArray($data['actor']),
+			request: Follow::deserializeValue($data['request']),
+			actor: Actor::deserializeValue($data['actor']),
 			siteId: isset($data['siteId']) ? Identifier::fromString($data['siteId']) : null,
-			site: isset($data['site']) ? Site::fromArray($data['site']) : null,
+			site: isset($data['site']) ? Site::deserializeValue($data['site']) : null,
 		);
 	}
 }

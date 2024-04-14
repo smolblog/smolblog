@@ -2,13 +2,16 @@
 
 namespace Smolblog\Core\ContentV1\Media;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Entity for handling media uploads.
  */
-class Media extends Entity {
+readonly class Media extends Value implements Entity {
+	use EntityKit;
 	/**
 	 * Create the Media object.
 	 *
@@ -41,12 +44,12 @@ class Media extends Entity {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		$base = parent::toArray();
+	public function serializeValue(): array {
+		$base = parent::serializeValue();
 		$base['userId'] = $this->userId->toString();
 		$base['siteId'] = $this->siteId->toString();
 		$base['type'] = $this->type->value;
-		$base['file'] = $this->file->toArray();
+		$base['file'] = $this->file->serializeValue();
 
 		return $base;
 	}
@@ -57,12 +60,12 @@ class Media extends Entity {
 	 * @param array $data Serialized entity.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		$data['userId'] = Identifier::fromString($data['userId']);
 		$data['siteId'] = Identifier::fromString($data['siteId']);
 		$data['type'] = MediaType::tryFrom($data['type']);
-		$data['file'] = MediaFile::fromArray($data['file']);
+		$data['file'] = MediaFile::deserializeValue($data['file']);
 
-		return parent::fromArray($data);
+		return parent::deserializeValue($data);
 	}
 }

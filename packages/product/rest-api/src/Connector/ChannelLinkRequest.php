@@ -3,12 +3,16 @@
 namespace Smolblog\Api\Connector;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Request body for ChannelLink
  */
-class ChannelLinkRequest extends Value {
+readonly class ChannelLinkRequest extends Value implements SerializableValue {
+	use SerializableValueKit;
+
 	/**
 	 * Construct the request.
 	 *
@@ -31,7 +35,7 @@ class ChannelLinkRequest extends Value {
 	 * @param array $data Serialized data.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		$params = [
 			...$data,
 			'channelId' => Identifier::fromString($data['channelId']),

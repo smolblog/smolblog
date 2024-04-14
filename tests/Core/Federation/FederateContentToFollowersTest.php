@@ -50,8 +50,8 @@ final class FederateContentToFollowersTest extends TestCase {
 	public function testFollowersMustNotBeEmpty() {
 		$this->expectException(InvalidCommandParametersException::class);
 
-		FederateContentToFollowers::fromArray([
-			...$this->subject->toArray(),
+		FederateContentToFollowers::deserializeValue([
+			...$this->subject->serializeValue(),
 			'followers' => []
 		]);
 	}
@@ -59,8 +59,8 @@ final class FederateContentToFollowersTest extends TestCase {
 	public function testFollowersMustMatchProvider() {
 		$this->expectException(InvalidCommandParametersException::class);
 
-		FederateContentToFollowers::fromArray([
-			...$this->subject->toArray(),
+		FederateContentToFollowers::deserializeValue([
+			...$this->subject->serializeValue(),
 			'provider' => 'wrong'
 		]);
 	}

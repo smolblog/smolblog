@@ -61,7 +61,7 @@ final class ConnectorTest extends TestCase {
 			details: [],
 		);
 		$results = App::fetch(new ChannelsForConnection($connectionId));
-		$this->assertEquals($expected->toArray(), $results[0]->toArray());
+		$this->assertEquals($expected->serializeValue(), $results[0]->serializeValue());
 	}
 
 	/** @depends testAuthRequest */

@@ -3,8 +3,8 @@
 namespace Smolblog\Core\ContentV1\Types\Note;
 
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Projection;
 
 /**
  * Store note-specific data.

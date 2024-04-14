@@ -4,11 +4,14 @@ namespace Smolblog\Test;
 
 use InvalidArgumentException;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\Event;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
-final class TestEvent extends Event {
-	public function __construct(public readonly string $property) { parent::__construct(); }
+final readonly class TestEvent extends DomainEvent {
+	public function __construct(public readonly string $property) {
+		parent::__construct(userId: new RandomIdentifier());
+	}
 }
 
 final class EventIsEquivalentTest extends TestCase {

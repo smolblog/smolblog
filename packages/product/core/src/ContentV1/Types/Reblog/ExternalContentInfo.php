@@ -2,12 +2,12 @@
 
 namespace Smolblog\Core\ContentV1\Types\Reblog;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Object containing info about an external embeddable URL.
  */
-class ExternalContentInfo extends Value {
+readonly class ExternalContentInfo extends Value {
 	/**
 	 * Construct the object
 	 *

@@ -32,7 +32,13 @@ final readonly class UnknownDomainEvent extends DomainEvent {
 		?Identifier $entityId = null,
 		public array $props = [],
 	) {
-		parent::__construct($id, $timestamp, $userId, $aggregateId, $entityId);
+		parent::__construct(
+			id: $id,
+			timestamp: $timestamp,
+			userId: $userId,
+			aggregateId: $aggregateId,
+			entityId: $entityId
+		);
 	}
 
 	/**

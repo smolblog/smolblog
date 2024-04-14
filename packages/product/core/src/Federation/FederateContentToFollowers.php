@@ -43,10 +43,10 @@ readonly class FederateContentToFollowers extends Command {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return [
-			'content' => $this->content->toArray(),
-			'followers' => array_map(fn($fl) => $fl->toArray(), $this->followers),
+			'content' => $this->content->serializeValue(),
+			'followers' => array_map(fn($fl) => $fl->serializeValue(), $this->followers),
 			'provider' => $this->provider,
 		];
 	}
@@ -57,10 +57,10 @@ readonly class FederateContentToFollowers extends Command {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new FederateContentToFollowers(
-			content: Content::fromArray($data['content']),
-			followers: array_map(fn($fl) => Follower::fromArray($fl), $data['followers']),
+			content: Content::deserializeValue($data['content']),
+			followers: array_map(fn($fl) => Follower::deserializeValue($fl), $data['followers']),
 			provider: $data['provider'],
 		);
 	}

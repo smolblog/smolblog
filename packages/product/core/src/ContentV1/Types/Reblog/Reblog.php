@@ -90,10 +90,10 @@ class Reblog implements ContentType {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		$data = $this->parentToArray();
 		if (isset($this->info)) {
-			$data['info'] = $this->info->toArray();
+			$data['info'] = $this->info->serializeValue();
 		}
 
 		return $data;
@@ -105,11 +105,11 @@ class Reblog implements ContentType {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new Reblog(
 			url: $data['url'],
 			comment: $data['comment'] ?? null,
-			info: isset($data['info']) ? ExternalContentInfo::fromArray($data['info']) : null,
+			info: isset($data['info']) ? ExternalContentInfo::deserializeValue($data['info']) : null,
 			commentHtml: $data['commentHtml'] ?? null,
 		);
 	}

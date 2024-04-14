@@ -3,9 +3,13 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Memoizable;
+use Smolblog\Foundation\Value\Traits\MemoizableKit;
 
-final class TestMemoizableQuery extends MemoizableQuery {
+final readonly class TestMemoizableQuery extends Query implements Memoizable {
+	use MemoizableKit;
 	public function __construct(public readonly string $key, public readonly string $aux) {}
 	public function getMemoKey(): string {
 		// We are using an intentionally bad function here to prove the short-circuiting of a memoized query.

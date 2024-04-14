@@ -11,7 +11,7 @@ trait MessageKit {
 	/**
 	 * Store the message's meta data.
 	 *
-	 * @var array
+	 * @var MessageMetadata
 	 */
 	private readonly MessageMetadata $meta;
 

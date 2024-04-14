@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates that a piece of content has been marked as deleted.
  */
-class ContentDeleted extends ContentEvent {
+readonly class ContentDeleted extends ContentEvent {
 	/**
 	 * Construct the event
 	 *

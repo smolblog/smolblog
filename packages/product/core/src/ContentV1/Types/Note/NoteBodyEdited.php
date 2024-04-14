@@ -10,7 +10,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a note' text has been edited.
  */
-class NoteBodyEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
+readonly class NoteBodyEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
 	use NoteEventKit;
 
 	/**

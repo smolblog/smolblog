@@ -2,12 +2,12 @@
 
 namespace Smolblog\Api\Content;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Payload for editing Media attributes.
  */
-class EditMediaPayload extends Value {
+readonly class EditMediaPayload extends Value {
 	/**
 	 * Construct the payload.
 	 *

@@ -78,11 +78,11 @@ readonly class PushContentToChannel extends Command implements AuthorizableMessa
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return [
-			'content' => $this->content->toArray(),
-			'channel' => $this->channel->toArray(),
-			'connection' => $this->connection->toArray(),
+			'content' => $this->content->serializeValue(),
+			'channel' => $this->channel->serializeValue(),
+			'connection' => $this->connection->serializeValue(),
 		];
 	}
 
@@ -92,11 +92,11 @@ readonly class PushContentToChannel extends Command implements AuthorizableMessa
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new PushContentToChannel(
-			content: Content::fromArray($data['content']),
-			channel: Channel::fromArray($data['channel']),
-			connection: Connection::fromArray($data['connection']),
+			content: Content::deserializeValue($data['content']),
+			channel: Channel::deserializeValue($data['channel']),
+			connection: Connection::deserializeValue($data['connection']),
 		);
 	}
 }

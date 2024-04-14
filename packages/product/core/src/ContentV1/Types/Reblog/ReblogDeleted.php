@@ -10,5 +10,5 @@ use Smolblog\Core\ContentV1\Events\ContentDeleted;
  * There is no extra information attached to this event, but it is its own event so it can be picked up by the
  * ReblogProjection (without it having to listen to *every* ContentDeleted event.)
  */
-class ReblogDeleted extends ContentDeleted {
+readonly class ReblogDeleted extends ContentDeleted {
 }

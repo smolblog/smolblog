@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\ContentV1\Media;
 
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
 
@@ -174,7 +174,7 @@ class MediaService implements Listener {
 	 * @return void
 	 */
 	public function onEditMediaAttributes(EditMediaAttributes $command) {
-		$this->bus->dispatch(new MediaAttributesEdited(...$command->toArray()));
+		$this->bus->dispatch(new MediaAttributesEdited(...$command->serializeValue()));
 	}
 
 	/**
@@ -184,6 +184,6 @@ class MediaService implements Listener {
 	 * @return void
 	 */
 	public function onDeleteMedia(DeleteMedia $command) {
-		$this->bus->dispatch(new MediaDeleted(...$command->toArray()));
+		$this->bus->dispatch(new MediaDeleted(...$command->serializeValue()));
 	}
 }

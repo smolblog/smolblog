@@ -2,12 +2,16 @@
 
 namespace Smolblog\Api;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Simple response for successful operations.
  */
-class SuccessResponse extends Value {
+readonly class SuccessResponse extends Value implements SerializableValue {
+	use SerializableValueKit;
+
 	/**
 	 * Construct the response
 	 *

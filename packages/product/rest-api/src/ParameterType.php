@@ -110,7 +110,7 @@ class ParameterType {
 	 * @return ParameterType
 	 */
 	public static function required(ParameterType $base): ParameterType {
-		return ParameterType::fromArray([...$base->toArray(), 'required' => true]);
+		return ParameterType::deserializeValue([...$base->serializeValue(), 'required' => true]);
 	}
 
 	/**
@@ -147,7 +147,7 @@ class ParameterType {
 	 * @return array
 	 */
 	public function schema(): array {
-		$base = $this->toArray();
+		$base = $this->serializeValue();
 		unset($base['required']);
 
 		if ($this->type === 'reference') {

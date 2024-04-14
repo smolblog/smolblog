@@ -5,12 +5,12 @@ namespace Smolblog\Api\Content;
 use DateTimeInterface;
 use Smolblog\Framework\Objects\ExtendableValueKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Payload for content base attributes.
  */
-class ContentTypePayload extends Value {
+readonly class ContentTypePayload extends Value {
 	use ExtendableValueKit;
 
 	/**

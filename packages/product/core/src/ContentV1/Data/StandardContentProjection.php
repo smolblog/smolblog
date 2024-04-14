@@ -28,10 +28,10 @@ use Smolblog\Core\ContentV1\Queries\{
 	UserCanEditContent
 };
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -124,7 +124,7 @@ class StandardContentProjection implements Projection {
 
 		$current = json_decode($currentJson, true) ?? [];
 		$ext = $event->getNewExtension();
-		$current[get_class($ext)] = $ext->toArray();
+		$current[get_class($ext)] = $ext->serializeValue();
 
 		$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->update([
 			'extensions' => json_encode($current)
@@ -206,7 +206,7 @@ class StandardContentProjection implements Projection {
 
 		$extensions = json_decode($results->extensions ?? '[]', true);
 		foreach ($extensions as $ext_class => $ext_array) {
-			$ext = $ext_class::fromArray($ext_array);
+			$ext = $ext_class::deserializeValue($ext_array);
 			$message->addContentExtension($ext);
 		}
 	}
@@ -346,7 +346,7 @@ class StandardContentProjection implements Projection {
 					new DateTimeImmutable($row->publish_timestamp) : null,
 				visibility: ContentVisibility::tryFrom($row->visibility),
 			)
-		)->toArray());
+		)->serializeValue());
 	}
 
 	/**

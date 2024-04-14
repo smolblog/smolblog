@@ -7,5 +7,5 @@ use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 /**
  * Indicates a Note has been published.
  */
-class PublicNoteCreated extends PublicContentAdded implements NoteBuilder {
+readonly class PublicNoteCreated extends PublicContentAdded implements NoteBuilder {
 }

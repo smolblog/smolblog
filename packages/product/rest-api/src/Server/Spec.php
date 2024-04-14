@@ -15,7 +15,7 @@ use Smolblog\Api\Model;
 use Smolblog\Api\ParameterType;
 use Smolblog\Framework\Objects\HttpResponse;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Return the generated OpenAPI spec.

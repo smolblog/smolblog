@@ -2,8 +2,10 @@
 
 namespace Smolblog\Core\ContentV1\Queries;
 
-use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Memoizable;
+use Smolblog\Foundation\Value\Traits\MemoizableKit;
 
 /**
  * A query that finds content then passes to a builder query.
@@ -12,20 +14,8 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * ContentService can take than info and fire off the appropriate *ById query. This allows a single query to return
  * any content type.
  */
-abstract class AdaptableContentQuery extends MemoizableQuery {
-	/**
-	 * ID of the found content.
-	 *
-	 * @var Identifier
-	 */
-	private ?Identifier $contentId = null;
-
-	/**
-	 * Type of the found content.
-	 *
-	 * @var string
-	 */
-	private string $contentType = '';
+abstract readonly class AdaptableContentQuery extends Query implements Memoizable {
+	use MemoizableKit;
 
 	/**
 	 * Set the info for the found content.
@@ -35,8 +25,8 @@ abstract class AdaptableContentQuery extends MemoizableQuery {
 	 * @return void
 	 */
 	public function setContentInfo(Identifier $id, string $type): void {
-		$this->contentId = $id;
-		$this->contentType = $type;
+		$this->setMetaValue('contentId', $id);
+		$this->setMetaValue('contentType', $type);
 	}
 
 	/**
@@ -45,7 +35,7 @@ abstract class AdaptableContentQuery extends MemoizableQuery {
 	 * @return Identifier|null
 	 */
 	public function getContentId(): ?Identifier {
-		return $this->contentId;
+		return $this->getMetaValue('contentId');
 	}
 
 	/**
@@ -54,7 +44,7 @@ abstract class AdaptableContentQuery extends MemoizableQuery {
 	 * @return string
 	 */
 	public function getContentType(): string {
-		return $this->contentType;
+		return $this->getMetaValue('contentType');
 	}
 
 	/**

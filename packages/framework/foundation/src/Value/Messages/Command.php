@@ -6,6 +6,8 @@ use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageKit;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * A command is a message that is sent to a service to perform an action.
@@ -13,7 +15,8 @@ use Smolblog\Foundation\Value;
  * Commands are typically sent to a service to perform an action, such as creating a new user, or updating a user's
  * profile. Commands are also used to send events to the system, such as when a user creates a new post.
  */
-abstract readonly class Command extends Value implements Message {
+abstract readonly class Command extends Value implements Message, SerializableValue {
+	use SerializableValueKit;
 	use MessageKit;
 
 	/**

@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates the channels content should syndicate to are set.
  */
-class SyndicationChannelsSet extends ContentExtensionEdited implements NeedsSyndicationState {
+readonly class SyndicationChannelsSet extends ContentExtensionEdited implements NeedsSyndicationState {
 	/**
 	 * Store the state of syndication on this content.
 	 *

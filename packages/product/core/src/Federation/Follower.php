@@ -2,7 +2,9 @@
 
 namespace Smolblog\Core\Federation;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
@@ -13,7 +15,8 @@ use Smolblog\Foundation\Value\Fields\NamedIdentifier;
  * there may be other protocols like Nostr that have similar needs. This could also represent a hub server that
  * aggregates and updates feeds.
  */
-class Follower extends Entity {
+readonly class Follower extends Value implements Entity {
+	use EntityKit;
 	public const NAMESPACE = 'e8b82f68-39f8-4ace-9104-abf4fdc3187e';
 
 	/**
@@ -52,8 +55,8 @@ class Follower extends Entity {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		$base = parent::toArray();
+	public function serializeValue(): array {
+		$base = parent::serializeValue();
 		$base['siteId'] = $this->siteId->toString();
 		return $base;
 	}
@@ -64,7 +67,7 @@ class Follower extends Entity {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		unset($data['id']);
 		$data['siteId'] = Identifier::fromString($data['siteId']);
 		return new Follower(...$data);

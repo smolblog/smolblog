@@ -4,12 +4,12 @@ namespace Smolblog\Api\Content;
 
 use DateTimeInterface;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Payload for content base attributes.
  */
-class BaseAttributesPayload extends Value {
+readonly class BaseAttributesPayload extends Value {
 	/**
 	 * Construct the payload
 	 *
@@ -29,8 +29,8 @@ class BaseAttributesPayload extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		$arr = parent::toArray();
+	public function serializeValue(): array {
+		$arr = parent::serializeValue();
 		$arr['publishTimestamp'] = $this->publishTimestamp?->format(DateTimeInterface::RFC3339_EXTENDED);
 		return $arr;
 	}
@@ -41,7 +41,7 @@ class BaseAttributesPayload extends Value {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new BaseAttributesPayload(
 			permalink: $data['permalink'] ?? null,
 			publishTimestamp: self::safeDeserializeDate($data['publishTimestamp'] ?? ''),

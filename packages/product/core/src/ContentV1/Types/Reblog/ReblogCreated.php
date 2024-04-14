@@ -11,7 +11,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a Reblog has been created.
  */
-class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
+readonly class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 	use ReblogEventKit {
 		getNewBody as internalGetBody;
 		getNewTitle as internalGetTitle;
@@ -63,7 +63,7 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 		return [
 			'url' => $this->url,
 			'comment' => $this->comment,
-			'info' => $this->info->toArray(),
+			'info' => $this->info->serializeValue(),
 		];
 	}
 
@@ -76,7 +76,7 @@ class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 	protected static function contentPayloadFromArray(array $payload): array {
 		return [
 			...$payload,
-			'info' => ExternalContentInfo::fromArray($payload['info']),
+			'info' => ExternalContentInfo::deserializeValue($payload['info']),
 		];
 	}
 

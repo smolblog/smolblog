@@ -4,14 +4,15 @@ namespace Smolblog\Core\Site;
 
 use Smolblog\Core\User\User;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Query to get the public and private keypair for a Site.
  */
-class GetSiteKeypair extends MemoizableQuery implements AuthorizableMessage {
+readonly class GetSiteKeypair extends Query implements Memoizable AuthorizableMessage {
+	use MemoizableKit;
 	/**
 	 * Create the query
 	 *

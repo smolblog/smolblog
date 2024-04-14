@@ -9,7 +9,7 @@ use Smolblog\Core\Site\SiteById;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\Objects\Accept;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 

@@ -6,6 +6,8 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageKit;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * An object that asks the domain model a thing.
@@ -16,7 +18,8 @@ use Smolblog\Foundation\Value\Traits\MessageMetadata;
  *
  * All Queries that can be memoized should extend MemoizableQuery.
  */
-abstract readonly class Query extends Value implements Message {
+abstract readonly class Query extends Value implements Message, SerializableValue {
+	use SerializableValueKit;
 	use MessageKit;
 
 	/**

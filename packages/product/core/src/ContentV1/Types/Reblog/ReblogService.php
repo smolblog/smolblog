@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use Smolblog\Core\ContentV1\ContentTypeConfiguration;
 use Smolblog\Core\ContentV1\ContentTypeService;
 use Smolblog\Core\ContentV1\ContentVisibility;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
 

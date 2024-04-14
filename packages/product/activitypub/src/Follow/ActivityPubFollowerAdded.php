@@ -71,7 +71,7 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * @return array
 	 */
 	public function getPayload(): array {
-		return ['request' => $this->request->toArray(), 'actor' => $this->actor->toArray()];
+		return ['request' => $this->request->serializeValue(), 'actor' => $this->actor->serializeValue()];
 	}
 
 	/**
@@ -81,6 +81,6 @@ class ActivityPubFollowerAdded extends FollowerAdded {
 	 * @return array
 	 */
 	protected static function payloadFromArray(array $payload): array {
-		return ['request' => Follow::fromArray($payload['request']), 'actor' => Actor::fromArray($payload['actor'])];
+		return ['request' => Follow::deserializeValue($payload['request']), 'actor' => Actor::deserializeValue($payload['actor'])];
 	}
 }

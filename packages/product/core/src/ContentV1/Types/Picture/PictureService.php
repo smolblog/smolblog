@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Types\Picture;
 use Smolblog\Core\ContentV1\ContentTypeConfiguration;
 use Smolblog\Core\ContentV1\ContentTypeService;
 use Smolblog\Core\ContentV1\ContentVisibility;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
@@ -45,7 +45,7 @@ class PictureService implements Listener, ContentTypeService {
 	 */
 	public function onCreatePicture(CreatePicture $command) {
 		$event = new PictureCreated(
-			...$command->toArray(),
+			...$command->serializeValue(),
 			authorId: $command->userId,
 		);
 
@@ -59,10 +59,10 @@ class PictureService implements Listener, ContentTypeService {
 	 * @return void
 	 */
 	public function onPublishPicture(PublishPicture $command) {
-		$note = $this->bus->fetch(new PictureById(...$command->toArray()));
+		$note = $this->bus->fetch(new PictureById(...$command->serializeValue()));
 
 		if ($note->visibility !== ContentVisibility::Published) {
-			$this->bus->dispatch(new PublicPictureCreated(...$command->toArray()));
+			$this->bus->dispatch(new PublicPictureCreated(...$command->serializeValue()));
 		}
 	}
 
@@ -82,7 +82,7 @@ class PictureService implements Listener, ContentTypeService {
 		$picture = $this->bus->fetch(new PictureById(...$contentParams));
 
 		$this->bus->dispatch(new PictureMediaEdited(
-			...$command->toArray(),
+			...$command->serializeValue(),
 		));
 
 		if ($picture->visibility === ContentVisibility::Published) {
@@ -106,7 +106,7 @@ class PictureService implements Listener, ContentTypeService {
 		$picture = $this->bus->fetch(new PictureById(...$contentParams));
 
 		$this->bus->dispatch(new PictureCaptionEdited(
-			...$command->toArray(),
+			...$command->serializeValue(),
 		));
 
 		if ($picture->visibility === ContentVisibility::Published) {

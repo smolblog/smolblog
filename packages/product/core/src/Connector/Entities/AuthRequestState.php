@@ -3,15 +3,16 @@
 namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\SerializableKit;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * State for an OAuth request. Not an Entity because, though it needs to persist, it doesn't need the extra
  * requirements of being an Entity. It can be persisted in any key-value store.
  */
-class AuthRequestState extends Value {
-	use SerializableKit;
+readonly class AuthRequestState extends Value implements SerializableValue {
+	use SerializableValueKit;
 
 	/**
 	 * Create the state
@@ -38,7 +39,7 @@ class AuthRequestState extends Value {
 	 * @param array $data Data to initialize class with.
 	 * @return static New instancce of this object
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		$data['userId'] = Identifier::fromString($data['userId']);
 		return new static(...$data);
 	}
@@ -48,7 +49,7 @@ class AuthRequestState extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		$data = get_object_vars($this);
 		$data['userId'] = $this->userId->toString();
 		return $data;

@@ -3,9 +3,9 @@
 namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Projection;
 
 /**
  * Store Reblog-specific state.

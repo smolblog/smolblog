@@ -59,8 +59,8 @@ class Tags implements ContentExtension {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		return['tags' => array_map(fn($tag) => $tag->toArray(), $this->tags)];
+	public function serializeValue(): array {
+		return['tags' => array_map(fn($tag) => $tag->serializeValue(), $this->tags)];
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Tags implements ContentExtension {
 	 * @param array $data Serialized extension.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
-		return new static(tags: array_map(fn($tag) => Tag::fromArray($tag), $data['tags']));
+	public static function deserializeValue(array $data): static {
+		return new static(tags: array_map(fn($tag) => Tag::deserializeValue($tag), $data['tags']));
 	}
 }

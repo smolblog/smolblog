@@ -18,9 +18,9 @@ use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
 use Smolblog\Core\ContentV1\Types\Note\Note;
 use Smolblog\Core\ContentV1\Types\Picture\Picture;
 use Smolblog\Core\ContentV1\Types\Reblog\Reblog;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\WP\Helpers\SiteHelper;
 

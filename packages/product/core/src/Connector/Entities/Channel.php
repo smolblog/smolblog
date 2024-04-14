@@ -2,7 +2,9 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
@@ -10,7 +12,8 @@ use Smolblog\Foundation\Value\Fields\NamedIdentifier;
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media
  * providers allow multiple profiles/blogs/channels/etc. per account, this is its own Entity.
  */
-class Channel extends Entity {
+readonly class Channel extends Value implements Entity {
+	use EntityKit;
 	public const NAMESPACE = '144af6d4-b4fb-4500-bb28-8e729cc7f585';
 
 	/**
@@ -47,7 +50,7 @@ class Channel extends Entity {
 	 * @param array $data Serialized array.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		unset($data['id']);
 		$data['connectionId'] = Identifier::fromString($data['connectionId']);
 		return new Channel(...$data);

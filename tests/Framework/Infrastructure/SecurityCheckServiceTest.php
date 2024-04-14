@@ -3,6 +3,7 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Foundation\Value\Traits\MessageKit;
+use Smolblog\Foundation\Value\Traits\MessageMetadata;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
@@ -13,6 +14,8 @@ use Smolblog\Foundation\Value\Messages\Query;
 
 final readonly class TestAuthorizableMessage extends Value implements Message, AuthorizableMessage {
 	use MessageKit;
+
+	public function __construct() { $this->meta = new MessageMetadata(); }
 
 	public function getAuthorizationQuery(): Query {
 		return new readonly class() extends Query {};

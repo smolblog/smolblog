@@ -10,7 +10,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates the tags have been set on a particular piece of content.
  */
-class TagsSet extends ContentExtensionEdited {
+readonly class TagsSet extends ContentExtensionEdited {
 	/**
 	 * Store the processed tags for use by other projections.
 	 *

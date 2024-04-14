@@ -2,7 +2,9 @@
 
 namespace Smolblog\Core\Site;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
@@ -12,7 +14,8 @@ use Smolblog\Foundation\Value\Fields\NamedIdentifier;
  * Right now the only permissions being tracked are "can they post" and "can they admin". This may be expanded in the
  * future, but for now this is all.
  */
-class SiteUserLink extends Entity {
+readonly class SiteUserLink extends Value implements Entity {
+	use EntityKit;
 	public const NAMESPACE = 'fa1f85d0-e650-4ca6-bbef-b2c7b130c689';
 
 	/**

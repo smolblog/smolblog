@@ -7,5 +7,5 @@ use Smolblog\Core\ContentV1\Events\PublicContentAdded;
 /**
  * Indicates a Picture has been published.
  */
-class PublicPictureCreated extends PublicContentAdded implements PictureBuilder {
+readonly class PublicPictureCreated extends PublicContentAdded implements PictureBuilder {
 }

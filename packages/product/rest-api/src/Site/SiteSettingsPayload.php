@@ -3,12 +3,12 @@
 namespace Smolblog\Api\Site;
 
 use Smolblog\Api\Exceptions\BadRequest;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Setting body.
  */
-class SiteSettingsPayload extends Value {
+readonly class SiteSettingsPayload extends Value {
 	/**
 	 * Create the payload.
 	 *

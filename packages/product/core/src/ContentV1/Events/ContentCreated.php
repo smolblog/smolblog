@@ -10,7 +10,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates an event where a new piece of Content has been created.
  */
-abstract class ContentCreated extends ContentEvent {
+abstract readonly class ContentCreated extends ContentEvent {
 	/**
 	 * Create the event
 	 *

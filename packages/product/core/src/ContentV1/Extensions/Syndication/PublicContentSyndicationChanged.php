@@ -9,6 +9,6 @@ use Smolblog\Core\ContentV1\Queries\GenericContentBuilder;
 /**
  * Indicates the syndication information on a piece of public content has changed.
  */
-class PublicContentSyndicationChanged extends PublicContentChanged implements GenericContentBuilder {
+readonly class PublicContentSyndicationChanged extends PublicContentChanged implements GenericContentBuilder {
 	use ContentBuilderKit;
 }

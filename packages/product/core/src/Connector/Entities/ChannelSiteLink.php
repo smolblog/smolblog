@@ -2,14 +2,17 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
 /**
  * Represents a link between a Connection and a Site.
  */
-class ChannelSiteLink extends Entity {
+readonly class ChannelSiteLink extends Value implements Entity {
+	use EntityKit;
 	public const NAMESPACE = 'ac8c2a55-53c9-4144-bc08-3c8e2b2f2064';
 
 	/**

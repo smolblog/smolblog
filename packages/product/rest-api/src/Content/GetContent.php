@@ -67,7 +67,7 @@ class GetContent extends BasicEndpoint {
 		return new ContentPayload(
 			id: $content->id,
 			type: new ContentTypePayload(
-				...$content->type->toArray(),
+				...$content->type->serializeValue(),
 				type: $content->type->getTypeKey(),
 			),
 			meta: new BaseAttributesPayload(

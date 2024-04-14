@@ -10,7 +10,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates that the comment on a reblog has changed.
  */
-class ReblogCommentChanged extends ContentBodyEdited implements NeedsMarkdownRendered {
+readonly class ReblogCommentChanged extends ContentBodyEdited implements NeedsMarkdownRendered {
 	use ReblogEventKit;
 
 	/**

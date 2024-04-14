@@ -4,17 +4,17 @@ namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Framework\Messages\Event;
-use Smolblog\Framework\Messages\MemoizableQuery;
+use Smolblog\Foundation\Service\Messaging\Event;
+use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Messages\Query;
-use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
-use Smolblog\Framework\Messages\Attributes\CheckMemoLayerListener;
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\SecurityLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\CheckMemoLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\EventStoreLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\SaveMemoLayerListener;
 use Smolblog\Foundation\Value\Messages\Command;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 function listenerTestTrace($add = '', $reset = false) {
 	static $trace;

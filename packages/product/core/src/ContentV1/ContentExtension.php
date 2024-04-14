@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1;
 
-use Smolblog\Framework\Objects\ArraySerializable;
+use Smolblog\Framework\Objects\SerializeableValue;
 
 /**
  * A piece of data attached to every piece of content.
@@ -12,5 +12,5 @@ use Smolblog\Framework\Objects\ArraySerializable;
  *
  * See: WordPress Post Meta
  */
-interface ContentExtension extends ArraySerializable {
+interface ContentExtension extends SerializeableValue {
 }

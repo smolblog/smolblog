@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Indicates a Channel is no longer active and has been deleted.
  */
-class ChannelDeleted extends ConnectorEvent {
+readonly class ChannelDeleted extends ConnectorEvent {
 	/**
 	 * Construct the event.
 	 *

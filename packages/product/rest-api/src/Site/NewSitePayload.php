@@ -2,12 +2,12 @@
 
 namespace Smolblog\Api\Site;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Expected payload for creating a new site.
  */
-class NewSitePayload extends Value {
+readonly class NewSitePayload extends Value {
 	/**
 	 * Create the payload.
 	 *

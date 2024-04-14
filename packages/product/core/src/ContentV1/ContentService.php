@@ -5,8 +5,8 @@ namespace Smolblog\Core\ContentV1;
 use Smolblog\Core\ContentV1\Commands\EditContentBaseAttributes;
 use Smolblog\Core\ContentV1\Events\ContentBaseAttributeEdited;
 use Smolblog\Core\ContentV1\Queries\AdaptableContentQuery;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**

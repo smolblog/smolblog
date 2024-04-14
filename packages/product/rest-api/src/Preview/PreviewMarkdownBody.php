@@ -2,12 +2,12 @@
 
 namespace Smolblog\Api\Preview;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Body for a Markdown preview request.
  */
-class PreviewMarkdownBody extends Value {
+readonly class PreviewMarkdownBody extends Value {
 	/**
 	 * Construct the object.
 	 *

@@ -7,7 +7,7 @@ namespace Smolblog\Core\ContentV1\Events;
  *
  * This should be implemented by any ContentEvents that result in a content's body changing.
  */
-abstract class ContentBodyEdited extends ContentEvent {
+abstract readonly class ContentBodyEdited extends ContentEvent {
 	/**
 	 * Get the updated HTML-formatted body text. Null if no change.
 	 *

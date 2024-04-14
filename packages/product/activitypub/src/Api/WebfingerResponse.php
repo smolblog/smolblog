@@ -3,12 +3,12 @@
 namespace Smolblog\ActivityPub\Api;
 
 use Smolblog\Api\ArrayType;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Describe a Webfinger object.
  */
-class WebfingerResponse extends Value {
+readonly class WebfingerResponse extends Value {
 	/**
 	 * Create the object.
 	 *
@@ -30,7 +30,7 @@ class WebfingerResponse extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		return array_filter(parent::toArray(), fn($item) => isset($item));
+	public function serializeValue(): array {
+		return array_filter(parent::serializeValue(), fn($item) => isset($item));
 	}
 }

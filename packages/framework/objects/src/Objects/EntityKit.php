@@ -18,7 +18,7 @@ trait EntityKit {
 	 * @param array $data Data to initialize class with.
 	 * @return static New instancce of this object
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		$dataWithIdentifier = [...$data, 'id' => Identifier::fromString($data['id'])];
 		return new static(...$dataWithIdentifier);
 	}
@@ -37,7 +37,7 @@ trait EntityKit {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		$fields = get_object_vars($this);
 		$fields['id'] = strval($this->id);
 		return $fields;

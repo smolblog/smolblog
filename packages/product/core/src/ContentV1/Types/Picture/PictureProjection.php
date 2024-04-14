@@ -6,9 +6,9 @@ use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\ContentV1\Events\ContentEvent;
 use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Core\ContentV1\Types\Note\Note;
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\Projection;
 
 /**
  * Store Picture-specific state.
@@ -95,7 +95,7 @@ class PictureProjection implements Projection {
 		$row = $this->db->table(self::TABLE)->where('content_uuid', '=', $message->getContentId()->toString())->first();
 
 		$message->setContentType(new Picture(
-			media: array_map(fn($m) => Media::fromArray($m), json_decode($row->media, true)),
+			media: array_map(fn($m) => Media::deserializeValue($m), json_decode($row->media, true)),
 			caption: $row->caption,
 			mediaHtml: json_decode($row->media_html),
 			captionHtml: $row->caption_html,

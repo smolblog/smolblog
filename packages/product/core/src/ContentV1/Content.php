@@ -4,7 +4,9 @@ namespace Smolblog\Core\ContentV1;
 
 use DateTimeInterface;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
-use Smolblog\Framework\Objects\Entity;
+use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Traits\Entity;
+use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -19,7 +21,8 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * Remember, the canonical store for all data is the event stream! The Content class is intented to provide a
  * view into the data, but there may be other data accessable in other ways.
  */
-class Content extends Entity {
+readonly class Content extends Value implements Entity {
+	use EntityKit;
 	/**
 	 * Handles the body and title.
 	 *
@@ -114,7 +117,7 @@ class Content extends Entity {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return [
 			'id' => $this->id->toString(),
 			'siteId' => $this->siteId->toString(),
@@ -125,10 +128,10 @@ class Content extends Entity {
 			'title' => $this->type->getTitle(),
 			'body' => $this->type->getBodyContent(),
 			'contentType' => [
-				...$this->type->toArray(),
+				...$this->type->serializeValue(),
 				'type' => get_class($this->type),
 			],
-			'extensions' => array_map(fn($ext) => $ext->toArray(), $this->extensions),
+			'extensions' => array_map(fn($ext) => $ext->serializeValue(), $this->extensions),
 		];
 	}
 
@@ -138,13 +141,13 @@ class Content extends Entity {
 	 * @param array $data Serialized data.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		$type = null;
 		if (isset($data['contentType'])) {
 			$contentTypeClass = $data['contentType']['type'];
 			unset($data['contentType']['type']);
 
-			$type = $contentTypeClass::fromArray($data['contentType']);
+			$type = $contentTypeClass::deserializeValue($data['contentType']);
 		} else {
 			$type = new GenericContent(title: $data['title'], body: $data['body']);
 		}
@@ -155,7 +158,7 @@ class Content extends Entity {
 
 		$extensions = [];
 		foreach ($data['extensions'] as $extClass => $extData) {
-			$extensions[$extClass] = $extClass::fromArray($extData);
+			$extensions[$extClass] = $extClass::deserializeValue($extData);
 		}
 
 		return new Content(

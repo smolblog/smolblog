@@ -17,7 +17,7 @@ class Plugin {
 		// Ensure the async hook is in place
 		add_action(
 			'smolblog_async_dispatch',
-			fn($class, $message) => $app->container->get(MessageBus::class)->dispatch($class::fromArray($message)),
+			fn($class, $message) => $app->container->get(MessageBus::class)->dispatch($class::deserializeValue($message)),
 			10,
 			2
 		);

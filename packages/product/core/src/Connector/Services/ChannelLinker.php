@@ -6,7 +6,7 @@ use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**

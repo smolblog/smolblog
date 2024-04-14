@@ -75,10 +75,10 @@ class Picture implements ContentType {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return [
 			...$this->baseToArray(),
-			'media' => array_map(fn($media) => $media->toArray(), $this->media),
+			'media' => array_map(fn($media) => $media->serializeValue(), $this->media),
 		];
 	}
 
@@ -88,9 +88,9 @@ class Picture implements ContentType {
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new Picture(
-			media: array_map(fn($arr) => Media::fromArray($arr), $data['media']),
+			media: array_map(fn($arr) => Media::deserializeValue($arr), $data['media']),
 			caption: $data['caption'] ?? null,
 			mediaHtml: $data['mediaHtml'] ?? [],
 			captionHtml: $data['captionHtml'] ?? '',

@@ -3,12 +3,12 @@
 namespace Smolblog\Core\ContentV1\Extensions\Syndication;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Store information about a link to a piece of content available elsewhere.
  */
-class SyndicationLink extends Value {
+readonly class SyndicationLink extends Value {
 	/**
 	 * Construct the link.
 	 *
@@ -26,7 +26,7 @@ class SyndicationLink extends Value {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function serializeValue(): array {
 		return array_filter([
 			'url' => $this->url,
 			'channelId' => $this->channelId?->toString(),
@@ -39,7 +39,7 @@ class SyndicationLink extends Value {
 	 * @param array $data Serialized link.
 	 * @return static
 	 */
-	public static function fromArray(array $data): static {
+	public static function deserializeValue(array $data): static {
 		return new static(url: $data['url'], channelId: self::safeDeserializeIdentifier($data['channelId'] ?? ''));
 	}
 }

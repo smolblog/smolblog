@@ -2,12 +2,12 @@
 
 namespace Smolblog\Api;
 
-use Smolblog\Framework\Objects\Value;
+use Smolblog\Foundation\Value;
 
 /**
  * Response indicating a redirect (301 or 302) should be given.
  */
-class RedirectResponse extends Value {
+readonly class RedirectResponse extends Value {
 	/**
 	 * Construct the response
 	 *

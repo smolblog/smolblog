@@ -2,9 +2,6 @@
 
 namespace Smolblog\Framework\ActivityPub\Objects;
 
-use JsonSerializable;
-use Smolblog\Framework\Objects\ArraySerializable;
-use Smolblog\Framework\Objects\SerializableKit;
 use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 
