@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 
 final class TestApp {
 	use AppKit {

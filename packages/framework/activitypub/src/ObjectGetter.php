@@ -6,8 +6,8 @@ use Psr\Http\Client\ClientInterface;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubBase;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
 use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
-use Smolblog\Framework\Objects\HttpRequest;
-use Smolblog\Framework\Objects\HttpVerb;
+use Smolblog\Foundation\Value\Http\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 
 /**
  * Get a remote ActivityPub object, optionally with a signature.

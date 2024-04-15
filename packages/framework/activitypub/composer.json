@@ -13,18 +13,37 @@
 			"email": "me@eph.me"
 		}
 	],
+	"repositories": [
+		{
+			"type": "path",
+			"url": "../foundation"
+		},
+		{
+			"type": "path",
+			"url": "../test-utils"
+		}
+	],
+	"minimum-stability": "dev",
 	"autoload": {
 		"psr-4": {
 			"Smolblog\\Framework\\ActivityPub\\": "src/"
 		}
 	},
 	"require": {
-		"php": "^8.2",
-		"psr/http-message": "^1.0",
+		"php": "^8.3",
+		"psr/http-message": "^1.0|^2.0",
 		"psr/http-client": "^1.0",
 		"psr/log": "^3.0"
 	},
 	"require-dev": {
-		"squizlabs/php_codesniffer": "^3.8"
+		"squizlabs/php_codesniffer": "^3.8",
+		"phpunit/phpunit": "^11.1",
+		"smolblog/test-utils": "*",
+		"smolblog/foundation": "*"
+	},
+	"scripts": {
+		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
 	}
 }

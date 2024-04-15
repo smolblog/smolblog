@@ -7,3 +7,4 @@ coverage.php
 test-coverage
 .DS_Store
 registration.json
+html-coverage/

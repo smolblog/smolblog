@@ -4,9 +4,9 @@ namespace Smolblog\Framework\ActivityPub\Signatures;
 
 use DateTimeImmutable;
 use Psr\Http\Message\RequestInterface;
+use Smolblog\Foundation\Value\Http\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
-use Smolblog\Framework\Objects\HttpRequest;
-use Smolblog\Framework\Objects\HttpVerb;
 use Smolblog\Test\TestCase;
 
 final class SignatureKitTest extends TestCase {

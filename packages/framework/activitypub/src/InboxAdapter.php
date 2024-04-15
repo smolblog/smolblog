@@ -8,8 +8,8 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Smolblog\Framework\ActivityPub\Objects\{ActivityPubBase, Actor, Delete, Follow, Undo};
 use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
-use Smolblog\Framework\Objects\HttpRequest;
-use Smolblog\Framework\Objects\HttpVerb;
+use Smolblog\Foundation\Value\Http\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 use stdClass;
 
 /**

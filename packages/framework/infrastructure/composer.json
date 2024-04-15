@@ -9,20 +9,38 @@
 			"email": "me@eph.me"
 		}
 	],
+	"repositories": [
+		{
+			"type": "path",
+			"url": "../foundation"
+		},
+		{
+			"type": "path",
+			"url": "../test-utils"
+		}
+	],
+	"minimum-stability": "dev",
 	"autoload": {
 		"psr-4": {
 			"Smolblog\\Framework\\Infrastructure\\": "src/"
 		}
 	},
 	"require": {
-		"php": "^8.2",
+		"php": "^8.3",
 		"psr/container": "^2.0",
 		"psr/event-dispatcher": "^1.0",
 		"crell/tukio": "^1.6",
 		"phpseclib/phpseclib": "^3.0",
-		"psr/log": "^3.0"
+		"psr/log": "^3.0",
+		"smolblog/foundation": "*"
 	},
 	"require-dev": {
-		"squizlabs/php_codesniffer": "^3.8"
+			"squizlabs/php_codesniffer": "^3.8",
+			"smolblog/test-utils": "*"
+	},
+	"scripts": {
+		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
 	}
 }
