@@ -23,9 +23,9 @@ use Smolblog\Foundation\Service\Messaging\Listener;
  * 4. Execution (default)
  * 5. Save Memo
  *
- * To add a listener to a particular layer, add the appropriate attribute (ex: `#[SecurityLayerListener]`). Within
+ * To add a listener to a particular layer, add the appropriate attribute (ex: `#[SecurityListener]`). Within
  * those layers, a listener can be moved earlier or later in the priority queue by setting the `earlier:` or
- * `later:` parameters (ex: `#[EventStoreLayerListener(earlier: 3)]` would be 3 places higher in the priority queue
+ * `later:` parameters (ex: `#[PersistEventListener(earlier: 3)]` would be 3 places higher in the priority queue
  * than a default listener in that layer).
  */
 class ListenerRegistry implements ListenerProviderInterface, Registry {
@@ -74,7 +74,7 @@ class ListenerRegistry implements ListenerProviderInterface, Registry {
 	 *
 	 * A listener service contains methods either
 	 *   1. beginning with `on` or
-	 *   2. containing a timing attribute from the Smolblog\Foundation\Service\Messaging\Attributes namespace
+	 *   2. containing a timing attribute from the Smolblog\Foundation\Service\Messaging namespace
 	 * that take a message object as its single parameter. The registry will note the parameter type and wire things up
 	 * accordingly.
 	 *

@@ -3,8 +3,6 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Exceptions\ServiceNotFoundException;
-use Smolblog\Framework\Exceptions\ServiceRegistryConfigurationException;
 
 interface TestBasicInterface {}
 

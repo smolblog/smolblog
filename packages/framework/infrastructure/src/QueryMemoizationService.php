@@ -3,8 +3,8 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
-use Smolblog\Foundation\Service\Messaging\Attributes\CheckMemoLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\SaveMemoLayerListener;
+use Smolblog\Foundation\Service\Messaging\CheckMemoListener;
+use Smolblog\Foundation\Service\Messaging\SaveMemoListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Value\Traits\Memoizable;
 
@@ -28,7 +28,7 @@ class QueryMemoizationService implements Listener {
 	 * @param Memoizable $query Incoming query to check.
 	 * @return void
 	 */
-	#[CheckMemoLayerListener()]
+	#[CheckMemoListener()]
 	public function checkMemo(Memoizable $query): void {
 		$key = $query->getMemoKey();
 		if (!array_key_exists($key, $this->memos)) {
@@ -45,7 +45,7 @@ class QueryMemoizationService implements Listener {
 	 * @param Memoizable $query Outgoing query to save.
 	 * @return void
 	 */
-	#[SaveMemoLayerListener()]
+	#[SaveMemoListener()]
 	public function setMemo(Memoizable $query): void {
 		$key = $query->getMemoKey();
 

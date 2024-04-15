@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36bfb4b346055e703d705d012b123832",
+    "content-hash": "424c0c496da7a722c004594e99c298fd",
     "packages": [
         {
             "name": "brick/math",
@@ -60,6 +60,71 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "cebe/markdown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cebe/markdown.git",
+                "reference": "2b2461bed9e15305486319ee552bafca75d1cdaa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cebe/markdown/zipball/2b2461bed9e15305486319ee552bafca75d1cdaa",
+                "reference": "2b2461bed9e15305486319ee552bafca75d1cdaa",
+                "shasum": ""
+            },
+            "require": {
+                "lib-pcre": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "cebe/indent": "*",
+                "facebook/xhprof": "*@dev",
+                "phpunit/phpunit": "4.1.*"
+            },
+            "default-branch": true,
+            "bin": [
+                "bin/markdown"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "cebe\\markdown\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Carsten Brandt",
+                    "email": "mail@cebe.cc",
+                    "homepage": "http://cebe.cc/",
+                    "role": "Creator"
+                }
+            ],
+            "description": "A super fast, highly extensible markdown parser for PHP",
+            "homepage": "https://github.com/cebe/markdown#readme",
+            "keywords": [
+                "extensible",
+                "fast",
+                "gfm",
+                "markdown",
+                "markdown-extra"
+            ],
+            "support": {
+                "issues": "https://github.com/cebe/markdown/issues",
+                "source": "https://github.com/cebe/markdown"
+            },
+            "time": "2020-02-26T01:55:18+00:00"
         },
         {
             "name": "crell/ordered-collection",
@@ -705,6 +770,59 @@
             "time": "2024-03-17T21:29:03+00:00"
         },
         {
+            "name": "psr/http-client",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-client.git",
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-client/zipball/bb5906edc1c324c9a05aa0873d40117941e5fa90",
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP clients",
+            "homepage": "https://github.com/php-fig/http-client",
+            "keywords": [
+                "http",
+                "http-client",
+                "psr",
+                "psr-18"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-client"
+            },
+            "time": "2023-09-23T14:17:50+00:00"
+        },
+        {
             "name": "psr/http-factory",
             "version": "dev-master",
             "source": {
@@ -1091,6 +1209,61 @@
             "time": "2024-04-08T21:12:32+00:00"
         },
         {
+            "name": "smolblog/activitypub-adapter",
+            "version": "dev-refactor/new-content-pipeline",
+            "dist": {
+                "type": "path",
+                "url": "../activitypub",
+                "reference": "e5aa0392b9076b982e842435ba29b6e857235294"
+            },
+            "require": {
+                "php": "^8.3",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0|^2.0",
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.1",
+                "smolblog/foundation": "*",
+                "smolblog/test-utils": "*",
+                "squizlabs/php_codesniffer": "^3.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Smolblog\\Framework\\ActivityPub\\": "src/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "XDEBUG_MODE=coverage phpunit --coverage-text"
+                ],
+                "lint": [
+                    "./vendor/squizlabs/php_codesniffer/bin/phpcs"
+                ],
+                "lintfix": [
+                    "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Smolblog",
+                    "email": "dev@smolblog.org"
+                },
+                {
+                    "name": "Evan Hildreth",
+                    "email": "me@eph.me"
+                }
+            ],
+            "description": "Toolkit for implementing ActivityPub in a PHP application",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "smolblog/foundation",
             "version": "dev-refactor/new-content-pipeline",
             "dist": {
@@ -1143,6 +1316,59 @@
                 }
             ],
             "description": "Foundational base objects for building a system",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "smolblog/smolblog-markdown",
+            "version": "dev-refactor/new-content-pipeline",
+            "dist": {
+                "type": "path",
+                "url": "../markdown",
+                "reference": "bdf5e7dbacc8c6ce1f478d41adb40604ae9c74de"
+            },
+            "require": {
+                "cebe/markdown": "^1.2",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^3.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Smolblog\\Markdown\\": "src/"
+                }
+            },
+            "scripts": {
+                "coverage": [
+                    "export XDEBUG_MODE=coverage; phpunit --testsuite markdown; cat coverage.txt"
+                ],
+                "test": [
+                    "phpunit --testsuite markdown"
+                ],
+                "lint": [
+                    "./vendor/squizlabs/php_codesniffer/bin/phpcs"
+                ],
+                "lintfix": [
+                    "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Smolblog",
+                    "email": "dev@smolblog.org"
+                },
+                {
+                    "name": "Evan Hildreth",
+                    "email": "me@eph.me"
+                }
+            ],
+            "description": "A superset of Markdown with some Smolblog flair.",
             "transport-options": {
                 "relative": true
             }
@@ -2877,12 +3103,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "dba1cc147947f77f1eee5703ca90a6ed1c0da9e2"
+                "reference": "8f4eb98a59459af25fe9227fbeba662125103d08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/dba1cc147947f77f1eee5703ca90a6ed1c0da9e2",
-                "reference": "dba1cc147947f77f1eee5703ca90a6ed1c0da9e2",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/8f4eb98a59459af25fe9227fbeba662125103d08",
+                "reference": "8f4eb98a59459af25fe9227fbeba662125103d08",
                 "shasum": ""
             },
             "require": {
@@ -2950,7 +3176,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-04-10T22:38:29+00:00"
+            "time": "2024-04-15T00:27:56+00:00"
         },
         {
             "name": "theseer/tokenizer",

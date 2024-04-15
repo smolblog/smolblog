@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\ContentV1\Media;
 
-use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\ContentBuildLayerListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;

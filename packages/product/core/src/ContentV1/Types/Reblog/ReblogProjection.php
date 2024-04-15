@@ -3,8 +3,8 @@
 namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\Projection;
 
 /**
@@ -45,7 +45,7 @@ class ReblogProjection implements Projection {
 	 * @param ReblogInfoChanged $event Event to handle.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(earlier: 1)]
+	#[ExecutionListener(earlier: 1)]
 	public function onReblogInfoChanged(ReblogInfoChanged $event) {
 		$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->update([
 			'url' => $event->url,
@@ -64,7 +64,7 @@ class ReblogProjection implements Projection {
 	 * @param ReblogCommentChanged $event Event to handle.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(earlier: 1)]
+	#[ExecutionListener(earlier: 1)]
 	public function onReblogCommentChanged(ReblogCommentChanged $event) {
 		$this->db->table(self::TABLE)->where('content_uuid', '=', $event->contentId->toString())->update([
 			'comment' => $event->comment,

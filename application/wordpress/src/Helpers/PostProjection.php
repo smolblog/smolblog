@@ -18,7 +18,7 @@ use Smolblog\Core\ContentV1\Extensions\Tags\Tags;
 use Smolblog\Core\ContentV1\Types\Note\Note;
 use Smolblog\Core\ContentV1\Types\Picture\Picture;
 use Smolblog\Core\ContentV1\Types\Reblog\Reblog;
-use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -28,7 +28,7 @@ class PostProjection implements Projection {
 	public function __construct(private MessageBus $bus, private LoggerInterface $log) {
 	}
 
-	#[ExecutionLayerListener(earlier: 3)]
+	#[ExecutionListener(earlier: 3)]
 	public function onPublicContentAdded(PublicContentAdded $event) {
 		$content = $event->getContent();
 
@@ -68,7 +68,7 @@ class PostProjection implements Projection {
 		$event->setContentProperty(permalink: $permalink);
 	}
 
-	#[ExecutionLayerListener]
+	#[ExecutionListener]
 	public function onPublicContentChanged(PublicContentChanged $event) {
 		$content = $event->getContent();
 
@@ -93,7 +93,7 @@ class PostProjection implements Projection {
 		restore_current_blog();
 	}
 
-	#[ExecutionLayerListener]
+	#[ExecutionListener]
 	public function onPublicContentRemoved(PublicContentRemoved $event) {
 		$content = $event->getContent();
 

@@ -9,7 +9,7 @@ use Smolblog\Core\Connector\Events\ChannelSaved;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionById;
-use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -50,7 +50,7 @@ class ChannelRefresher implements Listener {
 	 * @param ConnectionEstablished $event Event with Connection that has been established.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(later: 5)]
+	#[ExecutionListener(later: 5)]
 	public function onConnectionEstablished(ConnectionEstablished $event): void {
 		$connection = new Connection(
 			userId: $event->userId,

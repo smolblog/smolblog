@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\Service\Messaging\Attributes;
+namespace Smolblog\Foundation\Service\Messaging;
 
 use Attribute;
 use Crell\Tukio\ListenerPriority;
@@ -9,7 +9,7 @@ use Crell\Tukio\ListenerPriority;
  * Indicates the given function/method should fire during the security phase.
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
-class SecurityLayerListener extends ListenerPriority {
+class SecurityListener extends ListenerPriority {
 	/**
 	 * Indicates the given function/method should fire during the security phase.
 	 *

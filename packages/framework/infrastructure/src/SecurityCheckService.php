@@ -2,8 +2,8 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
-use Smolblog\Foundation\Service\Messaging\Attributes\SecurityLayerListener;
+use Smolblog\Foundation\Exceptions\MessageNotAuthorized;
+use Smolblog\Foundation\Service\Messaging\SecurityListener;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
@@ -25,20 +25,20 @@ class SecurityCheckService implements Listener {
 	 *
 	 * Fetches the Query object given by AuthorizableMessage->getAuthorizationQuery(). If the query returns a truthy
 	 * value (i.e. not zero or empty), the message can proceed. If it is a falsy value, the message is stopped and
-	 * a MessageNotAuthorizedException is thrown.
+	 * a MessageNotAuthorized is thrown.
 	 *
-	 * @throws MessageNotAuthorizedException Thrown when security query fails.
+	 * @throws MessageNotAuthorized Thrown when security query fails.
 	 *
 	 * @param AuthorizableMessage $event Message to check.
 	 * @return void
 	 */
-	#[SecurityLayerListener()]
+	#[SecurityListener()]
 	public function onAuthorizableMessage(AuthorizableMessage $event): void {
 
 		$securityQuery = $event->getAuthorizationQuery();
 		if (!$this->messageBus->fetch($securityQuery)) {
 			$event->stopMessage();
-			throw new MessageNotAuthorizedException(
+			throw new MessageNotAuthorized(
 				originalMessage: $event,
 				authorizationQuery: $securityQuery
 			);

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Tumblr;
 
-use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
@@ -31,7 +31,7 @@ class TumblrImporter implements Listener {
 	 * @param ImportFromTumblr $command Command to execute.
 	 * @return void
 	 */
-	#[ExecutionLayerListener]
+	#[ExecutionListener]
 	public function handleCommand(ImportFromTumblr $command) {
 		$client = $this->factory->getUserClient(...$command->connection->details);
 

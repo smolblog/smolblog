@@ -4,7 +4,7 @@ namespace Smolblog\Mock;
 
 use Smolblog\Core\ContentV1\Events\PermalinkAssigned;
 use Smolblog\Core\ContentV1\Events\PublicContentAdded;
-use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\ContentBuildLayerListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 

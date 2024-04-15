@@ -4,8 +4,6 @@ namespace Smolblog\Framework\Infrastructure;
 
 use Exception;
 use Psr\Container\ContainerInterface;
-use Smolblog\Framework\Exceptions\ServiceNotFoundException;
-use Smolblog\Framework\Exceptions\ServiceRegistryConfigurationException;
 
 /**
  * A basic implementation of a dependency injection container.

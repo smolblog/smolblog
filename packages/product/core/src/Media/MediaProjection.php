@@ -5,8 +5,8 @@ namespace Smolblog\Core\ContentV1\Media;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
-use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\ContentBuildLayerListener;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use stdClass;
@@ -117,7 +117,7 @@ class MediaProjection implements Projection {
 	 * @param ContentVisibleToUser $query Query to check.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(earlier: 5)]
+	#[ExecutionListener(earlier: 5)]
 	public function onContentVisibleToUser(ContentVisibleToUser $query) {
 		// Media objects are always public for now.
 		if ($this->db->table(self::TABLE)->where('content_uuid', '=', $query->contentId->toString())->exists()) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\Service\Messaging\Attributes;
+namespace Smolblog\Foundation\Service\Messaging;
 
 use Attribute;
 use Crell\Tukio\ListenerPriority;
@@ -9,7 +9,7 @@ use Crell\Tukio\ListenerPriority;
  * Indicates the given function/method should fire during the event store phase.
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
-class EventStoreLayerListener extends ListenerPriority {
+class PersistEventListener extends ListenerPriority {
 	/**
 	 * Indicates the given function/method should fire during the event store phase.
 	 *

@@ -6,7 +6,7 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\User\User;
-use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -33,7 +33,7 @@ class ConnectionRefresher implements Listener {
 	 * @param ConnectionById $query Query to intercept.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(later: 1)]
+	#[ExecutionListener(later: 1)]
 	public function checkOnConnectionById(ConnectionById $query) {
 		if ($query->results()) {
 			$query->setResults($this->refresh($query->results(), userId: User::internalSystemUser()->id));

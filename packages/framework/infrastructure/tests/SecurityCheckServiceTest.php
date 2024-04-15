@@ -5,7 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Smolblog\Foundation\Value\Traits\MessageKit;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
+use Smolblog\Foundation\Exceptions\MessageNotAuthorized;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
@@ -35,7 +35,7 @@ final class SecurityCheckServiceTest extends TestCase {
 	}
 
 	public function testAnUnauthorizedMessageWillStopAndThrowException() {
-		$this->expectException(MessageNotAuthorizedException::class);
+		$this->expectException(MessageNotAuthorized::class);
 
 		$bus = $this->createStub(MessageBus::class);
 		$bus->method('fetch')->willReturn(false);

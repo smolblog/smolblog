@@ -5,7 +5,7 @@ namespace Smolblog\Core\Connector\Data;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Connector\Events\ConnectorEvent;
-use Smolblog\Foundation\Service\Messaging\Attributes\EventStoreLayerListener;
+use Smolblog\Foundation\Service\Messaging\PersistEventListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
@@ -36,7 +36,7 @@ class ConnectorEventStream implements Listener {
 	 * @param ConnectorEvent $event Event to save.
 	 * @return void
 	 */
-	#[EventStoreLayerListener()]
+	#[PersistEventListener()]
 	public function onConnectorEvent(ConnectorEvent $event) {
 		$data = [
 			'event_uuid' => $event->id->toString(),

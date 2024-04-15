@@ -5,7 +5,7 @@ namespace Smolblog\Core\ContentV1\Data;
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\ContentV1\Events\ContentEvent;
-use Smolblog\Foundation\Service\Messaging\Attributes\EventStoreLayerListener;
+use Smolblog\Foundation\Service\Messaging\PersistEventListener;
 use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
@@ -38,7 +38,7 @@ class ContentEventStream implements Listener {
 	 * @param ContentEvent $event Event to save.
 	 * @return void
 	 */
-	#[EventStoreLayerListener()]
+	#[PersistEventListener()]
 	public function onContentEvent(ContentEvent $event) {
 		$data = [
 			'event_uuid' => $event->id->toString(),

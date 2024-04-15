@@ -5,12 +5,12 @@ namespace Smolblog\Framework\Infrastructure;
 use Smolblog\Test\TestCase;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Foundation\Value\Messages\Query;
-use Smolblog\Foundation\Service\Messaging\Attributes\SecurityLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\CheckMemoLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\ContentBuildLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\EventStoreLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\ExecutionLayerListener;
-use Smolblog\Foundation\Service\Messaging\Attributes\SaveMemoLayerListener;
+use Smolblog\Foundation\Service\Messaging\SecurityListener;
+use Smolblog\Foundation\Service\Messaging\CheckMemoListener;
+use Smolblog\Foundation\Service\Messaging\DownstreamListener;
+use Smolblog\Foundation\Service\Messaging\PersistEventListener;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
+use Smolblog\Foundation\Service\Messaging\SaveMemoListener;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -31,82 +31,83 @@ function listenerTestTrace($add = '', $reset = false) {
 }
 
 final class ListenerTestMainService {
-	#[SecurityLayerListener]
+	#[SecurityListener]
 	public function security(AuthorizableMessage $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[CheckMemoLayerListener]
+	#[CheckMemoListener]
 	public function checkMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[EventStoreLayerListener]
+	#[PersistEventListener]
 	public function eventStore(DomainEvent $event) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[ContentBuildLayerListener]
-	public function contentBuild(Command $event) {
-		listenerTestTrace(add: __METHOD__);
-	}
+	#[ExecutionListener]
 	public function onExecute(Command $event) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[SaveMemoLayerListener]
+	#[DownstreamListener]
+	public function contentPush(Command $event) {
+		listenerTestTrace(add: __METHOD__);
+	}
+	#[SaveMemoListener]
 	public function saveMemo(Memoizable $query) {
 		listenerTestTrace(add: __METHOD__);
 	}
 }
 
 final class ListenerTestTimingService {
-	#[SecurityLayerListener(earlier: 1)]
+	#[SecurityListener(earlier: 1)]
 	public function beforeSecurity(AuthorizableMessage $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[SecurityLayerListener(later: 1)]
+	#[SecurityListener(later: 1)]
 	public function afterSecurity(AuthorizableMessage $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
-	#[CheckMemoLayerListener(earlier: 1)]
+	#[CheckMemoListener(earlier: 1)]
 	public function beforeCheckMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[CheckMemoLayerListener(later: 1)]
+	#[CheckMemoListener(later: 1)]
 	public function afterCheckMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
-	#[EventStoreLayerListener(earlier: 1)]
+	#[PersistEventListener(earlier: 1)]
 	public function beforeEventStore(DomainEvent $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[EventStoreLayerListener(later: 1)]
+	#[PersistEventListener(later: 1)]
 	public function afterEventStore(DomainEvent $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
-	#[ContentBuildLayerListener(earlier: 1)]
-	public function beforeContentBuild(DomainEvent $message) {
-		listenerTestTrace(add: __METHOD__);
-	}
-	#[ContentBuildLayerListener(later: 1)]
-	public function afterContentBuild(DomainEvent $message) {
-		listenerTestTrace(add: __METHOD__);
-	}
-
-	#[ExecutionLayerListener(earlier: 1)]
+	#[ExecutionListener(earlier: 1)]
 	public function beforeExecution(Command $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[ExecutionLayerListener(later: 1)]
+	#[ExecutionListener(later: 1)]
 	public function afterExecution(Command $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
 
-	#[SaveMemoLayerListener(earlier: 1)]
+	#[DownstreamListener(earlier: 1)]
+	public function beforeContentBuild(DomainEvent $message) {
+		listenerTestTrace(add: __METHOD__);
+	}
+	#[DownstreamListener(later: 1)]
+	public function afterContentBuild(DomainEvent $message) {
+		listenerTestTrace(add: __METHOD__);
+	}
+
+	#[SaveMemoListener(earlier: 1)]
 	public function beforeSaveMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
-	#[SaveMemoLayerListener(later: 1)]
+	#[SaveMemoListener(later: 1)]
 	public function afterSaveMemo(Memoizable $message) {
 		listenerTestTrace(add: __METHOD__);
 	}
@@ -146,8 +147,8 @@ final class ListenerRegistryTest extends TestCase {
 		foreach ($this->provider->getListenersForEvent($event) as $listener) { $listener($event); }
 
 		$this->assertEquals([
-			ListenerTestMainService::class . '::' . 'contentBuild',
-			ListenerTestMainService::class . '::' . 'onExecute'
+			ListenerTestMainService::class . '::' . 'onExecute',
+			ListenerTestMainService::class . '::' . 'contentPush',
 		], listenerTestTrace(reset: true));
 	}
 
