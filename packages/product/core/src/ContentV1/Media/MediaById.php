@@ -4,15 +4,17 @@ namespace Smolblog\Core\ContentV1\Media;
 
 use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Memoizable;
+use Smolblog\Foundation\Value\Traits\MemoizableKit;
 
 /**
  * Search for a given media by its ID.
  *
  * Does not extend BaseContentById as Media does not have the same type/extension considerations.
  */
-readonly class MediaById extends Query implements Memoizable AuthorizableMessage {
+readonly class MediaById extends Query implements Memoizable, AuthorizableMessage {
 	use MemoizableKit;
 	/**
 	 * Construct the query

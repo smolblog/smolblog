@@ -3,14 +3,14 @@
 namespace Smolblog\Core\Federation;
 
 use Psr\Container\ContainerInterface;
-use Smolblog\Framework\Infrastructure\Registry;
-use Smolblog\Framework\Objects\RegistrarKit;
+use Smolblog\Foundation\Service\Registry\Registry;
+use Smolblog\Foundation\Service\Registry\RegistryKit;
 
 /**
  * Store FollowerProviders for use by the Model.
  */
 class FollowerProviderRegistry implements Registry {
-	use RegistrarKit {
+	use RegistryKit {
 		get as private internalGet;
 	}
 
@@ -31,11 +31,6 @@ class FollowerProviderRegistry implements Registry {
 	 */
 	public function __construct(ContainerInterface $container, array $configuration) {
 		$this->container = $container;
-		$this->interface = self::getInterfaceToRegister();
-
-		foreach ($configuration as $provider) {
-			$this->register($provider::getSlug(), $provider);
-		}
 	}
 
 	/**

@@ -3,16 +3,16 @@
     "description": "Foundational base objects for building a system",
     "type": "library",
     "license": "Apache-2.0",
-	"repositories": [
-		{
-			"type": "path",
-			"url": "../foundation"
-		},
-		{
-			"type": "path",
-			"url": "../test-utils"
-		}
-	],
+		"repositories": [
+			{
+				"type": "path",
+				"url": "../foundation"
+			},
+			{
+				"type": "path",
+				"url": "../test-utils"
+			}
+		],
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {

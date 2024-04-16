@@ -4,14 +4,14 @@ namespace Smolblog\Core\Connector\Services;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Core\Connector\Connector;
-use Smolblog\Framework\Infrastructure\Registry;
-use Smolblog\Framework\Objects\RegistrarKit;
+use Smolblog\Foundation\Service\Registry\Registry;
+use Smolblog\Foundation\Service\Registry\RegistryKit;
 
 /**
  * Class to handle storing Connectors for use later.
  */
 class ConnectorRegistry implements Registry {
-	use RegistrarKit {
+	use RegistryKit {
 		get as baseGet;
 	}
 
@@ -46,7 +46,6 @@ class ConnectorRegistry implements Registry {
 	 */
 	public function __construct(ContainerInterface $container, array $configuration) {
 		$this->container = $container;
-		$this->interface = Connector::class;
 		$pushConnectors = [];
 		$pullConnectors = [];
 
