@@ -21,5 +21,6 @@ readonly class ChannelsForSite extends Query {
 		public readonly ?bool $canPush = null,
 		public readonly ?bool $canPull = null,
 	) {
+		parent::__construct();
 	}
 }

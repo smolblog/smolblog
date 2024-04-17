@@ -21,5 +21,6 @@ readonly class UserCanLinkChannelAndSite extends Query {
 		public readonly Identifier $channelId,
 		public readonly Identifier $siteId,
 	) {
+		parent::__construct();
 	}
 }

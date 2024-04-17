@@ -36,7 +36,7 @@ final class ChannelProjectionTest extends TestCase {
 		);
 
 		$this->db->table('channels')->insert([
-			'channel_uuid' => $channel->id->toString(),
+			'channel_uuid' => $channel->getId()->toString(),
 			'connection_uuid' => $channel->connectionId->toString(),
 			'channel_key' => '123456',
 			'display_name' => 'Test Account',
@@ -59,8 +59,8 @@ final class ChannelProjectionTest extends TestCase {
 
 		$this->assertOnlyTableEntryEquals(
 			table: $this->db->table('channels'),
-			channel_uuid: Channel::buildId($event->connectionId, '123456')->toString(),
-			connection_uuid: $event->connectionId->toString(),
+			channel_uuid: Channel::buildId($event->entityId, '123456')->toString(),
+			connection_uuid: $event->entityId->toString(),
 			channel_key: '123456',
 			display_name: 'Test Account',
 			details: '{"token":"4edefc8f-0720-4fc1-8fe0-4db7882f7096"}',
@@ -81,7 +81,7 @@ final class ChannelProjectionTest extends TestCase {
 
 	public function testItWillFindASingleChannel() {
 		$channel = $this->setUpTestChannel();
-		$query = new ChannelById($channel->id);
+		$query = new ChannelById($channel->getId());
 
 		$this->projection->onChannelById($query);
 
@@ -99,7 +99,7 @@ final class ChannelProjectionTest extends TestCase {
 		$query = new ChannelsForConnection($channel1->connectionId);
 
 		$this->db->table('channels')->insert([
-			'channel_uuid' => $channel2->id->toString(),
+			'channel_uuid' => $channel2->getId()->toString(),
 			'connection_uuid' => $channel2->connectionId->toString(),
 			'channel_key' => '987654',
 			'display_name' => 'Sample Account',

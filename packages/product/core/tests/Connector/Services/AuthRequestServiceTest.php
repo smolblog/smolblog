@@ -45,7 +45,7 @@ final class AuthRequestServiceTest extends TestCase {
 		$command = new BeginAuthRequest(userId: $this->randomId(), provider: 'smol', callbackUrl: '//smol.blog');
 		$service->onBeginAuthRequest($command);
 
-		$this->assertEquals($authUrl, $command->redirectUrl);
+		$this->assertEquals($authUrl, $command->redirectUrl());
 	}
 
 	public function testItHandlesTheFinishAuthRequestCommand(): void {
@@ -99,6 +99,6 @@ final class AuthRequestServiceTest extends TestCase {
 
 		$service->onFinishAuthRequest($command);
 
-		$this->assertEquals('https://smol.blog/callback', $command->returnToUrl);
+		$this->assertEquals('https://smol.blog/callback', $command->returnToUrl());
 	}
 }

@@ -33,32 +33,4 @@ readonly class ChannelSiteLinkSet extends ConnectorEvent {
 	) {
 		parent::__construct(connectionId: $connectionId, userId: $userId, id: $id, timestamp: $timestamp);
 	}
-
-	/**
-	 * Unserialize this event's payload.
-	 *
-	 * @param array $payload Serialized payload.
-	 * @return array
-	 */
-	protected static function payloadFromArray(array $payload): array {
-		return [
-			...$payload,
-			'channelId' => Identifier::fromString($payload['channelId']),
-			'siteId' => Identifier::fromString($payload['siteId']),
-		];
-	}
-
-	/**
-	 * Get the fields specific to this Event.
-	 *
-	 * @return array
-	 */
-	public function getPayload(): array {
-		return [
-			'channelId' => $this->channelId->toString(),
-			'siteId' => $this->siteId->toString(),
-			'canPush' => $this->canPush,
-			'canPull' => $this->canPull,
-		];
-	}
 }

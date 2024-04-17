@@ -23,5 +23,6 @@ readonly class SiteHasPermissionForChannel extends Query {
 		public readonly bool $mustPush = false,
 		public readonly bool $mustPull = false,
 	) {
+		parent::__construct();
 	}
 }

@@ -34,6 +34,7 @@ readonly class ChannelsForAdmin extends Query implements AuthorizableMessage {
 		public readonly Identifier $siteId,
 		public readonly Identifier $userId,
 	) {
+		parent::__construct();
 	}
 
 	/**

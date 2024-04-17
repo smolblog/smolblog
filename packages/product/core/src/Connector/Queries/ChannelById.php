@@ -20,5 +20,6 @@ readonly class ChannelById extends Query {
 	public function __construct(
 		public readonly Identifier $channelId,
 	) {
+		parent::__construct();
 	}
 }

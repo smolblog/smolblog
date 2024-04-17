@@ -20,6 +20,7 @@ readonly class FinishAuthRequest extends Command {
 		public readonly string $stateKey,
 		public readonly string $code,
 	) {
+		parent::__construct();
 	}
 
 	public function setReturnUrl(string $url): void {

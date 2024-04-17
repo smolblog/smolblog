@@ -20,5 +20,6 @@ readonly class ChannelsForConnection extends Query {
 	public function __construct(
 		public readonly Identifier $connectionId,
 	) {
+		parent::__construct();
 	}
 }

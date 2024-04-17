@@ -92,21 +92,21 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 			details: ['three' => 'four'],
 		);
 		$link2 = new ChannelSiteLink(
-			channelId: $channel2->id,
+			channelId: $channel2->getId(),
 			siteId: $link1->siteId,
 			canPull: true,
 			canPush: false,
 		);
 
 		$this->db->table('channel_site_links')->insert([
-			'link_uuid' => $link2->id->toString(),
+			'link_uuid' => $link2->getId()->toString(),
 			'channel_uuid' => $link2->channelId->toString(),
 			'site_uuid' => $link2->siteId->toString(),
 			'can_push' => false,
 			'can_pull' => true,
 		]);
 		$this->db->table('channels')->insert([
-			'channel_uuid' => $channel2->id->toString(),
+			'channel_uuid' => $channel2->getId()->toString(),
 			'connection_uuid' => $channel2->connectionId->toString(),
 			'channel_key' => '56789',
 			'display_name' => 'Sample channel',
@@ -120,21 +120,21 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 			details: ['five' => 'six'],
 		);
 		$link3 = new ChannelSiteLink(
-			channelId: $channel3->id,
+			channelId: $channel3->getId(),
 			siteId: $this->randomId(scrub: true),
 			canPull: true,
 			canPush: false,
 		);
 
 		$this->db->table('channel_site_links')->insert([
-			'link_uuid' => $link3->id->toString(),
+			'link_uuid' => $link3->getId()->toString(),
 			'channel_uuid' => $link3->channelId->toString(),
 			'site_uuid' => $link3->siteId->toString(),
 			'can_push' => false,
 			'can_pull' => true,
 		]);
 		$this->db->table('channels')->insert([
-			'channel_uuid' => $channel3->id->toString(),
+			'channel_uuid' => $channel3->getId()->toString(),
 			'connection_uuid' => $channel3->connectionId->toString(),
 			'channel_key' => '34567',
 			'display_name' => 'Test channel',
@@ -303,7 +303,7 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 		];
 		$this->db->table('connections')->insert(array_map(
 			fn($con) => [
-				'connection_uuid' => $con->id->toString(),
+				'connection_uuid' => $con->getId()->toString(),
 				'user_uuid' => $con->userId->toString(),
 				'provider' => $con->provider,
 				'provider_key' => $con->providerKey,
@@ -315,25 +315,25 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 
 		$channels = [
 			new Channel(
-				connectionId: $this->scrubId($connections[0]->id),
+				connectionId: $this->scrubId($connections[0]->getId()),
 				channelKey: '2345',
 				displayName: '@me@microdon.com',
 				details: ['five' => 'six'],
 			),
 			new Channel(
-				connectionId: $this->scrubId($connections[0]->id),
+				connectionId: $this->scrubId($connections[0]->getId()),
 				channelKey: '4567',
 				displayName: '@otherme@microdon.com',
 				details: ['seven' => 'eight'],
 			),
 			new Channel(
-				connectionId: $this->scrubId($connections[1]->id),
+				connectionId: $this->scrubId($connections[1]->getId()),
 				channelKey: '7750',
 				displayName: '@lager@mastopub.com',
 				details: ['nine' => 'ten'],
 			),
 			new Channel(
-				connectionId: $this->scrubId($connections[1]->id),
+				connectionId: $this->scrubId($connections[1]->getId()),
 				channelKey: '9943',
 				displayName: '@pilsner@mastopub.com',
 				details: ['eleven' => 'twelve'],
@@ -341,7 +341,7 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 		];
 		$this->db->table('channels')->insert(array_map(
 			fn($cha) => [
-				'channel_uuid' => $cha->id->toString(),
+				'channel_uuid' => $cha->getId()->toString(),
 				'connection_uuid' => $cha->connectionId->toString(),
 				'channel_key' => $cha->channelKey,
 				'display_name' => $cha->displayName,
@@ -352,25 +352,25 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 
 		$links = [
 			new ChannelSiteLink(
-				channelId: $this->scrubId($channels[0]->id),
+				channelId: $this->scrubId($channels[0]->getId()),
 				siteId: $siteId,
 				canPull: true,
 				canPush: false,
 			),
 			new ChannelSiteLink(
-				channelId: $this->scrubId($channels[0]->id),
+				channelId: $this->scrubId($channels[0]->getId()),
 				siteId: $this->randomId(),
 				canPull: true,
 				canPush: false,
 			),
 			new ChannelSiteLink(
-				channelId: $this->scrubId($channels[2]->id),
+				channelId: $this->scrubId($channels[2]->getId()),
 				siteId: $this->randomId(),
 				canPull: true,
 				canPush: false,
 			),
 			new ChannelSiteLink(
-				channelId: $this->scrubId($channels[3]->id),
+				channelId: $this->scrubId($channels[3]->getId()),
 				siteId: $siteId,
 				canPull: true,
 				canPush: true,
@@ -389,16 +389,16 @@ final class ChannelSiteLinkProjectionTest extends TestCase {
 
 		$expected = [
 			'connections' => [
-				$connections[0]->id->toString() => $connections[0],
-				$connections[1]->id->toString() => $connections[1],
+				$connections[0]->getId()->toString() => $connections[0],
+				$connections[1]->getId()->toString() => $connections[1],
 			],
 			'channels' => [
-				$connections[0]->id->toString() => [$channels[0], $channels[1]],
-				$connections[1]->id->toString() => [$channels[3]],
+				$connections[0]->getId()->toString() => [$channels[0], $channels[1]],
+				$connections[1]->getId()->toString() => [$channels[3]],
 			],
 			'links' => [
-				$channels[0]->id->toString() => $links[0],
-				$channels[3]->id->toString() => $links[3],
+				$channels[0]->getId()->toString() => $links[0],
+				$channels[3]->getId()->toString() => $links[3],
 			],
 		];
 

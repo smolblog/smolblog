@@ -66,7 +66,7 @@ class ConnectionProjection implements Projection {
 	 */
 	public function onConnectionDeleted(ConnectionDeleted $event) {
 		$this->db->table(self::TABLE)->
-			where('connection_uuid', $event->connectionId->toString())->delete();
+			where('connection_uuid', $event->entityId->toString())->delete();
 	}
 
 	/**

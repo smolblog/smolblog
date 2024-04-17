@@ -5,7 +5,7 @@ namespace Smolblog\Core\Connector\Services;
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
 use Smolblog\Core\Connector\Queries\ChannelById;
-use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 
@@ -24,7 +24,7 @@ class ChannelLinker implements Listener {
 	/**
 	 * Handle the command to set permissions.
 	 *
-	 * @throws InvalidCommandParametersException Thrown when an ID is not found.
+	 * @throws EntityNotFound Thrown when an ID is not found.
 	 *
 	 * @param LinkChannelToSite $command Command to execute.
 	 * @return void
@@ -32,14 +32,13 @@ class ChannelLinker implements Listener {
 	public function onLinkChannelToSite(LinkChannelToSite $command): void {
 		$channel = $this->bus->fetch(new ChannelById($command->channelId));
 		if (!$channel) {
-			throw new InvalidCommandParametersException(
-				command: $command,
+			throw new EntityNotFound(
 				message: "Channel $command->channelId not found.",
 			);
 		}
 
 		$this->bus->dispatch(new ChannelSiteLinkSet(
-			channelId: $channel->id,
+			channelId: $channel->getId(),
 			siteId: $command->siteId,
 			canPull: $command->canPull,
 			canPush: $command->canPush,

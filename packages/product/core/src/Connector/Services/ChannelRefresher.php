@@ -72,14 +72,18 @@ class ChannelRefresher implements Listener {
 	private function refresh(Connection $connection, Identifier $userId): void {
 		$connector = $this->connectors->get($connection->provider);
 
-		$currentChannels = $this->messageBus->fetch(new ChannelsForConnection(connectionId: $connection->id));
+		$currentChannels = $this->messageBus->fetch(new ChannelsForConnection(connectionId: $connection->getId()));
 		$newChannels = $connector->getChannels(connection: $connection);
 
-		$toDeactivate = array_diff($currentChannels, $newChannels);
+		$toDeactivate = array_udiff(
+			$currentChannels,
+			$newChannels,
+			fn($a, $b) => strval($a->getId()) === strval($b->getId()) ? 0 : 1
+		);
 		foreach ($toDeactivate as $deleteMe) {
 			$this->messageBus->dispatch(new ChannelDeleted(
 				channelKey: $deleteMe->channelKey,
-				connectionId: $connection->id,
+				connectionId: $connection->getId(),
 				userId: $userId,
 			));
 		}
@@ -89,7 +93,7 @@ class ChannelRefresher implements Listener {
 				channelKey: $channel->channelKey,
 				displayName: $channel->displayName,
 				details: $channel->details,
-				connectionId: $connection->id,
+				connectionId: $connection->getId(),
 				userId: $userId,
 			));
 		}

@@ -6,9 +6,9 @@ use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
-use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
-use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ChannelLinkerTest extends TestCase {
@@ -22,13 +22,13 @@ final class ChannelLinkerTest extends TestCase {
 			details: ['smol' => 'blog'],
 		);
 		$command = new LinkChannelToSite(
-			channelId: $channel->id,
+			channelId: $channel->getId(),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
 			canPull: true, canPush: false,
 		);
 		$expectedEvent = new ChannelSiteLinkSet(
-			channelId: $channel->id,
+			channelId: $channel->getId(),
 			siteId: $command->siteId,
 			canPull: $command->canPull,
 			canPush: $command->canPush,
@@ -45,7 +45,7 @@ final class ChannelLinkerTest extends TestCase {
 	}
 
 	public function testItThrowsAnExceptionWhenChannelDoesNotExist() {
-		$this->expectException(InvalidCommandParametersException::class);
+		$this->expectException(EntityNotFound::class);
 
 		$bus = $this->createStub(MessageBus::class);
 		$command = new LinkChannelToSite(

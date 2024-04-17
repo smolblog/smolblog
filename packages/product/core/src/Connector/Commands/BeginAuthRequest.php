@@ -23,6 +23,7 @@ readonly class BeginAuthRequest extends Command {
 		public readonly string $callbackUrl,
 		public readonly ?string $returnToUrl = null,
 	) {
+		parent::__construct();
 	}
 
 	public function setRedirectUrl(string $url): void {

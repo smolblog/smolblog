@@ -48,7 +48,7 @@ class AuthRequestService implements Listener {
 			returnToUrl: $request->returnToUrl,
 		));
 
-		$request->redirectUrl = $data->url;
+		$request->setRedirectUrl($data->url);
 	}
 
 	/**
@@ -67,10 +67,10 @@ class AuthRequestService implements Listener {
 			providerKey: $connection->providerKey,
 			displayName: $connection->displayName,
 			details: $connection->details,
-			connectionId: $connection->id,
+			connectionId: $connection->getId(),
 			userId: $info->userId
 		));
 
-		$request->returnToUrl = $info->returnToUrl;
+		$request->setReturnUrl($info->returnToUrl);
 	}
 }

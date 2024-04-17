@@ -42,14 +42,14 @@ class ChannelProjection implements Projection {
 	 */
 	public function onChannelSaved(ChannelSaved $event) {
 		$channelId = Channel::buildId(
-			connectionId: $event->connectionId,
+			connectionId: $event->entityId,
 			channelKey: $event->channelKey,
 		);
 
 		$this->db->table(self::TABLE)->upsert(
 			[
 				'channel_uuid' => $channelId->toString(),
-				'connection_uuid' => $event->connectionId->toString(),
+				'connection_uuid' => $event->entityId->toString(),
 				'channel_key' => $event->channelKey,
 				'display_name' => $event->displayName,
 				'details' => json_encode($event->details),
@@ -67,7 +67,7 @@ class ChannelProjection implements Projection {
 	 */
 	public function onChannelDeleted(ChannelDeleted $event) {
 		$this->db->table(self::TABLE)->where('channel_uuid', Channel::buildId(
-			connectionId: $event->connectionId,
+			connectionId: $event->entityId,
 			channelKey: $event->channelKey,
 		))->delete();
 	}

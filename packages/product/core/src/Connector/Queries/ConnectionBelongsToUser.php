@@ -19,5 +19,6 @@ readonly class ConnectionBelongsToUser extends Query {
 		public readonly Identifier $connectionId,
 		public readonly Identifier $userId,
 	) {
+		parent::__construct();
 	}
 }

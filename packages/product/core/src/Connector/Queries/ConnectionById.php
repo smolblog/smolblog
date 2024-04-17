@@ -20,5 +20,6 @@ readonly class ConnectionById extends Query {
 	public function __construct(
 		public readonly Identifier $connectionId,
 	) {
+		parent::__construct();
 	}
 }

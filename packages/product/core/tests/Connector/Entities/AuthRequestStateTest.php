@@ -45,6 +45,6 @@ EOF;
 }
 EOF;
 
-		$this->assertEquals($expected, AuthRequestState::jsonDeserialize($json));
+		$this->assertEquals($expected, AuthRequestState::fromJson($json));
 	}
 }

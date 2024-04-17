@@ -71,7 +71,7 @@ final class ConnectionProjectionTest extends TestCase {
 
 		$this->assertOnlyTableEntryEquals(
 			table: $this->db->table('connections'),
-			connection_uuid: $event->connectionId->toString(),
+			connection_uuid: $event->entityId->toString(),
 			user_uuid: $event->userId->toString(),
 			provider: 'mastofed',
 			provider_key: '123456',
@@ -95,7 +95,7 @@ final class ConnectionProjectionTest extends TestCase {
 
 		$this->assertOnlyTableEntryEquals(
 			table: $this->db->table('connections'),
-			connection_uuid: $event->connectionId->toString(),
+			connection_uuid: $event->entityId->toString(),
 			user_uuid: $event->userId->toString(),
 			provider: 'mastofed',
 			provider_key: '123456',
@@ -156,7 +156,7 @@ final class ConnectionProjectionTest extends TestCase {
 		$query = new ConnectionsForUser($connection1->userId);
 
 		$this->db->table('connections')->insert([
-			'connection_uuid' => $connection2->id->toString(),
+			'connection_uuid' => $connection2->getId()->toString(),
 			'user_uuid' => $connection2->userId->toString(),
 			'provider' => 'bluesite',
 			'provider_key' => '56789',
