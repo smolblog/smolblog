@@ -15,4 +15,8 @@ class NoteService extends DefaultContentTypeService {
 			typeClass: Note::class,
 		);
 	}
+
+	protected const CREATE_EVENT = NoteCreated::class;
+	protected const UPDATE_EVENT = NoteUpdated::class;
+	protected const DELETE_EVENT = NoteDeleted::class;
 }
