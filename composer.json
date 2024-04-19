@@ -39,9 +39,10 @@
     ],
     "require-dev": {
         "nyholm/psr7": "^1.4",
-        "phpunit/phpunit": "^9",
+        "phpunit/phpunit": "^11",
         "squizlabs/php_codesniffer": "^3.8",
-        "symplify/monorepo-builder": "^11.2"
+        "symplify/monorepo-builder": "^11.2",
+        "behat/behat": "^3.14"
     },
     "require": {
         "cebe/markdown": "^1.2",
@@ -89,6 +90,7 @@
             "phpunit --testsuite all",
             "Smolblog\\Test\\CoverageReport::report"
         ],
+        "test-integration": "phpunit --testsuite integration --no-coverage",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
         "swagger": "Smolblog\\Api\\Model::printSpec",

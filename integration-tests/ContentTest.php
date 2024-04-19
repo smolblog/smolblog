@@ -3,6 +3,7 @@
 namespace Smolblog\Test;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\Depends;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Connector\Entities\Channel;
 use Smolblog\Core\Connector\Entities\Connection;
@@ -107,7 +108,7 @@ class ContentTest extends TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
-	/** @depends testNoteCreation */
+	#[Depends('testNoteCreation')]
 	public function testNoteModification() {
 		// Use the Admin user to test those permissions.
 		$contentParams = [
