@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Gives a truthy value if the given user can edit the given content on the given site.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class UserCanEditContent extends Query {
 	/**

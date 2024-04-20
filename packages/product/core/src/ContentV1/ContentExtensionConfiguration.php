@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\Value;
 
 /**
  * Store configuration information for a Content Extension.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentExtensionConfiguration extends Value {
 	/**

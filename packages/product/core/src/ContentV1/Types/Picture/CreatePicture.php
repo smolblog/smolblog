@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Create a Picture.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class CreatePicture extends Command implements AuthorizableMessage {
 	/**

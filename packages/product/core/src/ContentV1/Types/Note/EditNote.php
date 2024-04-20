@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Change the text on a Note.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class EditNote extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

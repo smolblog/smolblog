@@ -12,6 +12,8 @@ use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Service to handle Note-related commands.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class NoteService implements Listener, ContentTypeService {
 	use ContentUtilityKit;

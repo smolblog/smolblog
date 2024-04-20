@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Denotes that a file has been added to a MediaHandler's store.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaFileAdded extends ContentEvent {
 	/**

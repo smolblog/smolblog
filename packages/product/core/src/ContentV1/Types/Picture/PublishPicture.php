@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Take a picture from draft to Published
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PublishPicture extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\Value;
 
 /**
  * An individual tag.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class Tag extends Value {
 	/**

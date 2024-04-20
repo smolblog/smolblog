@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\ArraySerializable;
  * Define what a Content Type needs to have, namely a title and a body.
  *
  * Even if the title isn't shown on the web or in feeds, it's still needed for administration views and such.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 interface ContentType extends ArraySerializable {
 	/**

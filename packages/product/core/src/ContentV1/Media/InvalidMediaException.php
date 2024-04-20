@@ -8,6 +8,8 @@ use Smolblog\Framework\Exceptions\SmolblogException;
 
 /**
  * Indicates that a paricular piece of media could not be handled.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class InvalidMediaException extends Exception implements SmolblogException {
 	/**

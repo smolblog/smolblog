@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Find a piece of content by its permalink.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentByPermalink extends AdaptableContentQuery {
 	/**

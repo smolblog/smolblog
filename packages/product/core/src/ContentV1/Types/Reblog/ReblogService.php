@@ -12,6 +12,8 @@ use Smolblog\Framework\Objects\DateIdentifier;
 
 /**
  * Service to handle Reblog commands.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ReblogService implements Listener, ContentTypeService {
 	/**

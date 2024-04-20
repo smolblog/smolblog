@@ -13,6 +13,8 @@ use stdClass;
 
 /**
  * Store state for Media objects.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaProjection implements Projection {
 	public const TABLE = 'media';

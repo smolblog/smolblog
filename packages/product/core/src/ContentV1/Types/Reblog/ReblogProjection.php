@@ -9,6 +9,8 @@ use Smolblog\Framework\Messages\Projection;
 
 /**
  * Store Reblog-specific state.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ReblogProjection implements Projection {
 	public const TABLE = 'reblogs';

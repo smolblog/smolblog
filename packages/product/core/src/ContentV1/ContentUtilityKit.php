@@ -8,6 +8,8 @@ use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Utility functions for working with Content.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 trait ContentUtilityKit {
 	/**

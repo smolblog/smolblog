@@ -8,6 +8,8 @@ use Smolblog\Framework\Messages\Projection;
 
 /**
  * Store note-specific data.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class NoteProjection implements Projection {
 	public const TABLE = 'notes';

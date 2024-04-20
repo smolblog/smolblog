@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Change the comment text on a Reblog.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class EditReblogComment extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

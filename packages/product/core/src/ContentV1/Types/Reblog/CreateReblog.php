@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Create a Reblog.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class CreateReblog extends Command implements AuthorizableMessage {
 	/**

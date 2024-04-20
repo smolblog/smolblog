@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Search for a given media by its ID.
  *
  * Does not extend BaseContentById as Media does not have the same type/extension considerations.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaById extends MemoizableQuery implements AuthorizableMessage {
 	/**

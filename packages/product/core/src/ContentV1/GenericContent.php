@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\SerializableKit;
 
 /**
  * Content instantiated without a type.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class GenericContent implements ContentType {
 	use SerializableKit;

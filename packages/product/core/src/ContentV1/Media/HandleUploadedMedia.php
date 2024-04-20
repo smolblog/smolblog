@@ -12,6 +12,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Save an uploaded file to the media library
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	/**

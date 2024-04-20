@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Manually add a syndication link to a piece of content.
  *
  * This is for a situation where a user manually adds a URL to a content's links.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class AddSyndicationLink extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

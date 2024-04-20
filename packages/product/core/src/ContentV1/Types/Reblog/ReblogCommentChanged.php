@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates that the comment on a reblog has changed.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ReblogCommentChanged extends ContentBodyEdited implements NeedsMarkdownRendered {
 	use ReblogEventKit;

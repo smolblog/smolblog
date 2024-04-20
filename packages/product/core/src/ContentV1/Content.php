@@ -18,6 +18,8 @@ use Smolblog\Framework\Objects\Identifier;
  *
  * Remember, the canonical store for all data is the event stream! The Content class is intented to provide a
  * view into the data, but there may be other data accessable in other ways.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class Content extends Entity {
 	/**

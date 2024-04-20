@@ -15,6 +15,8 @@ use Smolblog\Framework\Objects\Identifier;
  *
  * It is recommended to extend and listen to the child events, `PublicContentAdded`, `PublicContentChanged`, and
  * `PublicContentRemoved`.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 abstract class PublicContentEvent extends ContentEvent implements ContentBuilder {
 	use ContentBuilderKit;

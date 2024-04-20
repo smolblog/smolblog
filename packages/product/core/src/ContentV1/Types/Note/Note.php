@@ -15,6 +15,8 @@ use Smolblog\Framework\Objects\SerializableKit;
  *
  * While a comparison could be drawn to what the Iconfactory first called a "tweet", this is closer to a
  * Mastodon "toot" or a Micro.blog post in that it allows some basic formatting.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class Note implements ContentType {
 	use SerializableKit;

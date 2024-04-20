@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Take a note from draft to Published
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PublishNote extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

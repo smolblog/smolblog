@@ -8,6 +8,8 @@ use Throwable;
 
 /**
  * Allow an object to build a piece of content over time.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 trait ContentBuilderKit {
 	/**

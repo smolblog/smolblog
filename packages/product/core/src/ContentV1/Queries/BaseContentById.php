@@ -16,6 +16,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Sets up memoization, content extensions, and a visibility security check.
  *
  * Use GenericContentById for a concrete query.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 abstract class BaseContentById extends MemoizableQuery implements ContentBuilder, AuthorizableMessage {
 	use ContentBuilderKit;

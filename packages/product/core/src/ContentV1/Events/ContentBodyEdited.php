@@ -6,6 +6,8 @@ namespace Smolblog\Core\ContentV1\Events;
  * Indicates a content's title or body has changed.
  *
  * This should be implemented by any ContentEvents that result in a content's body changing.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 abstract class ContentBodyEdited extends ContentEvent {
 	/**

@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
  *
  * A "base" attribute is an attribute on the Content class, like permalinkSlug and timestamp. These attributes
  * are common across all content types and are not extensions.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentBaseAttributeEdited extends ContentEvent {
 	/**

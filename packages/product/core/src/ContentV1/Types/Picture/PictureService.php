@@ -10,6 +10,8 @@ use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle Picture-related commands.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PictureService implements Listener, ContentTypeService {
 	/**

@@ -10,6 +10,8 @@ use Smolblog\Framework\Objects\Identifier;
  *
  * Before content is fully public (in draft or scheduled), it cannot be viewed by the public or by users other than
  * administrators and its author. This query checks for those conditions.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentVisibleToUser extends Query {
 	/**

@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicate that attributes have been changed on a piece of media.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaAttributesEdited extends ContentEvent {
 	/**

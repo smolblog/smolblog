@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a piece of content has been syndicated to the given URL.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentSyndicated extends ContentExtensionEdited implements NeedsSyndicationState {
 	/**

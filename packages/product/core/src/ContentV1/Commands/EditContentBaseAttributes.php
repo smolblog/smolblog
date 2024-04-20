@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Edit the base attributes of a piece of content.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class EditContentBaseAttributes extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

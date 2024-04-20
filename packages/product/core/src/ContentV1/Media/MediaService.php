@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\DateIdentifier;
 
 /**
  * Handle tasks related to Media.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaService implements Listener {
 	/**

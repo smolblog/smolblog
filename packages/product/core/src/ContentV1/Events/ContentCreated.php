@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates an event where a new piece of Content has been created.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 abstract class ContentCreated extends ContentEvent {
 	/**

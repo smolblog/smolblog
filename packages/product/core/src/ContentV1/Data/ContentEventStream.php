@@ -20,6 +20,8 @@ use Smolblog\Framework\Messages\Listener;
  * user_uuid varchar(40) NOT NULL,
  * event_type varchar(50) NOT NULL,
  * payload text,
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentEventStream implements Listener {
 	/**

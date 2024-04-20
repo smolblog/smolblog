@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Create a Note.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class CreateNote extends Command implements AuthorizableMessage {
 	/**

@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\NamedIdentifier;
 
 /**
  * Information on a Media's file used by the MediaHandler.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaFile extends Entity {
 	/**

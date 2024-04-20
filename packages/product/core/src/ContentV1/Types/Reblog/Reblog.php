@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\SerializableKit;
 
 /**
  * For reblogging interesting things from around the web.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class Reblog implements ContentType {
 	use SerializableKit {

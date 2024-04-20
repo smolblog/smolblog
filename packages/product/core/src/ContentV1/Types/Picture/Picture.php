@@ -11,6 +11,8 @@ use Smolblog\Core\ContentV1\Types\Note\Note;
 
 /**
  * For showing visual art.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class Picture implements ContentType {
 	use SerializableKit {

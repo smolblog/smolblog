@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Delete a note and remove it from projections.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class DeleteNote extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

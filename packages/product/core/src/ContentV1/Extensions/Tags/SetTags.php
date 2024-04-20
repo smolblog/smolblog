@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Set the tags for a piece of content.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class SetTags extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

@@ -12,6 +12,8 @@ use Smolblog\Framework\Messages\Projection;
 
 /**
  * Store Picture-specific state.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PictureProjection implements Projection {
 	public const TABLE = 'pictures';

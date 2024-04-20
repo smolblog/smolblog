@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates that a message needs objects for its media IDs.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 interface NeedsMediaObjects {
 	/**

@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Entity for handling media uploads.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class Media extends Entity {
 	/**

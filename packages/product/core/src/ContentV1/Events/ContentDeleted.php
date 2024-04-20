@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates that a piece of content has been marked as deleted.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentDeleted extends ContentEvent {
 	/**

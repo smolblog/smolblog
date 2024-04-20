@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\NamedIdentifier;
 
 /**
  * Store state related to content syndication.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentSyndicationProjection implements Projection {
 	public const TABLE = 'content_syndication';

@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\ArraySerializable;
  * piece of data that is applicable to multiple content types, ideally every type.
  *
  * See: WordPress Post Meta
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 interface ContentExtension extends ArraySerializable {
 }

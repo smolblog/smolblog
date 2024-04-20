@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Change the media on a Picture.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class EditPictureMedia extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

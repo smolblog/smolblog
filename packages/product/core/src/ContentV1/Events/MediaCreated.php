@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a piece of media has been added to the media library.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class MediaCreated extends ContentEvent {
 	/**

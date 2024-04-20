@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates the tags have been set on a particular piece of content.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class TagsSet extends ContentExtensionEdited {
 	/**

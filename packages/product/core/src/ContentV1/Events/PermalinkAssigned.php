@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
  * At least right now, permalinks are handled by the external system. Rather than try to anticipate what the permalink
  * structure is or will be, the external system can fire this event when the permalink is assigned (usually on content
  * publish). This will allow Smolblog's projections to remain in sync with the outside system.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PermalinkAssigned extends ContentEvent {
 	/**

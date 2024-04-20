@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Change the caption on a Picture.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class EditPictureCaption extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

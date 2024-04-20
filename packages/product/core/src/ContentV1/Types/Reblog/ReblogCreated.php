@@ -10,6 +10,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a Reblog has been created.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ReblogCreated extends ContentCreated implements NeedsMarkdownRendered {
 	use ReblogEventKit {

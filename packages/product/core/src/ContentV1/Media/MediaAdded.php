@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicate that a new piece of media has been uploaded and processed.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaAdded extends ContentEvent {
 	/**

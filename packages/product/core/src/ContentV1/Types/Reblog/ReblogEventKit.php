@@ -4,6 +4,8 @@ namespace Smolblog\Core\ContentV1\Types\Reblog;
 
 /**
  * Common code for Reblog-related events.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 trait ReblogEventKit {
 	/**

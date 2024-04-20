@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
  * An object (usually a message) that can build a Content object over time.
  *
  * See the ContentBuilderKit for an easy implementation.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 interface ContentBuilder {
 	/**

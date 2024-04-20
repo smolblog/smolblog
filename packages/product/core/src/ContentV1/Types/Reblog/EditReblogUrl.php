@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Change the URL on a Reblog.
  *
  * Could also be the same URL if the data needs to be refreshed.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class EditReblogUrl extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

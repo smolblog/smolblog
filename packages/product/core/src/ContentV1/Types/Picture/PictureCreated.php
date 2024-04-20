@@ -12,6 +12,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a Picture has been created.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PictureCreated extends ContentCreated implements NeedsMarkdownRendered, NeedsMediaObjects, NeedsMediaRendered {
 	/**

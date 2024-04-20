@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\Value;
 
 /**
  * Object containing info about an external embeddable URL.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ExternalContentInfo extends Value {
 	/**

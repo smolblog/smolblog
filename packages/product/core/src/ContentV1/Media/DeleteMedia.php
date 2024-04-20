@@ -10,6 +10,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Delete a media object.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class DeleteMedia extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

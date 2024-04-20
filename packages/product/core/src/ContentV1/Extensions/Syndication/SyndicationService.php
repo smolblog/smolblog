@@ -11,6 +11,8 @@ use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle Syndication commands.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class SyndicationService implements Listener, ContentExtensionService {
 	use ContentUtilityKit;

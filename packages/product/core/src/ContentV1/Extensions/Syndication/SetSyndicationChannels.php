@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Set the channels content should syndicate to.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class SetSyndicationChannels extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

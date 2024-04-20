@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates that a message needs the current state of syndication for the given ID.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 interface NeedsSyndicationState {
 	/**

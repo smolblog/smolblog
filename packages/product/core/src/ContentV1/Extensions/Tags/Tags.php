@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\SerializableKit;
  * Tags are gathered in full unicode text, but they are stripped to letters and numbers only for the purposes of
  * comparison. The idea is that "someThing" and "some thing" will be considered the same tag. This will likely
  * change as things get more mature, which is why the _events_ only store the full unicode text.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class Tags implements ContentExtension {
 	/**

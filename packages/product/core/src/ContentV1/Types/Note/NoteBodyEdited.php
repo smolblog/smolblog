@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a note' text has been edited.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class NoteBodyEdited extends ContentBodyEdited implements NeedsMarkdownRendered {
 	use NoteEventKit;

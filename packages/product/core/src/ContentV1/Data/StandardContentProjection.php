@@ -36,6 +36,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Project standard content properties.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class StandardContentProjection implements Projection {
 	public const TABLE = 'standard_content';

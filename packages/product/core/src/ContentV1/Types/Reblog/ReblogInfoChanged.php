@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates the Reblog's information about the external URL has been changed.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ReblogInfoChanged extends ContentBodyEdited {
 	use ReblogEventKit;

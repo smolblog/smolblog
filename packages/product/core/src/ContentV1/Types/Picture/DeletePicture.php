@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Delete a picture and remove it from projections.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class DeletePicture extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

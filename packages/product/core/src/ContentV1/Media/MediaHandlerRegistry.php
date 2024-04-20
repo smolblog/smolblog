@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\RegistrarKit;
 
 /**
  * Register MediaHandlers.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaHandlerRegistry implements Registry {
 	use RegistrarKit {

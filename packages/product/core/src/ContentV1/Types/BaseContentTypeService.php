@@ -7,6 +7,8 @@ use Smolblog\Core\ContentV1\ContentTypeService;
 
 /**
  * Base class with sane defaults for most ContentTypeServices.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 abstract class BaseContentTypeService implements ContentTypeService {
 	abstract protected static function getTypeKey(): string;

@@ -12,6 +12,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Fetch the file from the given URL and add it to the media library.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class SideloadMedia extends Command implements AuthorizableMessage {
 	/**

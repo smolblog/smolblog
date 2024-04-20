@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Change the attributes on a media object.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class EditMediaAttributes extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

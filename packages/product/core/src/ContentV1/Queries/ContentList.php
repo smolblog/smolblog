@@ -20,6 +20,8 @@ use Smolblog\Framework\Objects\Identifier;
  *
  * - An empty array for `visibility` or `types` (give `null` to ignore the filter)
  * - Not including Published in `visibility` on an unauthenticated query (`userId` is null)
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentList extends MemoizableQuery {
 	/**

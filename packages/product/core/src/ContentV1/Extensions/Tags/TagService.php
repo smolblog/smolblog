@@ -10,6 +10,8 @@ use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle Tag commands.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class TagService implements Listener, ContentExtensionService {
 	use ContentUtilityKit;

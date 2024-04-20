@@ -8,6 +8,8 @@ use Smolblog\Core\ContentV1\Queries\GenericContentBuilder;
 
 /**
  * Indicates the syndication information on a piece of public content has changed.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PublicContentSyndicationChanged extends PublicContentChanged implements GenericContentBuilder {
 	use ContentBuilderKit;

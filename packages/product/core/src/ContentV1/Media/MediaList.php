@@ -18,6 +18,8 @@ use Smolblog\Framework\Objects\Identifier;
  * nonsensical option does not necessarily indicate an issue with the program code. These include:
  *
  * - An empty array for `types` (give `null` to ignore the filter)
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaList extends MemoizableQuery {
 	/**

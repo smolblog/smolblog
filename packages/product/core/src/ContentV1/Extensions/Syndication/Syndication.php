@@ -12,6 +12,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Links to all of *those* posts are SyndicationLinks.
  *
  * You're writing the post. You want it to post to Tumblr and a newsletter. Those channels are listed here.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class Syndication implements ContentExtension {
 	/**

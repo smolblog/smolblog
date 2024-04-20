@@ -4,6 +4,8 @@ namespace Smolblog\Core\ContentV1\Types\Note;
 
 /**
  * Common code for Note-related events.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 trait NoteEventKit {
 	/**

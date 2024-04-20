@@ -8,6 +8,8 @@ use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
  * Service to provide rendered Markdown on a message that needs it.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class MarkdownMessageRenderer implements Listener {
 	/**

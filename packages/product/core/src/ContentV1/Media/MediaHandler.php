@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
  * Service that handles media uploads.
  *
  * This could be a service that saves uploads to the filesystem or sends them to an object storage bucket.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 interface MediaHandler {
 	/**

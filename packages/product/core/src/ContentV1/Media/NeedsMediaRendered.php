@@ -4,6 +4,8 @@ namespace Smolblog\Core\ContentV1\Media;
 
 /**
  * Indicates that a message needs HTML for its media object[s].
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 interface NeedsMediaRendered {
 	/**

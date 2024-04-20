@@ -6,6 +6,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Get a given Content object as a full Content object.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentById extends AdaptableContentQuery {
 	/**

@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\Value;
 
 /**
  * Store information about a link to a piece of content available elsewhere.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class SyndicationLink extends Value {
 	/**

@@ -9,6 +9,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Take a reblog from draft to Published
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PublishReblog extends Command implements AuthorizableMessage {
 	use EditContentCommandKit;

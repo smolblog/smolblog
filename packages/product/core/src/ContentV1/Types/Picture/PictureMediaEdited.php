@@ -10,6 +10,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates that the media on this picture has changed.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class PictureMediaEdited extends ContentBodyEdited implements NeedsMediaObjects, NeedsMediaRendered {
 	/**

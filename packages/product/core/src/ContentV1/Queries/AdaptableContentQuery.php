@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
  * The idea is that the data layer can find the content ID and type however it does. Once that is set, the
  * ContentService can take than info and fire off the appropriate *ById query. This allows a single query to return
  * any content type.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 abstract class AdaptableContentQuery extends MemoizableQuery {
 	/**

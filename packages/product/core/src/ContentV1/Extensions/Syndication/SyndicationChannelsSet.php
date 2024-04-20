@@ -8,6 +8,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates the channels content should syndicate to are set.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class SyndicationChannelsSet extends ContentExtensionEdited implements NeedsSyndicationState {
 	/**

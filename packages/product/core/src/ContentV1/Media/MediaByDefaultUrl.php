@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Search for a media object by its default URL.
+ *
+ * @deprecated Migrate to Smolblog\Core\Media
  */
 class MediaByDefaultUrl extends MemoizableQuery {
 	/**

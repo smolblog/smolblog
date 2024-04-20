@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Indicates a Note content has been created.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class NoteCreated extends ContentCreated implements NeedsMarkdownRendered {
 	use NoteEventKit;

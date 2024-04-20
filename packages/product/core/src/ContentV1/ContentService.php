@@ -11,6 +11,8 @@ use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Handle generic content commands.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentService implements Listener {
 	/**

@@ -9,6 +9,8 @@ use Smolblog\Framework\Messages\Query;
  * Trait to handle authorization for content editing commands.
  *
  * The command must have userId, siteId, and contentId as properties.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 trait EditContentCommandKit {
 	/**

@@ -15,6 +15,8 @@ use Smolblog\Framework\Objects\Identifier;
  * of the content as both its native object and the standard Content object when the event is projected. This will
  * allow listeners further down the chain to interact with either the the standard object or the native content at
  * the appropriate point in its lifecycle.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 abstract class ContentEvent extends Event {
 	use PayloadKit;

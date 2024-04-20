@@ -8,6 +8,8 @@ use Smolblog\Framework\Infrastructure\Registry;
  * Register available content extensions.
  *
  * I've avoided it as much as I can, but sometimes you just need to have things centrally registered.
+ *
+ * @deprecated Migrate to Smolblog\Core\Content
  */
 class ContentExtensionRegistry implements Registry {
 	/**
