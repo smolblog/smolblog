@@ -50,63 +50,64 @@ class Model extends DomainModel {
 			'configuration' => null,
 		],
 
-		Content\ContentService::class => [
-			'bus' => MessageBus::class,
-			'registry' => Content\ContentTypeRegistry::class,
+		Content\ContentStateRepo::class => [
+			'db' => ConnectionInterface::class,
 		],
-		Content\ContentTypeRegistry::class => [
+
+		ContentV1\ContentService::class => [
+			'bus' => MessageBus::class,
+			'registry' => ContentV1\ContentTypeRegistry::class,
+		],
+		ContentV1\ContentTypeRegistry::class => [
 			'configuration' => null,
 		],
-		Content\Data\ContentEventStream::class => [
+		ContentV1\Data\ContentEventStream::class => [
 			'db' => ConnectionInterface::class,
 		],
-		Content\Data\ContentStateRepo::class => [
-			'db' => ConnectionInterface::class,
-		],
-		Content\Data\StandardContentProjection::class => [
+		ContentV1\Data\StandardContentProjection::class => [
 			'db' => ConnectionInterface::class,
 			'bus' => MessageBus::class,
 		],
-		Content\Extensions\Syndication\ContentSyndicationProjection::class => [
+		ContentV1\Extensions\Syndication\ContentSyndicationProjection::class => [
 			'db' => ConnectionInterface::class,
 		],
-		Content\Extensions\Syndication\SyndicationService::class => [
+		ContentV1\Extensions\Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
 		],
-		Content\Extensions\Tags\TagService::class => [
+		ContentV1\Extensions\Tags\TagService::class => [
 			'bus' => MessageBus::class,
 		],
-		Content\Markdown\MarkdownMessageRenderer::class => [
+		ContentV1\Markdown\MarkdownMessageRenderer::class => [
 			'md' => SmolblogMarkdown::class,
 		],
-		Content\Media\MediaService::class => [
+		ContentV1\Media\MediaService::class => [
 			'bus' => MessageBus::class,
-			'registry' => Content\Media\MediaHandlerRegistry::class,
+			'registry' => ContentV1\Media\MediaHandlerRegistry::class,
 		],
-		Content\Media\MediaHandlerRegistry::class => [
+		ContentV1\Media\MediaHandlerRegistry::class => [
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
-		Content\Media\MediaProjection::class => [
+		ContentV1\Media\MediaProjection::class => [
 			'db' => ConnectionInterface::class,
 		],
-		Content\Types\Note\NoteProjection::class => [
+		ContentV1\Types\Note\NoteProjection::class => [
 			'db' => ConnectionInterface::class,
 		],
-		Content\Types\Note\NoteService::class => [
+		ContentV1\Types\Note\NoteService::class => [
 			'bus' => MessageBus::class,
 		],
-		Content\Types\Picture\PictureProjection::class => [
+		ContentV1\Types\Picture\PictureProjection::class => [
 			'db' => ConnectionInterface::class,
 		],
-		Content\Types\Picture\PictureService::class => [
+		ContentV1\Types\Picture\PictureService::class => [
 			'bus' => MessageBus::class,
 		],
-		Content\Types\Reblog\ReblogService ::class => [
+		ContentV1\Types\Reblog\ReblogService ::class => [
 			'bus' => MessageBus::class,
-			'embedService' => Content\Types\Reblog\ExternalContentService::class,
+			'embedService' => ContentV1\Types\Reblog\ExternalContentService::class,
 		],
-		Content\Types\Reblog\ReblogProjection::class => [
+		ContentV1\Types\Reblog\ReblogProjection::class => [
 			'db' => ConnectionInterface::class,
 		],
 		Federation\FederationService::class => [
