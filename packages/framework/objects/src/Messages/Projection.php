@@ -12,6 +12,8 @@ namespace Smolblog\Framework\Messages;
  * service that reacts to published content by sending a webhook. Regenerating a projection should be a free action with
  * no loss of data or side effects. Therefore, when regenerating, we need to ensure that only Projection services are
  * called, not all Listeners.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 interface Projection extends Listener {
 }

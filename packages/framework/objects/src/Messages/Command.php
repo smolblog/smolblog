@@ -12,6 +12,8 @@ namespace Smolblog\Framework\Messages;
  * method of talking to the Domain Model.
  *
  * Comamnds can provide a Query object that will return a truthy or falsy value in order to authorize the command.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 abstract class Command extends Message {
 }

@@ -9,6 +9,8 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Undocumented class
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class HttpRequest implements RequestInterface {
 	use HttpMessageKit;

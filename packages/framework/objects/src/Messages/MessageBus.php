@@ -10,6 +10,8 @@ use Smolblog\Framework\Messages\Query;
  *
  * A simple wrapper around a PSR-14 Event Dispatcher. Adds one convenience method for queries to automatically
  * unpack and return the results.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 interface MessageBus extends EventDispatcherInterface {
 	/**

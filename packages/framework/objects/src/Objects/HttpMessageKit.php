@@ -5,6 +5,9 @@ namespace Smolblog\Framework\Objects;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * @deprecated Migrate to Smolblog\Foundation classes
+ */
 trait HttpMessageKit {
 	/**
 	 * Retrieves the HTTP protocol version as a string.

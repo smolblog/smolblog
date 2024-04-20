@@ -7,6 +7,8 @@ namespace Smolblog\Framework\Messages;
  *
  * This interface exists mostly to allow a listening service to be identified as such without having to declare it
  * somewhere else.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 interface Listener {
 }

@@ -11,6 +11,8 @@ use Smolblog\Framework\Objects\SerializableKit;
  * This provides a set of functions for the base event class that assist with serializing common and uncommon
  * information. Fields that are unique to a subclass can (un)serialize into a 'payload' array. This can allow an event
  * store to index common information without needing to be aware of every single permutation.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 trait PayloadKit {
 	use SerializableKit;

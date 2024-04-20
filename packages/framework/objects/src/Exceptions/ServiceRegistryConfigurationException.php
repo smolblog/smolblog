@@ -8,6 +8,8 @@ use Throwable;
 
 /**
  * Exception for when an error is found in the ServiceRegistry configuration.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class ServiceRegistryConfigurationException extends Exception implements
 	SmolblogException,

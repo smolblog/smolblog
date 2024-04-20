@@ -8,6 +8,8 @@ use Throwable;
 
 /**
  * Exception for when a service is asked for but not found in the ServiceRegistrar.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class ServiceNotFoundException extends Exception implements SmolblogException, NotFoundExceptionInterface {
 	/**

@@ -6,6 +6,8 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * A randomly-generated (version 4) UUID.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class RandomIdentifier extends Identifier {
 	/**

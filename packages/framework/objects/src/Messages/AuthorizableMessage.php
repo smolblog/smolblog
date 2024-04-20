@@ -8,6 +8,8 @@ use Psr\EventDispatcher\StoppableEventInterface;
  * Indicates that an object provides a Query to check whether it can be executed.
  *
  * The Message class already includes stopMessage().
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 interface AuthorizableMessage {
 	/**

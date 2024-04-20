@@ -4,6 +4,8 @@ namespace Smolblog\Framework\Objects;
 
 /**
  * Class to centralize services (with dependencies) for a domain.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class DomainModel {
 	public const SERVICES = [];

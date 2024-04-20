@@ -12,6 +12,8 @@ use Smolblog\Framework\Objects\SerializableKit;
  *
  * Messages are essentially Value objects except for being mutable. Properties should be readonly whenever possible,
  * but messages themselves often have a need to be modified mid-flight, even if only to stop a message.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 abstract class Message implements StoppableEventInterface, ArraySerializable, JsonSerializable {
 	use SerializableKit;

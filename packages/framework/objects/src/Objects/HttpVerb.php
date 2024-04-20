@@ -4,6 +4,8 @@ namespace Smolblog\Framework\Objects;
 
 /**
  * Standard definition of HTTP verbs.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 enum HttpVerb: string {
 	case GET = 'GET';

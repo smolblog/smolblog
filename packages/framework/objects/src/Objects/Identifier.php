@@ -15,6 +15,8 @@ use Stringable;
  * identification. Creates version 4, 5, or 7 UUIDs.
  *
  * Essentially a wrapper around Ramsey\Uuid.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class Identifier implements Stringable, JsonSerializable {
 	/**

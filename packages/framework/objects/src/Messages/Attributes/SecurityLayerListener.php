@@ -7,6 +7,8 @@ use Crell\Tukio\ListenerPriority;
 
 /**
  * Indicates the given function/method should fire during the security phase.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
 class SecurityLayerListener extends ListenerPriority {

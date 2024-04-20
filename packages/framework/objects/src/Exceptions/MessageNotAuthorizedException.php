@@ -9,6 +9,8 @@ use Smolblog\Framework\Messages\Query;
 
 /**
  * Exception thrown when a message is not authorized to run.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class MessageNotAuthorizedException extends Exception implements SmolblogException {
 	/**

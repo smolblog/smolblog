@@ -9,6 +9,8 @@ use Throwable;
  * Provide simple array serialization functions to objects.
  *
  * Client classes will implement JsonSerializable and ArraySerializable.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 trait SerializableKit {
 	/**

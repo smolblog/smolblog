@@ -7,6 +7,8 @@ namespace Smolblog\Framework\Objects;
  *
  * Entities are defined by their Identifier. This trait provides the readonly $id property and also extends the
  * fromArray and toArray functions to serialize the identifier to and from a standard UUID string.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 trait EntityKit {
 	use SerializableKit;

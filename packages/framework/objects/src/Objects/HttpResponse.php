@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Undocumented class
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class HttpResponse implements ResponseInterface {
 	use HttpMessageKit;

@@ -10,6 +10,8 @@ namespace Smolblog\Framework\Messages;
  * complex queries to specialized handlers.
  *
  * All Queries that can be memoized should extend MemoizableQuery.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 abstract class Query extends Message {
 	/**

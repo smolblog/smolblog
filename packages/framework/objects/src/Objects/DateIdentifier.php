@@ -7,6 +7,8 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * A date-based (version 7) UUID.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class DateIdentifier extends Identifier {
 	/**

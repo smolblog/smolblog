@@ -8,6 +8,8 @@ use Ramsey\Uuid\Uuid;
  * A name-based (version 5) UUID.
  *
  * This is useful for creating deterministic identifiers, useful for sub-entities or intersection entities.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class NamedIdentifier extends Identifier {
 	/**
