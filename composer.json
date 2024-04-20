@@ -19,7 +19,10 @@
             "Smolblog\\MicroBlog\\": "packages/product/micro-blog/src/",
             "Smolblog\\Tumblr\\": "packages/product/tumblr/src/",
             "Smolblog\\WP\\": "application/wordpress/src/"
-        }
+        },
+        "files": [
+            "packages/framework/shim.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

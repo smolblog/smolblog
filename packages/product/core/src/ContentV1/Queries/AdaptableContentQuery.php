@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\ContentV1\Queries;
 
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Objects\Identifier;
 
 /**
  * A query that finds content then passes to a builder query.
