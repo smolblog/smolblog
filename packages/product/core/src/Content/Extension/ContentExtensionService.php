@@ -3,13 +3,14 @@
 namespace Smolblog\Core\Content\Extension;
 
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
+use Smolblog\Foundation\Service\Registry\ConfiguredRegisterable;
 
 /**
  * Denotes a service for a particular content extension.
  *
  * Mostly exists to be auto-discovered and added to the registry.
  */
-interface ContentExtensionService {
+interface ContentExtensionService extends ConfiguredRegisterable {
 	/**
 	 * Get the configuration for this content extension.
 	 *

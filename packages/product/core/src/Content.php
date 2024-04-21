@@ -35,7 +35,7 @@ readonly class Content extends Value implements SerializableValue, Entity {
 	) {
 		$this->id = $id ?? new DateIdentifier();
 
-		$this->publishTimestamp = $publishTimestamp ?? $this->published ? new DateTimeField() : null;
+		$this->publishTimestamp = $publishTimestamp; // ?? $this->published ? new DateTimeField() : null;
 	}
 
 	public function title(): string {

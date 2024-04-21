@@ -14,6 +14,7 @@ use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
+use Smolblog\Foundation\Service\Messaging\MessageBus as FoundationMessageBus;
 
 /**
  * Default model with services provided by the Framework.
@@ -21,6 +22,7 @@ use Smolblog\Markdown\SmolblogMarkdown;
 class DefaultModel extends DomainModel {
 	public const SERVICES = [
 		MessageBus::class => DefaultMessageBus::class,
+		FoundationMessageBus::class => DefaultMessageBus::class,
 		DefaultMessageBus::class => ['provider' => ListenerProviderInterface::class, 'log' => LoggerInterface::class],
 		ListenerProviderInterface::class => ListenerRegistry::class,
 		ListenerRegistry::class => ['container' => ContainerInterface::class],
