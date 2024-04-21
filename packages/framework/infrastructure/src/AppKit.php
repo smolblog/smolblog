@@ -3,7 +3,8 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Psr\Container\ContainerInterface;
-use Smolblog\Foundation\Service\Registry\Registry as FoundationRegistry;
+use Smolblog\Framework\Infrastructure\Registry as DeprecatedRegistry;
+use Smolblog\Foundation\Service\Registry\Registry;
 
 /**
  * Useful functions for building an App from DomainModels.
@@ -48,7 +49,7 @@ trait AppKit {
 		$registryMap = [];
 		$registries = array_filter(
 			array_keys($map),
-			fn($srv) => in_array(Registry::class, class_implements($srv))
+			fn($srv) => in_array(DeprecatedRegistry::class, class_implements($srv))
 		);
 
 		foreach ($registries as $registry) {
@@ -71,7 +72,7 @@ trait AppKit {
 		$registryMap = [];
 		$registries = array_filter(
 			array_keys($map),
-			fn($srv) => in_array(FoundationRegistry::class, class_implements($srv))
+			fn($srv) => in_array(Registry::class, class_implements($srv))
 		);
 
 		foreach ($registries as $registry) {
@@ -88,7 +89,7 @@ trait AppKit {
 			));
 
 			$registryMap[$registry] =
-				function(ContainerInterface $container) use ($registry, $dependencies, $servicesToRegister) {
+				function (ContainerInterface $container) use ($registry, $dependencies, $servicesToRegister) {
 					$service = new $registry(...array_map(fn($srv) => $container->get($srv), $dependencies));
 					$service->configure(configuration: $servicesToRegister);
 					return $service;
