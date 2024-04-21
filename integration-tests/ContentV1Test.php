@@ -34,11 +34,11 @@ use Smolblog\Core\ContentV1\Types\Reblog\CreateReblog;
 use Smolblog\Core\ContentV1\Types\Reblog\ExternalContentInfo;
 use Smolblog\Core\ContentV1\Types\Reblog\PublishReblog;
 use Smolblog\Core\ContentV1\Types\Reblog\Reblog;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Mock\App;
 use Smolblog\Mock\SecurityService;
 
-class ContentTest extends TestCase {
+class ContentV1Test extends TestCase {
 	private const NOTE = '5f98a21c-126d-40da-b62d-2a8cb03ed097';
 	private const REBLOG = '74b9c097-5a1f-405e-9da1-289eccb93028';
 	private const PICTURE = '1ee07396-7c81-426a-967a-b828e08d2cfb';

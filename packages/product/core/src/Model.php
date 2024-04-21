@@ -4,6 +4,7 @@ namespace Smolblog\Core;
 
 use Illuminate\Database\ConnectionInterface;
 use Psr\Container\ContainerInterface;
+use Smolblog\Foundation\Service\Messaging\MessageBus as FoundationMessageBus;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -50,8 +51,21 @@ class Model extends DomainModel {
 			'configuration' => null,
 		],
 
+		Content\ContentService::class => [
+			'types' => Content\Type\ContentTypeRegistry::class,
+			'extensions' => Content\Extension\ContentExtensionRegistry::class,
+		],
 		Content\ContentStateRepo::class => [
 			'db' => ConnectionInterface::class,
+		],
+		Content\Note\NoteService::class => [
+			'bus' => FoundationMessageBus::class
+		],
+		Content\Type\ContentTypeRegistry::class => [
+			'container' => ContainerInterface::class,
+		],
+		Content\Extension\ContentExtensionRegistry::class => [
+			'container' => ContainerInterface::class,
 		],
 
 		ContentV1\ContentService::class => [

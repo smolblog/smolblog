@@ -3,7 +3,9 @@
 namespace Smolblog\Foundation\Service\Messaging;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Foundation\Messages\Query;
+use Smolblog\Foundation\Service;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Message;
 
 /**
  * Handles the sending of messages to the appropriate objects.

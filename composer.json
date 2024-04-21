@@ -93,7 +93,7 @@
             "phpunit --testsuite all",
             "Smolblog\\Test\\CoverageReport::report"
         ],
-        "test-integration": "phpunit --testsuite integration --no-coverage",
+        "test-integration": "phpunit --testsuite integration --no-coverage --testdox",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
         "swagger": "Smolblog\\Api\\Model::printSpec",

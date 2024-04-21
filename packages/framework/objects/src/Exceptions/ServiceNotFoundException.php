@@ -26,7 +26,7 @@ class ServiceNotFoundException extends Exception implements SmolblogException, N
 		int $code = 0,
 		?Throwable $previous = null
 	) {
-		$message ??= "Service $service not found in ClassRegistrar.";
+		$message ??= "Service $service not found in ServiceRegistry.";
 		parent::__construct($message, $code, $previous);
 	}
 }

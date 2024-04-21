@@ -59,8 +59,8 @@ class ContentService implements Listener {
 	 * @param Content $content Content being worked on.
 	 * @return ContentTypeService
 	 */
-	private function getTypeServiceForContent(Content $content): ContentTypeService {
-		return $this->types->get(get_class($content)::KEY);
+	private function getTypeServiceForContent(Content $content): ?ContentTypeService {
+		return $this->types->get(get_class($content->body)::KEY);
 	}
 
 	/**

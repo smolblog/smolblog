@@ -5,6 +5,8 @@ namespace Smolblog\Mock;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query as FoundationQuery;
+use Smolblog\Foundation\Value\Traits\Message as FoundationMessage;
 
 class MockMessageBus extends DefaultMessageBus {
 	private int $indent = 0;
@@ -33,14 +35,14 @@ class MockMessageBus extends DefaultMessageBus {
 		return $val;
 	}
 
-	public function fetch(Query $query): mixed {
+	public function fetch(Query|FoundationQuery $query): mixed {
 		$this->startDispatch();
 		$val = parent::fetch($query);
 		$this->endDispatch();
 		return $val;
 	}
 
-	public function dispatchAsync(Message $message): void {
+	public function dispatchAsync(Message|FoundationMessage $message): void {
 		$this->queue[] = $message;
 	}
 }

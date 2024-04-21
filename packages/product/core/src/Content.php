@@ -21,21 +21,21 @@ readonly class Content extends Value implements SerializableValue, Entity {
 	use SerializableValueKit;
 	use EntityKit;
 
+	public ?DateTimeField $publishTimestamp;
+
 	public function __construct(
 		public ContentType $body,
 		public Identifier $siteId,
 		public Identifier $authorId,
 		?Identifier $id = null,
 		public ?string $path = null,
-		public ?DateTimeField $publishTimestamp = null,
+		?DateTimeField $publishTimestamp = null,
 		public bool $published = false,
 		#[ArrayType(ContentExtension::class)] public array $extensions = [],
 	) {
 		$this->id = $id ?? new DateIdentifier();
 
-		if ($this->published) {
-			$this->publishTimestamp ??= new DateTimeField();
-		}
+		$this->publishTimestamp = $publishTimestamp ?? $this->published ? new DateTimeField() : null;
 	}
 
 	public function title(): string {

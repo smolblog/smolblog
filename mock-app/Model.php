@@ -157,6 +157,13 @@ class Model extends DomainModel {
 			$table->text('expires');
 		});
 
+		$schema->create('content_states', function(Blueprint $table) {
+			$table->uuid('content_uuid')->primary();
+			$table->uuid('site_uuid');
+			$table->uuid('author_uuid');
+			$table->jsonb('content');
+		});
+
 		return $connection;
 	}
 }

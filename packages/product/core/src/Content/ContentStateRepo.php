@@ -7,6 +7,7 @@ use Smolblog\Core\Content;
 use Smolblog\Core\Content\Events\ContentCreated;
 use Smolblog\Core\Content\Events\ContentUpdated;
 use Smolblog\Core\Content\Events\ContentDeleted;
+use Smolblog\Core\Content\Queries\ContentById;
 use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -74,6 +75,14 @@ class ContentStateRepo implements Projection {
 	#[ExecutionListener]
 	public function onContentDeleted(ContentDeleted $event): void {
 		$this->db->table(self::TABLE)->where('content_uuid', $event->entityId->toString())->delete();
+	}
+
+	#[ExecutionListener]
+	public function onContentById(ContentById $query): void {
+		$result = $this->db->table(self::TABLE)->where('content_uuid', $query->id->toString())->first();
+		if (isset($result)) {
+			$query->setResults(Content::fromJson($result->content));
+		}
 	}
 
 	/**
