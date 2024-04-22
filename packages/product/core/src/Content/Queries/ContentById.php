@@ -6,17 +6,31 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\{AuthorizableMessage, Memoizable, MemoizableKit};
 
+/**
+ * Get a given Content object as a full Content object.
+ */
 readonly class ContentById extends Query implements Memoizable, AuthorizableMessage {
 	use MemoizableKit;
 
-	public function __construct(public Identifier $id, public ?Identifier $userId = null)
-	{
+	/**
+	 * Create the query.
+	 *
+	 * If the content is unpublished (or has unpublished edits), a user ID will be required to view the unpublished
+	 * info.
+	 *
+	 * @param Identifier      $id     ID for the content.
+	 * @param Identifier|null $userId Optional user making the query.
+	 */
+	public function __construct(public Identifier $id, public ?Identifier $userId = null) {
 		parent::__construct();
 	}
 
-	public function getAuthorizationQuery(): Query
-	{
-		return new class () extends Query {
-		};
+	/**
+	 * Check if the given user can see the given content.
+	 *
+	 * @return ContentVisibleToUser
+	 */
+	public function getAuthorizationQuery(): ContentVisibleToUser {
+		return new ContentVisibleToUser(contentId: $this->id, userId: $this->userId);
 	}
 }

@@ -4,9 +4,9 @@ namespace Smolblog\Core;
 
 use Illuminate\Database\ConnectionInterface;
 use Psr\Container\ContainerInterface;
+use Smolblog\Foundation\DomainModel;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
-use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
@@ -57,6 +57,10 @@ class Model extends DomainModel {
 		],
 		Content\ContentStateRepo::class => [
 			'db' => ConnectionInterface::class,
+			'bus' => DeprecatedMessageBus::class,
+		],
+		Content\ContentValidationService::class => [
+			'repo' => Content\ContentStateRepo::class,
 		],
 		Content\Note\NoteService::class => [
 			'bus' => MessageBus::class

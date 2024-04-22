@@ -3,6 +3,7 @@
 namespace Smolblog\Foundation\Value\Traits;
 
 use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**
  * Indicates that an object provides a Query to check whether it can be executed.
@@ -15,7 +16,7 @@ interface AuthorizableMessage {
 	 *
 	 * @return Query
 	 */
-	public function getAuthorizationQuery(): Query;
+	public function getAuthorizationQuery(): Query|DeprecatedQuery;
 
 	/**
 	 * Tell the message to stop executing.

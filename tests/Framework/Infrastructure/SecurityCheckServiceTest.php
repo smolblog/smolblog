@@ -2,16 +2,16 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Message;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Messages\Query;
 
 final class TestAuthorizableMessage extends Message implements AuthorizableMessage {
 	public function getAuthorizationQuery(): Query {
-		return new class() extends Query {};
+		return new readonly class() extends Query {};
 	}
 }
 

@@ -31,6 +31,10 @@ final class App {
 		return self::getApp()->container->get($service);
 	}
 
+	public static function resetMemo(): void {
+		self::getApp()->container->get(MockMemoService::class)->reset();
+	}
+
 	public readonly MessageBus $bus;
 	public readonly ServiceRegistry $container;
 

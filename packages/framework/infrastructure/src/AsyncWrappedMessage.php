@@ -12,7 +12,7 @@ class AsyncWrappedMessage extends DeprecatedMessage {
 	/**
 	 * Construct the message wrapper.
 	 *
-	 * @param DeprecatedMessage $message DeprecatedMessage to enqueue.
+	 * @param DeprecatedMessage|Message $message DeprecatedMessage to enqueue.
 	 */
 	public function __construct(
 		public readonly DeprecatedMessage|Message $message

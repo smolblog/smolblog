@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Site;
 
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
 
 /**
  * Check if a given user can perform a given action for a given site.

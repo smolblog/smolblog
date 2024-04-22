@@ -3,9 +3,9 @@
 namespace Smolblog\Core\Content\Commands;
 
 use Smolblog\Core\Content;
+use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
-use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 
 readonly class DeleteContent extends Command implements AuthorizableMessage {
@@ -15,8 +15,7 @@ readonly class DeleteContent extends Command implements AuthorizableMessage {
 	) {
 	}
 
-	public function getAuthorizationQuery(): Query {
-		return new class () extends Query {
-		};
+	public function getAuthorizationQuery(): UserCanEditContent {
+		return new UserCanEditContent(contentId: $this->content->id, userId: $this->userId);
 	}
 }

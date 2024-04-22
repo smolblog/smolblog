@@ -8,9 +8,13 @@ use Smolblog\Core\Content\Events\ContentCreated;
 use Smolblog\Core\Content\Events\ContentUpdated;
 use Smolblog\Core\Content\Events\ContentDeleted;
 use Smolblog\Core\Content\Queries\ContentById;
+use Smolblog\Core\Content\Queries\ContentVisibleToUser;
+use Smolblog\Core\Content\Queries\UserCanEditContent;
+use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Foundation\Service\Messaging\ExecutionListener;
 use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Store content objects in a simple key-value store.
@@ -26,9 +30,11 @@ class ContentStateRepo implements Projection {
 	 * Construct the projection.
 	 *
 	 * @param ConnectionInterface $db Working database connection.
+	 * @param MessageBus $bus Active MessageBus.
 	 */
 	public function __construct(
 		private ConnectionInterface $db,
+		private MessageBus $bus,
 	) {
 	}
 
@@ -40,12 +46,12 @@ class ContentStateRepo implements Projection {
 	 * Get a single content object.
 	 *
 	 * @param Identifier $id ID of the content to get.
-	 * @return Content
+	 * @return Content|null
 	 */
-	public function getSingleContent(Identifier $id): Content {
+	public function getSingleContent(Identifier $id): ?Content {
 		$row = $this->db->table(self::TABLE)->where('content_uuid', $id->toString())->value('content');
 
-		return Content::fromJson($row);
+		return isset($row) ? Content::fromJson($row) : null;
 	}
 
 	/**
@@ -79,10 +85,19 @@ class ContentStateRepo implements Projection {
 
 	#[ExecutionListener]
 	public function onContentById(ContentById $query): void {
-		$result = $this->db->table(self::TABLE)->where('content_uuid', $query->id->toString())->first();
-		if (isset($result)) {
-			$query->setResults(Content::fromJson($result->content));
-		}
+		$query->setResults($this->getSingleContent($query->id));
+	}
+
+	#[ExecutionListener]
+	public function onContentVisibleToUser(ContentVisibleToUser $query): void {
+		$query->setResults($this->checkUserAndContent(contentId: $query->contentId, userId: $query->userId));
+	}
+
+	#[ExecutionListener]
+	public function onUserCanEditContent(UserCanEditContent $query): void {
+		$query->setResults(
+			$this->checkUserAndContent(contentId: $query->contentId, userId: $query->userId, needsEdit: true)
+		);
 	}
 
 	/**
@@ -105,5 +120,25 @@ class ContentStateRepo implements Projection {
 			'content_uuid',
 			['content'],
 		);
+	}
+
+	private function checkUserAndContent(
+		Identifier $contentId,
+		?Identifier $userId = null,
+		bool $needsEdit = false
+	): bool {
+		$content = $this->getSingleContent($contentId);
+		if (!isset($content)) {
+			return false;
+		}
+		if (($content->published && !$needsEdit) || ($content->authorId == $userId)) {
+			return true;
+		}
+
+		return isset($userId) && $this->bus->fetch(new UserHasPermissionForSite(
+			siteId: $content->siteId,
+			userId: $userId,
+			mustBeAdmin: true,
+		));
 	}
 }
