@@ -12,6 +12,7 @@ use Smolblog\Foundation\Value\Traits\EntityKit;
  */
 readonly class MediaFile extends Value implements Entity {
 	use EntityKit;
+
 	/**
 	 * Construct the file.
 	 *

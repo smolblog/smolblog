@@ -12,6 +12,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  */
 readonly class Media extends Value implements Entity {
 	use EntityKit;
+
 	/**
 	 * Create the Media object.
 	 *

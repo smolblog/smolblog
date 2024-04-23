@@ -14,6 +14,7 @@ use Smolblog\Foundation\Value\Traits\MemoizableKit;
  */
 readonly class MediaById extends Query implements Memoizable {
 	use MemoizableKit;
+
 	/**
 	 * Construct the query
 	 *

@@ -13,6 +13,7 @@ use Smolblog\Foundation\Value\Traits\MemoizableKit;
  */
 readonly class MediaByDefaultUrl extends Query implements Memoizable {
 	use MemoizableKit;
+
 	/**
 	 * Create the query.
 	 *

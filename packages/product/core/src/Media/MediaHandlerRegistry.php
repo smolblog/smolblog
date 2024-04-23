@@ -33,7 +33,7 @@ class MediaHandlerRegistry implements Registry {
 	/**
 	 * Construct the Registrar with a DI container
 	 *
-	 * @param ContainerInterface $container     Containter which contains the needed classes.
+	 * @param ContainerInterface $container Containter which contains the needed classes.
 	 */
 	public function __construct(ContainerInterface $container) {
 		$this->container = $container;

@@ -17,11 +17,11 @@ class MessageNotAuthorizedException extends Exception implements SmolblogExcepti
 	/**
 	 * Construct the exception
 	 *
-	 * @param AuthorizableMessage $originalMessage    Original message.
-	 * @param DeprecatedQuery|Query               $authorizationQuery Query that returned falsey value.
-	 * @param string              $message            The Exception message to throw.
-	 * @param integer             $code               The Exception message to throw.
-	 * @param Throwable|null      $previous           The previous exception used for the exception chaining.
+	 * @param AuthorizableMessage   $originalMessage    Original message.
+	 * @param DeprecatedQuery|Query $authorizationQuery Query that returned falsey value.
+	 * @param string                $message            The Exception message to throw.
+	 * @param integer               $code               The Exception message to throw.
+	 * @param Throwable|null        $previous           The previous exception used for the exception chaining.
 	 */
 	public function __construct(
 		public readonly AuthorizableMessage $originalMessage,

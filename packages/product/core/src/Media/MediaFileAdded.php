@@ -13,7 +13,7 @@ readonly class MediaFileAdded extends DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param MediaFile $mediaFile File being uploaded.
+	 * @param MediaFile              $mediaFile File being uploaded.
 	 * @param Identifier             $userId    User uploading the media.
 	 * @param Identifier|null        $id        ID of the event.
 	 * @param DateTimeInterface|null $timestamp Timestamp of the event.

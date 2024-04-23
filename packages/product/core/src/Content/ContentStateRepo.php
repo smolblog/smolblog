@@ -29,8 +29,8 @@ class ContentStateRepo implements Projection {
 	/**
 	 * Construct the projection.
 	 *
-	 * @param ConnectionInterface $db Working database connection.
-	 * @param MessageBus $bus Active MessageBus.
+	 * @param ConnectionInterface $db  Working database connection.
+	 * @param MessageBus          $bus Active MessageBus.
 	 */
 	public function __construct(
 		private ConnectionInterface $db,

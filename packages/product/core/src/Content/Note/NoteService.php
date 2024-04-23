@@ -7,8 +7,7 @@ use Smolblog\Core\Content\Type\ContentTypeConfiguration;
 use Smolblog\Core\Content\Type\DefaultContentTypeService;
 
 class NoteService extends DefaultContentTypeService {
-	public static function getConfiguration(): ContentTypeConfiguration
-	{
+	public static function getConfiguration(): ContentTypeConfiguration {
 		return new ContentTypeConfiguration(
 			key: Note::KEY,
 			displayName: 'Note',

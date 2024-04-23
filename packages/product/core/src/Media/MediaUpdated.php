@@ -13,9 +13,9 @@ readonly class MediaUpdated extends DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param Media $media Media object being updated.
-	 * @param Identifier|null        $id                ID of the event.
-	 * @param DateTimeField|null $timestamp         Timestamp of the event.
+	 * @param Media              $media     Media object being updated.
+	 * @param Identifier|null    $id        ID of the event.
+	 * @param DateTimeField|null $timestamp Timestamp of the event.
 	 */
 	public function __construct(
 		public readonly Media $media,
