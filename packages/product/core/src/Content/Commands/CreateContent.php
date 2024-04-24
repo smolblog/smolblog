@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 
-readonly class CreateContent extends Command implements AuthorizableMessage {
+class CreateContent extends Command implements AuthorizableMessage {
 	public function __construct(
 		public Identifier $userId,
 		public Content $content,

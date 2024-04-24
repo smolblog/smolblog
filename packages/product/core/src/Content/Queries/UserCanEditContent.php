@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Messages\Query;
 /**
  * Gives a truthy value if the given user can edit the given content.
  */
-readonly class UserCanEditContent extends Query {
+class UserCanEditContent extends Query {
 	/**
 	 * Construct the query.
 	 *

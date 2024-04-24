@@ -12,7 +12,7 @@ use Smolblog\Foundation\Value\Traits\MemoizableKit;
  *
  * Not currently authorized but may in the future.
  */
-readonly class MediaById extends Query implements Memoizable {
+class MediaById extends Query implements Memoizable {
 	use MemoizableKit;
 
 	/**

@@ -22,7 +22,7 @@ use Smolblog\Foundation\Value\Traits\MemoizableKit;
  *
  * - An empty array for `types` (give `null` to ignore the filter)
  */
-readonly class MediaList extends Query implements Memoizable {
+class MediaList extends Query implements Memoizable {
 	use MemoizableKit;
 
 	/**

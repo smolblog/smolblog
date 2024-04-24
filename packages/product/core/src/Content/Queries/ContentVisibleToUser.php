@@ -11,7 +11,7 @@ use Smolblog\Foundation\Value\Messages\Query;
  * Before content is fully public (in draft or scheduled), it cannot be viewed by the public or by users other than
  * administrators and its author. This query checks for those conditions.
  */
-readonly class ContentVisibleToUser extends Query {
+class ContentVisibleToUser extends Query {
 	/**
 	 * Construct the query.
 	 *

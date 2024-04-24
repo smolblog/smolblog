@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Traits\{AuthorizableMessage, Memoizable, Memoizabl
 /**
  * Get a given Content object as a full Content object.
  */
-readonly class ContentById extends Query implements Memoizable, AuthorizableMessage {
+class ContentById extends Query implements Memoizable, AuthorizableMessage {
 	use MemoizableKit;
 
 	/**

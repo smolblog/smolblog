@@ -11,7 +11,7 @@ use Smolblog\Foundation\Value\Traits\MemoizableKit;
 /**
  * Search for a media object by its default URL.
  */
-readonly class MediaByDefaultUrl extends Query implements Memoizable {
+class MediaByDefaultUrl extends Query implements Memoizable {
 	use MemoizableKit;
 
 	/**

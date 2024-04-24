@@ -24,6 +24,7 @@
             "packages/framework/objects/src/shim.php"
         ]
     },
+    "minimum-stability": "dev",
     "autoload-dev": {
         "psr-4": {
             "Smolblog\\Mock\\": "mock-app/",

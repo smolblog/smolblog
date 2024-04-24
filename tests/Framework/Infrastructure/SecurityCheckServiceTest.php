@@ -11,7 +11,7 @@ use Smolblog\Framework\Messages\Message;
 
 final class TestAuthorizableMessage extends Message implements AuthorizableMessage {
 	public function getAuthorizationQuery(): Query {
-		return new readonly class() extends Query {};
+		return new class() extends Query {};
 	}
 }
 
