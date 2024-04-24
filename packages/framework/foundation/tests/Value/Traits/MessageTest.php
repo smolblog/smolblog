@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageKit;
@@ -14,7 +15,7 @@ final readonly class ExampleMessage extends Value implements Message {
 	public function __construct(public string $message) { $this->meta = new MessageMetadata(); }
 }
 
-#[CoversClass(MessageKit::class)]
+#[CoversTrait(MessageKit::class)]
 #[CoversClass(MessageMetadata::class)]
 final class MessageTest extends TestCase {
 	public function itWillNotSerializeMetadataByDefault() {

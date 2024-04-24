@@ -2,7 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Traits;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Smolblog\Foundation\Value;
 use Smolblog\Test\TestCase;
 
@@ -13,7 +13,7 @@ readonly class ExampleServiceConfiguration extends Value implements ServiceConfi
 	}
 }
 
-#[CoversClass(ServiceConfigurationKit::class)]
+#[CoversTrait(ServiceConfigurationKit::class)]
 final class ServiceConfigurationTest extends TestCase {
 	public function testItWillCorrectlyRetrieveTheKey() {
 		$config = new ExampleServiceConfiguration('key', 'test');

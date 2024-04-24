@@ -14,9 +14,12 @@ use Smolblog\Foundation\Value\Traits\MessageMetadata;
  * creating objects and sending them through a central orchestrator, we can more easily cache queries or send
  * complex queries to specialized handlers.
  *
- * All Queries that can be memoized should extend MemoizableQuery.
+ * All Queries that can be memoized should also implement Memoizable; use MemoizableKit to assist.
+ *
+ * Not `readonly` to allow middleware/plugins to modify parts of the Query. For example, a query reading an
+ * entity could be modified by a service to add extra metadata to the entity.
  */
-abstract readonly class Query extends Value implements Message {
+abstract class Query implements Message {
 	use MessageKit;
 
 	/**

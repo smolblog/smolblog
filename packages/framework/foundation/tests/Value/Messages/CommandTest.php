@@ -4,7 +4,7 @@ namespace Smolblog\Foundation\Value\Messages;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Smolblog\Test\TestCase;
 
-readonly class ExampleCommand extends Command {
+class ExampleCommand extends Command {
 	public function __construct(public string $name) {
 		parent::__construct();
 	}

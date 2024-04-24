@@ -2,7 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Traits;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\RandomIdentifier;
@@ -15,7 +15,7 @@ readonly class ExampleEntity extends Value implements Entity {
 	}
 }
 
-#[CoversClass(EntityKit::class)]
+#[CoversTrait(EntityKit::class)]
 final class EntityTest extends TestCase {
 	public function testItWillCorrectlyRetrieveTheId() {
 		$id = new RandomIdentifier();
