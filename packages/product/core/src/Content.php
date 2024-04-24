@@ -43,6 +43,6 @@ readonly class Content extends Value implements SerializableValue, Entity {
 	}
 
 	public function type(): string {
-		return $this->body->getTypeKey();
+		return get_class($this->body)::KEY;
 	}
 }

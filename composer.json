@@ -21,7 +21,7 @@
             "Smolblog\\WP\\": "application/wordpress/src/"
         },
         "files": [
-            "packages/framework/shim.php"
+            "packages/framework/src/shim.php"
         ]
     },
     "autoload-dev": {

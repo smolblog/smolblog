@@ -7,8 +7,25 @@
     {
       "type": "path",
       "url": "../../framework/foundation"
+    },
+    {
+      "type": "path",
+      "url": "../../framework/objects"
+    },
+    {
+      "type": "path",
+      "url": "../../framework/test-utils"
+    },
+    {
+      "type": "path",
+      "url": "../../framework/infrastructure"
+    },
+    {
+      "type": "path",
+      "url": "../../framework/markdown"
     }
   ],
+  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "Smolblog\\Core\\": "src/"
@@ -25,19 +42,13 @@
     }
   ],
   "require-dev": {
-    "squizlabs/php_codesniffer": "^3.8",
-    "phpunit/phpunit": "^9",
-    "nyholm/psr7": "^1.4",
-    "symplify/monorepo-builder": "^11.2"
+    "smolblog/test-utils": "*"
   },
   "scripts": {
-    "test": "phpunit --testsuite core",
-    "test-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite core; cat coverage.txt",
-    "integration": "phpunit --testsuite integration",
-    "integration-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite integration; cat coverage.txt",
+    "test": "export XDEBUG_MODE=coverage; phpunit --coverage-text",
+    "test-fast": "phpunit --no-coverage",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-    "swagger": "Smolblog\\Api\\Model::printSpec"
+    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },
   "require": {
     "php": "^8.2",
@@ -51,6 +62,9 @@
     "psr/log": "^3.0",
     "elephox/mimey": "^4.0",
     "tumblr/tumblr": "^0.4.2",
-    "smolblog/framework-foundation": "*"
+    "smolblog/framework-foundation": "*",
+    "smolblog/framework-objects": "*",
+    "smolblog/framework-infrastructure": "*",
+    "smolblog/smolblog-markdown": "*"
   }
 }
