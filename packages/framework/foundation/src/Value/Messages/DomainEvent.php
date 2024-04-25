@@ -9,7 +9,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Traits\Message;
-use Smolblog\Foundation\Value\Traits\MessageKit;
+use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
@@ -19,7 +19,7 @@ use Smolblog\Foundation\Value\Traits\SerializableValue;
  */
 readonly class DomainEvent extends Value implements Entity, Message, SerializableValue {
 	use SerializableSupertypeKit;
-	use MessageKit;
+	use ReadonlyMessageKit;
 	use EntityKit;
 
 	/**

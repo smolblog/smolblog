@@ -11,9 +11,7 @@ use Smolblog\Test\TestCase;
 
 class ExampleMemoizableQuery extends Query implements Memoizable {
 	use MemoizableKit;
-	public function __construct(public string $name, public Identifier $id) {
-		parent::__construct();
-	}
+	public function __construct(public string $name, public Identifier $id) {}
 }
 
 #[CoversTrait(MemoizableKit::class)]
@@ -40,9 +38,7 @@ final class MemoizableTest extends TestCase {
 			id: Identifier::fromString('fb0914b3-0224-4150-bd4b-2934aaddf9be'),
 		) extends Query implements Memoizable {
 			use MemoizableKit;
-			public function __construct(public string $name, public Identifier $id) {
-				parent::__construct();
-			}
+			public function __construct(public string $name, public Identifier $id) {}
 		};
 		$this->assertNotEquals($query->getMemoKey(), $query2->getMemoKey());
 	}

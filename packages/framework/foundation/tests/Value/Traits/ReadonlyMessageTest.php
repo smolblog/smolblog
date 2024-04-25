@@ -1,27 +1,25 @@
 <?php
 
+namespace Smolblog\Foundation\Value\Traits;
+
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\Message;
-use Smolblog\Foundation\Value\Traits\MessageKit;
-use Smolblog\Foundation\Value\Traits\MessageMetadata;
-use Smolblog\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 use Smolblog\Test\TestCase;
 
-final class ExampleMessage implements Message {
-	use MessageKit;
-	public function __construct(public readonly string $message) {}
+final readonly class ExampleReadonlyMessage extends Value implements Message {
+	use ReadonlyMessageKit;
+	public function __construct(public string $message) { $this->meta = new MessageMetadata(); }
 }
 
-#[CoversTrait(MessageKit::class)]
-final class MessageTest extends TestCase {
+#[CoversTrait(ReadonlyMessageKit::class)]
+#[CoversClass(MessageMetadata::class)]
+final class ReadonlyMessageTest extends TestCase {
 	public function itWillNotSerializeMetadataByDefault() {
-		$message = new class('hello') implements Message, SerializableValue {
+		$message = new readonly class('hello') extends Value implements Message, SerializableValue {
 			use SerializableValueKit;
 			use MessageKit;
-			public function __construct(public readonly string $message) {}
+			public function __construct(public readonly string $message) { $this->meta = new MessageMetadata(); }
 		};
 		$message->setMetaValue('one', 'two');
 		$message->setMetaValue('three', 'four');
@@ -30,7 +28,7 @@ final class MessageTest extends TestCase {
 	}
 
 	public function testItWillStopPropagation() {
-		$message = new ExampleMessage('hello');
+		$message = new ExampleReadonlyMessage('hello');
 		$this->assertFalse($message->isPropagationStopped());
 
 		$message->stopMessage();
@@ -38,7 +36,7 @@ final class MessageTest extends TestCase {
 	}
 
 	public function testItWillGetAndSetMetaValues() {
-		$message = new ExampleMessage('hello');
+		$message = new ExampleReadonlyMessage('hello');
 		$message->setMetaValue('one', 'two');
 		$this->assertEquals('two', $message->getMetaValue('one'));
 	}

@@ -5,9 +5,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Smolblog\Test\TestCase;
 
 class ExampleCommand extends Command {
-	public function __construct(public string $name) {
-		parent::__construct();
-	}
+	public function __construct(public string $name) {}
 }
 
 #[CoversClass(Command::class)]

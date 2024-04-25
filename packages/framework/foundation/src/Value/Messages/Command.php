@@ -18,11 +18,4 @@ use Smolblog\Foundation\Value;
  */
 abstract class Command implements Message {
 	use MessageKit;
-
-	/**
-	 * Initialize the command and its metadata.
-	 */
-	public function __construct() {
-		$this->meta = new MessageMetadata();
-	}
 }

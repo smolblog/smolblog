@@ -23,20 +23,13 @@ abstract class Query implements Message {
 	use MessageKit;
 
 	/**
-	 * Initialize the query and its metadata.
-	 */
-	public function __construct() {
-		$this->meta = new MessageMetadata();
-	}
-
-	/**
 	 * Set the results of the query. Override to add any extra validation.
 	 *
 	 * @param mixed $results Results of the query.
 	 * @return void
 	 */
 	public function setResults(mixed $results): void {
-		$this->meta->setMetaValue('results', $results);
+		$this->setMetaValue('results', $results);
 	}
 
 	/**

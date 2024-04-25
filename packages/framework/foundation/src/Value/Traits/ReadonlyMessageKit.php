@@ -3,17 +3,19 @@
 namespace Smolblog\Foundation\Value\Traits;
 
 /**
- * Useful functions for building a Message.
+ * Useful functions for building a Message. Use this kit for readonly classes.
  *
- * Stores metadata in a private property so it is not serialized.
+ * Stores metadata in a private property so it is not serialized. If the Message class is readonly, it will need
+ * to be redeclared. Consuming class MUST set $this->meta in the constructor. For example:
+ * `$this->meta = new MessageMetadata();`
  */
-trait MessageKit {
+trait ReadonlyMessageKit {
 	/**
 	 * Store the message's meta data.
 	 *
-	 * @var array
+	 * @var MessageMetadata
 	 */
-	private array $meta = [];
+	private readonly MessageMetadata $meta;
 
 	/**
 	 * Get the message's meta value for the given key.
@@ -22,7 +24,7 @@ trait MessageKit {
 	 * @return mixed Value of the meta value.
 	 */
 	public function getMetaValue(string $key): mixed {
-		return $this->meta[$key] ?? null;
+		return $this->meta->getMetaValue($key) ?? null;
 	}
 
 	/**
@@ -33,7 +35,7 @@ trait MessageKit {
 	 * @return void
 	 */
 	public function setMetaValue(string $key, mixed $value): void {
-		$this->meta[$key] = $value;
+		$this->meta->setMetaValue($key, $value);
 	}
 
 	/**
