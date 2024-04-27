@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 /**
  * Broad 'types' for media uploads.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 use DateTimeInterface;
 use Smolblog\Core\ContentV1\Events\ContentEvent;

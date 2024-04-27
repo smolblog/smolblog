@@ -1,17 +1,20 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Information on a Media's file used by the MediaHandler.
  */
-readonly class MediaFile extends Value implements Entity {
+readonly class MediaFile extends Value implements Entity, SerializableValue {
 	use EntityKit;
+	use SerializableValueKit;
 
 	/**
 	 * Construct the file.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Service\Registry\Registry;
@@ -15,13 +15,6 @@ class MediaHandlerRegistry implements Registry {
 	}
 
 	/**
-	 * Store the default media handler.
-	 *
-	 * @var string
-	 */
-	private string $defaultHandler;
-
-	/**
 	 * This registry handles MediaHandler services.
 	 *
 	 * @return string
@@ -34,8 +27,9 @@ class MediaHandlerRegistry implements Registry {
 	 * Construct the Registrar with a DI container
 	 *
 	 * @param ContainerInterface $container Containter which contains the needed classes.
+	 * @param string $defaultHandlerKey Key of MediaHandler to use by default.
 	 */
-	public function __construct(ContainerInterface $container) {
+	public function __construct(ContainerInterface $container, private string $defaultHandlerKey) {
 		$this->container = $container;
 	}
 
@@ -46,6 +40,6 @@ class MediaHandlerRegistry implements Registry {
 	 * @return MediaHandler
 	 */
 	public function get(?string $key = null): MediaHandler {
-		return $this->baseGet($key ?? $this->defaultHandler);
+		return $this->baseGet($key ?? $this->defaultHandlerKey);
 	}
 }

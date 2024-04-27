@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 use Smolblog\Core\ContentV1\EditContentCommandKit;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;

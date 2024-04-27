@@ -1,14 +1,12 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Core\ContentV1\Queries\ContentVisibleToUser;
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\ExecutionListener;
+use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use stdClass;
 
 /**
@@ -117,31 +115,13 @@ class MediaProjection implements Projection {
 	 * @param ContentVisibleToUser $query Query to check.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(earlier: 5)]
+	#[ExecutionListener(earlier: 5)]
 	public function onContentVisibleToUser(ContentVisibleToUser $query) {
 		// Media objects are always public for now.
 		if ($this->db->table(self::TABLE)->where('content_uuid', '=', $query->contentId->toString())->exists()) {
 			$query->setResults(true);
 			$query->stopMessage();
 		}
-	}
-
-	/**
-	 * Turn media IDs into actual entities.
-	 *
-	 * @param NeedsMediaObjects $message Message with Media IDs.
-	 * @return void
-	 */
-	#[ContentBuildLayerListener(earlier: 10)]
-	public function onNeedsMediaObjects(NeedsMediaObjects $message) {
-		$results = $this->db->table(self::TABLE)->whereIn('content_uuid', $message->getMediaIds())->get();
-
-		$message->setMediaObjects(
-			array_map(
-				fn($id) => self::mediaFromRow($results->firstWhere('content_uuid', $id->toString())),
-				$message->getMediaIds()
-			)
-		);
 	}
 
 	/**
@@ -172,9 +152,7 @@ class MediaProjection implements Projection {
 			title: $row->title,
 			accessibilityText: $row->accessibility_text,
 			type: MediaType::tryFrom($row->type),
-			thumbnailUrl: $row->thumbnail_url,
-			defaultUrl: $row->default_url,
-			file: MediaFile::jsonDeserialize($row->file),
+			fileId: Identifier::fromString($row->fileId),
 		);
 	}
 }

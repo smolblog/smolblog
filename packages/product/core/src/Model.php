@@ -139,6 +139,9 @@ class Model extends DomainModel {
 			'container' => ContainerInterface::class,
 			'configuration' => null,
 		],
+		Media\MediaHandlerRegistry::class => [
+			'container' => ContainerInterface::class,
+		],
 		Site\SiteEventStream::class => [
 			'db' => ConnectionInterface::class,
 		],

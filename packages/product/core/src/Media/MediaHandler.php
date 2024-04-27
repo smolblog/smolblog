@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Foundation\Service\Registry\Registerable;

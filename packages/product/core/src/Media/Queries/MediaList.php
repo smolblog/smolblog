@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Foundation\Service\Messaging\MemoizableQuery;

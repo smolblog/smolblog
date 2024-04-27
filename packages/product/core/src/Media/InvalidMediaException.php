@@ -1,8 +1,7 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
-use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 

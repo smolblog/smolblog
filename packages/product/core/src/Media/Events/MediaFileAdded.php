@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
-use DateTimeInterface;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 
@@ -16,13 +16,13 @@ readonly class MediaFileAdded extends DomainEvent {
 	 * @param MediaFile              $mediaFile File being uploaded.
 	 * @param Identifier             $userId    User uploading the media.
 	 * @param Identifier|null        $id        ID of the event.
-	 * @param DateTimeInterface|null $timestamp Timestamp of the event.
+	 * @param DateTimeField|null $timestamp Timestamp of the event.
 	 */
 	public function __construct(
 		public MediaFile $mediaFile,
 		Identifier $userId,
 		?Identifier $id = null,
-		?DateTimeInterface $timestamp = null
+		?DateTimeField $timestamp = null
 	) {
 		parent::__construct(
 			entityId: $mediaFile->id,

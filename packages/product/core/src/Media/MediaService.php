@@ -1,11 +1,9 @@
 <?php
 
-namespace Smolblog\Core\ContentV1\Media;
+namespace Smolblog\Core\Media;
 
-use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Handle tasks related to Media.
@@ -39,22 +37,6 @@ class MediaService implements Listener {
 		private MessageBus $bus,
 		private MediaHandlerRegistry $registry,
 	) {
-	}
-
-	/**
-	 * Add HTML to messages that need it.
-	 *
-	 * @param NeedsMediaRendered $message Message with media to render.
-	 * @return void
-	 */
-	#[ContentBuildLayerListener(earlier: 5)]
-	public function onNeedsMediaRendered(NeedsMediaRendered $message) {
-		$message->setMediaHtml(
-			array_map(
-				fn($media) => $this->htmlForMedia($media),
-				$message->getMediaObjects()
-			)
-		);
 	}
 
 	/**
