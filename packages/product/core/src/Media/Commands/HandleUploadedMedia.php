@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Commands;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Site\UserHasPermissionForSite;

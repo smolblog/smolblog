@@ -13,7 +13,6 @@ class UpdateContent extends Command implements AuthorizableMessage {
 		public Identifier $userId,
 		public Content $content,
 	) {
-		parent::__construct();
 	}
 
 	public function getAuthorizationQuery(): UserCanEditContent {

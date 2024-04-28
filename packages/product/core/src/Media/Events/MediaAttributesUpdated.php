@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Events;
 
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
@@ -11,7 +11,7 @@ use Smolblog\Foundation\Value\Messages\DomainEvent;
 /**
  * Indicate that attributes have been changed on a piece of media.
  */
-readonly class MediaAttributesEdited extends DomainEvent {
+readonly class MediaAttributesUpdated extends DomainEvent {
 	/**
 	 * Construct the event.
 	 *

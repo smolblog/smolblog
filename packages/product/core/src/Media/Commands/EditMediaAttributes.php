@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Commands;
 
 use Smolblog\Core\Media\Queries\UserCanEditMedia;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;

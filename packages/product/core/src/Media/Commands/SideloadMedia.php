@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Commands;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;

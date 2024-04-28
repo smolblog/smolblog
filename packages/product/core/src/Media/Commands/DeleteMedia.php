@@ -1,13 +1,11 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Commands;
 
 use Smolblog\Core\Media\Queries\UserCanEditMedia;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
-use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Framework\Messages\Query as MessagesQuery;
 
 /**
  * Delete a media object.

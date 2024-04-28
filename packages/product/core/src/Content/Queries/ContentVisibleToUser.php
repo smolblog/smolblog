@@ -22,6 +22,5 @@ class ContentVisibleToUser extends Query {
 		public readonly Identifier $contentId,
 		public readonly ?Identifier $userId,
 	) {
-		parent::__construct();
 	}
 }

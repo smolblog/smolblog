@@ -22,7 +22,6 @@ class ContentById extends Query implements Memoizable, AuthorizableMessage {
 	 * @param Identifier|null $userId Optional user making the query.
 	 */
 	public function __construct(public Identifier $id, public ?Identifier $userId = null) {
-		parent::__construct();
 	}
 
 	/**
