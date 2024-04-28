@@ -2,8 +2,7 @@
 
 namespace Smolblog\Core\Media;
 
-use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\Memoizable;
@@ -28,7 +27,7 @@ class MediaList extends Query implements Memoizable {
 	/**
 	 * Construct the query.
 	 *
-	 * @throws InvalidMessageAttributesException Thown when invalid arguments are provided.
+	 * @throws InvalidValueProperties Thown when invalid arguments are provided.
 	 *
 	 * @param Identifier       $siteId   ID of the site to pull from.
 	 * @param integer          $page     Page to show starting from 1; defaults to 1, must be non-negative.
@@ -48,7 +47,7 @@ class MediaList extends Query implements Memoizable {
 			$page <= 0 ||
 			$pageSize <= 0
 		) {
-			throw new InvalidMessageAttributesException("Invalid filters given");
+			throw new InvalidValueProperties("Invalid filters given");
 		}
 
 		// Check for nonsensical values; these could be user error.

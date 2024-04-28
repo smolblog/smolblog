@@ -4,11 +4,11 @@ namespace Smolblog\Core\Media;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Command;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 
 /**
  * Save an uploaded file to the media library
@@ -17,20 +17,22 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	/**
 	 * Create the command.
 	 *
+	 * @throws InvalidValueProperties When no accessibility text is provided.
+	 *
 	 * @param UploadedFileInterface $file              Uploaded file.
 	 * @param Identifier            $userId            User uploading the file.
 	 * @param Identifier            $siteId            Site file is being uploaded to.
-	 * @param string                $accessibilityText Alt text.
+	 * @param string|null           $accessibilityText Alt text.
 	 * @param string|null           $title             Title of the media.
-	 * @param Identifier|null       $contentId         ID for the new media; will auto-generate if not given.
+	 * @param Identifier|null       $mediaId           ID for the new media; will auto-generate if not given.
 	 */
 	public function __construct(
-		public readonly UploadedFileInterface $file,
+		public UploadedFileInterface $file,
 		public readonly Identifier $userId,
 		public readonly Identifier $siteId,
-		public readonly ?string $accessibilityText,
-		public readonly ?string $title = null,
-		public readonly ?Identifier $contentId = new DateIdentifier(),
+		public ?string $accessibilityText = null,
+		public ?string $title = null,
+		public Identifier $mediaId = new DateIdentifier(),
 	) {
 	}
 

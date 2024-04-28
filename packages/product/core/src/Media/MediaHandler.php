@@ -27,13 +27,13 @@ interface MediaHandler extends Registerable {
 	 * @param UploadedFileInterface $file   Uploaded file information.
 	 * @param Identifier|null       $userId ID of the user uploading the file.
 	 * @param Identifier|null       $siteId Site the file is being uploaded to.
-	 * @return MediaFile
+	 * @return Media
 	 */
 	public function handleUploadedFile(
 		UploadedFileInterface $file,
 		?Identifier $userId = null,
 		?Identifier $siteId = null,
-	): MediaFile;
+	): Media;
 
 	/**
 	 * Sideload the result of the given URL and return the resulting Media object.
@@ -43,13 +43,13 @@ interface MediaHandler extends Registerable {
 	 * @param string          $url    URL of media to sideload.
 	 * @param Identifier|null $userId ID of the user uploading the file.
 	 * @param Identifier|null $siteId Site the file is being uploaded to.
-	 * @return MediaFile
+	 * @return Media
 	 */
 	public function sideloadFile(
 		string $url,
 		?Identifier $userId = null,
 		?Identifier $siteId = null,
-	): MediaFile;
+	): Media;
 
 	/**
 	 * Get the URL for a thumbnail image for the media.
@@ -57,10 +57,10 @@ interface MediaHandler extends Registerable {
 	 * For images, this should be a small version of the image. For videos, a still image. For others, something
 	 * representative.
 	 *
-	 * @param MediaFile $file File to query.
+	 * @param Media $media Media to query.
 	 * @return string
 	 */
-	public function getThumbnailUrlFor(MediaFile $file): string;
+	public function getThumbnailUrlFor(Media $media): string;
 
 	/**
 	 * Get the URL for this media given the parameters.
@@ -69,11 +69,11 @@ interface MediaHandler extends Registerable {
 	 * extra props should be ignored. Ideally, the media handler will use this to provide the url to a copy of the media
 	 * that will fit in the box provided.
 	 *
-	 * @param MediaFile    $file      Media object being shown.
+	 * @param Media        $media     Media object being shown.
 	 * @param integer|null $maxWidth  Max width of the media needed.
 	 * @param integer|null $maxHeight Max height of the media needed.
 	 * @param mixed        ...$props  Any additional props needed.
 	 * @return string
 	 */
-	public function getUrlFor(MediaFile $file, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
+	public function getUrlFor(Media $media, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): string;
 }

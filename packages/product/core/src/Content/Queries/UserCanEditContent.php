@@ -19,6 +19,5 @@ class UserCanEditContent extends Query {
 		public readonly Identifier $userId,
 		public readonly Identifier $contentId,
 	) {
-		parent::__construct();
 	}
 }

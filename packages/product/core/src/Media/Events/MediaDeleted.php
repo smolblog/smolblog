@@ -2,45 +2,37 @@
 
 namespace Smolblog\Core\Media;
 
-use DateTimeInterface;
-use Smolblog\Core\ContentV1\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\DateTimeField;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
  * Indicate that attributes have been changed on a piece of media.
  */
-class MediaDeleted extends ContentEvent {
+readonly class MediaDeleted extends DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param Identifier             $contentId ID of the Media object.
-	 * @param Identifier             $userId    User uploading the media.
-	 * @param Identifier             $siteId    Site media is being uploaded to.
-	 * @param Identifier|null        $id        ID of the event.
-	 * @param DateTimeInterface|null $timestamp Timestamp of the event.
+	 * @param Identifier         $entityId    ID of the Media object.
+	 * @param Identifier         $userId      User deleting the media.
+	 * @param Identifier         $aggregateId Site media is being deleting from.
+	 * @param Identifier|null    $id          ID of the event.
+	 * @param DateTimeField|null $timestamp   Timestamp of the event.
 	 */
 	public function __construct(
-		Identifier $contentId,
+		Identifier $entityId,
 		Identifier $userId,
-		Identifier $siteId,
+		Identifier $aggregateId,
 		?Identifier $id = null,
-		?DateTimeInterface $timestamp = null
+		?DateTimeField $timestamp = null
 	) {
 		parent::__construct(
-			contentId: $contentId,
+			entityId: $entityId,
 			userId: $userId,
-			siteId: $siteId,
-			id: $id,
-			timestamp: $timestamp,
+			aggregateId: $aggregateId,
+			id: $id ?? new DateIdentifier(),
+			timestamp: $timestamp ?? new DateTimeField(),
 		);
-	}
-
-	/**
-	 * Get the payload for this event.
-	 *
-	 * @return array
-	 */
-	public function getPayload(): array {
-		return [];
 	}
 }

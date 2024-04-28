@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core\Media;
 
-use Smolblog\Foundation\Service\Messaging\MemoizableQuery;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\Memoizable;
@@ -22,10 +21,9 @@ class MediaByDefaultUrl extends Query implements Memoizable {
 	 * @param Identifier|null $siteId Optional site being searched.
 	 */
 	public function __construct(
-		public readonly string $url,
+		public string $url,
 		public readonly ?Identifier $userId = null,
 		public readonly ?Identifier $siteId = null,
 	) {
-		parent::__construct();
 	}
 }

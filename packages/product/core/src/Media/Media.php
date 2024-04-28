@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Media;
 
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
@@ -19,23 +20,31 @@ readonly class Media extends Value implements Entity, SerializableValue {
 	/**
 	 * Create the Media object.
 	 *
+	 * @throws InvalidValueProperties When Title or A11y text are empty.
+	 *
 	 * @param Identifier $id                ID for this object.
 	 * @param Identifier $userId            User who owns this object.
 	 * @param Identifier $siteId            Site this object belongs to.
-	 * @param string     $title             Title for the media (usually filename).
-	 * @param string     $accessibilityText Text description of the media.
+	 * @param string     $title             Title for the media (usually filename). Must not be empty.
+	 * @param string     $accessibilityText Text description of the media. Must not be empty.
 	 * @param MediaType  $type              Broad type of media (image, video, etc).
-	 * @param Identifier $fileId            ID for info about the actual file.
+	 * @param string     $handler           Key for handler for this media.
+	 * @param array      $fileDetails       Information needed by file handler.
 	 */
 	public function __construct(
 		Identifier $id,
-		public readonly Identifier $userId,
-		public readonly Identifier $siteId,
-		public readonly string $title,
-		public readonly string $accessibilityText,
-		public readonly MediaType $type,
-		public readonly Identifier $fileId,
+		public Identifier $userId,
+		public Identifier $siteId,
+		public string $title,
+		public string $accessibilityText,
+		public MediaType $type,
+		public string $handler,
+		public array $fileDetails,
 	) {
+		if (empty($this->title) || empty($this->accessibilityText)) {
+			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
+		}
+
 		$this->id = $id;
 	}
 }

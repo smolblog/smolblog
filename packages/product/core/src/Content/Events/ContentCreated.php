@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Content\Events;
 
 use Smolblog\Core\Content;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Framework\Objects\DateIdentifier;
 
 readonly class ContentCreated extends DomainEvent {
 	public function __construct(
