@@ -7,6 +7,15 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 use Smolblog\Foundation\Value\Traits\{Entity, SerializableValue, SerializableValueKit};
 
+/**
+ * A place where Content can be sent or retrieved from.
+ *
+ * This can be a social media account, a blog on a different system, or the website that comes with a site. Content is
+ * "published" by pushing it to a Channel. The Channel's provider handles putting the Content into the Channel and
+ * getting the resulting permalink.
+ *
+ * @codeCoverageIgnore
+ */
 readonly class Channel extends Value implements SerializableValue, Entity {
 	use SerializableValueKit;
 
@@ -26,6 +35,14 @@ readonly class Channel extends Value implements SerializableValue, Entity {
 		return new NamedIdentifier(namespace: self::NAMESPACE, name: "$provider|$providerKey");
 	}
 
+	/**
+	 * Construct the channel.
+	 *
+	 * @param string $provider Key for the provider used to power this Channel.
+	 * @param string $providerKey Unique value for this channel for this provider (username, URL, etc).
+	 * @param Identifier|null $connectionId Connection to use to authenticate to this Channel.
+	 * @param array $details Provider-required details for this Channel.
+	 */
 	public function __construct(
 		public string $provider,
 		public string $providerKey,
@@ -34,6 +51,11 @@ readonly class Channel extends Value implements SerializableValue, Entity {
 	) {
 	}
 
+	/**
+	 * Get the ID for this Channel.
+	 *
+	 * @return Identifier
+	 */
 	public function getId(): Identifier {
 		return self::buildId(provider: $this->provider, providerKey: $this->providerKey);
 	}
