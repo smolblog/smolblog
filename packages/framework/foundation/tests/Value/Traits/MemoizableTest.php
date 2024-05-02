@@ -1,7 +1,7 @@
 <?php
 
+// use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Query;
@@ -14,7 +14,8 @@ class ExampleMemoizableQuery extends Query implements Memoizable {
 	public function __construct(public string $name, public Identifier $id) {}
 }
 
-#[CoversTrait(MemoizableKit::class)]
+// #[CoversTrait(MemoizableKit::class)]
+#[CoversClass(MemoizableKit::class)]
 final class MemoizableTest extends TestCase {
 	#[TestDox('will provide the same key for the same query with the same parameters')]
 	public function testSameKey() {

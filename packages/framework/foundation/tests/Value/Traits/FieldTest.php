@@ -1,6 +1,7 @@
 <?php
 
-use PHPUnit\Framework\Attributes\CoversTrait;
+// use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Field;
 use Smolblog\Foundation\Value\Traits\FieldKit;
@@ -20,7 +21,8 @@ final readonly class TestValueWithField extends Value implements SerializableVal
 	public function __construct(public string $name, public int $idNumber, public ExampleField $meta) {}
 }
 
-#[CoversTrait(FieldKit::class)]
+// #[CoversTrait(FieldKit::class)]
+#[CoversClass(FieldKit::class)]
 final class FieldTest extends TestCase {
 	public function testItWillSerializeToAndDeserializeFromTheStringRepresentation() {
 		$object = new ExampleField(one: 'abc', two: 'xyz');
