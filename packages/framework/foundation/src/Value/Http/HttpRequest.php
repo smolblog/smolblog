@@ -25,7 +25,7 @@ class HttpRequest implements RequestInterface {
 	 *
 	 * @param HttpVerb                           $verb    HTTP method to use.
 	 * @param string|UriInterface                $url     URL of the request.
-	 * @param array                              $headers Headers of the request.
+	 * @param array<string, string>              $headers Headers of the request.
 	 * @param string|array|JsonSerializable|null $body    Request body in string or object format.
 	 */
 	public function __construct(

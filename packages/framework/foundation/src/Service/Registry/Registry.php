@@ -23,7 +23,7 @@ interface Registry extends Service {
 	/**
 	 * Accept the configuration for the registry.
 	 *
-	 * @param array $configuration Array of classes to register.
+	 * @param string[] $configuration Array of classes to register.
 	 * @return void
 	 */
 	public function configure(array $configuration): void;

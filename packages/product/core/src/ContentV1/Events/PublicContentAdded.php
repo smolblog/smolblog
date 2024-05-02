@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Events;
+namespace Smolblog\Core\ContentV1\Events;
 
 /**
  * Describes an event that adds content to the publicly-viewable site.

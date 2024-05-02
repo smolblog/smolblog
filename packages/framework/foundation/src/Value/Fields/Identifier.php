@@ -2,7 +2,6 @@
 
 namespace Smolblog\Foundation\Value\Fields;
 
-use Override;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
@@ -31,12 +30,12 @@ readonly class Identifier extends Value implements Field {
 	 *
 	 * @throws InvalidValueProperties Thrown if the string is not a valid UUID.
 	 *
-	 * @param mixed $idString Uuid string to create instance from.
+	 * @param string $idString Uuid string to create instance from.
 	 * @return static Identifier equal to the given string.
 	 */
-	public static function fromString(mixed $idString): static {
+	public static function fromString(string $idString): static {
 		try {
-			return new self(internal: Uuid::fromString($idString));
+			return new static(internal: Uuid::fromString($idString));
 		} catch (Throwable $e) {
 			throw new InvalidValueProperties(
 				message: "Could not create Identifier from string $idString",

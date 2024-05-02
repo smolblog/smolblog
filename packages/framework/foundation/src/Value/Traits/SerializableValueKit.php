@@ -7,6 +7,8 @@ use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionProperty;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Throwable;
 
 /**
  * Default serializing functions.
@@ -85,7 +87,15 @@ trait SerializableValueKit {
 			$parsedData[$name] = self::deserializeDataToType($data[$name], $type);
 		}
 
-		return new static(...$parsedData);
+		try {
+			// @phpstan-ignore-next-line
+			return new static(...$parsedData);
+		} catch (Throwable $e) {
+			throw new InvalidValueProperties(
+				message: 'Unable to deserialize ' . static::class . ': ' . $e->getMessage(),
+				previous: $e,
+			);
+		}
 	}
 
 	/**

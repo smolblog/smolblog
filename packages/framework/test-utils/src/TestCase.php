@@ -10,9 +10,7 @@ class TestCase extends PHPUnitTestCase {
 	protected mixed $subject;
 
 	protected function randomId(bool $scrub = false): Identifier {
-		$id = new RandomIdentifier();
-
-		return $scrub ? $this->scrubId($id) : $id;
+		return $this->scrubId(new RandomIdentifier());
 	}
 
 	protected function scrubId(Identifier $id): Identifier {

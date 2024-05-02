@@ -60,10 +60,10 @@ readonly class DateTimeField extends Value implements Field {
 	/**
 	 * Create the DateTime from a string.
 	 *
-	 * @param mixed $datetime String to create DateTime from.
-	 * @return self
+	 * @param string $datetime String to create DateTime from.
+	 * @return static
 	 */
-	public static function fromString(mixed $datetime): static {
-		return new self(datetime: strval($datetime));
+	public static function fromString(string $datetime): static {
+		return new self(datetime: $datetime);
 	}
 }

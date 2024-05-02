@@ -11,7 +11,7 @@ abstract class DomainModel {
 	/**
 	 * Get services defined in this model and the dependencies they need.
 	 *
-	 * @return array
+	 * @return array<string, array<string, mixed>>
 	 */
 	public static function getDependencyMap(): array {
 		return static::SERVICES;

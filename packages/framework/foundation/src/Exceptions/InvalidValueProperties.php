@@ -20,7 +20,8 @@ class InvalidValueProperties extends InvalidArgumentException {
 		?string $message = null,
 		?int $code = 0,
 		?Throwable $previous = null,
+		public readonly ?string $field = null,
 	) {
-		parent::__construct($message, $code, $previous);
+		parent::__construct($message ?? '', $code ?? 0, $previous);
 	}
 }

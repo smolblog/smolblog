@@ -72,31 +72,31 @@ readonly class Url extends Value implements Field, UriInterface {
 		return $this->internal->getUserInfo();
 	}
 
-	public function withFragment(string $fragment) {
+	public function withFragment(string $fragment): UriInterface {
 		return $this->internal->withFragment($fragment);
 	}
 
-	public function withHost(string $host) {
+	public function withHost(string $host): UriInterface {
 		return $this->internal->withHost($host);
 	}
 
-	public function withPath(string $path) {
+	public function withPath(string $path): UriInterface {
 		return $this->internal->withPath($path);
 	}
 
-	public function withPort(int|null $port) {
+	public function withPort(int|null $port): UriInterface {
 		return $this->internal->withPort($port);
 	}
 
-	public function withQuery(string $query) {
+	public function withQuery(string $query): UriInterface {
 		return $this->internal->withQuery($query);
 	}
 
-	public function withScheme(string $scheme) {
+	public function withScheme(string $scheme): UriInterface {
 		return $this->internal->withScheme($scheme);
 	}
 
-	public function withUserInfo(string $user, string|null $password = null) {
+	public function withUserInfo(string $user, string|null $password = null): UriInterface {
 		return $this->internal->withUserInfo(user: $user, password: $password);
 	}
 }

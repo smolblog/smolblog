@@ -30,6 +30,7 @@ abstract readonly class Value {
 		$base = get_object_vars(...)->__invoke($this);
 
 		try {
+			// @phpstan-ignore-next-line
 			return new static(...array_merge($base, $props));
 		} catch (Throwable $e) {
 			throw new InvalidValueProperties(

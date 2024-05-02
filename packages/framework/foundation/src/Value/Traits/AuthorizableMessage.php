@@ -16,7 +16,7 @@ interface AuthorizableMessage {
 	 *
 	 * @return Query
 	 */
-	public function getAuthorizationQuery(): Query|DeprecatedQuery;
+	public function getAuthorizationQuery(): Query|DeprecatedQuery; // @phpstan-ignore-line
 
 	/**
 	 * Tell the message to stop executing.

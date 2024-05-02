@@ -32,6 +32,6 @@ class CodePathNotSupported extends LogicException {
 	) {
 		$locationFragment = isset($location) ? "In $location: " : '';
 		$messageFragment = isset($message) ? $message : 'The code path is not supported.';
-		parent::__construct($locationFragment . $messageFragment, $code, $previous);
+		parent::__construct($locationFragment . $messageFragment, $code ?? 0, $previous);
 	}
 }

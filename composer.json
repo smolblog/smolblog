@@ -87,7 +87,7 @@
         "smolblog/tumblr": "self.version"
     },
     "scripts": {
-        "test": "phpunit --testdox",
+        "test": "phpunit --testdox --no-coverage",
         "test-fast": "phpunit --testsuite all --no-coverage",
         "test-coverage": [
             "@putenv XDEBUG_MODE=coverage",

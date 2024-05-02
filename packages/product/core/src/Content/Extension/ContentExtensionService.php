@@ -19,7 +19,7 @@ interface ContentExtensionService extends ConfiguredRegisterable {
 	public static function getConfiguration(): ContentExtensionConfiguration;
 
 	/**
-	 * Create the given content as a new piece of content.
+	 * Content is being created
 	 *
 	 * @param CreateContent $command Content being created.
 	 * @return void

@@ -20,6 +20,7 @@ abstract readonly class PublicContentEvent extends BaseContentEvent {
 	 * Get the ID of the content in question.
 	 *
 	 * @deprecated use $this->content->id
+	 * @codeCoverageIgnore
 	 *
 	 * @return Identifier
 	 */
@@ -31,6 +32,7 @@ abstract readonly class PublicContentEvent extends BaseContentEvent {
 	 * Get the content for this event.
 	 *
 	 * @deprecated Use $this->content.
+	 * @codeCoverageIgnore
 	 *
 	 * @return Content
 	 */
