@@ -8,24 +8,19 @@ use Smolblog\Core\Content\Type\ContentType;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Test\Kits\ContentTestKit;
 use Smolblog\Test\TestCase;
 
 final readonly class ExampleBaseContentEvent extends BaseContentEvent {}
 
 #[CoversClass(BaseContentEvent::class)]
 final class BaseContentEventTest extends TestCase {
+	use ContentTestKit;
+
 	private Content $content;
 
 	protected function setUp(): void {
-		$this->content = new Content(
-			body: new readonly class() extends ContentType {
-				public function __construct(public string $word = 'hello') {}
-				public function getTitle(): string { return $this->word; }
-			},
-			siteId: $this->randomId(),
-			authorId: $this->randomId(),
-			id: $this->randomId(),
-		);
+		$this->content = $this->sampleContent();
 	}
 
 	public function testItWillCreateWithDefaultIdAndTimestamp() {

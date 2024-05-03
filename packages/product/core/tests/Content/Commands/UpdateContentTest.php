@@ -3,23 +3,22 @@
 namespace Smolblog\Core\Content\Commands;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Smolblog\Core\Site\UserHasPermissionForSite;
+use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Test\Kits\ContentTestKit;
 use Smolblog\Test\TestCase;
 
-#[CoversClass(CreateContent::class)]
-final class CreateContentTest extends TestCase {
+#[CoversClass(UpdateContent::class)]
+final class UpdateContentTest extends TestCase {
 	use ContentTestKit;
 	public function testItRequiresAuthorPermissionForTheSite() {
-		$command = new CreateContent(
+		$command = new UpdateContent(
 			userId: $this->randomId(),
 			content: $this->sampleContent(),
 		);
 
-		$expected = new UserHasPermissionForSite(
-			siteId: $command->content->siteId,
+		$expected = new UserCanEditContent(
 			userId: $command->userId,
-			mustBeAuthor: true,
+			contentId: $command->content->id,
 		);
 
 		$this->assertEquals($expected, $command->getAuthorizationQuery());

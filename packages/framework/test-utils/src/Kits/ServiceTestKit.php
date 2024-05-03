@@ -15,13 +15,6 @@ trait ServiceTestKit {
 	private stdClass $deps;
 
 	/**
-	 * Store a
-	 *
-	 * @var mixed
-	 */
-	private mixed $service;
-
-	/**
 	 * Build the given service with mocks for each dependency.
 	 *
 	 * Dependencies will be added to $this->deps according to the parameter names on the constructor. If you want to
