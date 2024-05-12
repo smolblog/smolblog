@@ -14,7 +14,6 @@ final class ContentServiceTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->service = $this->setUpService(ContentService::class);
-		$this->deps->types->method('get')
 	}
 
 	public function testItWorks() {
