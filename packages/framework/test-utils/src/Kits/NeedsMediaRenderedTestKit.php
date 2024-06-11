@@ -3,8 +3,8 @@
 namespace Smolblog\Test\Kits;
 
 use PHPUnit\Framework\Attributes\TestDox;
-use Smolblog\Core\ContentV1\Media\Media;
-use Smolblog\Core\ContentV1\Media\NeedsMediaObjects;
+use Smolblog\Core\Content\Media\Media;
+use Smolblog\Core\Content\Media\NeedsMediaObjects;
 
 trait NeedsMediaRenderedTestKit {
 	#[TestDox('It implements the NeedsMediaRendered interface.')]

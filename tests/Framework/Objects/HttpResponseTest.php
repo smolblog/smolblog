@@ -13,7 +13,7 @@ final class HttpResponseTest extends TestCase {
 		$this->assertEquals(301, $response->getStatusCode());
 		$this->assertEquals('Moved Permanently', $response->getReasonPhrase());
 		$this->assertEquals('1.1', $response->getProtocolVersion());
-		$this->assertEquals(['Location' => ['https://smol.blog/']], $response->getHeaders());
+		$this->assertEquals(['location' => ['https://smol.blog/']], $response->getHeaders());
 		$this->assertEquals(['https://smol.blog/'], $response->getHeader('location'));
 		$this->assertEquals('https://smol.blog/', $response->getHeaderLine('location'));
 		$this->assertInstanceOf(StreamInterface::class, $response->getBody());

@@ -5,12 +5,12 @@ namespace Smolblog\Core\Content\Media;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\Kits\EventComparisonTestKit;
+use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
-
-use function Symfony\Component\String\b;
 
 final class MediaServiceTest extends TestCase {
 	use EventComparisonTestKit;
+	use MessageBusMockKit;
 
 	public function testItCreatesTypesFromMimeTypes() {
 		$this->assertEquals(MediaType::File, MediaService::typeFromMimeType('text'));
@@ -51,16 +51,16 @@ final class MediaServiceTest extends TestCase {
 		$registry->method('get')->willReturn($handler);
 
 		$bus = $this->createMock(MessageBus::class);
-		$bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new MediaFileAdded(
+		$this->messageBusShouldDispatch($bus,
+			$this->eventEquivalentTo(new MediaFileAdded(
 				contentId: $fileInfo->id,
 				userId: $command->userId,
 				siteId: $command->siteId,
 				handler: $fileInfo->handler,
 				mimeType: $fileInfo->mimeType,
 				details: $fileInfo->details,
-			))],
-			[$this->eventEquivalentTo(new MediaAdded(
+			)),
+			$this->eventEquivalentTo(new MediaAdded(
 				contentId: $command->contentId,
 				userId: $command->userId,
 				siteId: $command->siteId,
@@ -70,7 +70,7 @@ final class MediaServiceTest extends TestCase {
 				thumbnailUrl: '//img/thumb.jpg',
 				defaultUrl: '//img/orig.png',
 				file: $fileInfo,
-			))],
+			)),
 		);
 
 		$service = new MediaService($bus, $registry);
@@ -107,16 +107,16 @@ final class MediaServiceTest extends TestCase {
 		$registry->method('get')->willReturn($handler);
 
 		$bus = $this->createMock(MessageBus::class);
-		$bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new MediaFileAdded(
+		$this->messageBusShouldDispatch($bus,
+			$this->eventEquivalentTo(new MediaFileAdded(
 				contentId: $fileInfo->id,
 				userId: $command->userId,
 				siteId: $command->siteId,
 				handler: $fileInfo->handler,
 				mimeType: $fileInfo->mimeType,
 				details: $fileInfo->details,
-			))],
-			[$this->eventEquivalentTo(new MediaAdded(
+			)),
+			$this->eventEquivalentTo(new MediaAdded(
 				contentId: $command->contentId,
 				userId: $command->userId,
 				siteId: $command->siteId,
@@ -126,7 +126,7 @@ final class MediaServiceTest extends TestCase {
 				thumbnailUrl: '//img/thumb.jpg',
 				defaultUrl: '//img/orig.png',
 				file: $fileInfo,
-			))],
+			)),
 		);
 
 		$service = new MediaService($bus, $registry);
@@ -163,16 +163,16 @@ final class MediaServiceTest extends TestCase {
 		$registry->method('get')->willReturn($handler);
 
 		$bus = $this->createMock(MessageBus::class);
-		$bus->expects($this->exactly(2))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo(new MediaFileAdded(
+		$this->messageBusShouldDispatch($bus,
+			$this->eventEquivalentTo(new MediaFileAdded(
 				contentId: $fileInfo->id,
 				userId: $command->userId,
 				siteId: $command->siteId,
 				handler: $fileInfo->handler,
 				mimeType: $fileInfo->mimeType,
 				details: $fileInfo->details,
-			))],
-			[$this->eventEquivalentTo(new MediaAdded(
+			)),
+			$this->eventEquivalentTo(new MediaAdded(
 				contentId: $command->contentId,
 				userId: $command->userId,
 				siteId: $command->siteId,
@@ -182,7 +182,7 @@ final class MediaServiceTest extends TestCase {
 				thumbnailUrl: '//img/thumb.jpg',
 				defaultUrl: '//img/orig.png',
 				file: $fileInfo,
-			))],
+			)),
 		);
 
 		$service = new MediaService($bus, $registry);
@@ -268,7 +268,7 @@ final class MediaServiceTest extends TestCase {
 			registry: $this->createStub(MediaHandlerRegistry::class),
 		);
 
-		$message = $this->createStub(NeedsMediaRendered::class);
+		$message = $this->createMock(NeedsMediaRendered::class);
 		$message->method('getMediaObjects')->willReturn([
 			new Media(
 				id: $this->randomId(),

@@ -6,6 +6,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Service;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Framework\Messages\Message as DeprecatedMessage;
+use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**
  * Handles the sending of messages to the appropriate objects.
@@ -30,7 +32,7 @@ interface MessageBus extends EventDispatcherInterface, Service {
 	 * @param Query $query Query to execute.
 	 * @return mixed Results of the query.
 	 */
-	public function fetch(Query $query): mixed;
+	public function fetch(Query|DeprecatedQuery $query): mixed;
 
 	/**
 	 * Dispatch the given message on a separate thread.
@@ -42,5 +44,5 @@ interface MessageBus extends EventDispatcherInterface, Service {
 	 * @param Message $message Message to send.
 	 * @return void
 	 */
-	public function dispatchAsync(Message $message): void;
+	public function dispatchAsync(Message|DeprecatedMessage $message): void;
 }

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Connector\Services;
 
+use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
 use Smolblog\Core\Connector\Connector;
@@ -19,6 +20,7 @@ use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ChannelRefresherTest extends TestCase {
 	use EventComparisonTestKit;
+	use MessageBusMockKit;
 
 	private Connection $connection;
 	private ConnectorRegistry $connectors;
@@ -71,10 +73,10 @@ final class ChannelRefresherTest extends TestCase {
 		$this->connectors->method('get')->willReturn($connector);
 
 		$this->messageBus = $this->createMock(MessageBus::class);
-		$this->messageBus->expects($this->exactly(3))->method('dispatch')->withConsecutive(
-			[$this->eventEquivalentTo($deleteEvent)],
-			[$this->eventEquivalentTo($saveEventFirst)],
-			[$this->eventEquivalentTo($saveEventSecond)],
+		$this->messageBusShouldDispatch($this->messageBus,
+			$this->eventEquivalentTo($deleteEvent),
+			$this->eventEquivalentTo($saveEventFirst),
+			$this->eventEquivalentTo($saveEventSecond),
 		);
 
 		$this->service = new ChannelRefresher(
@@ -84,10 +86,10 @@ final class ChannelRefresherTest extends TestCase {
 	}
 
 	public function testItHandlesTheRefreshChannelsCommand(): void {
-		$this->messageBus->expects($this->exactly(2))->method('fetch')->withConsecutive(
-			[new ConnectionById(connectionId: $this->connection->id)],
-			[new ChannelsForConnection(connectionId: $this->connection->id)],
-		)->will($this->onConsecutiveCalls($this->connection, $this->oldChannels));
+		$this->messageBus->expects($this->exactly(2))->method('fetch')->willReturn(
+			$this->connection,
+			$this->oldChannels
+		);
 
 		$this->service->onRefreshChannels(
 			new RefreshChannels(connectionId: $this->connection->id, userId: $this->connection->userId)

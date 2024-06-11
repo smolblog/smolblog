@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test\Kits;
 
-use Smolblog\Core\ContentV1\ContentExtensionConfiguration;
+use Smolblog\Core\Content\ContentExtensionConfiguration;
 
 trait ContentExtensionServiceTestKit {
 	public function testItProvidesAValidContentExtensionConfiguration() {

@@ -8,9 +8,12 @@ use Smolblog\Core\Content\ContentType;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\PublicContentAdded;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 
 final class FederationServiceTest extends TestCase {
+	use MessageBusMockKit;
+
 	protected FollowerProvider $mockProvider;
 	protected MessageBus $mockBus;
 
@@ -48,17 +51,17 @@ final class FederationServiceTest extends TestCase {
 		$this->mockBus->method('fetch')->willReturn(['abc' => $abcFollowers, 'xyz' => $xyzFollowers]);
 
 
-		$this->mockBus->expects($this->exactly(2))->method('dispatchAsync')->withConsecutive(
-			[$this->equalTo(new FederateContentToFollowers(
+		$this->messageBusShouldDispatchAsync($this->mockBus,
+			$this->equalTo(new FederateContentToFollowers(
 				content: $content,
 				followers: $abcFollowers,
 				provider: 'abc',
-			))],
-			[$this->equalTo(new FederateContentToFollowers(
+			)),
+			$this->equalTo(new FederateContentToFollowers(
 				content: $content,
 				followers: $xyzFollowers,
 				provider: 'xyz',
-			))],
+			)),
 		);
 
 		$this->subject->onPublicContentAdded($event);

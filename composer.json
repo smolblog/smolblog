@@ -10,6 +10,7 @@
             "Smolblog\\Api\\": "packages/product/rest-api/src/",
             "Smolblog\\ContentProvenance\\": "packages/product/c2pa/src/",
             "Smolblog\\Core\\": "packages/product/core/src/",
+            "Smolblog\\Foundation\\": "packages/framework/foundation/src/",
             "Smolblog\\Framework\\": "packages/framework/objects/src/",
             "Smolblog\\Framework\\ActivityPub\\": "packages/framework/activitypub/src/",
             "Smolblog\\Framework\\Infrastructure\\": "packages/framework/infrastructure/src/",
@@ -18,7 +19,10 @@
             "Smolblog\\MicroBlog\\": "packages/product/micro-blog/src/",
             "Smolblog\\Tumblr\\": "packages/product/tumblr/src/",
             "Smolblog\\WP\\": "application/wordpress/src/"
-        }
+        },
+        "files": [
+            "packages/framework/objects/src/shim.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -38,9 +42,10 @@
     ],
     "require-dev": {
         "nyholm/psr7": "^1.4",
-        "phpunit/phpunit": "^9",
+        "phpunit/phpunit": "^11",
         "squizlabs/php_codesniffer": "^3.8",
-        "symplify/monorepo-builder": "^11.2"
+        "symplify/monorepo-builder": "^11.2",
+        "behat/behat": "^3.14"
     },
     "require": {
         "cebe/markdown": "^1.2",
@@ -69,6 +74,7 @@
         "smolblog/activitypub-adapter": "self.version",
         "smolblog/c2pa": "self.version",
         "smolblog/core": "self.version",
+        "smolblog/framework-foundation": "self.version",
         "smolblog/framework-infrastructure": "self.version",
         "smolblog/framework-objects": "self.version",
         "smolblog/indieweb": "self.version",
@@ -80,14 +86,14 @@
         "smolblog/tumblr": "self.version"
     },
     "scripts": {
-        "test": "phpunit --testsuite core",
+        "test": "phpunit --testdox --no-coverage",
+        "test-fast": "phpunit --testsuite all --no-coverage",
         "test-coverage": [
             "@putenv XDEBUG_MODE=coverage",
-            "phpunit --testsuite core",
+            "phpunit --testsuite all",
             "Smolblog\\Test\\CoverageReport::report"
         ],
-        "integration": "phpunit --testsuite integration",
-        "integration-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite integration; cat coverage.txt",
+        "test-integration": "phpunit --testsuite integration --no-coverage --testdox",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
         "swagger": "Smolblog\\Api\\Model::printSpec",
