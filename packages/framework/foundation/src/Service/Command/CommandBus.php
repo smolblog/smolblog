@@ -3,6 +3,7 @@
 namespace Smolblog\Foundation\Service\Command;
 
 use Smolblog\Foundation\Value\Messages\Command;
+use Smolblog\Framework\Messages\Command as DeprecatedCommand;
 
 /**
  * A service that accepts a Command object and routes it to the correct handler.
@@ -18,10 +19,10 @@ interface CommandBus {
 	 * This method should first route the Command through any appropriate middleware before finally calling the
 	 * correct handler for the Command.
 	 *
-	 * @param Command $command Command to execute.
+	 * @param Command|DeprecatedCommand $command Command to execute.
 	 * @return mixed Optional result of the execution.
 	 */
-	public function execute(Command $command): mixed;
+	public function execute(Command|DeprecatedCommand $command): mixed;
 
 	/**
 	 * Execute the given command on a separate thread.
@@ -29,8 +30,8 @@ interface CommandBus {
 	 * This method should first route the Command through any appropriate middleware before finally calling the
 	 * correct handler for the Command. This should happen on the execution thread.
 	 *
-	 * @param Command $command Command to execute.
+	 * @param Command|DeprecatedCommand $command Command to execute.
 	 * @return void
 	 */
-	public function executeAsync(Command $command): void;
+	public function executeAsync(Command|DeprecatedCommand $command): void;
 }

@@ -2,12 +2,20 @@
 
 namespace Smolblog\Core\Content\Type;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
-use Smolblog\Foundation\Service\Messaging\MessageBus;
 
+/**
+ * A default ContentTypeService implementation that dispatches the given event for a Command.
+ */
 abstract class DefaultContentTypeService implements ContentTypeService {
-	public function __construct(private MessageBus $bus) {
+	/**
+	 * Construct the service.
+	 *
+	 * @param EventDispatcherInterface $bus For sending the final events.
+	 */
+	public function __construct(private EventDispatcherInterface $bus) {
 	}
 
 	protected const CREATE_EVENT = ContentCreated::class;
@@ -21,7 +29,7 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 * @return void
 	 */
 	public function create(CreateContent $command): void {
-		// maybe check for existing ID?
+		// Maybe check for existing ID?
 		$this->bus->dispatch(new (static::CREATE_EVENT)(userId: $command->userId, content: $command->content));
 	}
 

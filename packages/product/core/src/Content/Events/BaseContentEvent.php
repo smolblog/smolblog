@@ -18,9 +18,9 @@ readonly abstract class BaseContentEvent extends DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param Content $content Content as of this event.
-	 * @param Identifier $userId User triggering the event.
-	 * @param Identifier|null $id ID of the event.
+	 * @param Content            $content   Content as of this event.
+	 * @param Identifier         $userId    User triggering the event.
+	 * @param Identifier|null    $id        ID of the event.
 	 * @param DateTimeField|null $timestamp Time of the event.
 	 */
 	public function __construct(

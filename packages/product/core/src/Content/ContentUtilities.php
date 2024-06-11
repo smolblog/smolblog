@@ -2,6 +2,11 @@
 
 namespace Smolblog\Core\Content;
 
+/**
+ * General-purpose utility functions around Content.
+ *
+ * All functions here should be static and execute without side-effects.
+ */
 final class ContentUtilities {
 	/**
 	 * Truncated the given text to a given number of characters.

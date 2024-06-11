@@ -38,10 +38,10 @@ readonly class Channel extends Value implements SerializableValue, Entity {
 	/**
 	 * Construct the channel.
 	 *
-	 * @param string $provider Key for the provider used to power this Channel.
-	 * @param string $providerKey Unique value for this channel for this provider (username, URL, etc).
+	 * @param string          $provider     Key for the provider used to power this Channel.
+	 * @param string          $providerKey  Unique value for this channel for this provider (username, URL, etc).
 	 * @param Identifier|null $connectionId Connection to use to authenticate to this Channel.
-	 * @param array $details Provider-required details for this Channel.
+	 * @param array           $details      Provider-required details for this Channel.
 	 */
 	public function __construct(
 		public string $provider,

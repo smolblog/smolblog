@@ -10,13 +10,12 @@ use Smolblog\Core\Content\Extension\ContentExtensionService;
 use Smolblog\Core\Content\Extension\ContentExtensionRegistry;
 use Smolblog\Core\Content\Type\ContentTypeRegistry;
 use Smolblog\Core\Content\Type\ContentTypeService;
-use Smolblog\Foundation\Service\Messaging\ExecutionListener;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Foundation\Service\Command\CommandHandler;
 
 /**
  * Handle generic content commands.
  */
-class ContentService implements Listener {
+class ContentService implements CommandHandler {
 	/**
 	 * Construct the service
 	 *
@@ -29,7 +28,13 @@ class ContentService implements Listener {
 	) {
 	}
 
-	#[ExecutionListener]
+	/**
+	 * Execute the CreateContent Command.
+	 *
+	 * @param CreateContent $command Command to execute.
+	 * @return void
+	 */
+	#[CommandHandler]
 	public function createContent(CreateContent $command): void {
 		$this->getTypeServiceForContent($command->content)->create($command);
 		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
@@ -37,7 +42,13 @@ class ContentService implements Listener {
 		}
 	}
 
-	#[ExecutionListener]
+	/**
+	 * Execute the UpdateContent Command.
+	 *
+	 * @param UpdateContent $command Command to execute.
+	 * @return void
+	 */
+	#[CommandHandler]
 	public function updateContent(UpdateContent $command): void {
 		$this->getTypeServiceForContent($command->content)->update($command);
 		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
@@ -45,7 +56,13 @@ class ContentService implements Listener {
 		}
 	}
 
-	#[ExecutionListener]
+	/**
+	 * Execute the DeleteContent Command.
+	 *
+	 * @param DeleteContent $command Command to execute.
+	 * @return void
+	 */
+	#[CommandHandler]
 	public function deleteContent(DeleteContent $command): void {
 		$this->getTypeServiceForContent($command->content)->delete($command);
 		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {

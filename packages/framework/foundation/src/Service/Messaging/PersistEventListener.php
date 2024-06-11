@@ -9,6 +9,8 @@ use Crell\Tukio\ListenerPriority;
  * Indicates the given function/method should fire during the event validation phase.
  *
  * This is for methods to check whether a given event is valid given the state of the application.
+ *
+ * @deprecated use EventListener(earlier: 25)
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
 class PersistEventListener extends ListenerPriority {
