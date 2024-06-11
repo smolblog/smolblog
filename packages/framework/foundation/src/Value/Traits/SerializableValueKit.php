@@ -59,6 +59,8 @@ trait SerializableValueKit {
 	/**
 	 * Deserialize the object from an array (typically JSON).
 	 *
+	 * @throws InvalidValueProperties If the object cannot be deserialized.
+	 *
 	 * @param array $data Serialized object.
 	 * @return static
 	 */
@@ -87,15 +89,8 @@ trait SerializableValueKit {
 			$parsedData[$name] = self::deserializeDataToType($data[$name], $type);
 		}
 
-		try {
-			// @phpstan-ignore-next-line
-			return new static(...$parsedData);
-		} catch (Throwable $e) {
-			throw new InvalidValueProperties(
-				message: 'Unable to deserialize ' . static::class . ': ' . $e->getMessage(),
-				previous: $e,
-			);
-		}
+		// @phpstan-ignore-next-line
+		return new static(...$parsedData);
 	}
 
 	/**

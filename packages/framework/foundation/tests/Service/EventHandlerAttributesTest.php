@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\Service\Messaging;
+namespace Smolblog\Foundation\Service;
 
 use Crell\Tukio\ListenerPriority;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -8,22 +8,18 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestWith;
 use Smolblog\Test\TestCase;
 
-#[CoversClass(CheckMemoListener::class)]
-#[CoversClass(DownstreamListener::class)]
-#[CoversClass(ExecutionListener::class)]
-#[CoversClass(PersistEventListener::class)]
-#[CoversClass(SaveMemoListener::class)]
-#[CoversClass(SecurityListener::class)]
-#[CoversClass(ValidateEventListener::class)]
+#[CoversClass(Command\CommandHandler::class)]
+#[CoversClass(Event\EventListener::class)]
+#[CoversClass(Event\ProjectionListener::class)]
+#[CoversClass(Event\ValidationListener::class)]
+#[CoversClass(Query\QueryHandler::class)]
 final class EventHandlerAttributesTest extends TestCase {
 	#[TestDox('$attribute is a ListenerPriority instance.')]
-	#[TestWith([CheckMemoListener::class])]
-	#[TestWith([DownstreamListener::class])]
-	#[TestWith([ExecutionListener::class])]
-	#[TestWith([PersistEventListener::class])]
-	#[TestWith([SaveMemoListener::class])]
-	#[TestWith([SecurityListener::class])]
-	#[TestWith([ValidateEventListener::class])]
+	#[TestWith([Command\CommandHandler::class])]
+	#[TestWith([Event\EventListener::class])]
+	#[TestWith([Event\ProjectionListener::class])]
+	#[TestWith([Event\ValidationListener::class])]
+	#[TestWith([Query\QueryHandler::class])]
 	public function testAttributes($attribute) {
 		$this->assertInstanceOf(ListenerPriority::class, new $attribute());
 	}

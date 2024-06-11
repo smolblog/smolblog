@@ -11,11 +11,12 @@ use Smolblog\Core\Content\Extension\ContentExtensionRegistry;
 use Smolblog\Core\Content\Type\ContentTypeRegistry;
 use Smolblog\Core\Content\Type\ContentTypeService;
 use Smolblog\Foundation\Service\Command\CommandHandler;
+use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
 /**
  * Handle generic content commands.
  */
-class ContentService implements CommandHandler {
+class ContentService implements CommandHandlerService {
 	/**
 	 * Construct the service
 	 *

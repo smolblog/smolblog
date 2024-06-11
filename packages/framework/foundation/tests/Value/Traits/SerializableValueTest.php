@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value;
 use Smolblog\Test\TestCase;
 
