@@ -2,6 +2,8 @@
 
 namespace Smolblog\Foundation\Service\Messaging;
 
+use Smolblog\Foundation\Service\Messaging\Listener;
+
 /**
  * Denotes a projection-style listener service that reacts to Events and updates its own data accordingly.
  *
@@ -12,6 +14,8 @@ namespace Smolblog\Foundation\Service\Messaging;
  * service that reacts to published content by sending a webhook. Regenerating a projection should be a free action with
  * no loss of data or side effects. Therefore, when regenerating, we need to ensure that only Projection services are
  * called, not all Listeners.
+ *
+ * @deprecated use Smolblog\Foundation\Service\Event\EventListenerService and ProjectionListener
  */
 interface Projection extends Listener {
 }

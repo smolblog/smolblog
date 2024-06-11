@@ -11,6 +11,8 @@ use Crell\Tukio\ListenerPriority;
  * This is the default phase (priority 0), and any listener with no priority attribute can be assumed to be
  * equivalent to applying #[ExecutionLayerListener] with no modifications. This attribute is explicitly
  * defined to allow listeners to set priority within the execution phase.
+ *
+ * @deprecated use CommandHandler, QueryHandler, or EventListener
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
 class ExecutionListener extends ListenerPriority {

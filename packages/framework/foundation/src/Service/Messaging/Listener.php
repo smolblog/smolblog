@@ -9,6 +9,8 @@ use Smolblog\Foundation\Service;
  *
  * This interface exists mostly to allow a listening service to be identified as such without having to declare it
  * somewhere else.
+ *
+ * @deprecated use CommandHandler, QueryHandler, or EventListener
  */
 interface Listener extends Service {
 }

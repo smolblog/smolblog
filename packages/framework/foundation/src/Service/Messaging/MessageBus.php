@@ -12,6 +12,8 @@ use Smolblog\Foundation\Value\Traits\Message;
  *
  * A simple wrapper around a PSR-14 Event Dispatcher. Adds one convenience method for queries to automatically
  * unpack and return the results.
+ *
+ * @deprecated 0.1 Use EventDispatcherInterface, CommandBus, or QueryBus
  */
 interface MessageBus extends EventDispatcherInterface, Service {
 	/**
