@@ -5,6 +5,9 @@ namespace Smolblog\Framework\Objects;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Exceptions\RegistrationException;
 
+/**
+ * @deprecated Migrate to Smolblog\Foundation classes
+ */
 trait RegistrarKit {
 	/**
 	 * Store the object factories.

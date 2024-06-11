@@ -11,15 +11,17 @@ use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
 use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
 use Smolblog\Framework\Objects\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 
 /**
  * Default model with services provided by the Framework.
  */
 class DefaultModel extends DomainModel {
 	public const SERVICES = [
+		DeprecatedMessageBus::class => DefaultMessageBus::class,
 		MessageBus::class => DefaultMessageBus::class,
 		DefaultMessageBus::class => ['provider' => ListenerProviderInterface::class, 'log' => LoggerInterface::class],
 		ListenerProviderInterface::class => ListenerRegistry::class,

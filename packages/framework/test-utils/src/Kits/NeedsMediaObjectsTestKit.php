@@ -2,11 +2,12 @@
 
 namespace Smolblog\Test\Kits;
 
-use Smolblog\Core\Content\Media\Media;
+use PHPUnit\Framework\Attributes\TestDox;
+use Smolblog\Core\ContentV1\Media\Media;
 use Smolblog\Framework\Objects\Identifier;
 
 trait NeedsMediaObjectsTestKit {
-	/** @testdox It implements the NeedsMediaObjects interface. */
+	#[TestDox('It implements the NeedsMediaObjects interface.')]
 	public function testNeedsMediaObjects() {
 		$result = [];
 		$actual = $this->subject->getMediaIds();

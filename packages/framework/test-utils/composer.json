@@ -13,14 +13,14 @@
 			"email": "me@eph.me"
 		}
 	],
-	"autoload-dev": {
+	"autoload": {
 		"psr-4": {
 			"Smolblog\\Test\\": "src/"
 		}
 	},
-	"require-dev": {
+	"require": {
     "squizlabs/php_codesniffer": "^3.8",
-    "phpunit/phpunit": "^9",
+    "phpunit/phpunit": "^11",
     "nyholm/psr7": "^1.4"
 	}
 }

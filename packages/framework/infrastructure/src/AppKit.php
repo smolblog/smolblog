@@ -2,6 +2,10 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
+use Psr\Container\ContainerInterface;
+use Smolblog\Framework\Infrastructure\Registry as DeprecatedRegistry;
+use Smolblog\Foundation\Service\Registry\Registry;
+
 /**
  * Useful functions for building an App from DomainModels.
  */
@@ -26,23 +30,72 @@ trait AppKit {
 	 * @return array
 	 */
 	private function buildDependencyMap(array $models): array {
-		$services = array_reduce($models, fn($carry, $item) => array_merge($carry, $item::getDependencyMap()), []);
+		$services = array_filter(
+			array_reduce($models, fn($carry, $item) => array_merge($carry, $item::getDependencyMap()), []),
+			fn($srv) => class_exists($srv) || interface_exists($srv),
+			ARRAY_FILTER_USE_KEY
+		);
 
+		$services = array_merge(
+			$services,
+			$this->getRegistriesV1($services),
+			$this->getRegistryFactories($services),
+		);
+
+		return $services;
+	}
+
+	private function getRegistriesV1(array $map): array {
+		$registryMap = [];
 		$registries = array_filter(
-			array_keys($services),
-			fn($srv) => in_array(Registry::class, class_implements($srv))
+			array_keys($map),
+			fn($srv) => in_array(DeprecatedRegistry::class, class_implements($srv))
 		);
 
 		foreach ($registries as $registry) {
 			$interface = $registry::getInterfaceToRegister();
 			$config = array_values(array_filter(
-				array_keys($services),
+				array_keys($map),
 				fn($srv) => in_array($interface, class_implements($srv))
 			));
 
-			$services[$registry]['configuration'] = fn() => $config;
+			$registryMap[$registry] = [
+				...$map[$registry],
+				'configuration' => fn() => $config
+			];
 		}
 
-		return $services;
+		return $registryMap;
+	}
+
+	private function getRegistryFactories(array $map): array {
+		$registryMap = [];
+		$registries = array_filter(
+			array_keys($map),
+			fn($srv) => in_array(Registry::class, class_implements($srv))
+		);
+
+		foreach ($registries as $registry) {
+			$dependencies = $map[$registry];
+			// If we already have a factory in place, move on.
+			if (!is_array($dependencies)) {
+				continue;
+			}
+
+			$interface = $registry::getInterfaceToRegister();
+			$servicesToRegister = array_values(array_filter(
+				array_keys($map),
+				fn($srv) => in_array($interface, class_implements($srv))
+			));
+
+			$registryMap[$registry] =
+				function (ContainerInterface $container) use ($registry, $dependencies, $servicesToRegister) {
+					$service = new $registry(...array_map(fn($srv) => $container->get($srv), $dependencies));
+					$service->configure(configuration: $servicesToRegister);
+					return $service;
+				};
+		}
+
+		return $registryMap;
 	}
 }

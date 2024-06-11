@@ -7,9 +7,12 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Smolblog\Framework\Messages\Message;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Framework\Messages\Message as DeprecatedMessage;
+use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
+use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**
  * Handles the sending of messages to the appropriate objects.
@@ -17,7 +20,7 @@ use Smolblog\Framework\Messages\Query;
  * A simple wrapper around a PSR-14 Event Dispatcher. Adds one convenience method for queries to automatically
  * unpack and return the results. Takes a PSR-14-compliant Listener Provider in construction.
  */
-class DefaultMessageBus implements MessageBus {
+class DefaultMessageBus implements DeprecatedMessageBus, MessageBus {
 	/**
 	 * Internal PSR-14-compliant dispatcher.
 	 *
@@ -54,7 +57,7 @@ class DefaultMessageBus implements MessageBus {
 	 * @param Query $query Query to execute.
 	 * @return mixed Results of the query.
 	 */
-	public function fetch(Query $query): mixed {
+	public function fetch(DeprecatedQuery|Query $query): mixed {
 		return $this->internal->dispatch($query)->results();
 	}
 
@@ -68,7 +71,7 @@ class DefaultMessageBus implements MessageBus {
 	 * @param Message $message Message to send.
 	 * @return void
 	 */
-	public function dispatchAsync(Message $message): void {
+	public function dispatchAsync(DeprecatedMessage|Message $message): void {
 		$this->internal->dispatch(new AsyncWrappedMessage($message));
 	}
 }

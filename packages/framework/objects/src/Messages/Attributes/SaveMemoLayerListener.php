@@ -7,6 +7,8 @@ use Crell\Tukio\ListenerPriority;
 
 /**
  * Indicates the given function/method should fire during the memo save phase.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
 class SaveMemoLayerListener extends ListenerPriority {

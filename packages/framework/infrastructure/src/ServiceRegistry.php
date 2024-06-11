@@ -108,7 +108,7 @@ class ServiceRegistry implements ContainerInterface {
 		$config = $this->configuration[$service];
 		if (is_callable($config)) {
 			// The config is a factory function, so just call it and return the result.
-			return call_user_func($config);
+			return call_user_func($config, $this);
 		}
 
 		if (is_string($config)) {
@@ -123,7 +123,7 @@ class ServiceRegistry implements ContainerInterface {
 
 		// Get the listed dependencies from the container.
 		$args = array_map(
-			fn($dependency) => is_callable($dependency) ? call_user_func($dependency) : $this->get($dependency),
+			fn($dependency) => is_callable($dependency) ? call_user_func($dependency, $this) : $this->get($dependency),
 			$config
 		);
 

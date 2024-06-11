@@ -10,6 +10,8 @@ namespace Smolblog\Framework\Infrastructure;
  * the Registry to be lazily instantiated by the DI container.
  *
  * If a Registry does not require this, it probably shouldn't implement this interface.
+ *
+ * @deprecated Use Smolblog\Foundation\Service\Registry
  */
 interface Registry {
 	/**

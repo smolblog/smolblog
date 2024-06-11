@@ -11,6 +11,8 @@ use Crell\Tukio\ListenerPriority;
  * Events may only be build with part of the content information, but further listeners may need the entire content
  * state (case in point: the Public* content events). This lets projections and other services set the full Content
  * object on the message so it can be used by the other listeners.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
 class ContentBuildLayerListener extends ListenerPriority {

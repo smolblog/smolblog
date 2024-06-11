@@ -6,6 +6,8 @@ use Stringable;
 
 /**
  * Represents an object that can be uniquely identified.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 abstract class Entity extends Value implements Stringable {
 	use EntityKit;

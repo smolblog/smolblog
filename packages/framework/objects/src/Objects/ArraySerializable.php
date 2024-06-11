@@ -2,6 +2,11 @@
 
 namespace Smolblog\Framework\Objects;
 
+/**
+ * Object can be serialized to an array.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
+ */
 interface ArraySerializable {
 	/**
 	 * Create an instance of this class from an associative array.

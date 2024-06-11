@@ -5,7 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Crell\Tukio\OrderedListenerProvider;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
  * Registrar for message listeners.

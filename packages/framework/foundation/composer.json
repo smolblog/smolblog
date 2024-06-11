@@ -1,0 +1,46 @@
+{
+    "name": "smolblog/framework-foundation",
+    "description": "Foundational base objects for building a system",
+    "type": "library",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\Foundation\\": "src/"
+        }
+    },
+    "repositories": [
+      {
+        "type": "path",
+        "url": "../test-utils"
+      }
+    ],
+	"authors": [
+		{
+			"name": "Smolblog",
+			"email": "dev@smolblog.org"
+		},
+		{
+			"name": "Evan Hildreth",
+			"email": "me@eph.me"
+		}
+	],
+	"require": {
+		"php": "^8.2",
+		"psr/http-message": "^1.0",
+        "ramsey/uuid": "^4.7",
+        "psr/event-dispatcher": "^1.0",
+        "crell/tukio": "^1.6",
+        "psr/container": "^2.0",
+        "phpseclib/phpseclib": "^3.0",
+        "guzzlehttp/psr7": "^2.6"
+	},
+    "require-dev": {
+        "smolblog/test-utils": "@dev",
+        "phpstan/phpstan": "^1.10"
+    },
+	"scripts": {
+        "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    }
+}

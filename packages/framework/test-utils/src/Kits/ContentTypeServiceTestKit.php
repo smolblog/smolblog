@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test\Kits;
 
-use Smolblog\Core\Content\ContentTypeConfiguration;
+use Smolblog\Core\ContentV1\ContentTypeConfiguration;
 
 trait ContentTypeServiceTestKit {
 	public function testItProvidesAValidContentTypeConfiguration() {

@@ -7,6 +7,8 @@ use Crell\Tukio\ListenerPriority;
 
 /**
  * Indicates the given function/method should fire during the memo checking phase.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::TARGET_METHOD)]
 class CheckMemoLayerListener extends ListenerPriority {

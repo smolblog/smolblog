@@ -6,6 +6,8 @@ use Exception;
 
 /**
  * Allow a Value object to take extra variables at runtime.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 trait ExtendableValueKit {
 	use SerializableKit;

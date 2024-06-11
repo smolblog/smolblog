@@ -9,6 +9,8 @@ use Throwable;
  * Indicates an invalid class was attempted to be registered.
  *
  * This is thrown by RegistrarKit when register is called on a class that does not implement the required interface.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class RegistrationException extends Exception implements SmolblogException {
 	/**

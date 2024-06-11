@@ -2,11 +2,11 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
+use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;
 use Smolblog\Framework\Messages\AuthorizableMessage;
-use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Simple class to check the authorization Query of an AuthorizableMessage.
