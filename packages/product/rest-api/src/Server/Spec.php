@@ -13,7 +13,7 @@ use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ManualSpec;
 use Smolblog\Api\Model;
 use Smolblog\Api\ParameterType;
-use Smolblog\Framework\Objects\HttpResponse;
+use Smolblog\Foundation\Value\Http\HttpResponse;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 

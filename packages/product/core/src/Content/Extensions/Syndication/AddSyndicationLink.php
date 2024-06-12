@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use Smolblog\Core\Content\EditContentCommandKit;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 

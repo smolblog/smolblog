@@ -14,7 +14,7 @@ use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\ActivityPub\Objects\Actor;
 use Smolblog\Framework\ActivityPub\Objects\ActorType;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\HttpResponse;
+use Smolblog\Foundation\Value\Http\HttpResponse;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**

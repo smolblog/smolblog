@@ -13,7 +13,7 @@ use Smolblog\Framework\Messages\Query;
  *
  * @deprecated Migrate to Smolblog\Foundation classes
  */
-interface MessageBus extends EventDispatcherInterface {
+interface MessageBusV1 extends EventDispatcherInterface {
 	/**
 	 * Dispatch the given message to its listeners.
 	 *

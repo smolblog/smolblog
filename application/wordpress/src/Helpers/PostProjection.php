@@ -20,7 +20,7 @@ use Smolblog\Core\Content\Types\Picture\Picture;
 use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\WP\Helpers\SiteHelper;
 

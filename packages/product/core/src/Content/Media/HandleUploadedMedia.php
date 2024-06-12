@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Media;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;

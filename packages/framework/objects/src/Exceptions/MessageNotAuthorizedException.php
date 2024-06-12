@@ -5,7 +5,7 @@ namespace Smolblog\Framework\Exceptions;
 use Exception;
 use Smolblog\Foundation\Value\Messages\Query;
 use Throwable;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**

@@ -11,7 +11,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Api\Verb;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\HttpResponse;
+use Smolblog\Foundation\Value\Http\HttpResponse;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**

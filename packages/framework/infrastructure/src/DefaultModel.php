@@ -12,7 +12,7 @@ use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
 use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 

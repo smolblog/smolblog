@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Smolblog\Api\ApiEnvironment;
 use Smolblog\Core\Content\ContentTypeRegistry;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 
 /**
  * IndieWeb domain model definition.

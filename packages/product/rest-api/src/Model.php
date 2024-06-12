@@ -7,7 +7,7 @@ use Exception;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionUnionType;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\ErrorResponse;

@@ -4,8 +4,8 @@ namespace Smolblog\Framework\ActivityPub\Signatures;
 
 use Psr\Http\Message\RequestInterface;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
-use Smolblog\Framework\Objects\HttpRequest;
-use Smolblog\Framework\Objects\HttpVerb;
+use Smolblog\Foundation\Value\Http\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 use Smolblog\Test\TestCase;
 
 /**

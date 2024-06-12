@@ -12,7 +12,7 @@ use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Infrastructure\QueryMemoizationService;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 
 class Model extends DomainModel {
 	public static function getDependencyMap(): array {

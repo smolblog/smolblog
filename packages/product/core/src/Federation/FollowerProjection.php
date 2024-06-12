@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use Illuminate\Database\ConnectionInterface;
-use Smolblog\Framework\Messages\Projection;
+use Smolblog\Foundation\Service\Messaging\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**

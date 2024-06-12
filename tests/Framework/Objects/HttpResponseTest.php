@@ -4,6 +4,7 @@ namespace Smolblog\Framework\Objects;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Smolblog\Foundation\Value\Http\HttpResponse;
 use Smolblog\Test\TestCase;
 
 final class HttpResponseTest extends TestCase {

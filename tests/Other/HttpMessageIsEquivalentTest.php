@@ -3,10 +3,10 @@
 namespace Smolblog\Test;
 
 use InvalidArgumentException;
-use Smolblog\Framework\Objects\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpRequest;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\HttpResponse;
-use Smolblog\Framework\Objects\HttpVerb;
+use Smolblog\Foundation\Value\Http\HttpResponse;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 use Smolblog\Test\Kits\HttpMessageComparisonTestKit;
 
 final class HttpMessageIsEquivalentTest extends TestCase {

@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Infrastructure;
 
 use Smolblog\Foundation\Service\Messaging\Listener as MessagingListener;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;

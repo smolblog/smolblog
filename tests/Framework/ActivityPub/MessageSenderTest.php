@@ -8,9 +8,9 @@ use Smolblog\Framework\ActivityPub\Objects\Accept;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
 use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
-use Smolblog\Framework\Objects\HttpRequest;
-use Smolblog\Framework\Objects\HttpResponse;
-use Smolblog\Framework\Objects\HttpVerb;
+use Smolblog\Foundation\Value\Http\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpResponse;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 use Smolblog\Test\Kits\HttpMessageComparisonTestKit;
 use Smolblog\Test\TestCase;
 

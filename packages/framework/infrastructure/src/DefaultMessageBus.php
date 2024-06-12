@@ -11,7 +11,7 @@ use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Framework\Messages\Message as DeprecatedMessage;
-use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
+// use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
 use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**
@@ -20,7 +20,7 @@ use Smolblog\Framework\Messages\Query as DeprecatedQuery;
  * A simple wrapper around a PSR-14 Event Dispatcher. Adds one convenience method for queries to automatically
  * unpack and return the results. Takes a PSR-14-compliant Listener Provider in construction.
  */
-class DefaultMessageBus implements DeprecatedMessageBus, MessageBus {
+class DefaultMessageBus implements MessageBus {
 	/**
 	 * Internal PSR-14-compliant dispatcher.
 	 *

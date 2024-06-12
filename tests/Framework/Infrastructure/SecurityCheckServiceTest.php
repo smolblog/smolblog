@@ -5,7 +5,7 @@ namespace Smolblog\Framework\Infrastructure;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\Query;
 

@@ -18,7 +18,7 @@ use Smolblog\Framework\Infrastructure\AppKit;
 use Smolblog\Framework\Infrastructure\DefaultModel;
 use Smolblog\Framework\Infrastructure\ServiceRegistry;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 use Smolblog\WP\Helpers\DatabaseHelper;
 use Smolblog\WP\Helpers\DebugEndpoint;
 
