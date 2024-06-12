@@ -2,8 +2,11 @@
 
 namespace Smolblog\Foundation\Value\Messages;
 
+use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageKit;
+use Smolblog\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
 
 /**
  * A command is a message that is sent to a service to perform an action.
@@ -14,6 +17,13 @@ use Smolblog\Foundation\Value\Traits\MessageKit;
  * Not `readonly` to allow middleware/plugins to modify parts of the Command. For example, a command creating a new
  * entity could be modified by a service to add extra metadata to the entity.
  */
-abstract class Command implements Message {
-	use MessageKit;
+abstract readonly class Command extends Value implements Message {
+	use ReadonlyMessageKit;
+
+	/**
+	 * Create the Command and initialize the metadata.
+	 */
+	public function __construct() {
+		$this->meta = new MessageMetadata();
+	}
 }

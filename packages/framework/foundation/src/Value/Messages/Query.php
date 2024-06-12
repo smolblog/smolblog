@@ -6,6 +6,7 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageKit;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
+use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
 
 /**
  * An object that asks the domain model a thing.
@@ -15,12 +16,16 @@ use Smolblog\Foundation\Value\Traits\MessageMetadata;
  * complex queries to specialized handlers.
  *
  * All Queries that can be memoized should also implement Memoizable; use MemoizableKit to assist.
- *
- * Not `readonly` to allow middleware/plugins to modify parts of the Query. For example, a query reading an
- * entity could be modified by a service to add extra metadata to the entity.
  */
-abstract class Query implements Message {
-	use MessageKit;
+abstract readonly class Query implements Message {
+	use ReadonlyMessageKit;
+
+	/**
+	 * Create the Query and initialize the metadata.
+	 */
+	public function __construct() {
+		$this->meta = new MessageMetadata();
+	}
 
 	/**
 	 * Set the results of the query. Override to add any extra validation.
