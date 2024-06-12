@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Markdown;
 
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**

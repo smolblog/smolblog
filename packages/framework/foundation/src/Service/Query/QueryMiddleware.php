@@ -3,7 +3,7 @@
 namespace Smolblog\Foundation\Service\Query;
 
 use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 
 /**
  * Denotes a service that performs an action on or in response to Queries.

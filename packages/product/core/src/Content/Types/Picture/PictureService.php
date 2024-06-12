@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Picture;
 use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentTypeService;
 use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Framework\Messages\Attributes\SecurityLayerListener;

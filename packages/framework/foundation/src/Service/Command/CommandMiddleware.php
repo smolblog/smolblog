@@ -3,7 +3,7 @@
 namespace Smolblog\Foundation\Service\Command;
 
 use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 
 /**
  * Denotes a service that performs an action on or in response to Commands.

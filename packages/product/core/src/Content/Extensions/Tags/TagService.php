@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Extensions\Tags;
 use Smolblog\Core\Content\ContentExtensionConfiguration;
 use Smolblog\Core\Content\ContentExtensionService;
 use Smolblog\Core\Content\ContentUtilityKit;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**

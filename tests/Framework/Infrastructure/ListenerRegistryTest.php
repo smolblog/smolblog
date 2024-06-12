@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use Smolblog\Foundation\Service\Messaging\Listener as MessagingListener;
+use Smolblog\Framework\Messages\Listener as MessagingListener;
 use Smolblog\Test\TestCase;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
@@ -15,7 +15,7 @@ use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 
 function listenerTestTrace($add = '', $reset = false) {
 	static $trace;

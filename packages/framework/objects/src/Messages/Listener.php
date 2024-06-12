@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Foundation\Service\Messaging;
+namespace Smolblog\Framework\Messages;
 
-use Smolblog\Foundation\Service;
+use Smolblog\Foundation\Service\Event\EventListenerService;
 
 /**
  * A service that listens for and reacts to messages.
@@ -10,7 +10,7 @@ use Smolblog\Foundation\Service;
  * This interface exists mostly to allow a listening service to be identified as such without having to declare it
  * somewhere else.
  *
- * @deprecated use CommandHandler, QueryHandler, or EventListener
+ * @deprecated use CommandHandlerService, QueryHandlerService, or EventListenerService
  */
-interface Listener extends Service {
+interface Listener {
 }

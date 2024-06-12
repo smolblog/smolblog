@@ -9,7 +9,7 @@ use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Core\Content\Events\PublicContentAdded;
 use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\User\User;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;
 

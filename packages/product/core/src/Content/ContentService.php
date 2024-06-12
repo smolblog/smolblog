@@ -6,7 +6,7 @@ use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
 use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
 use Smolblog\Core\Content\Queries\AdaptableContentQuery;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**

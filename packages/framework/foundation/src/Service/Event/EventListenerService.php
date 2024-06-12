@@ -3,7 +3,7 @@
 namespace Smolblog\Foundation\Service\Event;
 
 use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Framework\Messages\Listener;
 
 /**
  * A service that listens for and reacts to Events.

@@ -3,7 +3,10 @@
 namespace Smolblog\Framework\Messages;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Framework\Messages\Query;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Framework\Messages\Query as DeprecatedQuery;
+use Smolblog\Framework\Messages\Message as DeprecatedMessage;
 
 /**
  * Handles the sending of messages to the appropriate objects.
@@ -25,10 +28,10 @@ interface MessageBus extends EventDispatcherInterface {
 	/**
 	 * Convenience method for sending Query messages that will return the results.
 	 *
-	 * @param Query $query Query to execute.
+	 * @param DeprecatedQuery|Query $query Query to execute.
 	 * @return mixed Results of the query.
 	 */
-	public function fetch(Query $query): mixed;
+	public function fetch(DeprecatedQuery|Query $query): mixed;
 
 	/**
 	 * Dispatch the given message on a separate thread.
@@ -37,10 +40,10 @@ interface MessageBus extends EventDispatcherInterface {
 	 * queue, it could be an entirely different server. As such, the given Message should have as much information
 	 * included as reasonably possible.
 	 *
-	 * @param Message $message Message to send.
+	 * @param DeprecatedMessage|Message $message Message to send.
 	 * @return void
 	 */
-	public function dispatchAsync(Message $message): void;
+	public function dispatchAsync(DeprecatedMessage|Message $message): void;
 
 	// TODO: regenerate(Event): method that takes an Event and only calls Projection services.
 }
