@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" colors="true" testdox="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd">
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	bootstrap="vendor/autoload.php"
+	colors="true"
+	testdox="false"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+>
   <testsuites>
     <testsuite name="all">
       <directory>tests</directory>
@@ -9,7 +15,11 @@
       <directory>integration-tests</directory>
     </testsuite>
   </testsuites>
-  <coverage ignoreDeprecatedCodeUnits="true" pathCoverage="true">
+  <coverage
+		cacheDirectory=".phpunit-cache"
+		ignoreDeprecatedCodeUnits="true"
+		pathCoverage="true"
+	>
     <report>
       <text outputFile="coverage.txt" showOnlySummary="true"/>
       <html outputDirectory="test-coverage"/>

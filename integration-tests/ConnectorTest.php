@@ -2,6 +2,7 @@
 
 namespace Smolblog\Test;
 
+use PHPUnit\Framework\Attributes\Depends;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
@@ -45,7 +46,7 @@ final class ConnectorTest extends TestCase {
 		), $result);
 	}
 
-	/** @depends testAuthRequest */
+	#[Depends('testAuthRequest')]
 	public function testRefreshChannelsSuccess() {
 		$connectionId = Connection::buildId(provider: 'smolblog', providerKey: 'woohoo543');
 
@@ -64,7 +65,7 @@ final class ConnectorTest extends TestCase {
 		$this->assertEquals($expected->toArray(), $results[0]->toArray());
 	}
 
-	/** @depends testAuthRequest */
+	#[Depends('testAuthRequest')]
 	public function testRefreshChannelsFailure() {
 		$this->expectException(MessageNotAuthorizedException::class);
 
