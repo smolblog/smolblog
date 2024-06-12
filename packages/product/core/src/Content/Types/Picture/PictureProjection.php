@@ -8,7 +8,7 @@ use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Framework\Messages\Projection;
 
 /**
  * Store Picture-specific state.

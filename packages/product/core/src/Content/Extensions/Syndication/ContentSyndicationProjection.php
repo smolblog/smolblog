@@ -7,7 +7,7 @@ use Illuminate\Database\ConnectionInterface;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Framework\Messages\Projection;
 
 /**
  * Store state related to content syndication.

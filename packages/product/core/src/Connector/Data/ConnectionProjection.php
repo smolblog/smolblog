@@ -6,7 +6,7 @@ use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\{ConnectionDeleted, ConnectionEstablished, ConnectionRefreshed};
 use Smolblog\Core\Connector\Queries\{ConnectionBelongsToUser, ConnectionById, ConnectionsForUser};
-use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Framework\Messages\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**

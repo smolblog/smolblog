@@ -2,7 +2,7 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
-use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Foundation\Value\Traits\AuthorizableMessage;

@@ -8,13 +8,13 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Smolblog\Foundation\Service\Command\CommandBus;
-use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Service\Query\QueryBus;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Framework\Messages\Command as DeprecatedCommand;
 use Smolblog\Framework\Messages\Message as DeprecatedMessage;
+use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**

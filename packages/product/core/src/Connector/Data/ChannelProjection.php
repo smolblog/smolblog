@@ -8,7 +8,7 @@ use Smolblog\Core\Connector\Events\ChannelDeleted;
 use Smolblog\Core\Connector\Events\ChannelSaved;
 use Smolblog\Core\Connector\Queries\ChannelById;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
-use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Framework\Messages\Projection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**

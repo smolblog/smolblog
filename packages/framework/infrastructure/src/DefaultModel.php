@@ -15,8 +15,8 @@ use Smolblog\Framework\ActivityPub\ObjectGetter;
 use Smolblog\Foundation\DomainModel;
 use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Markdown\SmolblogMarkdown;
-use Smolblog\Foundation\Service\Messaging\MessageBus;
 use Smolblog\Foundation\Service\Query\QueryBus;
+use Smolblog\Framework\Messages\MessageBus;
 
 /**
  * Default model with services provided by the Framework.

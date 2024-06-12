@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Reblog;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Framework\Messages\Projection;
 
 /**
  * Store Reblog-specific state.

@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Types\Note;
 
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Foundation\Service\Messaging\Projection;
+use Smolblog\Framework\Messages\Projection;
 
 /**
  * Store note-specific data.
