@@ -7,11 +7,14 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Service\Query\QueryBus;
+use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\Query;
 use Smolblog\Foundation\Value\Traits\Message;
+use Smolblog\Framework\Messages\Command as DeprecatedCommand;
 use Smolblog\Framework\Messages\Message as DeprecatedMessage;
-// use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
 use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**
@@ -20,7 +23,7 @@ use Smolblog\Framework\Messages\Query as DeprecatedQuery;
  * A simple wrapper around a PSR-14 Event Dispatcher. Adds one convenience method for queries to automatically
  * unpack and return the results. Takes a PSR-14-compliant Listener Provider in construction.
  */
-class DefaultMessageBus implements MessageBus {
+class DefaultMessageBus implements MessageBus, CommandBus, QueryBus, EventDispatcherInterface {
 	/**
 	 * Internal PSR-14-compliant dispatcher.
 	 *
@@ -54,7 +57,7 @@ class DefaultMessageBus implements MessageBus {
 	/**
 	 * Convenience method for sending Query messages that will return the results.
 	 *
-	 * @param Query $query Query to execute.
+	 * @param DeprecatedQuery|Query $query Query to execute.
 	 * @return mixed Results of the query.
 	 */
 	public function fetch(DeprecatedQuery|Query $query): mixed {
@@ -68,10 +71,30 @@ class DefaultMessageBus implements MessageBus {
 	 * queue, it could be an entirely different server. As such, the given Message should have as much information
 	 * included as reasonably possible.
 	 *
-	 * @param Message $message Message to send.
+	 * @param DeprecatedMessage|Message $message Message to send.
 	 * @return void
 	 */
 	public function dispatchAsync(DeprecatedMessage|Message $message): void {
 		$this->internal->dispatch(new AsyncWrappedMessage($message));
+	}
+
+	/**
+	 * Execute the given command,
+	 *
+	 * @param DeprecatedCommand|Command $command Command to execute.
+	 * @return mixed
+	 */
+	public function execute(DeprecatedCommand|Command $command): mixed {
+		return $this->dispatch($command);
+	}
+
+	/**
+	 * Execute the given command on a separate thread.
+	 *
+	 * @param Command|DeprecatedCommand $command Command to execute.
+	 * @return void
+	 */
+	public function executeAsync(Command|DeprecatedCommand $command): void {
+		$this->dispatchAsync($command);
 	}
 }

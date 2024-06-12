@@ -3,6 +3,7 @@
 namespace Smolblog\Framework\Infrastructure;
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
@@ -11,18 +12,21 @@ use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
 use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\ActivityPub\ObjectGetter;
-use Smolblog\Framework\Messages\MessageBus as DeprecatedMessageBus;
 use Smolblog\Foundation\DomainModel;
+use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Markdown\SmolblogMarkdown;
 use Smolblog\Foundation\Service\Messaging\MessageBus;
+use Smolblog\Foundation\Service\Query\QueryBus;
 
 /**
  * Default model with services provided by the Framework.
  */
 class DefaultModel extends DomainModel {
 	public const SERVICES = [
-		DeprecatedMessageBus::class => DefaultMessageBus::class,
 		MessageBus::class => DefaultMessageBus::class,
+		EventDispatcherInterface::class => DefaultMessageBus::class,
+		CommandBus::class => DefaultMessageBus::class,
+		QueryBus::class => DefaultMessageBus::class,
 		DefaultMessageBus::class => ['provider' => ListenerProviderInterface::class, 'log' => LoggerInterface::class],
 		ListenerProviderInterface::class => ListenerRegistry::class,
 		ListenerRegistry::class => ['container' => ContainerInterface::class],
