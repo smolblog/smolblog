@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Site;
 
 use DateTimeImmutable;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class ExampleSiteEvent extends SiteEvent {

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Note;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class CreateNoteTest extends TestCase {

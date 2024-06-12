@@ -2,7 +2,7 @@
 
 namespace Smolblog\WP\Helpers;
 
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Infrastructure\AsyncWrappedMessage;
 
 class AsyncHelper implements Listener {

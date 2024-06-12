@@ -6,9 +6,9 @@ use DateTimeImmutable;
 use Smolblog\Core\Content\ContentTypeConfiguration;
 use Smolblog\Core\Content\ContentTypeService;
 use Smolblog\Core\Content\ContentVisibility;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 
 /**
  * Service to handle Reblog commands.

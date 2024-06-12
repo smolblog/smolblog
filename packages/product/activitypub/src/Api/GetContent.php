@@ -11,7 +11,7 @@ use Smolblog\Core\Content\Queries\ContentById;
 use Smolblog\Core\Site\SiteById;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the ActivityPub object for a particular piece of content.

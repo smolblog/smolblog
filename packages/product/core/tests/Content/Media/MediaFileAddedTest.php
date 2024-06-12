@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Media;
 
 use DateTimeImmutable;
 use Smolblog\Core\Content\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class MediaFileAddedTest extends TestCase {

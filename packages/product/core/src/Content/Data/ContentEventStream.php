@@ -6,7 +6,7 @@ use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Content\Events\ContentEvent;
 use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
  * Persist the content events.

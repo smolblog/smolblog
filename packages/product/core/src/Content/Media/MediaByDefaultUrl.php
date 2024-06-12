@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Media;
 
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Search for a media object by its default URL.

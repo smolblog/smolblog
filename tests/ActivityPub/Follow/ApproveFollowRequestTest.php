@@ -7,7 +7,7 @@ use Smolblog\Framework\ActivityPub\Objects\Actor;
 use Smolblog\Framework\ActivityPub\Objects\ActorPublicKey;
 use Smolblog\Framework\ActivityPub\Objects\ActorType;
 use Smolblog\Framework\ActivityPub\Objects\Follow;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\SerializableTestKit;
 use Smolblog\Test\TestCase;
 

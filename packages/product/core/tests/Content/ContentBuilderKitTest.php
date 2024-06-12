@@ -13,7 +13,7 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\GenericContent;
 use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
 final class ContentBuilderKitTestExtension implements ContentExtension {

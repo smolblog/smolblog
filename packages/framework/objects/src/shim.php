@@ -9,14 +9,9 @@ use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 
 class_alias(DomainModel::class, 'Smolblog\Framework\Objects\DomainModel');
 
-class_alias(Listener::class, 'Smolblog\Framework\Messages\Listener');
 class_alias(Projection::class, 'Smolblog\Framework\Messages\Projection');
 // class_alias(Command::class, 'Smolblog\Framework\Messages\Command');
 // class_alias(Query::class, 'Smolblog\Framework\Messages\Query');
-class_alias(Identifier::class, 'Smolblog\Framework\Objects\Identifier');
-class_alias(DateIdentifier::class, 'Smolblog\Framework\Objects\DateIdentifier');
-class_alias(RandomIdentifier::class, 'Smolblog\Framework\Objects\RandomIdentifier');
-class_alias(NamedIdentifier::class, 'Smolblog\Framework\Objects\NamedIdentifier');
 
 class_alias(HttpRequest::class, 'Smolblog\Framework\Objects\HttpRequest');
 class_alias(HttpResponse::class, 'Smolblog\Framework\Objects\HttpResponse');

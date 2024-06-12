@@ -2,6 +2,8 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Smolblog\Foundation\Value\Fields\Identifier;
+
 /**
  * Provides an Identifier property and extends SerializableKit to work with it.
  *

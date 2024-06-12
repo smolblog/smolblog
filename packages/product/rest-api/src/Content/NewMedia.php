@@ -12,7 +12,7 @@ use Smolblog\Api\Verb;
 use Smolblog\Core\Content\Media\HandleUploadedMedia;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Objects\HttpResponse;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to create a new media object.

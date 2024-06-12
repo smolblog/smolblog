@@ -3,6 +3,7 @@
 namespace Smolblog\Framework\Objects;
 
 use DateTimeImmutable;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Throwable;
 
 /**

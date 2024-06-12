@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Extensions\Syndication;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\ContentExtensionServiceTestKit;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 

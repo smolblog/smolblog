@@ -4,8 +4,8 @@ namespace Smolblog\Mock;
 
 use Smolblog\Core\Site\SiteUserLink;
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Service\Messaging\Listener;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 class SecurityService implements Listener {
 	public const SITE1 = '5d1b0f16-ff8d-4650-af86-bdcbab459715';

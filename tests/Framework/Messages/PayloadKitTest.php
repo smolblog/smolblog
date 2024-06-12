@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Messages;
 
 use DateTimeInterface;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 abstract class TestBaseEvent extends Event {
 	use PayloadKit;

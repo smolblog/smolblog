@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Queries;
 
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Find if the given content is visible to the given user.

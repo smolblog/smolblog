@@ -3,8 +3,8 @@
 namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Framework\Objects\Entity;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\NamedIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
 /**
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media

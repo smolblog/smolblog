@@ -3,6 +3,9 @@
 namespace Smolblog\Framework\Objects;
 
 use DateInterval;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 use Smolblog\Test\TestCase;
 
 final class IdentifierTest extends TestCase {

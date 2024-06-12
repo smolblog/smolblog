@@ -13,7 +13,7 @@ use Smolblog\Core\Content\Media\MediaList;
 use Smolblog\Core\Content\Queries\ContentList;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a list of recent content.

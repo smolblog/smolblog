@@ -8,7 +8,7 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Core\User\User;
 use Smolblog\Core\User\UserById;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to get standard information about the user.

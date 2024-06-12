@@ -5,7 +5,7 @@ namespace Smolblog\Mock;
 use Smolblog\Core\Content\Events\PermalinkAssigned;
 use Smolblog\Core\Content\Events\PublicContentAdded;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 class PermalinkService implements Listener {

@@ -7,7 +7,7 @@ use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentType;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\InvalidContentException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
 /**

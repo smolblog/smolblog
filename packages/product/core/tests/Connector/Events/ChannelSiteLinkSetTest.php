@@ -4,9 +4,9 @@ namespace Smolblog\Core\Connector\Events;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class ChannelSiteLinkSetTest extends TestCase {
 	public function testItWillCorrectlyDeserialize() {

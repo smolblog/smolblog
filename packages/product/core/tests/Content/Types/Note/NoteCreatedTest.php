@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Note;
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\NoteTestKit;
 
 final class NoteCreatedTest extends TestCase {

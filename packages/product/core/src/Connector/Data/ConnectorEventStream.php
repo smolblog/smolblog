@@ -6,7 +6,7 @@ use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Connector\Events\ConnectorEvent;
 use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 /**
  * Persist the Connector Events.

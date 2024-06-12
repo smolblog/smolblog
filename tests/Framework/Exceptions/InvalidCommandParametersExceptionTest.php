@@ -4,7 +4,7 @@ namespace Smolblog\Framework\Exceptions;
 
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class TestInvalidCommand extends Command {}
 

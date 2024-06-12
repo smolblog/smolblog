@@ -2,6 +2,8 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 use Smolblog\Test\TestCase;
 
 final class EntityTestConstructor extends Entity {

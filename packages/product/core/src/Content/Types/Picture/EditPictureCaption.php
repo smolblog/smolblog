@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Picture;
 use Smolblog\Core\Content\EditContentCommandKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Change the caption on a Picture.

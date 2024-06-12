@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use Smolblog\Core\Content\Events\PublicContentAdded;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**

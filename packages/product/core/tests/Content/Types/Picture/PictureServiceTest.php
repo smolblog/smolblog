@@ -12,7 +12,7 @@ use Smolblog\Core\Content\Types\Picture\PictureService;
 use Smolblog\Test\Kits\MessageBusMockKit;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\ContentTypeServiceTestKit;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 

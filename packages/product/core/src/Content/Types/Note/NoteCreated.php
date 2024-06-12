@@ -7,7 +7,7 @@ use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Events\ContentCreated;
 use Smolblog\Core\Content\InvalidContentException;
 use Smolblog\Core\Content\Markdown\NeedsMarkdownRendered;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a Note content has been created.

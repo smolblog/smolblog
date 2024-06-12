@@ -8,7 +8,7 @@ use Smolblog\Test\Kits\EndpointTestToolkit;
 use Smolblog\Core\Connector\Entities\Channel as ChannelEntity;
 use Smolblog\Core\Connector\Entities\Connection as ConnectionEntity;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class UserConnectionsTest extends TestCase {
 	use EndpointTestToolkit;

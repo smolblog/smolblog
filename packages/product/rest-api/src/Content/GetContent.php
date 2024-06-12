@@ -10,7 +10,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Queries\ContentById;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a specific piece of content.

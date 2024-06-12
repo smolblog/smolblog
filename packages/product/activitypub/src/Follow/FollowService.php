@@ -9,9 +9,9 @@ use Smolblog\Core\Site\SiteById;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\ActivityPub\MessageSender;
 use Smolblog\Framework\ActivityPub\Objects\Accept;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\RandomIdentifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 /**
  * Service for handling follow-related commands.

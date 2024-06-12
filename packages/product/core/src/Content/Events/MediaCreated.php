@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Events;
 
 use DateTimeInterface;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a piece of media has been added to the media library.

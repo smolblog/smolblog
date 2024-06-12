@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Extensions\Syndication;
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 class ContentSyndicatedTest extends TestCase {
 	public function testLinksCanBeSetAndRetrieved() {

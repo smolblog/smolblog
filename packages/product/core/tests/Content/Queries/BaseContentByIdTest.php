@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Queries;
 
 use Smolblog\Core\Content\Content;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class BaseContentByIdTest extends TestCase {
 	public function testItIsAuthorizedByAContentVisibleToUserQuery() {

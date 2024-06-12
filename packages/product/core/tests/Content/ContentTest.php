@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content;
 
 use DateTimeImmutable;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 
 final class TestContent implements ContentType {

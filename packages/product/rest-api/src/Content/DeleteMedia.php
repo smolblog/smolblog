@@ -12,7 +12,7 @@ use Smolblog\Api\Verb;
 use Smolblog\Core\Content\Media\DeleteMedia as DeleteMediaCommand;
 use Smolblog\Core\Content\Media\MediaById;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to delete media.

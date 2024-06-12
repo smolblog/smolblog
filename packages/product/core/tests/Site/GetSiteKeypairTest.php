@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Site;
 
 use Smolblog\Core\User\User;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class GetSiteKeypairTest extends TestCase {

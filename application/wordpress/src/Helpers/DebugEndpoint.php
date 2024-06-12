@@ -7,7 +7,7 @@ use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 class DebugEndpoint extends BasicEndpoint {
 	public static function getConfiguration(): EndpointConfig

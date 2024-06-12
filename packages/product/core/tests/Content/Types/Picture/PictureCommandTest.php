@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Picture;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\Queries\UserCanEditContent;
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 class PictureCommandTest extends TestCase {
 	public function testDeletePictureRequiresEditPermissions() {

@@ -12,8 +12,8 @@ use Smolblog\Core\Content\Queries\AdaptableContentQuery;
 use Smolblog\Core\Content\Queries\BaseContentById;
 use Smolblog\Framework\Messages\Message;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\RandomIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 final class ContentServiceTest extends TestCase {

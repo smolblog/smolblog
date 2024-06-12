@@ -5,7 +5,7 @@ namespace Smolblog\WP\Helpers;
 use Smolblog\Core\Federation\SiteByResourceUri;
 use Smolblog\Core\Site\{CreateSite, GetSiteKeypair, GetSiteSettings, LinkSiteAndUser, Site, SiteById, SiteSettings, SiteUsers, UpdateSettings, UserCanCreateSites, UserHasPermissionForSite};
 use Smolblog\Framework\Infrastructure\KeypairGenerator;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Objects\{Identifier, Keypair, RandomIdentifier};
 
 class SiteHelper implements Listener {

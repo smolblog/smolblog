@@ -8,7 +8,7 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\GenericResponse;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\Verb;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**

@@ -33,8 +33,8 @@ use Smolblog\Core\Content\Types\Reblog\EditReblogComment;
 use Smolblog\Core\Content\Types\Reblog\EditReblogUrl;
 use Smolblog\Core\Content\Types\Reblog\PublishReblog;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to create a minimal reblog post.

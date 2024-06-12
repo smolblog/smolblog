@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Events;
 
 use DateTimeInterface;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a base attribute has been edited.

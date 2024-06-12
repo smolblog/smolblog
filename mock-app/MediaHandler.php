@@ -5,8 +5,8 @@ namespace Smolblog\Mock;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Content\Media\MediaFile;
 use Smolblog\Core\Content\Media\MediaHandler as MediaHandlerInterface;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\RandomIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 class MediaHandler implements MediaHandlerInterface {
 

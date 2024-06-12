@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Queries;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a list of GenericContent objects.

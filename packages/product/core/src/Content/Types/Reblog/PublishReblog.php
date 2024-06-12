@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Reblog;
 use Smolblog\Core\Content\EditContentCommandKit;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Take a reblog from draft to Published

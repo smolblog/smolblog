@@ -11,7 +11,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Federation\Follower;
 use Smolblog\Core\Federation\GetFollowersForSiteByProvider;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the followers for a given Site.

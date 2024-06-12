@@ -5,7 +5,7 @@ namespace Smolblog\Core\Connector\Queries;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get existing and available connections and channels for the site admin screen.

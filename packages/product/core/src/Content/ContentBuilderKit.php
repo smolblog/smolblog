@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content;
 
 use DateTimeInterface;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Throwable;
 
 /**

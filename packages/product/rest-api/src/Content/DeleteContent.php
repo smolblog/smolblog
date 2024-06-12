@@ -16,7 +16,7 @@ use Smolblog\Core\Content\Media\MediaById;
 use Smolblog\Core\Content\Queries\ContentById;
 use Smolblog\Core\Content\Queries\GenericContentById;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to delete media.

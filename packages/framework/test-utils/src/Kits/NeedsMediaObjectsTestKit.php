@@ -4,7 +4,7 @@ namespace Smolblog\Test\Kits;
 
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Core\Content\Media\Media;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 trait NeedsMediaObjectsTestKit {
 	#[TestDox('It implements the NeedsMediaObjects interface.')]

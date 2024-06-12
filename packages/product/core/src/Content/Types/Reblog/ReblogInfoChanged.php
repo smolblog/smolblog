@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Types\Reblog;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Events\ContentBodyEdited;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates the Reblog's information about the external URL has been changed.

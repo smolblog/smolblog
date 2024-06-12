@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Queries;
 use Smolblog\Test\TestCase;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Framework\Exceptions\InvalidMessageAttributesException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class ContentListTest extends TestCase {
 	public function testPageZeroWillThrowAnException() {

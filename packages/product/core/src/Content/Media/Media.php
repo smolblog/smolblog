@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Media;
 
 use Smolblog\Framework\Objects\Entity;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Entity for handling media uploads.

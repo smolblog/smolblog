@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Federation;
 
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get the array of followers for the given site.

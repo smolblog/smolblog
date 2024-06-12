@@ -2,6 +2,7 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Stringable;
 
 /**

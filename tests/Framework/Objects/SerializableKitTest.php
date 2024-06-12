@@ -4,6 +4,7 @@ namespace Smolblog\Framework\Objects;
 
 use DateTimeImmutable;
 use JsonSerializable;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class TestSerializableObject { use SerializableKit; }

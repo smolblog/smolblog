@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Entities;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 final class ChannelSiteLinkTest extends TestCase {
 	public function testAnIdIsKnowableFromChannelAndSite() {

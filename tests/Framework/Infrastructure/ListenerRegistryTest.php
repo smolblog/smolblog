@@ -15,7 +15,7 @@ use Smolblog\Framework\Messages\Attributes\EventStoreLayerListener;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Attributes\SaveMemoLayerListener;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 
 function listenerTestTrace($add = '', $reset = false) {
 	static $trace;

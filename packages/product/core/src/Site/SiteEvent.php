@@ -5,7 +5,7 @@ namespace Smolblog\Core\Site;
 use DateTimeInterface;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\PayloadKit;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Event dealing with general site-level actions.

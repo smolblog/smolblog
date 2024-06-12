@@ -6,7 +6,7 @@ use Smolblog\Core\Content\ContentExtensionConfiguration;
 use Smolblog\Core\Content\ContentExtensionService;
 use Smolblog\Core\Content\ContentUtilityKit;
 use Smolblog\Core\Content\ContentUtilityService;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**

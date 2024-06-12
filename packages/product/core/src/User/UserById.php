@@ -3,7 +3,7 @@
 namespace Smolblog\Core\User;
 
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Retrieve a User by ID

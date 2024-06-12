@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Events;
 use DateTimeInterface;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\InvalidContentException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates an event where a new piece of Content has been created.

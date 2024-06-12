@@ -9,9 +9,9 @@ use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Core\Content\Events\PublicContentAdded;
 use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\User\User;
-use Smolblog\Framework\Messages\Listener;
+use Smolblog\Foundation\Service\Messaging\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Handle pushing content to external services.

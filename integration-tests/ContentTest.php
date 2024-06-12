@@ -34,7 +34,7 @@ use Smolblog\Core\Content\Types\Reblog\CreateReblog;
 use Smolblog\Core\Content\Types\Reblog\ExternalContentInfo;
 use Smolblog\Core\Content\Types\Reblog\PublishReblog;
 use Smolblog\Core\Content\Types\Reblog\Reblog;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Mock\App;
 use Smolblog\Mock\SecurityService;
 

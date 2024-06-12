@@ -6,8 +6,8 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Smolblog\Test\TestCase;
 use Psr\EventDispatcher\StoppableEventInterface;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\DateIdentifierTestKit;
 
 final class EventTest extends TestCase {

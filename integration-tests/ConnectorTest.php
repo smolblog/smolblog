@@ -11,7 +11,7 @@ use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Mock\App;
 
 final class ConnectorTest extends TestCase {

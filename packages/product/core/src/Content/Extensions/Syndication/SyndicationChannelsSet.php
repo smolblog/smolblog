@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Events\ContentExtensionEdited;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates the channels content should syndicate to are set.

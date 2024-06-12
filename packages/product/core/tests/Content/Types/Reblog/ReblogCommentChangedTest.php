@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Reblog;
 
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 class ReblogCommentChangedTest extends TestCase {
 	public function testTheInfoAndRenderCanBeSetAfterConstruction() {

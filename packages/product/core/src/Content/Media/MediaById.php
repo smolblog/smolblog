@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Media;
 use Smolblog\Core\Content\Queries\ContentVisibleToUser;
 use Smolblog\Framework\Messages\AuthorizableMessage;
 use Smolblog\Framework\Messages\MemoizableQuery;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Search for a given media by its ID.
