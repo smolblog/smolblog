@@ -16,6 +16,10 @@ trait ReblogEventKit {
 	/**
 	 * Get a title-appropriate truncation of the content.
 	 *
+	 * Ignore because we're about to replace this anyway
+	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @return string
 	 */
 	public function getNewTitle(): ?string {

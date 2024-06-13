@@ -7,9 +7,10 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Framework\Messages\Command as DeprecatedCommand;
 use Smolblog\Framework\Messages\Query;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Command;
 
 final class DefaultMessageBusTest extends TestCase {
 	private ListenerProviderInterface $provider;
@@ -66,7 +67,7 @@ final class DefaultMessageBusTest extends TestCase {
 	}
 
 	public function testItCanWrapAMessageInAnAsyncMessageWrapper() {
-		$message = new class($this->randomId()) extends Command { public function __construct(public readonly Identifier $thing) {} };
+		$message = new class($this->randomId()) extends DeprecatedCommand { public function __construct(public readonly Identifier $thing) {} };
 		$asyncMessage = new AsyncWrappedMessage($message);
 
 		$this->provider->method('getListenersForEvent')->willReturn([
@@ -74,5 +75,31 @@ final class DefaultMessageBusTest extends TestCase {
 		]);
 
 		$this->subject->dispatchAsync($message);
+	}
+
+	public function testItWillExecuteCommands() {
+		$this->provider->method('getListenersForEvent')->willReturn([
+			fn($event) => $event->setMetaValue('trace', 'first'),
+		]);
+
+		$message = new readonly class() extends Command {
+			public function __construct() { parent::__construct(); }
+		};
+		$this->subject->execute($message);
+
+		$this->assertEquals('first', $message->getMetaValue('trace'));
+	}
+
+	public function testItCanExecuteCommandsAsynchronously() {
+		$message = new readonly class($this->randomId()) extends Command {
+			public function __construct(public readonly Identifier $thing) { parent::__construct(); }
+		};
+		$asyncMessage = new AsyncWrappedMessage($message);
+
+		$this->provider->method('getListenersForEvent')->willReturn([
+			fn($event) => $this->assertEquals($asyncMessage, $event),
+		]);
+
+		$this->subject->executeAsync($message);
 	}
 }
