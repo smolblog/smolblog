@@ -17,6 +17,8 @@ use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Markdown\SmolblogMarkdown;
 use Smolblog\Foundation\Service\Query\QueryBus;
 use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Service\KeypairGenerator;
+use Smolblog\Framework\Infrastructure\KeypairGenerator as DeprecatedKeypairGenerator;
 
 /**
  * Default model with services provided by the Framework.
@@ -34,18 +36,19 @@ class DefaultModel extends DomainModel {
 		SecurityCheckService::class => ['messageBus' => MessageBus::class],
 		SmolblogMarkdown::class => [],
 		KeypairGenerator::class => [],
+		DeprecatedKeypairGenerator::class => [],
 		LoggerInterface::class => NullLogger::class,
 		NullLogger::class => [],
-		MessageSender::class => [
-			'fetcher' => ClientInterface::class,
-			'signer' => MessageSigner::class,
-			'log' => LoggerInterface::class,
-		],
-		MessageSigner::class => [],
-		MessageVerifier::class => [],
-		ObjectGetter::class => [
-			'fetcher' => ClientInterface::class,
-			'signer' => MessageSigner::class,
-		],
+		// MessageSender::class => [
+		// 	'fetcher' => ClientInterface::class,
+		// 	'signer' => MessageSigner::class,
+		// 	'log' => LoggerInterface::class,
+		// ],
+		// MessageSigner::class => [],
+		// MessageVerifier::class => [],
+		// ObjectGetter::class => [
+		// 	'fetcher' => ClientInterface::class,
+		// 	'signer' => MessageSigner::class,
+		// ],
 	];
 }

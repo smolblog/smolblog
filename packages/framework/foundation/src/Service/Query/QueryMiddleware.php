@@ -12,6 +12,8 @@ use Smolblog\Framework\Messages\Listener;
  * logging a Query's parameters or checking the security of a Query.
  *
  * Will have more structure in the future.
+ *
+ * @deprecated Prefer data interfaces
  */
 interface QueryMiddleware extends Service, Listener {
 }

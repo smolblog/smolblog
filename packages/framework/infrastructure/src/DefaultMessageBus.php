@@ -57,6 +57,8 @@ class DefaultMessageBus implements MessageBus, CommandBus, QueryBus, EventDispat
 	/**
 	 * Convenience method for sending Query messages that will return the results.
 	 *
+	 * @deprecated Prefer data interfaces
+	 *
 	 * @param DeprecatedQuery|Query $query Query to execute.
 	 * @return mixed Results of the query.
 	 */
