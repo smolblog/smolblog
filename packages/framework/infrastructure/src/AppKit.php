@@ -30,8 +30,12 @@ trait AppKit {
 	 * @return array
 	 */
 	private function buildDependencyMap(array $models): array {
+		return $this->buildDependencyMapFromArrays(array_map(fn($model) => $model::getDependencyMap(), $models));
+	}
+
+	private function buildDependencyMapFromArrays(array $maps): array {
 		$services = array_filter(
-			array_reduce($models, fn($carry, $item) => array_merge($carry, $item::getDependencyMap()), []),
+			array_reduce($maps, fn($carry, $item) => array_merge($carry, $item), []),
 			fn($srv) => class_exists($srv) || interface_exists($srv),
 			ARRAY_FILTER_USE_KEY
 		);
