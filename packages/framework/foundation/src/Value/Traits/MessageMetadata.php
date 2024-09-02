@@ -6,6 +6,8 @@ namespace Smolblog\Foundation\Value\Traits;
  * A class to store metadata on a message.
  *
  * Written the way it is to allow adding mutable properties to an immutable object.
+ *
+ * @deprecated Seriously, Evan? This is a code smell
  */
 class MessageMetadata {
 	/**

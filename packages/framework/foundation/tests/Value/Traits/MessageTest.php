@@ -1,7 +1,6 @@
 <?php
 
-// use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
@@ -13,8 +12,7 @@ final class ExampleMessage implements Message {
 	public function __construct(public readonly string $message) {}
 }
 
-// #[CoversTrait(MessageKit::class)]
-#[CoversClass(MessageKit::class)]
+#[CoversTrait(MessageKit::class)]
 final class MessageTest extends TestCase {
 	public function itWillNotSerializeMetadataByDefault() {
 		$message = new class('hello') implements Message, SerializableValue {

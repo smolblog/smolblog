@@ -16,6 +16,8 @@ use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
  * complex queries to specialized handlers.
  *
  * All Queries that can be memoized should also implement Memoizable; use MemoizableKit to assist.
+ *
+ * @deprecated Use data interfaces instead of queries
  */
 abstract readonly class Query implements Message {
 	use ReadonlyMessageKit;

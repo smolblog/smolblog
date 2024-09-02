@@ -4,6 +4,8 @@ namespace Smolblog\Foundation\Value\Traits;
 
 /**
  * Provide a default Memoization key.
+ *
+ * @deprecated Use data interfaces instead of queries
  */
 trait MemoizableKit {
 	/**

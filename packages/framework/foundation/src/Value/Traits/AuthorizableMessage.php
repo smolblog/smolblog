@@ -9,6 +9,8 @@ use Smolblog\Framework\Messages\Query as DeprecatedQuery;
  * Indicates that an object provides a Query to check whether it can be executed.
  *
  * The Message class already includes stopMessage().
+ *
+ * @deprecated Check security in the command/query handler
  */
 interface AuthorizableMessage {
 	/**

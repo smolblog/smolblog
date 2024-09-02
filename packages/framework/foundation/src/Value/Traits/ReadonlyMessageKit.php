@@ -8,6 +8,8 @@ namespace Smolblog\Foundation\Value\Traits;
  * Stores metadata in a private property so it is not serialized. If the Message class is readonly, it will need
  * to be redeclared. Consuming class MUST set $this->meta in the constructor. For example:
  * `$this->meta = new MessageMetadata();`
+ *
+ * @deprecated Seriously, Evan? This is a code smell
  */
 trait ReadonlyMessageKit {
 	/**

@@ -9,6 +9,8 @@ use Psr\EventDispatcher\StoppableEventInterface;
  * to the message to preserve the immutability of the message.
  *
  * @see https://www.php-fig.org/psr/psr-14/
+ *
+ * @deprecated Events are fire-and-forget
  */
 interface Message extends StoppableEventInterface {
 	/**

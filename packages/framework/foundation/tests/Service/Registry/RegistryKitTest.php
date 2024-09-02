@@ -2,8 +2,7 @@
 
 namespace Smolblog\Foundation\Service\Registry;
 
-// use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
 use Smolblog\Test\Kits\ServiceTestKit;
@@ -23,8 +22,7 @@ class TestRegistry implements Registry {
 	public function _test_getLibrary(): array { return $this->library; }
 }
 
-// #[CoversTrait(RegistryKit::class)]
-#[CoversClass(RegistryKit::class)]
+#[CoversTrait(RegistryKit::class)]
 final class RegistryKitTest extends TestCase {
 	use ServiceTestKit;
 

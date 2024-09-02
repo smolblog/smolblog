@@ -4,9 +4,10 @@ namespace Smolblog\Foundation\Value\Messages;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Message;
-use Smolblog\Foundation\Value\Traits\MessageKit;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
 use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * A command is a message that is sent to a service to perform an action.
@@ -17,8 +18,9 @@ use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
  * Not `readonly` to allow middleware/plugins to modify parts of the Command. For example, a command creating a new
  * entity could be modified by a service to add extra metadata to the entity.
  */
-abstract readonly class Command extends Value implements Message {
+abstract readonly class Command extends Value implements SerializableValue {
 	use ReadonlyMessageKit;
+	use SerializableValueKit;
 
 	/**
 	 * Create the Command and initialize the metadata.

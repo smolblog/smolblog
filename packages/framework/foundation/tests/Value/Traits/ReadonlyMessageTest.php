@@ -2,8 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Traits;
 
-// use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Smolblog\Foundation\Value;
 use Smolblog\Test\TestCase;
 
@@ -12,8 +11,7 @@ final readonly class ExampleReadonlyMessage extends Value implements Message {
 	public function __construct(public string $message) { $this->meta = new MessageMetadata(); }
 }
 
-// #[CoversTrait(ReadonlyMessageKit::class)]
-#[CoversClass(ReadonlyMessageKit::class)]
+#[CoversTrait(ReadonlyMessageKit::class)]
 #[CoversClass(MessageMetadata::class)]
 final class ReadonlyMessageTest extends TestCase {
 	public function itWillNotSerializeMetadataByDefault() {

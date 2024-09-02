@@ -2,8 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Traits;
 
-// use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
@@ -64,8 +63,7 @@ readonly class SerializedWithNonSerializedValueTest extends ValueTestBase {
 	public function __construct(public NonSerializableValueTest $contents) {}
 }
 
-// #[CoversTrait(SerializableValueKit::class)]
-#[CoversClass(SerializableValueKit::class)]
+#[CoversTrait(SerializableValueKit::class)]
 #[CoversClass(ArrayType::class)]
 final class SerializableValueTest extends TestCase {
 	public static function valueExamples(): array {

@@ -6,6 +6,8 @@ namespace Smolblog\Foundation\Value\Traits;
  * Useful functions for building a Message.
  *
  * Stores metadata in a private property so it is not serialized.
+ *
+ * @deprecated Events are fire-and-forget
  */
 trait MessageKit {
 	/**

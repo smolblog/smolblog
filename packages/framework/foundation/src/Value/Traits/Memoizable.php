@@ -10,6 +10,8 @@ namespace Smolblog\Foundation\Value\Traits;
  *
  * Kind of a cache, but as there's no real way to invalidate it and it does not persist between requests, it's not
  * called that.
+ *
+ * @deprecated Use data interfaces instead of queries
  */
 interface Memoizable {
 	/**

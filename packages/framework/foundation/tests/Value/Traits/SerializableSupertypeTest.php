@@ -2,8 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Traits;
 
-// use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
@@ -36,8 +35,7 @@ final readonly class UnknownSubtype extends ExampleSupertypeWithFallback {
 	}
 }
 
-// #[CoversTrait(SerializableSupertypeKit::class)]
-#[CoversClass(SerializableSupertypeKit::class)]
+#[CoversTrait(SerializableSupertypeKit::class)]
 final class SerializableSupertypeTest extends TestCase {
 	#[TestDox('It will add a type field to the serialization and deserialize without it.')]
 	public function testSerialization() {

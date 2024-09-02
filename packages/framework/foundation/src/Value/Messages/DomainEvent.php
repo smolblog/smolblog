@@ -2,24 +2,19 @@
 
 namespace Smolblog\Foundation\Value\Messages;
 
-use PHPUnit\Framework\TestSize\Unknown;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
-use Smolblog\Foundation\Value\Traits\Message;
-use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
-use Smolblog\Foundation\Value\Traits\MessageMetadata;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 
 /**
  * A domain event represents a change in state in the system.
  */
-readonly class DomainEvent extends Value implements Entity, Message, SerializableValue {
+readonly class DomainEvent extends Value implements Entity, SerializableValue {
 	use SerializableSupertypeKit;
-	use ReadonlyMessageKit;
 	use EntityKit;
 
 	/**
@@ -47,7 +42,6 @@ readonly class DomainEvent extends Value implements Entity, Message, Serializabl
 		public ?Identifier $aggregateId = null,
 		public ?Identifier $entityId = null,
 	) {
-		$this->meta = new MessageMetadata();
 		$this->id = $id;
 	}
 }
