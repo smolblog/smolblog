@@ -45,6 +45,14 @@ trait AppKit {
 		return $services;
 	}
 
+	/**
+	 * Load V1 registries with their configuration arrays
+	 *
+	 * @deprecated Migrate registries to new Registry interface
+	 *
+	 * @param array $map Dependency map.
+	 * @return array Map of registries and new dependencies
+	 */
 	private function getRegistriesV1(array $map): array {
 		$registryMap = [];
 		$registries = array_filter(
@@ -68,6 +76,16 @@ trait AppKit {
 		return $registryMap;
 	}
 
+	/**
+	 * Create factory methods for Registry services.
+	 *
+	 * If a registry already has a factory method defined, it is left alone. Otherwise, it creates a factory method
+	 * that first instantiates the Registry with its dependencies then calls the `configure` method with the classes
+	 * to register.
+	 *
+	 * @param array $map Dependency map.
+	 * @return array Registries and their factory methods.
+	 */
 	private function getRegistryFactories(array $map): array {
 		$registryMap = [];
 		$registries = array_filter(
