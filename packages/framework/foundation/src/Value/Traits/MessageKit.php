@@ -20,6 +20,8 @@ trait MessageKit {
 	/**
 	 * Get the message's meta value for the given key.
 	 *
+	 * @deprecated Events should be immutable
+	 *
 	 * @param string $key Key of the meta value to get.
 	 * @return mixed Value of the meta value.
 	 */
@@ -29,6 +31,8 @@ trait MessageKit {
 
 	/**
 	 * Set the message's meta value for the given key.
+	 *
+	 * @deprecated Events should be immutable.
 	 *
 	 * @param string $key   Key of the meta value to set.
 	 * @param mixed  $value Value of the meta value.
@@ -41,6 +45,8 @@ trait MessageKit {
 	/**
 	 * Mark the message as being stopped.
 	 *
+	 * @deprecated Messages should not be stopped.
+	 *
 	 * @return void
 	 */
 	public function stopMessage(): void {
@@ -49,6 +55,8 @@ trait MessageKit {
 
 	/**
 	 * Check if the message is stopped.
+	 *
+	 * @deprecated Messages should not be stopped.
 	 *
 	 * @return boolean
 	 */

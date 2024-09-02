@@ -20,4 +20,11 @@ final class CommandTest extends TestCase {
 
 		$this->assertEquals('two', $command->getMetaValue('one'));
 	}
+
+	public function testItCanHaveAReturnValue() {
+		$command = new ExampleCommand('test');
+		$command->setReturnValue('retval');
+
+		$this->assertEquals('retval', $command->returnValue());
+	}
 }

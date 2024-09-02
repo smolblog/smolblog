@@ -13,10 +13,7 @@ use Smolblog\Foundation\Value\Traits\SerializableValueKit;
  * A command is a message that is sent to a service to perform an action.
  *
  * Commands are typically sent to a service to perform an action, such as creating a new user, or updating a user's
- * profile. Commands are also used to send events to the system, such as when a user creates a new post.
- *
- * Not `readonly` to allow middleware/plugins to modify parts of the Command. For example, a command creating a new
- * entity could be modified by a service to add extra metadata to the entity.
+ * profile.
  */
 abstract readonly class Command extends Value implements SerializableValue {
 	use ReadonlyMessageKit;
@@ -27,5 +24,28 @@ abstract readonly class Command extends Value implements SerializableValue {
 	 */
 	public function __construct() {
 		$this->meta = new MessageMetadata();
+	}
+
+	/**
+	 * Set the return value of the command.
+	 *
+	 * @deprecated Stay tuned for actual return values
+	 *
+	 * @param mixed $value Value to return.
+	 * @return void
+	 */
+	public function setReturnValue(mixed $value): void {
+		$this->meta->setMetaValue('return', $value);
+	}
+
+	/**
+	 * Get the return value of the command.
+	 *
+	 * @deprecated Stay tuned for actual return values
+	 *
+	 * @return mixed
+	 */
+	public function returnValue(): mixed {
+		return $this->meta->getMetaValue('return');
 	}
 }

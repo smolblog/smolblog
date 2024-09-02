@@ -22,6 +22,8 @@ trait ReadonlyMessageKit {
 	/**
 	 * Get the message's meta value for the given key.
 	 *
+	 * @deprecated Messages should be immutable.
+	 *
 	 * @param string $key Key of the meta value to get.
 	 * @return mixed Value of the meta value.
 	 */
@@ -31,6 +33,8 @@ trait ReadonlyMessageKit {
 
 	/**
 	 * Set the message's meta value for the given key.
+	 *
+	 * @deprecated Messages should be immutable.
 	 *
 	 * @param string $key   Key of the meta value to set.
 	 * @param mixed  $value Value of the meta value.
@@ -43,6 +47,8 @@ trait ReadonlyMessageKit {
 	/**
 	 * Mark the message as being stopped.
 	 *
+	 * @deprecated Messages should not be stopped.
+	 *
 	 * @return void
 	 */
 	public function stopMessage(): void {
@@ -51,6 +57,8 @@ trait ReadonlyMessageKit {
 
 	/**
 	 * Check if the message is stopped.
+	 *
+	 * @deprecated Messages should not be stopped.
 	 *
 	 * @return boolean
 	 */
