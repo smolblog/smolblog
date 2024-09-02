@@ -9,7 +9,7 @@ use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
 

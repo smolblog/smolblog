@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Site;
 
 use Smolblog\Framework\Objects\Entity;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Represents a site with its own URL, posts, etc.

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Queries;
 
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Find the Connections assigned to a User and fetch them. Returns an array of Connection objects.

@@ -4,7 +4,7 @@ namespace Smolblog\Core\Federation;
 
 use DateTimeInterface;
 use Smolblog\Core\Site\SiteEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * The blog has lost a follower, either through removal or deletion. How this looks depends on the individual module.

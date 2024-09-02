@@ -3,7 +3,7 @@
 namespace Smolblog\Api\Connector;
 
 use Smolblog\Api\AuthScope;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;

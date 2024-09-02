@@ -10,7 +10,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Site\SiteUsers;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to get users attached to a site. Requires author permissions on the site.

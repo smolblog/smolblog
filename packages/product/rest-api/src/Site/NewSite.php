@@ -10,7 +10,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Api\Verb;
 use Smolblog\Core\Site\CreateSite;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Create a new site.

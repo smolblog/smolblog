@@ -6,8 +6,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Smolblog\Api\Exceptions\ErrorResponse;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
-use Smolblog\Framework\Objects\HttpResponse;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Http\HttpResponse;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Throwable;
 
 /**

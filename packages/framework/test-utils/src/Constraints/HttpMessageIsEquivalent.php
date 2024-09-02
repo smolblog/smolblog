@@ -40,7 +40,7 @@ class HttpMessageIsEquivalent extends Constraint {
 		return $data;
 	}
 
-	protected function matches($other): bool {
+	protected function matches(mixed $other): bool {
 		if (!is_a($other, MessageInterface::class)) {
 			throw new InvalidArgumentException('Object is not an HTTP Message.');
 		}
@@ -51,7 +51,7 @@ class HttpMessageIsEquivalent extends Constraint {
 		return $expectedData == $actualData;
 	}
 
-	protected function fail($other, $description, ?ComparisonFailure $comparisonFailure = null): void
+	protected function fail(mixed $other, string $description, ?ComparisonFailure $comparisonFailure = null): never
 	{
 		if ($comparisonFailure === null) {
 			$expectedData = $this->makeArray($this->expected);
@@ -62,7 +62,6 @@ class HttpMessageIsEquivalent extends Constraint {
 				$other,
 				$this->exporter()->export($expectedData),
 				$this->exporter()->export($actualData),
-				false,
 				'Failed asserting that two HTTP messages are equivalent.'
 			);
 		}

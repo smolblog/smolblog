@@ -4,7 +4,7 @@ namespace Smolblog\ContentProvenance;
 
 use Elephox\Mimey\MimeTypesInterface;
 use Psr\Log\LoggerInterface;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 
 /**
  * Domain model for Content Provenance and Authenticity.

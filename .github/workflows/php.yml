@@ -20,7 +20,7 @@ jobs:
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.2
+        php-version: 8.3
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
@@ -44,4 +44,4 @@ jobs:
       run: composer run-script test-coverage
 
     - name: Run integration test suite
-      run: composer run-script integration
+      run: composer run-script test-integration

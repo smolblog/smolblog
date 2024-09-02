@@ -10,7 +10,7 @@ use Smolblog\Api\SuccessResponse;
 use Smolblog\Api\Verb;
 use Smolblog\Core\Site\LinkSiteAndUser;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Set permissions for a user on a site.

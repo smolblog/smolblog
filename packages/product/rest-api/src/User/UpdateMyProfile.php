@@ -11,7 +11,7 @@ use Smolblog\Api\Verb;
 use Smolblog\Core\User\UpdateProfile as UserUpdateProfile;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to allow a user to update their profile.

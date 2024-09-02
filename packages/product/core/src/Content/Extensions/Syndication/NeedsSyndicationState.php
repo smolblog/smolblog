@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Extensions\Syndication;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates that a message needs the current state of syndication for the given ID.

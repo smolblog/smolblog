@@ -2,10 +2,13 @@
 
 namespace Smolblog\Framework\Objects;
 
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Stringable;
 
 /**
  * Represents an object that can be uniquely identified.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 abstract class Entity extends Value implements Stringable {
 	use EntityKit;

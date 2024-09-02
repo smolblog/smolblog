@@ -9,7 +9,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Site\GetSiteSettings;
 use Smolblog\Core\Site\SiteSettings;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Endpoint to get a site's settings.

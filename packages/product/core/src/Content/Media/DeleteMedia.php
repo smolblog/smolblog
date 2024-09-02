@@ -4,9 +4,9 @@ namespace Smolblog\Core\Content\Media;
 
 use Smolblog\Core\Content\EditContentCommandKit;
 use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Delete a media object.

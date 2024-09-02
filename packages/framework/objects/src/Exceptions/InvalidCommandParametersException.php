@@ -8,6 +8,8 @@ use Throwable;
 
 /**
  * Exception for when an error is found in the ServiceRegistrar configuration.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class InvalidCommandParametersException extends Exception implements SmolblogException {
 	/**

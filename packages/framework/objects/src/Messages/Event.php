@@ -4,9 +4,9 @@ namespace Smolblog\Framework\Messages;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Framework\Objects\EntityKit;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * A persistable object that tells the Domain Model that a thing happened.
@@ -18,6 +18,8 @@ use Smolblog\Framework\Objects\Identifier;
  * The intent of saving changes this way is to persist not only the state in the database but also _the Events
  * themselves._ This can allow old data to be interpreted in new ways, making migrations more reliable. It provides a
  * comprehensive audit trail that can more easily roll back unwanted changes.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 abstract class Event extends Message {
 	use EntityKit;

@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Media;
 use Smolblog\Framework\Messages\Attributes\ContentBuildLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 
 /**
  * Handle tasks related to Media.

@@ -16,7 +16,10 @@
 	"autoload": {
 		"psr-4": {
 			"Smolblog\\Framework\\": "src/"
-		}
+		},
+		"files": [
+				"src/shim.php"
+		]
 	},
 	"require": {
 		"php": "^8.2",

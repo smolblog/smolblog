@@ -3,9 +3,9 @@
 namespace Smolblog\Core\Connector\Commands;
 
 use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Command to fetch and save an updated list of channels for a given Connection.

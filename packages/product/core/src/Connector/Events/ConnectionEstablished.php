@@ -4,7 +4,7 @@ namespace Smolblog\Core\Connector\Events;
 
 use DateTimeInterface;
 use Smolblog\Core\Connector\Entities\Connection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a Connection has been formed or re-formed between a user account and an external provider.

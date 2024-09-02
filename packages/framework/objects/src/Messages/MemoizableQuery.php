@@ -10,6 +10,8 @@ namespace Smolblog\Framework\Messages;
  *
  * Kind of a cache, but as there's no real way to invalidate it and it does not persist between requests, it's not
  * called that.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 abstract class MemoizableQuery extends Query {
 	/**

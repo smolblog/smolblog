@@ -2,10 +2,10 @@
 
 namespace Smolblog\Core\Site;
 
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Add (or change) permissions for a user on a site.

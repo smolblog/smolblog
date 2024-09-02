@@ -6,8 +6,8 @@ use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Log\LoggerInterface;
 use Smolblog\Core\Content\Media\{MediaHandler, MediaFile, InvalidMediaException};
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 class MediaLibraryHelper implements MediaHandler {
 	public static function getHandle(): string {

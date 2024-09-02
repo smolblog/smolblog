@@ -10,7 +10,7 @@ use Smolblog\Api\ParameterType;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionsForUser;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get all connections for a user along with their channels.

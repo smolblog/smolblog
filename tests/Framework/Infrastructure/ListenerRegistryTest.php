@@ -2,8 +2,9 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
+use Smolblog\Framework\Messages\Listener as MessagingListener;
 use Smolblog\Test\TestCase;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Event;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;
@@ -125,7 +126,7 @@ final class ListenerRegistryTest extends TestCase {
 	}
 
 	public function testItRegistersListeners() {
-		$this->assertEquals(Listener::class, ListenerRegistry::getInterfaceToRegister());
+		$this->assertEquals(MessagingListener::class, ListenerRegistry::getInterfaceToRegister());
 	}
 
 	public function testListenerCanBeACallable() {

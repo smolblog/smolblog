@@ -20,8 +20,8 @@ use Smolblog\Framework\ActivityPub\Signatures\MessageSigner;
 use Smolblog\Framework\ActivityPub\Signatures\MessageVerifier;
 use Smolblog\Framework\Infrastructure\HttpSigner;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\NamedIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 
 /**
  * Service to handle incoming ActivityPub inbox requests.

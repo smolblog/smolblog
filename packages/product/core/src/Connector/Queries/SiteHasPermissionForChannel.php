@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Queries;
 
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Check if a given site can push to/pull from a given channel.

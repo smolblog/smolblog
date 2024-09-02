@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Site;
 
 use Smolblog\Core\User\User;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\MemoizableQuery;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Query to get the public and private keypair for a Site.

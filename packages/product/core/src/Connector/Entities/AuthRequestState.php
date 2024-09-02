@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector\Entities;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\SerializableKit;
 use Smolblog\Framework\Objects\Value;
 

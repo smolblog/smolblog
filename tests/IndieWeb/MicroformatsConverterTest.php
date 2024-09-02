@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use Smolblog\Core\Content\Content;
 use Smolblog\Core\Content\ContentVisibility;
 use Smolblog\Core\Content\GenericContent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\TestCase;
 
 final class MicroformatsConverterTest extends TestCase {

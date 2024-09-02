@@ -2,11 +2,12 @@
 
 namespace Smolblog\Test\Kits;
 
+use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Core\Content\Media\Media;
 use Smolblog\Core\Content\Media\NeedsMediaObjects;
 
 trait NeedsMediaRenderedTestKit {
-	/** @testdox It implements the NeedsMediaRendered interface. */
+	#[TestDox('It implements the NeedsMediaRendered interface.')]
 	public function testNeedsMediaRendered() {
 		if (in_array(NeedsMediaObjects::class, class_implements($this->subject))) {
 			$this->subject->setMediaObjects([

@@ -2,7 +2,7 @@
 
 namespace Smolblog\Api\User;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 
 /**

@@ -3,11 +3,15 @@
 namespace Smolblog\Core\Content\Types\Picture;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Framework\Objects\SerializableValueShim;
 
 /**
  * Create a Picture.

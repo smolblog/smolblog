@@ -2,7 +2,7 @@
 
 namespace Smolblog\Test\Kits;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 trait DateIdentifierTestKit {
 	/**

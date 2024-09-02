@@ -2,9 +2,12 @@
 
 namespace Smolblog\Framework\Infrastructure;
 
+use Psr\Container\ContainerInterface;
 use Smolblog\Test\TestCase;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
+use Smolblog\Foundation\Service;
+use Smolblog\Foundation\Service\Registry\Registry;
 
 final class TestApp {
 	use AppKit {
@@ -64,6 +67,51 @@ final class AppKitTest extends TestCase {
 			$expected[ListenerRegistry::class]['configuration'](),
 			$actual[ListenerRegistry::class]['configuration'](),
 		);
+	}
+
+	public function testItWillCreateFactoriesToCallConfigureOnNewRegistries() {
+		$regModel = new class() extends DomainModel {
+			public static function getDependencyMap(): array {
+				$registryOne = new class() implements Registry {
+					public function __construct(public ?ContainerInterface $container = null) {}
+					public static function getInterfaceToRegister(): string { return Service::class; }
+					public function configure(array $configuration): void {
+						throw new \Exception('Test failure; configure() should not have been called');
+					}
+				};
+				$registryTwo = new class() implements Registry {
+					public array $config = [];
+					public function __construct(public ?ContainerInterface $container = null) {}
+					public static function getInterfaceToRegister(): string { return Service::class; }
+					public function configure(array $configuration): void {
+						$this->config = $configuration;
+					}
+				};
+
+				class_alias(get_class($registryOne), 'AppKitTestRegistryOne');
+				class_alias(get_class($registryTwo), 'AppKitTestRegistryTwo');
+
+				return [
+					'AppKitTestRegistryOne' => fn() => $registryOne,
+					'AppKitTestRegistryTwo' => ['container' => ContainerInterface::class],
+				];
+			}
+		};
+
+		$app = new TestApp();
+		$actual = $app->buildDependencyMap([BasicModel::class, get_class($regModel)]);
+		$stubContainer = $this->createStub(ContainerInterface::class);
+		$stubContainer->method('get')->willReturnSelf();
+
+		$this->assertIsCallable($actual['AppKitTestRegistryOne']);
+		$this->assertIsCallable($actual['AppKitTestRegistryTwo']);
+
+		$reg1 = call_user_func($actual['AppKitTestRegistryOne'], $stubContainer);
+		$reg2 = call_user_func($actual['AppKitTestRegistryTwo'], $stubContainer);
+
+		$this->assertNull($reg1->container);
+		$this->assertInstanceOf(ContainerInterface::class, $reg2->container);
+		$this->assertEquals(['AppKitTestRegistryOne', 'AppKitTestRegistryTwo'], $reg2->config);
 	}
 
 	public function testItWillCreateAServiceRegistryWithTheDefaultModel() {

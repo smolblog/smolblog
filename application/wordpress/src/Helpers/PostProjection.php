@@ -21,7 +21,7 @@ use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Framework\Messages\Projection;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\WP\Helpers\SiteHelper;
 
 class PostProjection implements Projection {
@@ -34,7 +34,7 @@ class PostProjection implements Projection {
 
 		$wp_site_id = SiteHelper::UuidToInt( $content->siteId );
 		switch_to_blog( $wp_site_id );
-		
+
 		$wp_author_id = SiteHelper::UuidToInt( $content->authorId );
 		$wp_post_id = wp_insert_post( [
 			'post_author' => $wp_author_id,
@@ -58,7 +58,7 @@ class PostProjection implements Projection {
 			(isset($permalink_parts['fragment']) ? '#' . $permalink_parts['fragment'] : '');
 
 		restore_current_blog();
-		
+
 		$this->bus->dispatch(new PermalinkAssigned(
 			contentId: $event->contentId,
 			userId: $event->userId,

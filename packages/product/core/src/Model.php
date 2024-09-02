@@ -5,7 +5,7 @@ namespace Smolblog\Core;
 use Illuminate\Database\ConnectionInterface;
 use Psr\Container\ContainerInterface;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**

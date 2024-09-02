@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Commands;
 
 use Smolblog\Framework\Messages\Command;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * The indicated user is starting an OAuth request with the indicated provider.

@@ -11,7 +11,7 @@ use Smolblog\Core\Connector\Queries\ChannelsForAdmin;
 use Smolblog\Core\Connector\Queries\ChannelsForSite;
 use Smolblog\Core\Connector\Queries\ConnectionsForUser;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Objects\Value;
 
 /**

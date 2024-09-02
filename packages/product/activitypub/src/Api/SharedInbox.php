@@ -9,7 +9,7 @@ use Smolblog\Api\Endpoint;
 use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\Verb;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
-use Smolblog\Framework\Objects\HttpResponse;
+use Smolblog\Foundation\Value\Http\HttpResponse;
 
 /**
  * Server-wide ActivityPub Inbox endpoint.

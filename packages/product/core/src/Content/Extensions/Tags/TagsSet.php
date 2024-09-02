@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Extensions\Tags;
 use DateTimeInterface;
 use Smolblog\Core\Content\ContentExtension;
 use Smolblog\Core\Content\Events\ContentExtensionEdited;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates the tags have been set on a particular piece of content.

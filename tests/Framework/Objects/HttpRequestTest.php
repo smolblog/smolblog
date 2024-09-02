@@ -5,6 +5,8 @@ namespace Smolblog\Framework\Objects;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Smolblog\Foundation\Value\Http\HttpRequest;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 use Smolblog\Test\TestCase;
 
 final class HttpRequestTest extends TestCase {

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Queries;
 
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Gives a truthy value if the given user can edit the given content on the given site.

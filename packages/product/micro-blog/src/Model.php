@@ -2,7 +2,7 @@
 
 namespace Smolblog\MicroBlog;
 
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 
 /**
  * Services for the Micro.blog connector

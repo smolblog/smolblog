@@ -7,6 +7,8 @@ use Smolblog\Framework\Objects\Keypair;
 
 /**
  * Service to generate an RSA public/private keypair.
+ *
+ * @deprecated Migrate to Smolblog\Foundation\Service\KeypairGenerator
  */
 class KeypairGenerator {
 	/**

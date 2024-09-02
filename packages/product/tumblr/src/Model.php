@@ -2,7 +2,7 @@
 
 namespace Smolblog\Tumblr;
 
-use Smolblog\Framework\Objects\DomainModel;
+use Smolblog\Foundation\DomainModel;
 
 /**
  * Domain model for interacting with the Tumblr service.

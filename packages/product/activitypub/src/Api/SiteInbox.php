@@ -10,7 +10,7 @@ use Smolblog\Api\EndpointConfig;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\Verb;
 use Smolblog\Framework\ActivityPub\Objects\ActivityPubObject;
-use Smolblog\Framework\Objects\HttpResponse;
+use Smolblog\Foundation\Value\Http\HttpResponse;
 
 /**
  * ActivityPub Inbox endpoint.

@@ -3,11 +3,11 @@
 namespace Smolblog\Core\Content\Types\Note;
 
 use Smolblog\Core\Site\UserHasPermissionForSite;
-use Smolblog\Framework\Messages\AuthorizableMessage;
+use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 use Smolblog\Framework\Messages\Command;
 use Smolblog\Framework\Messages\Query;
-use Smolblog\Framework\Objects\DateIdentifier;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Create a Note.

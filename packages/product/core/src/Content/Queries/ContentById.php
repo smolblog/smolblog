@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Content\Queries;
 
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get a given Content object as a full Content object.

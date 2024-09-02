@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Connector\Events;
 
 use DateTimeInterface;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a Channel is no longer active and has been deleted.

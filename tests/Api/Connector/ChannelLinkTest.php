@@ -6,7 +6,7 @@ use Smolblog\Test\TestCase;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\Kits\EndpointTestToolkit;
 use stdClass;
 

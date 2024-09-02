@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Extensions\Syndication;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Events\ContentExtensionEdited;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a piece of content has been syndicated to the given URL.

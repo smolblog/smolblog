@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Media;
 
 use DateTimeInterface;
 use Smolblog\Core\Content\Events\ContentEvent;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicate that a new piece of media has been uploaded and processed.

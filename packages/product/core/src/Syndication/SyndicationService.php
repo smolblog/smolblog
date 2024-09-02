@@ -11,7 +11,7 @@ use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\User\User;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Handle pushing content to external services.

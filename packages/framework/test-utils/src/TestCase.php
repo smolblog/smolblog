@@ -3,16 +3,14 @@
 namespace Smolblog\Test;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Smolblog\Framework\Objects\Identifier;
-use Smolblog\Framework\Objects\RandomIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 class TestCase extends PHPUnitTestCase {
 	protected mixed $subject;
 
 	protected function randomId(bool $scrub = false): Identifier {
-		$id = new RandomIdentifier();
-
-		return $scrub ? $this->scrubId($id) : $id;
+		return $this->scrubId(new RandomIdentifier());
 	}
 
 	protected function scrubId(Identifier $id): Identifier {

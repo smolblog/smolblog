@@ -22,7 +22,7 @@
 namespace Smolblog\WP;
 
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\WP\Helpers\DatabaseHelper;
 use Smolblog\WP\Helpers\SiteHelper;
 use Smolblog\WP\Helpers\UserHelper;

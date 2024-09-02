@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Note;
 use DateTimeInterface;
 use Smolblog\Core\Content\Events\ContentBodyEdited;
 use Smolblog\Core\Content\Markdown\NeedsMarkdownRendered;
-use Smolblog\Framework\Objects\Identifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Indicates a note' text has been edited.

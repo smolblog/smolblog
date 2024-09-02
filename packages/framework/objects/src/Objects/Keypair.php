@@ -4,6 +4,8 @@ namespace Smolblog\Framework\Objects;
 
 /**
  * Represents a public key and optionally its corresponding private key.
+ *
+ * @deprecated Migrate to Smolblog\Foundation classes
  */
 class Keypair extends Value {
 	/**
