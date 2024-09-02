@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector\Data;
+namespace Smolblog\CoreDataSql\Connection;
 
 use DateTimeInterface;
 use Illuminate\Database\ConnectionInterface;

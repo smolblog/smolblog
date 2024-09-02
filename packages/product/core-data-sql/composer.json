@@ -30,7 +30,8 @@
 	],
 	"require": {
 		"php": "^8.2",
-		"smolblog/framework-foundation": "@dev"
+		"smolblog/framework-foundation": "@dev",
+		"illuminate/database": "^11.21"
 	},
 	"require-dev": {
 		"smolblog/test-utils": "@dev",

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector\Data;
+namespace Smolblog\CoreDataSql\Connection;
 
 use Illuminate\Database\ConnectionInterface;
 use Smolblog\Core\Connector\Entities\Connection;
