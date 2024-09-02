@@ -44,4 +44,4 @@ jobs:
       run: composer run-script test-coverage
 
     - name: Run integration test suite
-      run: composer run-script integration
+      run: composer run-script test-integration
