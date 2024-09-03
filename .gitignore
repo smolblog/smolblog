@@ -5,5 +5,6 @@ vendor/
 coverage.txt
 coverage.php
 test-coverage
+html-coverage
 .DS_Store
 registration.json
