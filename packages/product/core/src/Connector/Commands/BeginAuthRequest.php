@@ -2,20 +2,15 @@
 
 namespace Smolblog\Core\Connector\Commands;
 
-use Smolblog\Framework\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * The indicated user is starting an OAuth request with the indicated provider.
+ *
+ * Handler should return the redirect URL given by the provider.
  */
-class BeginAuthRequest extends Command {
-	/**
-	 * URL to Redirect the user to.
-	 *
-	 * @var string|null
-	 */
-	public ?string $redirectUrl = null;
-
+readonly class BeginAuthRequest extends Command {
 	/**
 	 * Create the command
 	 *

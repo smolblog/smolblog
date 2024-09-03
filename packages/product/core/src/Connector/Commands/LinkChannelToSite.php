@@ -3,14 +3,13 @@
 namespace Smolblog\Core\Connector\Commands;
 
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
-use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
-use Smolblog\Framework\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * Give a Site permission to push from/pull to a Channel.
  */
-class LinkChannelToSite extends Command implements AuthorizableMessage {
+readonly class LinkChannelToSite extends Command {
 	/**
 	 * Construct the command
 	 *

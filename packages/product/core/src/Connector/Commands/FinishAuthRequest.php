@@ -2,19 +2,14 @@
 
 namespace Smolblog\Core\Connector\Commands;
 
-use Smolblog\Framework\Messages\Command;
+use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * Command to kick off saving data from an OAuth callback.
+ *
+ * Handler should return a redirect URL for returning the user to the application.
  */
-class FinishAuthRequest extends Command {
-	/**
-	 * URL to return the user to.
-	 *
-	 * @var string|null
-	 */
-	public ?string $returnToUrl = null;
-
+readonly class FinishAuthRequest extends Command {
 	/**
 	 * Create the command
 	 *
