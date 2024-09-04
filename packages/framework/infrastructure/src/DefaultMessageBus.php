@@ -81,11 +81,12 @@ class DefaultMessageBus implements MessageBus, CommandBus, QueryBus, EventDispat
 	/**
 	 * Execute the given command,
 	 *
-	 * @param DeprecatedCommand|Command $command Command to execute.
+	 * @param Command $command Command to execute.
 	 * @return mixed
 	 */
-	public function execute(DeprecatedCommand|Command $command): mixed {
-		return $this->dispatch($command);
+	public function execute(Command $command): mixed {
+		$retVal = $this->dispatch($command);
+		return $retVal->returnValue() ?? $retVal;
 	}
 
 	/**
