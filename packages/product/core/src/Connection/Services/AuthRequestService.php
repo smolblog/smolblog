@@ -22,14 +22,16 @@ class AuthRequestService implements CommandHandlerService {
 	/**
 	 * Construct the service.
 	 *
-	 * @param ConnectionHandlerRegistry $handlers  Get Connection handlers.
-	 * @param AuthRequestStateRepo      $stateRepo Save state between requests.
-	 * @param EventDispatcherInterface  $eventBus  Save the final Connection.
+	 * @param ConnectionHandlerRegistry  $handlers  Get Connection handlers.
+	 * @param AuthRequestStateRepo       $stateRepo Save state between requests.
+	 * @param EventDispatcherInterface   $eventBus  Save the final Connection.
+	 * @param ConnectionChannelRefresher $refresher Get the latest channels.
 	 */
 	public function __construct(
 		private ConnectionHandlerRegistry $handlers,
 		private AuthRequestStateRepo $stateRepo,
 		private EventDispatcherInterface $eventBus,
+		private ConnectionChannelRefresher $refresher,
 	) {
 	}
 
@@ -87,6 +89,9 @@ class AuthRequestService implements CommandHandlerService {
 			entityId: $connection->getId(),
 			userId: $info->userId
 		));
+
+		// Get the latest list of channels.
+		$this->refresher->refresh(connection: $connection, userId: $info->userId);
 
 		$request->setReturnValue($info->returnToUrl);
 	}

@@ -16,7 +16,7 @@ use Smolblog\Foundation\Service\Command\CommandHandlerService;
  * The majority of operations are in separate services since they require more specialized dependencies that aren't
  * needed for the delete operation.
  */
-class ConnectionService implements CommandHandlerService {
+class ConnectionDeletionService implements CommandHandlerService {
 	/**
 	 * Construct the service
 	 *

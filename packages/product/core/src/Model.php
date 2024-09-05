@@ -18,8 +18,9 @@ class Model extends DomainModel {
 			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
 			'stateRepo' => Connection\Data\AuthRequestStateRepo::class,
 			'eventBus' => EventDispatcherInterface::class,
+			'refresher' => Connection\Services\ConnectionChannelRefresher::class,
 		],
-		Connection\Services\ChannelRefresher::class => [
+		Connection\Services\ConnectionChannelRefresher::class => [
 			'connections' => Connection\Data\ConnectionRepo::class,
 			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
 			'eventBus' => EventDispatcherInterface::class,
@@ -32,7 +33,7 @@ class Model extends DomainModel {
 			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
 			'eventBus' => EventDispatcherInterface::class,
 		],
-		Connection\Services\ConnectionService::class => [
+		Connection\Services\ConnectionDeletionService::class => [
 			'connections' => Connection\Data\ConnectionRepo::class,
 			'eventBus' => EventDispatcherInterface::class,
 		],
@@ -109,7 +110,7 @@ class Model extends DomainModel {
 		],
 		Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
-			'connectors' => Connection\Services\ConnectionRegistry::class,
+			'connectors' => Connection\Services\ConnectionHandlerRegistry::class,
 		]
 	];
 }
