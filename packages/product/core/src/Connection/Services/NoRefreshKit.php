@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connection\Entities\Connection;
 
 /**
  * Trait for Connectors that do not deal with refreshable tokens.

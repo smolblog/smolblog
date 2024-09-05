@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector\Entities;
+namespace Smolblog\Core\Connection\Entities;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\SerializableValue;

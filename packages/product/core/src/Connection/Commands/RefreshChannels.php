@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Connector\Commands;
+namespace Smolblog\Core\Connection\Commands;
 
-use Smolblog\Core\Connector\Queries\ConnectionBelongsToUser;
+use Smolblog\Core\Connection\Queries\ConnectionBelongsToUser;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Fields\Identifier;
 

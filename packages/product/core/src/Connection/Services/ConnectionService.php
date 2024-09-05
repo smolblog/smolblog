@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\Core\Connector\Services;
+namespace Smolblog\Core\Connection\Services;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Core\Connector\Commands\DeleteConnection;
-use Smolblog\Core\Connector\Data\ConnectionRepo;
-use Smolblog\Core\Connector\Events\ConnectionDeleted;
+use Smolblog\Core\Connection\Commands\DeleteConnection;
+use Smolblog\Core\Connection\Data\ConnectionRepo;
+use Smolblog\Core\Connection\Events\ConnectionDeleted;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector\Commands;
+namespace Smolblog\Core\Connection\Commands;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;

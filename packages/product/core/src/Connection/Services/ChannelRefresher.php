@@ -1,16 +1,16 @@
 <?php
 
-namespace Smolblog\Core\Connector\Services;
+namespace Smolblog\Core\Connection\Services;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Core\Connector\Commands\RefreshChannels;
-use Smolblog\Core\Connector\Data\ConnectionRepo;
-use Smolblog\Core\Connector\Entities\Connection;
-use Smolblog\Core\Connector\Events\ChannelDeleted;
-use Smolblog\Core\Connector\Events\ChannelSaved;
-use Smolblog\Core\Connector\Events\ConnectionEstablished;
-use Smolblog\Core\Connector\Queries\ChannelsForConnection;
-use Smolblog\Core\Connector\Queries\ConnectionById;
+use Smolblog\Core\Connection\Commands\RefreshChannels;
+use Smolblog\Core\Connection\Data\ConnectionRepo;
+use Smolblog\Core\Connection\Entities\Connection;
+use Smolblog\Core\Connection\Events\ChannelDeleted;
+use Smolblog\Core\Connection\Events\ChannelSaved;
+use Smolblog\Core\Connection\Events\ConnectionEstablished;
+use Smolblog\Core\Connection\Queries\ChannelsForConnection;
+use Smolblog\Core\Connection\Queries\ConnectionById;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;

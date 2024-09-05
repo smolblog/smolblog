@@ -1,15 +1,15 @@
 <?php
 
-namespace Smolblog\Core\Connector\Services;
+namespace Smolblog\Core\Connection\Services;
 
 use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Core\Connector\Commands\BeginAuthRequest;
-use Smolblog\Core\Connector\Commands\FinishAuthRequest;
-use Smolblog\Core\Connector\ConnectionHandler;
-use Smolblog\Core\Connector\Data\AuthRequestStateRepo;
-use Smolblog\Core\Connector\Entities\AuthRequestState;
-use Smolblog\Core\Connector\Events\ConnectionEstablished;
+use Smolblog\Core\Connection\Commands\BeginAuthRequest;
+use Smolblog\Core\Connection\Commands\FinishAuthRequest;
+use Smolblog\Core\Connection\ConnectionHandler;
+use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
+use Smolblog\Core\Connection\Entities\AuthRequestState;
+use Smolblog\Core\Connection\Events\ConnectionEstablished;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Service\Command\CommandHandler;

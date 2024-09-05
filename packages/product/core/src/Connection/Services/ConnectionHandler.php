@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Connector;
 
-use Smolblog\Core\Connector\Entities\AuthRequestState;
-use Smolblog\Core\Connector\Entities\Connection;
-use Smolblog\Core\Connector\Entities\ConnectionInitData;
+use Smolblog\Core\Connection\Entities\AuthRequestState;
+use Smolblog\Core\Connection\Entities\Connection;
+use Smolblog\Core\Connection\Entities\ConnectionInitData;
 use Smolblog\Foundation\Service\Registry\Registerable;
 
 /**

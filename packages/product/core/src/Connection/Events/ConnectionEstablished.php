@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Connector\Events;
+namespace Smolblog\Core\Connection\Events;
 
-use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;

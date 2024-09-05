@@ -1,8 +1,8 @@
 <?php
 
-namespace Smolblog\Core\Connector\Data;
+namespace Smolblog\Core\Connection\Data;
 
-use Smolblog\Core\Connector\Entities\Connection;
+use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
