@@ -19,12 +19,12 @@ interface ConnectionRepo {
 	public function connectionBelongsToUser(Identifier $connectionId, Identifier $userId): bool;
 
 	/**
-	 * Fetch the given Connection from the repo.
+	 * Fetch the given Connection from the repo; null if none is found.
 	 *
 	 * @param Identifier $connectionId Connection to fetch.
-	 * @return Connection
+	 * @return Connection|null
 	 */
-	public function connectionById(Identifier $connectionId): Connection;
+	public function connectionById(Identifier $connectionId): ?Connection;
 
 	/**
 	 * Get all Connections for a given User.

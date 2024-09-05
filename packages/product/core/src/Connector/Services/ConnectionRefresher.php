@@ -2,10 +2,16 @@
 
 namespace Smolblog\Core\Connector\Services;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Smolblog\Core\Connector\Commands\RefreshConnection;
+use Smolblog\Core\Connector\Data\ConnectionRepo;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ConnectionRefreshed;
 use Smolblog\Core\Connector\Queries\ConnectionById;
 use Smolblog\Core\User\User;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
+use Smolblog\Foundation\Service;
+use Smolblog\Foundation\Service\Command\CommandHandlerService;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
@@ -14,30 +20,36 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 /**
  * Service to check if a Connection needs a refresh and save the refreshed Connection if so.
  */
-class ConnectionRefresher implements Listener {
+class ConnectionRefresher implements Service, CommandHandlerService {
 	/**
-	 * Construct the service
+	 * Create the service
 	 *
-	 * @param ConnectorRegistry $connectorRepo Connectors to look up.
-	 * @param MessageBus        $messageBus    MessageBus to send the save event.
+	 * @param ConnectionRepo            $connections For fetching Connections.
+	 * @param ConnectionHandlerRegistry $handlers    For handling Connections.
+	 * @param EventDispatcherInterface  $eventBus    For saving the updated Connection.
 	 */
 	public function __construct(
-		private ConnectorRegistry $connectorRepo,
-		private MessageBus $messageBus,
+		private ConnectionRepo $connections,
+		private ConnectionHandlerRegistry $handlers,
+		private EventDispatcherInterface $eventBus,
 	) {
 	}
 
 	/**
-	 * Intercept the ConenctionById query and check the Connection is good.
+	 * Handle the RefreshConnection command
 	 *
-	 * @param ConnectionById $query Query to intercept.
+	 * @throws EntityNotFound When the given Connection cannot be found.
+	 *
+	 * @param RefreshConnection $command Command to execute.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(later: 1)]
-	public function checkOnConnectionById(ConnectionById $query) {
-		if ($query->results()) {
-			$query->setResults($this->refresh($query->results(), userId: User::internalSystemUser()->id));
+	public function onRefreshConnection(RefreshConnection $command) {
+		$connection = $this->connections->connectionById($command->connectionId);
+		if (!isset($connection)) {
+			throw new EntityNotFound($command->connectionId, Connection::class);
 		}
+
+		$this->refresh(connection: $connection, userId: $command->userId);
 	}
 
 	/**
@@ -48,15 +60,15 @@ class ConnectionRefresher implements Listener {
 	 * @return Connection Connection object ready to be used.
 	 */
 	public function refresh(Connection $connection, Identifier $userId): Connection {
-		$connector = $this->connectorRepo->get($connection->provider);
+		$connector = $this->handlers->get($connection->provider);
 		if (!$connector->connectionNeedsRefresh($connection)) {
 			return $connection;
 		}
 
 		$refreshed = $connector->refreshConnection($connection);
-		$this->messageBus->dispatch(new ConnectionRefreshed(
+		$this->eventBus->dispatch(new ConnectionRefreshed(
 			details: $refreshed->details,
-			connectionId: $refreshed->id,
+			entityId: $refreshed->getId(),
 			userId: $userId,
 		));
 		return $refreshed;

@@ -2,28 +2,34 @@
 
 namespace Smolblog\Core\Connector\Services;
 
+use Exception;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Connector\Commands\BeginAuthRequest;
 use Smolblog\Core\Connector\Commands\FinishAuthRequest;
+use Smolblog\Core\Connector\ConnectionHandler;
+use Smolblog\Core\Connector\Data\AuthRequestStateRepo;
 use Smolblog\Core\Connector\Entities\AuthRequestState;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
-use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
+use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
+use Smolblog\Foundation\Service\Command\CommandHandler;
+use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
 /**
  * Service to handle an OAuth request with an external provider.
  */
-class AuthRequestService implements Listener {
+class AuthRequestService implements CommandHandlerService {
 	/**
-	 * Construct the service
+	 * Construct the service.
 	 *
-	 * @param ConnectorRegistry    $connectors Repository of Connectors.
-	 * @param AuthRequestStateRepo $stateRepo  Repository for request states.
-	 * @param MessageBus           $messageBus MessageBus for the system.
+	 * @param ConnectionHandlerRegistry $handlers  Get Connection handlers.
+	 * @param AuthRequestStateRepo      $stateRepo Save state between requests.
+	 * @param EventDispatcherInterface  $eventBus  Save the final Connection.
 	 */
 	public function __construct(
-		private ConnectorRegistry $connectors,
+		private ConnectionHandlerRegistry $handlers,
 		private AuthRequestStateRepo $stateRepo,
-		private MessageBus $messageBus,
+		private EventDispatcherInterface $eventBus,
 	) {
 	}
 
@@ -32,11 +38,14 @@ class AuthRequestService implements Listener {
 	 *
 	 * Sets the `redirectUrl` property on the command to the URL the end-user should be given to start the process.
 	 *
+	 * @throws ServiceNotRegistered When no service is registered with the given key.
+	 *
 	 * @param BeginAuthRequest $request Command to execute.
 	 * @return void
 	 */
+	#[CommandHandler]
 	public function onBeginAuthRequest(BeginAuthRequest $request): void {
-		$connector = $this->connectors->get($request->provider);
+		$connector = $this->handlers->get($request->provider);
 
 		$data = $connector->getInitializationData(callbackUrl: $request->callbackUrl);
 
@@ -48,29 +57,37 @@ class AuthRequestService implements Listener {
 			returnToUrl: $request->returnToUrl,
 		));
 
-		$request->redirectUrl = $data->url;
+		$request->setReturnValue($data->url);
 	}
 
 	/**
 	 * Finish the OAuth request and save the new connection and its channels.
 	 *
+	 * @throws ServiceNotRegistered When no service is registered with the given key.
+	 *
 	 * @param FinishAuthRequest $request Command to execute.
 	 * @return void
 	 */
+	#[CommandHandler]
 	public function onFinishAuthRequest(FinishAuthRequest $request): void {
-		$connector = $this->connectors->get($request->provider);
+		$connector = $this->handlers->get($request->provider);
+
 		$info = $this->stateRepo->getAuthRequestState(key: $request->stateKey);
+		if (!isset($info)) {
+			throw new Exception("No state found with key $request->stateKey");
+		}
 
 		$connection = $connector->createConnection(code: $request->code, info: $info);
-		$this->messageBus->dispatch(new ConnectionEstablished(
+
+		$this->eventBus->dispatch(new ConnectionEstablished(
 			provider: $connection->provider,
 			providerKey: $connection->providerKey,
 			displayName: $connection->displayName,
 			details: $connection->details,
-			connectionId: $connection->id,
+			entityId: $connection->getId(),
 			userId: $info->userId
 		));
 
-		$request->returnToUrl = $info->returnToUrl;
+		$request->setReturnValue($info->returnToUrl);
 	}
 }

@@ -4,6 +4,7 @@ namespace Smolblog\Foundation\Service\Registry;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
+use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
 
 trait RegistryKit {
@@ -92,12 +93,16 @@ trait RegistryKit {
 	/**
 	 * Get an instance of the class indicated by the given key.
 	 *
+	 * Will throw a ServiceNotRegistered exception if the key does not exist; check with has($key) to avoid this.
+	 *
+	 * @throws ServiceNotRegistered When no service is registered with the given key.
+	 *
 	 * @param string $key Key for class to instantiate and get.
 	 * @return mixed Instance of the requested class.
 	 */
-	public function get(string $key): mixed {
+	public function getService(string $key): mixed {
 		if (!$this->has($key)) {
-			return null;
+			throw new ServiceNotRegistered(key: $key, service: self::getInterfaceToRegister());
 		}
 		return $this->container->get($this->library[$key]);
 	}

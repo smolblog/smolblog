@@ -71,6 +71,8 @@ class DefaultMessageBus implements MessageBus, CommandBus, QueryBus, EventDispat
 	 * queue, it could be an entirely different server. As such, the given Message should have as much information
 	 * included as reasonably possible.
 	 *
+	 * @deprecated use executeAsync for Commands
+	 *
 	 * @param DeprecatedMessage|Message $message Message to send.
 	 * @return void
 	 */

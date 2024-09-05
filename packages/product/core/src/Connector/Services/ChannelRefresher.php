@@ -2,47 +2,62 @@
 
 namespace Smolblog\Core\Connector\Services;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Connector\Commands\RefreshChannels;
+use Smolblog\Core\Connector\Data\ConnectionRepo;
 use Smolblog\Core\Connector\Entities\Connection;
 use Smolblog\Core\Connector\Events\ChannelDeleted;
 use Smolblog\Core\Connector\Events\ChannelSaved;
 use Smolblog\Core\Connector\Events\ConnectionEstablished;
 use Smolblog\Core\Connector\Queries\ChannelsForConnection;
 use Smolblog\Core\Connector\Queries\ConnectionById;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
+use Smolblog\Foundation\Service\Command\CommandHandler;
+use Smolblog\Foundation\Service\Command\CommandHandlerService;
+use Smolblog\Foundation\Service\Event\EventListener;
+use Smolblog\Foundation\Service\Event\EventListenerService;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Service to update Channels for a Connection based on a provider.
  */
-class ChannelRefresher implements Listener {
+class ChannelRefresher implements CommandHandlerService, EventListenerService {
 	/**
-	 * Construct the service.
+	 * Construct the service
 	 *
-	 * @param MessageBus        $messageBus MessageBus for the system.
-	 * @param ConnectorRegistry $connectors ConnectorRegistry for retrieving the Connection's Connector.
+	 * @param ConnectionRepo            $connections For fetching Connections.
+	 * @param ConnectionHandlerRegistry $handlers    For handling Connections.
+	 * @param EventDispatcherInterface  $eventBus    For saving the updated Connection.
 	 */
 	public function __construct(
-		private MessageBus $messageBus,
-		private ConnectorRegistry $connectors,
+		private ConnectionRepo $connections,
+		private ConnectionHandlerRegistry $handlers,
+		private EventDispatcherInterface $eventBus,
 	) {
 	}
 
 	/**
 	 * Respond to the RefreshChannels command.
 	 *
+	 * @throws EntityNotFound When the given Connection cannot be found.
+	 *
 	 * @param RefreshChannels $command Command with ID of Connection to refresh.
 	 * @return void
 	 */
+	#[CommandHandler]
 	public function onRefreshChannels(RefreshChannels $command): void {
-		$connection = $this->messageBus->fetch(new ConnectionById(connectionId: $command->connectionId));
+		$connection = $this->connections->connectionById(connectionId: $command->connectionId);
+		if (!isset($connection)) {
+			throw new EntityNotFound($command->connectionId, Connection::class);
+		}
+
 		$this->refresh(connection: $connection, userId: $command->userId);
 	}
 
 	/**
-	 * Respond to the onConnectionEstablished event.
+	 * Respond to the ConnectionEstablished event.
 	 *
 	 * When a Connection is established (or re-established), we should automatically refresh the channel listing. Do
 	 * this after the projection is run.
@@ -50,7 +65,7 @@ class ChannelRefresher implements Listener {
 	 * @param ConnectionEstablished $event Event with Connection that has been established.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(later: 5)]
+	#[EventListener]
 	public function onConnectionEstablished(ConnectionEstablished $event): void {
 		$connection = new Connection(
 			userId: $event->userId,
@@ -70,28 +85,30 @@ class ChannelRefresher implements Listener {
 	 * @return void
 	 */
 	private function refresh(Connection $connection, Identifier $userId): void {
-		$connector = $this->connectors->get($connection->provider);
+		/*
+			$connector = $this->handlers->get($connection->provider);
 
-		$currentChannels = $this->messageBus->fetch(new ChannelsForConnection(connectionId: $connection->id));
-		$newChannels = $connector->getChannels(connection: $connection);
+			$currentChannels = $this->messageBus->fetch(new ChannelsForConnection(connectionId: $connection->id));
+			$newChannels = $connector->getChannels(connection: $connection);
 
-		$toDeactivate = array_diff($currentChannels, $newChannels);
-		foreach ($toDeactivate as $deleteMe) {
+			$toDeactivate = array_diff($currentChannels, $newChannels);
+			foreach ($toDeactivate as $deleteMe) {
 			$this->messageBus->dispatch(new ChannelDeleted(
 				channelKey: $deleteMe->channelKey,
-				connectionId: $connection->id,
+				connectionId: $connection->getId(),
 				userId: $userId,
 			));
-		}
+			}
 
-		foreach ($newChannels as $channel) {
+			foreach ($newChannels as $channel) {
 			$this->messageBus->dispatch(new ChannelSaved(
 				channelKey: $channel->channelKey,
 				displayName: $channel->displayName,
 				details: $channel->details,
-				connectionId: $connection->id,
+				connectionId: $connection->getId(),
 				userId: $userId,
 			));
-		}
+			}
+		*/
 	}
 }
