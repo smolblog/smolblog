@@ -1,21 +1,19 @@
 <?php
 
-namespace Smolblog\Core\Connector\Commands;
+namespace Smolblog\Core\Connection\Commands;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Smolblog\Core\Connector\Connector;
-use Smolblog\Core\Connector\ConnectorConfiguration;
-use Smolblog\Core\Connector\ConnectorInitData;
-use Smolblog\Core\Connector\Entities\AuthRequestState;
-use Smolblog\Core\Connector\NoRefreshKit;
-use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
+use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
+use Smolblog\Core\Connection\Entities\AuthRequestState;
+use Smolblog\Core\Connection\Entities\ConnectionInitData;
+use Smolblog\Core\Connection\Services\ConnectionHandler;
 use Smolblog\Core\Model;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\ModelTest;
 
-abstract class AbstractMockConnector implements Connector {
-	public static function getConfiguration(): ConnectorConfiguration {
-		return new ConnectorConfiguration(key: 'testmock');
+abstract class AbstractMockConnector implements ConnectionHandler {
+	public static function getKey(): string {
+		return 'testmock';
 	}
 }
 
@@ -26,7 +24,7 @@ class BeginAuthRequestCommandTest extends ModelTest {
 
 	protected function createMockServices(): array {
 		$handler = $this->createStub(AbstractMockConnector::class);
-		$handler->method('getInitializationData')->willReturnCallback(fn($cbUrl) => new ConnectorInitData(
+		$handler->method('getInitializationData')->willReturnCallback(fn($cbUrl) => new ConnectionInitData(
 			url: $cbUrl,
 			state: '0ab41adf-ef37-4b51-bee3-d38bfb1b0b7a',
 			info: ['smol' => 'blog'],

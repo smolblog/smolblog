@@ -18,32 +18,41 @@
       "email": "me@eph.me"
     }
   ],
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../../framework/test-utils"
+    },
+    {
+      "type": "path",
+      "url": "../../framework/foundation"
+    },
+    {
+      "type": "path",
+      "url": "../../framework/objects"
+    },
+    {
+      "type": "path",
+      "url": "../../framework/infrastructure"
+    }
+  ],
   "require-dev": {
-    "squizlabs/php_codesniffer": "^3.8",
-    "phpunit/phpunit": "^9",
-    "nyholm/psr7": "^1.4",
-    "symplify/monorepo-builder": "^11.2"
+    "smolblog/test-utils": "@dev",
+    "smolblog/framework-objects": "@dev",
+    "smolblog/framework-infrastructure": "@dev"
   },
   "scripts": {
     "test": "phpunit --testsuite core",
     "test-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite core; cat coverage.txt",
-    "integration": "phpunit --testsuite integration",
-    "integration-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite integration; cat coverage.txt",
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-    "swagger": "Smolblog\\Api\\Model::printSpec"
+    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },
   "require": {
     "php": "^8.2",
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
-    "cebe/markdown": "^1.2",
-    "phpseclib/phpseclib": "^3.0",
-    "psr/http-client": "^1.0",
     "illuminate/database": "^9.0",
-    "taproot/micropub-adapter": "^0.1.1",
-    "psr/log": "^3.0",
     "elephox/mimey": "^4.0",
-    "tumblr/tumblr": "^0.4.2"
+    "smolblog/framework-foundation": "@dev"
   }
 }

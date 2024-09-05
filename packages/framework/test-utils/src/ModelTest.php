@@ -31,7 +31,7 @@ class ModelTest extends TestCase {
 		return [];
 	}
 
-	protected function expectEvent(Event|DomainEvent $event) {
+	protected function expectEvent(DomainEvent $event) {
 		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($event));
 	}
 }

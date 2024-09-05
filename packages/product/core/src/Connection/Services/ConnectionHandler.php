@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector;
+namespace Smolblog\Core\Connection\Services;
 
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\Connection;

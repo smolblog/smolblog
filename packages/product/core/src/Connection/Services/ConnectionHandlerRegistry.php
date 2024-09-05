@@ -3,7 +3,6 @@
 namespace Smolblog\Core\Connection\Services;
 
 use Psr\Container\ContainerInterface;
-use Smolblog\Core\Connection\ConnectionHandler;
 use Smolblog\Foundation\Service\Registry\Registry;
 use Smolblog\Foundation\Service\Registry\RegistryKit;
 

@@ -20,14 +20,6 @@ readonly class RefreshChannels extends Command {
 		public readonly Identifier $connectionId,
 		public readonly Identifier $userId,
 	) {
-	}
-
-	/**
-	 * Check if the given User has permission to execute this Command.
-	 *
-	 * @return ConnectionBelongsToUser
-	 */
-	public function getAuthorizationQuery(): ConnectionBelongsToUser {
-		return new ConnectionBelongsToUser(connectionId: $this->connectionId, userId: $this->userId);
+		parent::__construct();
 	}
 }

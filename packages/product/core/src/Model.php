@@ -4,6 +4,7 @@ namespace Smolblog\Core;
 
 use Illuminate\Database\ConnectionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Foundation\DomainModel;
 use Smolblog\Markdown\SmolblogMarkdown;
@@ -13,41 +14,27 @@ use Smolblog\Markdown\SmolblogMarkdown;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
-		Connector\Data\ChannelProjection::class => [
-			'db' => ConnectionInterface::class,
+		Connection\Services\AuthRequestService::class => [
+			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
+			'stateRepo' => Connection\Data\AuthRequestStateRepo::class,
+			'eventBus' => EventDispatcherInterface::class,
 		],
-		Connector\Data\ChannelSiteLinkProjection::class => [
-			'db' => ConnectionInterface::class,
-			'bus' => MessageBus::class,
+		Connection\Services\ChannelRefresher::class => [
+			'connections' => Connection\Data\ConnectionRepo::class,
+			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
+			'eventBus' => EventDispatcherInterface::class,
 		],
-		Connector\Data\ConnectionProjection::class => [
-			'db' => ConnectionInterface::class,
-		],
-		Connector\Data\ConnectorEventStream::class => [
-			'db' => ConnectionInterface::class,
-		],
-		Connector\Services\AuthRequestService::class => [
-			'connectors' => Connector\Services\ConnectorRegistry::class,
-			'stateRepo' => Connector\Services\AuthRequestStateRepo::class,
-			'messageBus' => MessageBus::class,
-		],
-		Connector\Services\ChannelLinker::class => [
-			'bus' => MessageBus::class,
-		],
-		Connector\Services\ChannelRefresher::class => [
-			'messageBus' => MessageBus::class,
-			'connectors' => Connector\Services\ConnectorRegistry::class,
-		],
-		Connector\Services\ConnectionRefresher::class => [
-			'messageBus' => MessageBus::class,
-			'connectorRepo' => Connector\Services\ConnectorRegistry::class,
-		],
-		Connector\Services\ConnectionService::class => [
-			'bus' => MessageBus::class,
-		],
-		Connector\Services\ConnectorRegistry::class => [
+		Connection\Services\ConnectionHandlerRegistry::class => [
 			'container' => ContainerInterface::class,
-			'configuration' => null,
+		],
+		Connection\Services\ConnectionRefresher::class => [
+			'connections' => Connection\Data\ConnectionRepo::class,
+			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
+			'eventBus' => EventDispatcherInterface::class,
+		],
+		Connection\Services\ConnectionService::class => [
+			'connections' => Connection\Data\ConnectionRepo::class,
+			'eventBus' => EventDispatcherInterface::class,
 		],
 
 		Content\ContentService::class => [
@@ -122,7 +109,7 @@ class Model extends DomainModel {
 		],
 		Syndication\SyndicationService::class => [
 			'bus' => MessageBus::class,
-			'connectors' => Connector\Services\ConnectorRegistry::class,
+			'connectors' => Connection\Services\ConnectionRegistry::class,
 		]
 	];
 }

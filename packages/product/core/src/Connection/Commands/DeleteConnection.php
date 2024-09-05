@@ -19,5 +19,6 @@ readonly class DeleteConnection extends Command {
 		public readonly Identifier $userId,
 		public readonly Identifier $connectionId,
 	) {
+		parent::__construct();
 	}
 }

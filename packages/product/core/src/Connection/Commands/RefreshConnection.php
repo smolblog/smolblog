@@ -19,5 +19,6 @@ readonly class RefreshConnection extends Command {
 		public Identifier $connectionId,
 		public Identifier $userId,
 	) {
+		parent::__construct();
 	}
 }
