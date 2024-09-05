@@ -102,7 +102,7 @@ trait RegistryKit {
 	 */
 	public function getService(string $key): mixed {
 		if (!$this->has($key)) {
-			throw new ServiceNotRegistered(key: $key, service: self::getInterfaceToRegister());
+			throw new ServiceNotRegistered(service: $key, registry: static::class);
 		}
 		return $this->container->get($this->library[$key]);
 	}

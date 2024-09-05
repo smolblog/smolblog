@@ -36,21 +36,4 @@ readonly class ConnectionEstablished extends DomainEvent {
 		$calculatedId = $entityId ?? Connection::buildId(provider: $provider, providerKey: $providerKey);
 		parent::__construct(entityId: $calculatedId, userId: $userId, id: $id, timestamp: $timestamp);
 	}
-
-	/**
-	 * For subclasses to provide any additional fields in a serialized array format.
-	 *
-	 * In this format so that the additional fields can be type-checked by the subclasses but still serialized and
-	 * stored in a standard format.
-	 *
-	 * @return array
-	 */
-	public function getPayload(): array {
-		return [
-			'provider' => $this->provider,
-			'providerKey' => $this->providerKey,
-			'displayName' => $this->displayName,
-			'details' => $this->details,
-		];
-	}
 }

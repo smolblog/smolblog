@@ -74,7 +74,7 @@ class AuthRequestService implements CommandHandlerService {
 
 		$info = $this->stateRepo->getAuthRequestState(key: $request->stateKey);
 		if (!isset($info)) {
-			throw new Exception("No state found with key $request->stateKey");
+			throw new EntityNotFound(entityId: $request->stateKey, entityName: AuthRequestState::class);
 		}
 
 		$connection = $connector->createConnection(code: $request->code, info: $info);

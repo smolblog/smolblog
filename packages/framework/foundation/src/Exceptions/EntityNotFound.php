@@ -13,14 +13,14 @@ class EntityNotFound extends Exception {
 	/**
 	 * Construct the exception
 	 *
-	 * @param Identifier     $entityId   ID that does not correspond to an Entity.
-	 * @param string         $entityName Name of the Entity.
-	 * @param string         $message    The Exception command to throw.
-	 * @param integer        $code       The Exception command to throw.
-	 * @param Throwable|null $previous   The previous exception used for the exception chaining.
+	 * @param string|Identifier $entityId   ID that does not correspond to an Entity.
+	 * @param string            $entityName Name of the Entity.
+	 * @param string            $message    The Exception command to throw.
+	 * @param integer           $code       The Exception command to throw.
+	 * @param Throwable|null    $previous   The previous exception used for the exception chaining.
 	 */
 	public function __construct(
-		public readonly Identifier $entityId,
+		public readonly string|Identifier $entityId,
 		public readonly string $entityName,
 		?string $message = null,
 		int $code = 0,

@@ -6,24 +6,19 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\ConnectionInitData;
-use Smolblog\Core\Connection\Services\ConnectionHandler;
 use Smolblog\Core\Model;
+use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Test\MockBases\ConnectionHandlerTestBase;
 use Smolblog\Test\ModelTest;
 
-abstract class AbstractMockConnector implements ConnectionHandler {
-	public static function getKey(): string {
-		return 'testmock';
-	}
-}
-
-class BeginAuthRequestCommandTest extends ModelTest {
+class BeginAuthRequestTest extends ModelTest {
 	const INCLUDED_MODELS = [Model::class];
 
 	private AuthRequestStateRepo & MockObject $stateRepo;
 
 	protected function createMockServices(): array {
-		$handler = $this->createStub(AbstractMockConnector::class);
+		$handler = $this->createStub(ConnectionHandlerTestBase::class);
 		$handler->method('getInitializationData')->willReturnCallback(fn($cbUrl) => new ConnectionInitData(
 			url: $cbUrl,
 			state: '0ab41adf-ef37-4b51-bee3-d38bfb1b0b7a',
@@ -33,7 +28,7 @@ class BeginAuthRequestCommandTest extends ModelTest {
 		$this->stateRepo = $this->createMock(AuthRequestStateRepo::class);
 
 		return [
-			AbstractMockConnector::class => fn() => $handler,
+			ConnectionHandlerTestBase::class => fn() => $handler,
 			AuthRequestStateRepo::class => fn() => $this->stateRepo,
 		];
 	}
@@ -57,5 +52,15 @@ class BeginAuthRequestCommandTest extends ModelTest {
 
 		$redirectUrl = $this->app->execute($command);
 		$this->assertEquals('//smol.blog/callback/testmock', $redirectUrl);
+	}
+
+	public function testProviderNotRegistered() {
+		$this->expectException(ServiceNotRegistered::class);
+
+		$this->app->execute(new BeginAuthRequest(
+			provider: 'not registered',
+			userId: Identifier::fromString('d18ba802-2a29-4c3e-b4db-d3dd7e6962de'),
+			callbackUrl: '//smol.blog/callback/testmock',
+		));
 	}
 }

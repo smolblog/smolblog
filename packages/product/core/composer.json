@@ -43,7 +43,10 @@
   },
   "scripts": {
     "test": "phpunit --testsuite core",
-    "test-coverage": "export XDEBUG_MODE=coverage; phpunit --testsuite core; cat coverage.txt",
+    "test-coverage": [
+      "@putenv XDEBUG_MODE=coverage",
+      "phpunit --testsuite core --coverage-text"
+    ],
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },

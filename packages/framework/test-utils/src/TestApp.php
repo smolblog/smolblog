@@ -5,6 +5,7 @@ namespace Smolblog\Test;
 use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Framework\Infrastructure\AppKit;
+use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Infrastructure\DefaultModel;
 use Smolblog\Framework\Infrastructure\ServiceRegistry;
 
@@ -25,5 +26,9 @@ class TestApp {
 
 	public function execute(Command $command): mixed {
 		return $this->container->get(CommandBus::class)->execute($command);
+	}
+
+	public function dispatch(mixed $event): mixed {
+		return $this->container->get(DefaultMessageBus::class)->dispatch($event);
 	}
 }
