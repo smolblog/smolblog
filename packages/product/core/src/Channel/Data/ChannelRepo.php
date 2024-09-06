@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Channel\Data;
 
-use Smolblog\Core\Connector\Entities\Channel;
+use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 interface ChannelRepo {
