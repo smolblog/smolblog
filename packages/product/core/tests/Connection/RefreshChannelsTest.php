@@ -2,32 +2,14 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-use PHPUnit\Framework\MockObject\Stub;
-use Smolblog\Core\Connection\Data\ConnectionRepo;
+require_once __DIR__ . '/_base.php';
+
 use Smolblog\Core\Connection\Entities\Connection;
-use Smolblog\Core\Connection\Services\ConnectionHandler;
-use Smolblog\Core\Model;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\MockBases\ConnectionHandlerTestBase;
-use Smolblog\Test\ModelTest;
+use Smolblog\Test\ConnectionTestBase;
 
-class RefreshChannelsTest extends ModelTest {
-	const INCLUDED_MODELS = [Model::class];
-
-	private ConnectionRepo & Stub $connections;
-	private ConnectionHandler & Stub $handler;
-
-	protected function createMockServices(): array {
-		$this->connections = $this->createStub(ConnectionRepo::class);
-		$this->handler = $this->createStub(ConnectionHandlerTestBase::class);
-
-		return [
-			ConnectionRepo::class => fn() => $this->connections,
-			ConnectionHandlerTestBase::class => fn() => $this->handler,
-		];
-	}
-
+class RefreshChannelsTest extends ConnectionTestBase {
 	public function testHappyPathWithCommand() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$connection = new Connection(

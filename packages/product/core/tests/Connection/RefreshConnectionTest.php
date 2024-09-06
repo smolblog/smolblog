@@ -2,39 +2,15 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
-use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
-use Smolblog\Core\Connection\Data\ConnectionRepo;
-use Smolblog\Core\Connection\Entities\AuthRequestState;
+require_once __DIR__ . '/_base.php';
+
 use Smolblog\Core\Connection\Entities\Connection;
-use Smolblog\Core\Connection\Entities\ConnectionInitData;
-use Smolblog\Core\Connection\Events\ConnectionDeleted;
 use Smolblog\Core\Connection\Events\ConnectionRefreshed;
-use Smolblog\Core\Connection\Services\ConnectionHandler;
-use Smolblog\Core\Model;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\MockBases\ConnectionHandlerTestBase;
-use Smolblog\Test\ModelTest;
+use Smolblog\Test\ConnectionTestBase;
 
-class RefreshConnectionTest extends ModelTest {
-	const INCLUDED_MODELS = [Model::class];
-
-	private ConnectionRepo & Stub $connections;
-	private ConnectionHandler & MockObject $handler;
-
-	protected function createMockServices(): array {
-		$this->connections = $this->createStub(ConnectionRepo::class);
-		$this->handler = $this->createMock(ConnectionHandlerTestBase::class);
-
-		return [
-			ConnectionRepo::class => fn() => $this->connections,
-			ConnectionHandlerTestBase::class => fn() => $this->handler,
-		];
-	}
-
+class RefreshConnectionTest extends ConnectionTestBase {
 	public function testHappyPath() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$connection = new Connection(

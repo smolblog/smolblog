@@ -2,36 +2,17 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
+require_once __DIR__ . '/_base.php';
+
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\Connection;
-use Smolblog\Core\Connection\Entities\ConnectionInitData;
 use Smolblog\Core\Connection\Events\ConnectionEstablished;
-use Smolblog\Core\Connection\Services\ConnectionHandler;
-use Smolblog\Core\Model;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\MockBases\ConnectionHandlerTestBase;
-use Smolblog\Test\ModelTest;
+use Smolblog\Test\ConnectionTestBase;
 
-class FinishAuthRequestTest extends ModelTest {
-	const INCLUDED_MODELS = [Model::class];
-
-	private AuthRequestStateRepo & MockObject $stateRepo;
-	private ConnectionHandler & MockObject $handler;
-
-	protected function createMockServices(): array {
-		$this->handler = $this->createMock(ConnectionHandlerTestBase::class);
-		$this->stateRepo = $this->createStub(AuthRequestStateRepo::class);
-
-		return [
-			ConnectionHandlerTestBase::class => fn() => $this->handler,
-			AuthRequestStateRepo::class => fn() => $this->stateRepo,
-		];
-	}
-
+class FinishAuthRequestTest extends ConnectionTestBase {
 	public function testHappyPath() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$command = new FinishAuthRequest(

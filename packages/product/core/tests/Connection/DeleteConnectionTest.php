@@ -2,31 +2,14 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
-use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
-use Smolblog\Core\Connection\Data\ConnectionRepo;
-use Smolblog\Core\Connection\Entities\AuthRequestState;
-use Smolblog\Core\Connection\Entities\ConnectionInitData;
+require_once __DIR__ . '/_base.php';
+
 use Smolblog\Core\Connection\Events\ConnectionDeleted;
-use Smolblog\Core\Model;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\ModelTest;
+use Smolblog\Test\ConnectionTestBase;
 
-class DeleteConnectionTest extends ModelTest {
-	const INCLUDED_MODELS = [Model::class];
-
-	private ConnectionRepo & Stub $connections;
-
-	protected function createMockServices(): array {
-		$this->connections = $this->createStub(ConnectionRepo::class);
-
-		return [
-			ConnectionRepo::class => fn() => $this->connections,
-		];
-	}
-
+class DeleteConnectionTest extends ConnectionTestBase {
 	public function testHappyPath() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$connectionId = Identifier::fromString('267bef97-2fb9-4c76-b709-472578f46091');
