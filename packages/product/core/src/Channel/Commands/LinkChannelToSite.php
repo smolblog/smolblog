@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector\Commands;
+namespace Smolblog\Core\Channel\Commands;
 
 use Smolblog\Core\Connector\Queries\UserCanLinkChannelAndSite;
 use Smolblog\Foundation\Value\Fields\Identifier;

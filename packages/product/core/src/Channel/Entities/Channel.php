@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connection\Entities;
+namespace Smolblog\Core\Channel\Entities;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -10,13 +10,13 @@ use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
- * Information about credentials needed to authenticate against an
- * exteral API as a particular user.
+ * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media
+ * providers allow multiple profiles/blogs/channels/etc. per account, this is its own Entity.
  */
-readonly class Connection extends Value implements Entity, SerializableValue {
+readonly class Channel extends Value implements Entity, SerializableValue {
 	use SerializableValueKit;
 
-	public const NAMESPACE = '3c7d4546-2086-44a0-aec8-85e64c6d2166';
+	public const NAMESPACE = '144af6d4-b4fb-4500-bb28-8e729cc7f585';
 
 	/**
 	 * Consistently build a unique identifier out of the provider and key.
@@ -30,20 +30,20 @@ readonly class Connection extends Value implements Entity, SerializableValue {
 	}
 
 	/**
-	 * Create the Connection.
+	 * Construct the Channel
 	 *
-	 * @param Identifier $userId      ID of the user this Connection belongs to.
-	 * @param string     $provider    Slug for the Connector this is tied to.
-	 * @param string     $providerKey Unique identifier for this account at this provider.
-	 * @param string     $displayName Recognizable name for the account (username or email?).
-	 * @param array      $details     Information needed by the handler.
+	 * @param string          $provider     Key for the handler this is tied to (usually provider name).
+	 * @param string          $providerKey  Unique identifier for this account at this provider.
+	 * @param string          $displayName  Recognizable name for the channel (URL or handle?).
+	 * @param array           $details      Information needed by the handler.
+	 * @param Identifier|null $connectionId Connection needed to authenticate for this channel (if necessary).
 	 */
 	public function __construct(
-		public readonly Identifier $userId,
 		public readonly string $provider,
 		public readonly string $providerKey,
 		public readonly string $displayName,
 		public readonly array $details,
+		public readonly ?Identifier $connectionId = null,
 	) {
 	}
 

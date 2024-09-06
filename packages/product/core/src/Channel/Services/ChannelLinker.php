@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector\Services;
+namespace Smolblog\Core\Channel\Services;
 
 use Smolblog\Core\Connector\Commands\LinkChannelToSite;
 use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;

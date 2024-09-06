@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Connector\Events;
+namespace Smolblog\Core\Channel\Events;
 
 use DateTimeInterface;
 use Smolblog\Foundation\Value\Fields\Identifier;
