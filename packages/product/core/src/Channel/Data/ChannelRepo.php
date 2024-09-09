@@ -18,7 +18,7 @@ interface ChannelRepo {
 	 * Get all Channels linked to a particular Connection.
 	 *
 	 * @param Identifier $connectionId ID of Connection in question.
-	 * @return array
+	 * @return Channel[]
 	 */
 	public function channelsForConnection(Identifier $connectionId): array;
 
@@ -26,7 +26,7 @@ interface ChannelRepo {
 	 * Get all Channels linked to a Site.
 	 *
 	 * @param Identifier $siteId ID of Site to check.
-	 * @return array
+	 * @return Channel[]
 	 */
 	public function channelsForSite(Identifier $siteId): array;
 

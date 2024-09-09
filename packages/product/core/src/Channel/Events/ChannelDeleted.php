@@ -12,19 +12,17 @@ readonly class ChannelDeleted extends DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param string             $channelKey   Key of the channel being deleted.
-	 * @param Identifier         $connectionId ID of the connection this event belongs to.
-	 * @param Identifier         $userId       ID of the user initiating this change.
-	 * @param Identifier|null    $id           Optional ID for the event.
-	 * @param DateTimeField|null $timestamp    Optional timestamp for the event (default now).
+	 * @param Identifier         $entityId  ID of the channel being deleted.
+	 * @param Identifier         $userId    ID of the user initiating this change.
+	 * @param Identifier|null    $id        Optional ID for the event.
+	 * @param DateTimeField|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		public readonly string $channelKey,
-		Identifier $connectionId,
+		Identifier $entityId,
 		Identifier $userId,
 		Identifier $id = null,
 		DateTimeField $timestamp = null,
 	) {
-		parent::__construct(connectionId: $connectionId, userId: $userId, id: $id, timestamp: $timestamp);
+		parent::__construct(entityId: $entityId, userId: $userId, id: $id, timestamp: $timestamp);
 	}
 }

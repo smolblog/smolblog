@@ -3,6 +3,10 @@
 namespace Smolblog\Core\Connection\Services;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Channel\Entities\Channel;
+use Smolblog\Core\Channel\Events\ChannelDeleted;
+use Smolblog\Core\Channel\Events\ChannelSaved;
 use Smolblog\Core\Connection\Commands\RefreshChannels;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Entities\Connection;
@@ -22,11 +26,13 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 	 * Construct the service
 	 *
 	 * @param ConnectionRepo            $connections For fetching Connections.
+	 * @param ChannelRepo               $channels    For getting the current Channels.
 	 * @param ConnectionHandlerRegistry $handlers    For handling Connections.
 	 * @param EventDispatcherInterface  $eventBus    For saving the updated Connection.
 	 */
 	public function __construct(
 		private ConnectionRepo $connections,
+		private ChannelRepo $channels,
 		private ConnectionHandlerRegistry $handlers,
 		private EventDispatcherInterface $eventBus,
 	) {
@@ -58,30 +64,24 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 	 * @return void
 	 */
 	public function refresh(Connection $connection, Identifier $userId): void {
-		/*
-			$connector = $this->handlers->get($connection->provider);
+		$connector = $this->handlers->get($connection->provider);
 
-			$currentChannels = $this->messageBus->fetch(new ChannelsForConnection(connectionId: $connection->id));
-			$newChannels = $connector->getChannels(connection: $connection);
+		$currentChannels = $this->channels->channelsForConnection(connectionId: $connection->getId());
+		$newChannels = $connector->getChannels(connection: $connection);
 
-			$toDeactivate = array_diff($currentChannels, $newChannels);
-			foreach ($toDeactivate as $deleteMe) {
-			$this->messageBus->dispatch(new ChannelDeleted(
-				channelKey: $deleteMe->channelKey,
-				connectionId: $connection->getId(),
+		$toDeactivate = array_diff($currentChannels, $newChannels);
+		foreach ($toDeactivate as $deleteMe) {
+			$this->eventBus->dispatch(new ChannelDeleted(
+				entityId: $deleteMe->getId(),
 				userId: $userId,
 			));
-			}
+		}
 
-			foreach ($newChannels as $channel) {
-			$this->messageBus->dispatch(new ChannelSaved(
-				channelKey: $channel->channelKey,
-				displayName: $channel->displayName,
-				details: $channel->details,
-				connectionId: $connection->getId(),
+		foreach ($newChannels as $channel) {
+			$this->eventBus->dispatch(new ChannelSaved(
+				channel: $channel,
 				userId: $userId,
 			));
-			}
-		*/
+		}
 	}
 }

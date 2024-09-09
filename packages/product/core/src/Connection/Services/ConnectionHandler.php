@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Connection\Services;
 
+use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Entities\ConnectionInitData;
