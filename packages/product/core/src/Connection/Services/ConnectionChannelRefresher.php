@@ -69,7 +69,8 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 		$currentChannels = $this->channels->channelsForConnection(connectionId: $connection->getId());
 		$newChannels = $connector->getChannels(connection: $connection);
 
-		$toDeactivate = array_diff($currentChannels, $newChannels);
+		// $toDeactivate = array_diff($currentChannels, $newChannels);
+		$toDeactivate = \array_filter($currentChannels, fn($channel) => !\in_array($channel, $newChannels));
 		foreach ($toDeactivate as $deleteMe) {
 			$this->eventBus->dispatch(new ChannelDeleted(
 				entityId: $deleteMe->getId(),
@@ -77,7 +78,8 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 			));
 		}
 
-		foreach ($newChannels as $channel) {
+		$toAdd = \array_filter($newChannels, fn($channel) => !\in_array($channel, $currentChannels));
+		foreach ($toAdd as $channel) {
 			$this->eventBus->dispatch(new ChannelSaved(
 				channel: $channel,
 				userId: $userId,

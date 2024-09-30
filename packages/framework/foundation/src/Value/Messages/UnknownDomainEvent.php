@@ -5,7 +5,7 @@ namespace Smolblog\Foundation\Value\Messages;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Throwable;
+use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
 
 /**
  * A domain event that is not known to the system.
@@ -14,6 +14,8 @@ use Throwable;
  * no longer have a class definition, or at least prevents throwing an error in those cases.
  */
 final readonly class UnknownDomainEvent extends DomainEvent {
+	use SerializableSupertypeBackupKit;
+
 	/**
 	 * Construct the event
 	 *
@@ -32,38 +34,15 @@ final readonly class UnknownDomainEvent extends DomainEvent {
 		?Identifier $entityId = null,
 		public array $props = [],
 	) {
-		parent::__construct($id, $timestamp, $userId, $aggregateId, $entityId);
+		parent::__construct($userId, $id, $timestamp, $aggregateId, $entityId);
 	}
 
 	/**
-	 * Deserialize the object. Any unknown fields are put in the `props` array.
+	 * Note that extra properties go in the $props field.
 	 *
-	 * @throws InvalidValueProperties Thrown if the object could not be deserialized.
-	 *
-	 * @param array $data Serialized object.
-	 * @return static
+	 * @return string
 	 */
-	public static function deserializeValue(array $data): static {
-		if (isset($data['props'])) {
-			return self::baseDeserialize($data);
-		}
-
-		$modified = [
-			'id' => $data['id'] ?? null,
-			'timestamp' => $data['timestamp'] ?? null,
-			'userId' => $data['userId'] ?? null,
-			'aggregateId' => $data['aggregateId'] ?? null,
-			'entityId' => $data['entityId'] ?? null,
-		];
-		$modified['props'] = array_diff_key($data, $modified);
-
-		try {
-			return self::baseDeserialize($modified);
-		} catch (Throwable $e) {
-			throw new InvalidValueProperties(
-				message: 'Could not deserialize to a DomainEvent',
-				previous: $e
-			);
-		}
+	public static function extraPropsField(): string {
+		return 'props';
 	}
 }

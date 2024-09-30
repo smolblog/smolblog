@@ -2,7 +2,9 @@
 
 namespace Smolblog\Core\Channel\Entities;
 
+use Override;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 
 /**
@@ -12,35 +14,37 @@ use Smolblog\Foundation\Value\Traits\SerializableValue;
  * package and thus don't need special data structures or type checking.
  */
 readonly class BasicChannel extends Channel {
+	use SerializableSupertypeBackupKit;
+
 	/**
-	 * Extra properties used by the handler.
+	 * Store extra properties in $details.
 	 *
-	 * @var array<array|string|float|integer|boolean>
+	 * @return string
 	 */
-	public array $details;
+	private static function extraPropsField(): string {
+		return 'details';
+	}
 
 	/**
 	 * Create the Channel.
 	 *
 	 * @param string                             $handler      Key for the handler this is tied to (usually provider
-	 *                                                                                                                name).
+	 *                                                         name).
 	 * @param string                             $handlerKey   Unique identifier for this account at this provider.
 	 * @param string                             $displayName  Recognizable name for the channel (URL or handle?).
+	 * @param array|string|float|integer|boolean $details      Extra properties used by the handler.
 	 * @param Identifier|null                    $userId       User responsible for this Channel (if applicable).
 	 * @param Identifier|null                    $connectionId Connection needed to authenticate for this channel (if
 	 *                    																		 necessary).
-	 * @param array|string|float|integer|boolean ...$details   Extra properties used by the handler.
 	 */
 	public function __construct(
 		string $handler,
 		string $handlerKey,
 		string $displayName,
+		public array $details,
 		?Identifier $userId = null,
 		?Identifier $connectionId = null,
-		mixed ...$details,
 	) {
-		$this->details = $details;
-
 		parent::__construct(
 			handler: $handler,
 			handlerKey: $handlerKey,

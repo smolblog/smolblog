@@ -9,6 +9,7 @@ use Smolblog\Test\Kits\ServiceTestKit;
 use Smolblog\Test\TestCase;
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
+use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 
 interface TestRegisterable extends Registerable {}
 interface TestConfigurable extends ConfiguredRegisterable {}
@@ -28,6 +29,7 @@ final class RegistryKitTest extends TestCase {
 
 	private array $basicServices;
 	private array $configuredServices;
+	private TestRegistry $service;
 
 	protected function setUp(): void {
 		$this->service = $this->setUpService(TestRegistry::class);
@@ -130,25 +132,27 @@ final class RegistryKitTest extends TestCase {
 		$this->deps->container->method('has')->willReturn(true);
 		$this->deps->container->method('get')->willReturn('ServiceOne_class_instance');
 
-		$this->assertEquals('ServiceOne_class_instance', $this->service->get('one'));
+		$this->assertEquals('ServiceOne_class_instance', $this->service->getService('one'));
 	}
 
-	#[TestDox('::get will return null if the given key is not present')]
+	#[TestDox('::get will throw exception if the given key is not present')]
 	function testGetWithNoKey() {
 		$this->setUpBasic();
 		$this->deps->container->method('has')->willReturn(true);
 		$this->deps->container->method('get')->willReturn('ServiceOne_class_instance');
 
-		$this->assertNull($this->service->get(get_class($this->basicServices[0])));
+		$this->expectException(ServiceNotRegistered::class);
+		$this->service->getService(get_class($this->basicServices[0]));
 	}
 
-	#[TestDox('::get will return false if the given key is present but the class is not in the container')]
+	#[TestDox('::get will throw exception if the given key is present but the class is not in the container')]
 	function testGetWithNoContainer() {
 		$this->setUpBasic();
 		$this->deps->container->method('has')->willReturn(false);
 		$this->deps->container->expects($this->never())->method('get');
 
-		$this->assertNull($this->service->get('one'));
+		$this->expectException(ServiceNotRegistered::class);
+		$this->service->getService('one');
 	}
 
 	#[TestDox('::getConfig will return the class config if the given key is present')]
@@ -160,11 +164,12 @@ final class RegistryKitTest extends TestCase {
 		$this->assertEquals('one', $config->getKey());
 	}
 
-	#[TestDox('::getConfig will return null if the given key is not present')]
+	#[TestDox('::getConfig will throw exception if the given key is not present')]
 	function testGetConfigWithNoKey() {
 		$this->setUpConfigured();
 
-		$this->assertNull($this->service->get(get_class($this->configuredServices[0])));
+		$this->expectException(ServiceNotRegistered::class);
+		$this->service->getService(get_class($this->configuredServices[0]));
 	}
 }
 

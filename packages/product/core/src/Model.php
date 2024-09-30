@@ -14,6 +14,10 @@ use Smolblog\Markdown\SmolblogMarkdown;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
+		Channel\Services\ChannelLinker::class => [
+			'channels' => Channel\Data\ChannelRepo::class,
+			'eventBus' => EventDispatcherInterface::class,
+		],
 		Connection\Services\AuthRequestService::class => [
 			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
 			'stateRepo' => Connection\Data\AuthRequestStateRepo::class,
@@ -22,6 +26,7 @@ class Model extends DomainModel {
 		],
 		Connection\Services\ConnectionChannelRefresher::class => [
 			'connections' => Connection\Data\ConnectionRepo::class,
+			'channels' => Channel\Data\ChannelRepo::class,
 			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,
 			'eventBus' => EventDispatcherInterface::class,
 		],

@@ -2,48 +2,53 @@
 
 namespace Smolblog\Core\Channel\Services;
 
-use Smolblog\Core\Connector\Commands\LinkChannelToSite;
-use Smolblog\Core\Connector\Events\ChannelSiteLinkSet;
-use Smolblog\Core\Connector\Queries\ChannelById;
-use Smolblog\Framework\Exceptions\InvalidCommandParametersException;
-use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Smolblog\Core\Channel\Commands\AddChannelToSite;
+use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Channel\Events\ChannelAddedToSite;
+use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Service\Command\CommandHandler;
+use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
 /**
  * Service to handle setting permissions for a Site and Channel.
  */
-class ChannelLinker implements Listener {
+class ChannelLinker implements CommandHandlerService {
 	/**
 	 * Construct the service.
 	 *
-	 * @param MessageBus $bus MesageBus to send events.
+	 * @param EventDispatcherInterface $eventBus MesageBus to send events.
+	 * @param ChannelRepo              $channels Get channels from storage.
 	 */
-	public function __construct(private MessageBus $bus) {
+	public function __construct(
+		private EventDispatcherInterface $eventBus,
+		private ChannelRepo $channels,
+	) {
 	}
 
 	/**
 	 * Handle the command to set permissions.
 	 *
-	 * @throws InvalidCommandParametersException Thrown when an ID is not found.
+	 * @throws CommandNotAuthorized Thrown when the user does not have correct permissions.
 	 *
-	 * @param LinkChannelToSite $command Command to execute.
+	 * @param AddChannelToSite $command Command to execute.
 	 * @return void
 	 */
-	public function onLinkChannelToSite(LinkChannelToSite $command): void {
-		$channel = $this->bus->fetch(new ChannelById($command->channelId));
-		if (!$channel) {
-			throw new InvalidCommandParametersException(
-				command: $command,
-				message: "Channel $command->channelId not found.",
-			);
+	#[CommandHandler]
+	public function onAddChannelToSite(AddChannelToSite $command): void {
+		if (
+			!$this->channels->userCanLinkChannelAndSite(
+				userId: $command->userId,
+				channelId: $command->channelId,
+				siteId: $command->siteId,
+			)
+		) {
+			throw new CommandNotAuthorized(originalCommand: $command);
 		}
 
-		$this->bus->dispatch(new ChannelSiteLinkSet(
-			channelId: $channel->id,
-			siteId: $command->siteId,
-			canPull: $command->canPull,
-			canPush: $command->canPush,
-			connectionId: $channel->connectionId,
+		$this->eventBus->dispatch(new ChannelAddedToSite(
+			aggregateId: $command->siteId,
+			entityId: $command->channelId,
 			userId: $command->userId,
 		));
 	}
