@@ -36,7 +36,7 @@ readonly class Url extends Value implements Field, UriInterface {
 	}
 
 	public static function fromString(string $string): static {
-		return new static($string);
+		return new self($string);
 	}
 
 

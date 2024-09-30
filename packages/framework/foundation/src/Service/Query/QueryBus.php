@@ -7,6 +7,8 @@ use Smolblog\Framework\Messages\Query as DeprecatedQuery;
 
 /**
  * A service that accepts a Query object, routes it to the correct handler, and returns the result.
+ *
+ * @deprecated Prefer data interfaces
  */
 interface QueryBus {
 	/**

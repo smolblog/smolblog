@@ -31,11 +31,11 @@ readonly class Identifier extends Value implements Field {
 	 * @throws InvalidValueProperties Thrown if the string is not a valid UUID.
 	 *
 	 * @param string $idString Uuid string to create instance from.
-	 * @return static Identifier equal to the given string.
+	 * @return self Identifier equal to the given string.
 	 */
 	public static function fromString(string $idString): static {
 		try {
-			return new static(internal: Uuid::fromString($idString));
+			return new self(internal: Uuid::fromString($idString));
 		} catch (Throwable $e) {
 			throw new InvalidValueProperties(
 				message: "Could not create Identifier from string $idString",
