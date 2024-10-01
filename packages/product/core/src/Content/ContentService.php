@@ -2,67 +2,92 @@
 
 namespace Smolblog\Core\Content;
 
-use Smolblog\Core\Content\Commands\EditContentBaseAttributes;
-use Smolblog\Core\Content\Events\ContentBaseAttributeEdited;
-use Smolblog\Core\Content\Queries\AdaptableContentQuery;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
+use Smolblog\Core\Content;
+use Smolblog\Core\Content\Commands\CreateContent;
+use Smolblog\Core\Content\Commands\DeleteContent;
+use Smolblog\Core\Content\Commands\UpdateContent;
+use Smolblog\Core\Content\Extension\ContentExtensionService;
+use Smolblog\Core\Content\Extension\ContentExtensionRegistry;
+use Smolblog\Core\Content\Type\ContentTypeRegistry;
+use Smolblog\Core\Content\Type\ContentTypeService;
+use Smolblog\Foundation\Service\Command\CommandHandler;
+use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
 /**
  * Handle generic content commands.
  */
-class ContentService implements Listener {
+class ContentService implements CommandHandlerService {
 	/**
 	 * Construct the service
 	 *
-	 * @param MessageBus          $bus      MessageBus for messages.
-	 * @param ContentTypeRegistry $registry Registry of content types.
+	 * @param ContentTypeRegistry      $types      Registry of content types.
+	 * @param ContentExtensionRegistry $extensions Registry of content extensions.
 	 */
 	public function __construct(
-		private MessageBus $bus,
-		private ContentTypeRegistry $registry,
+		private ContentTypeRegistry $types,
+		private ContentExtensionRegistry $extensions,
 	) {
 	}
 
 	/**
-	 * Edit the base attributes on a piece of content.
+	 * Execute the CreateContent Command.
 	 *
-	 * @param EditContentBaseAttributes $command Valid command to execute.
+	 * @param CreateContent $command Command to execute.
 	 * @return void
 	 */
-	public function onEditContentBaseAttributes(EditContentBaseAttributes $command): void {
-		$this->bus->dispatch(new ContentBaseAttributeEdited(
-			contentId: $command->contentId,
-			userId: $command->userId,
-			siteId: $command->siteId,
-			publishTimestamp: $command->publishTimestamp,
-			authorId: $command->authorId,
-		));
+	#[CommandHandler]
+	public function createContent(CreateContent $command): void {
+		$this->getTypeServiceForContent($command->content)->create($command);
+		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
+			$extServ->create($command);
+		}
 	}
 
 	/**
-	 * Fetch the content for an AdaptableContentQuery.
+	 * Execute the UpdateContent Command.
 	 *
-	 * @param AdaptableContentQuery $query Query being fetched.
+	 * @param UpdateContent $command Command to execute.
 	 * @return void
 	 */
-	#[ExecutionLayerListener(later: 5)]
-	public function onAdaptableContentQuery(AdaptableContentQuery $query): void {
-		if ($query->getContentId() === null) {
-			$query->setResults(null);
-			return;
+	#[CommandHandler]
+	public function updateContent(UpdateContent $command): void {
+		$this->getTypeServiceForContent($command->content)->update($command);
+		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
+			$extServ->update($command);
 		}
+	}
 
-		$singleQueryClass = $this->registry->singleItemQueryFor($query->getContentType());
-		$query->setResults(
-			$this->bus->fetch(
-				new $singleQueryClass(
-					userId: $query->getUserId(),
-					siteId: $query->getSiteId(),
-					contentId: $query->getContentId(),
-				)
-			)
-		);
+	/**
+	 * Execute the DeleteContent Command.
+	 *
+	 * @param DeleteContent $command Command to execute.
+	 * @return void
+	 */
+	#[CommandHandler]
+	public function deleteContent(DeleteContent $command): void {
+		$this->getTypeServiceForContent($command->content)->delete($command);
+		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
+			$extServ->delete($command);
+		}
+	}
+
+	/**
+	 * Get the Type Service for the given Content.
+	 *
+	 * @param Content $content Content being worked on.
+	 * @return ContentTypeService
+	 */
+	private function getTypeServiceForContent(Content $content): ?ContentTypeService {
+		return $this->types->get(get_class($content->body)::KEY);
+	}
+
+	/**
+	 * Get extension services for the given Content.
+	 *
+	 * @param Content $content Content being worked on.
+	 * @return ContentExtensionService[]
+	 */
+	private function getExtensionServicesForContent(Content $content): array {
+		return array_map(fn($srv) => $this->extensions->get($srv), array_keys($content->extensions));
 	}
 }

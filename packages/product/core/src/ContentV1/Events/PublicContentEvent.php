@@ -2,7 +2,8 @@
 
 namespace Smolblog\Core\Content\Events;
 
-use Smolblog\Core\Content;
+use Smolblog\Core\Content\ContentBuilderKit;
+use Smolblog\Core\Content\ContentBuilder;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -15,28 +16,24 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  * It is recommended to extend and listen to the child events, `PublicContentAdded`, `PublicContentChanged`, and
  * `PublicContentRemoved`.
  */
-abstract readonly class PublicContentEvent extends BaseContentEvent {
+abstract class PublicContentEvent extends ContentEvent implements ContentBuilder {
+	use ContentBuilderKit;
+
 	/**
 	 * Get the ID of the content in question.
-	 *
-	 * @deprecated use $this->content->id
-	 * @codeCoverageIgnore
 	 *
 	 * @return Identifier
 	 */
 	public function getContentId(): Identifier {
-		return $this->entityId;
+		return $this->contentId;
 	}
 
 	/**
-	 * Get the content for this event.
+	 * Empty payload (for now).
 	 *
-	 * @deprecated Use $this->content.
-	 * @codeCoverageIgnore
-	 *
-	 * @return Content
+	 * @return array
 	 */
-	public function getContent(): Content {
-		return $this->content;
+	public function getPayload(): array {
+		return [];
 	}
 }

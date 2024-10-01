@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Content\Events;
 
 /**
- * Describes an event that adds content to the publicly-viewable site.
+ * Describes an event that changes content on the publicly-viewable site.
  *
  * This is called out as its own event type as there are a number of significant actions that take place when content
  * is first published, including publishing to external channels.
  */
-readonly class PublicContentAdded extends PublicContentEvent {
+class PublicContentChanged extends PublicContentEvent {
 }

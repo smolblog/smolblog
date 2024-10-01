@@ -3,11 +3,15 @@
 namespace Smolblog\Core\Content\Queries;
 
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\Query;
+use Smolblog\Foundation\Value\Traits\{AuthorizableMessage, Memoizable, MemoizableKit};
 
 /**
  * Get a given Content object as a full Content object.
  */
-class ContentById extends AdaptableContentQuery {
+class ContentById extends Query implements Memoizable, AuthorizableMessage {
+	use MemoizableKit;
+
 	/**
 	 * Create the query.
 	 *
@@ -15,31 +19,17 @@ class ContentById extends AdaptableContentQuery {
 	 * info.
 	 *
 	 * @param Identifier      $id     ID for the content.
-	 * @param Identifier      $siteId ID of the site to search.
 	 * @param Identifier|null $userId Optional user making the query.
 	 */
-	public function __construct(
-		public readonly Identifier $id,
-		public readonly Identifier $siteId,
-		public readonly ?Identifier $userId = null,
-	) {
+	public function __construct(public Identifier $id, public ?Identifier $userId = null) {
 	}
 
 	/**
-	 * Get the site being searcherd.
+	 * Check if the given user can see the given content.
 	 *
-	 * @return Identifier
+	 * @return ContentVisibleToUser
 	 */
-	public function getSiteId(): Identifier {
-		return $this->siteId;
-	}
-
-	/**
-	 * Get the user making this query.
-	 *
-	 * @return Identifier|null
-	 */
-	public function getUserId(): ?Identifier {
-		return $this->userId;
+	public function getAuthorizationQuery(): ContentVisibleToUser {
+		return new ContentVisibleToUser(contentId: $this->id, userId: $this->userId);
 	}
 }
