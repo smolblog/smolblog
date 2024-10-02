@@ -1,9 +1,10 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\Content\Types\Note;
 
+use Smolblog\Core\Content\ContentUtilities;
+use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Content\Fields\Markdown;
-use Smolblog\Core\Content\Type\ContentType;
 
 /**
  * A short, text-only message. Like a tweet.

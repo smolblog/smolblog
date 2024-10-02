@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Type;
+namespace Smolblog\Core\Content\Entities;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\ServiceConfiguration;

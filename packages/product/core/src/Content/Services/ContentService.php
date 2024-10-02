@@ -1,15 +1,11 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\Content\Services;
 
-use Smolblog\Core\Content;
 use Smolblog\Core\Content\Commands\CreateContent;
 use Smolblog\Core\Content\Commands\DeleteContent;
 use Smolblog\Core\Content\Commands\UpdateContent;
-use Smolblog\Core\Content\Extension\ContentExtensionService;
-use Smolblog\Core\Content\Extension\ContentExtensionRegistry;
-use Smolblog\Core\Content\Type\ContentTypeRegistry;
-use Smolblog\Core\Content\Type\ContentTypeService;
+use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
@@ -78,7 +74,7 @@ class ContentService implements CommandHandlerService {
 	 * @return ContentTypeService
 	 */
 	private function getTypeServiceForContent(Content $content): ?ContentTypeService {
-		return $this->types->get(get_class($content->body)::KEY);
+		return $this->types->getService(get_class($content->body)::KEY);
 	}
 
 	/**
@@ -88,6 +84,6 @@ class ContentService implements CommandHandlerService {
 	 * @return ContentExtensionService[]
 	 */
 	private function getExtensionServicesForContent(Content $content): array {
-		return array_map(fn($srv) => $this->extensions->get($srv), array_keys($content->extensions));
+		return array_map(fn($srv) => $this->extensions->getService($srv), array_keys($content->extensions));
 	}
 }

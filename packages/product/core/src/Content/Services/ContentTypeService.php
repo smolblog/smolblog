@@ -1,8 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content\Type;
+namespace Smolblog\Core\Content\Services;
 
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
+use Smolblog\Core\Content\Entities\ContentTypeConfiguration;
 use Smolblog\Foundation\Service\Registry\ConfiguredRegisterable;
 
 /**

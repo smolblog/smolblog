@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Type;
+namespace Smolblog\Core\Content\Services;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};

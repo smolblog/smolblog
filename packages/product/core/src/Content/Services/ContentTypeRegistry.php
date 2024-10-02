@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Type;
+namespace Smolblog\Core\Content\Services;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Service\Registry\Registry;
@@ -23,6 +23,11 @@ class ContentTypeRegistry implements Registry {
 		return ContentTypeService::class;
 	}
 
+	/**
+	 * Construct the registry.
+	 *
+	 * @param ContainerInterface $container Dependency Injection container.
+	 */
 	public function __construct(private ContainerInterface $container) {
 		$this->container = $container;
 	}

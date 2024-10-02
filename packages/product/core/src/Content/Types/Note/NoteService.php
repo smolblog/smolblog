@@ -1,12 +1,19 @@
 <?php
 
-namespace Smolblog\Core\Content\Note;
+namespace Smolblog\Core\Content\Types\Note;
 
-use Smolblog\Core\Content\Note;
-use Smolblog\Core\Content\Type\ContentTypeConfiguration;
-use Smolblog\Core\Content\Type\DefaultContentTypeService;
+use Smolblog\Core\Content\Entities\ContentTypeConfiguration;
+use Smolblog\Core\Content\Services\DefaultContentTypeService;
 
+/**
+ * ContentTypeService to handle Notes.
+ */
 class NoteService extends DefaultContentTypeService {
+	/**
+	 * Get the configuration for the Note content type.
+	 *
+	 * @return ContentTypeConfiguration
+	 */
 	public static function getConfiguration(): ContentTypeConfiguration {
 		return new ContentTypeConfiguration(
 			key: Note::KEY,

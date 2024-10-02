@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Extension;
+namespace Smolblog\Core\Content\Services;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Service\Registry\Registry;
@@ -26,7 +26,7 @@ class ContentExtensionRegistry implements Registry {
 	/**
 	 * Construct the registry.
 	 *
-	 * @param array $configuration List of ContentExtensionService classes.
+	 * @param ContainerInterface $container Dependency Injection container.
 	 */
 	public function __construct(ContainerInterface $container) {
 		$this->container = $container;

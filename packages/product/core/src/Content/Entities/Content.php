@@ -1,12 +1,12 @@
 <?php
 
-namespace Smolblog\Core;
+namespace Smolblog\Core\Content\Entities;
 
 use Smolblog\Core\Content\Extension\ContentExtension;
 use Smolblog\Core\Content\Type\ContentType;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\{ArrayType, Entity, EntityKit, SerializableValue, SerializableValueKit};
-use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier, DateIdentifier};
+use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier, DateIdentifier, Url};
 
 /**
  * A unit of Content for the system.
@@ -21,23 +21,45 @@ readonly class Content extends Value implements SerializableValue, Entity {
 	use SerializableValueKit;
 	use EntityKit;
 
+	/**
+	 * Create the Content.
+	 *
+	 * @param ContentType        $body             The ContentType for this content.
+	 * @param Identifier         $siteId           ID for the Site this belongs to.
+	 * @param Identifier         $userId           ID of the user responsible for this content.
+	 * @param Identifier|null    $id               ID for the content; will be generated if not given.
+	 * @param DateTimeField|null $publishTimestamp Time and date the content was first published.
+	 * @param Url|null           $canonicalUrl     Canonical absolute URL to the content if it exists.
+	 * @param ContentExtension[] $extensions       Data for any extensions attached to this content.
+	 * @param array              $links            Channels this Content has been pushed to with relevant details.
+	 */
 	public function __construct(
 		public ContentType $body,
 		public Identifier $siteId,
-		public Identifier $authorId,
+		public Identifier $userId,
 		?Identifier $id = null,
-		public ?string $path = null,
 		public ?DateTimeField $publishTimestamp = null,
-		public bool $published = false,
+		public ?Url $canonicalUrl = null,
 		#[ArrayType(ContentExtension::class)] public array $extensions = [],
+		public array $links = [],
 	) {
 		$this->id = $id ?? new DateIdentifier();
 	}
 
+	/**
+	 * Title for this content.
+	 *
+	 * @return string
+	 */
 	public function title(): string {
 		return $this->body->getTitle();
 	}
 
+	/**
+	 * Type of this content.
+	 *
+	 * @return string
+	 */
 	public function type(): string {
 		return get_class($this->body)::KEY;
 	}
@@ -50,6 +72,6 @@ readonly class Content extends Value implements SerializableValue, Entity {
 	 * @return boolean
 	 */
 	public function isPublic(): bool {
-		return $this->published;
+		return !empty($this->links);
 	}
 }

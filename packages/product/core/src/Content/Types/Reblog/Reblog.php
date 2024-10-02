@@ -1,9 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Content;
+namespace Smolblog\Core\Content\Types\Reblog;
 
+use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Content\Fields\Markdown;
-use Smolblog\Core\Content\Type\ContentType;
 use Smolblog\Foundation\Value\Fields\Url;
 
 /**
