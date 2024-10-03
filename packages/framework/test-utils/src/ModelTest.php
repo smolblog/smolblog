@@ -6,6 +6,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 use Smolblog\Framework\Messages\Event;
+use Smolblog\Test\Constraints\DomainEventChecker;
 use Smolblog\Test\Kits\EventComparisonTestKit;
 
 class ModelTest extends TestCase {
@@ -32,7 +33,15 @@ class ModelTest extends TestCase {
 	}
 
 	protected function expectEvent(DomainEvent $event) {
-		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($event));
+		// $this->mockEventBus->expects($this->once())->method('dispatch')->with($this->eventEquivalentTo($event));
+		$this->expectEvents([$event]);
+	}
+
+	protected function expectEvents(array $events) {
+		$this->mockEventBus->
+			expects($this->exactly(count($events)))->
+			method('dispatch')->
+			with(new DomainEventChecker($events));
 	}
 
 	protected function expectNoEvents() {

@@ -78,8 +78,8 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 			));
 		}
 
-		$toAdd = \array_filter($newChannels, fn($channel) => !\in_array($channel, $currentChannels));
-		foreach ($toAdd as $channel) {
+		// Saving all channels in case some details have changed.
+		foreach ($newChannels as $channel) {
 			$this->eventBus->dispatch(new ChannelSaved(
 				channel: $channel,
 				userId: $userId,

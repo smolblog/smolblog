@@ -5,6 +5,8 @@ namespace Smolblog\Core\Connection\Commands;
 require_once __DIR__ . '/_base.php';
 
 use Smolblog\Core\Channel\Entities\BasicChannel;
+use Smolblog\Core\Channel\Events\ChannelDeleted;
+use Smolblog\Core\Channel\Events\ChannelSaved;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -53,8 +55,11 @@ class RefreshChannelsTest extends ConnectionTestBase {
 		$this->channels->method('channelsForConnection')->willReturn([$oldChannel, $sameChannel]);
 		$this->handler->method('getChannels')->willReturn([$sameChannel, $newChannel]);
 
-		// TODO: figure out how to check for multiple events
-		$this->mockEventBus->expects($this->exactly(2))->method('dispatch')->withAnyParameters();
+		$this->expectEvents([
+			new ChannelDeleted(entityId: $oldChannel->getId(), userId: $userId),
+			new ChannelSaved(channel: $sameChannel, userId: $userId),
+			new ChannelSaved(channel: $newChannel, userId: $userId),
+		]);
 
 		$this->app->execute($command);
 	}

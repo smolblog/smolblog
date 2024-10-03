@@ -42,7 +42,7 @@
     "smolblog/framework-infrastructure": "@dev"
   },
   "scripts": {
-    "test": "phpunit --testsuite core",
+    "test": "phpunit --testsuite core --no-coverage",
     "test-coverage": [
       "@putenv XDEBUG_MODE=coverage",
       "phpunit --testsuite core --coverage-text"
