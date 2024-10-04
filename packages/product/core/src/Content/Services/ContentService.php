@@ -5,9 +5,18 @@ namespace Smolblog\Core\Content\Services;
 use Smolblog\Core\Content\Commands\CreateContent;
 use Smolblog\Core\Content\Commands\DeleteContent;
 use Smolblog\Core\Content\Commands\UpdateContent;
+use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Entities\Content;
+use Smolblog\Core\Content\Entities\ContentExtension;
+use Smolblog\Core\Content\Entities\ContentType;
+use Smolblog\Core\Site\Data\SiteRepo;
+use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Handle generic content commands.
@@ -18,10 +27,14 @@ class ContentService implements CommandHandlerService {
 	 *
 	 * @param ContentTypeRegistry      $types      Registry of content types.
 	 * @param ContentExtensionRegistry $extensions Registry of content extensions.
+	 * @param ContentRepo              $repo       Content objects.
+	 * @param SiteRepo                 $sites      Site objects for checking permissions.
 	 */
 	public function __construct(
 		private ContentTypeRegistry $types,
 		private ContentExtensionRegistry $extensions,
+		private ContentRepo $repo,
+		private SiteRepo $sites,
 	) {
 	}
 
@@ -33,10 +46,33 @@ class ContentService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function createContent(CreateContent $command): void {
-		$this->getTypeServiceForContent($command->content)->create($command);
-		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
-			$extServ->create($command);
+		// Check for existing ID.
+		$contentId = $command->contentId;
+		if (isset($contentId) && $this->repo->hasContentWithId($contentId)) {
+			throw new InvalidValueProperties(
+				message: "The given ID {$contentId} is already in use.",
+				field: 'content.id',
+			);
 		}
+
+		// Check permissions.
+		$perms = $this->sites->userPermissionsForSite(userId: $command->userId, siteId: $command->siteId);
+		if (!$perms?->canCreateContent) {
+			throw new CommandNotAuthorized(originalCommand: $command);
+		}
+
+		// Generate a new ID.
+		if (!isset($contentId)) {
+			do {
+				$contentId = new DateIdentifier();
+			} while (!$this->repo->hasContentWithId($contentId));
+		}
+
+		// Save the new Content.
+		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
+			$extServ->create($command, $contentId);
+		}
+		$this->getServiceForContentType($command->body)->create($command, $contentId);
 	}
 
 	/**
@@ -47,10 +83,18 @@ class ContentService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function updateContent(UpdateContent $command): void {
-		$this->getTypeServiceForContent($command->content)->update($command);
-		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
+		if (!$this->repo->hasContentWithId($command->contentId)) {
+			throw new EntityNotFound(entityId: $command->contentId, entityName: Content::class);
+		}
+
+		if (!$this->userCanEditContent(userId: $command->userId, contentId: $command->contentId)) {
+			throw new CommandNotAuthorized(originalCommand: $command);
+		}
+
+		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
 			$extServ->update($command);
 		}
+		$this->getServiceForContentType($command->body)->update($command);
 	}
 
 	/**
@@ -61,29 +105,58 @@ class ContentService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function deleteContent(DeleteContent $command): void {
-		$this->getTypeServiceForContent($command->content)->delete($command);
-		foreach ($this->getExtensionServicesForContent($command->content) as $extServ) {
-			$extServ->delete($command);
+		$content = $this->repo->contentById(contentId: $command->contentId, userId: $command->userId);
+		if (!isset($content)) {
+			throw new EntityNotFound(entityId: $command->contentId, entityName: Content::class);
 		}
+
+		if (!$this->userCanEditContent(userId: $command->userId, contentId: $command->contentId)) {
+			throw new CommandNotAuthorized(originalCommand: $command);
+		}
+
+		foreach ($this->getServicesForContentExtensions($content->extensions) as $extServ) {
+			$extServ->delete($command, $content);
+		}
+		$this->getServiceForContentType($content->body)->delete($command, $content);
 	}
 
 	/**
-	 * Get the Type Service for the given Content.
+	 * Check if the given user can make changes to the given content.
 	 *
-	 * @param Content $content Content being worked on.
+	 * @param Identifier $userId    User to check.
+	 * @param Identifier $contentId Content to check.
+	 * @return boolean
+	 */
+	public function userCanEditContent(Identifier $userId, Identifier $contentId): bool {
+		$content = $this->repo->contentById($contentId, $userId);
+		if (!isset($content)) {
+			return false;
+		}
+		if ($content?->userId == $userId) {
+			return true;
+		}
+
+		$perms = $this->sites->userPermissionsForSite(userId: $userId, siteId: $content->siteId);
+		return $perms?->canEditAllContent ?? false;
+	}
+
+	/**
+	 * Get the Type Service for the given ContentType.
+	 *
+	 * @param ContentType $body Content being worked on.
 	 * @return ContentTypeService
 	 */
-	private function getTypeServiceForContent(Content $content): ?ContentTypeService {
-		return $this->types->getService(get_class($content->body)::KEY);
+	private function getServiceForContentType(ContentType $body): ?ContentTypeService {
+		return $this->types->getService(get_class($body)::KEY);
 	}
 
 	/**
-	 * Get extension services for the given Content.
+	 * Get extension services for the given ContentExtensions.
 	 *
-	 * @param Content $content Content being worked on.
+	 * @param ContentExtension[] $extensions Content being worked on.
 	 * @return ContentExtensionService[]
 	 */
-	private function getExtensionServicesForContent(Content $content): array {
-		return array_map(fn($srv) => $this->extensions->getService($srv), array_keys($content->extensions));
+	private function getServicesForContentExtensions(array $extensions): array {
+		return array_map(fn($srv) => $this->extensions->getService($srv), array_keys($extensions));
 	}
 }

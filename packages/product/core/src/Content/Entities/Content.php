@@ -2,8 +2,6 @@
 
 namespace Smolblog\Core\Content\Entities;
 
-use Smolblog\Core\Content\Extension\ContentExtension;
-use Smolblog\Core\Content\Type\ContentType;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\{ArrayType, Entity, EntityKit, SerializableValue, SerializableValueKit};
 use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier, DateIdentifier, Url};

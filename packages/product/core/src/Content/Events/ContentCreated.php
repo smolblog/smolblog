@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Content\Events;
 
-use Smolblog\Core\Content\ContentExtension;
-use Smolblog\Core\Content\Type\ContentType;
+use Smolblog\Core\Content\Entities\ContentExtension;
+use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;

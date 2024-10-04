@@ -7,6 +7,16 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 
 interface ContentRepo {
 	/**
+	 * Check if content with a given ID exists.
+	 *
+	 * No user check as this is intended to prevent ID collisions.
+	 *
+	 * @param Identifier $contentId ID to check.
+	 * @return boolean
+	 */
+	public function hasContentWithId(Identifier $contentId): bool;
+
+	/**
 	 * Get a given Content object as a full Content object; null if not found.
 	 *
 	 * If the content is unpublished (or has unpublished edits), a user ID will be required to view the unpublished
