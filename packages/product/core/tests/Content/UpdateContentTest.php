@@ -10,13 +10,19 @@ use Smolblog\Core\Site\Entities\UserSitePermissions;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Test\ContentTestBase;
+use Smolblog\Test\TestCustomContentExtension;
 use Smolblog\Test\TestCustomContentType;
+use Smolblog\Test\TestDefaultContentExtension;
 use Smolblog\Test\TestDefaultContentType;
 use Smolblog\Test\TestEventsContentType;
 use Smolblog\Test\TestEventsContentTypeUpdated;
 
 final class UpdateContentTest extends ContentTestBase {
 	public function testTypeWithDefaultService() {
+		$extensions = [
+			'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
+			'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+		];
 		$contentId = $this->randomId();
 		$userId = $this->randomId();
 		$command = new UpdateContent(
@@ -24,29 +30,38 @@ final class UpdateContentTest extends ContentTestBase {
 			siteId: $this->randomId(),
 			userId: $userId,
 			contentId: $contentId,
-			contentUserId: $userId
+			contentUserId: $userId,
+			extensions: $extensions,
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn(new Content(
-			body: $command->body,
+			body: $command->body->with(body: 'Here I go once again with the email.'),
 			siteId: $command->siteId,
 			userId: $userId,
 			id: $contentId,
 		));
 
+		$this->customExtensionService->expects($this->once())->method('update')->with(
+			command: $command,
+		);
 		$this->expectEvent(new ContentUpdated(
 			body: $command->body,
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
 			contentUserId: $command->userId,
+			extensions: $extensions,
 		));
 
 		$this->app->execute($command);
 	}
 
 	public function testTypeWithDefaultServiceAndCustomEvents() {
+		$extensions = [
+			'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
+			'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+		];
 		$contentId = $this->randomId();
 		$userId = $this->randomId();
 		$command = new UpdateContent(
@@ -54,29 +69,38 @@ final class UpdateContentTest extends ContentTestBase {
 			siteId: $this->randomId(),
 			userId: $userId,
 			contentId: $contentId,
-			contentUserId: $userId
+			contentUserId: $userId,
+			extensions: $extensions,
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn(new Content(
-			body: $command->body,
+			body: $command->body->with(body: 'Here I go once again with the email.'),
 			siteId: $command->siteId,
 			userId: $userId,
 			id: $contentId,
 		));
 
+		$this->customExtensionService->expects($this->once())->method('update')->with(
+			command: $command,
+		);
 		$this->expectEvent(new TestEventsContentTypeUpdated(
 			body: $command->body,
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
 			contentUserId: $command->userId,
+			extensions: $extensions,
 		));
 
 		$this->app->execute($command);
 	}
 
 	public function testTypeWithCustomService() {
+		$extensions = [
+			'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
+			'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+		];
 		$contentId = $this->randomId();
 		$userId = $this->randomId();
 		$command = new UpdateContent(
@@ -84,17 +108,21 @@ final class UpdateContentTest extends ContentTestBase {
 			siteId: $this->randomId(),
 			userId: $userId,
 			contentId: $contentId,
-			contentUserId: $userId
+			contentUserId: $userId,
+			extensions: $extensions,
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn(new Content(
-			body: $command->body,
+			body: $command->body->with(body: 'Here I go once again with the email.'),
 			siteId: $command->siteId,
 			userId: $userId,
 			id: $contentId,
 		));
 
+		$this->customExtensionService->expects($this->once())->method('update')->with(
+			command: $command,
+		);
 		$this->customContentService->expects($this->once())->method('update')->with(
 			command: $command,
 		);
@@ -133,7 +161,7 @@ final class UpdateContentTest extends ContentTestBase {
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn(new Content(
-			body: $command->body,
+			body: $command->body->with(body: 'Here I go once again with the email.'),
 			siteId: $command->siteId,
 			userId: $command->contentUserId,
 			id: $contentId,
@@ -162,7 +190,7 @@ final class UpdateContentTest extends ContentTestBase {
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn(new Content(
-			body: $command->body,
+			body: $command->body->with(body: 'Here I go once again with the email.'),
 			siteId: $command->siteId,
 			userId: $command->contentUserId,
 			id: $contentId,
@@ -187,7 +215,7 @@ final class UpdateContentTest extends ContentTestBase {
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn(new Content(
-			body: $command->body,
+			body: $command->body->with(body: 'Here I go once again with the email.'),
 			siteId: $command->siteId,
 			userId: $command->contentUserId,
 			id: $contentId,

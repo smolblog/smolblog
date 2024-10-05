@@ -10,7 +10,9 @@ use Smolblog\Core\Site\Entities\UserSitePermissions;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Test\ContentTestBase;
+use Smolblog\Test\TestCustomContentExtension;
 use Smolblog\Test\TestCustomContentType;
+use Smolblog\Test\TestDefaultContentExtension;
 use Smolblog\Test\TestDefaultContentType;
 use Smolblog\Test\TestEventsContentType;
 use Smolblog\Test\TestEventsContentTypeDeleted;
@@ -28,11 +30,19 @@ final class DeleteContentTest extends ContentTestBase {
 			siteId: $this->randomId(),
 			userId: $userId,
 			id: $contentId,
+			extensions: [
+				'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
+				'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+			],
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn($content);
 
+		$this->customExtensionService->expects($this->once())->method('delete')->with(
+			command: $command,
+			content: $content
+		);
 		$this->expectEvent(new ContentDeleted(
 			aggregateId: $content->siteId,
 			userId: $userId,
@@ -54,11 +64,19 @@ final class DeleteContentTest extends ContentTestBase {
 			siteId: $this->randomId(),
 			userId: $userId,
 			id: $contentId,
+			extensions: [
+				'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
+				'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+			],
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn($content);
 
+		$this->customExtensionService->expects($this->once())->method('delete')->with(
+			command: $command,
+			content: $content
+		);
 		$this->expectEvent(new TestEventsContentTypeDeleted(
 			aggregateId: $content->siteId,
 			userId: $userId,
@@ -80,11 +98,19 @@ final class DeleteContentTest extends ContentTestBase {
 			siteId: $this->randomId(),
 			userId: $userId,
 			id: $contentId,
+			extensions: [
+				'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
+				'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+			],
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn($content);
 
+		$this->customExtensionService->expects($this->once())->method('delete')->with(
+			command: $command,
+			content: $content
+		);
 		$this->customContentService->expects($this->once())->method('delete')->with(
 			command: $command,
 			content: $content
