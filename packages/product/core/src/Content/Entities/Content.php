@@ -61,15 +61,4 @@ readonly class Content extends Value implements SerializableValue, Entity {
 	public function type(): string {
 		return get_class($this->body)::KEY;
 	}
-
-	/**
-	 * Find out if this content is publicly available somewhere.
-	 *
-	 * Currently checks $this->published, but could change in the future.
-	 *
-	 * @return boolean
-	 */
-	public function isPublic(): bool {
-		return !empty($this->links);
-	}
 }

@@ -47,7 +47,6 @@ final class CreateContentTest extends ContentTestBase {
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
-			contentUserId: $command->userId,
 			extensions: $extensions,
 		));
 
@@ -84,7 +83,6 @@ final class CreateContentTest extends ContentTestBase {
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
-			contentUserId: $command->userId,
 			extensions: $extensions,
 		));
 

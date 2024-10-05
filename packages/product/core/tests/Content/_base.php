@@ -117,8 +117,8 @@ abstract class ContentTestBase extends ModelTest {
 		$this->siteRepo = $this->createMock(SiteRepo::class);
 
 		return [
-			TestDefaultContentTypeService::class => ['bus' => EventDispatcherInterface::class],
-			TestEventsContentTypeService::class => ['bus' => EventDispatcherInterface::class],
+			TestDefaultContentTypeService::class => ['eventBus' => EventDispatcherInterface::class],
+			TestEventsContentTypeService::class => ['eventBus' => EventDispatcherInterface::class],
 			TestCustomContentTypeService::class => fn() => $this->customContentService,
 			TestDefaultContentExtensionService::class => [],
 			TestCustomContentExtensionService::class => fn () => $this->customExtensionService,

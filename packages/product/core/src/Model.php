@@ -57,6 +57,16 @@ class Model extends DomainModel {
 			'container' => ContainerInterface::class,
 		],
 
+		Content\Types\Article\ArticleService::class => [
+			'eventBus' => EventDispatcherInterface::class,
+		],
+		Content\Types\Note\NoteService::class => [
+			'eventBus' => EventDispatcherInterface::class,
+		],
+		Content\Types\Reblog\ReblogService::class => [
+			'eventBus' => EventDispatcherInterface::class,
+		],
+
 		Federation\FederationService::class => [
 			'bus' => MessageBus::class,
 			'followerProviders' => Federation\FollowerProviderRegistry::class,

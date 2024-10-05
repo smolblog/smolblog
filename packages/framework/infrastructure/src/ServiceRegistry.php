@@ -1,5 +1,8 @@
 <?php
 
+// Disable type hint sniff because it doesn't play with the generic type.
+// phpcs:disable Squiz.Commenting.FunctionComment.IncorrectTypeHint
+
 namespace Smolblog\Framework\Infrastructure;
 
 use Exception;
@@ -44,7 +47,7 @@ class ServiceRegistry implements ContainerInterface {
 	 * Value: either
 	 *        1. a Callable factory that returns a fully instantiated class
 	 *        2. an array of named arguments and classes to pass to a constructor
-	 *        3. a fully-qualified name of an implementing class (when the key is an interface)
+	 *        3. a fully-qualified name of an implementing or substitutionary class
 	 *
 	 * @param array $configuration Properly-formatted configuration.
 	 */
@@ -57,12 +60,13 @@ class ServiceRegistry implements ContainerInterface {
 	/**
 	 * Finds an entry of the container by its identifier and returns it.
 	 *
-	 * @param string $id Identifier of the entry to look for.
+	 * @template SRV
+	 * @param class-string<SRV> $id Identifier of the entry to look for.
 	 *
 	 * @throws ServiceNotFoundException  No entry was found for **this** identifier.
 	 * @throws ServiceRegistryConfigurationException Error while retrieving the entry.
 	 *
-	 * @return mixed Entry.
+	 * @return SRV Entry.
 	 */
 	public function get(string $id): mixed {
 		if (!$this->has($id)) {
@@ -101,8 +105,9 @@ class ServiceRegistry implements ContainerInterface {
 	 *
 	 * @throws ServiceNotImplementedException Thrown if class_exists returns false for the service.
 	 *
-	 * @param string $service Service to instantiate.
-	 * @return mixed
+	 * @template SRV
+	 * @param class-string<SRV> $service Service to instantiate.
+	 * @return SRV
 	 */
 	private function instantiateService(string $service): mixed {
 		$config = $this->configuration[$service];

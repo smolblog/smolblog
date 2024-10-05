@@ -15,9 +15,9 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	/**
 	 * Construct the service.
 	 *
-	 * @param EventDispatcherInterface $bus For sending the final events.
+	 * @param EventDispatcherInterface $eventBus For sending the final events.
 	 */
-	public function __construct(private EventDispatcherInterface $bus) {
+	public function __construct(private EventDispatcherInterface $eventBus) {
 	}
 
 	protected const CREATE_EVENT = ContentCreated::class;
@@ -37,11 +37,11 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
-			contentUserId: $command->contentUserId ?? $command->userId,
+			contentUserId: $command->contentUserId,
 			publishTimestamp: $command->publishTimestamp,
 			extensions: $command->extensions,
 		);
-		$this->bus->dispatch($event);
+		$this->eventBus->dispatch($event);
 	}
 
 	/**
@@ -60,7 +60,7 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 			publishTimestamp: $command->publishTimestamp,
 			extensions: $command->extensions,
 		);
-		$this->bus->dispatch($event);
+		$this->eventBus->dispatch($event);
 	}
 
 	/**
@@ -78,6 +78,6 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 			aggregateId: $content->siteId,
 			entityId: $content->id,
 		);
-		$this->bus->dispatch($event);
+		$this->eventBus->dispatch($event);
 	}
 }

@@ -24,6 +24,6 @@ readonly class Markdown extends Value implements Field {
 	}
 
 	public static function fromString(string $string): static {
-		return new static($string);
+		return new self($string);
 	}
 }

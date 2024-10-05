@@ -9,7 +9,7 @@ use Smolblog\Core\Content\Fields\Markdown;
  * A more longform piece of writing with a title.
  */
 readonly class Article extends ContentType {
-	public const KEY = 'note';
+	public const KEY = 'article';
 
 	/**
 	 * Construct the Article.
