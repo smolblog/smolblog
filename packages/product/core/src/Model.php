@@ -51,6 +51,7 @@ class Model extends DomainModel {
 			'types' => Content\Services\ContentTypeRegistry::class,
 			'extensions' => Content\Services\ContentExtensionRegistry::class,
 			'repo' => Content\Data\ContentRepo::class,
+			'sites' => Site\Data\SiteRepo::class,
 		],
 		Content\Services\ContentTypeRegistry::class => [
 			'container' => ContainerInterface::class,

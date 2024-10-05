@@ -30,7 +30,7 @@ readonly class UpdateContent extends Command {
 		public Identifier $userId,
 		public ContentType $body,
 		public Identifier $siteId,
-		public ?Identifier $contentUserId,
+		public Identifier $contentUserId,
 		public ?DateTimeField $publishTimestamp = null,
 		#[ArrayType(ContentExtension::class)] public array $extensions = [],
 	) {

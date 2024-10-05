@@ -32,12 +32,12 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 * @return void
 	 */
 	public function create(CreateContent $command, Identifier $contentId): void {
-		$event = new ContentCreated(
+		$event = new (static::CREATE_EVENT)(
 			body: $command->body,
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
-			contentUserId: $command->contentUserId,
+			contentUserId: $command->contentUserId ?? $command->userId,
 			publishTimestamp: $command->publishTimestamp,
 			extensions: $command->extensions,
 		);
