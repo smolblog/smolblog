@@ -5,10 +5,14 @@ namespace Smolblog\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Content\Data\ContentRepo;
+use Smolblog\Core\Content\Entities\ContentExtension;
+use Smolblog\Core\Content\Entities\ContentExtensionConfiguration;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Content\Entities\ContentTypeConfiguration;
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
+use Smolblog\Core\Content\Services\ContentExtensionService;
 use Smolblog\Core\Content\Services\ContentTypeService;
+use Smolblog\Core\Content\Services\DefaultContentExtensionService;
 use Smolblog\Core\Content\Services\DefaultContentTypeService;
 use Smolblog\Core\Site\Data\SiteRepo;
 use Smolblog\Test\ModelTest;
@@ -72,15 +76,43 @@ final readonly class TestCustomContentType extends TestContentTypeBase {
 	public const KEY = 'testcustom';
 }
 
+final class TestDefaultContentExtensionService extends DefaultContentExtensionService {
+	public static function getConfiguration(): ContentExtensionConfiguration {
+		return new ContentExtensionConfiguration(
+			key: 'testdefaultext',
+			displayName: 'Test Default Extension',
+			extensionClass: TestDefaultContentExtension::class,
+		);
+	}
+}
+final readonly class TestDefaultContentExtension extends ContentExtension {
+	public function __construct(public string $metaval) {}
+}
+
+abstract class TestCustomContentExtensionService implements ContentExtensionService {
+	public static function getConfiguration(): ContentExtensionConfiguration {
+		return new ContentExtensionConfiguration(
+			key: 'testcustomext',
+			displayName: 'Test Custom Extension',
+			extensionClass: TestCustomContentExtension::class,
+		);
+	}
+}
+final readonly class TestCustomContentExtension extends ContentExtension {
+	public function __construct(public string $metaval) {}
+}
+
 abstract class ContentTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
 	protected TestCustomContentTypeService & MockObject $customContentService;
+	protected TestCustomContentExtensionService & MockObject $customExtensionService;
 	protected ContentRepo & MockObject $contentRepo;
 	protected SiteRepo & MockObject $siteRepo;
 
 	protected function createMockServices(): array {
 		$this->customContentService = $this->createMock(TestCustomContentTypeService::class);
+		$this->customExtensionService = $this->createMock(TestCustomContentExtensionService::class);
 		$this->contentRepo = $this->createMock(ContentRepo::class);
 		$this->siteRepo = $this->createMock(SiteRepo::class);
 
@@ -88,6 +120,8 @@ abstract class ContentTestBase extends ModelTest {
 			TestDefaultContentTypeService::class => ['bus' => EventDispatcherInterface::class],
 			TestEventsContentTypeService::class => ['bus' => EventDispatcherInterface::class],
 			TestCustomContentTypeService::class => fn() => $this->customContentService,
+			TestDefaultContentExtensionService::class => [],
+			TestCustomContentExtensionService::class => fn () => $this->customExtensionService,
 			ContentRepo::class => fn() => $this->contentRepo,
 			SiteRepo::class => fn() => $this->siteRepo,
 		];
