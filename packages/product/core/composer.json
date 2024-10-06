@@ -56,6 +56,7 @@
     "psr/event-dispatcher": "^1.0",
     "illuminate/database": "^9.0",
     "elephox/mimey": "^4.0",
-    "smolblog/framework-foundation": "@dev"
+    "smolblog/framework-foundation": "@dev",
+    "cocur/slugify": "^4.6"
   }
 }

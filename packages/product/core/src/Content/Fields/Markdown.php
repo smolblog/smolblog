@@ -16,13 +16,29 @@ use Smolblog\Foundation\Value\Traits\FieldKit;
 readonly class Markdown extends Value implements Field {
 	use FieldKit;
 
+	/**
+	 * Create the field.
+	 *
+	 * @param string $text Markdown-formatted text.
+	 */
 	public function __construct(public string $text) {
 	}
 
+	/**
+	 * Convert the field to a string.
+	 *
+	 * @return string
+	 */
 	public function toString(): string {
 		return $this->text;
 	}
 
+	/**
+	 * Create the field from a string.
+	 *
+	 * @param string $string Markdown-formatted text.
+	 * @return self
+	 */
 	public static function fromString(string $string): static {
 		return new self($string);
 	}
