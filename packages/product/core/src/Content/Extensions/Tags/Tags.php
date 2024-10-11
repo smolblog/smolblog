@@ -17,7 +17,7 @@ readonly class Tags extends ContentExtension {
 	 *
 	 * @throws InvalidValueProperties If any non-string values are given.
 	 *
-	 * @param array $tags Tags as input by the user.
+	 * @param string[] $tags Tags as input by the user.
 	 */
 	public function __construct(#[ArrayType(ArrayType::TYPE_STRING)] public array $tags) {
 		if (!empty(array_filter($tags, fn($tag) => !is_string($tag)))) {

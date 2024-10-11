@@ -67,6 +67,9 @@ class Model extends DomainModel {
 			'eventBus' => EventDispatcherInterface::class,
 		],
 
+		Content\Extensions\Tags\TagsService::class => [],
+		Content\Extensions\Warnings\WarningsService::class => [],
+
 		Federation\FederationService::class => [
 			'bus' => MessageBus::class,
 			'followerProviders' => Federation\FollowerProviderRegistry::class,

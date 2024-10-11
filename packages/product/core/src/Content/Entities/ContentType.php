@@ -21,6 +21,8 @@ abstract readonly class ContentType extends Value implements SerializableValue {
 	 *
 	 * For use in the title tag, the list of content, and other places.
 	 *
+	 * @codeCoverageIgnore For some reason Xdebug insists this line is untested.
+	 *
 	 * @return string
 	 */
 	abstract public function getTitle(): string;

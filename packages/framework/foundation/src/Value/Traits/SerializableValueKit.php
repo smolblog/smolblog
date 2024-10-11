@@ -164,7 +164,8 @@ trait SerializableValueKit {
 
 		if ($typeName === 'array') {
 			$attributeReflections = $prop->getAttributes(ArrayType::class, ReflectionAttribute::IS_INSTANCEOF);
-			return ($attributeReflections[0] ?? null)?->newInstance() ?? null;
+			$maybeArrayType = ($attributeReflections[0] ?? null)?->newInstance() ?? null;
+			return isset($maybeArrayType) ? ($maybeArrayType->isBuiltIn() ? null : $maybeArrayType) : null ;
 		}
 
 		return class_exists($typeName) ? $typeName : null;

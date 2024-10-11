@@ -22,6 +22,21 @@ class ArrayType {
 	public function __construct(public readonly string $type) {
 	}
 
+	/**
+	 * True if this ArrayType is one of the built-in types.
+	 *
+	 * @return boolean
+	 */
+	public function isBuiltIn(): bool {
+		return \in_array($this->type, [
+			self::TYPE_ARRAY,
+			self::TYPE_STRING,
+			self::TYPE_INTEGER,
+			self::TYPE_BOOLEAN,
+			self::TYPE_FLOAT,
+		]);
+	}
+
 	public const TYPE_ARRAY = '__builtin_array';
 	public const TYPE_STRING = '__builtin_string';
 	public const TYPE_INTEGER = '__builtin_integer';

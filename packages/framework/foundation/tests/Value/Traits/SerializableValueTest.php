@@ -30,7 +30,7 @@ readonly class RecursiveValueTest extends ValueTestBase {
 }
 
 readonly class ArrayWithScalarsValueTest extends ValueTestBase {
-	public function __construct(public array $array) {}
+	public function __construct(#[ArrayType(ArrayType::TYPE_STRING)]public array $array) {}
 }
 
 readonly class ArrayWithObjectsValueTest extends ValueTestBase {
@@ -64,7 +64,6 @@ readonly class SerializedWithNonSerializedValueTest extends ValueTestBase {
 }
 
 #[CoversTrait(SerializableValueKit::class)]
-#[CoversClass(ArrayType::class)]
 final class SerializableValueTest extends TestCase {
 	public static function valueExamples(): array {
 		return [
