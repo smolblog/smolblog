@@ -26,11 +26,7 @@ final class ContentServiceTest extends ContentTestBase {
 		$userId = $this->randomId();
 
 		$this->contentRepo->method('contentById')->willReturn(null);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $userId,
-			siteId: $this->randomId(),
-			canEditAllContent: true,
-		));
+		$this->perms->method('canEditAllContent')->willReturn(true);
 
 		$this->assertFalse($this->service->userCanEditContent(userId: $userId, contentId: $contentId));
 	}
@@ -45,11 +41,7 @@ final class ContentServiceTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('contentById')->willReturn($content);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $userId,
-			siteId: $content->siteId,
-			canEditAllContent: false,
-		));
+		$this->perms->method('canEditAllContent')->willReturn(false);
 
 		$this->assertTrue($this->service->userCanEditContent(userId: $userId, contentId: $content->id));
 	}
@@ -64,11 +56,7 @@ final class ContentServiceTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('contentById')->willReturn($content);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $userId,
-			siteId: $content->siteId,
-			canEditAllContent: true,
-		));
+		$this->perms->method('canEditAllContent')->willReturn(true);
 
 		$this->assertTrue($this->service->userCanEditContent(userId: $userId, contentId: $content->id));
 	}
@@ -83,11 +71,7 @@ final class ContentServiceTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('contentById')->willReturn($content);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $userId,
-			siteId: $content->siteId,
-			canEditAllContent: false,
-		));
+		$this->perms->method('canEditAllContent')->willReturn(false);
 
 		$this->assertfalse($this->service->userCanEditContent(userId: $userId, contentId: $content->id));
 	}

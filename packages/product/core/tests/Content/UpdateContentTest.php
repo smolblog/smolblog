@@ -166,36 +166,7 @@ final class UpdateContentTest extends ContentTestBase {
 			userId: $command->contentUserId,
 			id: $contentId,
 		));
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canEditAllContent: false,
-		));
-
-		$this->expectException(CommandNotAuthorized::class);
-
-		$this->app->execute($command);
-	}
-
-	public function testItFailsIfUserPermissionsDoNotExist() {
-		$contentId = $this->randomId();
-		$userId = $this->randomId();
-		$command = new UpdateContent(
-			body: new TestDefaultContentType(title: 'Default', body: 'I got the email; you got the email.'),
-			siteId: $this->randomId(),
-			userId: $userId,
-			contentId: $contentId,
-			contentUserId: $this->randomId(),
-		);
-
-		$this->contentRepo->method('hasContentWithId')->willReturn(true);
-		$this->contentRepo->method('contentById')->willReturn(new Content(
-			body: $command->body->with(body: 'Here I go once again with the email.'),
-			siteId: $command->siteId,
-			userId: $command->contentUserId,
-			id: $contentId,
-		));
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(null);
+		$this->perms->method('canEditAllContent')->willReturn(false);
 
 		$this->expectException(CommandNotAuthorized::class);
 
@@ -220,11 +191,7 @@ final class UpdateContentTest extends ContentTestBase {
 			userId: $command->contentUserId,
 			id: $contentId,
 		));
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canEditAllContent: true,
-		));
+		$this->perms->method('canEditAllContent')->willReturn(true);
 
 		$this->expectEvent(new ContentUpdated(
 			body: $command->body,

@@ -5,8 +5,11 @@ namespace Smolblog\Core\Channel\Services;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Channel\Commands\AddChannelToSite;
 use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\ChannelAddedToSite;
+use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
@@ -19,10 +22,12 @@ class ChannelLinker implements CommandHandlerService {
 	 *
 	 * @param EventDispatcherInterface $eventBus MesageBus to send events.
 	 * @param ChannelRepo              $channels Get channels from storage.
+	 * @param SitePermissionsService   $perms    Check site permissions.
 	 */
 	public function __construct(
 		private EventDispatcherInterface $eventBus,
 		private ChannelRepo $channels,
+		private SitePermissionsService $perms,
 	) {
 	}
 
@@ -36,12 +41,13 @@ class ChannelLinker implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function onAddChannelToSite(AddChannelToSite $command): void {
+		$channel = $this->channels->channelById($command->channelId);
+		if (!isset($channel)) {
+			throw new EntityNotFound(entityId: $command->channelId, entityName: Channel::class);
+		}
 		if (
-			!$this->channels->userCanLinkChannelAndSite(
-				userId: $command->userId,
-				channelId: $command->channelId,
-				siteId: $command->siteId,
-			)
+			!($channel->userId == $command->userId) ||
+			!($this->perms->canManageChannels(userId: $command->userId, siteId: $command->siteId))
 		) {
 			throw new CommandNotAuthorized(originalCommand: $command);
 		}

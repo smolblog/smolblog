@@ -9,6 +9,7 @@ use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Entities\{Content, ContentExtension, ContentType, ContentTypeConfiguration};
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
 use Smolblog\Core\Content\Services\{ContentExtensionRegistry, ContentTypeService, DefaultContentTypeService};
+use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteRepo;
 use Smolblog\Core\Site\Entities\UserSitePermissions;
 
@@ -35,15 +36,15 @@ abstract class ContentExtensionTest extends ModelTest {
 	const string EXTENSION_CLASS = self::class;
 
 	protected ContentRepo & MockObject $contentRepo;
-	protected SiteRepo & MockObject $siteRepo;
+	protected SitePermissionsService & MockObject $perms;
 
 	protected function createMockServices(): array {
 		$this->contentRepo = $this->createMock(ContentRepo::class);
-		$this->siteRepo = $this->createMock(SiteRepo::class);
+		$this->perms = $this->createMock(SitePermissionsService::class);
 
 		return [
 			ContentRepo::class => fn() => $this->contentRepo,
-			SiteRepo::class => fn() => $this->siteRepo,
+			SitePermissionsService::class => fn() => $this->perms,
 			ContentExtensionTestContentTypeService::class => ['eventBus' => EventDispatcherInterface::class],
 		];
 	}
@@ -83,11 +84,7 @@ abstract class ContentExtensionTest extends ModelTest {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: true,
-		));
+		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->expectEvent(new ContentCreated(
 			body: $command->body,

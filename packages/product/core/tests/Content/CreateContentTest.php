@@ -32,11 +32,7 @@ final class CreateContentTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: true,
-		));
+		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->customExtensionService->expects($this->once())->method('create')->with(
 			command: $command,
@@ -68,11 +64,7 @@ final class CreateContentTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: true,
-		));
+		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->customExtensionService->expects($this->once())->method('create')->with(
 			command: $command,
@@ -104,11 +96,7 @@ final class CreateContentTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: true,
-		));
+		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->customContentService->expects($this->once())->method('create')->with(
 			command: $command,
@@ -132,11 +120,7 @@ final class CreateContentTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: true,
-		));
+		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->expectException(InvalidValueProperties::class);
 
@@ -153,28 +137,7 @@ final class CreateContentTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: false,
-		));
-
-		$this->expectException(CommandNotAuthorized::class);
-
-		$this->app->execute($command);
-	}
-
-	public function testItFailsIfUserPermissionsDoNotExist() {
-		$contentId = $this->randomId();
-		$command = new CreateContent(
-			body: new TestDefaultContentType(title: 'Default', body: 'I got the email; you got the email.'),
-			siteId: $this->randomId(),
-			userId: $this->randomId(),
-			contentId: $contentId,
-		);
-
-		$this->contentRepo->method('hasContentWithId')->willReturn(false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(null);
+		$this->perms->method('canCreateContent')->willReturn(false);
 
 		$this->expectException(CommandNotAuthorized::class);
 
@@ -189,11 +152,7 @@ final class CreateContentTest extends ContentTestBase {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true, true, false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: true,
-		));
+		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(ContentCreated::class));
 

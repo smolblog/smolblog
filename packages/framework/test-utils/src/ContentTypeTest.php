@@ -9,7 +9,7 @@ use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
 use Smolblog\Core\Content\Services\ContentTypeRegistry;
-use Smolblog\Core\Site\Data\SiteRepo;
+use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Entities\UserSitePermissions;
 
 abstract class ContentTypeTest extends ModelTest {
@@ -24,15 +24,15 @@ abstract class ContentTypeTest extends ModelTest {
 	protected const DELETE_EVENT = ContentDeleted::class;
 
 	protected ContentRepo & MockObject $contentRepo;
-	protected SiteRepo & MockObject $siteRepo;
+	protected SitePermissionsService & MockObject $perms;
 
 	protected function createMockServices(): array {
 		$this->contentRepo = $this->createMock(ContentRepo::class);
-		$this->siteRepo = $this->createMock(SiteRepo::class);
+		$this->perms = $this->createMock(SitePermissionsService::class);
 
 		return [
 			ContentRepo::class => fn() => $this->contentRepo,
-			SiteRepo::class => fn() => $this->siteRepo,
+			SitePermissionsService::class => fn() => $this->perms,
 		];
 	}
 
@@ -66,11 +66,7 @@ abstract class ContentTypeTest extends ModelTest {
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $command->userId,
-			siteId: $command->siteId,
-			canCreateContent: true,
-		));
+		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->expectEvent(new (static::CREATE_EVENT)(
 			body: $command->body,

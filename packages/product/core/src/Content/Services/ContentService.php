@@ -9,6 +9,7 @@ use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Core\Content\Entities\ContentType;
+use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteRepo;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
@@ -28,13 +29,13 @@ class ContentService implements CommandHandlerService {
 	 * @param ContentTypeRegistry      $types      Registry of content types.
 	 * @param ContentExtensionRegistry $extensions Registry of content extensions.
 	 * @param ContentRepo              $repo       Content objects.
-	 * @param SiteRepo                 $sites      Site objects for checking permissions.
+	 * @param SitePermissionsService   $perms      Check permissions.
 	 */
 	public function __construct(
 		private ContentTypeRegistry $types,
 		private ContentExtensionRegistry $extensions,
 		private ContentRepo $repo,
-		private SiteRepo $sites,
+		private SitePermissionsService $perms,
 	) {
 	}
 
@@ -56,8 +57,7 @@ class ContentService implements CommandHandlerService {
 		}
 
 		// Check permissions.
-		$perms = $this->sites->userPermissionsForSite(userId: $command->userId, siteId: $command->siteId);
-		if (!$perms?->canCreateContent) {
+		if (!$this->perms->canCreateContent(userId: $command->userId, siteId: $command->siteId)) {
 			throw new CommandNotAuthorized(originalCommand: $command);
 		}
 
@@ -136,8 +136,7 @@ class ContentService implements CommandHandlerService {
 			return true;
 		}
 
-		$perms = $this->sites->userPermissionsForSite(userId: $userId, siteId: $content->siteId);
-		return $perms?->canEditAllContent ?? false;
+		return $this->perms->canEditAllContent(userId: $userId, siteId: $content->siteId);
 	}
 
 	/**

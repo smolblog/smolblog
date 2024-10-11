@@ -14,6 +14,7 @@ use Smolblog\Core\Content\Services\ContentExtensionService;
 use Smolblog\Core\Content\Services\ContentTypeService;
 use Smolblog\Core\Content\Services\DefaultContentExtensionService;
 use Smolblog\Core\Content\Services\DefaultContentTypeService;
+use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteRepo;
 use Smolblog\Test\ModelTest;
 
@@ -108,13 +109,13 @@ abstract class ContentTestBase extends ModelTest {
 	protected TestCustomContentTypeService & MockObject $customContentService;
 	protected TestCustomContentExtensionService & MockObject $customExtensionService;
 	protected ContentRepo & MockObject $contentRepo;
-	protected SiteRepo & MockObject $siteRepo;
+	protected SitePermissionsService & MockObject $perms;
 
 	protected function createMockServices(): array {
 		$this->customContentService = $this->createMock(TestCustomContentTypeService::class);
 		$this->customExtensionService = $this->createMock(TestCustomContentExtensionService::class);
 		$this->contentRepo = $this->createMock(ContentRepo::class);
-		$this->siteRepo = $this->createMock(SiteRepo::class);
+		$this->perms = $this->createMock(SitePermissionsService::class);
 
 		return [
 			TestDefaultContentTypeService::class => ['eventBus' => EventDispatcherInterface::class],
@@ -123,7 +124,7 @@ abstract class ContentTestBase extends ModelTest {
 			TestDefaultContentExtensionService::class => [],
 			TestCustomContentExtensionService::class => fn () => $this->customExtensionService,
 			ContentRepo::class => fn() => $this->contentRepo,
-			SiteRepo::class => fn() => $this->siteRepo,
+			SitePermissionsService::class => fn() => $this->perms,
 		];
 	}
 }

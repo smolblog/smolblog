@@ -17,6 +17,7 @@ class Model extends DomainModel {
 		Channel\Services\ChannelLinker::class => [
 			'channels' => Channel\Data\ChannelRepo::class,
 			'eventBus' => EventDispatcherInterface::class,
+			'perms' => Permissions\SitePermissionsService::class,
 		],
 
 		Connection\Services\AuthRequestService::class => [
@@ -51,7 +52,7 @@ class Model extends DomainModel {
 			'types' => Content\Services\ContentTypeRegistry::class,
 			'extensions' => Content\Services\ContentExtensionRegistry::class,
 			'repo' => Content\Data\ContentRepo::class,
-			'sites' => Site\Data\SiteRepo::class,
+			'perms' => Permissions\SitePermissionsService::class,
 		],
 		Content\Services\ContentTypeRegistry::class => [
 			'container' => ContainerInterface::class,

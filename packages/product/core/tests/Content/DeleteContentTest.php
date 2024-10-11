@@ -151,11 +151,7 @@ final class DeleteContentTest extends ContentTestBase {
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn($content);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $userId,
-			siteId: $content->siteId,
-			canEditAllContent: false,
-		));
+		$this->perms->method('canEditAllContent')->willReturn(false);
 
 		$this->expectException(CommandNotAuthorized::class);
 
@@ -178,11 +174,7 @@ final class DeleteContentTest extends ContentTestBase {
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
 		$this->contentRepo->method('contentById')->willReturn($content);
-		$this->siteRepo->method('userPermissionsForSite')->willReturn(new UserSitePermissions(
-			userId: $userId,
-			siteId: $content->siteId,
-			canEditAllContent: true,
-		));
+		$this->perms->method('canEditAllContent')->willReturn(true);
 
 		$this->expectEvent(new ContentDeleted(
 			aggregateId: $content->siteId,
