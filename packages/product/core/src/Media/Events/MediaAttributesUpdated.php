@@ -39,8 +39,8 @@ readonly class MediaAttributesUpdated extends DomainEvent {
 		}
 
 		parent::__construct(
-			id: $id ?? new DateIdentifier(),
-			timestamp: $timestamp ?? new DateTimeField(),
+			id: $id,
+			timestamp: $timestamp,
 			userId: $userId,
 			aggregateId: $aggregateId,
 			entityId: $entityId,
