@@ -2,15 +2,13 @@
 
 namespace Smolblog\Core\Media\Commands;
 
-use Smolblog\Core\Media\Queries\UserCanEditMedia;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
-use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 
 /**
  * Delete a media object.
  */
-class DeleteMedia extends Command implements AuthorizableMessage {
+readonly class DeleteMedia extends Command {
 	/**
 	 * Construct the command.
 	 *
@@ -21,14 +19,5 @@ class DeleteMedia extends Command implements AuthorizableMessage {
 		public readonly Identifier $userId,
 		public readonly Identifier $mediaId
 	) {
-	}
-
-	/**
-	 * Determine if the user owns the media object or is an admin on the site.
-	 *
-	 * @return UserCanEditMedia
-	 */
-	public function getAuthorizationQuery(): UserCanEditMedia {
-		return new UserCanEditMedia(userId: $this->userId, mediaId: $this->mediaId);
 	}
 }

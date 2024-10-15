@@ -2,8 +2,9 @@
 
 namespace Smolblog\Core\Media\Events;
 
-use DateTimeInterface;
-use Smolblog\Foundation\Value\Fields\DateIdentifier;
+use Smolblog\Core\Media\Entities\Media;
+use Smolblog\Core\Media\Entities\MediaType;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
@@ -13,38 +14,75 @@ use Smolblog\Foundation\Value\Messages\DomainEvent;
  */
 readonly class MediaCreated extends DomainEvent {
 	/**
+	 * User responsible for the Media object.
+	 *
+	 * @var Identifier
+	 */
+	public Identifier $mediaUserId;
+
+	/**
 	 * Create the event.
 	 *
-	 * @param Media              $media     Media object being created.
-	 * @param Identifier         $userId    User creating the Media.
-	 * @param Identifier|null    $id        ID of the event.
-	 * @param DateTimeField|null $timestamp Timestamp of the event.
+	 * @throws InvalidValueProperties When title or accessibilityText are empty.
+	 *
+	 * @param Identifier         $entityId          ID of the media object.
+	 * @param Identifier         $aggregateId       ID of the site media is uploaded to.
+	 * @param Identifier         $userId            User creating the Media.
+	 * @param string             $title             Title for the media (usually filename). Must not be empty.
+	 * @param string             $accessibilityText Text description of the media. Must not be empty.
+	 * @param MediaType          $type              Broad type of media (image, video, etc).
+	 * @param string             $handler           Key for handler for this media.
+	 * @param array              $fileDetails       Information needed by file handler.
+	 * @param Identifier|null    $id                ID of the event.
+	 * @param DateTimeField|null $timestamp         Timestamp of the event.
+	 * @param Identifier|null    $mediaUserId       User responsible for the media; defaults to $userId.
 	 */
 	public function __construct(
-		public Media $media,
+		Identifier $entityId,
+		Identifier $aggregateId,
 		Identifier $userId,
+		public string $title,
+		public string $accessibilityText,
+		public MediaType $type,
+		public string $handler,
+		public array $fileDetails,
 		?Identifier $id = null,
-		?DateTimeField $timestamp = null
+		?DateTimeField $timestamp = null,
+		?Identifier $mediaUserId = null,
 	) {
+		if (empty($this->title) || empty($this->accessibilityText)) {
+			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
+		}
+
+		$this->mediaUserId = $mediaUserId ?? $userId;
+
 		parent::__construct(
-			id: $id ?? new DateIdentifier(),
-			timestamp: $timestamp ?? new DateTimeField(),
+			id: $id,
+			timestamp: $timestamp,
 			userId: $userId,
-			aggregateId: $this->media->siteId,
-			entityId: $this->media->id,
+			aggregateId: $aggregateId,
+			entityId: $entityId,
 		);
 	}
 
 	/**
-	 * Create event from serialized data.
+	 * Create an event from an existing Media object.
 	 *
-	 * Removes the 'aggreagateId' and 'entityId' properties as they are taken from the Media object.
+	 * If the user on the media object is different from the user, be sure to set mediaUserId after creation.
 	 *
-	 * @param array $data Serialized data.
-	 * @return static
+	 * @param Media $media Media object being created.
+	 * @return self
 	 */
-	public static function deserializeValue(array $data): static {
-		unset($data['aggregateId'], $data['entityId']);
-		return parent::deserializeValue($data);
+	public static function createFromMediaObject(Media $media): self {
+		return new self(
+			entityId: $media->id,
+			aggregateId: $media->siteId,
+			userId: $media->userId,
+			title: $media->title,
+			accessibilityText: $media->accessibilityText,
+			type: $media->type,
+			handler: $media->handler,
+			fileDetails: $media->fileDetails,
+		);
 	}
 }

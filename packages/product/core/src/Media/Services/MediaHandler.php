@@ -1,8 +1,10 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Services;
 
-use Psr\Http\Message\UploadedFileInterface;
+use Smolblog\Core\Media\Commands\HandleUploadedMedia;
+use Smolblog\Core\Media\Commands\SideloadMedia;
+use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Foundation\Service\Registry\Registerable;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
@@ -24,32 +26,22 @@ interface MediaHandler extends Registerable {
 	 *
 	 * @throws InvalidMediaException If the file cannot be processed.
 	 *
-	 * @param UploadedFileInterface $file   Uploaded file information.
-	 * @param Identifier|null       $userId ID of the user uploading the file.
-	 * @param Identifier|null       $siteId Site the file is being uploaded to.
+	 * @param HandleUploadedMedia $command Original command being executed.
+	 * @param Identifier          $mediaId ID to use to create the Media object.
 	 * @return Media
 	 */
-	public function handleUploadedFile(
-		UploadedFileInterface $file,
-		?Identifier $userId = null,
-		?Identifier $siteId = null,
-	): Media;
+	public function handleUploadedFile(HandleUploadedMedia $command, Identifier $mediaId): Media;
 
 	/**
 	 * Sideload the result of the given URL and return the resulting Media object.
 	 *
 	 * @throws InvalidMediaException If the file at the URL cannot be processed.
 	 *
-	 * @param string          $url    URL of media to sideload.
-	 * @param Identifier|null $userId ID of the user uploading the file.
-	 * @param Identifier|null $siteId Site the file is being uploaded to.
+	 * @param SideloadMedia $command Original command being executed.
+	 * @param Identifier    $mediaId ID to use to create the Media object.
 	 * @return Media
 	 */
-	public function sideloadFile(
-		string $url,
-		?Identifier $userId = null,
-		?Identifier $siteId = null,
-	): Media;
+	public function sideloadFile(SideloadMedia $command, Identifier $mediaId): Media;
 
 	/**
 	 * Get the URL for a thumbnail image for the media.

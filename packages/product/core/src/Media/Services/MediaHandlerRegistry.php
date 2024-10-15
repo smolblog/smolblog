@@ -1,8 +1,9 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Services;
 
 use Psr\Container\ContainerInterface;
+use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Service\Registry\Registry;
 use Smolblog\Foundation\Service\Registry\RegistryKit;
 
@@ -10,9 +11,7 @@ use Smolblog\Foundation\Service\Registry\RegistryKit;
  * Register MediaHandlers.
  */
 class MediaHandlerRegistry implements Registry {
-	use RegistryKit {
-		get as private baseGet;
-	}
+	use RegistryKit;
 
 	/**
 	 * This registry handles MediaHandler services.
@@ -27,19 +26,29 @@ class MediaHandlerRegistry implements Registry {
 	 * Construct the Registrar with a DI container
 	 *
 	 * @param ContainerInterface $container         Containter which contains the needed classes.
-	 * @param string             $defaultHandlerKey Key of MediaHandler to use by default.
+	 * @param string|null        $defaultHandlerKey Key of MediaHandler to use by default.
 	 */
-	public function __construct(ContainerInterface $container, private string $defaultHandlerKey) {
+	public function __construct(ContainerInterface $container, private ?string $defaultHandlerKey) {
 		$this->container = $container;
 	}
 
 	/**
 	 * Get the given MediaHandler from the Registrar
 	 *
-	 * @param string $key Key for the MediaHandler.
+	 * @throws ServiceNotRegistered When no service is registered with the given key.
+	 *
+	 * @param string|null $key Key for the MediaHandler.
 	 * @return MediaHandler
 	 */
 	public function get(?string $key = null): MediaHandler {
-		return $this->baseGet($key ?? $this->defaultHandlerKey);
+		$keyToUse = $key ?? $this->defaultHandlerKey ?? \array_key_first($this->library);
+		if (!is_string($keyToUse)) {
+			throw new ServiceNotRegistered(
+				service: 'default',
+				registry: self::class,
+				message: 'No default MediaHandler set.'
+			);
+		}
+		return $this->getService($keyToUse);
 	}
 }

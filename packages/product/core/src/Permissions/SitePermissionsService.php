@@ -34,4 +34,22 @@ interface SitePermissionsService {
 	 * @return boolean
 	 */
 	public function canManageChannels(Identifier $userId, Identifier $siteId): bool;
+
+	/**
+	 * Can the given user upload media to the given site?
+	 *
+	 * @param Identifier $userId User to check.
+	 * @param Identifier $siteId Site to check.
+	 * @return boolean
+	 */
+	public function canUploadMedia(Identifier $userId, Identifier $siteId): bool;
+
+	/**
+	 * Can the given user edit all media on the given site (not just their own)?
+	 *
+	 * @param Identifier $userId User to check.
+	 * @param Identifier $siteId Site to check.
+	 * @return boolean
+	 */
+	public function canEditAllMedia(Identifier $userId, Identifier $siteId): bool;
 }

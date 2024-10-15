@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Media;
+namespace Smolblog\Core\Media\Entities;
 
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value;

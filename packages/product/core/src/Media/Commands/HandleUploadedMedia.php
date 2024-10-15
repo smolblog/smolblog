@@ -13,7 +13,7 @@ use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 /**
  * Save an uploaded file to the media library
  */
-class HandleUploadedMedia extends Command implements AuthorizableMessage {
+readonly class HandleUploadedMedia extends Command {
 	/**
 	 * Create the command.
 	 *
@@ -22,7 +22,7 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 	 * @param UploadedFileInterface $file              Uploaded file.
 	 * @param Identifier            $userId            User uploading the file.
 	 * @param Identifier            $siteId            Site file is being uploaded to.
-	 * @param string|null           $accessibilityText Alt text.
+	 * @param string                $accessibilityText Alt text.
 	 * @param string|null           $title             Title of the media.
 	 * @param Identifier|null       $mediaId           ID for the new media; will auto-generate if not given.
 	 */
@@ -30,18 +30,9 @@ class HandleUploadedMedia extends Command implements AuthorizableMessage {
 		public UploadedFileInterface $file,
 		public readonly Identifier $userId,
 		public readonly Identifier $siteId,
-		public ?string $accessibilityText = null,
+		public string $accessibilityText,
 		public ?string $title = null,
-		public Identifier $mediaId = new DateIdentifier(),
+		public ?Identifier $mediaId = null,
 	) {
-	}
-
-	/**
-	 * Get the authorization query: user must have authorship permissions.
-	 *
-	 * @return Query
-	 */
-	public function getAuthorizationQuery(): UserHasPermissionForSite {
-		return new UserHasPermissionForSite(siteId: $this->siteId, userId: $this->userId, mustBeAuthor: true);
 	}
 }
