@@ -64,6 +64,9 @@ class Model extends DomainModel {
 		Content\Types\Note\NoteService::class => [
 			'eventBus' => EventDispatcherInterface::class,
 		],
+		Content\Types\Picture\PictureService::class => [
+			'eventBus' => EventDispatcherInterface::class,
+		],
 		Content\Types\Reblog\ReblogService::class => [
 			'eventBus' => EventDispatcherInterface::class,
 		],
