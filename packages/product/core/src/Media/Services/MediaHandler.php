@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Media\Services;
 
+use Smolblog\Core\Media\Commands\DeleteMedia;
 use Smolblog\Core\Media\Commands\HandleUploadedMedia;
 use Smolblog\Core\Media\Commands\SideloadMedia;
 use Smolblog\Core\Media\Entities\Media;
@@ -42,6 +43,15 @@ interface MediaHandler extends Registerable {
 	 * @return Media
 	 */
 	public function sideloadFile(SideloadMedia $command, Identifier $mediaId): Media;
+
+	/**
+	 * Delete the given Media file from the system.
+	 *
+	 * @param DeleteMedia $command Original command being executed.
+	 * @param Media       $media   Media object being deleted.
+	 * @return Media
+	 */
+	public function deleteFile(DeleteMedia $command, Media $media): Media;
 
 	/**
 	 * Get the URL for a thumbnail image for the media.

@@ -133,6 +133,9 @@ class MediaService implements CommandHandlerService {
 	public function onDeleteMedia(DeleteMedia $command) {
 		$media = $this->checkEditPermsAndId($command);
 
+		$handler = $this->registry->get($media->handler);
+		$handler->deleteFile(command: $command, media: $media);
+
 		$this->bus->dispatch(new MediaDeleted(
 			entityId: $command->mediaId,
 			userId: $command->userId,
