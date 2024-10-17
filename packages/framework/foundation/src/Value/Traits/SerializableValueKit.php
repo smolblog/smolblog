@@ -2,6 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Traits;
 
+use BackedEnum;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -36,22 +37,7 @@ trait SerializableValueKit {
 				continue;
 			}
 
-			if (is_array($this->$name)) {
-				$data[$name] = array_map(fn($item) => $item->serializeValue(), $this->$name);
-				continue;
-			}
-
-			if (is_object($this->$name)) {
-				if (!is_a($this->$name, SerializableValue::class)) {
-					throw new CodePathNotSupported(
-						message: get_class($this->$name) . ' is not a SerializableValue. ' .
-							'Change the type or override serializeValue()',
-						location: 'SerializableValueKit::serializeValue via ' . static::class
-					);
-				}
-				$data[$name] = $this->$name->serializeValue();
-				continue;
-			}
+			$data[$name] = $this->serializeProperty($this->$name);
 		}//end foreach
 		return $data;
 	}
@@ -87,7 +73,7 @@ trait SerializableValueKit {
 			}
 
 			$parsedData[$name] = self::deserializeDataToType($data[$name], $type);
-		}
+		}//end foreach
 
 		// @phpstan-ignore-next-line
 		return new static(...$parsedData);
@@ -139,6 +125,36 @@ trait SerializableValueKit {
 	}
 
 	/**
+	 * Serialize the given property.
+	 *
+	 * Checks for a BackedEnum, then recursively maps an array, then checks for a SerializableValue.
+	 *
+	 * @throws CodePathNotSupported If a property is an object but not a SerializableValue.
+	 *
+	 * @param mixed $value Value to serialize.
+	 * @return mixed Serialized $value.
+	 */
+	private function serializeProperty(mixed $value): mixed {
+		if (is_a($value, BackedEnum::class)) {
+			return $value->value;
+		}
+
+		if (is_array($value)) {
+			return array_map(fn($item) => $this->serializeProperty($item), $value);
+		}
+
+		if (is_object($value) && is_a($value, SerializableValue::class)) {
+			return $value->serializeValue();
+		}
+
+		throw new CodePathNotSupported(
+			message: get_class($value) . ' is not a SerializableValue. ' .
+				'Change the type or override serializeValue()',
+			location: 'SerializableValueKit::serializeValue via ' . static::class
+		);
+	}
+
+	/**
 	 * Determine the type of a property if it is an object or array of objects. Will return null if the property is
 	 * a built-in type.
 	 *
@@ -149,7 +165,7 @@ trait SerializableValueKit {
 	 */
 	private static function determinePropertyType(ReflectionProperty $prop): string|ArrayType|null {
 		$type = $prop->getType();
-		if (get_class($type) !== ReflectionNamedType::class) {
+		if (!isset($type) || get_class($type) !== ReflectionNamedType::class) {
 			throw new CodePathNotSupported(
 				message: 'Union/intersection types are not supported; ' .
 					'change the type or override the propertyInfo() method.',
@@ -181,9 +197,14 @@ trait SerializableValueKit {
 	 * @return mixed Deserialized object of type $type or unmodified $data.
 	 */
 	private static function deserializeDataToType(mixed $data, string $type): mixed {
-		// If $type isn't a SerializableValue, don't touch.
-		if (class_exists($type) && is_subclass_of($type, SerializableValue::class, allow_string: true)) {
-			return $type::deserializeValue($data);
+		// If $type isn't a BackedEnum or SerializableValue, don't touch.
+		if (class_exists($type)) {
+			if (is_subclass_of($type, BackedEnum::class, allow_string: true)) {
+				return $type::from($data);
+			}
+			if (is_subclass_of($type, SerializableValue::class, allow_string: true)) {
+				return $type::deserializeValue($data);
+			}
 		}
 
 		throw new CodePathNotSupported(

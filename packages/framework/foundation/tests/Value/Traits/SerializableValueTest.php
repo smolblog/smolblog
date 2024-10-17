@@ -30,11 +30,27 @@ readonly class RecursiveValueTest extends ValueTestBase {
 }
 
 readonly class ArrayWithScalarsValueTest extends ValueTestBase {
-	public function __construct(#[ArrayType(ArrayType::TYPE_STRING)]public array $array) {}
+	public function __construct(#[ArrayType(ArrayType::TYPE_STRING)] public array $array) {}
 }
 
 readonly class ArrayWithObjectsValueTest extends ValueTestBase {
 	public function __construct(#[ArrayType(SimpleValueTest::class)] public array $array) {}
+}
+
+enum ValueTestStringEnum: string {
+	case ONE = 'one';
+	case TWO = 'two';
+}
+enum ValueTestIntEnum: int {
+	case ONE = 1;
+	case TWO = 2;
+}
+
+readonly class EnumValueTest extends ValueTestBase {
+	public function __construct(public ValueTestStringEnum $string, public ValueTestIntEnum $int) {}
+}
+readonly class ArrayWithEnumsValueTest extends ValueTestBase {
+	public function __construct(#[ArrayType(ValueTestStringEnum::class)] public array $array) {}
 }
 
 readonly class PrivatePropertyValueTest extends ValueTestBase {
@@ -85,6 +101,12 @@ final class SerializableValueTest extends TestCase {
 				'json' => '{"one":"one"}',
 				'info' => ['one' => null, 'two' => null, 'three' => null],
 			],
+			'enums' => [
+				'object' => new EnumValueTest(ValueTestStringEnum::ONE, ValueTestIntEnum::TWO),
+				'array' => ['string' => 'one', 'int' => 2],
+				'json' => '{"string":"one","int":2}',
+				'info' => ['string' => ValueTestStringEnum::class, 'int' => ValueTestIntEnum::class],
+			],
 			'recursive' => [
 				'object' => new RecursiveValueTest(new SimpleValueTest('inside')),
 				'array' => ['outside' => ['value' => 'inside']],
@@ -106,6 +128,15 @@ final class SerializableValueTest extends TestCase {
 				'array' => ['array' => [['value' => 'one'], ['value' => 'two'], ['value' => 'three']]],
 				'json' => '{"array":[{"value":"one"},{"value":"two"},{"value":"three"}]}',
 				'info' => ['array' => new ArrayType(SimpleValueTest::class)],
+			],
+			'array with enums' => [
+				'object' => new ArrayWithEnumsValueTest([
+					ValueTestStringEnum::ONE,
+					ValueTestStringEnum::TWO,
+				]),
+				'array' => ['array' => ['one', 'two']],
+				'json' => '{"array":["one","two"]}',
+				'info' => ['array' => new ArrayType(ValueTestStringEnum::class)],
 			],
 			'private property' => [
 				'object' => new PrivatePropertyValueTest('hello'),
