@@ -28,7 +28,7 @@ class MediaHandlerRegistry implements Registry {
 	 * @param ContainerInterface $container         Containter which contains the needed classes.
 	 * @param string|null        $defaultHandlerKey Key of MediaHandler to use by default.
 	 */
-	public function __construct(ContainerInterface $container, private ?string $defaultHandlerKey) {
+	public function __construct(ContainerInterface $container, private ?string $defaultHandlerKey = null) {
 		$this->container = $container;
 	}
 

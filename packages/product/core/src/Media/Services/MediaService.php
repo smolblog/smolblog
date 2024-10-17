@@ -47,8 +47,10 @@ class MediaService implements CommandHandlerService {
 	/**
 	 * Create the service.
 	 *
-	 * @param EventDispatcherInterface $bus      MessageBus to dispatch events.
-	 * @param MediaHandlerRegistry     $registry Available MediaHandlers.
+	 * @param EventDispatcherInterface $bus       MessageBus to dispatch events.
+	 * @param MediaHandlerRegistry     $registry  Available MediaHandlers.
+	 * @param MediaRepo                $mediaRepo Check existing media.
+	 * @param SitePermissionsService   $perms     Check user permissions.
 	 */
 	public function __construct(
 		private EventDispatcherInterface $bus,

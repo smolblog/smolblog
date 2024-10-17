@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\Media\Data;
 
-use Smolblog\Core\Media\Media;
+use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 interface MediaRepo {

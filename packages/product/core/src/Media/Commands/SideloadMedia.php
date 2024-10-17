@@ -28,5 +28,6 @@ readonly class SideloadMedia extends Command {
 		public readonly ?string $title = null,
 		public readonly ?Identifier $mediaId = null,
 	) {
+		parent::__construct();
 	}
 }

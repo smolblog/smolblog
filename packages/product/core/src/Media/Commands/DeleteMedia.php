@@ -19,5 +19,6 @@ readonly class DeleteMedia extends Command {
 		public readonly Identifier $userId,
 		public readonly Identifier $mediaId
 	) {
+		parent::__construct();
 	}
 }

@@ -19,17 +19,16 @@ use Smolblog\Framework\Exceptions\ServiceRegistryConfigurationException;
  * - A callable that will instantiate the class. This is useful for low-level classes that take simple configuration
  *   values or interfaces with simple implementations.
  *   Ex: '\PDO' => fn() => new PDO('sqlite:/db.sqlite')
- * - If the key is an interface, the value should be the fully-qualified class name of an implementing class that is
- *   also registered in the container.
- *   Ex: '\Smolblog\MessageBus' => 'Smolblog\Framework\Infrastructure\DefaultMessageBus'
- * - If the key is a service class, the value should be an array of (a) fully-qualified class names that are also
- *   registered in the container or (b) callables. The parameters should be given in order or with appropriate names;
- *   passing the spreaded array as the constructor's arguments should be successful.
+ * - A the fully-qualified class name of an implementing class that is also registered in the container.
+ *   Ex: '\Smolblog\MessageBus' => '\Smolblog\Framework\Infrastructure\DefaultMessageBus'
+ * - An array of (a) fully-qualified class names that are also registered in the container or (b) callables. The
+ *   parameters should be given in order or with appropriate names; passing the spreaded array as the constructor's
+ *   arguments should be successful.
  *   Ex: '\oddEvan\Vanity\NameService' => ['\Smolblog\MessageBus', '\Smolblog\Post\Media']
  *   Ex: '\Some\Other\Service' => ['messageBus' => '\Smolblog\MessageBus', 'configArray' => fn() => [1, 2, 3]]
  *
  * ServiceRegistry will register itself so it can be used as a dependency for other services as both ServiceRegistry and
- * the generic ContainerInterface.
+ * the generic ContainerInterface if it is not already present in the given configuration.
  */
 class ServiceRegistry implements ContainerInterface {
 	/**

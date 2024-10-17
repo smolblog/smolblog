@@ -34,5 +34,6 @@ readonly class HandleUploadedMedia extends Command {
 		public ?string $title = null,
 		public ?Identifier $mediaId = null,
 	) {
+		parent::__construct();
 	}
 }

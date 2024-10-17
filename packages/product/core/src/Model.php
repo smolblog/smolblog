@@ -71,6 +71,16 @@ class Model extends DomainModel {
 		Content\Extensions\Tags\TagsService::class => [],
 		Content\Extensions\Warnings\WarningsService::class => [],
 
+		Media\Services\MediaHandlerRegistry::class => [
+			'container' => ContainerInterface::class,
+		],
+		Media\Services\MediaService::class => [
+			'bus' => EventDispatcherInterface::class,
+			'registry' => Media\Services\MediaHandlerRegistry::class,
+			'mediaRepo' => Media\Data\MediaRepo::class,
+			'perms' => Permissions\SitePermissionsService::class,
+		],
+
 		Federation\FederationService::class => [
 			'bus' => MessageBus::class,
 			'followerProviders' => Federation\FollowerProviderRegistry::class,
