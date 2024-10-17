@@ -28,13 +28,16 @@ readonly class MediaAttributesUpdated extends DomainEvent {
 		Identifier $entityId,
 		Identifier $userId,
 		Identifier $aggregateId,
-		public ?string $title,
-		public ?string $accessibilityText,
+		public ?string $title = null,
+		public ?string $accessibilityText = null,
 		?Identifier $id = null,
 		?DateTimeField $timestamp = null
 	) {
 		if (!isset($title) && !isset($accessibilityText)) {
 			throw new InvalidValueProperties('No updated attributes provided.');
+		}
+		if ((isset($title) && empty($title)) || (isset($accessibilityText) && empty($accessibilityText))) {
+			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
 		}
 
 		parent::__construct(

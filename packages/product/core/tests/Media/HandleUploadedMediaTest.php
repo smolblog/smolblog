@@ -8,6 +8,8 @@ use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Core\Media\Events\MediaCreated;
+use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Test\MediaTestBase;
 
 final class HandleUploadedMediaTest extends MediaTestBase {
@@ -47,6 +49,92 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			handler: $media->handler,
 			fileDetails: []
 		));
+
+		$this->app->execute($command);
+	}
+
+	public function testItRequiresAltText() {
+		$this->expectException(InvalidValueProperties::class);
+
+		new HandleUploadedMedia(
+			file: $this->createMock(UploadedFileInterface::class),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+			accessibilityText: '',
+		);
+	}
+
+	public function testItRequiresANonemptyTitleIfGiven() {
+		$this->expectException(InvalidValueProperties::class);
+
+		new HandleUploadedMedia(
+			file: $this->createMock(UploadedFileInterface::class),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+			accessibilityText: 'alt text',
+			title: '',
+		);
+	}
+
+	public function testItFailsIfTheGivenContentIdExists() {
+		$mediaId = $this->randomId();
+		$command = new HandleUploadedMedia(
+			file: $this->createMock(UploadedFileInterface::class),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			mediaId: $mediaId,
+			accessibilityText: 'alt text',
+		);
+
+		$this->contentRepo->method('hasMediaWithId')->willReturn(true);
+		$this->perms->method('canUploadMedia')->willReturn(true);
+
+		$this->expectException(InvalidValueProperties::class);
+
+		$this->app->execute($command);
+	}
+
+	public function testItFailsIfTheUserCannotHandleUploadedMedia() {
+		$command = new HandleUploadedMedia(
+			file: $this->createMock(UploadedFileInterface::class),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			accessibilityText: 'alt text',
+		);
+
+		$this->contentRepo->method('hasMediaWithId')->willReturn(false);
+		$this->perms->method('canUploadMedia')->willReturn(false);
+
+		$this->expectException(CommandNotAuthorized::class);
+
+		$this->app->execute($command);
+	}
+
+	public function testItGeneratesANewIdThatDoesNotExist() {
+		$command = new HandleUploadedMedia(
+			file: $this->createMock(UploadedFileInterface::class),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+			accessibilityText: 'alt text',
+		);
+
+		$this->mockHandler
+			->method('handleUploadedFile')
+			->willReturnCallback(fn($cmd, $id) => new Media(
+				id: $id,
+				userId: $cmd->userId,
+				siteId: $cmd->siteId,
+				title: 'testimage.jpg',
+				accessibilityText: 'Image for testing',
+				type: MediaType::Image,
+				handler: 'testmock',
+				fileDetails: [],
+			));
+
+		$this->contentRepo->method('hasMediaWithId')->willReturn(true, true, false);
+		$this->perms->method('canUploadMedia')->willReturn(true);
+
+		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(MediaCreated::class));
 
 		$this->app->execute($command);
 	}

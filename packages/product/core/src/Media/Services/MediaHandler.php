@@ -49,9 +49,9 @@ interface MediaHandler extends Registerable {
 	 *
 	 * @param DeleteMedia $command Original command being executed.
 	 * @param Media       $media   Media object being deleted.
-	 * @return Media
+	 * @return void
 	 */
-	public function deleteFile(DeleteMedia $command, Media $media): Media;
+	public function deleteFile(DeleteMedia $command, Media $media): void;
 
 	/**
 	 * Get the URL for a thumbnail image for the media.

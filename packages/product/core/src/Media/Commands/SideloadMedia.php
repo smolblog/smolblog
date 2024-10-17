@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Media\Commands;
 
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
@@ -12,6 +13,8 @@ use Smolblog\Foundation\Value\Messages\Command;
 readonly class SideloadMedia extends Command {
 	/**
 	 * Create the command.
+	 *
+	 * @throws InvalidValueProperties If title or accessibility text are given and empty.
 	 *
 	 * @param string          $url               File to sideload.
 	 * @param Identifier      $userId            User uploading the file.
@@ -28,6 +31,9 @@ readonly class SideloadMedia extends Command {
 		public readonly ?string $title = null,
 		public readonly ?Identifier $mediaId = null,
 	) {
+		if ((isset($title) && empty($title)) || empty($accessibilityText)) {
+			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
+		}
 		parent::__construct();
 	}
 }

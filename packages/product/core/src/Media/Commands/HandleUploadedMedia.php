@@ -34,6 +34,9 @@ readonly class HandleUploadedMedia extends Command {
 		public ?string $title = null,
 		public ?Identifier $mediaId = null,
 	) {
+		if ((isset($title) && empty($title)) || empty($accessibilityText)) {
+			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
+		}
 		parent::__construct();
 	}
 }

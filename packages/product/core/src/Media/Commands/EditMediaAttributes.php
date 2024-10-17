@@ -31,6 +31,9 @@ readonly class EditMediaAttributes extends Command {
 		if (!isset($title) && !isset($accessibilityText)) {
 			throw new InvalidValueProperties('No updated attributes provided.');
 		}
+		if ((isset($title) && empty($title)) || (isset($accessibilityText) && empty($accessibilityText))) {
+			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
+		}
 
 		parent::__construct();
 	}
