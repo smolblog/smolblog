@@ -3,13 +3,13 @@
 namespace Smolblog\Core\Channel\Services;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Core\Channel\Commands\CompleteContentPush;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Channel\Events\ContentPushFailed;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
-use Smolblog\Foundation\Service\Command\CommandBus;
+use Smolblog\Core\Channel\Jobs\ContentPushJob;
+use Smolblog\Foundation\Service\Job\JobManager;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -22,11 +22,11 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 	/**
 	 * Construct the service.
 	 *
-	 * @param CommandBus               $commandBus For launching the asynchronous command.
+	 * @param JobManager               $jobManager For launching the asynchronous command.
 	 * @param EventDispatcherInterface $eventBus   For dispatching the events.
 	 */
 	public function __construct(
-		private CommandBus $commandBus,
+		private JobManager $jobManager,
 		private EventDispatcherInterface $eventBus,
 	) {
 	}
@@ -46,8 +46,8 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 		Identifier $userId,
 		Identifier $startEventId
 	): void {
-		$this->commandBus->executeAsync(
-			new CompleteContentPush(
+		$this->jobManager->enqueue(
+			new ContentPushJob(
 				content: $content,
 				channel: $channel,
 				userId: $userId,
@@ -58,38 +58,46 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 	}
 
 	/**
-	 * Handle the CompleteContentPush command when it is eventually executed.
+	 * Handle the ContentPushJob command when it is eventually executed.
 	 *
-	 * @param CompleteContentPush $command Async command being executed.
+	 * @param Content    $content      Content object to push.
+	 * @param Channel    $channel      Channel to push object to.
+	 * @param Identifier $userId       ID of the user who initiated the push.
+	 * @param Identifier $startEventId ID of the event indicating the start of this push.
 	 * @return void
 	 */
-	public function completeContentPush(CompleteContentPush $command): void {
+	public function completeContentPush(
+		Content $content,
+		Channel $channel,
+		Identifier $userId,
+		Identifier $startEventId
+	): void {
 		try {
 			$result = $this->push(
-				content: $command->content,
-				channel: $command->channel,
-				userId: $command->userId,
-				startEventId: $command->startEventId,
+				content: $content,
+				channel: $channel,
+				userId: $userId,
+				startEventId: $startEventId,
 			);
 		} catch (ContentPushException $exc) {
 			$this->eventBus->dispatch(new ContentPushFailed(
-				contentId: $command->content->id,
-				channelId: $command->channel->getId(),
-				startEventId: $command->startEventId,
+				contentId: $content->id,
+				channelId: $channel->getId(),
+				startEventId: $startEventId,
 				message: $exc->getMessage(),
-				userId: $command->userId,
-				aggregateId: $command->content->siteId,
+				userId: $userId,
+				aggregateId: $content->siteId,
 				details: $exc->details,
 			));
 			return;
 		}
 
 		$this->eventBus->dispatch(new ContentPushSucceeded(
-			contentId: $command->content->id,
-			channelId: $command->channel->getId(),
-			startEventId: $command->startEventId,
-			userId: $command->userId,
-			aggregateId: $command->content->siteId,
+			contentId: $content->id,
+			channelId: $channel->getId(),
+			startEventId: $startEventId,
+			userId: $userId,
+			aggregateId: $content->siteId,
 			url: $result->url,
 			details: $result->details,
 		));
