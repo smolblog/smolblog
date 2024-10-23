@@ -22,15 +22,4 @@ interface CommandBus {
 	 * @return mixed Optional result of the execution.
 	 */
 	public function execute(Command $command): mixed;
-
-	/**
-	 * Execute the given command on a separate thread.
-	 *
-	 * This method should first route the Command through any appropriate middleware before finally calling the
-	 * correct handler for the Command. This should happen on the execution thread.
-	 *
-	 * @param Command $command Command to execute.
-	 * @return void
-	 */
-	public function executeAsync(Command $command): void;
 }

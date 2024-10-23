@@ -6,8 +6,8 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Message;
 use Smolblog\Foundation\Value\Traits\MessageMetadata;
 use Smolblog\Foundation\Value\Traits\ReadonlyMessageKit;
+use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * A command is a message that is sent to a service to perform an action.
@@ -17,7 +17,7 @@ use Smolblog\Foundation\Value\Traits\SerializableValueKit;
  */
 abstract readonly class Command extends Value implements SerializableValue, Message {
 	use ReadonlyMessageKit;
-	use SerializableValueKit;
+	use SerializableSupertypeKit;
 
 	/**
 	 * Create the Command and initialize the metadata.

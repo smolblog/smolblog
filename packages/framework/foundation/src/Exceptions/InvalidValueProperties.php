@@ -15,6 +15,7 @@ class InvalidValueProperties extends InvalidArgumentException {
 	 * @param string|null $message  Optional message.
 	 * @param integer     $code     Optional code.
 	 * @param Throwable   $previous Optional previous exception.
+	 * @param string|null $field    Optional field that is invalid.
 	 */
 	public function __construct(
 		?string $message = null,

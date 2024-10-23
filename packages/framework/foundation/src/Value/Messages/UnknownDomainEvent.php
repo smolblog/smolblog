@@ -2,7 +2,6 @@
 
 namespace Smolblog\Foundation\Value\Messages;
 
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
@@ -42,7 +41,7 @@ final readonly class UnknownDomainEvent extends DomainEvent {
 	 *
 	 * @return string
 	 */
-	public static function extraPropsField(): string {
+	private static function extraPropsField(): string {
 		return 'props';
 	}
 }

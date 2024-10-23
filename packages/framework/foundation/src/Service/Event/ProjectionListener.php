@@ -23,6 +23,6 @@ class ProjectionListener extends ListenerPriority {
 	 * @param integer $later   Decreases priority by the given integer (will activate later).
 	 */
 	public function __construct(int $earlier = 0, int $later = 0) {
-		parent::__construct(priority: 50 + $earlier - $later);
+		parent::__construct(priority: $earlier - $later);
 	}
 }
