@@ -52,4 +52,13 @@ interface SitePermissionsService {
 	 * @return boolean
 	 */
 	public function canEditAllMedia(Identifier $userId, Identifier $siteId): bool;
+
+	/**
+	 * Can the given user push content to channels?
+	 *
+	 * @param Identifier $userId User to check.
+	 * @param Identifier $siteId Site to check.
+	 * @return boolean
+	 */
+	public function canPushContent(Identifier $userId, Identifier $siteId): bool;
 }

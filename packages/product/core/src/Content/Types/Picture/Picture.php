@@ -8,7 +8,6 @@ use Smolblog\Core\Content\Fields\Markdown;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\Url;
 
 /**
  * An embedded post from another site, such as YouTube or Tumblr.

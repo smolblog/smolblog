@@ -34,4 +34,15 @@ readonly class ChannelSaved extends DomainEvent {
 			timestamp: $timestamp
 		);
 	}
+
+	/**
+	 * Remove 'aggregateId' from (de)serialization.
+	 *
+	 * @return array
+	 */
+	protected static function propertyInfo(): array {
+		$base = parent::propertyInfo();
+		unset($base['aggregateId']);
+		return $base;
+	}
 }

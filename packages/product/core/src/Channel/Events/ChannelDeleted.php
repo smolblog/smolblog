@@ -25,4 +25,15 @@ readonly class ChannelDeleted extends DomainEvent {
 	) {
 		parent::__construct(entityId: $entityId, userId: $userId, id: $id, timestamp: $timestamp);
 	}
+
+	/**
+	 * Remove 'aggregateId' from (de)serialization.
+	 *
+	 * @return array
+	 */
+	protected static function propertyInfo(): array {
+		$base = parent::propertyInfo();
+		unset($base['aggregateId']);
+		return $base;
+	}
 }

@@ -17,9 +17,9 @@ readonly class AddChannelToSite extends Command {
 	 * @param Identifier $userId    ID of the User initiating this command.
 	 */
 	public function __construct(
-		public readonly Identifier $channelId,
-		public readonly Identifier $siteId,
-		public readonly Identifier $userId,
+		public Identifier $channelId,
+		public Identifier $siteId,
+		public Identifier $userId,
 	) {
 		parent::__construct();
 	}
