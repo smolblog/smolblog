@@ -2,7 +2,10 @@
 
 namespace Smolblog\Test;
 
+use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Service\Command\CommandBus;
+use Smolblog\Foundation\Service\Job\JobManager;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Framework\Infrastructure\AppKit;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
@@ -18,6 +21,10 @@ class TestApp {
 		$this->container = new ServiceRegistry(
 			$this->buildDependencyMapFromArrays([
 				DefaultModel::getDependencyMap(),
+				[
+					JobManager::class => TestJobManager::class,
+					TestJobManager::class => ['container' => ContainerInterface::class],
+				],
 				...array_map(fn($model) => $model::getDependencyMap(), $models),
 				$services,
 			])
@@ -25,10 +32,14 @@ class TestApp {
 	}
 
 	public function execute(Command $command): mixed {
-		return $this->container->get(CommandBus::class)->execute($command);
+		$retval = $this->container->get(CommandBus::class)->execute($command);
+		$this->container->get(TestJobManager::class)->run();
+		return $retval;
 	}
 
 	public function dispatch(mixed $event): mixed {
-		return $this->container->get(DefaultMessageBus::class)->dispatch($event);
+		$retval = $this->container->get(EventDispatcherInterface::class)->dispatch($event);
+		$this->container->get(TestJobManager::class)->run();
+		return $retval;
 	}
 }

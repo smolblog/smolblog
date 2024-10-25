@@ -5,6 +5,7 @@ namespace Smolblog\Core\Channel\Services;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Channel\Commands\PushContentToChannel;
 use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\ContentPushStarted;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Entities\Content;
@@ -51,7 +52,7 @@ class ContentPushService implements CommandHandlerService {
 
 		$channel = $this->channelRepo->channelById($command->channelId);
 		if (!isset($channel)) {
-			throw new EntityNotFound(entityId: $command->channelId, entityName: Content::class);
+			throw new EntityNotFound(entityId: $command->channelId, entityName: Channel::class);
 		}
 
 		if (!$this->perms->canPushContent(userId: $command->userId, siteId: $content->siteId)) {
