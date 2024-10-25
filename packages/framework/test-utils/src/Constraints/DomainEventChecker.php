@@ -6,12 +6,14 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 class DomainEventChecker extends Constraint {
-	public function __construct(private array $expectedEvents) {}
+	public function __construct(private array $expectedEvents, private bool $checkProcess = false) {}
 
 	private ?DomainEvent $expected = null;
+	private ?Identifier $processId = null;
 
 	public function toString(): string { return 'two Events are equivalent'; }
 	protected function failureDescription($other): string { return $this->toString(); }
@@ -31,6 +33,11 @@ class DomainEventChecker extends Constraint {
 		unset($actualData['id']);
 		unset($actualData['timestamp']);
 
+		if ($this->checkProcess) {
+			$this->processId ??= $other->processId;
+			$expectedData['processId'] = $this->processId?->toString() ?? '#ERR#';
+		}
+
 		return $expectedData == $actualData;
 	}
 
@@ -44,6 +51,12 @@ class DomainEventChecker extends Constraint {
 			$actualData = $other->serializeValue();
 			unset($actualData['id']);
 			unset($actualData['timestamp']);
+
+			if ($this->checkProcess) {
+				$expectedData['processId'] = $this->processId?->toString() ?? '#ERR#';
+			} else {
+				unset($expectedData['processId'], $actualData['processId']);
+			}
 
 			$comparisonFailure = new ComparisonFailure(
 				$this->expected,

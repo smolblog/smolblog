@@ -32,11 +32,11 @@ class ModelTest extends TestCase {
 		$this->expectEvents([$event]);
 	}
 
-	protected function expectEvents(array $events) {
+	protected function expectEvents(array $events, bool $checkProcess = false) {
 		$this->mockEventBus->
 			expects($this->exactly(count($events)))->
 			method('dispatch')->
-			with(new DomainEventChecker($events));
+			with(new DomainEventChecker($events, $checkProcess));
 	}
 
 	protected function expectNoEvents() {
