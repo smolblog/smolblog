@@ -14,6 +14,7 @@ use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 
 /**
  * Handle pushing content to channels.
@@ -59,11 +60,13 @@ class ContentPushService implements CommandHandlerService {
 			throw new CommandNotAuthorized($command);
 		}
 
+		$processId = new DateIdentifier();
 		$startEvent = new ContentPushStarted(
 			contentId: $content->id,
 			channelId: $channel->getId(),
 			userId: $command->userId,
 			aggregateId: $content->siteId,
+			processId: $processId,
 		);
 		$this->eventBus->dispatch($startEvent);
 
@@ -71,7 +74,7 @@ class ContentPushService implements CommandHandlerService {
 			content: $content,
 			channel: $channel,
 			userId: $command->userId,
-			startEventId: $startEvent->id,
+			processId: $processId,
 		);
 	}
 }

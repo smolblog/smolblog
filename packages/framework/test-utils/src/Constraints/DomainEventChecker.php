@@ -54,8 +54,6 @@ class DomainEventChecker extends Constraint {
 
 			if ($this->checkProcess) {
 				$expectedData['processId'] = $this->processId?->toString() ?? '#ERR#';
-			} else {
-				unset($expectedData['processId'], $actualData['processId']);
 			}
 
 			$comparisonFailure = new ComparisonFailure(

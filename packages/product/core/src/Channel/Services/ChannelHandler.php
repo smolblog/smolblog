@@ -24,16 +24,16 @@ interface ChannelHandler extends ConfiguredRegisterable {
 	 * Smolblog\Core\Channel\Events\ContentPushFailed event on failure. This is left to the implementing class in order
 	 * to allow for asynchronous workflows.
 	 *
-	 * @param Content    $content      Content object to push.
-	 * @param Channel    $channel      Channel to push content to.
-	 * @param Identifier $userId       User initiating the push.
-	 * @param Identifier $startEventId ID of the dispatched event starting the content push.
+	 * @param Content    $content   Content object to push.
+	 * @param Channel    $channel   Channel to push content to.
+	 * @param Identifier $userId    User initiating the push.
+	 * @param Identifier $processId ID of this particular content push.
 	 * @return void
 	 */
 	public function pushContentToChannel(
 		Content $content,
 		Channel $channel,
 		Identifier $userId,
-		Identifier $startEventId
+		Identifier $processId
 	): void;
 }

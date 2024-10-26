@@ -34,24 +34,24 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 	/**
 	 * Dispatch an async process to complete the push later.
 	 *
-	 * @param Content    $content      Content object to push.
-	 * @param Channel    $channel      Channel to push object to.
-	 * @param Identifier $userId       ID of the user who initiated the push.
-	 * @param Identifier $startEventId ID of the event indicating the start of this push.
+	 * @param Content    $content   Content object to push.
+	 * @param Channel    $channel   Channel to push object to.
+	 * @param Identifier $userId    ID of the user who initiated the push.
+	 * @param Identifier $processId ID of this particular push process.
 	 * @return void
 	 */
 	public function pushContentToChannel(
 		Content $content,
 		Channel $channel,
 		Identifier $userId,
-		Identifier $startEventId
+		Identifier $processId
 	): void {
 		$this->jobManager->enqueue(
 			new ContentPushJob(
 				content: $content,
 				channel: $channel,
 				userId: $userId,
-				startEventId: $startEventId,
+				processId: $processId,
 				service: static::class,
 			)
 		);
@@ -60,30 +60,30 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 	/**
 	 * Handle the ContentPushJob command when it is eventually executed.
 	 *
-	 * @param Content    $content      Content object to push.
-	 * @param Channel    $channel      Channel to push object to.
-	 * @param Identifier $userId       ID of the user who initiated the push.
-	 * @param Identifier $startEventId ID of the event indicating the start of this push.
+	 * @param Content    $content   Content object to push.
+	 * @param Channel    $channel   Channel to push object to.
+	 * @param Identifier $userId    ID of the user who initiated the push.
+	 * @param Identifier $processId ID of this particular push process.
 	 * @return void
 	 */
 	public function completeContentPush(
 		Content $content,
 		Channel $channel,
 		Identifier $userId,
-		Identifier $startEventId
+		Identifier $processId
 	): void {
 		try {
 			$result = $this->push(
 				content: $content,
 				channel: $channel,
 				userId: $userId,
-				startEventId: $startEventId,
+				processId: $processId,
 			);
 		} catch (ContentPushException $exc) {
 			$this->eventBus->dispatch(new ContentPushFailed(
 				contentId: $content->id,
 				channelId: $channel->getId(),
-				startEventId: $startEventId,
+				processId: $processId,
 				message: $exc->getMessage(),
 				userId: $userId,
 				aggregateId: $content->siteId,
@@ -95,7 +95,7 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 		$this->eventBus->dispatch(new ContentPushSucceeded(
 			contentId: $content->id,
 			channelId: $channel->getId(),
-			startEventId: $startEventId,
+			processId: $processId,
 			userId: $userId,
 			aggregateId: $content->siteId,
 			url: $result->url,
@@ -108,16 +108,16 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 	 *
 	 * @throws ContentPushFailure On failure.
 	 *
-	 * @param Content    $content      Content object to push.
-	 * @param Channel    $channel      Channel to push object to.
-	 * @param Identifier $userId       ID of the user who initiated the push.
-	 * @param Identifier $startEventId ID of the event indicating the start of this push.
+	 * @param Content    $content   Content object to push.
+	 * @param Channel    $channel   Channel to push object to.
+	 * @param Identifier $userId    ID of the user who initiated the push.
+	 * @param Identifier $processId ID of this particular push process.
 	 * @return ContentChannelEntry Information about the successfully completed push.
 	 */
 	abstract protected function push(
 		Content $content,
 		Channel $channel,
 		Identifier $userId,
-		Identifier $startEventId
+		Identifier $processId
 	): ContentChannelEntry;
 }

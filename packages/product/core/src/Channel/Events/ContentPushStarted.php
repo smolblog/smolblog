@@ -18,6 +18,7 @@ readonly class ContentPushStarted extends DomainEvent {
 	 * @param Identifier         $channelId   ID of the channel being pushed to.
 	 * @param Identifier         $userId      User initiating the action.
 	 * @param Identifier         $aggregateId Site the content belongs to.
+	 * @param Identifier         $processId   Identifier for this push process.
 	 * @param Identifier|null    $id          Optional ID for the event.
 	 * @param DateTimeField|null $timestamp   Optional timestamp for the event.
 	 * @param Identifier|null    $entityId    ContentChannelEntry ID; will be created if not provided.
@@ -27,6 +28,7 @@ readonly class ContentPushStarted extends DomainEvent {
 		public Identifier $channelId,
 		Identifier $userId,
 		Identifier $aggregateId,
+		Identifier $processId,
 		?Identifier $id = null,
 		?DateTimeField $timestamp = null,
 		?Identifier $entityId = null,
@@ -37,6 +39,7 @@ readonly class ContentPushStarted extends DomainEvent {
 			timestamp: $timestamp,
 			aggregateId: $aggregateId,
 			entityId: $entityId ?? ContentChannelEntry::buildId(contentId: $contentId, channelId: $channelId),
+			processId: $processId,
 		);
 	}
 }

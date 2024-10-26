@@ -43,7 +43,6 @@ abstract class DefaultChannelHandlerTestBase extends DefaultChannelHandler {
 	}
 
 	public function __construct(
-		public readonly Identifier $startEventId,
 		JobManager $jobManager,
 		EventDispatcherInterface $eventBus
 	) {
@@ -59,16 +58,6 @@ abstract class DefaultChannelHandlerTestBase extends DefaultChannelHandler {
 			}
 		};
 		parent::__construct($jobManagerProxy, $eventBus);
-	}
-
-	/** Override the parent method to insert the known startEventId. */
-	public function pushContentToChannel(
-		Content $content,
-		Channel $channel,
-		Identifier $userId,
-		Identifier $startEventId
-	): void {
-		parent::pushContentToChannel($content, $channel, $userId, $this->startEventId);
 	}
 }
 
@@ -103,7 +92,6 @@ abstract class ChannelTestBase extends ModelTest {
 			->getMockBuilder(DefaultChannelHandlerTestBase::class)
 			->onlyMethods(['push'])
 			->setConstructorArgs([
-				'startEventId' => $this->randomId(),
 				'jobManager' => $this->app->container->get(JobManager::class),
 				'eventBus' => $this->mockEventBus
 			])

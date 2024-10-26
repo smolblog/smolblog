@@ -49,19 +49,20 @@ final class PushContentToChannelTest extends ChannelTestBase {
 		$this->channels->method('channelById')->willReturn($channel);
 		$this->perms->method('canPushContent')->willReturn(true);
 
-		$this->expectEvent(new ContentPushStarted(
+		$this->expectEvents([new ContentPushStarted(
 			contentId: $content->id,
 			channelId: $channel->getId(),
 			userId: $content->userId,
 			entityId: $entry->getId(),
 			aggregateId: $content->siteId,
-		));
+			processId: $this->randomId(),
+		)], checkProcess: true);
 
 		$this->handlerMock->expects($this->once())->method('pushContentToChannel')->with(
 			content: $content,
 			channel: $channel,
 			userId: $content->userId,
-			startEventId: $this->isInstanceOf(Identifier::class),
+			processId: $this->isInstanceOf(Identifier::class),
 		);
 
 		$this->app->execute($command);
@@ -104,18 +105,19 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				userId: $content->userId,
 				entityId: $entry->getId(),
 				aggregateId: $content->siteId,
+				processId: $this->randomId(),
 			),
 			new ContentPushSucceeded(
 				contentId: $content->id,
 				channelId: $channel->getId(),
-				startEventId: $this->defaultHandlerMock->startEventId, // Use known ID from the mock class.
+				processId: $this->randomId(),
 				userId: $content->userId,
 				entityId: $entry->getId(),
 				aggregateId: $content->siteId,
 				url: 'https://test.smol.blog/post/test',
 				details: [ 'post_id' => '12345' ],
 			)
-		]);
+		], checkProcess: true);
 
 		$this->app->execute($command);
 	}
@@ -153,17 +155,18 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				channelId: $channel->getId(),
 				userId: $content->userId,
 				aggregateId: $content->siteId,
+				processId: $this->randomId(),
 			),
 			new ContentPushFailed(
 				contentId: $content->id,
 				channelId: $channel->getId(),
-				startEventId: $this->defaultHandlerMock->startEventId, // Use known ID from mock class.
+				processId: $this->randomId(),
 				userId: $content->userId,
 				aggregateId: $content->siteId,
 				message: 'Authentication expired',
 				details: ['code' => 403],
 			)
-		]);
+		], checkProcess: true);
 
 		$this->app->execute($command);
 	}

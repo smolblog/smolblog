@@ -14,19 +14,19 @@ readonly class ContentPushJob extends Job {
 	/**
 	 * Construct the job.
 	 *
-	 * @param string      $service      DefaultChannelHandler subclass that should handle this command.
-	 * @param Content     $content      Content to push.
-	 * @param Channel     $channel      Channel to push to.
-	 * @param Identifier  $userId       ID of the user who initiatied the push.
-	 * @param Identifier  $startEventId ID of the event starting the process.
-	 * @param string|null $method       Optional method to call; default 'completeContentPush'.
+	 * @param string      $service   DefaultChannelHandler subclass that should handle this command.
+	 * @param Content     $content   Content to push.
+	 * @param Channel     $channel   Channel to push to.
+	 * @param Identifier  $userId    ID of the user who initiatied the push.
+	 * @param Identifier  $processId ID of the push process.
+	 * @param string|null $method    Optional method to call; default 'completeContentPush'.
 	 */
 	public function __construct(
 		string $service,
 		public Content $content,
 		public Channel $channel,
 		public Identifier $userId,
-		public Identifier $startEventId,
+		public Identifier $processId,
 		?string $method = null,
 	) {
 		parent::__construct(service: $service, method: $method ?? 'completeContentPush');
