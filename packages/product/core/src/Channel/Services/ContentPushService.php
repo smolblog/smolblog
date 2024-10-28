@@ -60,21 +60,10 @@ class ContentPushService implements CommandHandlerService {
 			throw new CommandNotAuthorized($command);
 		}
 
-		$processId = new DateIdentifier();
-		$startEvent = new ContentPushStarted(
-			contentId: $content->id,
-			channelId: $channel->getId(),
-			userId: $command->userId,
-			aggregateId: $content->siteId,
-			processId: $processId,
-		);
-		$this->eventBus->dispatch($startEvent);
-
 		$this->handlers->get($channel->handler)->pushContentToChannel(
 			content: $content,
 			channel: $channel,
-			userId: $command->userId,
-			processId: $processId,
+			userId: $command->userId
 		);
 	}
 }

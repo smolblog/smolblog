@@ -49,20 +49,10 @@ final class PushContentToChannelTest extends ChannelTestBase {
 		$this->channels->method('channelById')->willReturn($channel);
 		$this->perms->method('canPushContent')->willReturn(true);
 
-		$this->expectEvents([new ContentPushStarted(
-			contentId: $content->id,
-			channelId: $channel->getId(),
-			userId: $content->userId,
-			entityId: $entry->getId(),
-			aggregateId: $content->siteId,
-			processId: $this->randomId(),
-		)], checkProcess: true);
-
 		$this->handlerMock->expects($this->once())->method('pushContentToChannel')->with(
 			content: $content,
 			channel: $channel,
 			userId: $content->userId,
-			processId: $this->isInstanceOf(Identifier::class),
 		);
 
 		$this->app->execute($command);
@@ -108,7 +98,7 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				processId: $this->randomId(),
 			),
 			new ContentPushSucceeded(
-				contentId: $content->id,
+				content: $content,
 				channelId: $channel->getId(),
 				processId: $this->randomId(),
 				userId: $content->userId,

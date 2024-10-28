@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
- * Denotes that a content push has failed and provides a user-facing message and applicable details.
+ * Denotes that an asychronous content push has failed and provides a user-facing message and applicable details.
  */
 readonly class ContentPushFailed extends DomainEvent {
 /**

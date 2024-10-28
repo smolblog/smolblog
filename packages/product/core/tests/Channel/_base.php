@@ -8,6 +8,7 @@ use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ChannelHandlerConfiguration;
 use Smolblog\Core\Channel\Jobs\ContentPushJob;
+use Smolblog\Core\Channel\Services\AsyncChannelHandler;
 use Smolblog\Core\Channel\Services\ChannelHandler;
 use Smolblog\Core\Channel\Services\ChannelHandlerRegistry;
 use Smolblog\Core\Channel\Services\DefaultChannelHandler;
@@ -32,9 +33,9 @@ abstract class ChannelHandlerTestBase implements ChannelHandler {
 }
 
 /**
- * Provices a ChannelHandler with key 'testmock'
+ * Provices a ChannelHandler with key 'defaultmock'
  */
-abstract class DefaultChannelHandlerTestBase extends DefaultChannelHandler {
+abstract class DefaultChannelHandlerTestBase extends AsyncChannelHandler {
 	public static function getConfiguration(): ChannelHandlerConfiguration {
 		return new ChannelHandlerConfiguration(
 			key: 'defaultmock',

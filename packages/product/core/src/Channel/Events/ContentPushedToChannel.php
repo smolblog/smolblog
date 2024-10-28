@@ -2,14 +2,18 @@
 
 namespace Smolblog\Core\Channel\Events;
 
+use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
- * Denotes that an asynchronous content push was successful and provides any applicable URL and/or details.
+ * Indicates that the given Content has been pushed to the given channel.
+ *
+ * The full Content object is included here as a record of what was published when.
  */
-readonly class ContentPushSucceeded extends ContentPushedToChannel {
+readonly class ContentPushedToChannel extends DomainEvent {
 	/**
 	 * Create the event.
 	 *
@@ -17,36 +21,32 @@ readonly class ContentPushSucceeded extends ContentPushedToChannel {
 	 * @param Identifier         $channelId   ID of the channel being pushed to.
 	 * @param Identifier         $userId      User who first initiated the action.
 	 * @param Identifier         $aggregateId Site the content belongs to.
-	 * @param Identifier         $processId   Identifier for this push process.
 	 * @param Identifier|null    $id          Optional ID for the event.
 	 * @param DateTimeField|null $timestamp   Optional timestamp for the event.
 	 * @param Identifier|null    $entityId    ContentChannelEntry ID; will be created if not provided.
+	 * @param Identifier|null    $processId   Identifier for this push process if applicable.
 	 * @param string|null        $url         Optional URL of the content on the channel.
 	 * @param array              $details     Channel-specific details.
 	 */
 	public function __construct(
-		Content $content,
-		Identifier $channelId,
+		public Content $content,
+		public Identifier $channelId,
 		Identifier $userId,
 		Identifier $aggregateId,
-		Identifier $processId,
 		?Identifier $id = null,
 		?DateTimeField $timestamp = null,
 		?Identifier $entityId = null,
-		?string $url = null,
-		array $details = [],
+		?Identifier $processId = null,
+		public ?string $url = null,
+		public array $details = [],
 	) {
 		parent::__construct(
-			content: $content,
-			channelId: $channelId,
 			userId: $userId,
 			id: $id,
 			timestamp: $timestamp,
 			aggregateId: $aggregateId,
-			entityId: $entityId,
+			entityId: $entityId ?? ContentChannelEntry::buildId(contentId: $content->id, channelId: $channelId),
 			processId: $processId,
-			url: $url,
-			details: $details,
 		);
 	}
 }

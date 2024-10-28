@@ -7,18 +7,20 @@ use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Channel\Events\ContentPushFailed;
+use Smolblog\Core\Channel\Events\ContentPushStarted;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Channel\Jobs\ContentPushJob;
 use Smolblog\Foundation\Service\Job\JobManager;
+use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
- * Provides a set of good defaults for most channel handlers.
+ * Provides a set of good defaults for async channel handlers.
  *
  * Implementing classes should implement the push method as documented: returning a ContentChannelEntry on success and
  * throwing a ContentPushFailure on failure. This class will handle dispatching the required events.
  */
-abstract class DefaultChannelHandler implements ChannelHandler {
+abstract class AsyncChannelHandler implements ChannelHandler {
 	/**
 	 * Construct the service.
 	 *
@@ -34,18 +36,26 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 	/**
 	 * Dispatch an async process to complete the push later.
 	 *
-	 * @param Content    $content   Content object to push.
-	 * @param Channel    $channel   Channel to push object to.
-	 * @param Identifier $userId    ID of the user who initiated the push.
-	 * @param Identifier $processId ID of this particular push process.
+	 * @param Content    $content Content object to push.
+	 * @param Channel    $channel Channel to push object to.
+	 * @param Identifier $userId  ID of the user who initiated the push.
 	 * @return void
 	 */
 	public function pushContentToChannel(
 		Content $content,
 		Channel $channel,
-		Identifier $userId,
-		Identifier $processId
+		Identifier $userId
 	): void {
+		$processId = new DateIdentifier();
+		$startEvent = new ContentPushStarted(
+			contentId: $content->id,
+			channelId: $channel->getId(),
+			userId: $userId,
+			aggregateId: $content->siteId,
+			processId: $processId,
+		);
+		$this->eventBus->dispatch($startEvent);
+
 		$this->jobManager->enqueue(
 			new ContentPushJob(
 				content: $content,
@@ -93,7 +103,7 @@ abstract class DefaultChannelHandler implements ChannelHandler {
 		}
 
 		$this->eventBus->dispatch(new ContentPushSucceeded(
-			contentId: $content->id,
+			content: $content,
 			channelId: $channel->getId(),
 			processId: $processId,
 			userId: $userId,
