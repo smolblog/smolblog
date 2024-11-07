@@ -32,7 +32,10 @@ class TestApp {
 	}
 
 	public function execute(Command $command): mixed {
-		$retval = $this->container->get(CommandBus::class)->execute($command);
+		// Serialize and deserialize the Command to ensure that it will successfully translate.
+		// Future systems may send Commands to other services.
+		$serializedCommand = $command->serializeValue();
+		$retval = $this->container->get(CommandBus::class)->execute(Command::deserializeValue($serializedCommand));
 		$this->container->get(TestJobManager::class)->run();
 		return $retval;
 	}

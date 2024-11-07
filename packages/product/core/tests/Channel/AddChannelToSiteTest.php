@@ -23,7 +23,7 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		);
 
 		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $channel->getId())->
+			with(channelId: $this->objectEquals($channel->getId()))->
 			willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
@@ -54,7 +54,7 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		);
 
 		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $channel->getId())->
+			with(channelId: $this->objectEquals($channel->getId()))->
 			willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
@@ -82,7 +82,7 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		);
 
 		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $channel->getId())->
+			with(channelId: $this->objectEquals($channel->getId()))->
 			willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(false);
 
