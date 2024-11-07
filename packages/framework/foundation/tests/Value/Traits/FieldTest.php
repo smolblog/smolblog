@@ -42,4 +42,42 @@ final class FieldTest extends TestCase {
 		$this->assertEquals($json, json_encode($value));
 		$this->assertEquals($value, TestValueWithField::fromJson($json));
 	}
+
+	public function testTwoIdenticalFieldObjectsAreEqual() {
+		$one = new ExampleField(one: 'abc', two: 'xyz');
+		$two = new ExampleField(one: 'abc', two: 'xyz');
+
+		$this->assertTrue($one->equals($two));
+		$this->assertObjectEquals($one, $two);
+	}
+
+	public function testTwoDifferentFieldObjectsWithTheSameSerializedValueAreEqual() {
+		$one = new ExampleField(one: 'abc', two: 'xyz');
+		$two = new readonly class('abc|xyz') extends Value implements Field {
+			use FieldKit;
+			public function __construct(public string $val) {}
+			public function toString(): string { return $this->val; }
+			public static function fromString(string $string): static { return new self($string); }
+		};
+
+		$this->assertNotInstanceOf(ExampleField::class, $two);
+		$this->assertTrue($one->equals($two));
+		$this->assertObjectEquals($one, $two);
+	}
+
+	public function testTwoFieldObjectsWithDifferentSerializedValuesAreNotEqual() {
+		$one = new ExampleField(one: 'abc', two: 'xyz');
+		$two = new ExampleField(one: 'xyz', two: 'xyz');
+
+		$this->assertFalse($one->equals($two));
+		$this->assertObjectNotEquals($one, $two);
+	}
+
+	public function testAFieldIsNotEqualToAValueThatIsNotAField() {
+		$one = new ExampleField(one: 'abc', two: 'xyz');
+		$two = new TestValueWithField(name: 'Bob', idNumber: 5, meta: $one);
+
+		$this->assertFalse($one->equals($two));
+		$this->assertObjectNotEquals($one, $two);
+	}
 }

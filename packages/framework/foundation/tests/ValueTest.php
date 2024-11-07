@@ -58,4 +58,41 @@ final class ValueTest extends TestCase {
 		};
 		$first->with(itIsOnly: 'a model');
 	}
+
+	#[TestDox('equals() will return true if the objects\' class and values match')]
+	public function testEqualsClassAndValuesMatch() {
+		$first = new readonly class('camelot') extends Value {
+			public function __construct(public string $destination) {}
+		};
+		$second = new (\get_class($first))('camelot');
+
+		$this->assertEquals($first->destination, $second->destination);
+		$this->assertTrue($first->equals($second));
+		$this->assertObjectEquals($first, $second);
+	}
+
+	#[TestDox('equals() will return false if the objects\' values do not match')]
+	public function testEqualsValueMismatch() {
+		$first = new readonly class('camelot') extends Value {
+			public function __construct(public string $destination) {}
+		};
+		$second = new (\get_class($first))('a model');
+
+		$this->assertNotEquals($first->destination, $second->destination);
+		$this->assertFalse($first->equals($second));
+		$this->assertObjectNotEquals($first, $second);
+	}
+
+	#[TestDox('equals() will return false if the objects\' classes do not match')]
+	public function testEqualsClassMismatch() {
+		$first = new readonly class('camelot') extends Value {
+			public function __construct(public string $destination) {}
+		};
+		$second = new readonly class('camelot') extends Value {
+			public function __construct(public string $destination) {}
+		};
+
+		$this->assertEquals($first->destination, $second->destination);
+		$this->assertFalse($first->equals($second));
+	}
 }

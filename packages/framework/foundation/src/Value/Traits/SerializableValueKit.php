@@ -9,12 +9,23 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value;
 use Throwable;
 
 /**
  * Default serializing functions.
  */
 trait SerializableValueKit {
+	/**
+	 * Compare serialized values to determine equality.
+	 *
+	 * @param Value $other Object to compare to.
+	 * @return boolean
+	 */
+	public function equals(Value $other): bool {
+		return is_a($other, SerializableValue::class) && json_encode($this) == json_encode($other);
+	}
+
 	/**
 	 * Serialize the object to an array. This can be used to serialize to JSON.
 	 *

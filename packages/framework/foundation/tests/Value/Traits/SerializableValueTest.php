@@ -240,6 +240,41 @@ final class SerializableValueTest extends TestCase {
 		SerializedWithNonSerializedValueTest::deserializeValue(['contents' => ['contents' => ['one', 'two']]]);
 	}
 
+	public function testTwoIdenticalSerializableObjectsAreEqual() {
+		$one = new ManyScalarsValueTest(one: 'bob', two: 5, three: true);
+		$two = new ManyScalarsValueTest(one: 'bob', two: 5, three: true);
+
+		$this->assertTrue($one->equals($two));
+		$this->assertObjectEquals($one, $two);
+	}
+
+	public function testTwoDifferentSerializableObjectsWithTheSameSerializedValueAreEqual() {
+		$one = new ManyScalarsValueTest(one: 'bob', two: 5, three: true);
+		$two = new readonly class(one: 'bob', two: 5, three: true) extends ValueTestBase {
+			public function __construct(public string $one, public ?int $two = null, public ?bool $three = null) {}
+		};
+
+		$this->assertNotInstanceOf(ManyScalarsValueTest::class, $two);
+		$this->assertTrue($one->equals($two));
+		$this->assertObjectEquals($one, $two);
+	}
+
+	public function testTwoSerializableObjectsWithDifferentSerializedValuesAreNotEqual() {
+		$one = new ManyScalarsValueTest(one: 'bob', two: 5, three: true);
+		$two = new ManyScalarsValueTest(one: 'larry', two: 7, three: true);
+
+		$this->assertFalse($one->equals($two));
+		$this->assertObjectNotEquals($one, $two);
+	}
+
+	public function testASerializableValueIsNotEqualToAValueThatIsNotASerializableValue() {
+		$one = new ManyScalarsValueTest(one: 'bob', two: 5, three: true);
+		$two = new NonSerializableValueTest(['one', 'two']);
+
+		$this->assertNotInstanceOf(SerializableValue::class, $two);
+		$this->assertFalse($one->equals($two));
+	}
+
 	/*
 	Test this fails I guess
 

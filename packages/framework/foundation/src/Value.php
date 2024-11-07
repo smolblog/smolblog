@@ -39,4 +39,21 @@ abstract readonly class Value {
 			);
 		}
 	}
+
+	/**
+	 * Check for equality.
+	 *
+	 * This performs a very basic comparison; if a subclass has a more reliable method, it should override this method.
+	 *
+	 * @param self $other Object to compare to.
+	 * @return boolean True if $this and $other are the same type with the same values.
+	 */
+	public function equals(self $other): bool {
+		if (get_class($this) !== get_class($other)) {
+			return false;
+		}
+
+		$base = get_object_vars(...)->__invoke($this);
+		return $base == get_object_vars($other);
+	}
 }

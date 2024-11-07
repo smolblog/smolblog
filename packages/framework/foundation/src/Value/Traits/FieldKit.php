@@ -2,11 +2,23 @@
 
 namespace Smolblog\Foundation\Value\Traits;
 
+use Smolblog\Foundation\Value;
+
 /**
  * Trait to proivde string methods for Values that are scalars. Pair with the Field interface.
  */
 trait FieldKit {
 	use SerializableValueKit;
+
+	/**
+	 * Compare serialized values to determine equality.
+	 *
+	 * @param Value $other Object to compare to.
+	 * @return boolean
+	 */
+	public function equals(Value $other): bool {
+		return is_a($other, Field::class) && strval($this) == strval($other);
+	}
 
 	/**
 	 * Provide the serialized value as the string representation.
