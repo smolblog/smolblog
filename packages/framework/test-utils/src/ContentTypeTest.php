@@ -10,7 +10,6 @@ use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
 use Smolblog\Core\Content\Services\ContentTypeRegistry;
 use Smolblog\Core\Permissions\SitePermissionsService;
-use Smolblog\Core\Site\Entities\UserSitePermissions;
 
 abstract class ContentTypeTest extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];

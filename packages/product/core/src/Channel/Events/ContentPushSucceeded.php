@@ -5,6 +5,7 @@ namespace Smolblog\Core\Channel\Events;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\Url;
 
 /**
  * Denotes that an asynchronous content push was successful and provides any applicable URL and/or details.
@@ -21,7 +22,7 @@ readonly class ContentPushSucceeded extends ContentPushedToChannel {
 	 * @param Identifier|null    $id          Optional ID for the event.
 	 * @param DateTimeField|null $timestamp   Optional timestamp for the event.
 	 * @param Identifier|null    $entityId    ContentChannelEntry ID; will be created if not provided.
-	 * @param string|null        $url         Optional URL of the content on the channel.
+	 * @param Url|null           $url         Optional URL of the content on the channel.
 	 * @param array              $details     Channel-specific details.
 	 */
 	public function __construct(
@@ -33,7 +34,7 @@ readonly class ContentPushSucceeded extends ContentPushedToChannel {
 		?Identifier $id = null,
 		?DateTimeField $timestamp = null,
 		?Identifier $entityId = null,
-		?string $url = null,
+		?Url $url = null,
 		array $details = [],
 	) {
 		parent::__construct(

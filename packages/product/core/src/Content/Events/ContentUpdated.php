@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Events;
 
+use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
@@ -44,6 +45,22 @@ readonly class ContentUpdated extends DomainEvent {
 			timestamp: $timestamp,
 			aggregateId: $aggregateId,
 			entityId: $entityId,
+		);
+	}
+
+	/**
+	 * Create a Content object based on the information in this event.
+	 *
+	 * @return Content
+	 */
+	public function getContentObject(): Content {
+		return new Content(
+			body: $this->body,
+			siteId: $this->aggregateId,
+			userId: $this->contentUserId ?? $this->userId,
+			id: $this->entityId,
+			publishTimestamp: $this->publishTimestamp,
+			extensions: $this->extensions,
 		);
 	}
 }

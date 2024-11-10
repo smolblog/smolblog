@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Entities;
 
+use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\{ArrayType, Entity, EntityKit, SerializableValue, SerializableValueKit};
 use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier, DateIdentifier, Url};
@@ -22,14 +23,14 @@ readonly class Content extends Value implements SerializableValue, Entity {
 	/**
 	 * Create the Content.
 	 *
-	 * @param ContentType        $body             The ContentType for this content.
-	 * @param Identifier         $siteId           ID for the Site this belongs to.
-	 * @param Identifier         $userId           ID of the user responsible for this content.
-	 * @param Identifier|null    $id               ID for the content; will be generated if not given.
-	 * @param DateTimeField|null $publishTimestamp Time and date the content was first published.
-	 * @param Url|null           $canonicalUrl     Canonical absolute URL to the content if it exists.
-	 * @param ContentExtension[] $extensions       Data for any extensions attached to this content.
-	 * @param array              $links            Channels this Content has been pushed to with relevant details.
+	 * @param ContentType           $body             The ContentType for this content.
+	 * @param Identifier            $siteId           ID for the Site this belongs to.
+	 * @param Identifier            $userId           ID of the user responsible for this content.
+	 * @param Identifier|null       $id               ID for the content; will be generated if not given.
+	 * @param DateTimeField|null    $publishTimestamp Time and date the content was first published.
+	 * @param Url|null              $canonicalUrl     Canonical absolute URL to the content if it exists.
+	 * @param ContentExtension[]    $extensions       Data for any extensions attached to this content.
+	 * @param ContentChannelEntry[] $links            Channels this Content has been pushed to with relevant details.
 	 */
 	public function __construct(
 		public ContentType $body,
@@ -39,7 +40,7 @@ readonly class Content extends Value implements SerializableValue, Entity {
 		public ?DateTimeField $publishTimestamp = null,
 		public ?Url $canonicalUrl = null,
 		#[ArrayType(ContentExtension::class)] public array $extensions = [],
-		public array $links = [],
+		#[ArrayType(ContentChannelEntry::class)] public array $links = [],
 	) {
 		$this->id = $id ?? new DateIdentifier();
 	}

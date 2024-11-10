@@ -2,27 +2,30 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Illuminate\Database\ConnectionInterface;
-use Smolblog\Framework\Messages\MessageBus;
+use Doctrine\DBAL\Connection;
 use Smolblog\Foundation\DomainModel;
 
 /**
- * Set up the services and listeners for the Core domain model.
+ * Set up the services and listeners for the Core Data domain model.
  */
 class Model extends DomainModel {
 	public const SERVICES = [
-		Connection\ChannelProjection::class => [
-			'db' => ConnectionInterface::class,
+		ContentProjection::class => [
+			'db' => Connection::class,
 		],
-		Connection\ChannelSiteLinkProjection::class => [
-			'db' => ConnectionInterface::class,
-			'bus' => MessageBus::class,
-		],
-		Connection\ConnectionProjection::class => [
-			'db' => ConnectionInterface::class,
-		],
-		Connection\ConnectorEventStream::class => [
-			'db' => ConnectionInterface::class,
-		],
+		DatabaseManager::class => [],
+		// 'props' => fn() => ['driver' => 'pdo_sqlite', 'memory' => true],
 	];
+
+	/**
+	 * Get the dependency map for this Model.
+	 *
+	 * @return array
+	 */
+	public static function getDependencyMap(): array {
+		return [
+			...self::SERVICES,
+			Connection::class => fn($c) => $c->get(DatabaseManager::class)->getConnection(),
+		];
+	}
 }

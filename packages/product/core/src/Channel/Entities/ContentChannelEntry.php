@@ -5,6 +5,7 @@ namespace Smolblog\Core\Channel\Entities;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
+use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
@@ -35,15 +36,15 @@ readonly class ContentChannelEntry extends Value implements SerializableValue, E
 	/**
 	 * Construct the entry.
 	 *
-	 * @param Identifier  $contentId ID of the content.
-	 * @param Identifier  $channelId ID of the channel.
-	 * @param string|null $url       Optional URL of the content on the channel.
-	 * @param array       $details   Channel-specific details.
+	 * @param Identifier $contentId ID of the content.
+	 * @param Identifier $channelId ID of the channel.
+	 * @param Url|null   $url       Optional URL of the content on the channel.
+	 * @param array      $details   Channel-specific details.
 	 */
 	public function __construct(
 		public Identifier $contentId,
 		public Identifier $channelId,
-		public ?string $url = null,
+		public ?Url $url = null,
 		public array $details = [],
 	) {
 	}

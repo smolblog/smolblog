@@ -28,16 +28,15 @@ class Smolblog {
 	public readonly ServiceRegistry $container;
 	private array $depMap = [];
 
-	public function __construct( array $plugin_models = [] ) {
+	public function __construct(array $plugin_models = []) {
 		// $this->container = $this->buildDefaultContainer( [
-		// 	Core\Model::class,
-		// 	Api\Model::class,
-		// 	MicroBlog\Model::class,
-		// 	ActivityPub\Model::class,
-		// 	$this->wordpress_model(),
-		// 	...$plugin_models,
+		// Core\Model::class,
+		// Api\Model::class,
+		// MicroBlog\Model::class,
+		// ActivityPub\Model::class,
+		// $this->wordpress_model(),
+		// ...$plugin_models,
 		// ] );
-
 		$this->depMap = $this->buildDependencyMap([
 			DefaultModel::class,
 			Core\Model::class,
@@ -61,12 +60,12 @@ class Smolblog {
 				global $wpdb;
 
 				$wpdb->show_errors();
-				define( 'DIEONDBERROR', true );
+				define('DIEONDBERROR', true);
 
 				return [
 					Api\ApiEnvironment::class => fn() => new class implements Api\ApiEnvironment {
-						public function getApiUrl( string $endpoint = '/' ): string {
-							return get_rest_url( null, '/smolblog/v2' . $endpoint );
+						public function getApiUrl(string $endpoint = '/'): string {
+							return get_rest_url(null, '/smolblog/v2' . $endpoint);
 						}
 					},
 					ContentProvenance\ContentProvenanceEnvironment::class =>
@@ -99,7 +98,7 @@ class Smolblog {
 					WordPressLogger::class => [],
 					// LoggerInterface::class => WordPressLogger::class,
 					LoggerInterface::class => \Monolog\Logger::class,
-					\Monolog\Logger::class => function() {
+					\Monolog\Logger::class => function () {
 						$logger = new \Monolog\Logger('smolblog');
 						$logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(
 							filename: '/var/www/html/wp-content/logs/sblog',

@@ -7,6 +7,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Service\Job\JobManager;
 use Smolblog\Foundation\Value\Messages\Command;
+use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Framework\Infrastructure\AppKit;
 use Smolblog\Framework\Infrastructure\DefaultMessageBus;
 use Smolblog\Framework\Infrastructure\DefaultModel;
@@ -41,7 +43,14 @@ class TestApp {
 	}
 
 	public function dispatch(mixed $event): mixed {
-		$retval = $this->container->get(EventDispatcherInterface::class)->dispatch($event);
+		$processedEvent = $event;
+		if (is_a($event, DomainEvent::class)) {
+			// Serialize and deserialize the DomainEvent to ensure that it will successfully translate.
+			// Future systems may send DomainEvents to other services.
+			$processedEvent = DomainEvent::deserializeValue($event->serializeValue());
+		}
+
+		$retval = $this->container->get(EventDispatcherInterface::class)->dispatch($processedEvent);
 		$this->container->get(TestJobManager::class)->run();
 		return $retval;
 	}

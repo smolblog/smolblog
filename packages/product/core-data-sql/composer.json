@@ -26,16 +26,25 @@
 		{
 			"type": "path",
 			"url": "../../framework/foundation"
+		},
+		{
+			"type": "path",
+			"url": "../../framework/infrastructure"
+		},
+		{
+			"type": "path",
+			"url": "../core"
 		}
 	],
 	"require": {
 		"php": "^8.2",
 		"smolblog/framework-foundation": "@dev",
-		"illuminate/database": "^11.21"
+		"smolblog/core": "@dev",
+		"doctrine/dbal": "^4.2"
 	},
 	"require-dev": {
 		"smolblog/test-utils": "@dev",
-		"phpstan/phpstan": "^1.10"
+		"smolblog/framework-infrastructure": "@dev"
 	},
 	"scripts": {
 		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
