@@ -33,6 +33,10 @@
 		},
 		{
 			"type": "path",
+			"url": "../../framework/objects"
+		},
+		{
+			"type": "path",
 			"url": "../core"
 		}
 	],
@@ -44,7 +48,8 @@
 	},
 	"require-dev": {
 		"smolblog/test-utils": "@dev",
-		"smolblog/framework-infrastructure": "@dev"
+		"smolblog/framework-infrastructure": "@dev",
+		"smolblog/framework-objects": "@dev"
 	},
 	"scripts": {
 		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",

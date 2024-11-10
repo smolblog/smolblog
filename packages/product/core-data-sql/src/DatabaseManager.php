@@ -49,6 +49,15 @@ class DatabaseManager implements Registry {
 	}
 
 	/**
+	 * Get the database connection.
+	 *
+	 * @return Connection
+	 */
+	public function getConnection(): Connection {
+		return $this->dbalConnection;
+	}
+
+	/**
 	 * Store the handler services.
 	 *
 	 * @param class-string<DatabaseTableHandler>[] $configuration Array of DatabaseTableHandler services.
@@ -89,8 +98,11 @@ class DatabaseManager implements Registry {
 	 * @return string
 	 */
 	protected function getSchemaVersion(): ?string {
-		$res = $this->dbalConnection->fetchOne('SELECT schema_version FROM db_manager');
+		if (!$this->dbalConnection->createSchemaManager()->tableExists('db_manager')) {
+			return null;
+		}
 
+		$res = $this->dbalConnection->fetchOne('SELECT schema_version FROM db_manager');
 		return $res ? $res : null;
 	}
 

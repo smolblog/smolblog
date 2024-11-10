@@ -111,8 +111,8 @@ trait AppKit {
 			));
 
 			$registryMap[$registry] =
-				function (ContainerInterface $container) use ($registry, $dependencies, $servicesToRegister) {
-					$service = new $registry(...array_map(fn($srv) => $container->get($srv), $dependencies));
+				function (ServiceRegistry $container) use ($registry, $dependencies, $servicesToRegister) {
+					$service = $container->instantiateService($registry, $dependencies);
 					$service->configure(configuration: $servicesToRegister);
 					return $service;
 				};

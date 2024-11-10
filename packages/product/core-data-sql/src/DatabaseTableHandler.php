@@ -15,7 +15,7 @@ interface DatabaseTableHandler {
 	 * the individual handler.
 	 *
 	 * @param Schema $schema Schema builder object.
-	 * @return void
+	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): void;
+	public static function addTableToSchema(Schema $schema): Schema;
 }

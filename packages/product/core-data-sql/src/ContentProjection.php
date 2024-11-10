@@ -9,6 +9,7 @@ use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Data\ContentStateManager;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\{ContentCanonicalUrlSet, ContentCreated, ContentDeleted, ContentUpdated};
+use Smolblog\Foundation\Service\Event\ProjectionListener;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
@@ -19,9 +20,9 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * Create the content table.
 	 *
 	 * @param Schema $schema Schema to add the content table to.
-	 * @return void
+	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): void {
+	public static function addTableToSchema(Schema $schema): Schema {
 		$table = $schema->createTable('content');
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('content_uuid', 'guid');
@@ -31,6 +32,8 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$table->setPrimaryKey(['dbid']);
 		$table->addUniqueIndex(['content_uuid']);
 		$table->addIndex(['site_uuid']);
+
+		return $schema;
 	}
 
 	/**
@@ -79,6 +82,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @param ContentCreated $event Event to handle.
 	 * @return void
 	 */
+	#[ProjectionListener()]
 	public function onContentCreated(ContentCreated $event): void {
 		$content = $event->getContentObject();
 
@@ -95,6 +99,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @param ContentUpdated $event Event to handle.
 	 * @return void
 	 */
+	#[ProjectionListener()]
 	public function onContentUpdated(ContentUpdated $event): void {
 		$current = $this->contentById(
 			$event->entityId ?? Identifier::fromString('00000000-0000-0000-0000-000000000000')
@@ -118,6 +123,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @param ContentDeleted $event Event to handle.
 	 * @return void
 	 */
+	#[ProjectionListener()]
 	public function onContentDeleted(ContentDeleted $event): void {
 		$this->db->delete('content', ['content_uuid' => $event->entityId]);
 	}
@@ -128,6 +134,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @param ContentCanonicalUrlSet $event Event to handle.
 	 * @return void
 	 */
+	#[ProjectionListener()]
 	public function onContentCanonicalUrlSet(ContentCanonicalUrlSet $event): void {
 		$current = $this->contentById(
 			$event->entityId ?? Identifier::fromString('00000000-0000-0000-0000-000000000000')
@@ -146,6 +153,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @param ContentPushedToChannel $event Event to handle.
 	 * @return void
 	 */
+	#[ProjectionListener()]
 	public function onContentPushedToChannel(ContentPushedToChannel $event): void {
 		$current = $this->contentById($event->content->id);
 		if (!isset($current)) {

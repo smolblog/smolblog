@@ -14,7 +14,6 @@ class Model extends DomainModel {
 			'db' => Connection::class,
 		],
 		DatabaseManager::class => [],
-		// 'props' => fn() => ['driver' => 'pdo_sqlite', 'memory' => true],
 	];
 
 	/**

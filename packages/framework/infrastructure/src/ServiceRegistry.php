@@ -73,7 +73,7 @@ class ServiceRegistry implements ContainerInterface {
 		}
 
 		try {
-			$this->library[$id] ??= $this->instantiateService($id);
+			$this->library[$id] ??= $this->instantiateService($id, $this->configuration[$id]);
 		} catch (Exception $e) {
 			throw new ServiceRegistryConfigurationException(
 				service: $id,
@@ -105,11 +105,11 @@ class ServiceRegistry implements ContainerInterface {
 	 * @throws ServiceNotImplementedException Thrown if class_exists returns false for the service.
 	 *
 	 * @template SRV
-	 * @param class-string<SRV> $service Service to instantiate.
+	 * @param class-string<SRV>                                    $service Service to instantiate.
+	 * @param callable|string|array<string, callable|class-string> $config  Configuration array.
 	 * @return SRV
 	 */
-	private function instantiateService(string $service): mixed {
-		$config = $this->configuration[$service];
+	public function instantiateService(string $service, callable|string|array $config): mixed {
 		if (is_callable($config)) {
 			// The config is a factory function, so just call it and return the result.
 			return call_user_func($config, $this);
