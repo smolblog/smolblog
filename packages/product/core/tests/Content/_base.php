@@ -125,6 +125,7 @@ abstract class ContentTestBase extends ModelTest {
 			TestCustomContentExtensionService::class => fn () => $this->customExtensionService,
 			ContentRepo::class => fn() => $this->contentRepo,
 			SitePermissionsService::class => fn() => $this->perms,
+			...parent::createMockServices(),
 		];
 	}
 }

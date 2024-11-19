@@ -46,6 +46,7 @@ abstract class ContentExtensionTest extends ModelTest {
 			ContentRepo::class => fn() => $this->contentRepo,
 			SitePermissionsService::class => fn() => $this->perms,
 			ContentExtensionTestContentTypeService::class => ['eventBus' => EventDispatcherInterface::class],
+			...parent::createMockServices(),
 		];
 	}
 

@@ -32,6 +32,7 @@ abstract class MediaTestBase extends ModelTest {
 			MediaHandlerTestBase::class => fn() => $this->mockHandler,
 			MediaRepo::class => fn() => $this->contentRepo,
 			SitePermissionsService::class => fn() => $this->perms,
+			...parent::createMockServices(),
 		];
 	}
 }

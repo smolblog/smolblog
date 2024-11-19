@@ -84,15 +84,6 @@ class DatabaseManager implements Registry {
 	}
 
 	/**
-	 * Get the DBAL connection object.
-	 *
-	 * @return Connection
-	 */
-	public function connection(): Connection {
-		return $this->dbalConnection;
-	}
-
-	/**
 	 * Get the hash of the currently live schema.
 	 *
 	 * @return string

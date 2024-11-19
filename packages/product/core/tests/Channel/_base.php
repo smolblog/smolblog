@@ -83,6 +83,7 @@ abstract class ChannelTestBase extends ModelTest {
 			ContentRepo::class => fn() => $this->contentRepo,
 			ChannelHandlerTestBase::class => fn() => $this->handlerMock,
 			DefaultChannelHandlerTestBase::class => fn() => $this->defaultHandlerMock,
+			...parent::createMockServices(),
 		];
 	}
 

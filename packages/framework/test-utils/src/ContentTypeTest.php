@@ -32,6 +32,7 @@ abstract class ContentTypeTest extends ModelTest {
 		return [
 			ContentRepo::class => fn() => $this->contentRepo,
 			SitePermissionsService::class => fn() => $this->perms,
+			...parent::createMockServices(),
 		];
 	}
 

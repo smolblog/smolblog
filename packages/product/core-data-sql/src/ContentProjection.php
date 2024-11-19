@@ -73,7 +73,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 			return null;
 		}
 
-		return \is_string($result) ? Content::fromJson($result) : Content::deserializeValue($result);
+		return is_string($result) ? Content::fromJson($result) : Content::deserializeValue($result);
 	}
 
 	/**

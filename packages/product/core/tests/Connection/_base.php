@@ -37,6 +37,7 @@ abstract class ConnectionTestBase extends ModelTest {
 			ChannelRepo::class => fn() => $this->channels,
 			ConnectionRepo::class => fn() => $this->connections,
 			ConnectionHandlerTestBase::class => fn() => $this->handler,
+			...parent::createMockServices(),
 		];
 	}
 }

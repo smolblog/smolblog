@@ -7,7 +7,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 use Smolblog\Test\Constraints\DomainEventChecker;
 
-class ModelTest extends TestCase {
+class ModelTest extends AppTest {
 	const INCLUDED_MODELS = [];
 
 	protected EventDispatcherInterface & MockObject $mockEventBus;
@@ -16,16 +16,11 @@ class ModelTest extends TestCase {
 	protected function setUp(): void {
 		$this->mockEventBus = $this->createMock(EventDispatcherInterface::class);
 
-		$mockServices = [
-			EventDispatcherInterface::class => fn() => $this->mockEventBus,
-			...$this->createMockServices(),
-		];
-
-		$this->app = new TestApp(models: static::INCLUDED_MODELS, services: $mockServices);
+		parent::setUp();
 	}
 
 	protected function createMockServices(): array {
-		return [];
+		return [EventDispatcherInterface::class => fn() => $this->mockEventBus];
 	}
 
 	protected function expectEvent(DomainEvent $event) {
