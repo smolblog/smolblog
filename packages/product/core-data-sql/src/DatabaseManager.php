@@ -29,6 +29,12 @@ class DatabaseManager implements Registry {
 	 */
 	private Connection $dbalConnection;
 
+	private const DSN_MAPPING = [
+		'mysql' => 'mysqli',
+		'postgres' => 'pdo_pgsql',
+		'sqlite' => 'pdo_sqlite',
+	];
+
 	/**
 	 * Create the manager and connect to the given database.
 	 *
@@ -44,7 +50,7 @@ class DatabaseManager implements Registry {
 			throw new Exception('No configuration provided to DatabaseManager.');
 		}
 
-		$connectionParameters = $props ?? (new DsnParser())->parse($dsn ?? '');
+		$connectionParameters = $props ?? (new DsnParser(static::DSN_MAPPING))->parse($dsn ?? '');
 		$this->dbalConnection = DriverManager::getConnection($connectionParameters);
 	}
 

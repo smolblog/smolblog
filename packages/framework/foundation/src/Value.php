@@ -3,7 +3,6 @@
 namespace Smolblog\Foundation;
 
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Traits\{SerializableValue, SerializableValueKit};
 use Throwable;
 
 /**
