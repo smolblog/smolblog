@@ -28,14 +28,12 @@ readonly class BasicChannel extends Channel {
 	/**
 	 * Create the Channel.
 	 *
-	 * @param string                             $handler      Key for the handler this is tied to (usually provider
-	 *                                                         name).
-	 * @param string                             $handlerKey   Unique identifier for this account at this provider.
-	 * @param string                             $displayName  Recognizable name for the channel (URL or handle?).
-	 * @param array|string|float|integer|boolean $details      Extra properties used by the handler.
-	 * @param Identifier|null                    $userId       User responsible for this Channel (if applicable).
-	 * @param Identifier|null                    $connectionId Connection needed to authenticate for this channel (if
-	 *                    																		 necessary).
+	 * @param string          $handler      Key for the handler this is tied to (usually provider name).
+	 * @param string          $handlerKey   Unique identifier for this account at this provider.
+	 * @param string          $displayName  Recognizable name for the channel (URL or handle?).
+	 * @param array           $details      Extra properties used by the handler.
+	 * @param Identifier|null $userId       User responsible for this Channel (if applicable).
+	 * @param Identifier|null $connectionId Connection needed to authenticate for this channel (if necessary).
 	 */
 	public function __construct(
 		string $handler,
