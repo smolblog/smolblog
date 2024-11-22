@@ -4,7 +4,6 @@ namespace Smolblog\CoreDataSql;
 
 require_once __DIR__ . '/_base.php';
 
-use PHPUnit\Framework\Attributes\Depends;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Content\Entities\Content;

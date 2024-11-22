@@ -10,6 +10,9 @@ use Smolblog\Foundation\DomainModel;
  */
 class Model extends DomainModel {
 	public const SERVICES = [
+		ChannelProjection::class => [
+			'db' => Connection::class,
+		],
 		ContentProjection::class => [
 			'db' => Connection::class,
 		],

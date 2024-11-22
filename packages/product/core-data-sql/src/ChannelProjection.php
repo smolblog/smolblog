@@ -7,13 +7,14 @@ use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\{ChannelAddedToSite, ChannelDeleted, ChannelSaved};
+use Smolblog\Foundation\Service\Event\EventListenerService;
 use Smolblog\Foundation\Service\Event\ProjectionListener;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Store and retrieve Content objects.
  */
-class ChannelProjection implements ChannelRepo, DatabaseTableHandler {
+class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTableHandler {
 	/**
 	 * Create the channel tables.
 	 *
@@ -173,8 +174,8 @@ class ChannelProjection implements ChannelRepo, DatabaseTableHandler {
 		$this->db->insert(
 			'channels_sites',
 			[
-				'siteId' => $event->aggregateId,
-				'channelId' => $event->entityId,
+				'site_uuid' => $event->aggregateId,
+				'channel_uuid' => $event->entityId,
 			],
 		);
 	}
