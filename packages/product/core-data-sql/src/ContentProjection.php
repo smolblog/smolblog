@@ -104,9 +104,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 */
 	#[ProjectionListener()]
 	public function onContentUpdated(ContentUpdated $event): void {
-		$current = $this->contentById(
-			$event->entityId ?? Identifier::fromString('00000000-0000-0000-0000-000000000000')
-		);
+		$current = $this->contentById($event->entityId ?? Identifier::nil());
 		if (!isset($current)) {
 			return;
 		}
@@ -139,9 +137,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 */
 	#[ProjectionListener()]
 	public function onContentCanonicalUrlSet(ContentCanonicalUrlSet $event): void {
-		$current = $this->contentById(
-			$event->entityId ?? Identifier::fromString('00000000-0000-0000-0000-000000000000')
-		);
+		$current = $this->contentById($event->entityId ?? Identifier::nil());
 		if (!isset($current)) {
 			return;
 		}

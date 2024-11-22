@@ -167,7 +167,12 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 */
 	#[ProjectionListener]
 	public function onChannelAddedToSite(ChannelAddedToSite $event): void {
-		if ($this->siteCanUseChannel(siteId: $event->aggregateId, channelId: $event->entityId)) {
+		if (
+			$this->siteCanUseChannel(
+				siteId: $event->aggregateId ?? Identifier::nil(),
+				channelId: $event->entityId ?? Identifier::nil()
+			)
+		) {
 			return;
 		}
 

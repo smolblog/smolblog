@@ -90,4 +90,9 @@ final class IdentifierTest extends TestCase {
 
 		Identifier::fromByteString(hex2bin('10a353e40ccf5f74a77b067262bfc58888'));
 	}
+
+	#[TestDox('Identifier::nil() will return the nil UUID')]
+	public function testNil() {
+		$this->assertEquals('00000000-0000-0000-0000-000000000000', strval(Identifier::nil()));
+	}
 }

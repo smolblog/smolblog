@@ -23,6 +23,15 @@ readonly class Identifier extends Value implements Field {
 	use FieldKit;
 
 	/**
+	 * Get an identifier that is all zeros (00000000-0000-0000-0000-000000000000).
+	 *
+	 * @return self
+	 */
+	public static function nil(): self {
+		return self::fromString('00000000-0000-0000-0000-000000000000');
+	}
+
+	/**
 	 * Re-create an Identifier instance from a string representation.
 	 *
 	 * Not to be confused with the create* methods; this creates an instance from an existing ID's representation. The
