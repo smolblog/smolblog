@@ -2,7 +2,7 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connection as DatabaseConnection;
 use Smolblog\Foundation\DomainModel;
 
 /**
@@ -11,10 +11,13 @@ use Smolblog\Foundation\DomainModel;
 class Model extends DomainModel {
 	public const SERVICES = [
 		ChannelProjection::class => [
-			'db' => Connection::class,
+			'db' => DatabaseConnection::class,
+		],
+		ConnectionProjection::class => [
+			'db' => DatabaseConnection::class,
 		],
 		ContentProjection::class => [
-			'db' => Connection::class,
+			'db' => DatabaseConnection::class,
 		],
 		DatabaseManager::class => [],
 	];
@@ -27,7 +30,7 @@ class Model extends DomainModel {
 	public static function getDependencyMap(): array {
 		return [
 			...self::SERVICES,
-			Connection::class => fn($c) => $c->get(DatabaseManager::class)->getConnection(),
+			DatabaseConnection::class => fn($c) => $c->get(DatabaseManager::class)->getConnection(),
 		];
 	}
 }

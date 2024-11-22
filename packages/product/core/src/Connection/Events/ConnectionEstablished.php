@@ -36,4 +36,19 @@ readonly class ConnectionEstablished extends DomainEvent {
 		$calculatedId = $entityId ?? Connection::buildId(provider: $provider, providerKey: $providerKey);
 		parent::__construct(entityId: $calculatedId, userId: $userId, id: $id, timestamp: $timestamp);
 	}
+
+	/**
+	 * Get the Connection object described by this event.
+	 *
+	 * @return Connection
+	 */
+	public function getConnectionObject(): Connection {
+		return new Connection(
+			userId: $this->userId,
+			provider: $this->provider,
+			providerKey: $this->providerKey,
+			displayName: $this->displayName,
+			details: $this->details,
+		);
+	}
 }
