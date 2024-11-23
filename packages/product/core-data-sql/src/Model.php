@@ -20,6 +20,9 @@ class Model extends DomainModel {
 			'db' => DatabaseConnection::class,
 		],
 		DatabaseManager::class => [],
+		EventStream::class => [
+			'db' => DatabaseConnection::class,
+		],
 	];
 
 	/**
