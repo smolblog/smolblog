@@ -4,6 +4,7 @@ namespace Smolblog\CoreDataSql;
 
 require_once __DIR__ . '/_base.php';
 
+use Smolblog\Core\Channel\Entities\BasicChannel;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\ChannelSaved;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
@@ -34,12 +35,13 @@ final class EventStreamTest extends DataTestBase {
 				userId: $userId,
 			),
 			new ChannelSaved(
-				new Channel(
+				new BasicChannel(
 					handler: 'test',
 					handlerKey: 'onetwo',
 					displayName: '@oneTwo',
 					userId: $userId,
 					connectionId: $connectionId,
+					details: ['eleven' => 22],
 				),
 				userId: $userId,
 			),
@@ -49,7 +51,7 @@ final class EventStreamTest extends DataTestBase {
 				userId: $userId,
 				entityId: $contentId,
 			),
-			new class(
+			new readonly class(
 				userId: $userId,
 				aggregateId: $siteId,
 				processId: $this->randomId()
@@ -60,10 +62,9 @@ final class EventStreamTest extends DataTestBase {
 			$this->app->dispatch($event);
 		}
 
-		$actual = array_map(
-			fn($json) => \is_string($json) ? DomainEvent::fromJson($json) : DomainEvent::deserializeValue($json),
-			$db->fetchFirstColumn('SELECT event_obj FROM event_stream'),
+		$this->assertEquals(
+			array_map(fn($evt) => json_encode($evt), $expected),
+			$db->fetchFirstColumn('SELECT event_obj FROM event_stream')
 		);
-		$this->assertEquals($expected, $actual);
 	}
 }

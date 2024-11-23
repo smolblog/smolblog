@@ -47,7 +47,7 @@ final class MediaEntityTest extends TestCase {
 			aggregateId: $this->randomId(),
 			title: '',
 			accessibilityText: 'alt text',
-			type: MediaType::Audio,
+			mediaType: MediaType::Audio,
 			handler: 'test',
 			fileDetails: [],
 		);
@@ -62,7 +62,7 @@ final class MediaEntityTest extends TestCase {
 			aggregateId: $this->randomId(),
 			title: 'title',
 			accessibilityText: '',
-			type: MediaType::Audio,
+			mediaType: MediaType::Audio,
 			handler: 'test',
 			fileDetails: [],
 		);

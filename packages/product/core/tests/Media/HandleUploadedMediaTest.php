@@ -45,7 +45,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			userId: $command->userId,
 			title: $media->title,
 			accessibilityText: $command->accessibilityText,
-			type: $media->type,
+			mediaType: $media->type,
 			handler: $media->handler,
 			fileDetails: []
 		));

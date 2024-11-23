@@ -59,7 +59,10 @@ trait SerializableSupertypeKit {
 		try {
 			return static::baseDeserialize($data);
 		} catch (Throwable $e) {
-			throw new InvalidValueProperties("Unable to deserialize $type from " . static::class, previous: $e);
+			throw new InvalidValueProperties(
+				"Unable to deserialize $type from " . static::class . ': ' . $e->getMessage(),
+				previous: $e
+			);
 		}
 	}
 }

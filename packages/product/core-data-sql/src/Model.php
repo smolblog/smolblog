@@ -23,6 +23,9 @@ class Model extends DomainModel {
 		EventStream::class => [
 			'db' => DatabaseConnection::class,
 		],
+		MediaProjection::class => [
+			'db' => DatabaseConnection::class,
+		],
 	];
 
 	/**

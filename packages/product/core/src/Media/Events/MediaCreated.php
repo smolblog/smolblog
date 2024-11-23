@@ -30,7 +30,7 @@ readonly class MediaCreated extends DomainEvent {
 	 * @param Identifier         $userId            User creating the Media.
 	 * @param string             $title             Title for the media (usually filename). Must not be empty.
 	 * @param string             $accessibilityText Text description of the media. Must not be empty.
-	 * @param MediaType          $type              Broad type of media (image, video, etc).
+	 * @param MediaType          $mediaType         Broad type of media (image, video, etc).
 	 * @param string             $handler           Key for handler for this media.
 	 * @param array              $fileDetails       Information needed by file handler.
 	 * @param Identifier|null    $id                ID of the event.
@@ -43,7 +43,7 @@ readonly class MediaCreated extends DomainEvent {
 		Identifier $userId,
 		public string $title,
 		public string $accessibilityText,
-		public MediaType $type,
+		public MediaType $mediaType,
 		public string $handler,
 		public array $fileDetails,
 		?Identifier $id = null,
@@ -80,9 +80,27 @@ readonly class MediaCreated extends DomainEvent {
 			userId: $media->userId,
 			title: $media->title,
 			accessibilityText: $media->accessibilityText,
-			type: $media->type,
+			mediaType: $media->type,
 			handler: $media->handler,
 			fileDetails: $media->fileDetails,
+		);
+	}
+
+	/**
+	 * Get a Media object represented by this event.
+	 *
+	 * @return Media
+	 */
+	public function getMediaObject(): Media {
+		return new Media(
+			id: $this->entityId ?? Identifier::nil(),
+			userId: $this->mediaUserId,
+			siteId: $this->aggregateId ?? Identifier::nil(),
+			title: $this->title,
+			accessibilityText: $this->accessibilityText,
+			type: $this->mediaType,
+			handler: $this->handler,
+			fileDetails: $this->fileDetails,
 		);
 	}
 }
