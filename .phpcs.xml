@@ -58,6 +58,8 @@
 		<exclude name="Squiz.Commenting.ClassComment.TagNotAllowed"/>
 		<!-- Seriously? Sometimes you just need a good comment on a line. -->
 		<exclude name="Squiz.Commenting.PostStatementComment.Found"/>
+		<!-- Same with an annotation. -->
+		<exclude name="Squiz.Commenting.PostStatementComment.AnnotationFound"/>
 	</rule>
 
 	<!-- Make structures look nicer -->

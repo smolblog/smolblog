@@ -105,7 +105,7 @@ class ContentService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function deleteContent(DeleteContent $command): void {
-		$content = $this->repo->contentById(contentId: $command->contentId, userId: $command->userId);
+		$content = $this->repo->contentById(contentId: $command->contentId);
 		if (!isset($content)) {
 			throw new EntityNotFound(entityId: $command->contentId, entityName: Content::class);
 		}
@@ -128,7 +128,7 @@ class ContentService implements CommandHandlerService {
 	 * @return boolean
 	 */
 	public function userCanEditContent(Identifier $userId, Identifier $contentId): bool {
-		$content = $this->repo->contentById($contentId, $userId);
+		$content = $this->repo->contentById($contentId);
 		if (!isset($content)) {
 			return false;
 		}

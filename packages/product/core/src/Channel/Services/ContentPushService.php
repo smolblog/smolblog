@@ -46,7 +46,7 @@ class ContentPushService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function onPushContentToChannel(PushContentToChannel $command) {
-		$content = $this->contentRepo->contentById(contentId: $command->contentId, userId: $command->userId);
+		$content = $this->contentRepo->contentById(contentId: $command->contentId);
 		if (!isset($content)) {
 			throw new EntityNotFound(entityId: $command->contentId, entityName: Content::class);
 		}

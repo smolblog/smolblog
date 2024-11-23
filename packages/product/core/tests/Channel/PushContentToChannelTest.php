@@ -18,6 +18,7 @@ use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Test\ChannelTestBase;
 
 final class PushContentToChannelTest extends ChannelTestBase {
@@ -32,12 +33,6 @@ final class PushContentToChannelTest extends ChannelTestBase {
 			handlerKey: 'test',
 			displayName: 'https://test.smol.blog',
 			details: [],
-		);
-		$entry = new ContentChannelEntry(
-			contentId: $content->id,
-			channelId: $channel->getId(),
-			url: 'https://test.smol.blog/post/test',
-			details: [ 'post_id' => '12345' ],
 		);
 		$command = new PushContentToChannel(
 			contentId: $content->id,
@@ -73,7 +68,7 @@ final class PushContentToChannelTest extends ChannelTestBase {
 		$entry = new ContentChannelEntry(
 			contentId: $content->id,
 			channelId: $channel->getId(),
-			url: 'https://test.smol.blog/post/test',
+			url: new Url('https://test.smol.blog/post/test'),
 			details: [ 'post_id' => '12345' ],
 		);
 		$command = new PushContentToChannel(
@@ -104,7 +99,7 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				userId: $content->userId,
 				entityId: $entry->getId(),
 				aggregateId: $content->siteId,
-				url: 'https://test.smol.blog/post/test',
+				url: new Url('https://test.smol.blog/post/test'),
 				details: [ 'post_id' => '12345' ],
 			)
 		], checkProcess: true);
