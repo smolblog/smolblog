@@ -3,7 +3,7 @@
 namespace Smolblog\IndieWeb;
 
 use DateTimeInterface;
-use Smolblog\Core\Content\Content;
+use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Extensions\Syndication\Syndication;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Types\Note\Note;
@@ -24,8 +24,8 @@ class MicroformatsConverter {
 	 */
 	public function entryPropertiesFromContent(Content $content, ?User $author = null): array {
 		$props = [
-			'name' => [$content->type->getTitle()],
-			'content' => [['html' => $content->type->getBodyContent()]],
+			'name' => [$content->title()],
+			'content' => [['html' => $content->body->getBodyContent()]],
 			'published' => [$content->publishTimestamp?->format(DateTimeInterface::ATOM) ?? null],
 			'url' => [$content->permalink ?? null],
 			'uid' => [$content->id->toString()],

@@ -10,6 +10,7 @@
             "Smolblog\\Api\\": "packages/product/rest-api/src/",
             "Smolblog\\ContentProvenance\\": "packages/product/c2pa/src/",
             "Smolblog\\Core\\": "packages/product/core/src/",
+            "Smolblog\\CoreDataSql\\": "packages/product/core-data-sql/src/",
             "Smolblog\\Foundation\\": "packages/framework/foundation/src/",
             "Smolblog\\Framework\\": "packages/framework/objects/src/",
             "Smolblog\\Framework\\ActivityPub\\": "packages/framework/activitypub/src/",
@@ -64,13 +65,15 @@
         "ramsey/uuid": "^4.7",
         "taproot/micropub-adapter": "^0.1.1",
         "tumblr/tumblr": "^0.4.2",
-        "woocommerce/action-scheduler": "^3.1"
+        "woocommerce/action-scheduler": "^3.1",
+        "doctrine/dbal": "^4.2"
     },
     "replace": {
         "smolblog/activitypub": "self.version",
         "smolblog/activitypub-adapter": "self.version",
         "smolblog/c2pa": "self.version",
         "smolblog/core": "self.version",
+        "smolblog/core-data-sql": "self.version",
         "smolblog/framework-foundation": "self.version",
         "smolblog/framework-infrastructure": "self.version",
         "smolblog/framework-objects": "self.version",
@@ -84,10 +87,10 @@
     },
     "scripts": {
         "test": "phpunit --testdox --no-coverage",
-        "test-fast": "phpunit --testsuite all --no-coverage",
+        "test-fast": "phpunit --testsuite unit --no-coverage",
         "test-coverage": [
             "@putenv XDEBUG_MODE=coverage",
-            "phpunit --testsuite all",
+            "phpunit --testsuite unit",
             "Smolblog\\Test\\CoverageReport::report"
         ],
         "test-integration": "phpunit --testsuite integration --no-coverage --testdox",

@@ -100,8 +100,11 @@ final class AppKitTest extends TestCase {
 
 		$app = new TestApp();
 		$actual = $app->buildDependencyMap([BasicModel::class, get_class($regModel)]);
-		$stubContainer = $this->createStub(ContainerInterface::class);
+		$stubContainer = $this->createStub(ServiceRegistry::class);
 		$stubContainer->method('get')->willReturnSelf();
+		$stubContainer->method('instantiateService')->willReturnCallback(
+			fn($srv, $conf) => new $srv($stubContainer)
+		);
 
 		$this->assertIsCallable($actual['AppKitTestRegistryOne']);
 		$this->assertIsCallable($actual['AppKitTestRegistryTwo']);
