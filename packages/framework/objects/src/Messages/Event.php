@@ -45,8 +45,8 @@ abstract class Event extends Message {
 	 * @param DateTimeInterface|null $timestamp Time of the Event. Will create from 'now' by default.
 	 */
 	public function __construct(
-		Identifier $id = null,
-		DateTimeInterface $timestamp = null,
+		?Identifier $id = null,
+		?DateTimeInterface $timestamp = null,
 	) {
 		$this->timestamp = $timestamp ?? new DateTimeImmutable();
 		$this->id = $id ?? new DateIdentifier($this->timestamp);
