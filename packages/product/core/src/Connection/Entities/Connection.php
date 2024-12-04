@@ -52,7 +52,7 @@ readonly class Connection extends Value implements Entity, SerializableValue {
 	 *
 	 * @return Identifier
 	 */
-	public function getId(): Identifier {
-		return self::BuildId(provider: $this->provider, providerKey: $this->providerKey);
+	public Identifier $id {
+		get => self::BuildId(provider: $this->provider, providerKey: $this->providerKey);
 	}
 }

@@ -86,7 +86,7 @@ readonly class UserSitePermissions extends Value implements Entity, Serializable
 	 *
 	 * @return Identifier
 	 */
-	public function getId(): Identifier {
-		return self::buildId($this->userId, $this->siteId);
+	public Identifier $id {
+		get => self::buildId($this->userId, $this->siteId);
 	}
 }

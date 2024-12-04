@@ -61,7 +61,7 @@ readonly abstract class Channel extends Value implements Entity, SerializableVal
 	 *
 	 * @return Identifier
 	 */
-	public function getId(): Identifier {
-		return self::buildId(handler: $this->handler, handlerKey: $this->handlerKey);
+	public private(set) Identifier $id {
+		get => self::buildId(handler: $this->handler, handlerKey: $this->handlerKey);
 	}
 }

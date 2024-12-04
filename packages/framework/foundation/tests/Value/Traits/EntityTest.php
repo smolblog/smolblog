@@ -22,6 +22,5 @@ final class EntityTest extends TestCase {
 		$entity = new ExampleEntity($id, 'test');
 
 		$this->assertEquals($id, $entity->id);
-		$this->assertEquals($id, $entity->getId());
 	}
 }

@@ -55,7 +55,7 @@ readonly class ContentChannelEntry extends Value implements SerializableValue, E
 	 *
 	 * @return Identifier
 	 */
-	public function getId(): Identifier {
-		return self::buildId(contentId: $this->contentId, channelId: $this->channelId);
+	public Identifier $id {
+		get => self::buildId(contentId: $this->contentId, channelId: $this->channelId);
 	}
 }

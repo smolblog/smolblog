@@ -13,7 +13,7 @@ interface Entity {
 	 *
 	 * Not all Entities have a hard-coded ID. Some may be derived from other data. Thus, a function.
 	 *
-	 * @return Identifier
+	 * @var Identifier
 	 */
-	public function getId(): Identifier;
+	public Identifier $id { get; }
 }
