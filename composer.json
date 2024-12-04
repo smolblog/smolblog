@@ -51,7 +51,7 @@
         "elephox/mimey": "^4.0",
         "guzzlehttp/guzzle": "^7.6",
         "guzzlehttp/psr7": "^2.6",
-        "illuminate/database": "^9.0",
+        "illuminate/database": "^11.0",
         "monolog/monolog": "^3.0",
         "nyholm/psr7-server": "dev-master",
         "papertower/wp-rest-api-psr7": "dev-master",

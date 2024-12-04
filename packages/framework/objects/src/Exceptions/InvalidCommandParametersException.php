@@ -22,7 +22,7 @@ class InvalidCommandParametersException extends Exception implements SmolblogExc
 	 */
 	public function __construct(
 		public readonly Command $command,
-		string $message = null,
+		?string $message = null,
 		int $code = 0,
 		?Throwable $previous = null
 	) {

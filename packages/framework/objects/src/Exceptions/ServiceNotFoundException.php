@@ -22,7 +22,7 @@ class ServiceNotFoundException extends Exception implements SmolblogException, N
 	 */
 	public function __construct(
 		public readonly string $service,
-		string $message = null,
+		?string $message = null,
 		int $code = 0,
 		?Throwable $previous = null
 	) {

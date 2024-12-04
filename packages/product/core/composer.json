@@ -51,10 +51,10 @@
     "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
   },
   "require": {
-    "php": "^8.2",
+    "php": "^8.4",
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
-    "illuminate/database": "^9.0",
+    "illuminate/database": "^11.0",
     "elephox/mimey": "^4.0",
     "smolblog/framework-foundation": "@dev",
     "cocur/slugify": "^4.6"

@@ -22,8 +22,8 @@ readonly class ChannelAddedToSite extends DomainEvent {
 		Identifier $aggregateId,
 		Identifier $entityId,
 		Identifier $userId,
-		Identifier $id = null,
-		DateTimeField $timestamp = null,
+		?Identifier $id = null,
+		?DateTimeField $timestamp = null,
 	) {
 		parent::__construct(
 			entityId: $entityId,

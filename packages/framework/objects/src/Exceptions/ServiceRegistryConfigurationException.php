@@ -26,7 +26,7 @@ class ServiceRegistryConfigurationException extends Exception implements
 	public function __construct(
 		public readonly string $service,
 		public readonly mixed $config,
-		string $message = null,
+		?string $message = null,
 		int $code = 0,
 		?Throwable $previous = null
 	) {

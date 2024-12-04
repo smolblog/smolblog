@@ -14,7 +14,7 @@ readonly class DateIdentifier extends Identifier {
 	 *
 	 * @param DateTimeInterface|null $date Date to create UUID with. Uses current date by default.
 	 */
-	public function __construct(DateTimeInterface|DateTimeField $date = null) {
+	public function __construct(DateTimeInterface|DateTimeField|null $date = null) {
 		$dateObj = $date instanceof DateTimeField ? $date->object : $date;
 		parent::__construct(internal: Uuid::uuid7($dateObj));
 	}
