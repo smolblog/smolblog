@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9f70e0f5631691fdc14bf35faf23889",
+    "content-hash": "8aa389c2da7930974bbe9fe3d9551ff6",
     "packages": [
         {
             "name": "brick/math",
@@ -2014,7 +2014,7 @@
         },
         {
             "name": "smolblog/framework-foundation",
-            "version": "dev-dependency/php-eight-four",
+            "version": "dev-refactor/new-foundation-core",
             "dist": {
                 "type": "path",
                 "url": "../../framework/foundation",
@@ -4277,7 +4277,7 @@
         },
         {
             "name": "smolblog/framework-infrastructure",
-            "version": "dev-dependency/php-eight-four",
+            "version": "dev-refactor/new-foundation-core",
             "dist": {
                 "type": "path",
                 "url": "../../framework/infrastructure",
@@ -4316,7 +4316,7 @@
         },
         {
             "name": "smolblog/framework-objects",
-            "version": "dev-dependency/php-eight-four",
+            "version": "dev-refactor/new-foundation-core",
             "dist": {
                 "type": "path",
                 "url": "../../framework/objects",
@@ -4357,7 +4357,7 @@
         },
         {
             "name": "smolblog/test-utils",
-            "version": "dev-dependency/php-eight-four",
+            "version": "dev-refactor/new-foundation-core",
             "dist": {
                 "type": "path",
                 "url": "../../framework/test-utils",
@@ -4535,7 +4535,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.4"
+        "php": "^8.3"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
