@@ -51,6 +51,11 @@ readonly class ContentPushedToChannel extends DomainEvent {
 		);
 	}
 
+	/**
+	 * Get the ContentChannelEntry object created by this event.
+	 *
+	 * @return ContentChannelEntry
+	 */
 	public function getEntryObject(): ContentChannelEntry {
 		return new ContentChannelEntry(
 			contentId: $this->content->id,

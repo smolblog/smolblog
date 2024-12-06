@@ -29,6 +29,10 @@ class Model extends DomainModel {
 			'channelRepo' => Channel\Data\ChannelRepo::class,
 			'handlers' => Channel\Services\ChannelHandlerRegistry::class,
 		],
+		Channel\Services\ChannelQueryService::class => [
+			'repo' => Channel\Data\ChannelRepo::class,
+			'sitePerms' => Permissions\SitePermissionsService::class,
+		],
 
 		Connection\Services\AuthRequestService::class => [
 			'handlers' => Connection\Services\ConnectionHandlerRegistry::class,

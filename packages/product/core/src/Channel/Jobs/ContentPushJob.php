@@ -14,7 +14,7 @@ readonly class ContentPushJob extends Job {
 	/**
 	 * Construct the job.
 	 *
-	 * @param string      $service   DefaultChannelHandler subclass that should handle this command.
+	 * @param string      $service   AsyncChannelHandler subclass that should handle this command.
 	 * @param Content     $content   Content to push.
 	 * @param Channel     $channel   Channel to push to.
 	 * @param Identifier  $userId    ID of the user who initiatied the push.

@@ -2,23 +2,23 @@
 
 namespace Smolblog\Foundation\Exceptions;
 
-use Smolblog\Foundation\Value\Messages\Command;
+use Exception;
 use Throwable;
 
 /**
- * Exception thrown when a command is not authorized to run.
+ * Exception thrown when an action is not authorized to run.
+ *
+ * A generic exception that essentially represents an HTTP 403 (Forbidden) error.
  */
-class CommandNotAuthorized extends ActionNotAuthorized {
+class ActionNotAuthorized extends Exception {
 	/**
 	 * Construct the exception
 	 *
-	 * @param Command $originalCommand Original command.
 	 * @param string              $message         The Exception command to throw.
 	 * @param integer             $code            The Exception command to throw.
 	 * @param Throwable|null      $previous        The previous exception used for the exception chaining.
 	 */
 	public function __construct(
-		public readonly Command $originalCommand,
 		string $message = "",
 		int $code = 0,
 		?Throwable $previous = null
