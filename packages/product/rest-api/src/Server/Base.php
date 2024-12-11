@@ -13,7 +13,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 class Base extends BasicEndpoint {
 	public const LICENSE = [
 		'notice' => <<<EOF
-			<p>Smolblog &copy; 2023 Evan Hildreth and contributors</p>
+			<p>Smolblog &copy; 2023 Evan Hildreth</p>
 
 			<p>This program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU Affero General Public License as

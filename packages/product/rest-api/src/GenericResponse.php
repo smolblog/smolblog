@@ -10,6 +10,8 @@ use Smolblog\Framework\Objects\Value;
  *
  * Useful for small, one-off response objects. Endpoints using this should also define the shape of the response in
  * their configuration.
+ *
+ * @deprecated Just use an array.
  */
 class GenericResponse extends Value {
 	use ExtendableValueKit;

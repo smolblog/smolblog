@@ -15,9 +15,7 @@ use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
 use Smolblog\Core\Connector\Services\ConnectorRegistry;
 use Smolblog\Core\Content\ContentTypeRegistry;
-use Smolblog\Core\Content\Types\Reblog\ExternalContentService;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
  * Domain model for the API.
@@ -55,9 +53,6 @@ class Model extends DomainModel {
 		Content\EditMedia::class => ['bus' => MessageBus::class],
 		Content\DeleteMedia::class => ['bus' => MessageBus::class],
 
-		Preview\PreviewEmbed::class => ['embed' => ExternalContentService::class],
-		Preview\PreviewMarkdown::class => ['md' => SmolblogMarkdown::class],
-
 		Server\Base::class => ['env' => ApiEnvironment::class],
 		Server\Spec::class => ['env' => ApiEnvironment::class],
 
@@ -69,7 +64,6 @@ class Model extends DomainModel {
 
 		User\GetMyProfile::class => ['bus' => MessageBus::class],
 		User\GetMySites::class => ['bus' => MessageBus::class],
-		User\UpdateMyProfile::class => ['bus' => MessageBus::class],
 	];
 
 	/**

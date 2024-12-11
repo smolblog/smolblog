@@ -2,9 +2,13 @@
 
 namespace Smolblog\Api;
 
+use JsonSerializable;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Smolblog\Api\Exceptions\ErrorResponse;
+use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Framework\Exceptions\MessageNotAuthorizedException;
 use Smolblog\Foundation\Value\Http\HttpResponse;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -26,7 +30,7 @@ abstract class BasicEndpoint implements Endpoint {
 		?Identifier $userId,
 		?array $params,
 		?object $body,
-	): mixed;
+	): array|JsonSerializable;
 
 	/**
 	 * Translate the standard Request to the given run method.
@@ -86,10 +90,20 @@ abstract class BasicEndpoint implements Endpoint {
 			}
 		} catch (ErrorResponse $ex) {
 			return new HttpResponse(code: $ex->getHttpCode(), body: $ex);
-		} catch (MessageNotAuthorizedException $ex) {
+		} catch (MessageNotAuthorizedException | CommandNotAuthorized $ex) {
 			return new HttpResponse(code: 403, body: [
 				'code' => 403,
 				'error' => 'You are not authorized to perform this action.'
+			]);
+		} catch (EntityNotFound $ex) {
+			return new HttpResponse(code: 404, body: [
+				'code' => 404,
+				'error' => $ex->getMessage(),
+			]);
+		} catch (InvalidValueProperties $ex) {
+			return new HttpResponse(code: 400, body: [
+				'code' => 400,
+				'error' => $ex->getMessage(),
 			]);
 		} catch (Throwable $ex) {
 			return new HttpResponse(
