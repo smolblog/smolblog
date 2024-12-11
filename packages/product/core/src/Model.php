@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Framework\Messages\MessageBus;
 use Smolblog\Foundation\DomainModel;
+use Smolblog\Foundation\Service\KeypairGenerator;
 use Smolblog\Markdown\SmolblogMarkdown;
 
 /**
@@ -98,23 +99,12 @@ class Model extends DomainModel {
 			'perms' => Permissions\SitePermissionsService::class,
 		],
 
-		Federation\FederationService::class => [
-			'bus' => MessageBus::class,
-			'followerProviders' => Federation\FollowerProviderRegistry::class,
-		],
-		Federation\FollowerProjection::class => [
-			'db' => ConnectionInterface::class,
-		],
-		Federation\FollowerProviderRegistry::class => [
-			'container' => ContainerInterface::class,
-			'configuration' => null,
-		],
-		Site\SiteEventStream::class => [
-			'db' => ConnectionInterface::class,
-		],
-		Syndication\SyndicationService::class => [
-			'bus' => MessageBus::class,
-			'connectors' => Connection\Services\ConnectionHandlerRegistry::class,
+		Site\Services\SiteService::class => [
+			'globalPerms' => Permissions\GlobalPermissionsService::class,
+			'sitePerms' => Permissions\SitePermissionsService::class,
+			'repo' => Site\Data\SiteRepo::class,
+			'keygen' => KeypairGenerator::class,
+			'eventBus' => EventDispatcherInterface::class,
 		]
 	];
 }

@@ -61,4 +61,22 @@ interface SitePermissionsService {
 	 * @return boolean
 	 */
 	public function canPushContent(Identifier $userId, Identifier $siteId): bool;
+
+	/**
+	 * Can the given user set user permissions?
+	 *
+	 * @param Identifier $userId User to check.
+	 * @param Identifier $siteId Site to check.
+	 * @return boolean
+	 */
+	public function canManagePermissions(Identifier $userId, Identifier $siteId): bool;
+
+	/**
+	 * Can the given user change site settings?
+	 *
+	 * @param Identifier $userId User to check.
+	 * @param Identifier $siteId Site to check.
+	 * @return boolean
+	 */
+	public function canManageSettings(Identifier $userId, Identifier $siteId): bool;
 }

@@ -1,69 +1,109 @@
 <?php
 
-namespace Smolblog\Core\Site;
+namespace Smolblog\Core\Site\Commands;
 
-use InvalidArgumentException;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\TestCase;
+require_once __DIR__ . '/_base.php';
 
-final class CreateSiteTest extends TestCase {
-	public function testItCreatesASiteIdIfNoneIsGiven() {
-		$command = new CreateSite(
+use Smolblog\Core\Site\Entities\Site;
+use Smolblog\Core\Site\Events\SiteCreated;
+use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Keypair;
+use Smolblog\Test\SiteTestBase;
+
+final class CreateSiteTest extends SiteTestBase {
+	public function testHappyPath() {
+		$expected = new Site(
+			id: $this->randomId(),
+			key: 'test',
+			displayName: 'Test Site',
 			userId: $this->randomId(),
-			handle: 'something',
-			displayName: 'Something.com',
-			baseUrl: 'https://something.com/',
+			keypair: new Keypair(publicKey: '--PUBLIC-KEY--'),
+			description: 'This is a drill.',
 		);
 
-		$this->assertInstanceOf(Identifier::class, $command->siteId);
+		$this->keygen->method('generate')->willReturn($expected->keypair);
+		$this->globalPerms->method('canCreateSite')->willReturn(true);
+		$this->repo->method('hasSiteWithID')->willReturn(false);
+		$this->repo->method('hasSiteWithKey')->willReturn(false);
+
+		$event = new SiteCreated(
+			userId: $expected->userId,
+			aggregateId: $expected->id,
+			key: 'test',
+			displayName: 'Test Site',
+			keypair: $expected->keypair,
+			description: $expected->description,
+			siteUserId: $expected->userId,
+		);
+
+		$this->expectEvent($event);
+		$this->assertObjectEquals($expected, $event->getSiteObject());
+
+		$this->app->execute(new CreateSite(
+			userId: $expected->userId,
+			key: 'test',
+			displayName: 'Test Site',
+			description: $expected->description,
+			siteId: $expected->id,
+		));
 	}
 
-	public function testItThrowsExceptionIfBaseUrlIsNotValid() {
-		$this->expectException(InvalidArgumentException::class);
+	public function testItFailsIfTheGivenSiteIdExists() {
+		$this->repo->method('hasSiteWithKey')->willReturn(false);
+		$this->globalPerms->method('canCreateSite')->willReturn(true);
 
-		new CreateSite(
+		$this->repo->method('hasSiteWithID')->willReturn(true);
+		$this->expectException(InvalidValueProperties::class);
+
+		$this->app->execute(new CreateSite(
 			userId: $this->randomId(),
-			handle: 'something',
-			displayName: 'Something.com',
-			baseUrl: '-$omething^',
-		);
+			key: 'test',
+			displayName: 'Test Site',
+			siteId: $this->randomId(),
+		));
 	}
 
-	public function testItAuthorizesWithTheGivenUserId() {
-		$command = new CreateSite(
-			userId: $this->randomId(),
-			handle: 'something',
-			displayName: 'Something.com',
-			baseUrl: 'https://something.com/',
-		);
+	public function testItFailsIfTheGivenSiteKeyExists() {
+		$this->repo->method('hasSiteWithID')->willReturn(false);
+		$this->globalPerms->method('canCreateSite')->willReturn(true);
 
-		$this->assertEquals($command->userId, $command->getAuthorizationQuery()->userId);
+		$this->repo->method('hasSiteWithKey')->willReturn(true);
+		$this->expectException(InvalidValueProperties::class);
+
+		$this->app->execute(new CreateSite(
+			userId: $this->randomId(),
+			key: 'test',
+			displayName: 'Test Site',
+		));
 	}
 
-	public function testItAuthorizesWithTheCommandUserIfItIsGiven() {
-		$command = new CreateSite(
-			userId: $this->randomId(),
-			handle: 'something',
-			displayName: 'Something.com',
-			baseUrl: 'https://something.com/',
-			commandUser: $this->randomId()
-		);
+	public function testItFailsIfTheUserCannotCreateSite() {
+		$this->repo->method('hasSiteWithID')->willReturn(false);
+		$this->repo->method('hasSiteWithKey')->willReturn(false);
 
-		$this->assertEquals($command->commandUser, $command->getAuthorizationQuery()->userId);
-		$this->assertNotEquals($command->userId, $command->getAuthorizationQuery()->userId);
+		$this->globalPerms->method('canCreateSite')->willReturn(false);
+		$this->expectException(CommandNotAuthorized::class);
+
+		$this->app->execute(new CreateSite(
+			userId: $this->randomId(),
+			key: 'test',
+			displayName: 'Test Site',
+		));
 	}
 
-	public function testItCanAcceptAnIdInsteadOfCreatingOne() {
-		$newId = $this->randomId();
-
+	public function testItGeneratesANewIdThatDoesNotExist() {
 		$command = new CreateSite(
 			userId: $this->randomId(),
-			handle: 'something',
-			displayName: 'Something.com',
-			baseUrl: 'https://something.com/',
-			siteId: $newId
+			key: 'test',
+			displayName: 'Test Site'
 		);
 
-		$this->assertEquals($newId, $command->siteId);
+		$this->repo->method('hasSiteWithId')->willReturn(true, true, false);
+		$this->globalPerms->method('canCreateSite')->willReturn(true);
+
+		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(SiteCreated::class));
+
+		$this->app->execute($command);
 	}
 }
