@@ -46,4 +46,12 @@ interface SiteRepo {
 	 * @return Identifier[]
 	 */
 	public function userIdsForSite(Identifier $siteId): array;
+
+	/**
+	 * Get the sites belonging to a given user.
+	 *
+	 * @param Identifier $userId User whose sites to retrieve.
+	 * @return Site[]
+	 */
+	public function sitesForUser(Identifier $userId): array;
 }
