@@ -2,21 +2,18 @@
 
 namespace Smolblog\Api\Connector;
 
-use Smolblog\Api\AuthScope;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Framework\Objects\Value;
 use Smolblog\Api\BasicEndpoint;
 use Smolblog\Api\EndpointConfig;
-use Smolblog\Api\DataType;
-use Smolblog\Api\ErrorResponses;
 use Smolblog\Api\Exceptions\BadRequest;
 use Smolblog\Api\Exceptions\NotFound;
 use Smolblog\Api\ParameterType;
 use Smolblog\Api\RedirectResponse;
 use Smolblog\Api\SuccessResponse;
-use Smolblog\Core\Connector\Commands\FinishAuthRequest;
-use Smolblog\Core\Connector\Services\AuthRequestStateRepo;
-use Smolblog\Core\Connector\Services\ConnectorRegistry;
+use Smolblog\Core\Connection\Commands\FinishAuthRequest;
+use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
+use Smolblog\Core\Connection\Services\ConnectionHandlerRegistry;
+use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Framework\Messages\MessageBus;
 
 /**
@@ -48,13 +45,13 @@ class AuthCallback extends BasicEndpoint {
 	/**
 	 * Construct the endpoint.
 	 *
-	 * @param MessageBus           $bus        To dispatch command.
-	 * @param ConnectorRegistry    $connectors To check if provider is registered.
-	 * @param AuthRequestStateRepo $authRepo   To check if state is valid.
+	 * @param CommandBus                $commandBus To dispatch command.
+	 * @param ConnectionHandlerRegistry $connectors To check if provider is registered.
+	 * @param AuthRequestStateRepo      $authRepo   To check if state is valid.
 	 */
 	public function __construct(
-		private MessageBus $bus,
-		private ConnectorRegistry $connectors,
+		private CommandBus $commandBus,
+		private ConnectionHandlerRegistry $connectors,
 		private AuthRequestStateRepo $authRepo,
 	) {
 	}
@@ -65,7 +62,6 @@ class AuthCallback extends BasicEndpoint {
 	 * This is a public endpoint as there is not always a way to ensure authentication carries through the entire
 	 * OAuth process.
 	 *
-	 * @throws NotFound Provider not registered.
 	 * @throws BadRequest Invalid parameters given.
 	 *
 	 * @param Identifier|null $userId Authenticated user; ignored.
@@ -78,10 +74,6 @@ class AuthCallback extends BasicEndpoint {
 		?array $params = [],
 		?object $body = null
 	): SuccessResponse|RedirectResponse {
-		if (empty($params['provider']) || !$this->connectors->has($params['provider'])) {
-			throw new NotFound('The given provider has not been registered.');
-		}
-
 		$state = $params['state'] ?? $params['oauth_token'] ?? null;
 		$code = $params['code'] ?? $params['oauth_verifier'] ?? null;
 
@@ -92,17 +84,13 @@ class AuthCallback extends BasicEndpoint {
 			throw new BadRequest('No valid code or oauth_verifier was given');
 		}
 
-		if ($this->authRepo->getAuthRequestState($state) === null) {
-			throw new NotFound('The given authentication session was not found. It may be incorrect or expired.');
-		}
-
 		$command = new FinishAuthRequest(
 			provider: $params['provider'],
 			stateKey: $state,
 			code: $code,
 		);
-		$this->bus->dispatch($command);
+		$this->commandBus->execute($command);
 
-		return isset($command->returnToUrl) ? new RedirectResponse(url: $command->returnToUrl) : new SuccessResponse();
+		return isset($command->returnToUrl) ? new RedirectResponse(url: $command->returnValue()) : new SuccessResponse();
 	}
 }

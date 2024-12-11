@@ -43,10 +43,10 @@ class AuthRequestService implements CommandHandlerService {
 	 * @throws ServiceNotRegistered When no service is registered with the given key.
 	 *
 	 * @param BeginAuthRequest $request Command to execute.
-	 * @return void
+	 * @return string
 	 */
 	#[CommandHandler]
-	public function onBeginAuthRequest(BeginAuthRequest $request): void {
+	public function onBeginAuthRequest(BeginAuthRequest $request): string {
 		$connector = $this->handlers->get($request->provider);
 
 		$data = $connector->getInitializationData(callbackUrl: $request->callbackUrl);
@@ -60,6 +60,7 @@ class AuthRequestService implements CommandHandlerService {
 		));
 
 		$request->setReturnValue($data->url);
+		return $data->url;
 	}
 
 	/**
@@ -68,10 +69,10 @@ class AuthRequestService implements CommandHandlerService {
 	 * @throws ServiceNotRegistered When no service is registered with the given key.
 	 *
 	 * @param FinishAuthRequest $request Command to execute.
-	 * @return void
+	 * @return string|null
 	 */
 	#[CommandHandler]
-	public function onFinishAuthRequest(FinishAuthRequest $request): void {
+	public function onFinishAuthRequest(FinishAuthRequest $request): ?string {
 		$connector = $this->handlers->get($request->provider);
 
 		$info = $this->stateRepo->getAuthRequestState(key: $request->stateKey);
@@ -94,5 +95,6 @@ class AuthRequestService implements CommandHandlerService {
 		$this->refresher->refresh(connection: $connection, userId: $info->userId);
 
 		$request->setReturnValue($info->returnToUrl);
+		return $info->returnToUrl;
 	}
 }
