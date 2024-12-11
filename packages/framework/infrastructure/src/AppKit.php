@@ -33,6 +33,12 @@ trait AppKit {
 		return $this->buildDependencyMapFromArrays(array_map(fn($model) => $model::getDependencyMap(), $models));
 	}
 
+	/**
+	 * Build the dependency map given an array of configuration arrays.
+	 *
+	 * @param array $maps Individual dependency maps.
+	 * @return array
+	 */
 	private function buildDependencyMapFromArrays(array $maps): array {
 		$services = array_filter(
 			array_reduce($maps, fn($carry, $item) => array_merge($carry, $item), []),

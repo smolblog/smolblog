@@ -12,6 +12,13 @@ use Smolblog\Foundation\Value\Traits\ServiceConfigurationKit;
 readonly class ContentTypeConfiguration extends Value implements ServiceConfiguration {
 	use ServiceConfigurationKit;
 
+	/**
+	 * Create the configuration.
+	 *
+	 * @param string $key         Key for this content type.
+	 * @param string $displayName User-friendly name for this content type.
+	 * @param string $typeClass   PHP class implementing this type.
+	 */
 	public function __construct(
 		string $key,
 		public string $displayName,
