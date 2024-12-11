@@ -42,14 +42,17 @@ class FinishAuthRequestTest extends ConnectionTestBase {
 			info: $state,
 		)->willReturn($connection);
 
-		$this->expectEvent(new ConnectionEstablished(
+		$event = new ConnectionEstablished(
 			provider: 'testmock',
 			providerKey: $connection->providerKey,
 			displayName: $connection->displayName,
 			details: $connection->details,
 			userId: $userId,
 			entityId: $connection->getId(),
-		));
+		);
+
+		$this->assertObjectEquals($connection, $event->getConnectionObject());
+		$this->expectEvent($event);
 
 		$redirectUrl = $this->app->execute($command);
 		$this->assertEquals('//dashboard.smolblog.com/account/connections', $redirectUrl);

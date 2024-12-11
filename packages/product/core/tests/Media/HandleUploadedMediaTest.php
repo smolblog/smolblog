@@ -39,7 +39,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			->willReturn($media);
 		$this->perms->method('canUploadMedia')->willReturn(true);
 
-		$this->expectEvent(new MediaCreated(
+		$event = new MediaCreated(
 			entityId: $mediaId,
 			aggregateId: $command->siteId,
 			userId: $command->userId,
@@ -48,7 +48,9 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			mediaType: $media->type,
 			handler: $media->handler,
 			fileDetails: []
-		));
+		);
+		$this->expectEvent($event);
+		$this->assertObjectEquals($media, $event->getMediaObject());
 
 		$this->app->execute($command);
 	}

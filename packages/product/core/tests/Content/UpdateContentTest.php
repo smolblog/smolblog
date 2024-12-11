@@ -45,14 +45,25 @@ final class UpdateContentTest extends ContentTestBase {
 		$this->customExtensionService->expects($this->once())->method('update')->with(
 			command: $command,
 		);
-		$this->expectEvent(new ContentUpdated(
+		$event = new ContentUpdated(
 			body: $command->body,
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
 			contentUserId: $command->userId,
 			extensions: $extensions,
-		));
+		);
+		$this->expectEvent($event);
+		$this->assertObjectEquals(
+			new Content(
+				body: $command->body,
+				siteId: $command->siteId,
+				userId: $userId,
+				id: $contentId,
+				extensions: $extensions,
+			),
+			$event->getContentObject()
+		);
 
 		$this->app->execute($command);
 	}

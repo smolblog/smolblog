@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\ContentCreated;
 use Smolblog\Core\Site\Entities\UserSitePermissions;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
@@ -70,13 +71,24 @@ final class CreateContentTest extends ContentTestBase {
 			command: $command,
 			contentId: $contentId,
 		);
-		$this->expectEvent(new TestEventsContentTypeCreated(
+		$event = new TestEventsContentTypeCreated(
 			body: $command->body,
 			aggregateId: $command->siteId,
 			userId: $command->userId,
 			entityId: $contentId,
 			extensions: $extensions,
-		));
+		);
+		$this->assertObjectEquals(
+			new Content(
+				body: $command->body,
+				siteId: $command->siteId,
+				userId: $command->userId,
+				id: $contentId,
+				extensions: $extensions,
+			),
+			$event->getContentObject(),
+		);
+		$this->expectEvent($event);
 
 		$this->app->execute($command);
 	}
