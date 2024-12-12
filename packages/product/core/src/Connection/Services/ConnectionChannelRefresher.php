@@ -19,7 +19,7 @@ use Smolblog\Foundation\Service\Event\EventListenerService;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
- * Service to update Channels for a Connection based on a provider.
+ * Service to update Channels for a Connection based on a handler.
  */
 class ConnectionChannelRefresher implements CommandHandlerService, EventListenerService {
 	/**
@@ -57,14 +57,14 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 	}
 
 	/**
-	 * Update Channels for the given Connection based on the provider.
+	 * Update Channels for the given Connection based on the handler.
 	 *
 	 * @param Connection $connection Connection to refresh.
 	 * @param Identifier $userId     ID of User instigating this change.
 	 * @return void
 	 */
 	public function refresh(Connection $connection, Identifier $userId): void {
-		$connector = $this->handlers->get($connection->provider);
+		$connector = $this->handlers->get($connection->handler);
 
 		$currentChannels = $this->channels->channelsForConnection(connectionId: $connection->getId());
 		$newChannels = $connector->getChannels(connection: $connection);

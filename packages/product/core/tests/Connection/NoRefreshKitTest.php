@@ -41,8 +41,8 @@ final class NoRefreshKitTest extends TestCase {
 	private function makeConnection(): Connection {
 		return new Connection(
 			userId: $this->randomId(),
-			provider: 'test',
-			providerKey: $this->randomId()->toString(),
+			handler: 'test',
+			handlerKey: $this->randomId()->toString(),
 			displayName: 'Test',
 			details: [],
 		);

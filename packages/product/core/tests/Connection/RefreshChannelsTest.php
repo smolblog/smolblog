@@ -17,8 +17,8 @@ class RefreshChannelsTest extends ConnectionTestBase {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$connection = new Connection(
 			userId: $userId,
-			provider: 'testmock',
-			providerKey: 'abc1233445',
+			handler: 'testmock',
+			handlerKey: 'abc1233445',
 			displayName: 'Test Account',
 			details: ['smol' => 'blog'],
 		);

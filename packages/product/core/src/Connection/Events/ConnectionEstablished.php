@@ -8,24 +8,24 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
- * Indicates a Connection has been formed or re-formed between a user account and an external provider.
+ * Indicates a Connection has been formed or re-formed between a user account and an external handler.
  */
 readonly class ConnectionEstablished extends DomainEvent {
 	/**
 	 * Create the Event
 	 *
-	 * @param string             $provider    Key for the provider this connection is for.
-	 * @param string             $providerKey Unique identifier for this connection for this provider.
+	 * @param string             $handler     Key for the handler this connection is for.
+	 * @param string             $handlerKey  Unique identifier for this connection for this handler.
 	 * @param string             $displayName Human-readable name for this connection.
-	 * @param array              $details     Additional information needed to connect to this provider.
+	 * @param array              $details     Additional information needed to connect to this handler.
 	 * @param Identifier         $userId      ID of the user initiating this change.
 	 * @param Identifier|null    $entityId    ID of the connection this event belongs to.
 	 * @param Identifier|null    $id          Optional ID for the event.
 	 * @param DateTimeField|null $timestamp   Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		public readonly string $provider,
-		public readonly string $providerKey,
+		public readonly string $handler,
+		public readonly string $handlerKey,
 		public readonly string $displayName,
 		public readonly array $details,
 		Identifier $userId,
@@ -33,7 +33,7 @@ readonly class ConnectionEstablished extends DomainEvent {
 		?Identifier $id = null,
 		?DateTimeField $timestamp = null,
 	) {
-		$calculatedId = $entityId ?? Connection::buildId(provider: $provider, providerKey: $providerKey);
+		$calculatedId = $entityId ?? Connection::buildId(handler: $handler, handlerKey: $handlerKey);
 		parent::__construct(entityId: $calculatedId, userId: $userId, id: $id, timestamp: $timestamp);
 	}
 
@@ -45,8 +45,8 @@ readonly class ConnectionEstablished extends DomainEvent {
 	public function getConnectionObject(): Connection {
 		return new Connection(
 			userId: $this->userId,
-			provider: $this->provider,
-			providerKey: $this->providerKey,
+			handler: $this->handler,
+			handlerKey: $this->handlerKey,
 			displayName: $this->displayName,
 			details: $this->details,
 		);

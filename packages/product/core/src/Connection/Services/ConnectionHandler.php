@@ -9,20 +9,20 @@ use Smolblog\Core\Connection\Entities\ConnectionInitData;
 use Smolblog\Foundation\Service\Registry\Registerable;
 
 /**
- * Class to handle authenticating against an external provider.
+ * Class to handle authenticating against an external handler.
  */
 interface ConnectionHandler extends Registerable {
 	/**
 	 * Get the string this ConnectionHandler should be registered under.
 	 *
-	 * Typically the provider name in all lowercase, e.g. 'tumblr', 'mastodon', or 'discord'.
+	 * Typically the handler name in all lowercase, e.g. 'tumblr', 'mastodon', or 'discord'.
 	 *
 	 * @return string
 	 */
 	public static function getKey(): string;
 
 	/**
-	 * Get the information needed to start an OAuth session with the provider
+	 * Get the information needed to start an OAuth session with the handler
 	 *
 	 * @param string $callbackUrl URL of the callback endpoint.
 	 * @return ConnectionHandlerInitData
@@ -30,7 +30,7 @@ interface ConnectionHandler extends Registerable {
 	public function getInitializationData(string $callbackUrl): ConnectionInitData;
 
 	/**
-	 * Handle the OAuth callback from the provider and create the credential
+	 * Handle the OAuth callback from the handler and create the credential
 	 *
 	 * Implementing service should throw an exception if the Connection cannot be created.
 	 *

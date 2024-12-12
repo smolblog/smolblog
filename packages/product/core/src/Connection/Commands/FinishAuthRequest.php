@@ -16,12 +16,12 @@ readonly class FinishAuthRequest extends Command {
 	/**
 	 * Create the command
 	 *
-	 * @param string $provider ID for a registered Connector.
+	 * @param string $handler  ID for a registered Connector.
 	 * @param string $stateKey ID for an AuthRequestState.
 	 * @param string $code     Key for the OAuth request.
 	 */
 	public function __construct(
-		public readonly string $provider,
+		public readonly string $handler,
 		public readonly string $stateKey,
 		public readonly string $code,
 	) {

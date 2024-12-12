@@ -60,7 +60,7 @@ class ConnectionRefresher implements Service, CommandHandlerService {
 	 * @return Connection Connection object ready to be used.
 	 */
 	public function refresh(Connection $connection, Identifier $userId): Connection {
-		$connector = $this->handlers->get($connection->provider);
+		$connector = $this->handlers->get($connection->handler);
 		if (!$connector->connectionNeedsRefresh($connection)) {
 			return $connection;
 		}

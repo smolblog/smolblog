@@ -14,7 +14,7 @@ class BeginAuthRequestTest extends ConnectionTestBase {
 	public function testHappyPath() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$command = new BeginAuthRequest(
-			provider: 'testmock',
+			handler: 'testmock',
 			userId: $userId,
 			callbackUrl: '//smol.blog/callback/testmock',
 			returnToUrl: '//dashboard.smolblog.com/account/connections',
@@ -29,7 +29,7 @@ class BeginAuthRequestTest extends ConnectionTestBase {
 		$this->stateRepo->expects($this->once())->method('saveAuthRequestState')->with(new AuthRequestState(
 			key: '0ab41adf-ef37-4b51-bee3-d38bfb1b0b7a',
 			userId: $userId,
-			provider: 'testmock',
+			handler: 'testmock',
 			info: ['smol' => 'blog'],
 			returnToUrl: '//dashboard.smolblog.com/account/connections',
 		));
@@ -38,11 +38,11 @@ class BeginAuthRequestTest extends ConnectionTestBase {
 		$this->assertEquals('//smol.blog/callback/testmock', $redirectUrl);
 	}
 
-	public function testProviderNotRegistered() {
+	public function testhandlerNotRegistered() {
 		$this->expectException(ServiceNotRegistered::class);
 
 		$this->app->execute(new BeginAuthRequest(
-			provider: 'not registered',
+			handler: 'not registered',
 			userId: Identifier::fromString('d18ba802-2a29-4c3e-b4db-d3dd7e6962de'),
 			callbackUrl: '//smol.blog/callback/testmock',
 		));

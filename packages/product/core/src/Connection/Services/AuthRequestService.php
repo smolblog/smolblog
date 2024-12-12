@@ -16,7 +16,7 @@ use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
 /**
- * Service to handle an OAuth request with an external provider.
+ * Service to handle an OAuth request with an external handler.
  */
 class AuthRequestService implements CommandHandlerService {
 	/**
@@ -47,14 +47,14 @@ class AuthRequestService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function onBeginAuthRequest(BeginAuthRequest $request): string {
-		$connector = $this->handlers->get($request->provider);
+		$connector = $this->handlers->get($request->handler);
 
 		$data = $connector->getInitializationData(callbackUrl: $request->callbackUrl);
 
 		$this->stateRepo->saveAuthRequestState(new AuthRequestState(
 			key: $data->state,
 			userId: $request->userId,
-			provider: $request->provider,
+			handler: $request->handler,
 			info: $data->info,
 			returnToUrl: $request->returnToUrl,
 		));
@@ -73,7 +73,7 @@ class AuthRequestService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function onFinishAuthRequest(FinishAuthRequest $request): ?string {
-		$connector = $this->handlers->get($request->provider);
+		$connector = $this->handlers->get($request->handler);
 
 		$info = $this->stateRepo->getAuthRequestState(key: $request->stateKey);
 		if (!isset($info)) {
@@ -83,8 +83,8 @@ class AuthRequestService implements CommandHandlerService {
 		$connection = $connector->createConnection(code: $request->code, info: $info);
 
 		$this->eventBus->dispatch(new ConnectionEstablished(
-			provider: $connection->provider,
-			providerKey: $connection->providerKey,
+			handler: $connection->handler,
+			handlerKey: $connection->handlerKey,
 			displayName: $connection->displayName,
 			details: $connection->details,
 			entityId: $connection->getId(),
