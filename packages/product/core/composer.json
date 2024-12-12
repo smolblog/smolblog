@@ -48,7 +48,8 @@
       "phpunit --testsuite core --coverage-text"
     ],
     "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+    "endpoints": "Smolblog\\Core\\Endpoints::listEndpoints"
   },
   "require": {
     "php": "^8.3",
