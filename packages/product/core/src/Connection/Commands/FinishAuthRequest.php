@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
+use Smolblog\Foundation\Service\Command\ExpectedResponse;
+use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Foundation\Value\Messages\Command;
 
 /**
@@ -9,6 +11,7 @@ use Smolblog\Foundation\Value\Messages\Command;
  *
  * Handler should return a redirect URL for returning the user to the application.
  */
+#[ExpectedResponse(type: Url::class, name: 'url', description: 'URL to redirect the end-user to.', optional: true)]
 readonly class FinishAuthRequest extends Command {
 	/**
 	 * Create the command

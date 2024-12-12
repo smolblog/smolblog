@@ -2,12 +2,15 @@
 
 namespace Smolblog\Core\Channel\Commands;
 
+use Smolblog\Core\Channel\Entities\ContentChannelEntry;
+use Smolblog\Foundation\Service\Command\ExpectedResponse;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * Push the given content to the given channel.
  */
+#[ExpectedResponse(type: ContentChannelEntry::class, optional: true)]
 readonly class PushContentToChannel extends Command {
 	/**
 	 * Create the command.
