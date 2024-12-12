@@ -5,6 +5,7 @@ namespace Smolblog\Core\Media\Commands;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Site\UserHasPermissionForSite;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Service\Command\ExpectedResponse;
 use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
@@ -13,6 +14,7 @@ use Smolblog\Foundation\Value\Traits\AuthorizableMessage;
 /**
  * Save an uploaded file to the media library
  */
+#[ExpectedResponse(type: Identifier::class, name: 'id', description: 'ID of the created media')]
 readonly class HandleUploadedMedia extends Command {
 	/**
 	 * Create the command.

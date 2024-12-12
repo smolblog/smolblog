@@ -9,10 +9,12 @@ use Smolblog\Core\Site\Commands\CreateSite;
 use Smolblog\Core\Site\Commands\SetUserSitePermissions;
 use Smolblog\Core\Site\Commands\UpdateSiteDetails;
 use Smolblog\Core\Site\Data\SiteRepo;
+use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Core\Site\Events\SiteCreated;
 use Smolblog\Core\Site\Events\SiteDetailsUpdated;
 use Smolblog\Core\Site\Events\UserSitePermissionsSet;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
@@ -100,9 +102,9 @@ class SiteService implements CommandHandlerService {
 	#[CommandHandler]
 	public function onSetUserSitePermissions(SetUserSitePermissions $command): void {
 		if (!$this->repo->hasSiteWithId($command->siteId)) {
-			throw new InvalidValueProperties(
-				message: "No site exists with ID {$command->siteId}",
-				field: 'siteId',
+			throw new EntityNotFound(
+				entityId: $command->siteId,
+				entityName: Site::class,
 			);
 		}
 
@@ -127,9 +129,9 @@ class SiteService implements CommandHandlerService {
 	#[CommandHandler]
 	public function onUpdateSiteDetails(UpdateSiteDetails $command): void {
 		if (!$this->repo->hasSiteWithId($command->siteId)) {
-			throw new InvalidValueProperties(
-				message: "No site exists with ID {$command->siteId}",
-				field: 'siteId',
+			throw new EntityNotFound(
+				entityId: $command->siteId,
+				entityName: Site::class,
 			);
 		}
 

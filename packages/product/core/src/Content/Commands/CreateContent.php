@@ -2,16 +2,18 @@
 
 namespace Smolblog\Core\Content\Commands;
 
-use Smolblog\Api\ArrayType;
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Core\Content\Entities\ContentType;
+use Smolblog\Foundation\Service\Command\ExpectedResponse;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Create a new piece of Content.
  */
+#[ExpectedResponse(type: Identifier::class, name: 'id', description: 'ID of the created content.')]
 readonly class CreateContent extends Command {
 	/**
 	 * Create the command.
