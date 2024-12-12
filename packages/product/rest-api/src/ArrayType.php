@@ -6,6 +6,8 @@ use Attribute;
 
 /**
  * Attach type information to an array.
+ *
+ * @deprecated use Smolblog\Foundation\Value\Traits\ArrayType
  */
 #[Attribute]
 class ArrayType {
