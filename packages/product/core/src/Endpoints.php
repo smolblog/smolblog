@@ -2,8 +2,10 @@
 
 namespace Smolblog\Core;
 
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionProperty;
+use Smolblog\Foundation\Service\Command\ExpectedResponse;
 use Smolblog\Foundation\Value\Http\HttpVerb;
 
 class Endpoints {
@@ -49,15 +51,49 @@ class Endpoints {
 			echo 'Authentication: ' . (isset($props['authenticatedUserField']) ? 'Bearer' : 'n/a') . "\n";
 
 			\preg_match_all('/{([\w\d]+)}/', $props['route'], $matches, \PREG_PATTERN_ORDER);
-			$urlProps = $matches[1];
+			$urlPropNames = $matches[1];
+
+			$pathProps = [];
+			$bodyProps = [];
 			foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $payloadProp) {
-				if (\in_array($payloadProp->getName(), $urlProps) || $payloadProp->getName() == $props['authenticatedUserField']) {
+				if ($payloadProp->getName() == $props['authenticatedUserField']) {
 					continue;
 				}
-				echo "  {$payloadProp->getName()}: {$payloadProp->getType()}\n";
+				if (in_array($payloadProp->getName(), $urlPropNames)) {
+					$pathProps[] = "{$payloadProp->getName()}: {$payloadProp->getType()}";
+					continue;
+				}
+				$bodyProps[] = "{$payloadProp->getName()}: {$payloadProp->getType()}";
 			}
+
+			if (!empty($pathProps)) {
+				echo "Path variables:\n";
+				foreach ($pathProps as $output) {
+					echo "  {$output}\n";
+				}
+			}
+			if (!empty($bodyProps)) {
+				echo "Body:\n";
+				foreach ($bodyProps as $output) {
+					echo "  {$output}\n";
+				}
+			}
+
+			$respReflect = $reflection->getAttributes(ExpectedResponse::class, ReflectionAttribute::IS_INSTANCEOF);
+			if (!empty($respReflect)) {
+				echo "Response: 200\n";
+				$expected = $respReflect[0]->newInstance();
+				if (isset($expected->name)) {
+					echo "  {$expected->name}: {$expected->type}\n";
+				} else {
+					echo "  {$expected->type}\n";
+				}
+			} else {
+				echo "Response: 204\n";
+			}
+
 			echo "\n";
-		}
+		}//end foreach
 	}
 
 		/**
