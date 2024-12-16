@@ -7,6 +7,8 @@ use Smolblog\Framework\Messages\Message as DeprecatedMessage;
 
 /**
  * Wrapper to designate a message that should be enqueued to handle on a different thread.
+ *
+ * @deprecated Use Smolblog\Foundation\Value\Jobs\Job
  */
 class AsyncWrappedMessage extends DeprecatedMessage {
 	/**

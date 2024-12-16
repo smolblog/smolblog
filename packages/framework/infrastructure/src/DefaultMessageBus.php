@@ -57,6 +57,8 @@ class DefaultMessageBus implements MessageBus, CommandBus, QueryBus, EventDispat
 	/**
 	 * Convenience method for sending Query messages that will return the results.
 	 *
+	 * @deprecated Prefer data interfaces to Query objects.
+	 *
 	 * @param DeprecatedQuery|Query $query Query to execute.
 	 * @return mixed Results of the query.
 	 */
@@ -71,7 +73,7 @@ class DefaultMessageBus implements MessageBus, CommandBus, QueryBus, EventDispat
 	 * queue, it could be an entirely different server. As such, the given Message should have as much information
 	 * included as reasonably possible.
 	 *
-	 * @deprecated use executeAsync for Commands
+	 * @deprecated use JobManager with AsyncExecutionJob or AsyncDispatchJob
 	 *
 	 * @param DeprecatedMessage|Message $message Message to send.
 	 * @return void
@@ -93,6 +95,8 @@ class DefaultMessageBus implements MessageBus, CommandBus, QueryBus, EventDispat
 
 	/**
 	 * Execute the given command on a separate thread.
+	 *
+	 * @deprecated use JobManager with AsyncExecutionJob
 	 *
 	 * @param Command|DeprecatedCommand $command Command to execute.
 	 * @return void

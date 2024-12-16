@@ -1,0 +1,58 @@
+{
+	"name": "smolblog/core-rest-api",
+	"description": "REST API for the core Smolblog model",
+	"type": "smolblog-plugin",
+	"license": "AGPL-3.0-or-later",
+	"autoload": {
+		"psr-4": {
+			"Smolblog\\CoreRestApi\\": "src/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Smolblog",
+			"email": "dev@smolblog.org"
+		},
+		{
+			"name": "Evan Hildreth",
+			"email": "me@eph.me"
+		}
+	],
+	"repositories": [
+		{
+			"type": "path",
+			"url": "../../framework/test-utils"
+		},
+		{
+			"type": "path",
+			"url": "../../framework/foundation"
+		},
+		{
+			"type": "path",
+			"url": "../../framework/infrastructure"
+		},
+		{
+			"type": "path",
+			"url": "../../framework/objects"
+		},
+		{
+			"type": "path",
+			"url": "../core"
+		}
+	],
+	"require": {
+		"php": "^8.2",
+		"smolblog/framework-foundation": "@dev",
+		"smolblog/core": "@dev"
+	},
+	"require-dev": {
+		"smolblog/test-utils": "@dev",
+		"smolblog/framework-infrastructure": "@dev",
+		"smolblog/framework-objects": "@dev"
+	},
+	"scripts": {
+		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+	}
+}

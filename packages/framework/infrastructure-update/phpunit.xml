@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         testdox="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+>
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </source>
+    <coverage pathCoverage="true" ignoreDeprecatedCodeUnits="true">
+        <report>
+            <html outputDirectory="html-coverage" lowUpperBound="70" highLowerBound="100"/>
+        </report>
+    </coverage>
+	<php>
+		<ini name="xdebug.mode" value="coverage"/>
+		<ini name="memory_limit" value="1024M"/>
+	</php>
+</phpunit>
