@@ -28,7 +28,7 @@ trait ErrorResponseKit {
 	 * @param RequestInterface|null $request   Original web request.
 	 * @return ResponseInterface
 	 */
-	public function getExceptionResponse(Throwable $exception, ?RequestInterface $request = null): ResponseInterface {
+	public function handleException(Throwable $exception, ?RequestInterface $request = null): ResponseInterface {
 		$logLevel = LogLevel::INFO;
 		$response = null;
 
@@ -57,7 +57,7 @@ trait ErrorResponseKit {
 				break;
 
 			default:
-			$logLevel = LogLevel::ERROR;
+				$logLevel = LogLevel::ERROR;
 				$response = new HttpResponse(
 					code: 500,
 					body: ['error' => 'An error occurred; check the server logs for details.'],
