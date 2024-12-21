@@ -2,8 +2,8 @@
 
 namespace Smolblog\Infrastructure\Endpoint;
 
-use Smolblog\Core\Content\Fields\Markdown;
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Fields\Markdown;
 
 /**
  * Store documentation information for an Endpoint.

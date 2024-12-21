@@ -3,6 +3,7 @@
 namespace Smolblog\Infrastructure\Endpoint\OpenApi;
 
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Foundation\Value\Traits\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
@@ -17,14 +18,17 @@ readonly class OpenApiSpec extends Value implements SerializableValue {
 
 	public function __construct(
 		public string $openapi,
-		public object $info,
-		#[ArrayType(ArrayType::TYPE_ARRAY)] public ?array $servers,
-		public ?object $paths,
-		#[ArrayType(ArrayType::TYPE_ARRAY)] public ?array $webhooks,
-		public ?object $components,
-		public ?object $security,
-		#[ArrayType(ArrayType::TYPE_ARRAY)] public ?array $tags,
-		public ?object $externalDocs,
+		public Info $info,
+		#[ArrayType(Server::class)] public array $servers = [],
+		#[ArrayType(PathItem::class, isMap: true)] public ?array $paths = null,
+		public ?object $components = null,
+		public ?object $security = null,
+		#[ArrayType(ArrayType::TYPE_ARRAY)] public ?array $tags = null,
 	) {
+		if (empty($servers)) {
+			$this->servers = [
+				new Server(url: new Url('/')),
+			];
+		}
 	}
 }

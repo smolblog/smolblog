@@ -17,9 +17,10 @@ class ArrayType {
 	/**
 	 * Construct the attribute.
 	 *
-	 * @param string $type Class name or primitive type constant.
+	 * @param string  $type  Class name or primitive type constant.
+	 * @param boolean $isMap True if this is an associative array with string keys.
 	 */
-	public function __construct(public readonly string $type) {
+	public function __construct(public readonly string $type, public readonly bool $isMap = false) {
 	}
 
 	/**

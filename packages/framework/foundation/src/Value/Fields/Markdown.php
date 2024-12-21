@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Fields;
+namespace Smolblog\Foundation\Value\Fields;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Field;
@@ -12,8 +12,6 @@ use Smolblog\Foundation\Value\Traits\FieldKit;
  * Is it a class that just has a text field? Yes. Does it turn the Markdown into HTML? No, that needs a Service. So why
  * does this class exist? Because Markdown text should be treated differently from generic text, especially in the
  * user interface.
- *
- * @deprecated use Smolblog\Foundation\Value\Fields\Markdown
  */
 readonly class Markdown extends Value implements Field {
 	use FieldKit;
