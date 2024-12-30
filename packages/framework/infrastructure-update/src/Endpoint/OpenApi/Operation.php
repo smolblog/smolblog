@@ -22,7 +22,7 @@ readonly class Operation extends Value implements SerializableValue {
 		public ?Markdown $description = null,
 		#[ArrayType(Parameter::class)] public ?array $parameters = null,
 		public ?RequestBody $requestBody = null,
-		public ?Responses $responses = null,
+		#[ArrayType(Response::class, isMap: true)] public ?array $responses = null,
 		public bool $deprecated = false,
 		#[ArrayType(SecurityRequirement::class, isMap: true)] public ?array $security = null,
 		#[ArrayType(Server::class)] public ?array $servers = null,
