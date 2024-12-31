@@ -4,6 +4,7 @@ namespace Smolblog\Infrastructure\Endpoint;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Markdown;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Store documentation information for an Endpoint.
@@ -17,6 +18,7 @@ readonly class EndpointDocumentation extends Value {
 	 *
 	 * @param string                     $oneline        Single-line description of the endpoint.
 	 * @param Markdown|null              $longform       Markdown-formatted longer description of the endpoint.
+	 * @param string[]|null              $tags           Categories for this endpoint.
 	 * @param array<string, string>|null $queryVariables Keys for each accepted query variable, value is class or RegEx.
 	 * @param string|array|null          $bodyShape      Class or key-value array describing the expected JSON body.
 	 * @param string|array|null          $responseShape  Class or key-value array describing the expected JSON result.
@@ -24,7 +26,8 @@ readonly class EndpointDocumentation extends Value {
 	public function __construct(
 		public string $oneline,
 		public ?Markdown $longform = null,
-		public ?array $queryVariables = null,
+		#[ArrayType(ArrayType::TYPE_STRING)] public ?array $tags = null,
+		#[ArrayType(ArrayType::TYPE_STRING, isMap: true)] public ?array $queryVariables = null,
 		public string|array|null $bodyShape = null,
 		public string|array|null $responseShape = null,
 	) {
