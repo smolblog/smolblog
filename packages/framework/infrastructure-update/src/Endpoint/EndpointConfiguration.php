@@ -18,13 +18,13 @@ readonly class EndpointConfiguration implements ServiceConfiguration {
 	 * @param string                $route         Route for the endpoint; add placeholder variables with {var}.
 	 * @param HttpVerb              $verb          HTTP method for the endpoint, default GET.
 	 * @param array<string, string> $pathVariables Keys for each placeholder in $route, value is class or RegEx.
-	 * @param AuthScope|null        $scope         Required scope for the endpoint; null if no auth required.
+	 * @param boolean               $auth          True if this endpoint requires authentication.
 	 */
 	public function __construct(
 		public string $route,
 		public HttpVerb $verb = HttpVerb::GET,
 		public array $pathVariables = [],
-		public ?AuthScope $scope = null,
+		public bool $auth = true,
 	) {
 	}
 }
