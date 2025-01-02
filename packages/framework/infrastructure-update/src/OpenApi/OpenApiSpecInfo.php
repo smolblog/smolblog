@@ -6,6 +6,7 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Email;
 use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Foundation\Value\Fields\Url;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
@@ -37,7 +38,7 @@ readonly class OpenApiSpecInfo extends Value implements SerializableValue {
 		public ?Url $contactUrl = null,
 		public ?Email $contactEmail = null,
 		public string $authSchemeName = 'default',
-		public array $overrides = [],
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $overrides = [],
 	) {
 	}
 }

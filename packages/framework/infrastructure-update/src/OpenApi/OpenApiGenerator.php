@@ -11,9 +11,14 @@ use ReflectionEnum;
 use ReflectionProperty;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Service\Registry\Registry;
-use Smolblog\Foundation\Value\Fields\{DateTimeField, Email, Identifier, Url};
+use Smolblog\Foundation\Value\Fields\{DateTimeField, Email, Identifier, Markdown, Url};
 use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Traits\Field;
+use stdClass;
 
+/**
+ * Register documented endpoints and create an OpenAPI spec.
+ */
 class OpenApiGenerator implements Registry {
 	/**
 	 * OpenAPI documented classes.
@@ -80,6 +85,8 @@ class OpenApiGenerator implements Registry {
 		}
 
 		$spec = ['title' => $info->title, 'version' => $info->version];
+
+		return $spec;
 	}
 
 	/**
@@ -88,7 +95,7 @@ class OpenApiGenerator implements Registry {
 	 * @param class-string $className Class to reference.
 	 * @return array
 	 */
-	private function componentSchemaFromClass(string $className): array {
+	public function componentSchemaFromClass(string $className): array {
 		// If the class provides its own schema, use it.
 		if (is_a($className, OpenApiDocumentedValue::class, allow_string: true)) {
 			$schema = $className::getOpenApiSchema();
@@ -109,15 +116,18 @@ class OpenApiGenerator implements Registry {
 		$reflect = new ReflectionClass($className);
 
 		$props = [];
-		$required = [];
 		foreach ($reflect->getProperties(ReflectionProperty::IS_PUBLIC) as $prop) {
 			$name = $prop->getName();
 			$props[$name] = $this->typeFromProperty($prop);
-
-			if (!$prop->hasDefaultValue()) {
-				$required[] = $name;
-			}
 		}
+
+		$required = array_map(
+			fn($refParam) => $refParam->getName(),
+			array_filter(
+				$reflect->getConstructor()?->getParameters() ?? [],
+				fn($refParam) => !$refParam->isOptional()
+			),
+		);
 
 		$schema = ['type' => 'object', 'properties' => $props];
 		if (!empty($required)) {
@@ -158,17 +168,24 @@ class OpenApiGenerator implements Registry {
 				return ['type' => 'string', 'format' => 'uri'];
 		}
 
+		// If it's a Field, then it serializes to/from a string, so use that.
+		if (is_a($typeName, Field::class, allow_string: true)) {
+			return ['type' => 'string'];
+		}
+
 		// Handle arrays.
 		if ($typeName === 'array') {
 			$attributeReflections = $prop->getAttributes(ArrayType::class, ReflectionAttribute::IS_INSTANCEOF);
 			$arrayType = ($attributeReflections[0] ?? null)?->newInstance() ?? null;
 			if (!isset($arrayType)) {
-				throw new CodePathNotSupported("ArrayType annotation missing for {$prop->class}::{$prop->getName()}");
+				$arrayType = new ArrayType(ArrayType::NO_TYPE);
 			}
 
-			$itemSchema = $arrayType->isBuiltIn() ?
-				OpenApiUtils::builtInArrayTypeSchema($arrayType->type) :
-				$this->enqueueClassAndGetRef($arrayType->type);
+			$itemSchema = match (true) {
+				$arrayType->type === ArrayType::NO_TYPE => new stdClass(),
+				$arrayType->isBuiltIn() => OpenApiUtils::builtInArrayTypeSchema($arrayType->type),
+				default => $this->enqueueClassAndGetRef($arrayType->type)
+			};
 
 			// Check for associative arrays (maps) and handle those correctly.
 			if ($arrayType->isMap) {
@@ -176,7 +193,7 @@ class OpenApiGenerator implements Registry {
 			}
 
 			return ['type' => 'array', 'items' => $itemSchema];
-		}
+		}//end if
 
 		return $this->enqueueClassAndGetRef($typeName);
 	}

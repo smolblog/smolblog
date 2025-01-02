@@ -6,7 +6,10 @@ use ReflectionClass;
 use ReflectionProperty;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\DomainModel;
+use Smolblog\Foundation\Value\Http\HttpVerb;
 use Smolblog\Infrastructure\Endpoint\EndpointConfiguration;
+use Smolblog\Infrastructure\OpenApi\OpenApiGenerator;
+use Smolblog\Infrastructure\OpenApi\OpenApiSpecInfo;
 
 /**
  * Declared dependencies for the default infrastructure.
@@ -19,18 +22,7 @@ class Model extends DomainModel {
 	];
 
 	public static function scratchpad() {
-		$refClass = new ReflectionClass(EndpointConfiguration::class);
-
-		echo "Class doc:\n";
-		echo $refClass->getDocComment();
-
-		echo "\n\n";
-
-		foreach ($refClass->getProperties(ReflectionProperty::IS_PUBLIC) as $refProp) {
-			echo "Property {$refProp->getName()} doc:\n";
-			echo $refProp->getDocComment();
-
-			echo "\n\n";
-		}
+		$gen = new OpenApiGenerator();
+		echo \json_encode($gen->componentSchemaFromClass(HttpVerb::class), JSON_PRETTY_PRINT);
 	}
 }

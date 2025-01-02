@@ -23,16 +23,13 @@ class OpenApiUtils {
 	/**
 	 * Turn a built-in ArrayType entry into an OpenAPI type.
 	 *
-	 * @throws CodePathNotSupported If either array or a non-built-in type is given.
+	 * @throws CodePathNotSupported If a non-built-in type (or no type) is given.
 	 *
 	 * @param string $givenType A built-in constant from ArrayType.
 	 * @return array
 	 */
 	public static function builtInArrayTypeSchema(string $givenType): array {
 		switch ($givenType) {
-			case ArrayType::TYPE_ARRAY:
-				throw new CodePathNotSupported('I don\'t know what to do with an array of arrays...');
-				break;
 			case ArrayType::TYPE_BOOLEAN:
 				return ['type' => 'boolean'];
 			case ArrayType::TYPE_INTEGER:

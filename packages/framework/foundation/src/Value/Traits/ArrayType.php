@@ -30,7 +30,6 @@ class ArrayType {
 	 */
 	public function isBuiltIn(): bool {
 		return \in_array($this->type, [
-			self::TYPE_ARRAY,
 			self::TYPE_STRING,
 			self::TYPE_INTEGER,
 			self::TYPE_BOOLEAN,
@@ -38,9 +37,9 @@ class ArrayType {
 		]);
 	}
 
-	public const TYPE_ARRAY = '__builtin_array';
 	public const TYPE_STRING = '__builtin_string';
 	public const TYPE_INTEGER = '__builtin_integer';
 	public const TYPE_BOOLEAN = '__builtin_boolean';
 	public const TYPE_FLOAT = '__builtin_float';
+	public const NO_TYPE = '__no_type';
 }

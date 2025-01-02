@@ -3,6 +3,7 @@
 namespace Smolblog\Infrastructure\Endpoint;
 
 use Smolblog\Foundation\Value\Http\HttpVerb;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
 use Smolblog\Foundation\Value\Traits\ServiceConfigurationKit;
 
@@ -23,7 +24,7 @@ readonly class EndpointConfiguration implements ServiceConfiguration {
 	public function __construct(
 		public string $route,
 		public HttpVerb $verb = HttpVerb::GET,
-		public array $pathVariables = [],
+		#[ArrayType(ArrayType::TYPE_STRING, isMap: true)] public array $pathVariables = [],
 		public bool $auth = true,
 	) {
 	}
