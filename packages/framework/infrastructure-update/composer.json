@@ -27,6 +27,10 @@
 		{
 			"type": "path",
 			"url": "../infrastructure"
+		},
+		{
+			"type": "path",
+			"url": "../objects"
 		}
 	],
 	"require": {
@@ -35,12 +39,16 @@
 		"psr/event-dispatcher": "^1.0",
 		"crell/tukio": "^1.6",
 		"psr/log": "^3.0",
-		"smolblog/framework-foundation": "@dev"
+		"smolblog/framework-foundation": "@dev",
+		"smolblog/framework-objects": "@dev"
 	},
 	"require-dev": {
 		"smolblog/test-utils": "@dev"
 	},
 	"scripts": {
-		"scratch": "Smolblog\\Infrastructure\\Model::scratchpad"
+		"scratch": "Smolblog\\Infrastructure\\Model::scratchpad",
+		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
 	}
 }

@@ -2,11 +2,6 @@
 
 namespace Smolblog\Test;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Test\Constraints\DomainEventChecker;
-
 class AppTest extends TestCase {
 	const INCLUDED_MODELS = [];
 

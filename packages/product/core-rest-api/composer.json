@@ -29,7 +29,7 @@
 		},
 		{
 			"type": "path",
-			"url": "../../framework/infrastructure"
+			"url": "../../framework/infrastructure-update"
 		},
 		{
 			"type": "path",
@@ -43,11 +43,11 @@
 	"require": {
 		"php": "^8.2",
 		"smolblog/framework-foundation": "@dev",
+		"smolblog/framework-infrastructure-update": "@dev",
 		"smolblog/core": "@dev"
 	},
 	"require-dev": {
 		"smolblog/test-utils": "@dev",
-		"smolblog/framework-infrastructure": "@dev",
 		"smolblog/framework-objects": "@dev"
 	},
 	"scripts": {
