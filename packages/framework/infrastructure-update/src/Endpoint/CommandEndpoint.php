@@ -8,8 +8,6 @@ use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Value\Http\HttpResponse;
 
 abstract class CommandEndpoint implements Endpoint {
-	use ErrorResponseKit;
-
 	public const string COMMAND = self::class;
 
 	public function __construct(private CommandBus $bus) {

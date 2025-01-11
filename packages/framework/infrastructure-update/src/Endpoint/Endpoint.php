@@ -4,12 +4,13 @@ namespace Smolblog\Infrastructure\Endpoint;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Smolblog\Foundation\Service\Registry\ConfiguredRegisterable;
 
 /**
  * Code to create and handle a REST API endpoint.
  */
-interface Endpoint extends ConfiguredRegisterable {
+interface Endpoint extends ConfiguredRegisterable, RequestHandlerInterface {
 	/**
 	 * Get the configuration for this endpoint.
 	 *

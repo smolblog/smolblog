@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7015be92acd4a7d6c943ce77a20bfd77",
+    "content-hash": "aca5bcc782e056b626d4a069f047202f",
     "packages": [
         {
             "name": "brick/math",
@@ -816,6 +816,121 @@
                 "source": "https://github.com/php-fig/http-message/tree/1.1"
             },
             "time": "2023-04-04T09:50:52+00:00"
+        },
+        {
+            "name": "psr/http-server-handler",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-server-handler.git",
+                "reference": "13403d43196ab3382d0a4ca28be32984282641f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-server-handler/zipball/13403d43196ab3382d0a4ca28be32984282641f9",
+                "reference": "13403d43196ab3382d0a4ca28be32984282641f9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side request handler",
+            "keywords": [
+                "handler",
+                "http",
+                "http-interop",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response",
+                "server"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-server-handler"
+            },
+            "time": "2023-11-16T18:17:39+00:00"
+        },
+        {
+            "name": "psr/http-server-middleware",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-server-middleware.git",
+                "reference": "459eeb7efeae55b4102a951c4ecc93a11ce58d0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-server-middleware/zipball/459eeb7efeae55b4102a951c4ecc93a11ce58d0f",
+                "reference": "459eeb7efeae55b4102a951c4ecc93a11ce58d0f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "psr/http-message": "^1.0 || ^2.0",
+                "psr/http-server-handler": "^1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side middleware",
+            "keywords": [
+                "http",
+                "http-interop",
+                "middleware",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/http-server-middleware/issues",
+                "source": "https://github.com/php-fig/http-server-middleware"
+            },
+            "time": "2023-09-22T11:17:21+00:00"
         },
         {
             "name": "psr/log",
@@ -3142,6 +3257,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "psr/http-server-handler": 20,
+        "psr/http-server-middleware": 20,
         "smolblog/framework-foundation": 20,
         "smolblog/framework-objects": 20,
         "smolblog/test-utils": 20
