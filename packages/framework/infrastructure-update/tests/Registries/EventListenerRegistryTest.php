@@ -1,17 +1,10 @@
 <?php
 
-namespace Smolblog\Infrastructure\MessageBus;
+namespace Smolblog\Infrastructure\Registries;
 
-use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Foundation\Exceptions\CodePathNotSupported;
-use Smolblog\Foundation\Service\Command\CommandBus;
-use Smolblog\Foundation\Service\Command\CommandHandler;
-use Smolblog\Foundation\Service\Command\CommandHandlerService;
 use Smolblog\Foundation\Service\Event\EventListener;
 use Smolblog\Foundation\Service\Event\EventListenerService;
-use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Infrastructure\Model;
 use Smolblog\Test\AppTest;
 use Smolblog\Test\TestCase;

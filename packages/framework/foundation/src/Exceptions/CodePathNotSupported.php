@@ -3,11 +3,14 @@
 namespace Smolblog\Foundation\Exceptions;
 
 use LogicException;
+use Psr\Container\ContainerExceptionInterface;
 use Throwable;
 
 /**
- * Exception for when a code path is not supported. This indicates an issue in code that should be fixed. It does not
- * indicate bad input.
+ * Exception for when a code path is not supported or a configuration is incorrect.
+ *
+ * - This indicates an issue in code that should be fixed.
+ * - This does not indicate bad input.
  *
  * For example, if a class using SerializableValueKit has a property with a union type or a type that does not
  * implement SerializableValue, the code in SerializableValueKit will not work. The class should either override the
@@ -15,7 +18,7 @@ use Throwable;
  *
  * This should be a HTTP 500 error if it is caught by an API layer.
  */
-class CodePathNotSupported extends LogicException {
+class CodePathNotSupported extends LogicException implements ContainerExceptionInterface {
 	/**
 	 * Construct the exception
 	 *

@@ -7,16 +7,10 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use ReflectionClass;
-use ReflectionProperty;
-use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\DomainModel;
 use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Value\Http\HttpVerb;
-use Smolblog\Infrastructure\Endpoint\EndpointConfiguration;
 use Smolblog\Infrastructure\OpenApi\OpenApiGenerator;
-use Smolblog\Infrastructure\OpenApi\OpenApiSpecInfo;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Declared dependencies for the default infrastructure.
@@ -26,16 +20,16 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class Model extends DomainModel {
 	public const AUTO_SERVICES = [
 		Endpoint\EndpointRegistry::class,
-		MessageBus\CommandHandlerRegistry::class,
-		MessageBus\EventListenerRegistry::class,
+		Registries\CommandHandlerRegistry::class,
+		Registries\EventListenerRegistry::class,
 		OpenApi\OpenApiGenerator::class,
 	];
 
 	public const SERVICES = [
 		LoggerInterface::class => NullLogger::class,
-		ListenerProviderInterface::class => MessageBus\EventListenerRegistry::class,
+		ListenerProviderInterface::class => Registries\EventListenerRegistry::class,
 		EventDispatcherInterface::class => Dispatcher::class,
-		CommandBus::class => MessageBus\CommandHandlerRegistry::class,
+		CommandBus::class => Registries\CommandHandlerRegistry::class,
 
 		NullLogger::class => [],
 		Dispatcher::class => [

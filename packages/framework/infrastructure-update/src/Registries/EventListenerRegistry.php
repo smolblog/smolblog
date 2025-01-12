@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Infrastructure\MessageBus;
+namespace Smolblog\Infrastructure\Registries;
 
 use Crell\Tukio\OrderedListenerProvider;
 use Psr\Container\ContainerInterface;

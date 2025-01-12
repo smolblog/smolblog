@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Infrastructure\MessageBus;
+namespace Smolblog\Infrastructure\Registries;
 
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
