@@ -10,7 +10,6 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
-use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;

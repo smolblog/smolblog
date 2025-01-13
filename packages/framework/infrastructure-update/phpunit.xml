@@ -5,6 +5,7 @@
          colors="true"
          testdox="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
 >
     <testsuites>
         <testsuite name="Test Suite">
