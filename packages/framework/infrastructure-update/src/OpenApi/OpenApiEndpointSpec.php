@@ -17,8 +17,8 @@ readonly class OpenApiEndpointSpec extends Value implements SerializableValue {
 	 *
 	 * @see https://spec.openapis.org/oas/latest.html#operation-object
 	 *
-	 * @param array                    $operation         OpenAPI-compliant operation definition.
-	 * @param array<int, class-string> $referencedClasses Any classes referenced in $operation that should be added.
+	 * @param array          $operation         OpenAPI-compliant operation definition.
+	 * @param class-string[] $referencedClasses Any classes referenced in $operation that should be added.
 	 */
 	public function __construct(
 		public array $operation,

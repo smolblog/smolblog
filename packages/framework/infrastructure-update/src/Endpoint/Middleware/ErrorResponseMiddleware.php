@@ -12,6 +12,7 @@ use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Value\Http\HttpResponse;
 use Throwable;
 
@@ -22,7 +23,7 @@ use Throwable;
  * individual endpoints. Exceptions are handled in the following ways:
  *
  * - CommandNotAuthorized: Log notice, return HTTP 403 with given exception message.
- * - EntityNotFound: Log info, return HTTP 404 with given exception message.
+ * - EntityNotFound or ServiceNotRegistered: Log info, return HTTP 404 with given exception message.
  * - InvalidValueProperties: Log info, return HTTP 400 with given exception message.
  * - CodePathNotSupported: Log error, return HTTP 500 with generic message.
  *
@@ -53,7 +54,7 @@ class ErrorResponseMiddleware implements MiddlewareInterface {
 				context: $this->logContext($e, $request),
 			);
 			return new HttpResponse(code: 403, body: ['error' => $e->getMessage()]);
-		} catch (EntityNotFound $e) {
+		} catch (EntityNotFound | ServiceNotRegistered $e) {
 			$this->log?->info(
 				message: "No result at {$request->getMethod()} {$request->getUri()->getPath()}",
 				context: $this->logContext($e, $request),
@@ -91,12 +92,12 @@ class ErrorResponseMiddleware implements MiddlewareInterface {
 			'line' => $exception->getLine(),
 			'trace' => $exception->getTraceAsString(),
 			'previous' => $exception->getPrevious()?->getMessage(),
-			'request' => isset($request) ? [
+			'request' => [
 				'method' => $request->getMethod(),
 				'path' => $request->getUri()->getPath(),
 				'headers' => $request->getHeaders(),
 				'body' => $request->getBody()->__toString(),
-			] : null,
+			],
 		];
 	}
 }
