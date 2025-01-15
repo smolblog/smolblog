@@ -30,11 +30,11 @@ class EndpointRegistry implements Registry {
 	}
 
 	/**
-	 * Debug endpoints.
+	 * Get configurations for all registered endpoints.
 	 *
-	 * @return array
+	 * @return EndpointConfiguration[]
 	 */
-	public function getEndpoints(): array {
+	public function getEndpointConfigurations(): array {
 		return $this->configs;
 	}
 }
