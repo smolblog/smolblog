@@ -14,6 +14,11 @@
 			"Smolblog\\Infrastructure\\": "src/"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"Smolblog\\Infrastructure\\Test\\": "test-utils/"
+		}
+	},
 	"minimum-stability": "dev",
 	"repositories": [
 		{
