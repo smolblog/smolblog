@@ -37,9 +37,4 @@ class Model extends DomainModel {
 			LoggerInterface::class,
 		]
 	];
-
-	public static function scratchpad() {
-		$gen = new OpenApiGenerator();
-		echo \json_encode($gen->componentSchemaFromClass(HttpVerb::class), JSON_PRETTY_PRINT);
-	}
 }
