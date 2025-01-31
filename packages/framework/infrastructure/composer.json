@@ -1,5 +1,5 @@
 {
-	"name": "smolblog/framework-infrastructure-update",
+	"name": "smolblog/framework-infrastructure",
 	"description": "Framework built around Domain Driven Design and Event Sourcing",
 	"type": "library",
 	"license": "Apache-2.0",
@@ -28,14 +28,6 @@
 		{
 			"type": "path",
 			"url": "../foundation"
-		},
-		{
-			"type": "path",
-			"url": "../infrastructure"
-		},
-		{
-			"type": "path",
-			"url": "../objects"
 		}
 	],
 	"require": {
@@ -45,7 +37,6 @@
 		"crell/tukio": "^1.6",
 		"psr/log": "^3.0",
 		"smolblog/framework-foundation": "@dev",
-		"smolblog/framework-objects": "@dev",
 		"psr/http-server-handler": "^1.0",
 		"psr/http-server-middleware": "^1.0"
 	},

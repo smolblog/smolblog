@@ -29,17 +29,11 @@
     },
     {
       "type": "path",
-      "url": "../../framework/objects"
-    },
-    {
-      "type": "path",
       "url": "../../framework/infrastructure"
     }
   ],
   "require-dev": {
-    "smolblog/test-utils": "@dev",
-    "smolblog/framework-objects": "@dev",
-    "smolblog/framework-infrastructure": "@dev"
+    "smolblog/test-utils": "@dev"
   },
   "scripts": {
     "test": "phpunit --testsuite core --no-coverage",

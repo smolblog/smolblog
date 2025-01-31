@@ -35,8 +35,7 @@
         "guzzlehttp/psr7": "^2.6"
 	},
     "require-dev": {
-        "smolblog/test-utils": "@dev",
-        "phpstan/phpstan": "^1.10"
+        "smolblog/test-utils": "@dev"
     },
 	"scripts": {
         "test": "XDEBUG_MODE=coverage phpunit --coverage-text",

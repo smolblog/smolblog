@@ -29,11 +29,7 @@
 		},
 		{
 			"type": "path",
-			"url": "../../framework/infrastructure-update"
-		},
-		{
-			"type": "path",
-			"url": "../../framework/objects"
+			"url": "../../framework/infrastructure"
 		},
 		{
 			"type": "path",
@@ -43,12 +39,11 @@
 	"require": {
 		"php": "^8.2",
 		"smolblog/framework-foundation": "@dev",
-		"smolblog/framework-infrastructure-update": "@dev",
+		"smolblog/framework-infrastructure": "@dev",
 		"smolblog/core": "@dev"
 	},
 	"require-dev": {
-		"smolblog/test-utils": "@dev",
-		"smolblog/framework-objects": "@dev"
+		"smolblog/test-utils": "@dev"
 	},
 	"scripts": {
 		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
