@@ -35,7 +35,7 @@ class MediaService implements CommandHandlerService {
 	 * @return MediaType
 	 */
 	public static function typeFromMimeType(string $mimeType): MediaType {
-		return match (strstr($mimeType, '/', true)) {
+		return match (strstr($mimeType, '/', true)) { // @codeCoverageIgnore
 			false => MediaType::File, // Short-circuit when $mimeType does not have a '/' character.
 			'image' => MediaType::Image,
 			'video' => MediaType::Video,

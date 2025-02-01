@@ -14,9 +14,9 @@ class ActionNotAuthorized extends Exception {
 	/**
 	 * Construct the exception
 	 *
-	 * @param string              $message         The Exception command to throw.
-	 * @param integer             $code            The Exception command to throw.
-	 * @param Throwable|null      $previous        The previous exception used for the exception chaining.
+	 * @param string         $message  The Exception command to throw.
+	 * @param integer        $code     The Exception command to throw.
+	 * @param Throwable|null $previous The previous exception used for the exception chaining.
 	 */
 	public function __construct(
 		string $message = "",

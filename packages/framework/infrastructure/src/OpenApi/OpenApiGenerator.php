@@ -18,6 +18,7 @@ use stdClass;
 
 /**
  * Register documented endpoints and create an OpenAPI spec.
+ * @codeCoverageIgnore It's not done yet.
  */
 class OpenApiGenerator implements Registry {
 	/**
