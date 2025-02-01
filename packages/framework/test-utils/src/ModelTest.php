@@ -5,13 +5,13 @@ namespace Smolblog\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Test\BasicApp\App;
 use Smolblog\Test\Constraints\DomainEventChecker;
 
 class ModelTest extends AppTest {
 	const INCLUDED_MODELS = [];
 
 	protected EventDispatcherInterface & MockObject $mockEventBus;
-	protected TestApp $app;
 
 	protected function setUp(): void {
 		$this->mockEventBus = $this->createMock(EventDispatcherInterface::class);

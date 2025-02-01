@@ -20,16 +20,6 @@
 		}
 	},
 	"minimum-stability": "stable",
-	"repositories": [
-		{
-			"type": "path",
-			"url": "../test-utils"
-		},
-		{
-			"type": "path",
-			"url": "../foundation"
-		}
-	],
 	"require": {
 		"php": "^8.4",
 		"psr/container": "^2.0",

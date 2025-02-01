@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Test;
+namespace Smolblog\Core\Test;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -10,28 +10,16 @@ use Smolblog\Core\Content\Entities\{Content, ContentExtension, ContentType, Cont
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
 use Smolblog\Core\Content\Services\{ContentExtensionRegistry, ContentTypeService, DefaultContentTypeService};
 use Smolblog\Core\Permissions\SitePermissionsService;
-
-final readonly class ContentExtensionTestContentType extends ContentType {
-	public const KEY = 'exttest';
-	public function __construct(public string $title) {}
-	public function getTitle(): string { return $this->title; }
-}
-
-final class ContentExtensionTestContentTypeService extends DefaultContentTypeService {
-	public static function getConfiguration(): ContentTypeConfiguration {
-		return new ContentTypeConfiguration(
-			key: 'exttest',
-			displayName: 'Extension Test',
-			typeClass: ContentExtensionTestContentType::class);
-	}
-}
+use Smolblog\Core\Test\Setup\ContentExtensionTestContentType;
+use Smolblog\Core\Test\Setup\ContentExtensionTestContentTypeService;
+use Smolblog\Test\ModelTest;
 
 abstract class ContentExtensionTest extends ModelTest {
-	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
+	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
-	const string EXTENSION_KEY = 'invalid';
-	const string SERVICE_CLASS = self::class;
-	const string EXTENSION_CLASS = self::class;
+	public const string EXTENSION_KEY = 'invalid';
+	public const string SERVICE_CLASS = self::class;
+	public const string EXTENSION_CLASS = self::class;
 
 	protected ContentRepo & MockObject $contentRepo;
 	protected SitePermissionsService & MockObject $perms;

@@ -18,22 +18,9 @@
       "email": "me@eph.me"
     }
   ],
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../../framework/test-utils"
-    },
-    {
-      "type": "path",
-      "url": "../../framework/foundation"
-    },
-    {
-      "type": "path",
-      "url": "../../framework/infrastructure"
-    }
-  ],
   "require-dev": {
-    "smolblog/test-utils": "@dev"
+    "smolblog/test-utils": "@dev",
+    "smolblog/core-test-utils": "@dev"
   },
   "scripts": {
     "test": "phpunit --testsuite core --no-coverage",
@@ -46,7 +33,7 @@
     "endpoints": "Smolblog\\Core\\Endpoints::listEndpoints"
   },
   "require": {
-    "php": "^8.3",
+    "php": "^8.4",
     "psr/container": "^2.0",
     "psr/event-dispatcher": "^1.0",
     "illuminate/database": "^11.0",

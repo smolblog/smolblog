@@ -19,7 +19,7 @@
 		}
 	},
 	"require": {
-		"php": "^8.2",
+		"php": "^8.4",
 		"psr/http-message": "^1.0",
 		"psr/http-client": "^1.0",
 		"psr/log": "^3.0"

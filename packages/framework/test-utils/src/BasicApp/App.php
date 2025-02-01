@@ -2,14 +2,11 @@
 
 namespace Smolblog\Test\BasicApp;
 
-use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Service\Command\CommandBus;
-use Smolblog\Foundation\Service\Job\JobManager;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 use Smolblog\Infrastructure\AppKit;
-use Smolblog\Infrastructure\Model;
 use Smolblog\Infrastructure\Registries\ServiceRegistry;
 
 class App {

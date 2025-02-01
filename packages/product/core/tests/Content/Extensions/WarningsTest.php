@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Extensions\Warnings;
 
 use Smolblog\Core\Content\Entities\ContentExtension;
-use Smolblog\Test\ContentExtensionTest;
+use Smolblog\Core\Test\ContentExtensionTest;
 
 final class WarningsTest extends ContentExtensionTest {
 	const string EXTENSION_KEY = 'warnings';

@@ -6,6 +6,7 @@ require_once __DIR__ . '/_base.php';
 
 use Smolblog\Core\Site\Events\SiteDetailsUpdated;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
+use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Test\SiteTestBase;
 
@@ -80,7 +81,7 @@ final class UpdateSiteDetailsTest extends SiteTestBase {
 		$this->repo->method('hasSiteWithId')->willReturn(false);
 		$this->sitePerms->method('canManageSettings')->willReturn(true);
 
-		$this->expectException(InvalidValueProperties::class);
+		$this->expectException(EntityNotFound::class);
 
 		$this->app->execute($command);
 	}

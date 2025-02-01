@@ -8,7 +8,7 @@ use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\Url;
-use Smolblog\Test\ContentTypeTest;
+use Smolblog\Core\Test\ContentTypeTest;
 
 final class PictureTest extends ContentTypeTest {
 	const string TYPE_KEY = 'picture';

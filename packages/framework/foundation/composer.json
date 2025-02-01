@@ -8,12 +8,6 @@
             "Smolblog\\Foundation\\": "src/"
         }
     },
-    "repositories": [
-      {
-        "type": "path",
-        "url": "../test-utils"
-      }
-    ],
 	"authors": [
 		{
 			"name": "Smolblog",

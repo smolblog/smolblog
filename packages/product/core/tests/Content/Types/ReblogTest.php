@@ -5,7 +5,7 @@ namespace Smolblog\Core\Content\Types\Reblog;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Content\Fields\Markdown;
 use Smolblog\Foundation\Value\Fields\Url;
-use Smolblog\Test\ContentTypeTest;
+use Smolblog\Core\Test\ContentTypeTest;
 
 final class ReblogTest extends ContentTypeTest {
 	const string TYPE_KEY = 'reblog';

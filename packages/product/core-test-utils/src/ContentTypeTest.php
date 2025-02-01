@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Test;
+namespace Smolblog\Core\Test;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
@@ -10,13 +10,14 @@ use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
 use Smolblog\Core\Content\Services\ContentTypeRegistry;
 use Smolblog\Core\Permissions\SitePermissionsService;
+use Smolblog\Test\ModelTest;
 
 abstract class ContentTypeTest extends ModelTest {
-	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
+	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
-	const string TYPE_KEY = 'invalid';
-	const string SERVICE_CLASS = self::class;
-	const string TYPE_CLASS = self::class;
+	public const string TYPE_KEY = 'invalid';
+	public const string SERVICE_CLASS = self::class;
+	public const string TYPE_CLASS = self::class;
 
 	protected const CREATE_EVENT = ContentCreated::class;
 	protected const UPDATE_EVENT = ContentUpdated::class;

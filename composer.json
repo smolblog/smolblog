@@ -1,33 +1,8 @@
 {
     "name": "smolblog/smolblog",
-    "description": "Blogging for the Social Web",
-    "type": "project",
+	"description": "Blogging for the Social Web",
     "license": "AGPL-3.0-only",
-    "autoload": {
-        "psr-4": {
-            "Smolblog\\": "src/",
-            "Smolblog\\ActivityPub\\": "packages/product/activitypub/src/",
-            "Smolblog\\Api\\": "packages/product/rest-api/src/",
-            "Smolblog\\ContentProvenance\\": "packages/product/c2pa/src/",
-            "Smolblog\\Core\\": "packages/product/core/src/",
-            "Smolblog\\CoreDataSql\\": "packages/product/core-data-sql/src/",
-            "Smolblog\\Foundation\\": "packages/framework/foundation/src/",
-            "Smolblog\\Framework\\": "packages/framework/objects/src/",
-            "Smolblog\\Framework\\ActivityPub\\": "packages/framework/activitypub/src/",
-            "Smolblog\\Framework\\Infrastructure\\": "packages/framework/infrastructure/src/",
-            "Smolblog\\IndieWeb\\": "packages/product/indieweb/src/",
-            "Smolblog\\Markdown\\": "packages/framework/markdown/src/",
-            "Smolblog\\MicroBlog\\": "packages/product/micro-blog/src/",
-            "Smolblog\\Tumblr\\": "packages/product/tumblr/src/",
-            "Smolblog\\WP\\": "application/wordpress/src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Smolblog\\Mock\\": "mock-app/",
-            "Smolblog\\Test\\": "packages/framework/test-utils/src/"
-        }
-    },
+	"type": "project",
     "authors": [
         {
             "name": "Smolblog",
@@ -37,53 +12,61 @@
             "name": "Evan Hildreth",
             "email": "me@eph.me"
         }
-    ],
-    "require-dev": {
-        "nyholm/psr7": "^1.4",
-        "phpunit/phpunit": "^11",
-        "squizlabs/php_codesniffer": "^3.8",
-        "symplify/monorepo-builder": "^11.2",
-        "behat/behat": "^3.14"
-    },
+	],
     "require": {
         "cebe/markdown": "^1.2",
+		"cocur/slugify": "^4.6",
         "crell/tukio": "^1.6",
-        "elephox/mimey": "^4.0",
-        "guzzlehttp/guzzle": "^7.6",
+		"doctrine/dbal": "^4.2",
+		"elephox/mimey": "^4.0",
         "guzzlehttp/psr7": "^2.6",
         "illuminate/database": "^11.0",
-        "monolog/monolog": "^3.0",
-        "nyholm/psr7-server": "dev-master",
-        "papertower/wp-rest-api-psr7": "dev-master",
-        "php": "^8.2",
+		"nyholm/psr7": "^1.4",
+		"php": "^8.4",
         "phpseclib/phpseclib": "^3.0",
+		"phpunit/phpunit": "^11",
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0",
+		"psr/http-server-handler": "^1.0",
+		"psr/http-server-middleware": "^1.0",
         "psr/log": "^3.0",
         "ramsey/uuid": "^4.7",
-        "taproot/micropub-adapter": "^0.1.1",
-        "tumblr/tumblr": "^0.4.2",
-        "woocommerce/action-scheduler": "^3.1",
-        "doctrine/dbal": "^4.2"
+		"squizlabs/php_codesniffer": "^3.8"
+	},
+	"require-dev": {
+		"symplify/monorepo-builder": "^11.2"
     },
-    "replace": {
-        "smolblog/activitypub": "self.version",
-        "smolblog/activitypub-adapter": "self.version",
-        "smolblog/c2pa": "self.version",
+	"replace": {
+		"smolblog/activitypub-adapter": "self.version",
         "smolblog/core": "self.version",
         "smolblog/core-data-sql": "self.version",
+		"smolblog/core-rest-api": "self.version",
+		"smolblog/core-test-utils": "self.version",
         "smolblog/framework-foundation": "self.version",
-        "smolblog/framework-infrastructure": "self.version",
-        "smolblog/framework-objects": "self.version",
-        "smolblog/indieweb": "self.version",
-        "smolblog/micro-blog": "self.version",
-        "smolblog/rest-api": "self.version",
+		"smolblog/framework-infrastructure": "self.version",
         "smolblog/smolblog-markdown": "self.version",
-        "smolblog/smolblog-wp": "self.version",
-        "smolblog/test-utils": "self.version",
-        "smolblog/tumblr": "self.version"
+		"smolblog/test-utils": "self.version"
+	},
+	"minimum-stability": "stable",
+	"autoload": {
+		"psr-4": {
+			"Smolblog\\CoreDataSql\\": "packages/product/core-data-sql/src/",
+			"Smolblog\\CoreRestApi\\": "packages/product/core-rest-api/src/",
+			"Smolblog\\Core\\": "packages/product/core/src/",
+			"Smolblog\\Core\\Test\\": "packages/product/core-test-utils/src/",
+			"Smolblog\\Foundation\\": "packages/framework/foundation/src/",
+			"Smolblog\\Framework\\ActivityPub\\": "packages/framework/activitypub/src/",
+			"Smolblog\\Infrastructure\\": "packages/framework/infrastructure/src/",
+			"Smolblog\\Markdown\\": "packages/framework/markdown/src/",
+			"Smolblog\\Test\\": "packages/framework/test-utils/src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Smolblog\\Infrastructure\\Test\\": "packages/framework/infrastructure/test-utils/"
+		}
     },
     "scripts": {
         "test": "phpunit --testdox --no-coverage",
@@ -97,6 +80,7 @@
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
         "swagger": "Smolblog\\Api\\Model::printSpec",
-        "monorepo-merge": "./vendor/bin/monorepo-builder merge"
+		"monorepo-merge": "./vendor/bin/monorepo-builder merge",
+		"monorepo-set-paths": "./vendor/bin/monorepo-builder merge"
     }
 }

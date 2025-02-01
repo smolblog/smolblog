@@ -19,29 +19,29 @@ final class ConnectionProjectionTest extends DataTestBase {
 		$connections = [
 			'sameUserOne' => new Connection(
 				userId: $userId,
-				provider: 'test',
-				providerKey: 'sameUserOne',
+				handler: 'test',
+				handlerKey: 'sameUserOne',
 				displayName: 'Same User One',
 				details: ['one' => 2]
 			),
 			'otherUserOne' => new Connection(
 				userId: $this->randomId(),
-				provider: 'test',
-				providerKey: 'otherUser',
+				handler: 'test',
+				handlerKey: 'otherUser',
 				displayName: 'Other User',
 				details: ['five' => 6]
 			),
 			'sameUserTwo' => new Connection(
 				userId: $userId,
-				provider: 'other',
-				providerKey: 'sameUserTwo',
+				handler: 'other',
+				handlerKey: 'sameUserTwo',
 				displayName: 'Same User Two',
 				details: ['three' => 4]
 			),
 			'otherUserTwo' => new Connection(
 				userId: $this->randomId(),
-				provider: 'other',
-				providerKey: 'otherUserTwo',
+				handler: 'other',
+				handlerKey: 'otherUserTwo',
 				displayName: 'Other User Two',
 				details: ['seven' => 8]
 			),
@@ -49,8 +49,8 @@ final class ConnectionProjectionTest extends DataTestBase {
 
 		foreach ($connections as $conn) {
 			$this->app->dispatch(new ConnectionEstablished(
-				provider: $conn->provider,
-				providerKey: $conn->providerKey,
+				handler: $conn->handler,
+				handlerKey: $conn->handlerKey,
 				displayName: $conn->displayName,
 				details: $conn->details,
 				userId: $conn->userId,
@@ -64,15 +64,15 @@ final class ConnectionProjectionTest extends DataTestBase {
 		$projection = $this->app->container->get(ConnectionProjection::class);
 		$connection = new Connection(
 			userId: $this->randomId(),
-			provider: 'test',
-			providerKey: '123456',
+			handler: 'test',
+			handlerKey: '123456',
 			displayName: 'Test Connection',
 			details: ['one' => 2],
 		);
 
 		$event = new ConnectionEstablished(
-			provider: 'test',
-			providerKey: '123456',
+			handler: 'test',
+			handlerKey: '123456',
 			displayName: 'Test Connection',
 			details: ['one' => 2],
 			userId: $connection->userId,
@@ -85,8 +85,8 @@ final class ConnectionProjectionTest extends DataTestBase {
 
 		$newConnection = $connection->with(details: ['abc' => 456]);
 		$this->app->dispatch(new ConnectionEstablished(
-			provider: 'test',
-			providerKey: '123456',
+			handler: 'test',
+			handlerKey: '123456',
 			displayName: 'Test Connection',
 			details: ['abc' => 456],
 			userId: $connection->userId,
@@ -98,14 +98,14 @@ final class ConnectionProjectionTest extends DataTestBase {
 		$projection = $this->app->container->get(ConnectionProjection::class);
 		$connection = new Connection(
 			userId: $this->randomId(),
-			provider: 'test',
-			providerKey: '123456',
+			handler: 'test',
+			handlerKey: '123456',
 			displayName: 'Test Connection',
 			details: ['one' => 2],
 		);
 		$this->app->dispatch(new ConnectionEstablished(
-			provider: 'test',
-			providerKey: '123456',
+			handler: 'test',
+			handlerKey: '123456',
 			displayName: 'Test Connection',
 			details: ['one' => 2],
 			userId: $connection->userId,
@@ -127,8 +127,8 @@ final class ConnectionProjectionTest extends DataTestBase {
 		$projection = $this->app->container->get(ConnectionProjection::class);
 
 		$addEvent = new ConnectionEstablished(
-			provider: 'test',
-			providerKey: '123456',
+			handler: 'test',
+			handlerKey: '123456',
 			displayName: 'Test Connection',
 			details: ['one' => 2],
 			userId: $this->randomId(),

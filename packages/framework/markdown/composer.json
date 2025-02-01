@@ -3,7 +3,7 @@
   "description": "A superset of Markdown with some Smolblog flair.",
   "type": "library",
   "require": {
-    "php": "^8.2",
+    "php": "^8.4",
     "cebe/markdown": "^1.2"
   },
   "require-dev": {

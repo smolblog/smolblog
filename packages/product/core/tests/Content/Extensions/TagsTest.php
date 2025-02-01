@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Extensions\Tags;
 
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Test\ContentExtensionTest;
+use Smolblog\Core\Test\ContentExtensionTest;
 
 final class TagsTest extends ContentExtensionTest {
 	const string EXTENSION_KEY = 'tags';

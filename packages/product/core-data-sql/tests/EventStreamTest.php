@@ -28,8 +28,8 @@ final class EventStreamTest extends DataTestBase {
 
 		$expected = [
 			new ConnectionEstablished(
-				provider: 'test',
-				providerKey: 'onetwo',
+				handler: 'test',
+				handlerKey: 'onetwo',
 				displayName: '@oneTwo',
 				details: ['one' => 2],
 				userId: $userId,

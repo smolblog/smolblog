@@ -11,6 +11,7 @@ use Smolblog\Core\Connection\Queries\ConnectionById;
 use Smolblog\Core\User\User;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Service;
+use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
@@ -43,6 +44,7 @@ class ConnectionRefresher implements Service, CommandHandlerService {
 	 * @param RefreshConnection $command Command to execute.
 	 * @return void
 	 */
+	#[CommandHandler]
 	public function onRefreshConnection(RefreshConnection $command) {
 		$connection = $this->connections->connectionById($command->connectionId);
 		if (!isset($connection)) {

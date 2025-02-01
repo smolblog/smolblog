@@ -13,12 +13,6 @@
 			"email": "me@eph.me"
 		}
 	],
-	"repositories": [
-		{
-			"type": "path",
-			"url": "../infrastructure"
-		}
-	],
 	"autoload": {
 		"psr-4": {
 			"Smolblog\\Test\\": "src/"
