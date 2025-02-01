@@ -4,6 +4,7 @@ namespace Smolblog\Foundation\Service\Registry;
 
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
 use Smolblog\Test\Kits\ServiceTestKit;
 use Smolblog\Test\TestCase;
@@ -25,14 +26,14 @@ class TestRegistry implements Registry {
 
 #[CoversTrait(RegistryKit::class)]
 final class RegistryKitTest extends TestCase {
-	use ServiceTestKit;
-
 	private array $basicServices;
 	private array $configuredServices;
 	private TestRegistry $service;
+	private ContainerInterface & MockObject $container;
 
 	protected function setUp(): void {
-		$this->service = $this->setUpService(TestRegistry::class);
+		$this->container = $this->createMock(ContainerInterface::class);
+		$this->service = new TestRegistry($this->container);
 	}
 
 	protected function setUpBasic(): void {
@@ -104,7 +105,7 @@ final class RegistryKitTest extends TestCase {
 	#[TestDox('::has will return true if the given key is present and the class is in the container')]
 	function testHasWithKeyAndContainer() {
 		$this->setUpBasic();
-		$this->deps->container->method('has')->willReturn(true);
+		$this->container->method('has')->willReturn(true);
 
 		$this->assertTrue($this->service->has('one'));
 		$this->assertTrue($this->service->has('two'));
@@ -113,7 +114,7 @@ final class RegistryKitTest extends TestCase {
 	#[TestDox('::has will return false if the given key is not present')]
 	function testHasWithNoKey() {
 		$this->setUpBasic();
-		$this->deps->container->method('has')->willReturn(true);
+		$this->container->method('has')->willReturn(true);
 
 		$this->assertFalse($this->service->has(get_class($this->basicServices[0])));
 	}
@@ -121,7 +122,7 @@ final class RegistryKitTest extends TestCase {
 	#[TestDox('::has will return false if the given key is present but the class is not in the container')]
 	function testHasWithNoContainer() {
 		$this->setUpBasic();
-		$this->deps->container->method('has')->willReturn(false);
+		$this->container->method('has')->willReturn(false);
 
 		$this->assertFalse($this->service->has('one'));
 	}
@@ -129,8 +130,8 @@ final class RegistryKitTest extends TestCase {
 	#[TestDox('::get will return an instance of the class if the given key is present and the class is in the container')]
 	function testGetWithContainerAndKey() {
 		$this->setUpBasic();
-		$this->deps->container->method('has')->willReturn(true);
-		$this->deps->container->method('get')->willReturn('ServiceOne_class_instance');
+		$this->container->method('has')->willReturn(true);
+		$this->container->method('get')->willReturn('ServiceOne_class_instance');
 
 		$this->assertEquals('ServiceOne_class_instance', $this->service->getService('one'));
 	}
@@ -138,8 +139,8 @@ final class RegistryKitTest extends TestCase {
 	#[TestDox('::get will throw exception if the given key is not present')]
 	function testGetWithNoKey() {
 		$this->setUpBasic();
-		$this->deps->container->method('has')->willReturn(true);
-		$this->deps->container->method('get')->willReturn('ServiceOne_class_instance');
+		$this->container->method('has')->willReturn(true);
+		$this->container->method('get')->willReturn('ServiceOne_class_instance');
 
 		$this->expectException(ServiceNotRegistered::class);
 		$this->service->getService(get_class($this->basicServices[0]));
@@ -148,8 +149,8 @@ final class RegistryKitTest extends TestCase {
 	#[TestDox('::get will throw exception if the given key is present but the class is not in the container')]
 	function testGetWithNoContainer() {
 		$this->setUpBasic();
-		$this->deps->container->method('has')->willReturn(false);
-		$this->deps->container->expects($this->never())->method('get');
+		$this->container->method('has')->willReturn(false);
+		$this->container->expects($this->never())->method('get');
 
 		$this->expectException(ServiceNotRegistered::class);
 		$this->service->getService('one');
