@@ -19,7 +19,7 @@
 			"Smolblog\\Infrastructure\\Test\\": "test-utils/"
 		}
 	},
-	"minimum-stability": "dev",
+	"minimum-stability": "stable",
 	"repositories": [
 		{
 			"type": "path",
@@ -31,7 +31,7 @@
 		}
 	],
 	"require": {
-		"php": "^8.2",
+		"php": "^8.4",
 		"psr/container": "^2.0",
 		"psr/event-dispatcher": "^1.0",
 		"crell/tukio": "^1.6",

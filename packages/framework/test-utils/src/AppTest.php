@@ -2,13 +2,15 @@
 
 namespace Smolblog\Test;
 
+use Smolblog\Test\BasicApp\App;
+
 class AppTest extends TestCase {
 	const INCLUDED_MODELS = [];
 
-	protected TestApp $app;
+	protected App $app;
 
 	protected function setUp(): void {
-		$this->app = new TestApp(models: static::INCLUDED_MODELS, services: $this->createMockServices());
+		$this->app = new App(models: static::INCLUDED_MODELS, services: $this->createMockServices());
 	}
 
 	protected function createMockServices(): array {

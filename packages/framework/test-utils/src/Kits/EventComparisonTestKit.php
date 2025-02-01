@@ -4,11 +4,10 @@ namespace Smolblog\Test\Kits;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Framework\Messages\Event;
-use Smolblog\Test\Constraints\EventIsEquivalent;
+use Smolblog\Test\Constraints\DomainEventChecker;
 
 trait EventComparisonTestKit {
-	private function eventEquivalentTo(Event|DomainEvent $expected): Constraint {
-		return new EventIsEquivalent($expected);
+	private function eventEquivalentTo(DomainEvent $expected): Constraint {
+		return new DomainEventChecker([$expected]);
 	}
 }

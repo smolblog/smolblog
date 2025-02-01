@@ -2,7 +2,7 @@
 	"name": "smolblog/test-utils",
 	"description": "Test utilities for Smolblog projects",
 	"type": "library",
-	"license": "AGPL-3.0-only",
+	"license": "Apache-2.0",
 	"authors": [
 		{
 			"name": "Smolblog",

@@ -10,8 +10,6 @@ use Smolblog\Core\Content\Entities\{Content, ContentExtension, ContentType, Cont
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
 use Smolblog\Core\Content\Services\{ContentExtensionRegistry, ContentTypeService, DefaultContentTypeService};
 use Smolblog\Core\Permissions\SitePermissionsService;
-use Smolblog\Core\Site\Data\SiteRepo;
-use Smolblog\Core\Site\Entities\UserSitePermissions;
 
 final readonly class ContentExtensionTestContentType extends ContentType {
 	public const KEY = 'exttest';

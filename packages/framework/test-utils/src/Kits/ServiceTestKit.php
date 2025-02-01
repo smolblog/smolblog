@@ -25,7 +25,7 @@ trait ServiceTestKit {
 	 * @return mixed
 	 */
 	private function setUpService(string $class, mixed ...$overrides): mixed {
-		$params = (new \ReflectionClass($class))->getConstructor()->getParameters();
+		$params = (new \ReflectionClass($class))->getConstructor()?->getParameters() ?? [];
 		$this->deps = new stdClass();
 		foreach($params as $param) {
 			$name = $param->getName();

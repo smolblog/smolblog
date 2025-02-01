@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Test;
+namespace Smolblog\Test\BasicApp;
 
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Service\Job\JobManager;

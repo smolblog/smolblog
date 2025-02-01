@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Test;
+namespace Smolblog\Test\BasicApp;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -8,28 +8,24 @@ use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Service\Job\JobManager;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Framework\Infrastructure\AppKit;
-use Smolblog\Framework\Infrastructure\DefaultMessageBus;
-use Smolblog\Framework\Infrastructure\DefaultModel;
-use Smolblog\Framework\Infrastructure\ServiceRegistry;
+use Smolblog\Infrastructure\AppKit;
+use Smolblog\Infrastructure\Model;
+use Smolblog\Infrastructure\Registries\ServiceRegistry;
 
-class TestApp {
+class App {
 	use AppKit;
 
 	public readonly ServiceRegistry $container;
 
 	public function __construct(array $models, array $services) {
+		$map = [
+			...$this->buildDependencyMap([Model::class, ...$models]),
+			...$services,
+		];
+
 		$this->container = new ServiceRegistry(
-			$this->buildDependencyMapFromArrays([
-				DefaultModel::getDependencyMap(),
-				[
-					JobManager::class => TestJobManager::class,
-					TestJobManager::class => ['container' => ContainerInterface::class],
-				],
-				...array_map(fn($model) => $model::getDependencyMap(), $models),
-				$services,
-			])
+			configuration: $map,
+			supplements: $this->buildSupplementsForRegistries(array_keys($map)),
 		);
 	}
 

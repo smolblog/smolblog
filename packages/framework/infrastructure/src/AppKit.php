@@ -18,11 +18,10 @@ trait AppKit {
 	 */
 	private function buildContainerFromModels(array $models = []): ServiceRegistry {
 		$map = $this->buildDependencyMap($models);
-		$configs = RegistryHelper::getRegistryConfigs(array_keys($map));
 
 		return new ServiceRegistry(
 			configuration: $map,
-			supplements: array_map(fn($conf) => ['configure' => ['configuration' => $conf]], $configs),
+			supplements: $this->buildSupplementsForRegistries(array_keys($map)),
 		);
 	}
 
@@ -40,6 +39,19 @@ trait AppKit {
 			),
 			fn($carry, $item) => array_merge($carry, $item),
 			[]
+		);
+	}
+
+	/**
+	 * Translates the configs from RegistryHelper into the format needed by ServiceRegistry.
+	 *
+	 * @param array $services List of classes to check.
+	 * @return array Supplements array for ServiceRegistry
+	 */
+	private function buildSupplementsForRegistries(array $services): array {
+		return array_map(
+			fn($conf) => ['configure' => ['configuration' => $conf]],
+			RegistryHelper::getRegistryConfigs($services),
 		);
 	}
 }

@@ -26,7 +26,7 @@ final class KeypairGeneratorTest extends TestCase {
 
 		$this->assertStringNotContainsString("\r", $key->publicKey);
 		$this->assertStringContainsString("\n", $key->publicKey);
-		$this->assertStringNotContainsString("\r", $key->privateKey);
-		$this->assertStringContainsString("\n", $key->privateKey);
+		$this->assertStringNotContainsString("\r", $key->privateKey ?? '');
+		$this->assertStringContainsString("\n", $key->privateKey ?? '');
 	}
 }
