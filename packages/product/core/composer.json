@@ -19,8 +19,8 @@
         }
     ],
     "require-dev": {
-        "smolblog/test-utils": "^0.2.5",
-        "smolblog/core-test-utils": "^0.2.5"
+        "smolblog/test-utils": "^0.3",
+        "smolblog/core-test-utils": "^0.3"
     },
     "scripts": {
         "test": "phpunit --testsuite core --no-coverage",
@@ -37,6 +37,6 @@
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "elephox/mimey": "^4.0",
-        "smolblog/framework-foundation": "^0.2.5"
+        "smolblog/framework-foundation": "^0.3"
     }
 }
