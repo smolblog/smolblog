@@ -20,12 +20,12 @@
     ],
     "require": {
         "php": "^8.4",
-        "smolblog/framework-foundation": "^0.1",
-        "smolblog/core": "^0.1",
+        "smolblog/framework-foundation": "^0.2",
+        "smolblog/core": "^0.2",
         "doctrine/dbal": "^4.2"
     },
     "require-dev": {
-        "smolblog/test-utils": "^0.1"
+        "smolblog/test-utils": "^0.2"
     },
     "scripts": {
         "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
