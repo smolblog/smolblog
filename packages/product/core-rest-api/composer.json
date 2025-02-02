@@ -1,35 +1,35 @@
 {
-	"name": "smolblog/core-rest-api",
-	"description": "REST API for the core Smolblog model",
-	"type": "smolblog-plugin",
-	"license": "AGPL-3.0-or-later",
-	"autoload": {
-		"psr-4": {
-			"Smolblog\\CoreRestApi\\": "src/"
-		}
-	},
-	"authors": [
-		{
-			"name": "Smolblog",
-			"email": "dev@smolblog.org"
-		},
-		{
-			"name": "Evan Hildreth",
-			"email": "me@eph.me"
-		}
-	],
-	"require": {
-		"php": "^8.4",
-		"smolblog/framework-foundation": "@dev",
-		"smolblog/framework-infrastructure": "@dev",
-		"smolblog/core": "@dev"
-	},
-	"require-dev": {
-		"smolblog/test-utils": "@dev"
-	},
-	"scripts": {
-		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
-		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
-	}
+    "name": "smolblog/core-rest-api",
+    "description": "REST API for the core Smolblog model",
+    "type": "smolblog-plugin",
+    "license": "AGPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\CoreRestApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Smolblog",
+            "email": "dev@smolblog.org"
+        },
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "smolblog/framework-foundation": "^0.1",
+        "smolblog/framework-infrastructure": "^0.1",
+        "smolblog/core": "^0.1"
+    },
+    "require-dev": {
+        "smolblog/test-utils": "^0.1"
+    },
+    "scripts": {
+        "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    }
 }

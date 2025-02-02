@@ -8,30 +8,30 @@
             "Smolblog\\Foundation\\": "src/"
         }
     },
-	"authors": [
-		{
-			"name": "Smolblog",
-			"email": "dev@smolblog.org"
-		},
-		{
-			"name": "Evan Hildreth",
-			"email": "me@eph.me"
-		}
-	],
-	"require": {
+    "authors": [
+        {
+            "name": "Smolblog",
+            "email": "dev@smolblog.org"
+        },
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me"
+        }
+    ],
+    "require": {
         "php": "^8.4",
-		"psr/http-message": "^1.0",
+        "psr/http-message": "^1.0",
         "ramsey/uuid": "^4.7",
         "psr/event-dispatcher": "^1.0",
         "crell/tukio": "^1.6",
         "psr/container": "^2.0",
         "phpseclib/phpseclib": "^3.0",
         "guzzlehttp/psr7": "^2.6"
-	},
-    "require-dev": {
-        "smolblog/test-utils": "@dev"
     },
-	"scripts": {
+    "require-dev": {
+        "smolblog/test-utils": "^0.1"
+    },
+    "scripts": {
         "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"

@@ -1,35 +1,35 @@
 {
-	"name": "smolblog/core-data-sql",
-	"description": "Data persistance and retrieval for Smolblog using a SQL database",
-	"type": "smolblog-plugin",
-	"license": "AGPL-3.0-or-later",
-	"autoload": {
-		"psr-4": {
-			"Smolblog\\CoreDataSql\\": "src/"
-		}
-	},
-	"authors": [
-		{
-			"name": "Smolblog",
-			"email": "dev@smolblog.org"
-		},
-		{
-			"name": "Evan Hildreth",
-			"email": "me@eph.me"
-		}
-	],
-	"require": {
-		"php": "^8.4",
-		"smolblog/framework-foundation": "@dev",
-		"smolblog/core": "@dev",
-		"doctrine/dbal": "^4.2"
-	},
-	"require-dev": {
-		"smolblog/test-utils": "@dev"
-	},
-	"scripts": {
-		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
-		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
-	}
+    "name": "smolblog/core-data-sql",
+    "description": "Data persistance and retrieval for Smolblog using a SQL database",
+    "type": "smolblog-plugin",
+    "license": "AGPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\CoreDataSql\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Smolblog",
+            "email": "dev@smolblog.org"
+        },
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "smolblog/framework-foundation": "^0.1",
+        "smolblog/core": "^0.1",
+        "doctrine/dbal": "^4.2"
+    },
+    "require-dev": {
+        "smolblog/test-utils": "^0.1"
+    },
+    "scripts": {
+        "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    }
 }

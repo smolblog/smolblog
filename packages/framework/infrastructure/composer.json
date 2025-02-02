@@ -1,42 +1,42 @@
 {
-	"name": "smolblog/framework-infrastructure",
-	"description": "Framework built around Domain Driven Design and Event Sourcing",
-	"type": "library",
-	"license": "Apache-2.0",
-	"authors": [
-		{
-			"name": "Evan Hildreth",
-			"email": "me@eph.me"
-		}
-	],
-	"autoload": {
-		"psr-4": {
-			"Smolblog\\Infrastructure\\": "src/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Smolblog\\Infrastructure\\Test\\": "test-utils/"
-		}
-	},
-	"minimum-stability": "stable",
-	"require": {
-		"php": "^8.4",
-		"psr/container": "^2.0",
-		"psr/event-dispatcher": "^1.0",
-		"crell/tukio": "^1.6",
-		"psr/log": "^3.0",
-		"smolblog/framework-foundation": "@dev",
-		"psr/http-server-handler": "^1.0",
-		"psr/http-server-middleware": "^1.0"
-	},
-	"require-dev": {
-		"smolblog/test-utils": "@dev"
-	},
-	"scripts": {
-		"scratch": "Smolblog\\Infrastructure\\Model::scratchpad",
-		"test": "XDEBUG_MODE=coverage phpunit --coverage-text",
-		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
-	}
+    "name": "smolblog/framework-infrastructure",
+    "description": "Framework built around Domain Driven Design and Event Sourcing",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\Infrastructure\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Smolblog\\Infrastructure\\Test\\": "test-utils/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.4",
+        "psr/container": "^2.0",
+        "psr/event-dispatcher": "^1.0",
+        "crell/tukio": "^1.6",
+        "psr/log": "^3.0",
+        "smolblog/framework-foundation": "^0.1",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0"
+    },
+    "require-dev": {
+        "smolblog/test-utils": "^0.1"
+    },
+    "scripts": {
+        "scratch": "Smolblog\\Infrastructure\\Model::scratchpad",
+        "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    }
 }
