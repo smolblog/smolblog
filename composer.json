@@ -1,52 +1,49 @@
 {
-    "name": "smolblog/smolblog",
+	"name": "smolblog/smolblog",
 	"description": "Blogging for the Social Web",
-    "license": "AGPL-3.0-only",
+	"license": "AGPL-3.0-only",
 	"type": "project",
-    "authors": [
-        {
-            "name": "Smolblog",
-            "email": "dev@smolblog.org"
-        },
-        {
-            "name": "Evan Hildreth",
-            "email": "me@eph.me"
-        }
+	"authors": [
+		{
+			"name": "Smolblog",
+			"email": "dev@smolblog.org"
+		},
+		{
+			"name": "Evan Hildreth",
+			"email": "me@eph.me"
+		}
 	],
-    "require": {
-        "cebe/markdown": "^1.2",
-		"cocur/slugify": "^4.6",
-        "crell/tukio": "^1.6",
+	"require": {
+		"cebe/markdown": "^1.2",
+		"crell/tukio": "^1.6",
 		"doctrine/dbal": "^4.2",
 		"elephox/mimey": "^4.0",
-        "guzzlehttp/psr7": "^2.6",
-        "illuminate/database": "^11.0",
-		"nyholm/psr7": "^1.4",
+		"guzzlehttp/psr7": "^2.6",
 		"php": "^8.4",
-        "phpseclib/phpseclib": "^3.0",
+		"phpseclib/phpseclib": "^3.0",
 		"phpunit/phpunit": "^11",
-        "psr/container": "^2.0",
-        "psr/event-dispatcher": "^1.0",
-        "psr/http-client": "^1.0",
-        "psr/http-message": "^1.0",
+		"psr/container": "^2.0",
+		"psr/event-dispatcher": "^1.0",
+		"psr/http-client": "^1.0",
+		"psr/http-message": "^1.0",
 		"psr/http-server-handler": "^1.0",
 		"psr/http-server-middleware": "^1.0",
-        "psr/log": "^3.0",
-        "ramsey/uuid": "^4.7",
+		"psr/log": "^3.0",
+		"ramsey/uuid": "^4.7",
 		"squizlabs/php_codesniffer": "^3.8"
 	},
 	"require-dev": {
 		"symplify/monorepo-builder": "^11.2"
-    },
+	},
 	"replace": {
 		"smolblog/activitypub-adapter": "self.version",
-        "smolblog/core": "self.version",
-        "smolblog/core-data-sql": "self.version",
+		"smolblog/core": "self.version",
+		"smolblog/core-data-sql": "self.version",
 		"smolblog/core-rest-api": "self.version",
 		"smolblog/core-test-utils": "self.version",
-        "smolblog/framework-foundation": "self.version",
+		"smolblog/framework-foundation": "self.version",
 		"smolblog/framework-infrastructure": "self.version",
-        "smolblog/smolblog-markdown": "self.version",
+		"smolblog/smolblog-markdown": "self.version",
 		"smolblog/test-utils": "self.version"
 	},
 	"minimum-stability": "stable",
@@ -67,20 +64,17 @@
 		"psr-4": {
 			"Smolblog\\Infrastructure\\Test\\": "packages/framework/infrastructure/test-utils/"
 		}
-    },
-    "scripts": {
-        "test": "phpunit --testdox --no-coverage",
-        "test-fast": "phpunit --testsuite unit --no-coverage",
-        "test-coverage": [
-            "@putenv XDEBUG_MODE=coverage",
-            "phpunit --testsuite unit",
-            "Smolblog\\Test\\CoverageReport::report"
-        ],
-        "test-integration": "phpunit --testsuite integration --no-coverage --testdox",
-        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-        "swagger": "Smolblog\\Api\\Model::printSpec",
-		"monorepo-merge": "./vendor/bin/monorepo-builder merge",
-		"monorepo-set-paths": "./vendor/bin/monorepo-builder merge"
-    }
+	},
+	"scripts": {
+		"test": "phpunit --testdox --no-coverage",
+		"test-fast": "phpunit --testsuite unit --no-coverage",
+		"test-coverage": [
+			"@putenv XDEBUG_MODE=coverage",
+			"phpunit --testsuite unit",
+			"Smolblog\\Test\\CoverageReport::report"
+		],
+		"lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+		"monorepo": "./vendor/bin/monorepo-builder"
+	}
 }
