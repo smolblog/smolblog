@@ -13,6 +13,8 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorke
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateReplaceReleaseWorker;
 
 return static function (MBConfig $mbConfig): void {
+	$mbConfig->defaultBranch('main');
+
 	$mbConfig->packageDirectories([
 		__DIR__ . '/packages/framework',
 		__DIR__ . '/packages/product',
