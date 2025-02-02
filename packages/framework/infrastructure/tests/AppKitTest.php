@@ -56,10 +56,8 @@ final class AppKitTest extends TestCase {
 		];
 
 		$expected = [
-			Endpoint\EndpointRegistry::class => ['container' => ContainerInterface::class],
 			Registries\CommandHandlerRegistry::class => ['container' => ContainerInterface::class],
 			Registries\EventListenerRegistry::class => ['container' => ContainerInterface::class],
-			OpenApi\OpenApiGenerator::class => [],
 			LoggerInterface::class => NullLogger::class,
 			EventDispatcherInterface::class => Dispatcher::class,
 			CommandBus::class => Registries\CommandHandlerRegistry::class,

@@ -9,8 +9,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Smolblog\Foundation\DomainModel;
 use Smolblog\Foundation\Service\Command\CommandBus;
-use Smolblog\Foundation\Value\Http\HttpVerb;
-use Smolblog\Infrastructure\OpenApi\OpenApiGenerator;
 
 /**
  * Declared dependencies for the default infrastructure.
@@ -19,10 +17,8 @@ use Smolblog\Infrastructure\OpenApi\OpenApiGenerator;
  */
 class Model extends DomainModel {
 	public const AUTO_SERVICES = [
-		Endpoint\EndpointRegistry::class,
 		Registries\CommandHandlerRegistry::class,
 		Registries\EventListenerRegistry::class,
-		OpenApi\OpenApiGenerator::class,
 	];
 
 	public const SERVICES = [

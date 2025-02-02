@@ -18,8 +18,10 @@
   </php>
   <source>
     <include>
-      <directory>packages/framework/*/src</directory>
+      <directory>packages/framework/foundation/src</directory>
+      <directory>packages/framework/infrastructure/src</directory>
       <directory>packages/product/core/src</directory>
+      <directory>packages/product/core-data-sql/src</directory>
     </include>
     <exclude>
       <directory>packages/framework/test-utils/src</directory>
