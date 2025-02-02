@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: "danharrin/monorepo-split-github-action@v2.3.0"
         with:
-          tag: ${GITHUB_REF#refs/tags/}
+          tag: ${{ github.ref_name }}
 
           # ↓ split packages directory
           package_directory: 'packages/${{ matrix.package.local_path }}'
