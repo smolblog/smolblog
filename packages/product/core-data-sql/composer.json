@@ -20,12 +20,12 @@
     ],
     "require": {
         "php": "^8.4",
-        "smolblog/framework-foundation": "^0.2",
-        "smolblog/core": "^0.2",
+        "smolblog/framework-foundation": "^0.2.1",
+        "smolblog/core": "^0.2.1",
         "doctrine/dbal": "^4.2"
     },
     "require-dev": {
-        "smolblog/test-utils": "^0.2"
+        "smolblog/test-utils": "^0.2.1"
     },
     "scripts": {
         "test": "phpunit",
