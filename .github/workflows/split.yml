@@ -1,0 +1,44 @@
+name: 'Packages Split'
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+jobs:
+  packages_split:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # define package to repository map
+        package:
+          - local_path: 'framework/foundation'
+            split_repository: 'framework-foundation'
+          - local_path: 'framework/infrastructure'
+            split_repository: 'framework-infrastructure'
+          - local_path: 'product/core'
+            split_repository: 'core'
+          - local_path: 'product/core-data-sql'
+            split_repository: 'core-data-sql'
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "symplify/monorepo-split-github-action@2.1"
+        with:
+          tag: ${GITHUB_REF#refs/tags/}
+
+          # ↓ split packages directory
+          package_directory: 'packages/${{ matrix.package.local_path }}'
+
+          # ↓ into smolblog repository
+          repository_organization: 'smolblog'
+          repository_name: '${{ matrix.package.split_repository }}'
+
+          # ↓ the user signed under the split commit
+          user_name: "Smolbot (Github Action)"
+          user_email: "dev@smolblog.org"

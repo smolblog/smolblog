@@ -12,7 +12,11 @@ Especially in these early stages, it is assumed that there will be an underlying
 
 By the same token, if a feature would work better as its own library that depends on this library, we should do that.
 
----
+## Contributing
+
+This is a read-only repository. All development happens in the [Smolblog monorepo](https://github.com/smolblog/smolblog).
+
+## License
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
