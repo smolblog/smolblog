@@ -26,12 +26,12 @@
         "psr/event-dispatcher": "^1.0",
         "crell/tukio": "^1.6",
         "psr/log": "^3.0",
-        "smolblog/framework-foundation": "^0.1",
+        "smolblog/framework-foundation": "^0.2",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
-        "smolblog/test-utils": "^0.1"
+        "smolblog/test-utils": "^0.2"
     },
     "scripts": {
         "scratch": "Smolblog\\Infrastructure\\Model::scratchpad",

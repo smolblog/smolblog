@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "smolblog/test-utils": "^0.1"
+        "smolblog/test-utils": "^0.2"
     },
     "minimum-stability": "stable"
 }
