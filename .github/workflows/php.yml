@@ -10,8 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  build_and_test_monorepo:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,3 +41,33 @@ jobs:
 
     - name: Run unit test suite with code coverage
       run: composer run-script test-coverage
+
+  after_split_testing:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package_path:
+          - framework/foundation
+          - framework/infrastructure
+          - framework/test-utils
+          - product/core
+          - product/core-data-sql
+          - product/core-test-utils
+
+    name: After Split Testing of ${{ matrix.package_path }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          coverage: none
+
+      - run: |
+          composer install --no-progress
+          vendor/bin/monorepo-builder localize-composer-paths ${{ matrix.package_path }}/composer.json
+
+          cd packages/${{ matrix.package_path }}
+
+          composer update --no-progress
+          composer test
