@@ -13,6 +13,8 @@ jobs:
   build_and_test_monorepo:
     runs-on: ubuntu-latest
 
+    name: Build and test monorepo
+
     steps:
     - uses: actions/checkout@v3
 
@@ -63,11 +65,12 @@ jobs:
           php-version: 8.4
           coverage: none
 
-      - run: |
-          composer install --no-progress
-          vendor/bin/monorepo-builder localize-composer-paths ${{ matrix.package_path }}/composer.json
-
-          cd packages/${{ matrix.package_path }}
-
-          composer update --no-progress
-          composer test
+      - name: Install monorepo composer
+        run: composer install --no-progress
+      - name: Update package composer path
+        run: vendor/bin/monorepo-builder localize-composer-paths packages/${{ matrix.package_path }}/composer.json
+      - run: cd packages/${{ matrix.package_path }}
+      - name: Install package composer
+        run: composer update --no-progress
+      - name: Run package tests
+        run: composer test

@@ -32,7 +32,7 @@
         "smolblog/test-utils": "^0.2"
     },
     "scripts": {
-        "test": "XDEBUG_MODE=coverage phpunit --coverage-text",
+        "test": "phpunit",
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
     }
