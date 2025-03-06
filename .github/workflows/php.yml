@@ -50,6 +50,7 @@ jobs:
         package_path:
           - framework/foundation
           - framework/infrastructure
+          - framework/markdown
           - framework/test-utils
           - product/core
           - product/core-data-sql

@@ -21,6 +21,8 @@ jobs:
             split_repository: 'framework-foundation'
           - local_path: 'framework/infrastructure'
             split_repository: 'framework-infrastructure'
+          - local_path: 'framework/markdown'
+            split_repository: 'smolblog-markdown'
           - local_path: 'product/core'
             split_repository: 'core'
           - local_path: 'product/core-data-sql'
