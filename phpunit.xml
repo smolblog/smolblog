@@ -20,6 +20,7 @@
     <include>
       <directory>packages/framework/foundation/src</directory>
       <directory>packages/framework/infrastructure/src</directory>
+      <directory>packages/framework/markdown/src</directory>
       <directory>packages/product/core/src</directory>
       <directory>packages/product/core-data-sql/src</directory>
     </include>

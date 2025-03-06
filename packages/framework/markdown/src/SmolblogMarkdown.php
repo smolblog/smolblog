@@ -2,15 +2,15 @@
 
 namespace Smolblog\Markdown;
 
-use cebe\markdown\block\FencedCodeTrait;
 use cebe\markdown\Markdown;
+use Smolblog\Markdown\Elements\CustomFencedCodeTrait;
 use Smolblog\Markdown\Elements\EmbedTrait;
 
 /**
  * Markdown parser with some extra Smolblog flair.
  */
 class SmolblogMarkdown extends Markdown {
-	use FencedCodeTrait;
+	use CustomFencedCodeTrait;
 	use EmbedTrait;
 
 	/**
@@ -23,5 +23,16 @@ class SmolblogMarkdown extends Markdown {
 	) {
 		$this->embedProvider = $embedProvider;
 		$this->html5 = true;
+	}
+
+	/**
+	 * Add a custom handler to the service.
+	 *
+	 * @param string   $language Language this handler is for.
+	 * @param callable $handler  Callable handler for the language.
+	 * @return void
+	 */
+	public function addCustomCodeHandler(string $language, callable $handler): void {
+		$this->codeRenderers[$language] = $handler;
 	}
 }
