@@ -102,21 +102,6 @@ $md = new SmolblogMarkdown();
 
 This will create the parser **with no oEmbed support.** Embed directives will show as normal links as seen above.
 
-### Create a parser with oEmbed
-
-You will need the [Embed] library installed (run `composer require embed/embed`). Support for other libraries coming
-soon!
-
-[embed]: https://github.com/oscarotero/Embed
-
-```php
-use Smolblog\Markdown\{SmolblogMarkdown, DefaultEmbedProvider};
-
-//...
-
-$md = new SmolblogMarkdown(embedProvider: new DefaultEmbedProvider());
-```
-
 ### Custom oEmbed provider
 
 If you have a different oEmbed library you want to use, you can pass in anything that implements the `EmbedProvider`
