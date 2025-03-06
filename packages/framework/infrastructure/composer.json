@@ -26,12 +26,12 @@
         "psr/event-dispatcher": "^1.0",
         "crell/tukio": "^1.6",
         "psr/log": "^3.0",
-        "smolblog/framework-foundation": "^0.3",
+        "smolblog/framework-foundation": "^0.4",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
-        "smolblog/test-utils": "^0.3"
+        "smolblog/test-utils": "^0.4"
     },
     "scripts": {
         "test": "phpunit",

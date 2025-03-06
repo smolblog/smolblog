@@ -23,7 +23,7 @@
         }
     ],
     "require-dev": {
-        "smolblog/test-utils": "^0.3"
+        "smolblog/test-utils": "^0.4"
     },
     "scripts": {
         "test": "phpunit",
