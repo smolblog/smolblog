@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smolblog
  *
@@ -7,7 +8,7 @@
  * @package Smolblog\WP
  *
  * @wordpress-plugin
- * Plugin Name:       Smolblog WP
+ * Plugin Name:       Smolblog
  * Plugin URI:        http://github.com/smolblog/smolblog
  * Description:       WordPress + Smolblog
  * Version:           1.0.0
@@ -21,17 +22,11 @@
 
 namespace Smolblog\WP;
 
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\WP\Helpers\DatabaseHelper;
-use Smolblog\WP\Helpers\SiteHelper;
-use Smolblog\WP\Helpers\UserHelper;
-
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Load Action Scheduler.
 $smolblog_action_scheduler = __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
-if ( is_readable( $smolblog_action_scheduler ) ) {
+if (is_readable($smolblog_action_scheduler)) {
 	require_once $smolblog_action_scheduler;
 }
 
