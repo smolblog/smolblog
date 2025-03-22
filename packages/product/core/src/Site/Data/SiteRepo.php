@@ -27,9 +27,9 @@ interface SiteRepo {
 	 * Get the site object for the given ID.
 	 *
 	 * @param Identifier $siteId Site to retrieve.
-	 * @return Site
+	 * @return Site|null
 	 */
-	public function siteById(Identifier $siteId): Site;
+	public function siteById(Identifier $siteId): ?Site;
 
 	/**
 	 * Get the keypair for the given site.
