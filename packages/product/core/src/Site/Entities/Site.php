@@ -7,12 +7,15 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Keypair;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
+use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
 /**
  * Represents a site with its own URL, posts, etc.
  */
-readonly class Site extends Value implements Entity {
+readonly class Site extends Value implements Entity, SerializableValue {
 	use EntityKit;
+	use SerializableValueKit;
 
 	/**
 	 * Construct the site.
