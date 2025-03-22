@@ -3,6 +3,11 @@
 namespace Smolblog\CoreDataSql;
 
 use Doctrine\DBAL\Connection as DatabaseConnection;
+use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Connection\Data\ConnectionRepo;
+use Smolblog\Core\Content\Data\ContentRepo;
+use Smolblog\Core\Content\Data\ContentStateManager;
+use Smolblog\Core\Media\Data\MediaRepo;
 use Smolblog\Foundation\DomainModel;
 
 /**
@@ -26,6 +31,12 @@ class Model extends DomainModel {
 		MediaProjection::class => [
 			'db' => DatabaseConnection::class,
 		],
+
+		ChannelRepo::class => ChannelProjection::class,
+		ConnectionRepo::class => ConnectionProjection::class,
+		ContentRepo::class => ContentProjection::class,
+		ContentStateManager::class => ContentProjection::class,
+		MediaRepo::class => MediaProjection::class,
 	];
 
 	/**
