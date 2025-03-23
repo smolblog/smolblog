@@ -15,10 +15,11 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	/**
 	 * Create the content table.
 	 *
-	 * @param Schema $schema Schema to add the content table to.
+	 * @param Schema   $schema    Schema to add the content table to.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema {
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
 		$table = $schema->createTable('event_stream');
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('event_uuid', 'guid');
@@ -40,9 +41,9 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	/**
 	 * Create the service.
 	 *
-	 * @param Connection $db Working database connection.
+	 * @param DatabaseEnvironment $env Working database connection.
 	 */
-	public function __construct(private Connection $db) {
+	public function __construct(private DatabaseEnvironment $env) {
 	}
 
 	/**
@@ -53,7 +54,7 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	 */
 	#[EventListener]
 	public function onDomainEvent(DomainEvent $event) {
-		$this->db->insert('event_stream', [
+		$this->env->getConnection()->insert($this->env->tableName('event_stream'), [
 				'event_uuid' => $event->id,
 				'timestamp' => $event->timestamp->toString(),
 				'user_uuid' => $event->id,

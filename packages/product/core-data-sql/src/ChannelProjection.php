@@ -2,7 +2,6 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Channel\Entities\Channel;
@@ -21,11 +20,12 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 * Currently creates both a table for storing Channel state and a linking table for Channels and Sites. As Sites
 	 * grows more robust, this may be broken out into its own class.
 	 *
-	 * @param Schema $schema Schema to add the channel tables to.
+	 * @param Schema   $schema    Schema to add the channel tables to.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema {
-		$channelTable = $schema->createTable('channels');
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
+		$channelTable = $schema->createTable($tableName('channels'));
 		$channelTable->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$channelTable->addColumn('channel_uuid', 'guid');
 		$channelTable->addColumn('connection_uuid', 'guid', ['notnull' => false]);
@@ -35,7 +35,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		$channelTable->addUniqueIndex(['channel_uuid']);
 		$channelTable->addIndex(['connection_uuid']);
 
-		$siteLinkTable = $schema->createTable('channels_sites');
+		$siteLinkTable = $schema->createTable($tableName('channels_sites'));
 		$siteLinkTable->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$siteLinkTable->addColumn('channel_uuid', 'guid');
 		$siteLinkTable->addColumn('site_uuid', 'guid');
@@ -49,9 +49,9 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	/**
 	 * Create the service.
 	 *
-	 * @param Connection $db Working database connection.
+	 * @param DatabaseEnvironment $env Working database connection.
 	 */
-	public function __construct(private Connection $db) {
+	public function __construct(private DatabaseEnvironment $env) {
 	}
 
 	/**
@@ -61,8 +61,11 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 * @return Channel|null
 	 */
 	public function channelById(Identifier $channelId): ?Channel {
-		$query = $this->db->createQueryBuilder();
-		$query->select('channel_obj')->from('channels')->where('channel_uuid = ?')->setParameter(0, $channelId);
+		$query = $this->env->getConnection()->createQueryBuilder();
+		$query
+			->select('channel_obj')
+			->from($this->env->tableName('channels'))
+			->where('channel_uuid = ?')->setParameter(0, $channelId);
 		$result = $query->fetchOne();
 
 		if ($result === false) {
@@ -82,8 +85,12 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 * @return Channel[]
 	 */
 	public function channelsForConnection(Identifier $connectionId): array {
-		$query = $this->db->createQueryBuilder();
-		$query->select('channel_obj')->from('channels')->where('connection_uuid = ?')->setParameter(0, $connectionId);
+		$query = $this->env->getConnection()->createQueryBuilder();
+		$query
+			->select('channel_obj')
+			->from($this->env->tableName('channels'))
+			->where('connection_uuid = ?')
+			->setParameter(0, $connectionId);
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
@@ -99,11 +106,11 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 * @return Channel[]
 	 */
 	public function channelsForSite(Identifier $siteId): array {
-		$query = $this->db->createQueryBuilder();
+		$query = $this->env->getConnection()->createQueryBuilder();
 		$query->
 			select('c.channel_obj')->
-			from('channels', 'c')->
-			innerJoin('c', 'channels_sites', 'cs', 'c.channel_uuid = cs.channel_uuid')->
+			from($this->env->tableName('channels'), 'c')->
+			innerJoin('c', $this->env->tableName('channels_sites'), 'cs', 'c.channel_uuid = cs.channel_uuid')->
 			where('cs.site_uuid = ?')->
 			setParameter(0, $siteId);
 		$results = $query->fetchFirstColumn();
@@ -122,9 +129,9 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 * @return boolean
 	 */
 	public function siteCanUseChannel(Identifier $siteId, Identifier $channelId): bool {
-		$query = $this->db->createQueryBuilder();
+		$query = $this->env->getConnection()->createQueryBuilder();
 		$query->select('1')
-			->from('channels_sites')
+			->from($this->env->tableName('channels_sites'))
 			->where('site_uuid = ?')
 			->andWhere('channel_uuid = ?')
 			->setParameter(0, $siteId)
@@ -142,8 +149,12 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 */
 	#[ProjectionListener]
 	public function onChannelSaved(ChannelSaved $event): void {
-		$checkQuery = $this->db->createQueryBuilder();
-		$checkQuery->select('dbid')->from('channels')->where('channel_uuid = ?')->setParameter(0, $event->entityId);
+		$checkQuery = $this->env->getConnection()->createQueryBuilder();
+		$checkQuery
+			->select('dbid')
+			->from($this->env->tableName('channels'))
+			->where('channel_uuid = ?')
+			->setParameter(0, $event->entityId);
 		$dbid = $checkQuery->fetchOne();
 
 		$data = [
@@ -153,9 +164,9 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		];
 
 		if ($dbid) {
-			$this->db->update('channels', $data, ['dbid' => $dbid]);
+			$this->env->getConnection()->update($this->env->tableName('channels'), $data, ['dbid' => $dbid]);
 		} else {
-			$this->db->insert('channels', $data);
+			$this->env->getConnection()->insert($this->env->tableName('channels'), $data);
 		}
 	}
 
@@ -176,8 +187,8 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 			return;
 		}
 
-		$this->db->insert(
-			'channels_sites',
+		$this->env->getConnection()->insert(
+			$this->env->tableName('channels_sites'),
 			[
 				'site_uuid' => $event->aggregateId,
 				'channel_uuid' => $event->entityId,
@@ -193,6 +204,6 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 */
 	#[ProjectionListener]
 	public function onChannelDeleted(ChannelDeleted $event): void {
-		$this->db->delete('channels', ['channel_uuid' => $event->entityId]);
+		$this->env->getConnection()->delete($this->env->tableName('channels'), ['channel_uuid' => $event->entityId]);
 	}
 }

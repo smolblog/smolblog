@@ -18,10 +18,11 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	/**
 	 * Create the content table.
 	 *
-	 * @param Schema $schema Schema to add the content table to.
+	 * @param Schema   $schema    Schema to add the content table to.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema {
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
 		$table = $schema->createTable('media');
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('media_uuid', 'guid');
@@ -38,9 +39,9 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	/**
 	 * Create the service.
 	 *
-	 * @param Connection $db Working database connection.
+	 * @param DatabaseEnvironment $env Working database connection.
 	 */
-	public function __construct(private Connection $db) {
+	public function __construct(private DatabaseEnvironment $env) {
 	}
 
 	/**
@@ -50,8 +51,12 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 * @return boolean
 	 */
 	public function hasMediaWithId(Identifier $mediaId): bool {
-		$query = $this->db->createQueryBuilder();
-		$query->select('1')->from('media')->where('media_uuid = ?')->setParameter(0, $mediaId);
+		$query = $this->env->getConnection()->createQueryBuilder();
+		$query
+			->select('1')
+			->from($this->env->tableName('media'))
+			->where('media_uuid = ?')
+			->setParameter(0, $mediaId);
 		$result = $query->fetchOne();
 
 		return $result ? true : false;
@@ -64,8 +69,12 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 * @return Media|null
 	 */
 	public function mediaById(Identifier $mediaId): ?Media {
-		$query = $this->db->createQueryBuilder();
-		$query->select('media_obj')->from('media')->where('media_uuid = ?')->setParameter(0, $mediaId);
+		$query = $this->env->getConnection()->createQueryBuilder();
+		$query
+			->select('media_obj')
+			->from($this->env->tableName('media'))
+			->where('media_uuid = ?')
+			->setParameter(0, $mediaId);
 		$result = $query->fetchOne();
 
 		if ($result === false) {
@@ -88,10 +97,10 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	public function onMediaCreated(MediaCreated $event): void {
 		$media = $event->getMediaObject();
 
-		$this->db->insert('media', [
-				'media_uuid' => $media->id,
-				'site_uuid' => $media->siteId,
-				'media_obj' => json_encode($media),
+		$this->env->getConnection()->insert($this->env->tableName('media'), [
+			'media_uuid' => $media->id,
+			'site_uuid' => $media->siteId,
+			'media_obj' => json_encode($media),
 		]);
 	}
 
@@ -112,7 +121,11 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 			title: $event->title ?? $existing->title,
 			accessibilityText: $event->accessibilityText ?? $existing->accessibilityText,
 		);
-		$this->db->update('media', ['media_obj' => json_encode($updated)], ['media_uuid' => $updated->id]);
+		$this->env->getConnection()->update(
+			$this->env->tableName('media'),
+			['media_obj' => json_encode($updated)],
+			['media_uuid' => $updated->id],
+		);
 	}
 
 	/**
@@ -123,6 +136,6 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 */
 	#[ProjectionListener]
 	public function onMediaDeleted(MediaDeleted $event): void {
-		$this->db->delete('media', ['media_uuid' => $event->entityId]);
+		$this->env->getConnection()->delete($this->env->tableName('media'), ['media_uuid' => $event->entityId]);
 	}
 }

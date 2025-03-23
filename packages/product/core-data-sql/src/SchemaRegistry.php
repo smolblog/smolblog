@@ -36,7 +36,7 @@ class SchemaRegistry implements Registry {
 		// TODO use array_any to confirm correct config.
 		$expectedSchema = array_reduce(
 			array: $configuration,
-			callback: fn($schema, $srv) => $srv::addTableToSchema($schema),
+			callback: fn($schema, $srv) => $srv::addTableToSchema($schema, $this->env->tableName(...)),
 			initial: new Schema()
 		);
 
