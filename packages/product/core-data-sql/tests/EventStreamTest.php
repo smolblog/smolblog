@@ -18,8 +18,9 @@ use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 final class EventStreamTest extends DataTestBase {
 	public function testEventPersistence() {
-		$db = $this->app->container->get(DatabaseManager::class)->getConnection();
-		$this->assertEquals(0, $db->fetchOne('SELECT COUNT(*) FROM event_stream'));
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
+		$this->assertEquals(0, $db->fetchOne('SELECT COUNT(*) FROM ' . $env->tableName('event_stream')));
 
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
@@ -64,7 +65,7 @@ final class EventStreamTest extends DataTestBase {
 
 		$this->assertEquals(
 			array_map(fn($evt) => json_encode($evt), $expected),
-			$db->fetchFirstColumn('SELECT event_obj FROM event_stream')
+			$db->fetchFirstColumn('SELECT event_obj FROM ' . $env->tableName('event_stream'))
 		);
 	}
 }

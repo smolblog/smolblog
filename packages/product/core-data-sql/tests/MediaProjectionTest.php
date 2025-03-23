@@ -38,7 +38,8 @@ final class MediaProjectionTest extends DataTestBase {
 
 	public function testMediaUpdated() {
 		$projection = $this->app->container->get(MediaProjection::class);
-		$db = $this->app->container->get(DatabaseManager::class)->getConnection();
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
 
 		$oldMedia = new Media(
 			id: $this->randomId(),
@@ -60,7 +61,7 @@ final class MediaProjectionTest extends DataTestBase {
 			title: 'i said hey',
 		);
 
-		$db->insert('media', [
+		$db->insert($env->tableName('media'), [
 			'media_uuid' => $oldMedia->id,
 			'site_uuid' => $oldMedia->siteId,
 			'media_obj' => json_encode($oldMedia),
@@ -73,7 +74,8 @@ final class MediaProjectionTest extends DataTestBase {
 
 	public function testMediaDeleted() {
 		$projection = $this->app->container->get(MediaProjection::class);
-		$db = $this->app->container->get(DatabaseManager::class)->getConnection();
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
 
 		$media = new Media(
 			id: $this->randomId(),
@@ -85,7 +87,7 @@ final class MediaProjectionTest extends DataTestBase {
 			handler: 'test',
 			fileDetails: ['one' => 2],
 		);
-		$db->insert('media', [
+		$db->insert($env->tableName('media'), [
 			'media_uuid' => $media->id,
 			'site_uuid' => $media->siteId,
 			'media_obj' => json_encode($media),

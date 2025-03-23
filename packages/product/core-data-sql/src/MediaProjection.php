@@ -23,7 +23,7 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 * @return Schema
 	 */
 	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
-		$table = $schema->createTable('media');
+		$table = $schema->createTable($tableName('media'));
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('media_uuid', 'guid');
 		$table->addColumn('site_uuid', 'guid');

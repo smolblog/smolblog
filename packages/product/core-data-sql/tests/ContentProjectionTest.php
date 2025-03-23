@@ -47,7 +47,8 @@ final class ContentProjectionTest extends DataTestBase {
 
 	public function testContentUpdated() {
 		$projection = $this->app->container->get(ContentProjection::class);
-		$db = $this->app->container->get(DatabaseManager::class)->getConnection();
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
 
 		$oldContent = new Content(
 			body: new Note(new Markdown('This *was* a test.')),
@@ -71,7 +72,7 @@ final class ContentProjectionTest extends DataTestBase {
 			extensions: $newContent->extensions,
 		);
 
-		$db->insert('content', [
+		$db->insert($env->tableName('content'), [
 			'content_uuid' => $oldContent->id,
 			'site_uuid' => $oldContent->siteId,
 			'content_obj' => json_encode($oldContent),
@@ -84,7 +85,8 @@ final class ContentProjectionTest extends DataTestBase {
 
 	public function testContentDeleted() {
 		$projection = $this->app->container->get(ContentProjection::class);
-		$db = $this->app->container->get(DatabaseManager::class)->getConnection();
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
 
 		$content = new Content(
 			body: new Note(new Markdown('This *was* a test.')),
@@ -94,7 +96,7 @@ final class ContentProjectionTest extends DataTestBase {
 				'tags' => new Tags(['tops']),
 			],
 		);
-		$db->insert('content', [
+		$db->insert($env->tableName('content'), [
 			'content_uuid' => $content->id,
 			'site_uuid' => $content->siteId,
 			'content_obj' => json_encode($content),
@@ -112,7 +114,8 @@ final class ContentProjectionTest extends DataTestBase {
 
 	public function testContentCanonicalUrlSet() {
 		$projection = $this->app->container->get(ContentProjection::class);
-		$db = $this->app->container->get(DatabaseManager::class)->getConnection();
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
 
 		$content = new Content(
 			body: new Note(new Markdown('This *was* a test.')),
@@ -122,7 +125,7 @@ final class ContentProjectionTest extends DataTestBase {
 				'tags' => new Tags(['tops']),
 			],
 		);
-		$db->insert('content', [
+		$db->insert($env->tableName('content'), [
 			'content_uuid' => $content->id,
 			'site_uuid' => $content->siteId,
 			'content_obj' => json_encode($content),
@@ -145,7 +148,8 @@ final class ContentProjectionTest extends DataTestBase {
 
 	public function testContentPushedToChannel() {
 		$projection = $this->app->container->get(ContentProjection::class);
-		$db = $this->app->container->get(DatabaseManager::class)->getConnection();
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
 
 		$contentBase = new Content(
 			body: new Note(new Markdown('This *was* a test.')),
@@ -203,7 +207,7 @@ final class ContentProjectionTest extends DataTestBase {
 			details: $entryThree->details,
 		);
 
-		$db->insert('content', [
+		$db->insert($env->tableName('content'), [
 			'content_uuid' => $contentBase->id,
 			'site_uuid' => $contentBase->siteId,
 			'content_obj' => json_encode($contentBase),
