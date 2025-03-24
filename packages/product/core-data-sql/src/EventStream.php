@@ -20,7 +20,7 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	 * @return Schema
 	 */
 	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
-		$table = $schema->createTable('event_stream');
+		$table = $schema->createTable($tableName('event_stream'));
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('event_uuid', 'guid');
 		$table->addColumn('timestamp', 'datetimetz_immutable');

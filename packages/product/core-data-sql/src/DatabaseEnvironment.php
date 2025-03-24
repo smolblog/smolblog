@@ -22,7 +22,7 @@ class DatabaseEnvironment {
 	 */
 	private Connection $dbalConnection;
 
-	private const DSN_MAPPING = [
+	protected const DSN_MAPPING = [
 		'mysql' => 'mysqli',
 		'postgres' => 'pdo_pgsql',
 		'sqlite' => 'pdo_sqlite',
@@ -47,17 +47,16 @@ class DatabaseEnvironment {
 		$connectionParameters = $props ?? (new DsnParser(static::DSN_MAPPING))->parse($dsn ?? '');
 		$this->dbalConnection = DriverManager::getConnection($connectionParameters);
 
-		if (isset($ignorePrefix)) {
-			$this->dbalConnection->getConfiguration()->setSchemaAssetsFilter(
-				static function (string|AbstractAsset $assetName) use ($ignorePrefix): bool {
-					if ($assetName instanceof AbstractAsset) {
-						$assetName = $assetName->getName();
-					}
-
-					return !str_starts_with($assetName, $ignorePrefix);
-				}
-			);
-		}
+		// if (!empty($tablePrefix)) {
+		// $this->dbalConnection->getConfiguration()->setSchemaAssetsFilter(
+		// static function (string|AbstractAsset $assetName) use ($tablePrefix): bool {
+		// if ($assetName instanceof AbstractAsset) {
+		// $assetName = $assetName->getName();
+		// }
+		// return str_starts_with($assetName, $tablePrefix);
+		// }
+		// );
+		// }
 	}
 
 	/**

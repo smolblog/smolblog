@@ -23,7 +23,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @return Schema
 	 */
 	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
-		$table = $schema->createTable('content');
+		$table = $schema->createTable($tableName('content'));
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('content_uuid', 'guid');
 		$table->addColumn('site_uuid', 'guid');

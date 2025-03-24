@@ -26,7 +26,7 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * @return Schema
 	 */
 	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
-		$table = $schema->createTable('connections');
+		$table = $schema->createTable($tableName('connections'));
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('connection_uuid', 'guid');
 		$table->addColumn('user_uuid', 'guid');
