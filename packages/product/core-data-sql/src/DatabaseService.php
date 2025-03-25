@@ -2,7 +2,7 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder as DBALQueryBuilder;
 
 /**
  * Service for data-focused services to access the database.
@@ -39,6 +39,19 @@ class DatabaseService {
 	}
 
 	/**
+	 * Create a Smolblog QueryBuilder to directly query data. Table names should be passed as-is.
+	 *
+	 * We'll see if this works...
+	 *
+	 * @see https://www.doctrine-project.org/projects/doctrine-dbal/en/4.2/reference/query-builder.html#sql-query-builder
+	 *
+	 * @return QueryBuilder
+	 */
+	public function createQueryBuilder(): QueryBuilder {
+		return new QueryBuilder(env: $this->env);
+	}
+
+	/**
 	 * Create a Doctrine DBAL QueryBuilder to directly query data. Table names need to be run through tableName().
 	 *
 	 * The function name is verbose, but as the QueryBuilder itself is not aware of the database prefix, the name is a
@@ -48,9 +61,9 @@ class DatabaseService {
 	 *
 	 * @see https://www.doctrine-project.org/projects/doctrine-dbal/en/4.2/reference/query-builder.html#sql-query-builder
 	 *
-	 * @return QueryBuilder
+	 * @return DBALQueryBuilder
 	 */
-	public function createUnprefixedQueryBuilder(): QueryBuilder {
+	public function createUnprefixedQueryBuilder(): DBALQueryBuilder {
 		return $this->env->getConnection()->createQueryBuilder();
 	}
 
