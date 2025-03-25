@@ -47,16 +47,16 @@ class DatabaseEnvironment {
 		$connectionParameters = $props ?? (new DsnParser(static::DSN_MAPPING))->parse($dsn ?? '');
 		$this->dbalConnection = DriverManager::getConnection($connectionParameters);
 
-		// if (!empty($tablePrefix)) {
-		// $this->dbalConnection->getConfiguration()->setSchemaAssetsFilter(
-		// static function (string|AbstractAsset $assetName) use ($tablePrefix): bool {
-		// if ($assetName instanceof AbstractAsset) {
-		// $assetName = $assetName->getName();
-		// }
-		// return str_starts_with($assetName, $tablePrefix);
-		// }
-		// );
-		// }
+		if (!empty($tablePrefix)) {
+			$this->dbalConnection->getConfiguration()->setSchemaAssetsFilter(
+				static function (string|AbstractAsset $assetName) use ($tablePrefix): bool {
+					if ($assetName instanceof AbstractAsset) {
+						$assetName = $assetName->getName();
+					}
+					return str_starts_with($assetName, $tablePrefix);
+				}
+			);
+		}
 	}
 
 	/**
