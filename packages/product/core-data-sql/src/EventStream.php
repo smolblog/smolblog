@@ -41,9 +41,9 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	/**
 	 * Create the service.
 	 *
-	 * @param DatabaseEnvironment $env Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private DatabaseEnvironment $env) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -54,7 +54,7 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	 */
 	#[EventListener]
 	public function onDomainEvent(DomainEvent $event) {
-		$this->env->getConnection()->insert($this->env->tableName('event_stream'), [
+		$this->db->insert('event_stream', [
 				'event_uuid' => $event->id,
 				'timestamp' => $event->timestamp->toString(),
 				'user_uuid' => $event->id,

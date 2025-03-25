@@ -39,9 +39,9 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	/**
 	 * Create the service.
 	 *
-	 * @param DatabaseEnvironment $env Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private DatabaseEnvironment $env) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -51,10 +51,10 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 * @return boolean
 	 */
 	public function hasMediaWithId(Identifier $mediaId): bool {
-		$query = $this->env->getConnection()->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('1')
-			->from($this->env->tableName('media'))
+			->from($this->db->tableName('media'))
 			->where('media_uuid = ?')
 			->setParameter(0, $mediaId);
 		$result = $query->fetchOne();
@@ -69,10 +69,10 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 * @return Media|null
 	 */
 	public function mediaById(Identifier $mediaId): ?Media {
-		$query = $this->env->getConnection()->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('media_obj')
-			->from($this->env->tableName('media'))
+			->from($this->db->tableName('media'))
 			->where('media_uuid = ?')
 			->setParameter(0, $mediaId);
 		$result = $query->fetchOne();
@@ -97,7 +97,7 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	public function onMediaCreated(MediaCreated $event): void {
 		$media = $event->getMediaObject();
 
-		$this->env->getConnection()->insert($this->env->tableName('media'), [
+		$this->db->insert('media', [
 			'media_uuid' => $media->id,
 			'site_uuid' => $media->siteId,
 			'media_obj' => json_encode($media),
@@ -121,8 +121,8 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 			title: $event->title ?? $existing->title,
 			accessibilityText: $event->accessibilityText ?? $existing->accessibilityText,
 		);
-		$this->env->getConnection()->update(
-			$this->env->tableName('media'),
+		$this->db->update(
+			'media',
 			['media_obj' => json_encode($updated)],
 			['media_uuid' => $updated->id],
 		);
@@ -136,6 +136,6 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 */
 	#[ProjectionListener]
 	public function onMediaDeleted(MediaDeleted $event): void {
-		$this->env->getConnection()->delete($this->env->tableName('media'), ['media_uuid' => $event->entityId]);
+		$this->db->delete('media', ['media_uuid' => $event->entityId]);
 	}
 }

@@ -42,9 +42,9 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	/**
 	 * Create the service.
 	 *
-	 * @param DatabaseEnvironment $env Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private DatabaseEnvironment $env) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -55,9 +55,9 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * @return boolean True if the given User created the given Connection.
 	 */
 	public function connectionBelongsToUser(Identifier $connectionId, Identifier $userId): bool {
-		$query = $this->env->getConnection()->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query->select('1')
-			->from($this->env->tableName('connections'))
+			->from($this->db->tableName('connections'))
 			->where('connection_uuid = ?')
 			->andWhere('user_uuid = ?')
 			->setParameter(0, $connectionId)
@@ -74,10 +74,10 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * @return Connection|null
 	 */
 	public function connectionById(Identifier $connectionId): ?Connection {
-		$query = $this->env->getConnection()->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('connection_obj')
-			->from($this->env->tableName('connections'))
+			->from($this->db->tableName('connections'))
 			->where('connection_uuid = ?')
 			->setParameter(0, $connectionId);
 		$result = $query->fetchOne();
@@ -99,10 +99,10 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * @return Connection[]
 	 */
 	public function connectionsForUser(Identifier $userId): array {
-		$query = $this->env->getConnection()->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('connection_obj')
-			->from($this->env->tableName('connections'))
+			->from($this->db->tableName('connections'))
 			->where('user_uuid = ?')
 			->setParameter(0, $userId);
 		$results = $query->fetchFirstColumn();
@@ -121,10 +121,10 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 */
 	#[ProjectionListener]
 	public function onConnectionEstablished(ConnectionEstablished $event): void {
-		$checkQuery = $this->env->getConnection()->createQueryBuilder();
+		$checkQuery = $this->db->createUnprefixedQueryBuilder();
 		$checkQuery
 			->select('dbid')
-			->from($this->env->tableName('connections'))
+			->from($this->db->tableName('connections'))
 			->where('connection_uuid = ?')
 			->setParameter(0, $event->entityId);
 		$dbid = $checkQuery->fetchOne();
@@ -136,9 +136,9 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 		];
 
 		if ($dbid) {
-			$this->env->getConnection()->update($this->env->tableName('connections'), $data, ['dbid' => $dbid]);
+			$this->db->update('connections', $data, ['dbid' => $dbid]);
 		} else {
-			$this->env->getConnection()->insert($this->env->tableName('connections'), $data);
+			$this->db->insert('connections', $data);
 		}
 	}
 
@@ -156,8 +156,8 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 		}
 
 		$updated = $current->with(details: $event->details);
-		$this->env->getConnection()->update(
-			$this->env->tableName('connections'),
+		$this->db->update(
+			'connections',
 			['connection_obj' => json_encode($updated)],
 			['connection_uuid' => $event->entityId]
 		);
@@ -171,7 +171,6 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 */
 	#[ProjectionListener]
 	public function onConnectionDeleted(ConnectionDeleted $event): void {
-		$this->env->getConnection()
-			->delete($this->env->tableName('connections'), ['connection_uuid' => $event->entityId]);
+		$this->db->delete('connections', ['connection_uuid' => $event->entityId]);
 	}
 }

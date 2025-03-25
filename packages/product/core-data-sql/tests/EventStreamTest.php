@@ -19,6 +19,7 @@ use Smolblog\Foundation\Value\Messages\DomainEvent;
 final class EventStreamTest extends DataTestBase {
 	public function testEventPersistence() {
 		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$this->app->container->get(SchemaRegistry::class); // Load the schema.
 		$db = $env->getConnection();
 		$this->assertEquals(0, $db->fetchOne('SELECT COUNT(*) FROM ' . $env->tableName('event_stream')));
 

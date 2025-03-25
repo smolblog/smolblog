@@ -39,9 +39,9 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	/**
 	 * Create the service.
 	 *
-	 * @param DatabaseEnvironment $env Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private DatabaseEnvironment $env) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -51,10 +51,10 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @return boolean
 	 */
 	public function hasContentWithId(Identifier $contentId): bool {
-		$query = $this->env->getConnection()->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('1')
-			->from($this->env->tableName('content'))
+			->from($this->db->tableName('content'))
 			->where('content_uuid = ?')
 			->setParameter(0, $contentId);
 		$result = $query->fetchOne();
@@ -69,10 +69,10 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @return Content|null
 	 */
 	public function contentById(Identifier $contentId): ?Content {
-		$query = $this->env->getConnection()->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('content_obj')
-			->from($this->env->tableName('content'))
+			->from($this->db->tableName('content'))
 			->where('content_uuid = ?')
 			->setParameter(0, $contentId);
 		$result = $query->fetchOne();
@@ -97,7 +97,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	public function onContentCreated(ContentCreated $event): void {
 		$content = $event->getContentObject();
 
-		$this->env->getConnection()->insert($this->env->tableName('content'), [
+		$this->db->insert('content', [
 				'content_uuid' => $content->id,
 				'site_uuid' => $content->siteId,
 				'content_obj' => json_encode($content),
@@ -123,8 +123,8 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 			publishTimestamp: $event->publishTimestamp,
 			extensions: $event->extensions,
 		);
-		$this->env->getConnection()->update(
-			$this->env->tableName('content'),
+		$this->db->update(
+			'content',
 			['content_obj' => json_encode($updated)],
 			['content_uuid' => $updated->id],
 		);
@@ -138,7 +138,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 */
 	#[ProjectionListener()]
 	public function onContentDeleted(ContentDeleted $event): void {
-		$this->env->getConnection()->delete($this->env->tableName('content'), ['content_uuid' => $event->entityId]);
+		$this->db->delete('content', ['content_uuid' => $event->entityId]);
 	}
 
 	/**
@@ -155,8 +155,8 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		}
 
 		$updated = $current->with(canonicalUrl: $event->url);
-		$this->env->getConnection()->update(
-			$this->env->tableName('content'),
+		$this->db->update(
+			'content',
 			['content_obj' => json_encode($updated)],
 			['content_uuid' => $updated->id],
 		);
@@ -180,8 +180,8 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$links[$pushInfo->getId()->toString()] = $pushInfo;
 
 		$updated = $current->with(links: $links);
-		$this->env->getConnection()->update(
-			$this->env->tableName('content'),
+		$this->db->update(
+			'content',
 			['content_obj' => json_encode($updated)],
 			['content_uuid' => $updated->id]
 		);

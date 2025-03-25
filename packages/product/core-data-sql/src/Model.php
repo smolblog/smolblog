@@ -18,6 +18,7 @@ class Model extends DomainModel {
 		ChannelProjection::class,
 		ConnectionProjection::class,
 		ContentProjection::class,
+		DatabaseService::class,
 		EventStream::class,
 		MediaProjection::class,
 		SchemaRegistry::class,
