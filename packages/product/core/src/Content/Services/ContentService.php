@@ -65,7 +65,7 @@ class ContentService implements CommandHandlerService {
 		if (!isset($contentId)) {
 			do {
 				$contentId = new DateIdentifier();
-			} while (!$this->repo->hasContentWithId($contentId));
+			} while ($this->repo->hasContentWithId($contentId));
 		}
 
 		// Save the new Content.
