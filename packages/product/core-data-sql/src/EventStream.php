@@ -2,6 +2,7 @@
 
 namespace Smolblog\CoreDataSql;
 
+use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Foundation\Service\Event\EventListener;
@@ -56,11 +57,11 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	public function onDomainEvent(DomainEvent $event) {
 		$this->db->insert('event_stream', [
 				'event_uuid' => $event->id,
-				'timestamp' => $event->timestamp->toString(),
-				'user_uuid' => $event->id,
-				'aggregate_uuid' => $event->id,
-				'entity_uuid' => $event->id,
-				'process_uuid' => $event->id,
+				'timestamp' => $event->timestamp->object->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s'),
+				'user_uuid' => $event->userId,
+				'aggregate_uuid' => $event->aggregateId,
+				'entity_uuid' => $event->entityId,
+				'process_uuid' => $event->processId,
 				'event_obj' => json_encode($event),
 		]);
 	}
