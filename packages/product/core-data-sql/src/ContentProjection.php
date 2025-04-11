@@ -88,6 +88,25 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	}
 
 	/**
+	 * Get a list of Content objects.
+	 *
+	 * @return Content[]
+	 */
+	public function contentList(): array {
+		$query = $this->db->createQueryBuilder();
+		$query
+			->select('content_obj')
+			->from('content')
+			->orderBy('dbid', 'DESC');
+		$results = $query->fetchFirstColumn();
+
+		return array_map(
+			fn($ser) => is_string($ser) ? Content::fromJson($ser) : Content::deserializeValue($ser),
+			$results
+		);
+	}
+
+	/**
 	 * Create a new content entry.
 	 *
 	 * @param ContentCreated $event Event to handle.
