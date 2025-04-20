@@ -39,4 +39,8 @@ class ConnectionHandlerRegistry implements Registry {
 	public function get(string $key): ConnectionHandler {
 		return $this->getService($key);
 	}
+
+	public function availableConnections(): array {
+		return [];
+	}
 }
