@@ -23,4 +23,16 @@ interface ContentRepo {
 	 * @return Content|null
 	 */
 	public function contentById(Identifier $contentId): ?Content;
+
+	/**
+	 * Retrieve a list of Content objects
+	 *
+	 * @param Identifier      $forSite     Content assigned to the given site.
+	 * @param Identifier|null $ownedByUser Content owned by the given user.
+	 * @return array Content objects meeting the given parameters.
+	 */
+	public function contentList(
+		Identifier $forSite,
+		?Identifier $ownedByUser = null,
+	): array;
 }

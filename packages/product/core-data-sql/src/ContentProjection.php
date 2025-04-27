@@ -8,6 +8,7 @@ use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Data\ContentStateManager;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\{ContentCanonicalUrlSet, ContentCreated, ContentDeleted, ContentUpdated};
+use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Service\Event\ProjectionListener;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
@@ -27,11 +28,13 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('content_uuid', 'guid');
 		$table->addColumn('site_uuid', 'guid');
+		$table->addColumn('user_uuid', 'guid');
 		$table->addColumn('content_obj', 'json');
 
 		$table->setPrimaryKey(['dbid']);
 		$table->addUniqueIndex(['content_uuid']);
 		$table->addIndex(['site_uuid']);
+		$table->addIndex(['user_uuid']);
 
 		return $schema;
 	}
@@ -88,16 +91,26 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	}
 
 	/**
-	 * Get a list of Content objects.
+	 * Retrieve a list of Content objects
 	 *
-	 * @return Content[]
+	 * @param Identifier      $forSite     Content assigned to the given site.
+	 * @param Identifier|null $ownedByUser Content owned by the given user.
+	 * @return array Content objects meeting the given parameters.
 	 */
-	public function contentList(): array {
+	public function contentList(Identifier $forSite, ?Identifier $ownedByUser = null): array {
 		$query = $this->db->createQueryBuilder();
 		$query
 			->select('content_obj')
 			->from('content')
+			->where('site_uuid = :site')
+			->setParameter('site', $forSite)
 			->orderBy('dbid', 'DESC');
+
+		if (isset($ownedByUser)) {
+			$query
+				->where('user_uuid = :user')
+				->setParameter('user', $ownedByUser);
+		}
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
