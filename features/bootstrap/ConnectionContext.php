@@ -1,5 +1,7 @@
 <?php
 
+namespace Smolblog\FeatureTest\Context;
+
 use Behat\Step\Then;
 use Behat\Step\When;
 use Behat\Step\Given;
@@ -11,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context {
+class ConnectionContext implements Context {
 	/**
 	 * Initializes context.
 	 *

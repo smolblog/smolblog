@@ -51,7 +51,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Smolblog\\Infrastructure\\Test\\": "packages/framework/infrastructure/test-utils/"
+            "Smolblog\\Infrastructure\\Test\\": "packages/framework/infrastructure/test-utils/",
+            "Smolblog\\FeatureTest\\Context\\": "features/bootstrap/"
         }
     },
     "scripts": {
