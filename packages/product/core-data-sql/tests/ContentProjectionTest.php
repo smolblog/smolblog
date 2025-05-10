@@ -75,6 +75,7 @@ final class ContentProjectionTest extends DataTestBase {
 		$db->insert($env->tableName('content'), [
 			'content_uuid' => $oldContent->id,
 			'site_uuid' => $oldContent->siteId,
+			'user_uuid' => $oldContent->userId,
 			'content_obj' => json_encode($oldContent),
 		]);
 		$this->assertObjectEquals($oldContent, $projection->contentById($oldContent->id) ?? new stdClass());
@@ -99,6 +100,7 @@ final class ContentProjectionTest extends DataTestBase {
 		$db->insert($env->tableName('content'), [
 			'content_uuid' => $content->id,
 			'site_uuid' => $content->siteId,
+			'user_uuid' => $content->userId,
 			'content_obj' => json_encode($content),
 		]);
 		$this->assertTrue($projection->hasContentWithId($content->id));
@@ -128,6 +130,7 @@ final class ContentProjectionTest extends DataTestBase {
 		$db->insert($env->tableName('content'), [
 			'content_uuid' => $content->id,
 			'site_uuid' => $content->siteId,
+			'user_uuid' => $content->userId,
 			'content_obj' => json_encode($content),
 		]);
 		$this->assertObjectEquals($content, $projection->contentById($content->id) ?? new stdClass());
@@ -210,6 +213,7 @@ final class ContentProjectionTest extends DataTestBase {
 		$db->insert($env->tableName('content'), [
 			'content_uuid' => $contentBase->id,
 			'site_uuid' => $contentBase->siteId,
+			'user_uuid' => $contentBase->userId,
 			'content_obj' => json_encode($contentBase),
 		]);
 		$this->assertObjectEquals($contentBase, $projection->contentById($contentBase->id) ?? new stdClass());

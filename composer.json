@@ -50,7 +50,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Smolblog\\Infrastructure\\Test\\": "packages/framework/infrastructure/test-utils/"
+            "Smolblog\\Infrastructure\\Test\\": "packages/framework/infrastructure/test-utils/",
+            "Smolblog\\IntegrationTest\\": "integration-tests"
         }
     },
     "scripts": {

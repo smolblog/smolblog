@@ -132,6 +132,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$this->db->insert('content', [
 				'content_uuid' => $content->id,
 				'site_uuid' => $content->siteId,
+				'user_uuid' => $content->userId,
 				'content_obj' => json_encode($content),
 		]);
 	}
@@ -157,7 +158,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		);
 		$this->db->update(
 			'content',
-			['content_obj' => json_encode($updated)],
+			['content_obj' => json_encode($updated), 'user_uuid' => $updated->userId],
 			['content_uuid' => $updated->id],
 		);
 	}
