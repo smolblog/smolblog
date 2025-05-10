@@ -43,10 +43,6 @@ class SchemaRegistry implements Registry {
 		$expectedSchema
 			->createTable($this->env->tableName('db_manager'))
 			->addColumn('schema_version', 'string', ['length' => 32]);
-		// echo implode(
-		// array: $expectedSchema->toSql($this->env->getConnection()->getDatabasePlatform()),
-		// separator: PHP_EOL,
-		// );
 		$schemaVersion = md5(implode(
 			array: $expectedSchema->toSql($this->env->getConnection()->getDatabasePlatform()),
 			separator: ' '

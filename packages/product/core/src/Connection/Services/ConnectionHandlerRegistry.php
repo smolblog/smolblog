@@ -40,7 +40,12 @@ class ConnectionHandlerRegistry implements Registry {
 		return $this->getService($key);
 	}
 
+	/**
+	 * List the available Connection handlers.
+	 *
+	 * @return string[]
+	 */
 	public function availableConnections(): array {
-		return [];
+		return array_keys($this->library);
 	}
 }

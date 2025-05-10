@@ -47,6 +47,9 @@ class SiteService implements CommandHandlerService {
 	/**
 	 * Create a new Site
 	 *
+	 * @throws InvalidValueProperties If the ID or key is already in use.
+	 * @throws CommandNotAuthorized If the user cannot create sites.
+	 *
 	 * @param CreateSite $command Command to execute.
 	 * @return Identifier ID of created site.
 	 */
@@ -96,6 +99,9 @@ class SiteService implements CommandHandlerService {
 	/**
 	 * Set user permissions for a site.
 	 *
+	 * @throws EntityNotFound If the site does not exist.
+	 * @throws CommandNotAuthorized If the user cannot manage permissions.
+	 *
 	 * @param SetUserSitePermissions $command Command to execute.
 	 * @return void
 	 */
@@ -122,6 +128,9 @@ class SiteService implements CommandHandlerService {
 
 	/**
 	 * Update details for a site.
+	 *
+	 * @throws EntityNotFound If the site does not exist.
+	 * @throws CommandNotAuthorized If the user cannot manage settings.
 	 *
 	 * @param UpdateSiteDetails $command Command to execute.
 	 * @return void

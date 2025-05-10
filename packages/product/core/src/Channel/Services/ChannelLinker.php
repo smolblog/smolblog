@@ -34,6 +34,7 @@ class ChannelLinker implements CommandHandlerService {
 	/**
 	 * Handle the command to set permissions.
 	 *
+	 * @throws EntityNotFound Thrown when the given channel does not exist.
 	 * @throws CommandNotAuthorized Thrown when the user does not have correct permissions.
 	 *
 	 * @param AddChannelToSite $command Command to execute.
