@@ -2,8 +2,11 @@
 
 namespace Smolblog\Core\Channel\Events;
 
+use ReflectionClass;
+use ReflectionProperty;
 use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier};
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\ValueProperty;
 
 /**
  * Indicates a Channel is no longer active and has been deleted.
@@ -29,11 +32,11 @@ readonly class ChannelDeleted extends DomainEvent {
 	/**
 	 * Remove 'aggregateId' from (de)serialization.
 	 *
-	 * @return array
+	 * @param ReflectionProperty $prop  ReflectionProperty for the property being evaluated.
+	 * @param ReflectionClass    $class ReflectionClass for this class.
+	 * @return ValueProperty|null
 	 */
-	protected static function propertyInfo(): array {
-		$base = parent::propertyInfo();
-		unset($base['aggregateId']);
-		return $base;
+	protected static function getPropertyInfo(ReflectionProperty $prop, ReflectionClass $class): ?ValueProperty {
+		return ($prop->getName() === 'aggregateId') ? null : parent::getPropertyInfo(prop: $prop, class: $class);
 	}
 }
