@@ -130,7 +130,7 @@ trait SerializableValueKit {
 	protected static function propertyInfo(): array {
 		return array_map(
 			function (ValueProperty $prop) {
-				if ($prop->type === 'array' && isset($prop->items)) {
+				if (($prop->type === 'array' || $prop->type === 'map') && isset($prop->items)) {
 					$arrayType = new ArrayType(type: $prop->items);
 					return ($arrayType->isBuiltIn() || $arrayType->type === ArrayType::NO_TYPE) ? null : $arrayType;
 				}

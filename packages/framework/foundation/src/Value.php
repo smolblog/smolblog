@@ -120,7 +120,13 @@ abstract readonly class Value {
 				);
 			}
 
-			$params['items'] = $arrayType->type;
+			if ($arrayType->isMap) {
+				$params['type'] = 'map';
+			}
+
+			if ($arrayType->type !== ArrayType::NO_TYPE) {
+				$params['items'] = $arrayType->type;
+			}
 		}
 
 		return new ValueProperty(...$params);
