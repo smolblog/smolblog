@@ -4,6 +4,7 @@ namespace Smolblog\Foundation\Value\Messages;
 
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
 
 /**
@@ -31,7 +32,7 @@ final readonly class UnknownDomainEvent extends DomainEvent {
 		Identifier $userId,
 		?Identifier $aggregateId = null,
 		?Identifier $entityId = null,
-		public array $props = [],
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $props = [],
 	) {
 		parent::__construct($userId, $id, $timestamp, $aggregateId, $entityId);
 	}

@@ -8,6 +8,7 @@ use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Indicate that a new piece of media has been uploaded and processed.
@@ -45,7 +46,7 @@ readonly class MediaCreated extends DomainEvent {
 		public string $accessibilityText,
 		public MediaType $mediaType,
 		public string $handler,
-		public array $fileDetails,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $fileDetails,
 		?Identifier $id = null,
 		?DateTimeField $timestamp = null,
 		?Identifier $mediaUserId = null,

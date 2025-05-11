@@ -2,12 +2,12 @@
 
 namespace Smolblog\Core\Content\Commands;
 
-use Smolblog\Api\ArrayType;
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\Command;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Update the given content with new information. Will replace all fields with the given values, including omitted

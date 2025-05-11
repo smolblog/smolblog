@@ -6,6 +6,7 @@ use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\Url;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Denotes that an asynchronous content push was successful and provides any applicable URL and/or details.
@@ -35,7 +36,7 @@ readonly class ContentPushSucceeded extends ContentPushedToChannel {
 		?DateTimeField $timestamp = null,
 		?Identifier $entityId = null,
 		?Url $url = null,
-		array $details = [],
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] array $details = [],
 	) {
 		parent::__construct(
 			content: $content,

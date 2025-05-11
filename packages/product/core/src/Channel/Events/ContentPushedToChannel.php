@@ -8,6 +8,7 @@ use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Indicates that the given Content has been pushed to the given channel.
@@ -39,7 +40,7 @@ readonly class ContentPushedToChannel extends DomainEvent {
 		?Identifier $entityId = null,
 		?Identifier $processId = null,
 		public ?Url $url = null,
-		public array $details = [],
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details = [],
 	) {
 		parent::__construct(
 			userId: $userId,
