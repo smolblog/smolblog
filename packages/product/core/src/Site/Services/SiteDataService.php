@@ -26,12 +26,12 @@ class SiteDataService implements Service {
 	/**
 	 * Get detailed information on the given site. User must be able to manage settings on the site.
 	 *
-	 * @param Identifier $siteId        Site to query.
-	 * @param Identifier $currentUserId User making the query.
+	 * @param Identifier $siteId Site to query.
+	 * @param Identifier $userId User making the query.
 	 * @return Site|null
 	 */
-	public function siteById(Identifier $siteId, Identifier $currentUserId): ?Site {
-		if (!$this->perms->canManageSettings(userId: $currentUserId, siteId: $siteId)) {
+	public function siteById(Identifier $siteId, Identifier $userId): ?Site {
+		if (!$this->perms->canManageSettings(userId: $userId, siteId: $siteId)) {
 			return null;
 		}
 

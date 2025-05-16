@@ -23,15 +23,15 @@ class ConnectionDataService implements Service {
 	/**
 	 * Get all Connections owned by a user. Current user must be the user or have canManageOtherConnections.
 	 *
-	 * @param Identifier $userId        User being queried.
-	 * @param Identifier $currentUserId User making the request.
+	 * @param Identifier $connectionUserId User being queried.
+	 * @param Identifier $userId           User making the request.
 	 * @return array
 	 */
-	public function connectionsForUser(Identifier $userId, Identifier $currentUserId): array {
-		if ($userId != $currentUserId && !$this->perms->canManageOtherConnections($currentUserId)) {
+	public function connectionsForUser(Identifier $connectionUserId, Identifier $userId): array {
+		if ($connectionUserId != $userId && !$this->perms->canManageOtherConnections($userId)) {
 			return [];
 		}
 
-		return $this->repo->connectionsForUser($userId);
+		return $this->repo->connectionsForUser($connectionUserId);
 	}
 }

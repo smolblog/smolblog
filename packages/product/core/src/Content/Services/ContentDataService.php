@@ -29,36 +29,36 @@ class ContentDataService implements Service {
 	/**
 	 * Fetch the list of content available to this user.
 	 *
-	 * @param Identifier $siteId        Site to retrieve content for.
-	 * @param Identifier $currentUserId User making the request.
+	 * @param Identifier $siteId Site to retrieve content for.
+	 * @param Identifier $userId User making the request.
 	 * @return array
 	 */
-	public function contentList(Identifier $siteId, Identifier $currentUserId): array {
-		if ($this->perms->canEditAllContent(userId: $currentUserId, siteId: $siteId)) {
+	public function contentList(Identifier $siteId, Identifier $userId): array {
+		if ($this->perms->canEditAllContent(userId: $userId, siteId: $siteId)) {
 			// Show all content.
 			return $this->repo->contentList(forSite: $siteId);
 		}
 
 		// Show only this user's content.
-		return $this->repo->contentList(forSite: $siteId, ownedByUser: $currentUserId);
+		return $this->repo->contentList(forSite: $siteId, ownedByUser: $userId);
 	}
 
 	/**
 	 * Get an individual piece of content.
 	 *
-	 * @param Identifier $contentId     Content to retrieve.
-	 * @param Identifier $currentUserId User making the request.
+	 * @param Identifier $contentId Content to retrieve.
+	 * @param Identifier $userId    User making the request.
 	 * @return Content|null Null if content does not exist or user does not have permission.
 	 */
-	public function contentById(Identifier $contentId, Identifier $currentUserId): ?Content {
+	public function contentById(Identifier $contentId, Identifier $userId): ?Content {
 		$content = $this->repo->contentById($contentId);
 		if (!isset($content)) {
 			return null;
 		}
 
 		if (
-			$content->userId == $currentUserId ||
-			$this->perms->canEditAllContent(userId: $currentUserId, siteId: $content->siteId)
+			$content->userId == $userId ||
+			$this->perms->canEditAllContent(userId: $userId, siteId: $content->siteId)
 		) {
 			return $content;
 		}

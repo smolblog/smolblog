@@ -30,12 +30,12 @@ class ChannelDataService implements Service {
 	/**
 	 * Get the channels the given site is assigned to.
 	 *
-	 * @param Identifier $siteId        Site to get channels for.
-	 * @param Identifier $currentUserId User making the query.
+	 * @param Identifier $siteId Site to get channels for.
+	 * @param Identifier $userId User making the query.
 	 * @return array
 	 */
-	public function channelsForSite(Identifier $siteId, Identifier $currentUserId): array {
-		if (!$this->sitePerms->canManageChannels(userId: $currentUserId, siteId: $siteId)) {
+	public function channelsForSite(Identifier $siteId, Identifier $userId): array {
+		if (!$this->sitePerms->canManageChannels(userId: $userId, siteId: $siteId)) {
 			return [];
 		}
 
@@ -47,12 +47,12 @@ class ChannelDataService implements Service {
 	 *
 	 * This will include channels enabled by the user's Connections.
 	 *
-	 * @param Identifier $userId        User to get chnnels for.
-	 * @param Identifier $currentUserId User making the query.
+	 * @param Identifier $channelUserId User to get chnnels for.
+	 * @param Identifier $userId        User making the query.
 	 * @return array
 	 */
-	public function availableChannels(Identifier $userId, Identifier $currentUserId): array {
-		if ($userId != $currentUserId && !$this->globalPerms->canManageOtherConnections($currentUserId)) {
+	public function availableChannels(Identifier $channelUserId, Identifier $userId): array {
+		if ($channelUserId != $userId && !$this->globalPerms->canManageOtherConnections($userId)) {
 			return [];
 		}
 
