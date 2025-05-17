@@ -11,7 +11,7 @@ use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Events\ConnectionEstablished;
 use Smolblog\Core\Content\Events\ContentCreated;
-use Smolblog\Core\Content\Fields\Markdown;
+use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\CoreDataSql\Test\DataTestBase;
 use Smolblog\Foundation\Value\Messages\DomainEvent;

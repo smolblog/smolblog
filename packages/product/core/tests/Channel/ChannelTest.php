@@ -4,7 +4,7 @@ namespace Smolblog\Core\Channel\Entities;
 
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Content\Entities\Content;
-use Smolblog\Core\Content\Fields\Markdown;
+use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Test\TestCase;

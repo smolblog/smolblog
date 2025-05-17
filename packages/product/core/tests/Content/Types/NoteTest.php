@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Note;
 
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Core\Content\Fields\Markdown;
+use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Test\ContentTypeTest;
 
 final class NoteTest extends ContentTypeTest {

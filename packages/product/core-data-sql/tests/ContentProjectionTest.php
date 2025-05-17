@@ -12,7 +12,7 @@ use Smolblog\Core\Content\Events\ContentCreated;
 use Smolblog\Core\Content\Events\ContentDeleted;
 use Smolblog\Core\Content\Events\ContentUpdated;
 use Smolblog\Core\Content\Extensions\Tags\Tags;
-use Smolblog\Core\Content\Fields\Markdown;
+use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\CoreDataSql\Test\DataTestBase;
 use Smolblog\Foundation\Value\Fields\Url;
