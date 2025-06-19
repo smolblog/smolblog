@@ -8,7 +8,7 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\{ArrayType, DisplayName, Target};
 use Smolblog\Foundation\Value\ValueProperty;
 use Throwable;
 
@@ -106,6 +106,7 @@ abstract readonly class Value {
 		}
 
 		$params = [
+			'name' => $prop->getName(),
 			'type' => $type->getName(),
 		];
 
@@ -127,6 +128,18 @@ abstract readonly class Value {
 			if ($arrayType->type !== ArrayType::NO_TYPE) {
 				$params['items'] = $arrayType->type;
 			}
+		}
+
+		$targetReflection = $prop->getAttributes(Target::class, ReflectionAttribute::IS_INSTANCEOF);
+		$target = ($targetReflection[0] ?? null)?->newInstance() ?? null;
+		if ($target) {
+			$params['target'] = $target;
+		}
+
+		$nameReflection = $prop->getAttributes(DisplayName::class, ReflectionAttribute::IS_INSTANCEOF);
+		$displayName = ($nameReflection[0] ?? null)?->newInstance() ?? null;
+		if ($displayName) {
+			$params['displayName'] = $displayName;
 		}
 
 		return new ValueProperty(...$params);
