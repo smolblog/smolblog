@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Test\TestCase;
 
 readonly class ValueTestBase extends Value implements SerializableValue {

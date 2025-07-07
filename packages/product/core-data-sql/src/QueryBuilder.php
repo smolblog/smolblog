@@ -6,6 +6,8 @@ use Doctrine\DBAL\Query\QueryBuilder as DBALQueryBuilder;
 
 /**
  * A shim over the Doctrine QueryBuilder that adds the table prefix where appropriate.
+ *
+ * @codeCoverageIgnore
  */
 class QueryBuilder extends DBALQueryBuilder {
 	/**

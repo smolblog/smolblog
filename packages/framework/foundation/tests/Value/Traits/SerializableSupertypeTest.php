@@ -46,6 +46,15 @@ final class SerializableSupertypeTest extends TestCase {
 		$this->assertEquals($array, $object->serializeValue());
 	}
 
+	#[TestDox('It will add a type field to the reflection for the supertype only.')]
+	public function testReflection() {
+		$supertype = ExampleSupertype::reflection();
+		$subtype = ExampleSubtype::reflection();
+
+		$this->assertArrayHasKey('type', $supertype);
+		$this->assertArrayNotHasKey('type', $subtype);
+	}
+
 	public static function knownTypes(): array {
 		return [
 			'the test subclass' => [
