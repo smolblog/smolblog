@@ -5,7 +5,8 @@ namespace Smolblog\Core\Connection\Entities;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
+use Smolblog\Foundation\Value\Attributes\Derived;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
@@ -31,6 +32,14 @@ readonly class Connection extends Value implements Entity, SerializableValue {
 	}
 
 	/**
+	 * Generated ID (from handler and handlerKey)
+	 *
+	 * @var Identifier
+	 */
+	#[Derived]
+	public Identifier $id;
+
+	/**
 	 * Create the Connection.
 	 *
 	 * @param Identifier $userId      ID of the user this Connection belongs to.
@@ -46,6 +55,7 @@ readonly class Connection extends Value implements Entity, SerializableValue {
 		public readonly string $displayName,
 		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public readonly array $details,
 	) {
+		$this->id = self::buildId($handler, $handlerKey);
 	}
 
 	/**

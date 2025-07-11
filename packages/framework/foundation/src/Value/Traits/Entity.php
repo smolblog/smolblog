@@ -9,9 +9,17 @@ use Smolblog\Foundation\Value\Fields\Identifier;
  */
 interface Entity {
 	/**
+	 * All entities have a unique ID.
+	 *
+	 * @var Identifier
+	 */
+	public Identifier $id { get; }
+
+	/**
 	 * Get the entity ID.
 	 *
 	 * Not all Entities have a hard-coded ID. Some may be derived from other data. Thus, a function.
+	 * @deprecated use the $id property instead.
 	 *
 	 * @return Identifier
 	 */

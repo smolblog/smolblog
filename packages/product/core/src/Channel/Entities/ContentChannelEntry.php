@@ -2,6 +2,8 @@
 
 namespace Smolblog\Core\Channel\Entities;
 
+use ReflectionClass;
+use ReflectionProperty;
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
@@ -10,6 +12,7 @@ use Smolblog\Foundation\Value\Traits\ArrayType;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Foundation\Value\ValueProperty;
 
 /**
  * The result of a successful push of content to a channel.
@@ -35,6 +38,13 @@ readonly class ContentChannelEntry extends Value implements SerializableValue, E
 	}
 
 	/**
+	 * Generated ID (from content and channel IDs)
+	 *
+	 * @var Identifier
+	 */
+	public Identifier $id;
+
+	/**
 	 * Construct the entry.
 	 *
 	 * @param Identifier $contentId ID of the content.
@@ -48,6 +58,7 @@ readonly class ContentChannelEntry extends Value implements SerializableValue, E
 		public ?Url $url = null,
 		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details = [],
 	) {
+		$this->id = self::buildId($contentId, $channelId);
 	}
 
 
@@ -58,5 +69,16 @@ readonly class ContentChannelEntry extends Value implements SerializableValue, E
 	 */
 	public function getId(): Identifier {
 		return self::buildId(contentId: $this->contentId, channelId: $this->channelId);
+	}
+
+	/**
+	 * Remove 'id' from (de)serialization.
+	 *
+	 * @param ReflectionProperty $prop  ReflectionProperty for the property being evaluated.
+	 * @param ReflectionClass    $class ReflectionClass for this class.
+	 * @return ValueProperty|null
+	 */
+	protected static function getPropertyInfo(ReflectionProperty $prop, ReflectionClass $class): ?ValueProperty {
+		return ($prop->getName() === 'id') ? null : parent::getPropertyInfo(prop: $prop, class: $class);
 	}
 }
