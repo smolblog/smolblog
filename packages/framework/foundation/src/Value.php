@@ -73,7 +73,7 @@ abstract readonly class Value {
 		$propReflections = $class->getProperties(ReflectionProperty::IS_PUBLIC);
 		$props = [];
 		foreach ($propReflections as $prop) {
-			$info = self::getPropertyInfo($prop, $class);
+			$info = static::getPropertyInfo($prop, $class);
 			if (isset($info)) {
 				$props[$prop->getName()] = $info;
 			}

@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Extensions\Warnings;
 
 use Smolblog\Core\Content\Entities\ContentExtension;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Tag content with content warnings.

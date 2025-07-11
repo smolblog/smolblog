@@ -6,7 +6,7 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 use Smolblog\Foundation\Value\Fields\Url;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;

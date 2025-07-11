@@ -4,7 +4,7 @@ namespace Smolblog\Core\Channel\Entities;
 
 use Override;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 

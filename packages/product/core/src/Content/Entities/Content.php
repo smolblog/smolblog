@@ -4,7 +4,8 @@ namespace Smolblog\Core\Content\Entities;
 
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\{ArrayType, Entity, EntityKit, SerializableValue, SerializableValueKit};
+use Smolblog\Foundation\Value\Attributes\ArrayType;
+use Smolblog\Foundation\Value\Traits\{Entity, EntityKit, SerializableValue, SerializableValueKit};
 use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier, DateIdentifier, Url};
 
 /**
