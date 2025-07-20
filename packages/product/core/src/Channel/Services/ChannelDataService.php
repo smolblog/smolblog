@@ -32,10 +32,13 @@ class ChannelDataService implements Service {
 	 *
 	 * @param Identifier $siteId Site to get channels for.
 	 * @param Identifier $userId User making the query.
-	 * @return array
+	 * @return Channel[]
 	 */
 	public function channelsForSite(Identifier $siteId, Identifier $userId): array {
-		if (!$this->sitePerms->canManageChannels(userId: $userId, siteId: $siteId)) {
+		if (
+			!$this->sitePerms->canManageChannels(userId: $userId, siteId: $siteId)
+			&& !$this->sitePerms->canPushContent(userId: $userId, siteId: $siteId)
+		) {
 			return [];
 		}
 

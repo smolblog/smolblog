@@ -47,7 +47,7 @@ class ChannelLinker implements CommandHandlerService {
 			throw new EntityNotFound(entityId: $command->channelId, entityName: Channel::class);
 		}
 		if (
-			!($channel->userId == $command->userId) ||
+			!(!isset($channel->userId) || $channel->userId == $command->userId) ||
 			!($this->perms->canManageChannels(userId: $command->userId, siteId: $command->siteId))
 		) {
 			throw new CommandNotAuthorized(originalCommand: $command);
