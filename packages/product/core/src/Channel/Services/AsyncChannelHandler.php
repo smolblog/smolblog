@@ -11,8 +11,8 @@ use Smolblog\Core\Channel\Events\ContentPushStarted;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Channel\Jobs\ContentPushJob;
 use Smolblog\Foundation\Service\Job\JobManager;
-use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 /**
  * Provides a set of good defaults for async channel handlers.
@@ -46,7 +46,7 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 		Channel $channel,
 		Identifier $userId
 	): void {
-		$processId = new DateIdentifier();
+		$processId = new RandomIdentifier();
 		$startEvent = new ContentPushStarted(
 			contentId: $content->id,
 			channelId: $channel->getId(),

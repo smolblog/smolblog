@@ -8,7 +8,7 @@ use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Indicates that the given Content has been pushed to the given channel.

@@ -6,7 +6,7 @@ use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\Url;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Denotes that an asynchronous content push was successful and provides any applicable URL and/or details.
