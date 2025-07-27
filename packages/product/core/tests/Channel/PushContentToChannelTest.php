@@ -213,7 +213,6 @@ final class PushContentToChannelTest extends ChannelTestBase {
 		], checkProcess: true);
 
 		$this->app->execute($command);
-		$this->defaultProjectionMock->handlePushEvent($pushEvent);
 	}
 
 	public function testDefaultProjectionWillDispatchFailureEvent() {
@@ -264,7 +263,6 @@ final class PushContentToChannelTest extends ChannelTestBase {
 		], checkProcess: true);
 
 		$this->app->execute($command);
-		$this->defaultProjectionMock->handlePushEvent($pushEvent);
 	}
 
 	public function testItFailsIfTheContentIsMissing() {

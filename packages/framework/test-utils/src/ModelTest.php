@@ -2,6 +2,7 @@
 
 namespace Smolblog\Test;
 
+use Crell\Tukio\Dispatcher;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
@@ -30,7 +31,8 @@ class ModelTest extends AppTest {
 		$this->mockEventBus->
 			expects($this->exactly(count($events)))->
 			method('dispatch')->
-			with(new DomainEventChecker($events, $checkProcess));
+			with(new DomainEventChecker($events, $checkProcess))->
+			willReturnCallback(fn($event) => $this->app->container->get(Dispatcher::class)->dispatch($event));
 	}
 
 	protected function expectNoEvents() {
