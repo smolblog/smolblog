@@ -6,6 +6,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
+use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Channel\Events\ContentPushFailed;
 use Smolblog\Core\Channel\Events\ContentPushStarted;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
@@ -47,8 +48,8 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 		Identifier $userId
 	): void {
 		$processId = new RandomIdentifier();
-		$startEvent = new ContentPushStarted(
-			contentId: $content->id,
+		$startEvent = new ContentPushedToChannel(
+			content: $content,
 			channelId: $channel->getId(),
 			userId: $userId,
 			aggregateId: $content->siteId,
@@ -103,7 +104,7 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 		}
 
 		$this->eventBus->dispatch(new ContentPushSucceeded(
-			content: $content,
+			contentId: $content->id,
 			channelId: $channel->getId(),
 			processId: $processId,
 			userId: $userId,
