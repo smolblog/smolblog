@@ -19,7 +19,7 @@ class Model extends DomainModel {
 	public const AUTO_SERVICES = [
 		CommandHandlerRegistry::class,
 		EventListenerRegistry::class,
-		TestJobManager::class
+		TestJobManager::class,
 	];
 
 	public const SERVICES = [

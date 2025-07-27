@@ -166,7 +166,7 @@ final class CreateContentTest extends ContentTestBase {
 		$this->contentRepo->method('hasContentWithId')->willReturn(true, true, false);
 		$this->perms->method('canCreateContent')->willReturn(true);
 
-		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(ContentCreated::class));
+		$this->expectEventOfType(ContentCreated::class);
 
 		$this->app->execute($command);
 	}
@@ -181,7 +181,7 @@ final class CreateContentTest extends ContentTestBase {
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
 		$this->perms->method('canCreateContent')->willReturn(true);
 
-		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(ContentCreated::class));
+		$this->expectEventOfType(ContentCreated::class);
 
 		$this->app->execute($command);
 	}

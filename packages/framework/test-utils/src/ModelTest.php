@@ -5,7 +5,6 @@ namespace Smolblog\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Test\BasicApp\App;
 use Smolblog\Test\Constraints\DomainEventChecker;
 
 class ModelTest extends AppTest {
@@ -36,5 +35,9 @@ class ModelTest extends AppTest {
 
 	protected function expectNoEvents() {
 		$this->mockEventBus->expects($this->never())->method('dispatch');
+	}
+
+	protected function expectEventOfType(string $type) {
+		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf($type));
 	}
 }
