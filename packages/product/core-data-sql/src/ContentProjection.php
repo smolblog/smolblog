@@ -4,6 +4,7 @@ namespace Smolblog\CoreDataSql;
 
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
+use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Data\ContentStateManager;
 use Smolblog\Core\Content\Entities\Content;
@@ -198,12 +199,12 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	/**
 	 * Update an entry's links after a push.
 	 *
-	 * @param ContentPushedToChannel $event Event to handle.
+	 * @param ContentPushSucceeded $event Event to handle.
 	 * @return void
 	 */
 	#[ProjectionListener()]
-	public function onContentPushedToChannel(ContentPushedToChannel $event): void {
-		$current = $this->contentById($event->content->id);
+	public function onContentPushSucceeded(ContentPushSucceeded $event): void {
+		$current = $this->contentById($event->contentId);
 		if (!isset($current)) {
 			return;
 		}

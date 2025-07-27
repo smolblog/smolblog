@@ -27,7 +27,6 @@ readonly class ContentPushedToChannel extends DomainEvent {
 	 * @param DateTimeField|null $timestamp   Optional timestamp for the event.
 	 * @param Identifier|null    $entityId    ContentChannelEntry ID; will be created if not provided.
 	 * @param Identifier|null    $processId   Identifier for this push process if applicable.
-	 * @param Url|null           $url         Optional URL of the content on the channel.
 	 * @param array              $details     Channel-specific details.
 	 */
 	public function __construct(
@@ -39,7 +38,6 @@ readonly class ContentPushedToChannel extends DomainEvent {
 		?DateTimeField $timestamp = null,
 		?Identifier $entityId = null,
 		?Identifier $processId = null,
-		public ?Url $url = null,
 		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details = [],
 	) {
 		parent::__construct(
@@ -49,20 +47,6 @@ readonly class ContentPushedToChannel extends DomainEvent {
 			aggregateId: $aggregateId,
 			entityId: $entityId ?? ContentChannelEntry::buildId(contentId: $content->id, channelId: $channelId),
 			processId: $processId,
-		);
-	}
-
-	/**
-	 * Get the ContentChannelEntry object created by this event.
-	 *
-	 * @return ContentChannelEntry
-	 */
-	public function getEntryObject(): ContentChannelEntry {
-		return new ContentChannelEntry(
-			contentId: $this->content->id,
-			channelId: $this->channelId,
-			url: $this->url,
-			details: $this->details,
 		);
 	}
 }

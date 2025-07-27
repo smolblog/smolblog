@@ -6,6 +6,7 @@ require_once __DIR__ . '/_base.php';
 
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
+use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\ContentCanonicalUrlSet;
 use Smolblog\Core\Content\Events\ContentCreated;
@@ -149,7 +150,7 @@ final class ContentProjectionTest extends DataTestBase {
 		);
 	}
 
-	public function testContentPushedToChannel() {
+	public function testContentPushSucceeded() {
 		$projection = $this->app->container->get(ContentProjection::class);
 		$env = $this->app->container->get(DatabaseEnvironment::class);
 		$db = $env->getConnection();
@@ -170,11 +171,12 @@ final class ContentProjectionTest extends DataTestBase {
 			details: ['wpid' => '1234'],
 		);
 		$contentOne = $contentBase->with(links: [$entryOne->getId()->toString() => $entryOne]);
-		$eventOne = new ContentPushedToChannel(
-			content: $contentBase,
+		$eventOne = new ContentPushSucceeded(
+			contentId: $contentBase->id,
 			channelId: $entryOne->channelId,
 			userId: $contentBase->userId,
 			aggregateId: $contentBase->siteId,
+			processId: $this->randomId(),
 			url: $entryOne->url,
 			details: $entryOne->details,
 		);
@@ -188,11 +190,12 @@ final class ContentProjectionTest extends DataTestBase {
 			$entryOne->getId()->toString() => $entryOne,
 			$entryTwo->getId()->toString() => $entryTwo,
 		]);
-		$eventTwo = new ContentPushedToChannel(
-			content: $contentOne,
+		$eventTwo = new ContentPushSucceeded(
+			contentId: $contentOne->id,
 			channelId: $entryTwo->channelId,
 			userId: $contentBase->userId,
 			aggregateId: $contentBase->siteId,
+			processId: $this->randomId(),
 			details: $entryTwo->details,
 		);
 
@@ -201,11 +204,12 @@ final class ContentProjectionTest extends DataTestBase {
 			$entryOne->getId()->toString() => $entryThree,
 			$entryTwo->getId()->toString() => $entryTwo,
 		]);
-		$eventThree = new ContentPushedToChannel(
-			content: $contentTwo,
+		$eventThree = new ContentPushSucceeded(
+			contentId: $contentTwo->id,
 			channelId: $entryThree->channelId,
 			userId: $contentBase->userId,
 			aggregateId: $contentBase->siteId,
+			processId: $this->randomId(),
 			url: $entryThree->url,
 			details: $entryThree->details,
 		);
@@ -258,12 +262,13 @@ final class ContentProjectionTest extends DataTestBase {
 		);
 		$this->assertFalse($projection->hasContentWithId($missingContent->id));
 
-		$projection->onContentPushedToChannel(
-			new ContentPushedToChannel(
-				content: $missingContent,
+		$projection->onContentPushSucceeded(
+			new ContentPushSucceeded(
+				contentId: $missingContent->id,
 				channelId: $this->randomId(),
 				userId: $missingContent->userId,
 				aggregateId: $missingContent->siteId,
+				processId: $this->randomId(),
 			)
 		);
 		$this->assertFalse($projection->hasContentWithId($missingContent->id));

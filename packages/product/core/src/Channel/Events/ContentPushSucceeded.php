@@ -48,4 +48,18 @@ readonly class ContentPushSucceeded extends DomainEvent {
 			processId: $processId,
 		);
 	}
+
+	/**
+	 * Get the ContentChannelEntry object created by this event.
+	 *
+	 * @return ContentChannelEntry
+	 */
+	public function getEntryObject(): ContentChannelEntry {
+		return new ContentChannelEntry(
+			contentId: $this->contentId,
+			channelId: $this->channelId,
+			url: $this->url,
+			details: $this->details,
+		);
+	}
 }
