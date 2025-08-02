@@ -68,6 +68,13 @@ trait SerializableSupertypeKit {
 		}
 	}
 
+	/**
+	 * Get type information, including a 'type' property used in (de)serialization.
+	 *
+	 * Will return an empty array if the class does not extend Value.
+	 *
+	 * @return ValueProperty[]
+	 */
 	public static function reflection(): array {
 		if (!is_a(self::class, Value::class, allow_string: true)) {
 			return [];
