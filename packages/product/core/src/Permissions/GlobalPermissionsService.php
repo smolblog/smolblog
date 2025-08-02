@@ -12,4 +12,12 @@ interface GlobalPermissionsService {
 	 * @return boolean
 	 */
 	public function canCreateSite(Identifier $userId): bool;
+
+	/**
+	 * Can the given user manage other users' Connections?
+	 *
+	 * @param Identifier $userId User to check.
+	 * @return boolean
+	 */
+	public function canManageOtherConnections(Identifier $userId): bool;
 }

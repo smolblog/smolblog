@@ -6,6 +6,7 @@ use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Indicates a Connection has been formed or re-formed between a user account and an external handler.
@@ -27,7 +28,7 @@ readonly class ConnectionEstablished extends DomainEvent {
 		public readonly string $handler,
 		public readonly string $handlerKey,
 		public readonly string $displayName,
-		public readonly array $details,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public readonly array $details,
 		Identifier $userId,
 		?Identifier $entityId = null,
 		?Identifier $id = null,

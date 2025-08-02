@@ -54,6 +54,8 @@
 		<exclude name="Squiz.Commenting.PostStatementComment.Found"/>
 		<!-- Same with an annotation. -->
 		<exclude name="Squiz.Commenting.PostStatementComment.AnnotationFound"/>
+
+		<exclude-pattern>integration-tests/*</exclude-pattern>
 	</rule>
 
 	<!-- Make structures look nicer -->

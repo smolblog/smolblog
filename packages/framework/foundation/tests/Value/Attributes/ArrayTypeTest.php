@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\Value\Traits;
+namespace Smolblog\Foundation\Value\Attributes;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

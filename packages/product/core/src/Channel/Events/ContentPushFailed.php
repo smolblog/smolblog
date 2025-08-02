@@ -6,6 +6,7 @@ use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Denotes that an asychronous content push has failed and provides a user-facing message and applicable details.
@@ -35,7 +36,7 @@ readonly class ContentPushFailed extends DomainEvent {
 		?Identifier $id = null,
 		?DateTimeField $timestamp = null,
 		?Identifier $entityId = null,
-		public array $details = [],
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details = [],
 	) {
 		parent::__construct(
 			userId: $userId,

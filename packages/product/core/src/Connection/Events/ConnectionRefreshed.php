@@ -5,6 +5,7 @@ namespace Smolblog\Core\Connection\Events;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Indicates a Connection has been formed or re-formed between a user account and an external handler.
@@ -20,7 +21,7 @@ readonly class ConnectionRefreshed extends DomainEvent {
 	 * @param DateTimeField|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		public readonly array $details,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public readonly array $details,
 		Identifier $entityId,
 		Identifier $userId,
 		?Identifier $id = null,

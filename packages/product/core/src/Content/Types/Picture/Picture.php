@@ -4,10 +4,11 @@ namespace Smolblog\Core\Content\Types\Picture;
 
 use Smolblog\Core\Content\ContentUtilities;
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Core\Content\Fields\Markdown;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Fields\Markdown;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * An embedded post from another site, such as YouTube or Tumblr.
@@ -24,7 +25,7 @@ readonly class Picture extends ContentType {
 	 * @param Markdown|null $caption  Optional caption for the Picture.
 	 */
 	public function __construct(
-		public array $pictures,
+		#[ArrayType(Media::class)] public array $pictures,
 		public ?Markdown $caption = null,
 	) {
 		if (empty($pictures)) {

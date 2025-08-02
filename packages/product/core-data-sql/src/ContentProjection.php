@@ -2,13 +2,14 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
+use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Data\ContentStateManager;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\{ContentCanonicalUrlSet, ContentCreated, ContentDeleted, ContentUpdated};
+use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Service\Event\ProjectionListener;
 use Smolblog\Foundation\Value\Fields\Identifier;
 
@@ -19,19 +20,22 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	/**
 	 * Create the content table.
 	 *
-	 * @param Schema $schema Schema to add the content table to.
+	 * @param Schema   $schema    Schema to add the content table to.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema {
-		$table = $schema->createTable('content');
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
+		$table = $schema->createTable($tableName('content'));
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('content_uuid', 'guid');
 		$table->addColumn('site_uuid', 'guid');
+		$table->addColumn('user_uuid', 'guid');
 		$table->addColumn('content_obj', 'json');
 
 		$table->setPrimaryKey(['dbid']);
 		$table->addUniqueIndex(['content_uuid']);
 		$table->addIndex(['site_uuid']);
+		$table->addIndex(['user_uuid']);
 
 		return $schema;
 	}
@@ -39,9 +43,9 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	/**
 	 * Create the service.
 	 *
-	 * @param Connection $db Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private Connection $db) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -51,8 +55,12 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @return boolean
 	 */
 	public function hasContentWithId(Identifier $contentId): bool {
-		$query = $this->db->createQueryBuilder();
-		$query->select('1')->from('content')->where('content_uuid = ?')->setParameter(0, $contentId);
+		$query = $this->db->createUnprefixedQueryBuilder();
+		$query
+			->select('1')
+			->from($this->db->tableName('content'))
+			->where('content_uuid = ?')
+			->setParameter(0, $contentId);
 		$result = $query->fetchOne();
 
 		return $result ? true : false;
@@ -65,8 +73,12 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * @return Content|null
 	 */
 	public function contentById(Identifier $contentId): ?Content {
-		$query = $this->db->createQueryBuilder();
-		$query->select('content_obj')->from('content')->where('content_uuid = ?')->setParameter(0, $contentId);
+		$query = $this->db->createUnprefixedQueryBuilder();
+		$query
+			->select('content_obj')
+			->from($this->db->tableName('content'))
+			->where('content_uuid = ?')
+			->setParameter(0, $contentId);
 		$result = $query->fetchOne();
 
 		if ($result === false) {
@@ -77,6 +89,37 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		return is_string($result) ?
 			Content::fromJson($result) :
 			Content::deserializeValue($result); // @codeCoverageIgnore
+	}
+
+	/**
+	 * Retrieve a list of Content objects
+	 *
+	 * @param Identifier      $forSite     Content assigned to the given site.
+	 * @param Identifier|null $ownedByUser Content owned by the given user.
+	 * @return array Content objects meeting the given parameters.
+	 */
+	public function contentList(Identifier $forSite, ?Identifier $ownedByUser = null): array {
+		$query = $this->db->createQueryBuilder();
+		$query
+			->select('content_obj')
+			->from('content')
+			->where('site_uuid = :site')
+			->setParameter('site', $forSite)
+			->orderBy('dbid', 'DESC');
+
+		if (isset($ownedByUser)) {
+			$query
+				->andWhere('user_uuid = :user')
+				->setParameter('user', $ownedByUser);
+		}
+		$results = $query->fetchFirstColumn();
+
+		return array_map(
+			fn($ser) => is_string($ser) ?
+				Content::fromJson($ser) :
+				Content::deserializeValue($ser), // @codeCoverageIgnore
+			$results
+		);
 	}
 
 	/**
@@ -92,6 +135,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$this->db->insert('content', [
 				'content_uuid' => $content->id,
 				'site_uuid' => $content->siteId,
+				'user_uuid' => $content->userId,
 				'content_obj' => json_encode($content),
 		]);
 	}
@@ -115,7 +159,11 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 			publishTimestamp: $event->publishTimestamp,
 			extensions: $event->extensions,
 		);
-		$this->db->update('content', ['content_obj' => json_encode($updated)], ['content_uuid' => $updated->id]);
+		$this->db->update(
+			'content',
+			['content_obj' => json_encode($updated), 'user_uuid' => $updated->userId],
+			['content_uuid' => $updated->id],
+		);
 	}
 
 	/**
@@ -143,18 +191,22 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		}
 
 		$updated = $current->with(canonicalUrl: $event->url);
-		$this->db->update('content', ['content_obj' => json_encode($updated)], ['content_uuid' => $updated->id]);
+		$this->db->update(
+			'content',
+			['content_obj' => json_encode($updated)],
+			['content_uuid' => $updated->id],
+		);
 	}
 
 	/**
 	 * Update an entry's links after a push.
 	 *
-	 * @param ContentPushedToChannel $event Event to handle.
+	 * @param ContentPushSucceeded $event Event to handle.
 	 * @return void
 	 */
 	#[ProjectionListener()]
-	public function onContentPushedToChannel(ContentPushedToChannel $event): void {
-		$current = $this->contentById($event->content->id);
+	public function onContentPushSucceeded(ContentPushSucceeded $event): void {
+		$current = $this->contentById($event->contentId);
 		if (!isset($current)) {
 			return;
 		}
@@ -164,6 +216,10 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$links[$pushInfo->getId()->toString()] = $pushInfo;
 
 		$updated = $current->with(links: $links);
-		$this->db->update('content', ['content_obj' => json_encode($updated)], ['content_uuid' => $updated->id]);
+		$this->db->update(
+			'content',
+			['content_obj' => json_encode($updated)],
+			['content_uuid' => $updated->id]
+		);
 	}
 }

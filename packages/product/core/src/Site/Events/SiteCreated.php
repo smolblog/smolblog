@@ -2,11 +2,14 @@
 
 namespace Smolblog\Core\Site\Events;
 
+use ReflectionClass;
+use ReflectionProperty;
 use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Keypair;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Smolblog\Foundation\Value\ValueProperty;
 
 /**
  * Indicates a Site has been created.
@@ -52,12 +55,12 @@ readonly class SiteCreated extends DomainEvent {
 	/**
 	 * Remove 'entityId' from (de)serialization.
 	 *
-	 * @return array
+	 * @param ReflectionProperty $prop  ReflectionProperty for the property being evaluated.
+	 * @param ReflectionClass    $class ReflectionClass for this class.
+	 * @return ValueProperty|null
 	 */
-	protected static function propertyInfo(): array {
-		$base = parent::propertyInfo();
-		unset($base['entityId']);
-		return $base;
+	protected static function getPropertyInfo(ReflectionProperty $prop, ReflectionClass $class): ?ValueProperty {
+		return ($prop->getName() === 'entityId') ? null : parent::getPropertyInfo(prop: $prop, class: $class);
 	}
 
 	/**

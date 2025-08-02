@@ -3,7 +3,7 @@
 namespace Smolblog\Core\Content\Types\Article;
 
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Core\Content\Fields\Markdown;
+use Smolblog\Foundation\Value\Fields\Markdown;
 
 /**
  * A more longform piece of writing with a title.

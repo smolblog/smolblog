@@ -3,8 +3,9 @@
 namespace Smolblog\Core\Channel\Entities;
 
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
+use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Content\Entities\Content;
-use Smolblog\Core\Content\Fields\Markdown;
+use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Test\TestCase;
@@ -22,6 +23,7 @@ final class ChannelTest extends TestCase {
 			'anotherField' => ['one', 'two', 'three'],
 		];
 
+		/** @var BasicChannel */
 		$actual = Channel::deserializeValue($serialized);
 		$this->assertInstanceOf(BasicChannel::class, $actual);
 		$this->assertEquals('123', $actual->details['authKey']);
@@ -40,11 +42,12 @@ final class ChannelTest extends TestCase {
 			url: new Url('//smol.test/post'),
 			details: ['dbid' => 42],
 		);
-		$event = new ContentPushedToChannel(
-			content: $content,
+		$event = new ContentPushSucceeded(
+			contentId: $content->id,
 			channelId: $entry->channelId,
 			userId: $content->userId,
 			aggregateId: $content->siteId,
+			processId: $this->randomId(),
 			url: $entry->url,
 			details: $entry->details,
 		);

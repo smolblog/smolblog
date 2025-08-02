@@ -10,6 +10,8 @@ use ReflectionProperty;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
+use Smolblog\Foundation\Value\ValueProperty;
 use Throwable;
 
 /**
@@ -127,12 +129,17 @@ trait SerializableValueKit {
 	 * @return array
 	 */
 	protected static function propertyInfo(): array {
-		$propReflections = (new ReflectionClass(static::class))->getProperties(ReflectionProperty::IS_PUBLIC);
-		$props = [];
-		foreach ($propReflections as $prop) {
-			$props[$prop->getName()] = self::determinePropertyType($prop);
-		}
-		return $props;
+		return array_map(
+			function (ValueProperty $prop) {
+				if (($prop->type === 'array' || $prop->type === 'map') && isset($prop->items)) {
+					$arrayType = new ArrayType(type: $prop->items);
+					return ($arrayType->isBuiltIn() || $arrayType->type === ArrayType::NO_TYPE) ? null : $arrayType;
+				}
+
+				return class_exists($prop->type) ? $prop->type : null;
+			},
+			static::reflection(),
+		);
 	}
 
 	/**
@@ -163,39 +170,6 @@ trait SerializableValueKit {
 				'Change the type or override serializeValue()',
 			location: 'SerializableValueKit::serializeValue via ' . static::class
 		);
-	}
-
-	/**
-	 * Determine the type of a property if it is an object or array of objects. Will return null if the property is
-	 * a built-in type.
-	 *
-	 * @throws CodePathNotSupported If the property is a union/intersection type.
-	 *
-	 * @param ReflectionProperty $prop Property to check.
-	 * @return string|ArrayType|null
-	 */
-	private static function determinePropertyType(ReflectionProperty $prop): string|ArrayType|null {
-		$type = $prop->getType();
-		if (!isset($type) || get_class($type) !== ReflectionNamedType::class) {
-			throw new CodePathNotSupported(
-				message: 'Union/intersection types are not supported; ' .
-					'change the type or override the propertyInfo() method.',
-				location: 'SerializableValueKit::propertyInfo via' . static::class,
-			);
-		}
-
-		$typeName = $type->getName();
-		if ($type->isBuiltin() && $typeName !== 'array') {
-			return null;
-		}
-
-		if ($typeName === 'array') {
-			$attributeReflections = $prop->getAttributes(ArrayType::class, ReflectionAttribute::IS_INSTANCEOF);
-			$maybeArrayType = ($attributeReflections[0] ?? null)?->newInstance() ?? null;
-			return isset($maybeArrayType) ? ($maybeArrayType->isBuiltIn() ? null : $maybeArrayType) : null ;
-		}
-
-		return class_exists($typeName) ? $typeName : null;
 	}
 
 	/**

@@ -102,7 +102,7 @@ final class CreateSiteTest extends SiteTestBase {
 		$this->repo->method('hasSiteWithId')->willReturn(true, true, false);
 		$this->globalPerms->method('canCreateSite')->willReturn(true);
 
-		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(SiteCreated::class));
+		$this->expectEventOfType(SiteCreated::class);
 
 		$this->app->execute($command);
 	}

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Jobs;
 
+use Smolblog\Foundation\Value\Traits\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
 
 /**
@@ -22,7 +23,7 @@ readonly class BasicJob extends Job {
 	public function __construct(
 		string $service,
 		string $method,
-		public array $props,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $props,
 	) {
 		parent::__construct(service: $service, method: $method);
 	}

@@ -4,6 +4,7 @@ namespace Smolblog\Core\Connection\Entities;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
@@ -27,7 +28,7 @@ readonly class AuthRequestState extends Value implements SerializableValue {
 		public readonly string $key,
 		public readonly Identifier $userId,
 		public readonly string $handler,
-		public readonly array $info,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public readonly array $info,
 		public readonly ?string $returnToUrl = null,
 	) {
 	}

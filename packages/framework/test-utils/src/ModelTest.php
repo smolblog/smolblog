@@ -2,10 +2,10 @@
 
 namespace Smolblog\Test;
 
+use Crell\Tukio\Dispatcher;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Test\BasicApp\App;
 use Smolblog\Test\Constraints\DomainEventChecker;
 
 class ModelTest extends AppTest {
@@ -31,10 +31,15 @@ class ModelTest extends AppTest {
 		$this->mockEventBus->
 			expects($this->exactly(count($events)))->
 			method('dispatch')->
-			with(new DomainEventChecker($events, $checkProcess));
+			with(new DomainEventChecker($events, $checkProcess))->
+			willReturnCallback(fn($event) => $this->app->container->get(Dispatcher::class)->dispatch($event));
 	}
 
 	protected function expectNoEvents() {
 		$this->mockEventBus->expects($this->never())->method('dispatch');
+	}
+
+	protected function expectEventOfType(string $type) {
+		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf($type));
 	}
 }

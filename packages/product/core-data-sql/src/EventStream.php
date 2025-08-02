@@ -2,6 +2,7 @@
 
 namespace Smolblog\CoreDataSql;
 
+use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Foundation\Service\Event\EventListener;
@@ -15,11 +16,12 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	/**
 	 * Create the content table.
 	 *
-	 * @param Schema $schema Schema to add the content table to.
+	 * @param Schema   $schema    Schema to add the content table to.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema {
-		$table = $schema->createTable('event_stream');
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
+		$table = $schema->createTable($tableName('event_stream'));
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('event_uuid', 'guid');
 		$table->addColumn('timestamp', 'datetimetz_immutable');
@@ -40,9 +42,9 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	/**
 	 * Create the service.
 	 *
-	 * @param Connection $db Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private Connection $db) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -55,11 +57,11 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	public function onDomainEvent(DomainEvent $event) {
 		$this->db->insert('event_stream', [
 				'event_uuid' => $event->id,
-				'timestamp' => $event->timestamp->toString(),
-				'user_uuid' => $event->id,
-				'aggregate_uuid' => $event->id,
-				'entity_uuid' => $event->id,
-				'process_uuid' => $event->id,
+				'timestamp' => $event->timestamp->object->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.u'),
+				'user_uuid' => $event->userId,
+				'aggregate_uuid' => $event->aggregateId,
+				'entity_uuid' => $event->entityId,
+				'process_uuid' => $event->processId,
 				'event_obj' => json_encode($event),
 		]);
 	}

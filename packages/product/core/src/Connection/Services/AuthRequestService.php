@@ -66,7 +66,7 @@ class AuthRequestService implements CommandHandlerService {
 	/**
 	 * Finish the OAuth request and save the new connection and its channels.
 	 *
-	 * @throws ServiceNotRegistered When no service is registered with the given key.
+	 * @throws EntityNotFound When no existing request is found for the given key.
 	 *
 	 * @param FinishAuthRequest $request Command to execute.
 	 * @return string|null

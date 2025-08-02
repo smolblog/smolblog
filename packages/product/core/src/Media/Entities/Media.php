@@ -7,6 +7,7 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Traits\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
@@ -39,7 +40,7 @@ readonly class Media extends Value implements Entity, SerializableValue {
 		public string $accessibilityText,
 		public MediaType $type,
 		public string $handler,
-		public array $fileDetails,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $fileDetails,
 	) {
 		if (empty($this->title) || empty($this->accessibilityText)) {
 			throw new InvalidValueProperties('title and accessibilityText must not be empty.');

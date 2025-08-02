@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Connection\Entities;
 
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
 
@@ -19,6 +20,10 @@ readonly class ConnectionInitData extends Value implements SerializableValue {
 	 * @param string $state Random string to identify the request.
 	 * @param array  $info  Additional info needed by the callback.
 	 */
-	public function __construct(public string $url, public string $state, public array $info) {
+	public function __construct(
+		public string $url,
+		public string $state,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $info
+) {
 	}
 }

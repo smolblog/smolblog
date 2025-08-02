@@ -34,6 +34,7 @@ class ChannelLinker implements CommandHandlerService {
 	/**
 	 * Handle the command to set permissions.
 	 *
+	 * @throws EntityNotFound Thrown when the given channel does not exist.
 	 * @throws CommandNotAuthorized Thrown when the user does not have correct permissions.
 	 *
 	 * @param AddChannelToSite $command Command to execute.
@@ -46,7 +47,7 @@ class ChannelLinker implements CommandHandlerService {
 			throw new EntityNotFound(entityId: $command->channelId, entityName: Channel::class);
 		}
 		if (
-			!($channel->userId == $command->userId) ||
+			!(!isset($channel->userId) || $channel->userId == $command->userId) ||
 			!($this->perms->canManageChannels(userId: $command->userId, siteId: $command->siteId))
 		) {
 			throw new CommandNotAuthorized(originalCommand: $command);

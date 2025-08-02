@@ -6,6 +6,7 @@ use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\NamedIdentifier;
 use Smolblog\Foundation\Value\Fields\Url;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
@@ -45,7 +46,7 @@ readonly class ContentChannelEntry extends Value implements SerializableValue, E
 		public Identifier $contentId,
 		public Identifier $channelId,
 		public ?Url $url = null,
-		public array $details = [],
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details = [],
 	) {
 	}
 

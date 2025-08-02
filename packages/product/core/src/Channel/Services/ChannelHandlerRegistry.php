@@ -41,4 +41,13 @@ class ChannelHandlerRegistry implements Registry {
 	public function get(string $key): ChannelHandler {
 		return $this->getService($key);
 	}
+
+	/**
+	 * Get the available channel handlers.
+	 *
+	 * @return array
+	 */
+	public function availableChannelHandlers(): array {
+		return $this->configs;
+	}
 }

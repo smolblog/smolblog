@@ -7,6 +7,7 @@ use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Services\ConnectionHandler;
+use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Test\ModelTest;
 
 /**
@@ -25,18 +26,21 @@ abstract class ConnectionTestBase extends ModelTest {
 	protected ChannelRepo & MockObject $channels;
 	protected ConnectionRepo & MockObject $connections;
 	protected ConnectionHandler & MockObject $handler;
+	protected GlobalPermissionsService & MockObject $globalPerms;
 
 	protected function createMockServices(): array {
 		$this->stateRepo = $this->createMock(AuthRequestStateRepo::class);
 		$this->channels = $this->createMock(ChannelRepo::class);
 		$this->connections = $this->createMock(ConnectionRepo::class);
 		$this->handler = $this->createMock(ConnectionHandlerTestBase::class);
+		$this->globalPerms = $this->createMock(GlobalPermissionsService::class);
 
 		return [
 			AuthRequestStateRepo::class => fn() => $this->stateRepo,
 			ChannelRepo::class => fn() => $this->channels,
 			ConnectionRepo::class => fn() => $this->connections,
 			ConnectionHandlerTestBase::class => fn() => $this->handler,
+			GlobalPermissionsService::class => fn() => $this->globalPerms,
 			...parent::createMockServices(),
 		];
 	}

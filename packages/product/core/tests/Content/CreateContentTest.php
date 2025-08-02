@@ -156,7 +156,7 @@ final class CreateContentTest extends ContentTestBase {
 		$this->app->execute($command);
 	}
 
-	public function testItGeneratesANewIdThatDoesNotExist() {
+	public function testItGeneratesANewIdThatDoesNotExistOnTheThirdTry() {
 		$command = new CreateContent(
 			body: new TestDefaultContentType(title: 'Default', body: 'I got the email; you got the email.'),
 			siteId: $this->randomId(),
@@ -166,7 +166,22 @@ final class CreateContentTest extends ContentTestBase {
 		$this->contentRepo->method('hasContentWithId')->willReturn(true, true, false);
 		$this->perms->method('canCreateContent')->willReturn(true);
 
-		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(ContentCreated::class));
+		$this->expectEventOfType(ContentCreated::class);
+
+		$this->app->execute($command);
+	}
+
+	public function testItGeneratesANewIdThatDoesNotExistOnTheFirstTry() {
+		$command = new CreateContent(
+			body: new TestDefaultContentType(title: 'Default', body: 'I got the email; you got the email.'),
+			siteId: $this->randomId(),
+			userId: $this->randomId(),
+		);
+
+		$this->contentRepo->method('hasContentWithId')->willReturn(false);
+		$this->perms->method('canCreateContent')->willReturn(true);
+
+		$this->expectEventOfType(ContentCreated::class);
 
 		$this->app->execute($command);
 	}

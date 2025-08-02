@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content\Data;
 
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
+use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Content\Events\{ContentCanonicalUrlSet, ContentCreated, ContentDeleted, ContentUpdated};
 use Smolblog\Foundation\Service\Event\EventListener;
 use Smolblog\Foundation\Service\Event\EventListenerService;
@@ -63,14 +64,14 @@ interface ContentStateManager extends EventListenerService {
 	public function onContentCanonicalUrlSet(ContentCanonicalUrlSet $event): void;
 
 	/**
-	 * Handle the ContentPushedToChannel event.
+	 * Handle the ContentPushSucceeded event.
 	 *
-	 * Update the `links` property on the Content with ID `$event->content->id` to add the information in the event.
+	 * Update the `links` property on the Content with ID `$event->contentId` to add the information in the event.
 	 * Note that the `entityId` here is the ContentChannelEntry and created from the intersection of the Content and
 	 * Channel IDs.
 	 *
-	 * @param ContentPushedToChannel $event Event to handle.
+	 * @param ContentPushSucceeded $event Event to handle.
 	 * @return void
 	 */
-	public function onContentPushedToChannel(ContentPushedToChannel $event): void;
+	public function onContentPushSucceeded(ContentPushSucceeded $event): void;
 }

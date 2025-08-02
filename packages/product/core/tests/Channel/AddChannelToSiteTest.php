@@ -42,6 +42,36 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		$this->app->execute($command);
 	}
 
+	public function testAuthorizedIfNoUserAndPermissioned() {
+		$siteId = $this->randomId();
+		$userId = $this->randomId();
+		$channel = new BasicChannel(
+			handler: 'test',
+			handlerKey: 'test',
+			displayName: 'Test',
+			details: [],
+		);
+
+		$this->channels->expects($this->once())->method('channelById')->
+			with(channelId: $this->objectEquals($channel->getId()))->
+			willReturn($channel);
+		$this->perms->method('canManageChannels')->willReturn(true);
+
+		$command = new AddChannelToSite(
+			channelId: $channel->getId(),
+			siteId: $siteId,
+			userId: $userId,
+		);
+
+		$this->expectEvent(new ChannelAddedToSite(
+			aggregateId: $siteId,
+			entityId: $channel->getId(),
+			userId: $userId,
+		));
+
+		$this->app->execute($command);
+	}
+
 	public function testUnauthorizedIfUsersDoNotMatch() {
 		$siteId = $this->randomId();
 		$userId = $this->randomId();

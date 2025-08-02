@@ -2,7 +2,6 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Channel\Entities\Channel;
@@ -21,11 +20,12 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 * Currently creates both a table for storing Channel state and a linking table for Channels and Sites. As Sites
 	 * grows more robust, this may be broken out into its own class.
 	 *
-	 * @param Schema $schema Schema to add the channel tables to.
+	 * @param Schema   $schema    Schema to add the channel tables to.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema {
-		$channelTable = $schema->createTable('channels');
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
+		$channelTable = $schema->createTable($tableName('channels'));
 		$channelTable->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$channelTable->addColumn('channel_uuid', 'guid');
 		$channelTable->addColumn('connection_uuid', 'guid', ['notnull' => false]);
@@ -35,7 +35,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		$channelTable->addUniqueIndex(['channel_uuid']);
 		$channelTable->addIndex(['connection_uuid']);
 
-		$siteLinkTable = $schema->createTable('channels_sites');
+		$siteLinkTable = $schema->createTable($tableName('channels_sites'));
 		$siteLinkTable->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$siteLinkTable->addColumn('channel_uuid', 'guid');
 		$siteLinkTable->addColumn('site_uuid', 'guid');
@@ -49,9 +49,9 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	/**
 	 * Create the service.
 	 *
-	 * @param Connection $db Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private Connection $db) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -62,7 +62,10 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 */
 	public function channelById(Identifier $channelId): ?Channel {
 		$query = $this->db->createQueryBuilder();
-		$query->select('channel_obj')->from('channels')->where('channel_uuid = ?')->setParameter(0, $channelId);
+		$query
+			->select('channel_obj')
+			->from('channels')
+			->where('channel_uuid = ?')->setParameter(0, $channelId);
 		$result = $query->fetchOne();
 
 		if ($result === false) {
@@ -83,7 +86,11 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 */
 	public function channelsForConnection(Identifier $connectionId): array {
 		$query = $this->db->createQueryBuilder();
-		$query->select('channel_obj')->from('channels')->where('connection_uuid = ?')->setParameter(0, $connectionId);
+		$query
+			->select('channel_obj')
+			->from('channels')
+			->where('connection_uuid = ?')
+			->setParameter(0, $connectionId);
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
@@ -143,7 +150,11 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	#[ProjectionListener]
 	public function onChannelSaved(ChannelSaved $event): void {
 		$checkQuery = $this->db->createQueryBuilder();
-		$checkQuery->select('dbid')->from('channels')->where('channel_uuid = ?')->setParameter(0, $event->entityId);
+		$checkQuery
+			->select('dbid')
+			->from('channels')
+			->where('channel_uuid = ?')
+			->setParameter(0, $event->entityId);
 		$dbid = $checkQuery->fetchOne();
 
 		$data = [

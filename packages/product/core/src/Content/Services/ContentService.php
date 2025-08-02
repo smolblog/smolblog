@@ -42,6 +42,9 @@ class ContentService implements CommandHandlerService {
 	/**
 	 * Execute the CreateContent Command.
 	 *
+	 * @throws InvalidValueProperties When the given id is already in use.
+	 * @throws CommandNotAuthorized When the user does not have permission to create content.
+	 *
 	 * @param CreateContent $command Command to execute.
 	 * @return void
 	 */
@@ -65,7 +68,7 @@ class ContentService implements CommandHandlerService {
 		if (!isset($contentId)) {
 			do {
 				$contentId = new DateIdentifier();
-			} while (!$this->repo->hasContentWithId($contentId));
+			} while ($this->repo->hasContentWithId($contentId));
 		}
 
 		// Save the new Content.
@@ -77,6 +80,9 @@ class ContentService implements CommandHandlerService {
 
 	/**
 	 * Execute the UpdateContent Command.
+	 *
+	 * @throws EntityNotFound When the given id does not exist.
+	 * @throws CommandNotAuthorized When the user does not have permission to edit the content.
 	 *
 	 * @param UpdateContent $command Command to execute.
 	 * @return void
@@ -99,6 +105,9 @@ class ContentService implements CommandHandlerService {
 
 	/**
 	 * Execute the DeleteContent Command.
+	 *
+	 * @throws EntityNotFound When the given id does not exist.
+	 * @throws CommandNotAuthorized When the user does not have permission to delete the content.
 	 *
 	 * @param DeleteContent $command Command to execute.
 	 * @return void

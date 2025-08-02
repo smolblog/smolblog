@@ -136,7 +136,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 		$this->contentRepo->method('hasMediaWithId')->willReturn(true, true, false);
 		$this->perms->method('canUploadMedia')->willReturn(true);
 
-		$this->mockEventBus->expects($this->once())->method('dispatch')->with($this->isInstanceOf(MediaCreated::class));
+		$this->expectEventOfType(MediaCreated::class);
 
 		$this->app->execute($command);
 	}

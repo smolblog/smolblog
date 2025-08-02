@@ -4,7 +4,7 @@ namespace Smolblog\Core\Content\Extensions\Tags;
 
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Store tags for a piece of content.

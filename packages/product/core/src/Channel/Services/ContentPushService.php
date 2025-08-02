@@ -41,6 +41,9 @@ class ContentPushService implements CommandHandlerService {
 	/**
 	 * Handle the PushContentToChannel command
 	 *
+	 * @throws EntityNotFound When either either the channel or content does not exist.
+	 * @throws CommandNotAuthorized When the user does not have permission.
+	 *
 	 * @param PushContentToChannel $command Command to handle.
 	 * @return void
 	 */

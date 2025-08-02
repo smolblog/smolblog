@@ -8,11 +8,12 @@ use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Test\TestCase;
 
 readonly class ValueTestBase extends Value implements SerializableValue {
 	use SerializableValueKit;
-	public static function getPropertyInfo(): array {
+	public static function testPropertyInfo(): array {
 		return static::propertyInfo();
 	}
 }
@@ -184,7 +185,7 @@ final class SerializableValueTest extends TestCase {
 	#[TestDox('provides property info for the class')]
 	#[DataProvider('valueExamples')]
 	public function testPropInfo(ValueTestBase $object, array $array, string $json, array $info) {
-		$this->assertEquals($info, $object::getPropertyInfo());
+		$this->assertEquals($info, $object::testPropertyInfo());
 	}
 
 	#[TestDox('It will throw an exception when default serialization is used with a union type')]

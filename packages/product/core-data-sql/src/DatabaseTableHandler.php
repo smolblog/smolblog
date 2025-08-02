@@ -14,8 +14,11 @@ interface DatabaseTableHandler {
 	 * This allows the overall application to update the actual database schema to match the requirements needed by
 	 * the individual handler.
 	 *
-	 * @param Schema $schema Schema builder object.
+	 * The callable passed to $tableName should behave identically to DatabaseEnvironment::tableName.
+	 *
+	 * @param Schema   $schema    Schema builder object.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema;
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema;
 }

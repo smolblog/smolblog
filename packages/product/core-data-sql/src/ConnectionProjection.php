@@ -21,11 +21,12 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * Currently creates both a table for storing Channel state and a linking table for Channels and Sites. As Sites
 	 * grows more robust, this may be broken out into its own class.
 	 *
-	 * @param Schema $schema Schema to add the channel tables to.
+	 * @param Schema   $schema    Schema to add the channel tables to.
+	 * @param callable $tableName Function to create a prefixed table name from a given table name.
 	 * @return Schema
 	 */
-	public static function addTableToSchema(Schema $schema): Schema {
-		$table = $schema->createTable('connections');
+	public static function addTableToSchema(Schema $schema, callable $tableName): Schema {
+		$table = $schema->createTable($tableName('connections'));
 		$table->addColumn('dbid', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 		$table->addColumn('connection_uuid', 'guid');
 		$table->addColumn('user_uuid', 'guid');
@@ -41,9 +42,9 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	/**
 	 * Create the service.
 	 *
-	 * @param DatabaseConnection $db Working database connection.
+	 * @param DatabaseService $db Working database connection.
 	 */
-	public function __construct(private DatabaseConnection $db) {
+	public function __construct(private DatabaseService $db) {
 	}
 
 	/**
@@ -54,9 +55,9 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * @return boolean True if the given User created the given Connection.
 	 */
 	public function connectionBelongsToUser(Identifier $connectionId, Identifier $userId): bool {
-		$query = $this->db->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query->select('1')
-			->from('connections')
+			->from($this->db->tableName('connections'))
 			->where('connection_uuid = ?')
 			->andWhere('user_uuid = ?')
 			->setParameter(0, $connectionId)
@@ -73,10 +74,10 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * @return Connection|null
 	 */
 	public function connectionById(Identifier $connectionId): ?Connection {
-		$query = $this->db->createQueryBuilder();
+		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('connection_obj')
-			->from('connections')
+			->from($this->db->tableName('connections'))
 			->where('connection_uuid = ?')
 			->setParameter(0, $connectionId);
 		$result = $query->fetchOne();
@@ -98,8 +99,12 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * @return Connection[]
 	 */
 	public function connectionsForUser(Identifier $userId): array {
-		$query = $this->db->createQueryBuilder();
-		$query->select('connection_obj')->from('connections')->where('user_uuid = ?')->setParameter(0, $userId);
+		$query = $this->db->createUnprefixedQueryBuilder();
+		$query
+			->select('connection_obj')
+			->from($this->db->tableName('connections'))
+			->where('user_uuid = ?')
+			->setParameter(0, $userId);
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
@@ -116,10 +121,10 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 */
 	#[ProjectionListener]
 	public function onConnectionEstablished(ConnectionEstablished $event): void {
-		$checkQuery = $this->db->createQueryBuilder();
+		$checkQuery = $this->db->createUnprefixedQueryBuilder();
 		$checkQuery
 			->select('dbid')
-			->from('connections')
+			->from($this->db->tableName('connections'))
 			->where('connection_uuid = ?')
 			->setParameter(0, $event->entityId);
 		$dbid = $checkQuery->fetchOne();

@@ -12,8 +12,10 @@ use Smolblog\Core\Channel\Services\AsyncChannelHandler;
 use Smolblog\Core\Channel\Services\ChannelHandler;
 use Smolblog\Core\Channel\Services\ChannelHandlerRegistry;
 use Smolblog\Core\Channel\Services\DefaultChannelHandler;
+use Smolblog\Core\Channel\Services\ProjectionChannelHandler;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Entities\Content;
+use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Foundation\Service\Job\JobManager;
 use Smolblog\Foundation\Value\Fields\Identifier;
@@ -33,12 +35,12 @@ abstract class ChannelHandlerTestBase implements ChannelHandler {
 }
 
 /**
- * Provices a ChannelHandler with key 'defaultmock'
+ * Provices a ChannelHandler with key 'asyncmock'
  */
 abstract class DefaultChannelHandlerTestBase extends AsyncChannelHandler {
 	public static function getConfiguration(): ChannelHandlerConfiguration {
 		return new ChannelHandlerConfiguration(
-			key: 'defaultmock',
+			key: 'asyncmock',
 			displayName: 'Default',
 		);
 	}
@@ -62,27 +64,44 @@ abstract class DefaultChannelHandlerTestBase extends AsyncChannelHandler {
 	}
 }
 
+/**
+ * Provices a ChannelHandler with key 'projectionmock'
+ */
+abstract class ProjectionChannelHandlerTestBase extends ProjectionChannelHandler {
+	public static function getConfiguration(): ChannelHandlerConfiguration {
+		return new ChannelHandlerConfiguration(
+			key: 'projectionmock',
+			displayName: 'Default',
+		);
+	}
+}
+
 abstract class ChannelTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
 	protected ChannelRepo & MockObject $channels;
 	protected SitePermissionsService & MockObject $perms;
+	protected GlobalPermissionsService & MockObject $globalPerms;
 	protected ContentRepo & MockObject $contentRepo;
 	protected ChannelHandlerTestBase & MockObject $handlerMock;
 	protected DefaultChannelHandlerTestBase & MockObject $defaultHandlerMock;
+	protected ProjectionChannelHandlerTestBase & MockObject $defaultProjectionMock;
 
 	protected function createMockServices(): array {
 		$this->channels = $this->createMock(ChannelRepo::class);
 		$this->perms = $this->createMock(SitePermissionsService::class);
+		$this->globalPerms = $this->createMock(GlobalPermissionsService::class);
 		$this->contentRepo = $this->createMock(ContentRepo::class);
 		$this->handlerMock = $this->createMock(ChannelHandlerTestBase::class);
 
 		return [
 			ChannelRepo::class => fn() => $this->channels,
 			SitePermissionsService::class => fn() => $this->perms,
+			GlobalPermissionsService::class => fn() => $this->globalPerms,
 			ContentRepo::class => fn() => $this->contentRepo,
 			ChannelHandlerTestBase::class => fn() => $this->handlerMock,
 			DefaultChannelHandlerTestBase::class => fn() => $this->defaultHandlerMock,
+			ProjectionChannelHandlerTestBase::class => fn() => $this->defaultProjectionMock,
 			...parent::createMockServices(),
 		];
 	}
@@ -95,7 +114,16 @@ abstract class ChannelTestBase extends ModelTest {
 			->onlyMethods(['push'])
 			->setConstructorArgs([
 				'jobManager' => $this->app->container->get(JobManager::class),
-				'eventBus' => $this->mockEventBus
+				'eventBus' => $this->app->container->get(EventDispatcherInterface::class)
+			])
+			->getMock();
+
+		$this->defaultProjectionMock = $this
+			->getMockBuilder(ProjectionChannelHandlerTestBase::class)
+			->onlyMethods(['project'])
+			->setConstructorArgs([
+				'eventBus' => $this->app->container->get(EventDispatcherInterface::class),
+				'channels' => $this->channels,
 			])
 			->getMock();
 	}

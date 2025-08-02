@@ -6,13 +6,14 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
+use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Channel\Events\ContentPushFailed;
 use Smolblog\Core\Channel\Events\ContentPushStarted;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Channel\Jobs\ContentPushJob;
 use Smolblog\Foundation\Service\Job\JobManager;
-use Smolblog\Foundation\Value\Fields\DateIdentifier;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 /**
  * Provides a set of good defaults for async channel handlers.
@@ -46,9 +47,9 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 		Channel $channel,
 		Identifier $userId
 	): void {
-		$processId = new DateIdentifier();
-		$startEvent = new ContentPushStarted(
-			contentId: $content->id,
+		$processId = new RandomIdentifier();
+		$startEvent = new ContentPushedToChannel(
+			content: $content,
 			channelId: $channel->getId(),
 			userId: $userId,
 			aggregateId: $content->siteId,
@@ -103,7 +104,7 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 		}
 
 		$this->eventBus->dispatch(new ContentPushSucceeded(
-			content: $content,
+			contentId: $content->id,
 			channelId: $channel->getId(),
 			processId: $processId,
 			userId: $userId,

@@ -4,6 +4,7 @@ namespace Smolblog\Core\Channel\Entities;
 
 use Override;
 use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 
@@ -39,7 +40,7 @@ readonly class BasicChannel extends Channel {
 		string $handler,
 		string $handlerKey,
 		string $displayName,
-		public array $details,
+		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details,
 		?Identifier $userId = null,
 		?Identifier $connectionId = null,
 	) {
