@@ -67,15 +67,15 @@
         "monorepo": "./vendor/bin/monorepo-builder"
     },
     "replace": {
-        "smolblog/activitypub-adapter": "0.4.0",
-        "smolblog/core": "0.4.0",
-        "smolblog/core-data-sql": "0.4.0",
-        "smolblog/core-rest-api": "0.4.0",
-        "smolblog/core-test-utils": "0.4.0",
-        "smolblog/framework-foundation": "0.4.0",
-        "smolblog/framework-infrastructure": "0.4.0",
-        "smolblog/smolblog-markdown": "0.4.0",
-        "smolblog/test-utils": "0.4.0"
+        "smolblog/activitypub-adapter": "0.5.0",
+        "smolblog/core": "0.5.0",
+        "smolblog/core-data-sql": "0.5.0",
+        "smolblog/core-rest-api": "0.5.0",
+        "smolblog/core-test-utils": "0.5.0",
+        "smolblog/framework-foundation": "0.5.0",
+        "smolblog/framework-infrastructure": "0.5.0",
+        "smolblog/smolblog-markdown": "0.5.0",
+        "smolblog/test-utils": "0.5.0"
     },
     "minimum-stability": "stable"
 }
