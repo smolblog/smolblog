@@ -66,15 +66,14 @@ readonly class ValueProperty extends Value {
 			);
 		}
 
-		if (isset($pattern) && preg_match($pattern, '') === false) {
-			throw new InvalidValueProperties(
-				message: 'Invalid regular expression provided for `pattern`.',
-				field: 'pattern',
-			);
-		}
-
 		// Via https://stackoverflow.com/a/42665007.
-		$this->displayName = $displayName ??
-			ucwords(implode(' ', preg_split('/(?=[A-Z])/', $this->name) ?: []));
+		// $this->displayName = $displayName ??
+		// ucwords(implode(' ', preg_split('/(?=[A-Z])/', $this->name) ?: []));
+		if (!isset($displayName)) {
+			$wordSplit = preg_split('/(?=[A-Z])/', $this->name) ?: [];
+			$wordString = implode(' ', $wordSplit);
+			$displayName = ucwords($wordString);
+		}
+		$this->displayName = $displayName;
 	}
 }

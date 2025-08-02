@@ -4,7 +4,13 @@ namespace Smolblog\Foundation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
+use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
+use Smolblog\Foundation\Value\Attributes\DisplayName;
+use Smolblog\Foundation\Value\Attributes\Target;
+use Smolblog\Foundation\Value\Fields\Identifier;
+use Smolblog\Foundation\Value\ValueProperty;
 use Smolblog\Test\TestCase;
 
 #[CoversClass(Value::class)]
@@ -94,5 +100,106 @@ final class ValueTest extends TestCase {
 
 		$this->assertEquals($first->destination, $second->destination);
 		$this->assertFalse($first->equals($second));
+	}
+
+	#[TestDox('Default getPropertyInfo() does not work with union types')]
+	public function testPropertyUnionType() {
+		$this->expectException(CodePathNotSupported::class);
+
+		$class = new readonly class(543) extends Value {
+			public function __construct(public string|int $thing) {}
+		};
+
+		get_class($class)::reflection();
+	}
+
+	#[TestDox('Default getPropertyInfo() requires typed arrays')]
+	public function testPropertyNoArrayType() {
+		$this->expectException(CodePathNotSupported::class);
+
+		$class = new readonly class([543]) extends Value {
+			public function __construct(public array $thing) {}
+		};
+
+		get_class($class)::reflection();
+	}
+
+	#[TestDox('reflection() will generate an appropriate array of ValueProperty objects.')]
+	public function testReflection() {
+		$class = new readonly class(
+			stringVal: 'one',
+			intVal: 2,
+			id: $this->randomId(),
+			stringList: [],
+			stringMap: [],
+			idList: [],
+			idMap: [],
+			mixedMap: [],
+		) extends Value {
+			public function __construct(
+				public string $stringVal,
+				#[DisplayName('Something')]public int $intVal,
+				#[Target('\\OtherLibrary\\Entity')] public Identifier $id,
+				#[ArrayType(ArrayType::TYPE_STRING)] public array $stringList,
+				#[ArrayType(ArrayType::TYPE_STRING, isMap: true)] public array $stringMap,
+				#[ArrayType(Identifier::class), Target('\\OtherLibrary\\Entity')] public array $idList,
+				#[ArrayType(Identifier::class, isMap: true), Target('\\OtherLibrary\\Entity'), DisplayName('Something Else')] public array $idMap,
+				#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $mixedMap,
+			) {}
+		};
+
+		$expected = [
+			'stringVal' => new ValueProperty(
+				name: 'stringVal',
+				type: 'string',
+				displayName: 'String Val',
+			),
+			'intVal' => new ValueProperty(
+				name: 'intVal',
+				type: 'int',
+				displayName: 'Something',
+			),
+			'id' => new ValueProperty(
+				name: 'id',
+				type: Identifier::class,
+				displayName: 'Id',
+				target: '\\OtherLibrary\\Entity',
+			),
+			'stringList' => new ValueProperty(
+				name: 'stringList',
+				type: 'array',
+				items: 'string',
+				displayName: 'String List',
+			),
+			'stringMap' => new ValueProperty(
+				name: 'stringMap',
+				type: 'map',
+				items: 'string',
+				displayName: 'String Map',
+			),
+			'idList' => new ValueProperty(
+				name: 'idList',
+				type: 'array',
+				items: Identifier::class,
+				displayName: 'Id List',
+				target: '\\OtherLibrary\\Entity',
+			),
+			'idMap' => new ValueProperty(
+				name: 'idMap',
+				type: 'map',
+				items: Identifier::class,
+				displayName: 'Something Else',
+				target: '\\OtherLibrary\\Entity',
+			),
+			'mixedMap' => new ValueProperty(
+				name: 'mixedMap',
+				type: 'map',
+				displayName: 'Mixed Map',
+			),
+		];
+
+		$actual = get_class($class)::reflection();
+
+		$this->assertEquals($expected, $actual);
 	}
 }

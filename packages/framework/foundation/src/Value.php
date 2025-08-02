@@ -133,13 +133,13 @@ abstract readonly class Value {
 		$targetReflection = $prop->getAttributes(Target::class, ReflectionAttribute::IS_INSTANCEOF);
 		$target = ($targetReflection[0] ?? null)?->newInstance() ?? null;
 		if ($target) {
-			$params['target'] = $target;
+			$params['target'] = $target->type;
 		}
 
 		$nameReflection = $prop->getAttributes(DisplayName::class, ReflectionAttribute::IS_INSTANCEOF);
 		$displayName = ($nameReflection[0] ?? null)?->newInstance() ?? null;
 		if ($displayName) {
-			$params['displayName'] = $displayName;
+			$params['displayName'] = $displayName->name;
 		}
 
 		return new ValueProperty(...$params);
