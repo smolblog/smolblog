@@ -45,7 +45,7 @@ class ConnectionHandlerRegistry implements Registry {
 	 *
 	 * @return string[]
 	 */
-	public function availableConnections(): array {
+	public function availableConnectionHandlers(): array {
 		return array_keys($this->library);
 	}
 }

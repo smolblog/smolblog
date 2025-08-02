@@ -67,13 +67,7 @@ readonly class ValueProperty extends Value {
 		}
 
 		// Via https://stackoverflow.com/a/42665007.
-		// $this->displayName = $displayName ??
-		// ucwords(implode(' ', preg_split('/(?=[A-Z])/', $this->name) ?: []));
-		if (!isset($displayName)) {
-			$wordSplit = preg_split('/(?=[A-Z])/', $this->name) ?: [];
-			$wordString = implode(' ', $wordSplit);
-			$displayName = ucwords($wordString);
-		}
-		$this->displayName = $displayName;
+		$this->displayName = $displayName ??
+			ucwords(implode(' ', preg_split('/(?=[A-Z])/', $this->name) ?: []));
 	}
 }

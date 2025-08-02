@@ -20,6 +20,82 @@ use Smolblog\Foundation\Value\Fields\Url;
 use stdClass;
 
 final class ContentProjectionTest extends DataTestBase {
+	public function testContentList() {
+		$projection = $this->app->container->get(ContentProjection::class);
+		$env = $this->app->container->get(DatabaseEnvironment::class);
+		$db = $env->getConnection();
+
+		$site1 = $this->randomId();
+		$site2 = $this->randomId();
+		$userA = $this->randomId();
+		$userB = $this->randomId();
+
+		$site1userA = new Content(
+			body: new Note(new Markdown('This *is* a test.')),
+			siteId: $site1,
+			userId: $userA,
+			extensions: [
+				'tags' => new Tags(['test']),
+			],
+		);
+		$site1userB = new Content(
+			body: new Note(new Markdown('This *is* a test.')),
+			siteId: $site1,
+			userId: $userB,
+			extensions: [
+				'tags' => new Tags(['test']),
+			],
+		);
+		$site2userA = new Content(
+			body: new Note(new Markdown('This *is* a test.')),
+			siteId: $site2,
+			userId: $userA,
+			extensions: [
+				'tags' => new Tags(['test']),
+			],
+		);
+		$site2userB = new Content(
+			body: new Note(new Markdown('This *is* a test.')),
+			siteId: $site2,
+			userId: $userB,
+			extensions: [
+				'tags' => new Tags(['test']),
+			],
+		);
+
+		foreach ([$site1userA, $site1userB, $site2userA, $site2userB] as $toInsert) {
+			$db->insert($env->tableName('content'), [
+				'content_uuid' => $toInsert->id,
+				'site_uuid' => $toInsert->siteId,
+				'user_uuid' => $toInsert->userId,
+				'content_obj' => json_encode($toInsert),
+			]);
+			$this->assertObjectEquals($toInsert, $projection->contentById($toInsert->id) ?? new stdClass());
+		}
+
+		$this->assertJsonStringEqualsJsonString(
+			json_encode([$site1userB, $site1userA]), json_encode($projection->contentList(forSite: $site1))
+		);
+		$this->assertJsonStringEqualsJsonString(
+			json_encode([$site1userA]), json_encode($projection->contentList(forSite: $site1, ownedByUser: $userA))
+		);
+		$this->assertJsonStringEqualsJsonString(
+			json_encode([$site1userB]), json_encode($projection->contentList(forSite: $site1, ownedByUser: $userB))
+		);
+		$this->assertJsonStringEqualsJsonString(
+			json_encode([$site2userB, $site2userA]), json_encode($projection->contentList(forSite: $site2))
+		);
+		$this->assertJsonStringEqualsJsonString(
+			json_encode([$site2userA]), json_encode($projection->contentList(forSite: $site2, ownedByUser: $userA))
+		);
+		$this->assertJsonStringEqualsJsonString(
+			json_encode([$site2userB]), json_encode($projection->contentList(forSite: $site2, ownedByUser: $userB))
+		);
+		$this->assertEmpty($projection->contentList(forSite: $this->randomId()));
+		$this->assertEmpty($projection->contentList(forSite: $site1, ownedByUser: $this->randomId()));
+		$this->assertEmpty($projection->contentList(forSite: $site2, ownedByUser: $this->randomId()));
+	}
+
 	public function testContentCreated() {
 		$projection = $this->app->container->get(ContentProjection::class);
 

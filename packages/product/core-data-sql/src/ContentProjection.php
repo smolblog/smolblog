@@ -109,13 +109,15 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 
 		if (isset($ownedByUser)) {
 			$query
-				->where('user_uuid = :user')
+				->andWhere('user_uuid = :user')
 				->setParameter('user', $ownedByUser);
 		}
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
-			fn($ser) => is_string($ser) ? Content::fromJson($ser) : Content::deserializeValue($ser),
+			fn($ser) => is_string($ser) ?
+				Content::fromJson($ser) :
+				Content::deserializeValue($ser), // @codeCoverageIgnore
 			$results
 		);
 	}

@@ -55,6 +55,15 @@ final class SerializableSupertypeTest extends TestCase {
 		$this->assertArrayNotHasKey('type', $subtype);
 	}
 
+	#[TestDox('It will return an empty reflection if it is not a Value.')]
+	public function testEmptyReflection() {
+		$someOtherClass = new class() {
+			use SerializableSupertypeKit;
+		};
+
+		$this->assertEmpty(get_class($someOtherClass)::reflection());
+	}
+
 	public static function knownTypes(): array {
 		return [
 			'the test subclass' => [

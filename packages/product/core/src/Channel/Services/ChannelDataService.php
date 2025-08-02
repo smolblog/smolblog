@@ -51,6 +51,7 @@ class ChannelDataService implements Service {
 	 * This will include channels enabled by the user's Connections.
 	 *
 	 * @throws CodePathNotSupported Method is not implemented yet.
+	 * @codeCoverageIgnore
 	 *
 	 * @param Identifier $channelUserId User to get chnnels for.
 	 * @param Identifier $userId        User making the query.

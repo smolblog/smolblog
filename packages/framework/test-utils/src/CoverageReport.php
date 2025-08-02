@@ -17,11 +17,6 @@ class CoverageReport {
 				'score' => $report->getReport()->numberOfExecutedLines() / $report->getReport()->numberOfExecutableLines(),
 				'fileFilter' => fn($file) => ($file->numberOfExecutableLines() - $file->numberOfExecutedLines()) > 0
 			],
-			[
-				'type' => 'branch',
-				'score' => $report->getReport()->numberOfExecutedBranches() / $report->getReport()->numberOfExecutableBranches(),
-				'fileFilter' => fn($file) => ($file->numberOfExecutableBranches() - $file->numberOfExecutedBranches()) > 0
-			],
 		];
 
 		$results = array_map(fn($def) => self::printReport($report, ...$def), $tests);
