@@ -21,7 +21,7 @@
     "require": {
         "squizlabs/php_codesniffer": "^3.8",
         "phpunit/phpunit": "^11",
-        "smolblog/framework-infrastructure": "^0.5"
+        "smolblog/framework-infrastructure": "^0.6"
     },
     "scripts": {
         "test": "phpunit",
