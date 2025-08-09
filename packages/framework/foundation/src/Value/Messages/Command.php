@@ -15,7 +15,7 @@ use Smolblog\Foundation\Value\Traits\SerializableValue;
  * Commands are typically sent to a service to perform an action, such as creating a new user, or updating a user's
  * profile.
  */
-abstract readonly class Command extends Value implements SerializableValue, Message {
+abstract readonly class Command extends Value implements SerializableValue {
 	use ReadonlyMessageKit;
 	use SerializableSupertypeKit;
 
