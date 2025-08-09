@@ -44,6 +44,7 @@ trait RegistryKit {
 	 * @return void
 	 */
 	public function discover(DiscoveryLocation $location, ClassReflector $class): void {
+		echo static::class . " is now discovering!\n";
 		if ($class->is(self::getInterfaceToRegister())) {
 			$this->discoveryItems->add($location, $class->getName());
 		}

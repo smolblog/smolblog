@@ -5,13 +5,14 @@ namespace Smolblog\Core\Content\Services;
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Service\Registry\Registry;
 use Smolblog\Foundation\Service\Registry\RegistryKit;
+use Tempest\Discovery\Discovery;
 
 /**
  * Register available content types.
  *
  * I've avoided it as much as I can, but sometimes you just need to have things centrally registered.
  */
-class ContentTypeRegistry implements Registry {
+class ContentTypeRegistry implements Registry, Discovery {
 	use RegistryKit;
 
 	/**
@@ -29,6 +30,7 @@ class ContentTypeRegistry implements Registry {
 	 * @param ContainerInterface $container Dependency Injection container.
 	 */
 	public function __construct(private ContainerInterface $container) {
+		echo static::class . " is being constructed.\n";
 		$this->container = $container;
 	}
 
