@@ -6,8 +6,15 @@ use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
+use Tempest\Discovery\DiscoveryLocation;
+use Tempest\Discovery\IsDiscovery;
+use Tempest\Reflection\ClassReflector;
+
+use function Tempest\Support\arr;
 
 trait RegistryKit {
+	use IsDiscovery;
+
 	/**
 	 * Store the object factories.
 	 *
@@ -28,6 +35,28 @@ trait RegistryKit {
 	 * @var ContainerInterface
 	 */
 	private ContainerInterface $container;
+
+	/**
+	 * Use Tempest discovery to find classes that implement the interface.
+	 *
+	 * @param DiscoveryLocation $location File location.
+	 * @param ClassReflector    $class    Class information.
+	 * @return void
+	 */
+	public function discover(DiscoveryLocation $location, ClassReflector $class): void {
+		if ($class->is(self::getInterfaceToRegister())) {
+			$this->discoveryItems->add($location, $class->getName());
+		}
+	}
+
+	/**
+	 * Apply discovered items to this registry. Calls ->configure() behind the scenes.
+	 *
+	 * @return void
+	 */
+	public function apply(): void {
+		$this->configure(arr($this->discoveryItems)->toArray());
+	}
 
 	/**
 	 * Configure the Registry

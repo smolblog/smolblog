@@ -14,18 +14,21 @@ use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
 use Smolblog\Foundation\Service\Registry\Registry;
+use Smolblog\Foundation\Service\Registry\RegistryKit;
 use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * Register Command Handler services and map the Commands they are responsible for.
  */
 class CommandHandlerRegistry implements Registry, CommandBus {
+	use RegistryKit;
+
 	/**
 	 * Store the Command classes and their handler methods.
 	 *
 	 * @var array<string, string[]>
 	 */
-	private array $library = [];
+	private $library = [];
 
 	/**
 	 * Get the interface this Registry tracks.

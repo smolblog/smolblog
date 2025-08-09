@@ -3,6 +3,7 @@
 namespace Smolblog\Foundation\Service\Registry;
 
 use Smolblog\Foundation\Service;
+use Tempest\Discovery\Discovery;
 
 /**
  * A class that registers services for a specific purpose.
@@ -12,7 +13,7 @@ use Smolblog\Foundation\Service;
  *
  * If a Registry does not require this, it probably shouldn't implement this interface.
  */
-interface Registry extends Service {
+interface Registry extends Service, Discovery {
 	/**
 	 * Get the interface this Registry tracks.
 	 *

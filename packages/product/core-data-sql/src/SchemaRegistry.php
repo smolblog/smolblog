@@ -4,11 +4,14 @@ namespace Smolblog\CoreDataSql;
 
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Foundation\Service\Registry\Registry;
+use Smolblog\Foundation\Service\Registry\RegistryKit;
 
 /**
  * Collect services that handle database tables to assist with creating/migrating schema.
  */
 class SchemaRegistry implements Registry {
+	use RegistryKit;
+
 	/**
 	 * This registry is for DatabaseTableHandlers.
 	 *

@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Smolblog\Foundation\Service\Event\EventListenerService;
 use Smolblog\Foundation\Service\Registry\Registry;
+use Smolblog\Foundation\Service\Registry\RegistryKit;
 
 /**
  * Registrar for message listeners.
@@ -16,6 +17,8 @@ use Smolblog\Foundation\Service\Registry\Registry;
  * a listener that will respond to an Event object will respond to all messages that inherit from Event.
  */
 class EventListenerRegistry implements ListenerProviderInterface, Registry {
+	use RegistryKit;
+
 	/**
 	 * This registry registers Listener classes.
 	 *
