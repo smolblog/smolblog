@@ -30,13 +30,16 @@
         "psr/http-server-middleware": "^1.0",
         "psr/log": "^3.0",
         "ramsey/uuid": "^4.7",
-        "squizlabs/php_codesniffer": "^3.8"
+        "squizlabs/php_codesniffer": "^3.8",
+        "psr-discovery/http-factory-implementations": "@dev",
+        "tempest/framework": "^1.5"
     },
     "require-dev": {
         "symplify/monorepo-builder": "^11.2"
     },
     "autoload": {
         "psr-4": {
+            "Smolblog\\App\\": "app/",
             "Smolblog\\CoreDataSql\\": "packages/product/core-data-sql/src/",
             "Smolblog\\CoreRestApi\\": "packages/product/core-rest-api/src/",
             "Smolblog\\Core\\": "packages/product/core/src/",
@@ -64,7 +67,8 @@
         ],
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-        "monorepo": "./vendor/bin/monorepo-builder"
+        "monorepo": "./vendor/bin/monorepo-builder",
+        "try": "Smolblog\\App\\HelloCommand::try"
     },
     "replace": {
         "smolblog/activitypub-adapter": "0.5.0",

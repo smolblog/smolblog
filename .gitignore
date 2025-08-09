@@ -2,9 +2,14 @@ vendor/
 .phpunit.result.cache
 .phpunit-cache
 .phpdoc
+.tempest
 coverage.txt
 coverage.php
 test-coverage
 html-coverage
 .DS_Store
 registration.json
+
+vite-tempest
+node_modules/
+public/build/
