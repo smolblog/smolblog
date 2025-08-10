@@ -8,6 +8,11 @@
             "Smolblog\\Foundation\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Smolblog\\Foundation\\Test\\": "test-utils/"
+        }
+    },
     "authors": [
         {
             "name": "Smolblog",

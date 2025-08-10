@@ -2,6 +2,7 @@
 
 namespace Smolblog\Foundation;
 
+use League\ConstructFinder\ConstructFinder;
 use ReflectionClass;
 use ReflectionNamedType;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
@@ -10,6 +11,7 @@ use Smolblog\Foundation\Exceptions\CodePathNotSupported;
  * Class to centralize services (with dependencies) for a domain.
  */
 abstract class DomainModel {
+	protected const DISCOVER = false;
 	public const AUTO_SERVICES = [];
 	public const SERVICES = [];
 
@@ -26,13 +28,55 @@ abstract class DomainModel {
 	}
 
 	/**
+	 * Discover any classes that implement Service within the subclass file's folder.
+	 *
+	 * @return array
+	 */
+	private static function discoverServices(): array {
+		$dir = static::DISCOVER;
+
+		// If ::DISCOVER is boolean true, get the directory of the file.
+		if ($dir === true) {
+			$dir = new ReflectionClass(static::class)->getFileName();
+			if ($dir !== false) {
+				$dir = dirname(realpath($dir));
+			}
+		}
+		// If ::DISCOVER is false or an empty string, do not discover.
+		if (!$dir || !is_string($dir)) {
+			return [];
+		}
+
+		$foundClasses = ConstructFinder::locatedIn($dir)->findClassNames();
+		return array_filter($foundClasses, static function ($found) {
+			// If we already know it doesn't exist or isn't a Service, filter out.
+			if (!class_exists($found) || !is_a($found, Service::class, true)) {
+				return false;
+			}
+
+			$reflection = new ReflectionClass($found);
+			// If it's abstract, filter out.
+			if ($reflection->isAbstract()) {
+				return false;
+			}
+
+			return true;
+		});
+	}
+
+	/**
 	 * Get services marked for auto-registration, reflect their constructors, and create the dependency map.
 	 *
 	 * @return array<class-string, array<string, mixed>>
 	 */
 	private static function autoregisterServices(): array {
+		$autoreg = [
+			...self::discoverServices(),
+			...static::AUTO_SERVICES,
+		];
+
 		$deps = [];
-		foreach (static::AUTO_SERVICES as $service) {
+		foreach ($autoreg as $service) {
 			$deps[$service] = self::reflectService($service);
 		}
 		return $deps;

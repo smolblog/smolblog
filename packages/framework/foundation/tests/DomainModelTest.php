@@ -9,6 +9,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Foundation\Exceptions\CodePathNotSupported;
 use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Service\Registry\Registry;
+use Smolblog\Foundation\Test\DiscoveryTestFixture as Fixture;
 use Smolblog\Test\TestCase;
 
 final class DomainModelTestNoConstructor {}
@@ -22,6 +23,12 @@ final class DomainModelTestUnionType { public function __construct(private Comma
 final class DomainModelTestIntersectionType { public function __construct(private CommandBus & Registry $also) {} }
 final class DomainModelTestBuiltInType { public function __construct(private string $noGood) {} }
 
+final class DomainModelTestDiscoverOtherFolder extends DomainModel {
+	protected const DISCOVER = __DIR__ . '/../test-utils/DiscoveryTestFixture';
+}
+final class DomainModelTestDiscoverNonNamespacedFolder extends DomainModel {
+	protected const DISCOVER = true;
+}
 
 #[CoversClass(DomainModel::class)]
 final class DomainModelTest extends TestCase {
@@ -85,5 +92,38 @@ final class DomainModelTest extends TestCase {
 	public function testBadServices(DomainModel $model) {
 		$this->expectException(CodePathNotSupported::class);
 		get_class($model)::getDependencyMap();
+	}
+
+	public static function discoveryFixtures(): array {
+		return [
+			'its own folder' => [Fixture\Model::class],
+			'another namespaced folder' => [DomainModelTestDiscoverOtherFolder::class],
+		];
+	}
+
+	#[DataProvider('discoveryFixtures')]
+	#[TestDox('It can discover Services in $_dataName.')]
+	public function testDiscovery(string $modelClass) {
+		$expected = [
+			Fixture\SameDirectoryService::class => ['commandBus' => CommandBus::class],
+			Fixture\Others\ServiceClassWithDependencies::class => [
+				'one' => Fixture\SomeFolder\SomeInterface::class,
+				'two' => Fixture\SomeFolder\SomeAbstractServiceInterfaceClass::class,
+				'three' => Fixture\SameDirectoryService::class,
+			],
+			Fixture\SomeFolder\SomeConcreteServiceInterfaceClass::class => [],
+			Fixture\SomeFolder\SomeServiceClass::class => [],
+			Fixture\SomeFolder\SomeServiceInterfaceClass::class => [],
+		];
+
+		$this->assertEquals($expected, $modelClass::getDependencyMap());
+	}
+
+	#[TestDox('It will not discover Services that are not loaded.')]
+	public function testBadDiscovery() {
+		$this->assertArrayNotHasKey(
+			'Smolblog\Foundation\Test\NotAutoloadedFixture\NonAutoloadedClass',
+			DomainModelTestDiscoverNonNamespacedFolder::getDependencyMap()
+		);
 	}
 }
