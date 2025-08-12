@@ -7,9 +7,9 @@ use ReflectionProperty;
 use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Keypair;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 use Smolblog\Foundation\Value\ValueProperty;
+use Smolblog\Infrastructure\Keypair;
 
 /**
  * Indicates a Site has been created.

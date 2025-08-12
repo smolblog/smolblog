@@ -8,7 +8,7 @@ use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Core\Site\Events\SiteCreated;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Keypair;
+use Smolblog\Infrastructure\Keypair;
 use Smolblog\Test\SiteTestBase;
 
 final class CreateSiteTest extends SiteTestBase {

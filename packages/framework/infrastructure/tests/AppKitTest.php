@@ -13,7 +13,7 @@ use Smolblog\Foundation\DomainModel;
 use Smolblog\Foundation\Service\Command\CommandBus;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
-use Smolblog\Foundation\Service\KeypairGenerator;
+use Smolblog\Infrastructure\KeypairGenerator;
 use Smolblog\Foundation\Value\Messages\Command;
 use Smolblog\Infrastructure\Registries\CommandHandlerRegistry;
 use Smolblog\Infrastructure\Registries\RegistryHelper;

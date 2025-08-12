@@ -4,11 +4,11 @@ namespace Smolblog\Core\Site\Entities;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Keypair;
 use Smolblog\Foundation\Value\Traits\Entity;
 use Smolblog\Foundation\Value\Traits\EntityKit;
 use Smolblog\Foundation\Value\Traits\SerializableValue;
 use Smolblog\Foundation\Value\Traits\SerializableValueKit;
+use Smolblog\Infrastructure\Keypair;
 
 /**
  * Represents a site with its own URL, posts, etc.

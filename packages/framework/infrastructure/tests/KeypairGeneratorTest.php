@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\Service;
+namespace Smolblog\Infrastructure;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Smolblog\Test\TestCase;

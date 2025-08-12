@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\Value;
+namespace Smolblog\Infrastructure;
 
 use Smolblog\Foundation\Value;
 use Smolblog\Foundation\Value\Traits\SerializableValue;

@@ -6,7 +6,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteRepo;
-use Smolblog\Foundation\Service\KeypairGenerator;
+use Smolblog\Infrastructure\KeypairGenerator;
 
 abstract class SiteTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
