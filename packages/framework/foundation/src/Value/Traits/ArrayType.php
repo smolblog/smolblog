@@ -3,6 +3,7 @@
 namespace Smolblog\Foundation\Value\Traits;
 
 use Attribute;
+use Deprecated;
 use Smolblog\Foundation\Value\Attributes\ArrayType as AttributesArrayType;
 
 /**
@@ -17,4 +18,8 @@ use Smolblog\Foundation\Value\Attributes\ArrayType as AttributesArrayType;
 	Attribute::TARGET_PARAMETER
 )]
 class ArrayType extends AttributesArrayType {
+	#[Deprecated]
+	public function __construct(...$args) {
+		parent::__construct(...$args);
+	}
 }
