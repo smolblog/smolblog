@@ -3,9 +3,16 @@
 namespace Smolblog\Foundation\v2;
 
 /**
- * A Model that enumerates services (with dependencies) for a domain.
+ * Class to centralize information about a domain/package.
  */
-interface WithServices {
+interface Module {
+	/**
+	 * Array of class name keys with the interfaces they implement.
+	 *
+	 * @return array<class-string, class-string[]>
+	 */
+	public static function discoverableClasses(): array;
+
 	/**
 	 * Get the Services to be registered in this Model and their dependencies.
 	 *

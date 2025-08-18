@@ -19,7 +19,7 @@ use Smolblog\Foundation\Value\Attributes\ArrayType as AttributesArrayType;
 )]
 class ArrayType extends AttributesArrayType {
 	#[Deprecated]
-	public function __construct(...$args) {
+	public function __construct(...$args) { //phpcs:ignore
 		parent::__construct(...$args);
 	}
 }

@@ -1,11 +1,24 @@
 <?php
 
-namespace Smolblog\Foundation\v2\DomainModel;
+namespace Smolblog\Foundation\v2\Module;
 
 use League\ConstructFinder\ConstructFinder;
 use ReflectionClass;
 
-trait FileEnumerationKit {
+trait FileDiscoveryKit {
+	/**
+	 * Get the list of discoverable classes in this Module.
+	 *
+	 * @return class-string[]
+	 */
+	private static function listClasses(): array {
+		$dir = new ReflectionClass(static::class)->getFileName();
+		if ($dir === false) {
+			return [];
+		}
+		return self::getClassNamesFromFolder(folder: dirname(realpath($dir)));
+	}
+
 	/**
 	 * Get fully-qualified class names from files in the given folders.
 	 *

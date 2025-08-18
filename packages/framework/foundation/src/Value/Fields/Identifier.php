@@ -2,6 +2,7 @@
 
 namespace Smolblog\Foundation\Value\Fields;
 
+use Ramsey\Uuid\Rfc4122\{UuidV4, UuidV5, UuidV7};
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
@@ -44,13 +45,15 @@ readonly class Identifier extends Value implements Field {
 	 */
 	public static function fromString(string $idString): static {
 		try {
-			return new self(internal: Uuid::fromString($idString));
+			$newId = Uuid::fromString($idString);
 		} catch (Throwable $e) {
 			throw new InvalidValueProperties(
 				message: "Could not create Identifier from string $idString",
 				previous: $e
 			);
 		}
+
+		return static::deserializeToType($newId);
 	}
 
 	/**
@@ -66,7 +69,7 @@ readonly class Identifier extends Value implements Field {
 	 */
 	public static function fromByteString(string $byteString): self {
 		try {
-			return new self(internal: Uuid::fromBytes($byteString));
+			$newId = Uuid::fromBytes($byteString);
 		} catch (Throwable $e) {
 			$idString = bin2hex($byteString);
 			throw new InvalidValueProperties(
@@ -74,6 +77,30 @@ readonly class Identifier extends Value implements Field {
 				previous: $e
 			);
 		}
+
+		return static::deserializeToType($newId);
+	}
+
+	/**
+	 * Attempt to use the correct foundation type based on the Ramsey\UUID class.
+	 *
+	 * @param UuidInterface $newId Deserialized UUID.
+	 * @return self|DateIdentifier|NamedIdentifier|RandomIdentifier
+	 */
+	private static function deserializeToType(UuidInterface $newId): self {
+		if (self::class !== static::class) {
+			return static::fromByteString($newId->getBytes());
+		}
+
+		switch (get_class($newId)) {
+			case UuidV4::class:
+				return RandomIdentifier::fromByteString($newId->getBytes());
+			case UuidV5::class:
+				return NamedIdentifier::fromByteString($newId->getBytes());
+			case UuidV7::class:
+				return DateIdentifier::fromByteString($newId->getBytes());
+		}
+		return new self(internal: $newId);
 	}
 
 	/**
