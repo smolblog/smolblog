@@ -66,6 +66,7 @@ final class IdentifierTest extends TestCase {
 
 		$this->assertEquals($idString, $idObject->toString());
 		$this->assertEquals(strval($idObject), strval(Identifier::fromString($idString)));
+		$this->assertEquals($idObject, Identifier::fromString($idString));
 	}
 
 	#[TestDox('Identifiers will serialize to and deserialize from a byte-compressed string')]
@@ -75,6 +76,7 @@ final class IdentifierTest extends TestCase {
 
 		$this->assertEquals($byteString, $idObject->toByteString());
 		$this->assertEquals(strval($idObject), strval(Identifier::fromByteString($byteString)));
+		$this->assertEquals($idObject, Identifier::fromByteString($byteString));
 	}
 
 	#[TestDox('It will throw an exception if it can\'t deserialize the string')]

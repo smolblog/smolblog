@@ -15,6 +15,8 @@ use Throwable;
  * A DateTime object.
  *
  * This is a wrapper around DateTimeImmutable that provides a serializable interface.
+ *
+ * @deprecated 0.6 Use DateTimeInterface/Immutable.
  */
 readonly class DateTimeField extends Value implements Field {
 	use FieldKit;

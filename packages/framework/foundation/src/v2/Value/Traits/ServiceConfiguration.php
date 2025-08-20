@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\Value\Traits;
+namespace Smolblog\Foundation\v2\Value\Traits;
 
 /**
  * An object that stores configuration for a ConfiguredRegisterable service.

@@ -28,18 +28,16 @@ trait FileDiscoveryKit {
 	 *
 	 * @param string $folder                Folder to search. Pass __DIR__ to search the current file's folder.
 	 * @param array  $excludingFilePatterns Array of patterns to exclude (e.g. *.view.php).
-	 * @param array  $excludingClasses      Array of classes to exclude.
 	 * @return class-string[]
 	 */
 	private static function getClassNamesFromFolder(
 		string $folder,
 		array $excludingFilePatterns = [],
-		array $excludingClasses = [],
 	): array {
 		$foundClasses = ConstructFinder::locatedIn($folder)->exclude(...$excludingFilePatterns)->findClassNames();
-		return array_filter($foundClasses, function ($found) use ($excludingClasses) {
+		return array_filter($foundClasses, static function ($found) {
 			// If we already know it doesn't exist, filter out.
-			if (!class_exists($found) || in_array($found, $excludingClasses)) {
+			if (!class_exists($found)) {
 				return false;
 			}
 
