@@ -15,7 +15,7 @@ class FieldHandler implements Exporter, Importer {
 	}
 
 	public function exportValue(Serializer $serializer, FieldAttribute $field, mixed $value, mixed $runningValue): mixed {
-		// @var Field
+		/** @var Field */
 		$fieldObject = $value;
 		return $serializer->formatter->serializeString($runningValue, $field, $fieldObject->toString());
 	}
@@ -39,7 +39,7 @@ class FieldHandler implements Exporter, Importer {
 			return null;
 		}
 
-		// @var class-string<Field>
+		/** @var class-string<Field> */
 		$fieldType = $field->phpType;
 		return $fieldType::fromString($string);
 	}
