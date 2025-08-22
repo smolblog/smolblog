@@ -10,6 +10,8 @@ use Throwable;
  * A name-based (version 5) UUID.
  *
  * This is useful for creating deterministic identifiers, useful for sub-entities or intersection entities.
+ *
+ * @deprecated Use Smolblog\Foundation\v2\Value\Factories\UuidFactory
  */
 readonly class NamedIdentifier extends Identifier {
 	/**

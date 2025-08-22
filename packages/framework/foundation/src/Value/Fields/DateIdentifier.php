@@ -13,6 +13,8 @@ readonly class DateIdentifier extends Identifier {
 	 * Create the UUID.
 	 *
 	 * @param DateTimeInterface|null $date Date to create UUID with. Uses current date by default.
+	 *
+	 * @deprecated Use Smolblog\Foundation\v2\Value\Factories\UuidFactory
 	 */
 	public function __construct(DateTimeInterface|DateTimeField|null $date = null) {
 		$dateObj = $date instanceof DateTimeField ? $date->object : $date;

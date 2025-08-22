@@ -23,7 +23,7 @@ readonly class Email extends Value implements Field {
 	 * @param string $email Email address to save.
 	 */
 	public function __construct(public string $email) {
-		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+		if (!\filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
 			throw new InvalidValueProperties("{$this->email} is not a valid email address.");
 		}
 	}

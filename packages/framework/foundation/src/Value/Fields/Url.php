@@ -12,6 +12,8 @@ use Smolblog\Foundation\Value\Traits\FieldKit;
 
 /**
  * PSR-7 compatible URL field.
+ *
+ * @deprecated Use Smolblog\Foundation\v2\Value\Factories\HttpMessageFactory
  */
 readonly class Url extends Value implements Field, UriInterface {
 	use FieldKit;
@@ -45,7 +47,7 @@ readonly class Url extends Value implements Field, UriInterface {
 	 * @return string
 	 */
 	public function toString(): string {
-		return strval($this->internal);
+		return \strval($this->internal);
 	}
 
 	/**

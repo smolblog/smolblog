@@ -19,6 +19,8 @@ use Throwable;
  * RandomIdentifier, or NamedIdentifier instead.
  *
  * Essentially a wrapper around Ramsey\Uuid.
+ *
+ * @deprecated Use Smolblog\Foundation\v2\Value\Factories\UuidFactory
  */
 readonly class Identifier extends Value implements Field {
 	use FieldKit;

@@ -4,7 +4,7 @@ namespace Smolblog\Foundation\v2\Value\Factories;
 
 use DateTimeInterface;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidFactory as RamseyUuidFactory;
 use Ramsey\Uuid\UuidInterface;
 use Stringable;
 
@@ -14,28 +14,28 @@ use Stringable;
  * Is this an anti-pattern? Probably. But while it type-hints against Ramsey\Uuid, it could be implemented by anything.
  * Including a future version of Ramsey\Uuid or some future PSR standard.
  */
-class IdentifierFactory {
+class UuidFactory {
 	/**
 	 * Internal instance of a Ramesy\Uuid\UuidFactory.
 	 *
 	 * Typehint should be replaced with UuidFactoryInterface when the interface gets ::uuid7 in version 5.
 	 *
-	 * @var UuidFactory
+	 * @var RamseyUuidFactory
 	 */
-	private static UuidFactory $internal;
+	private static RamseyUuidFactory $internal;
 
-	private static function factory(): UuidFactory {
-		self::$internal ??= new UuidFactory();
+	private static function factory(): RamseyUuidFactory {
+		self::$internal ??= new RamseyUuidFactory();
 		return self::$internal;
 	}
 
 	/**
 	 * Replace the instance of UuidFactory.
 	 *
-	 * @param UuidFactory $newSource Ramsey\Uuid-compatible factory.
+	 * @param RamseyUuidFactory $newSource Ramsey\Uuid-compatible factory.
 	 * @return void
 	 */
-	public static function setSource(UuidFactory $newSource) {
+	public static function setSource(RamseyUuidFactory $newSource) {
 		self::$internal = $newSource;
 	}
 
