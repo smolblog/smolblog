@@ -89,7 +89,7 @@ readonly class Identifier extends Value implements Field {
 	 */
 	private static function deserializeToType(UuidInterface $newId): self {
 		if (self::class !== static::class) {
-			return static::fromByteString($newId->getBytes());
+			return new static($newId);
 		}
 
 		switch (get_class($newId)) {

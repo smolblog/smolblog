@@ -43,11 +43,20 @@
 	</rule>
 
 	<!-- Add Squiz commenting rules -->
-	<rule ref="Squiz.Commenting.FunctionComment"/>
+	<rule ref="Squiz.Commenting.FunctionComment">
+		<properties>
+			<property name="minimumVisibility" value="protected" />
+		</properties>
+	</rule>
 	<rule ref="Squiz.Commenting.ClassComment"/>
 	<rule ref="Squiz.Commenting.VariableComment"/>
 
 	<!-- Make structures look nicer -->
 	<rule ref="Generic.Classes.OpeningBraceSameLine"/>
 	<rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+	<!-- <rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/> -->
+
+	<!-- Directly use built-in functions. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions"/>
 </ruleset>

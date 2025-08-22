@@ -32,10 +32,13 @@
         "ramsey/uuid": "^4.7",
         "squizlabs/php_codesniffer": "^3.8",
         "league/construct-finder": "^1.5",
-        "crell/serde": "^1.5"
+        "crell/serde": "^1.5",
+        "psr/http-factory": "^1.1",
+        "nyholm/psr7": "^1.8"
     },
     "require-dev": {
-        "symplify/monorepo-builder": "^11.2"
+        "symplify/monorepo-builder": "^11.2",
+        "slevomat/coding-standard": "^8.20"
     },
     "autoload": {
         "psr-4": {
@@ -80,5 +83,10 @@
         "smolblog/smolblog-markdown": "0.5.0",
         "smolblog/test-utils": "0.5.0"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
 }
