@@ -48,7 +48,9 @@
 			<property name="minimumVisibility" value="protected" />
 		</properties>
 	</rule>
-	<rule ref="Squiz.Commenting.ClassComment"/>
+	<rule ref="Squiz.Commenting.ClassComment">
+		<exclude name="Squiz.Commenting.ClassComment.TagNotAllowed"/>
+	</rule>
 	<rule ref="Squiz.Commenting.VariableComment"/>
 
 	<!-- Make structures look nicer -->

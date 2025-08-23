@@ -1,11 +1,11 @@
 <?php
 
-namespace Smolblog\Foundation\v2\Value\Traits;
+namespace Smolblog\Foundation\v2\Registry;
 
 /**
  * An object that stores configuration for a ConfiguredRegisterable service.
  */
-interface ServiceConfiguration {
+interface RegisterableConfiguration {
 	/**
 	 * Get the service's key from this configuration.
 	 *

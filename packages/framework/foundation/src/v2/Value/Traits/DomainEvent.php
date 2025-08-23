@@ -3,7 +3,7 @@
 namespace Smolblog\Foundation\v2\Value\Traits;
 
 use DateTimeInterface;
-use Smolblog\Foundation\Value\Fields\Identifier;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Represents a Thing That Has Happened.
@@ -20,13 +20,13 @@ interface DomainEvent extends Entity {
 	public DateTimeInterface $timestamp { get; }
 
 	/**
-	 * Identifier of the user/entity making the change.
+	 * UUID of the user/entity making the change.
 	 *
-	 * If an event is happening without user interaction, use a dedicated system user identifier or Identifier::Nil().
+	 * If an event is happening without user interaction, use a dedicated system user identifier or the nil UUID.
 	 *
-	 * @var Identifier
+	 * @var UuidInterface
 	 */
-	public Identifier $userId { get; }
+	public UuidInterface $userId { get; }
 
 	/**
 	 * Type for this event.
@@ -38,31 +38,31 @@ interface DomainEvent extends Entity {
 	public string $type { get; }
 
 	/**
-	 * Optional Identifier for the "entity" this Event refers to.
+	 * Optional UUID for the "entity" this Event refers to.
 	 *
 	 * For example, in a content management system, it would be the individual piece of content being edited.
 	 *
-	 * @var Identifier|null
+	 * @var UuidInterface|null
 	 */
-	public ?Identifier $entityId { get; }
+	public ?UuidInterface $entityId { get; }
 
 	/**
-	 * Optional Identifier for the "aggregate" this Event refers to.
+	 * Optional UUID for the "aggregate" this Event refers to.
 	 *
 	 * If the entity belongs to a larger identifiable entity, then this would be its ID.
 	 *
-	 * @var Identifier|null
+	 * @var UuidInterface|null
 	 */
-	public ?Identifier $aggregateId { get; }
+	public ?UuidInterface $aggregateId { get; }
 
 	/**
-	 * Optional Identifier for the process that created this Event.
+	 * Optional UUID for the process that created this Event.
 	 *
 	 * This is in place to link subsequent events together. An asynchronous process could create at least two events:
 	 * one denoting the start of the process and one recording the result. This identifier links the two events together
 	 * so it is clear which result belongs to which process.
 	 *
-	 * @var Identifier|null
+	 * @var UuidInterface|null
 	 */
-	public ?Identifier $processId { get; }
+	public ?UuidInterface $processId { get; }
 }

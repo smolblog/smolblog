@@ -2,8 +2,6 @@
 
 namespace Smolblog\Foundation\v2\Value\Traits;
 
-use Smolblog\Foundation\Value\Fields\Identifier;
-
 /**
  * Useful defaults for DomainEvents.
  *

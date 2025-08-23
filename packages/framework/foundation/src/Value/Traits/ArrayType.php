@@ -18,7 +18,6 @@ use Smolblog\Foundation\Value\Attributes\ArrayType as AttributesArrayType;
 	Attribute::TARGET_PARAMETER
 )]
 class ArrayType extends AttributesArrayType {
-	#[Deprecated]
 	public function __construct(...$args) { //phpcs:ignore
 		parent::__construct(...$args);
 	}

@@ -7,8 +7,10 @@ use Crell\Serde\DeformatterResult;
 use Crell\Serde\Deserializer;
 use Crell\Serde\PropertyHandler\{Exporter, Importer};
 use Crell\Serde\Serializer;
-use Smolblog\Foundation\v2\Value\Traits\Field;
 
+/**
+ * Attempt at handling Field objects in Serde.
+ */
 class FieldHandler implements Exporter, Importer {
 	public function canExport(FieldAttribute $field, mixed $value, string $format): bool {
 		return $value instanceof Field;
