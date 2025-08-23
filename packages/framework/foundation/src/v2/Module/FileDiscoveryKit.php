@@ -16,7 +16,7 @@ trait FileDiscoveryKit {
 		if ($dir === false) {
 			return [];
 		}
-		return self::getClassNamesFromFolder(folder: dirname(realpath($dir)));
+		return self::getClassNamesFromFolder(folder: \dirname(\realpath($dir)));
 	}
 
 	/**
@@ -35,9 +35,9 @@ trait FileDiscoveryKit {
 		array $excludingFilePatterns = [],
 	): array {
 		$foundClasses = ConstructFinder::locatedIn($folder)->exclude(...$excludingFilePatterns)->findClassNames();
-		return array_filter($foundClasses, static function ($found) {
+		return \array_filter($foundClasses, static function ($found) {
 			// If we already know it doesn't exist, filter out.
-			if (!class_exists($found)) {
+			if (!\class_exists($found)) {
 				return false;
 			}
 

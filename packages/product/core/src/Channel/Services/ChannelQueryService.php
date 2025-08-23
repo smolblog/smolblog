@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Channel\Services;
 
-use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Foundation\Exceptions\ActionNotAuthorized;
 use Smolblog\Foundation\Value\Fields\Identifier;

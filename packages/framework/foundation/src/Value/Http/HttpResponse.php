@@ -31,11 +31,11 @@ class HttpResponse implements ResponseInterface {
 		array $headers = [],
 		string|array|JsonSerializable|null $body = null,
 	) {
-		$casedHeaders = array_change_key_case($headers, CASE_LOWER);
+		$casedHeaders = \array_change_key_case($headers, CASE_LOWER);
 
 		$parsedBody = $body;
-		if (isset($body) && (is_array($body) || is_object($body))) {
-			$parsedBody = json_encode($body);
+		if (isset($body) && (\is_array($body) || \is_object($body))) {
+			$parsedBody = \json_encode($body);
 			$casedHeaders['content-type'] ??= 'application/json';
 		}
 

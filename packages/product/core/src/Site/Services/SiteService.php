@@ -18,9 +18,9 @@ use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
-use Smolblog\Infrastructure\KeypairGenerator;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\RandomIdentifier;
+use Smolblog\Infrastructure\KeypairGenerator;
 
 /**
  * Handle Site-related commands.

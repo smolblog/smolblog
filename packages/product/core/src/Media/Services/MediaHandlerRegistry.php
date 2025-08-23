@@ -42,7 +42,7 @@ class MediaHandlerRegistry implements Registry {
 	 */
 	public function get(?string $key = null): MediaHandler {
 		$keyToUse = $key ?? $this->defaultHandlerKey ?? \array_key_first($this->library);
-		if (!is_string($keyToUse)) {
+		if (!\is_string($keyToUse)) {
 			throw new ServiceNotRegistered(
 				service: 'default',
 				registry: self::class,

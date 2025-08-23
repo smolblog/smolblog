@@ -65,7 +65,7 @@ trait ModuleKit {
 	private static function analyzeClasses(array $classNames): array {
 		$map = [];
 		foreach ($classNames as $className) {
-			$implements = class_implements($className);
+			$implements = \class_implements($className);
 			if ($implements) {
 				$map[$className] = $implements;
 			}
@@ -81,11 +81,11 @@ trait ModuleKit {
 	 * @return array<class-string, array<string, class-string|callable>|string|callable>
 	 */
 	private static function mapServices(array $overrides = []): array {
-		$overridden = array_keys($overrides);
-		$automapClasses = array_keys(
-			array_filter(
+		$overridden = \array_keys($overrides);
+		$automapClasses = \array_keys(
+			\array_filter(
 				self::discoverableClasses(),
-				fn($implements, $class) => !in_array($class, $overridden) && in_array(Service::class, $implements),
+				fn($implements, $class) => !\in_array($class, $overridden) && \in_array(Service::class, $implements),
 				ARRAY_FILTER_USE_BOTH
 			)
 		);
@@ -95,7 +95,7 @@ trait ModuleKit {
 			$automapResults[$classToMap] = self::reflectService($classToMap);
 		}
 
-		return array_merge($automapResults, $overrides);
+		return \array_merge($automapResults, $overrides);
 	}
 
 	/**
@@ -115,7 +115,7 @@ trait ModuleKit {
 		$params = [];
 		foreach ($reflect->getParameters() as $param) {
 			$type = $param->getType();
-			if (!isset($type) || get_class($type) !== ReflectionNamedType::class || $type->isBuiltin()) {
+			if (!isset($type) || \get_class($type) !== ReflectionNamedType::class || $type->isBuiltin()) {
 				throw new CodePathNotSupported(
 					message: "{$service} cannot be auto-registered; parameter {$param->getName()} is not a class.",
 					location: static::class . '::AUTO_SERVICES',

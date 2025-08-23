@@ -51,7 +51,7 @@ class CommandHandlerRegistry implements Registry, CommandBus {
 	 * @return void
 	 */
 	public function configure(array $configuration): void {
-		array_walk($configuration, fn($srv) => $this->autoregisterService($srv));
+		\array_walk($configuration, fn($srv) => $this->autoregisterService($srv));
 	}
 
 	/**

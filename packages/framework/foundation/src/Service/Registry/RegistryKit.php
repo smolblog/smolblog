@@ -39,11 +39,11 @@ trait RegistryKit {
 	 */
 	public function configure(array $configuration): void {
 		$interface = self::getInterfaceToRegister();
-		if (is_a($interface, ConfiguredRegisterable::class, allow_string: true)) {
+		if (\is_a($interface, ConfiguredRegisterable::class, allow_string: true)) {
 			$this->configureWithObjects($configuration);
 			return;
 		}
-		if (is_a($interface, Registerable::class, allow_string: true)) {
+		if (\is_a($interface, Registerable::class, allow_string: true)) {
 			$this->configureWithKeys($configuration);
 			return;
 		}
@@ -87,7 +87,7 @@ trait RegistryKit {
 	 * @return boolean false if $this->get will return null.
 	 */
 	public function has(string $key): bool {
-		return array_key_exists($key, $this->library) && $this->container->has($this->library[$key]);
+		return \array_key_exists($key, $this->library) && $this->container->has($this->library[$key]);
 	}
 
 	/**

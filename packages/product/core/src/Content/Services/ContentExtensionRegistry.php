@@ -38,7 +38,7 @@ class ContentExtensionRegistry implements Registry {
 	 * @return string[]
 	 */
 	public function availableContentExtensions(): array {
-		return array_map(fn($ct) => $ct->displayName, $this->configs);
+		return \array_map(fn($ct) => $ct->displayName, $this->configs);
 	}
 
 	/**

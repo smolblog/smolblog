@@ -38,7 +38,7 @@ class ContentTypeRegistry implements Registry {
 	 * @return string[]
 	 */
 	public function availableContentTypes(): array {
-		return array_map(fn($ct) => $ct->displayName, $this->configs);
+		return \array_map(fn($ct) => $ct->displayName, $this->configs);
 	}
 
 	/**

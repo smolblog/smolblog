@@ -20,7 +20,7 @@ readonly class Tags extends ContentExtension {
 	 * @param string[] $tags Tags as input by the user.
 	 */
 	public function __construct(#[ArrayType(ArrayType::TYPE_STRING)] public array $tags) {
-		if (!empty(array_filter($tags, fn($tag) => !is_string($tag)))) {
+		if (!empty(\array_filter($tags, fn($tag) => !\is_string($tag)))) {
 			throw new InvalidValueProperties(message: 'All tags must be strings.', field: 'tags');
 		}
 	}

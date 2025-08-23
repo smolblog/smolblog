@@ -54,7 +54,7 @@ class DatabaseEnvironment {
 						// This statement is included in the Doctrine docs but isn't triggered during tests.
 						$assetName = $assetName->getName(); // @codeCoverageIgnore
 					}
-					return str_starts_with($assetName, $tablePrefix);
+					return \str_starts_with($assetName, $tablePrefix);
 				}
 			);
 		}

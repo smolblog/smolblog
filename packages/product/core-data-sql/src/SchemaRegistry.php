@@ -34,7 +34,7 @@ class SchemaRegistry implements Registry {
 	 */
 	public function configure(array $configuration): void {
 		// TODO use array_any to confirm correct config.
-		$expectedSchema = array_reduce(
+		$expectedSchema = \array_reduce(
 			array: $configuration,
 			callback: fn($schema, $srv) => $srv::addTableToSchema($schema, $this->env->tableName(...)),
 			initial: new Schema()
@@ -43,7 +43,7 @@ class SchemaRegistry implements Registry {
 		$expectedSchema
 			->createTable($this->env->tableName('db_manager'))
 			->addColumn('schema_version', 'string', ['length' => 32]);
-		$schemaVersion = md5(implode(
+		$schemaVersion = \md5(\implode(
 			array: $expectedSchema->toSql($this->env->getConnection()->getDatabasePlatform()),
 			separator: ' '
 		));

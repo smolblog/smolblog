@@ -17,7 +17,7 @@ trait FieldKit {
 	 * @return boolean
 	 */
 	public function equals(Value $other): bool {
-		return is_a($other, Field::class) && strval($this) == strval($other);
+		return \is_a($other, Field::class) && \strval($this) == \strval($other);
 	}
 
 	/**
@@ -60,6 +60,6 @@ trait FieldKit {
 	 * @return static
 	 */
 	public static function deserializeValue(mixed $string): static {
-		return static::fromString(strval($string));
+		return static::fromString(\strval($string));
 	}
 }

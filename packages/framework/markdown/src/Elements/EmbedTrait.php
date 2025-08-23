@@ -26,7 +26,7 @@ trait EmbedTrait {
 	 * @return boolean
 	 */
 	protected function identifyEmbed(string $line) {
-		return preg_match(static::$embedPattern, $line) === 1; // @codeCoverageIgnore
+		return \preg_match(static::$embedPattern, $line) === 1; // @codeCoverageIgnore
 	}
 
 	/**
@@ -38,7 +38,7 @@ trait EmbedTrait {
 	 */
 	protected function consumeEmbed(array $lines, int $current) {
 		$matches = array();
-		preg_match(static::$embedPattern, $lines[$current], $matches);
+		\preg_match(static::$embedPattern, $lines[$current], $matches);
 
 		return [
 			[

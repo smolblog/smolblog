@@ -21,7 +21,7 @@ trait AppKit {
 
 		return new ServiceRegistry(
 			configuration: $map,
-			supplements: $this->buildSupplementsForRegistries(array_keys($map)),
+			supplements: $this->buildSupplementsForRegistries(\array_keys($map)),
 		);
 	}
 
@@ -32,12 +32,12 @@ trait AppKit {
 	 * @return array
 	 */
 	private function buildDependencyMap(array $models): array {
-		return array_reduce(
-			array_map(
+		return \array_reduce(
+			\array_map(
 				fn($model) => $model::getDependencyMap(),
 				$models
 			),
-			fn($carry, $item) => array_merge($carry, $item),
+			fn($carry, $item) => \array_merge($carry, $item),
 			[]
 		);
 	}
@@ -49,7 +49,7 @@ trait AppKit {
 	 * @return array Supplements array for ServiceRegistry
 	 */
 	private function buildSupplementsForRegistries(array $services): array {
-		return array_map(
+		return \array_map(
 			fn($conf) => ['configure' => ['configuration' => $conf]],
 			RegistryHelper::getRegistryConfigs($services),
 		);

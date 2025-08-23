@@ -28,12 +28,12 @@ trait SerializableSupertypeBackupKit {
 			return self::baseDeserialize($data);
 		}
 
-		$modified = array_filter(
+		$modified = \array_filter(
 			$data,
-			fn($key) => in_array($key, array_keys(static::propertyInfo())),
+			fn($key) => \in_array($key, \array_keys(static::propertyInfo())),
 			ARRAY_FILTER_USE_KEY
 		);
-		$modified[$extraField] = array_diff_key($data, $modified);
+		$modified[$extraField] = \array_diff_key($data, $modified);
 
 		try {
 			return self::baseDeserialize($modified);

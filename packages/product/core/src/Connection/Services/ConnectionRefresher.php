@@ -13,10 +13,10 @@ use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Service;
 use Smolblog\Foundation\Service\Command\CommandHandler;
 use Smolblog\Foundation\Service\Command\CommandHandlerService;
+use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
 use Smolblog\Framework\Messages\Listener;
 use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Service to check if a Connection needs a refresh and save the refreshed Connection if so.

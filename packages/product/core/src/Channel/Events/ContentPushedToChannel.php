@@ -4,11 +4,11 @@ namespace Smolblog\Core\Channel\Events;
 
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Content\Entities\Content;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Indicates that the given Content has been pushed to the given channel.

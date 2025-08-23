@@ -3,7 +3,6 @@
 namespace Smolblog\Core\Channel\Services;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
@@ -11,6 +10,7 @@ use Smolblog\Core\Channel\Events\ContentPushFailed;
 use Smolblog\Core\Channel\Events\ContentPushStarted;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Channel\Jobs\ContentPushJob;
+use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Foundation\Service\Job\JobManager;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\RandomIdentifier;

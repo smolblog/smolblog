@@ -82,7 +82,7 @@ class DatabaseService {
 			$data,
 		);
 
-		return intval($result);
+		return \intval($result);
 	}
 
 	/**
@@ -102,7 +102,7 @@ class DatabaseService {
 			$where,
 		);
 
-		return intval($result);
+		return \intval($result);
 	}
 
 	/**
@@ -120,6 +120,6 @@ class DatabaseService {
 			$where,
 		);
 
-		return intval($result);
+		return \intval($result);
 	}
 }

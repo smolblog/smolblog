@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Channel\Events;
 
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\Url;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**

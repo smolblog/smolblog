@@ -28,6 +28,6 @@ readonly class Note extends ContentType {
 	 * @return string
 	 */
 	public function getTitle(): string {
-		return ContentUtilities::truncateText(strval($this->text));
+		return ContentUtilities::truncateText(\strval($this->text));
 	}
 }

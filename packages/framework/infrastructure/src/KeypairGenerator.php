@@ -17,8 +17,8 @@ class KeypairGenerator {
 		$key = RSA::createKey();
 
 		// @codeCoverageIgnoreStart
-		$pub = str_replace(["\r\n", "\r", "\n"], "\n", strval($key->getPublicKey()));
-		$priv = str_replace(["\r\n", "\r", "\n"], "\n", $key->__toString());
+		$pub = \str_replace(["\r\n", "\r", "\n"], "\n", \strval($key->getPublicKey()));
+		$priv = \str_replace(["\r\n", "\r", "\n"], "\n", $key->__toString());
 		// @codeCoverageIgnoreEnd
 		return new Keypair(publicKey: $pub, privateKey: $priv);
 	}

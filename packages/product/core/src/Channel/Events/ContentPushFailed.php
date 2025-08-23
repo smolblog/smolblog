@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Channel\Events;
 
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
+use Smolblog\Foundation\Value\Attributes\ArrayType;
 use Smolblog\Foundation\Value\Fields\DateTimeField;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Denotes that an asychronous content push has failed and provides a user-facing message and applicable details.

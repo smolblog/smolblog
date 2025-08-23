@@ -18,11 +18,11 @@ class RegistryHelper {
 		$map = [];
 		$registries = [];
 		foreach ($services as $service) {
-			if (!class_exists($service)) { // @codeCoverageIgnore
+			if (!\class_exists($service)) { // @codeCoverageIgnore
 				continue;
 			}
 
-			$implements = class_implements($service);
+			$implements = \class_implements($service);
 			if (!$implements) {
 				// This exists for static analysis; class_implements should always be an array since we already checked
 				// if the class exists. This line should never be called.
@@ -30,12 +30,12 @@ class RegistryHelper {
 			}
 
 			$map[$service] = $implements;
-			if (in_array(Registry::class, $implements, strict: true)) {
+			if (\in_array(Registry::class, $implements, strict: true)) {
 				$registries[$service] = $service;
 			}
 		}
 
-		return array_map(
+		return \array_map(
 			fn($reg) => self::getImplementingClassesForRegistry($map, $reg),
 			$registries,
 		);
@@ -50,11 +50,11 @@ class RegistryHelper {
 	 */
 	private static function getImplementingClassesForRegistry(array $map, string $registry): array {
 		$search = $registry::getInterfaceToRegister();
-		$filtered = array_filter(
+		$filtered = \array_filter(
 			$map,
-			fn($imp) => in_array($search, $imp, strict: true)
+			fn($imp) => \in_array($search, $imp, strict: true)
 		);
 
-		return array_keys($filtered);
+		return \array_keys($filtered);
 	}
 }

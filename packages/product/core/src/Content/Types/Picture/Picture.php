@@ -35,10 +35,10 @@ readonly class Picture extends ContentType {
 			);
 		}
 
-		$rejects = array_filter(
+		$rejects = \array_filter(
 			$pictures,
 			fn($pic) => !(
-				is_a($pic, Media::class) &&
+				\is_a($pic, Media::class) &&
 				($pic->type === MediaType::Image || $pic->type === MediaType::Video)
 			)
 		);
@@ -57,7 +57,7 @@ readonly class Picture extends ContentType {
 	 */
 	public function getTitle(): string {
 		return isset($this->caption) ?
-			ContentUtilities::truncateText(strval($this->caption)) :
+			ContentUtilities::truncateText(\strval($this->caption)) :
 			$this->pictures[0]->title;
 	}
 }

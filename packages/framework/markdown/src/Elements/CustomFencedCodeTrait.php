@@ -46,8 +46,8 @@ trait CustomFencedCodeTrait {
 	 * @return string
 	 */
 	protected function renderCode($block) {
-		if (isset($block['language']) && array_key_exists($block['language'], $this->codeRenderers)) {
-			return call_user_func($this->codeRenderers[$block['language']], $block);
+		if (isset($block['language']) && \array_key_exists($block['language'], $this->codeRenderers)) {
+			return \call_user_func($this->codeRenderers[$block['language']], $block);
 		}
 		return $this->baseRenderCode($block);
 	}

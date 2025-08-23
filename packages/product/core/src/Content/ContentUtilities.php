@@ -17,8 +17,8 @@ final class ContentUtilities {
 	 */
 	public static function truncateText(string $text, int $limit = 100): string {
 		// Some branches here will never be executed.
-		$truncated = substr($text, 0, strpos(wordwrap($text, $limit) . "\n", "\n")); // @codeCoverageIgnore
-		if (strlen($text) > $limit) {
+		$truncated = \substr($text, 0, \strpos(\wordwrap($text, $limit) . "\n", "\n")); // @codeCoverageIgnore
+		if (\strlen($text) > $limit) {
 			$truncated .= '...';
 		}
 		return $truncated;

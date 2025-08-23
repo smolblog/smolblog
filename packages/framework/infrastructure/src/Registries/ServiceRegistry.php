@@ -110,7 +110,7 @@ class ServiceRegistry implements ContainerInterface {
 	 * @return boolean
 	 */
 	public function has(string $id): bool {
-		return array_key_exists($id, $this->configuration);
+		return \array_key_exists($id, $this->configuration);
 	}
 
 	/**
@@ -124,19 +124,19 @@ class ServiceRegistry implements ContainerInterface {
 	 */
 	private function instantiateService(string $service): mixed {
 		$config = $this->configuration[$service];
-		if (is_callable($config)) {
+		if (\is_callable($config)) {
 			// The config is a factory function, so just call it and return the result.
-			return call_user_func($config, $this);
+			return \call_user_func($config, $this);
 		}
 
-		if (is_string($config)) {
+		if (\is_string($config)) {
 			// This is an alias, so we should provide an instance of the implementation.
 			return $this->get($config);
 		}
 
 		// Get the listed dependencies from the container.
-		$args = array_map(
-			fn($dependency) => is_callable($dependency) ? call_user_func($dependency, $this) : $this->get($dependency),
+		$args = \array_map(
+			fn($dependency) => \is_callable($dependency) ? \call_user_func($dependency, $this) : $this->get($dependency),
 			$config
 		);
 
@@ -144,7 +144,7 @@ class ServiceRegistry implements ContainerInterface {
 
 		// Call any supplemental methods.
 		foreach ($this->supplements[$service] ?? [] as $method => $args) {
-			call_user_func_array([$instance, $method], $args);
+			\call_user_func_array([$instance, $method], $args);
 		}
 		return $instance;
 	}

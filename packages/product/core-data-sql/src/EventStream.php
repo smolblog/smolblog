@@ -62,7 +62,7 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 				'aggregate_uuid' => $event->aggregateId,
 				'entity_uuid' => $event->entityId,
 				'process_uuid' => $event->processId,
-				'event_obj' => json_encode($event),
+				'event_obj' => \json_encode($event),
 		]);
 	}
 }

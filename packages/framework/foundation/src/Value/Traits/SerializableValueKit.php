@@ -25,7 +25,7 @@ trait SerializableValueKit {
 	 * @return boolean
 	 */
 	public function equals(Value $other): bool {
-		return is_a($other, SerializableValue::class) && json_encode($this) == json_encode($other);
+		return \is_a($other, SerializableValue::class) && \json_encode($this) == \json_encode($other);
 	}
 
 	/**
@@ -77,8 +77,8 @@ trait SerializableValueKit {
 				continue;
 			}
 
-			if (is_a($type, ArrayType::class)) {
-				$parsedData[$name] = array_map(
+			if (\is_a($type, ArrayType::class)) {
+				$parsedData[$name] = \array_map(
 					fn($item) => self::deserializeDataToType($item, $type->type),
 					$data[$name]
 				);
@@ -109,7 +109,7 @@ trait SerializableValueKit {
 	 * @return string
 	 */
 	public function toJson(): string {
-		return json_encode($this);
+		return \json_encode($this);
 	}
 
 	/**
@@ -119,7 +119,7 @@ trait SerializableValueKit {
 	 * @return static
 	 */
 	public static function fromJson(string $json): static {
-		$data = json_decode($json, true);
+		$data = \json_decode($json, true);
 		return static::deserializeValue($data);
 	}
 
@@ -129,14 +129,14 @@ trait SerializableValueKit {
 	 * @return array
 	 */
 	protected static function propertyInfo(): array {
-		return array_map(
+		return \array_map(
 			function (ValueProperty $prop) {
 				if (($prop->type === 'array' || $prop->type === 'map') && isset($prop->items)) {
 					$arrayType = new ArrayType(type: $prop->items);
 					return ($arrayType->isBuiltIn() || $arrayType->type === ArrayType::NO_TYPE) ? null : $arrayType;
 				}
 
-				return class_exists($prop->type) ? $prop->type : null;
+				return \class_exists($prop->type) ? $prop->type : null;
 			},
 			static::reflection(),
 		);
@@ -153,20 +153,20 @@ trait SerializableValueKit {
 	 * @return mixed Serialized $value.
 	 */
 	private function serializeProperty(mixed $value): mixed {
-		if (is_a($value, BackedEnum::class)) {
+		if (\is_a($value, BackedEnum::class)) {
 			return $value->value;
 		}
 
-		if (is_array($value)) {
-			return array_map(fn($item) => $this->serializeProperty($item), $value);
+		if (\is_array($value)) {
+			return \array_map(fn($item) => $this->serializeProperty($item), $value);
 		}
 
-		if (is_object($value) && is_a($value, SerializableValue::class)) {
+		if (\is_object($value) && \is_a($value, SerializableValue::class)) {
 			return $value->serializeValue();
 		}
 
 		throw new CodePathNotSupported(
-			message: get_class($value) . ' is not a SerializableValue. ' .
+			message: \get_class($value) . ' is not a SerializableValue. ' .
 				'Change the type or override serializeValue()',
 			location: 'SerializableValueKit::serializeValue via ' . static::class
 		);
@@ -183,11 +183,11 @@ trait SerializableValueKit {
 	 */
 	private static function deserializeDataToType(mixed $data, string $type): mixed {
 		// If $type isn't a BackedEnum or SerializableValue, don't touch.
-		if (class_exists($type)) {
-			if (is_subclass_of($type, BackedEnum::class, allow_string: true)) {
+		if (\class_exists($type)) {
+			if (\is_subclass_of($type, BackedEnum::class, allow_string: true)) {
 				return $type::from($data);
 			}
-			if (is_subclass_of($type, SerializableValue::class, allow_string: true)) {
+			if (\is_subclass_of($type, SerializableValue::class, allow_string: true)) {
 				return $type::deserializeValue($data);
 			}
 		}

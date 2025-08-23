@@ -22,7 +22,7 @@ trait SerializableSupertypeKit {
 	 */
 	public function serializeValue(): array {
 		$base = $this->baseSerialize();
-		$base['type'] = get_class($this);
+		$base['type'] = \get_class($this);
 		return $base;
 	}
 
@@ -46,14 +46,14 @@ trait SerializableSupertypeKit {
 	 */
 	public static function deserializeValue(array $data): static {
 		$type = $data['type'] ?? null;
-		if (isset($type) && class_exists($type) && is_a($type, static::class, allow_string: true)) {
+		if (isset($type) && \class_exists($type) && \is_a($type, static::class, allow_string: true)) {
 			unset($data['type']);
 			return $type::deserializeValue($data);
 		}
 
 		if (self::class == static::class) {
 			$fallback = static::getFallbackClass();
-			if (isset($fallback) && class_exists($fallback)) {
+			if (isset($fallback) && \class_exists($fallback)) {
 				return $fallback::deserializeValue($data);
 			}
 		}
@@ -76,7 +76,7 @@ trait SerializableSupertypeKit {
 	 * @return ValueProperty[]
 	 */
 	public static function reflection(): array {
-		if (!is_a(self::class, Value::class, allow_string: true)) {
+		if (!\is_a(self::class, Value::class, allow_string: true)) {
 			return [];
 		}
 

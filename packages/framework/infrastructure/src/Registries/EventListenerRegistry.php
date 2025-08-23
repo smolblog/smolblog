@@ -48,7 +48,7 @@ class EventListenerRegistry implements ListenerProviderInterface, Registry {
 	 * @return void
 	 */
 	public function configure(array $configuration): void {
-		array_walk($configuration, fn($srv) => $this->internal->addSubscriber($srv, $srv));
+		\array_walk($configuration, fn($srv) => $this->internal->addSubscriber($srv, $srv));
 	}
 
 	/**
