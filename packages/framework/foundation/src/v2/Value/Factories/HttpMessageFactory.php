@@ -4,6 +4,7 @@ namespace Smolblog\Foundation\v2\Value\Factories;
 
 use JsonSerializable;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -117,18 +118,10 @@ class HttpMessageFactory {
 		array $headers = [],
 		string|array|JsonSerializable|null $body = null,
 	): RequestInterface {
-		$casedHeaders = \array_change_key_case($headers, CASE_LOWER);
-
 		self::$internalRequest ??= self::default();
 		$newRequest = self::$internalRequest->createRequest($verb->value, $url);
 
-		if (isset($body)) {
-			$parsedBody = \is_string($body) ? $body : (\json_encode($body) ?: '');
-			$casedHeaders['content-type'] ??= 'application/json';
-
-			self::$internalStream ??= self::default();
-			$newRequest = $newRequest->withBody(self::$internalStream->createStream($parsedBody));
-		}
+		$newRequest = self::addBody($newRequest, $body);
 
 		foreach ($headers as $key => $value) {
 			$newRequest = $newRequest->withHeader($key, $value);
@@ -140,9 +133,9 @@ class HttpMessageFactory {
 	/**
 	 * Create a PSR-7 HTTP Response.
 	 *
-	 * @param integer                                 $code    HTTP code for the response. Default 200 (OK).
-	 * @param array                                   $headers Headers of the response.
-	 * @param string|array|JsonSerializable|null|null $body    Response body in string or object format.
+	 * @param integer                            $code    HTTP code for the response. Default 200 (OK).
+	 * @param array                              $headers Headers of the response.
+	 * @param string|array|JsonSerializable|null $body    Response body in string or object format.
 	 * @return RequestInterface
 	 */
 	public static function response(
@@ -150,23 +143,48 @@ class HttpMessageFactory {
 		array $headers = [],
 		string|array|JsonSerializable|null $body = null,
 	): ResponseInterface {
-		$casedHeaders = \array_change_key_case($headers, CASE_LOWER);
-
 		self::$internalResponse ??= self::default();
 		$newResponse = self::$internalResponse->createResponse($code);
 
-		if (isset($body)) {
-			$parsedBody = \is_string($body) ? $body : (\json_encode($body) ?: '');
-			$casedHeaders['content-type'] ??= 'application/json';
-
-			self::$internalStream ??= self::default();
-			$newResponse = $newResponse->withBody(self::$internalStream->createStream($parsedBody));
-		}
+		$newResponse = self::addBody($newResponse, $body);
 
 		foreach ($headers as $key => $value) {
 			$newResponse = $newResponse->withHeader($key, $value);
 		}
 
 		return $newResponse;
+	}
+
+	/**
+	 * Create a PSR-7 URI object.
+	 *
+	 * @param string $uri URI to create.
+	 * @return UriInterface
+	 */
+	public static function uri(string $uri): UriInterface {
+		self::$internalUri ??= self::default();
+		return self::$internalUri->createUri($uri);
+	}
+
+	/**
+	 * Add the body to the given message.
+	 *
+	 * @template M
+	 * @param M $message
+	 * @param string|array|JsonSerializable|null $body
+	 * @return M
+	 */
+	private static function addBody(
+		MessageInterface $message,
+		string|array|JsonSerializable|null $body
+	): MessageInterface {
+		if (empty($body)) {
+			return $message;
+		}
+
+		$parsedBody = \is_string($body) ? $body : (\json_encode($body) ?: '');
+
+		self::$internalStream ??= self::default();
+		return $message->withBody(self::$internalStream->createStream($parsedBody));
 	}
 }
