@@ -43,11 +43,9 @@
     "autoload": {
         "psr-4": {
             "Smolblog\\CoreDataSql\\": "packages/product/core-data-sql/src/",
-            "Smolblog\\CoreRestApi\\": "packages/product/core-rest-api/src/",
             "Smolblog\\Core\\": "packages/product/core/src/",
             "Smolblog\\Core\\Test\\": "packages/product/core-test-utils/src/",
             "Smolblog\\Foundation\\": "packages/framework/foundation/src/",
-            "Smolblog\\Framework\\ActivityPub\\": "packages/framework/activitypub/src/",
             "Smolblog\\Infrastructure\\": "packages/framework/infrastructure/src/",
             "Smolblog\\Markdown\\": "packages/framework/markdown/src/",
             "Smolblog\\Test\\": "packages/framework/test-utils/src/"
