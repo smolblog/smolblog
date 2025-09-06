@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\v2\Value\Traits;
+namespace Smolblog\Foundation\v2\Validation;
 
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 

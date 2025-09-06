@@ -1,9 +1,10 @@
 <?php
 
-namespace Smolblog\Foundation\v2\Value\Traits;
+namespace Smolblog\Foundation\v2\DomainModel;
 
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
+use Smolblog\Foundation\v2\Value\Traits\Entity;
 
 /**
  * Represents a Thing That Has Happened.
