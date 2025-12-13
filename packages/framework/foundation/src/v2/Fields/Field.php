@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\v2\Serialization;
+namespace Smolblog\Foundation\v2\Fields;
 
 use Stringable;
 

@@ -1,11 +1,10 @@
 <?php
 
-namespace Smolblog\Foundation\Service\Command;
+namespace Smolblog\Foundation\v2\DomainModel;
 
 use Attribute;
 use Smolblog\Foundation\v2\Reflection\ListType;
 use Smolblog\Foundation\v2\Reflection\MapType;
-use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Document the expected response from handling a Command.
@@ -19,14 +18,14 @@ class ExpectedResponse {
 	/**
 	 * Construct the attribute.
 	 *
-	 * @param class-string|ArrayType|ListType|MapType $type        Type of the response.
-	 * @param boolean                                 $optional    True if a valid (non-Exceptional)
-	 * 	                                                           response can also be null.
-	 * @param string|null                             $name        Optional name for the response.
-	 * @param string|null                             $description Optional description for the response.
+	 * @param class-string|ListType|MapType $type        Type of the response.
+	 * @param boolean                       $optional    True if a valid (non-Exceptional)
+	 *                                                   response can also be null.
+	 * @param string|null                   $name        Optional name for the response.
+	 * @param string|null                   $description Optional description for the response.
 	 */
 	public function __construct(
-		public readonly string|ArrayType|ListType|MapType $type,
+		public readonly string|ListType|MapType $type,
 		public readonly bool $optional = false,
 		public readonly ?string $name = null,
 		public readonly ?string $description = null,

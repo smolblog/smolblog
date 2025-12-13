@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\v2\Value\Factories;
+namespace Smolblog\Foundation\v2\Factories;
 
 use JsonSerializable;
 use Nyholm\Psr7\Factory\Psr17Factory;

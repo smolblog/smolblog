@@ -1,8 +1,9 @@
 <?php
 
-namespace Smolblog\Foundation\v2\Value\Traits;
+namespace Smolblog\Foundation\v2\Value;
 
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\v2\Validation\Validated;
 use Throwable;
 
 use function is_a;

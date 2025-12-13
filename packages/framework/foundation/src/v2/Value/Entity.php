@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Foundation\v2\Value\Traits;
+namespace Smolblog\Foundation\v2\Value;
 
 use Ramsey\Uuid\UuidInterface;
 

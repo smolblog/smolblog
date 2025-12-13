@@ -3,7 +3,10 @@
 namespace Smolblog\Foundation\v2\Reflection;
 
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
+use Smolblog\Foundation\v2\Utilities\StringUtils;
+use Smolblog\Foundation\v2\Validation\Validated;
 use Smolblog\Foundation\v2\Value;
+use Smolblog\Foundation\v2\Value\CloneKit;
 use Smolblog\Foundation\Value\Fields\Markdown;
 
 /**
@@ -11,7 +14,9 @@ use Smolblog\Foundation\Value\Fields\Markdown;
  *
  * This can be used for any number of reasons: serialization, form building, documentation generation, etc.
  */
-readonly class ValueProperty implements Value {
+readonly class ValueProperty implements Value, Validated {
+	use CloneKit;
+
 	/**
 	 * Human-readable display name.
 	 *
@@ -32,10 +37,6 @@ readonly class ValueProperty implements Value {
 	 * @param string|null              $description     Optional single-line description.
 	 * @param Markdown|null            $longDescription Optional Markdown-formatted longer description.
 	 * @param boolean                  $optional        If the property can be `null`. Default true.
-	 * @param mixed                    $default         Default value for the property if any.
-	 * @param integer|null             $min             Optional minimum value.
-	 * @param integer|null             $max             Optional maximum value.
-	 * @param string|null              $pattern         Optional regular expression to validate against.
 	 */
 	public function __construct(
 		public string $name,
@@ -46,26 +47,21 @@ readonly class ValueProperty implements Value {
 		public ?string $description = null,
 		public ?Markdown $longDescription = null,
 		public bool $optional = true,
-		public mixed $default = null,
-		public ?int $min = null,
-		public ?int $max = null,
 	) {
-		if ($type === 'array' && !isset($items)) {
+		$this->displayName = $displayName ?? StringUtils::camelToTitle($this->name);
+	}
+
+	/**
+	 * Validate the object.
+	 *
+	 * @return void
+	 */
+	public function validate(): void {
+		if (($this->type === 'array' || $this->type === 'map') && !isset($items)) {
 			throw new InvalidValueProperties(
 				message: 'Type `array` must include an `items` property.',
 				field: 'items',
 			);
 		}
-
-		if (isset($min, $max) && $min > $max) {
-			throw new InvalidValueProperties(
-				message: 'Nonsensical constraints: `min` is greater than `max`',
-				field: 'min',
-			);
-		}
-
-		// Via https://stackoverflow.com/a/42665007.
-		$this->displayName = $displayName ??
-			\ucwords(\implode(' ', \preg_split('/(?=[A-Z])/', $this->name) ?: []));
 	}
 }
