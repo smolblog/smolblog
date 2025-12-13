@@ -4,6 +4,7 @@ namespace Smolblog\Core\Connection\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Events\ConnectionEstablished;
@@ -12,6 +13,7 @@ use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\ConnectionTestBase;
 
+#[AllowMockObjectsWithoutExpectations]
 class FinishAuthRequestTest extends ConnectionTestBase {
 	public function testHappyPath() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');

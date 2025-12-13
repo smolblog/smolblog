@@ -4,13 +4,12 @@
   bootstrap="vendor/autoload.php"
   colors="true"
   testdox="false"
-  displayDetailsOnTestsThatTriggerDeprecations="true"
-  displayDetailsOnTestsThatTriggerWarnings="true"
+  displayDetailsOnAllIssues="true"
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd"
 >
   <testsuites>
     <testsuite name="unit">
-      <directory>packages/*/*/tests</directory>
+      <directory>packages/product/*/tests</directory>
     </testsuite>
   </testsuites>
   <coverage ignoreDeprecatedCodeUnits="true" pathCoverage="true">

@@ -4,12 +4,14 @@ namespace Smolblog\Core\Site\Services;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Test\SiteTestBase;
 use stdClass;
 
+#[AllowMockObjectsWithoutExpectations]
 final class SiteDataServiceTest extends SiteTestBase {
 	private SiteDataService $service;
 

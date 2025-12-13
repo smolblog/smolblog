@@ -4,6 +4,7 @@ namespace Smolblog\Core\Channel\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\BasicChannel;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
@@ -23,6 +24,7 @@ use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Test\ChannelTestBase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class PushContentToChannelTest extends ChannelTestBase {
 	public function testHappyPathWithCustom() {
 		$content = new Content(

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Content\Types\Picture;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Media\Entities\Media;
@@ -10,6 +11,7 @@ use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Core\Test\ContentTypeTest;
 
+#[AllowMockObjectsWithoutExpectations]
 final class PictureTest extends ContentTypeTest {
 	const string TYPE_KEY = 'picture';
 	const string SERVICE_CLASS = PictureService::class;

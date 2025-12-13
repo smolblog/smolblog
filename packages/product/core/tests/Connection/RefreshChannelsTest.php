@@ -4,6 +4,7 @@ namespace Smolblog\Core\Connection\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\BasicChannel;
 use Smolblog\Core\Channel\Events\ChannelDeleted;
 use Smolblog\Core\Channel\Events\ChannelSaved;
@@ -12,6 +13,7 @@ use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\ConnectionTestBase;
 
+#[AllowMockObjectsWithoutExpectations]
 class RefreshChannelsTest extends ConnectionTestBase {
 	public function testHappyPathWithCommand() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');

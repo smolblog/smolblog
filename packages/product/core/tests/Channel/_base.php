@@ -2,6 +2,7 @@
 
 namespace Smolblog\Test;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Channel\Data\ChannelRepo;
@@ -76,6 +77,7 @@ abstract class ProjectionChannelHandlerTestBase extends ProjectionChannelHandler
 	}
 }
 
+#[AllowMockObjectsWithoutExpectations]
 abstract class ChannelTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 

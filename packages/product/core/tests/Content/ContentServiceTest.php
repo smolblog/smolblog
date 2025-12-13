@@ -4,12 +4,14 @@ namespace Smolblog\Core\Content\Services;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Site\Entities\UserSitePermissions;
 use Smolblog\Test\ContentTestBase;
 use Smolblog\Test\TestDefaultContentType;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ContentServiceTest extends ContentTestBase {
 	private ContentService $service;
 

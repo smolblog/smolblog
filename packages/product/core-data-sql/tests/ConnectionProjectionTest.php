@@ -2,6 +2,7 @@
 
 namespace Smolblog\CoreDataSql;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Events\ConnectionDeleted;
 use Smolblog\Core\Connection\Events\ConnectionEstablished;
@@ -12,6 +13,7 @@ use stdClass;
 
 require_once __DIR__ . '/_base.php';
 
+#[AllowMockObjectsWithoutExpectations]
 final class ConnectionProjectionTest extends DataTestBase {
 	public function setUpUserConnections() {
 		$userId = Identifier::fromString('6e648ea4-de43-45ad-9c5a-12eeaf9afd41');

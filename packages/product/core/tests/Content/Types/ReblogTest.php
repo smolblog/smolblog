@@ -2,11 +2,13 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Core\Test\ContentTypeTest;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ReblogTest extends ContentTypeTest {
 	const string TYPE_KEY = 'reblog';
 	const string SERVICE_CLASS = ReblogService::class;

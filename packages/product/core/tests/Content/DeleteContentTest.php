@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\ContentDeleted;
 use Smolblog\Core\Site\Entities\UserSitePermissions;
@@ -17,6 +18,7 @@ use Smolblog\Test\TestDefaultContentType;
 use Smolblog\Test\TestEventsContentType;
 use Smolblog\Test\TestEventsContentTypeDeleted;
 
+#[AllowMockObjectsWithoutExpectations]
 final class DeleteContentTest extends ContentTestBase {
 	public function testTypeWithDefaultService() {
 		$contentId = $this->randomId();

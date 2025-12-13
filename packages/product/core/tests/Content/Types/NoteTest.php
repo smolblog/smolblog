@@ -2,10 +2,12 @@
 
 namespace Smolblog\Core\Content\Types\Note;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Test\ContentTypeTest;
 
+#[AllowMockObjectsWithoutExpectations]
 final class NoteTest extends ContentTypeTest {
 	const string TYPE_KEY = 'note';
 	const string SERVICE_CLASS = NoteService::class;

@@ -2,6 +2,7 @@
     "name": "smolblog/smolblog",
     "description": "Blogging for the Social Web",
     "license": "AGPL-3.0-only",
+    "type": "project",
     "authors": [
         {
             "name": "Smolblog",
@@ -12,16 +13,17 @@
             "email": "me@eph.me"
         }
     ],
-    "type": "project",
     "require": {
+        "cavatappi/foundation": "^0.1",
+        "cavatappi/testing": "^0.1",
         "cebe/markdown": "^1.2",
-        "crell/tukio": "^1.6",
+        "crell/tukio": "^2.0",
         "doctrine/dbal": "^4.2",
         "elephox/mimey": "^4.0",
         "guzzlehttp/psr7": "^2.6",
         "php": "^8.4",
         "phpseclib/phpseclib": "^3.0",
-        "phpunit/phpunit": "^11",
+        "phpunit/phpunit": "^12",
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "psr/http-client": "^1.0",
@@ -35,6 +37,18 @@
     "require-dev": {
         "symplify/monorepo-builder": "^11.2"
     },
+    "replace": {
+        "smolblog/activitypub-adapter": "0.5.0",
+        "smolblog/core": "0.5.0",
+        "smolblog/core-data-sql": "0.5.0",
+        "smolblog/core-rest-api": "0.5.0",
+        "smolblog/core-test-utils": "0.5.0",
+        "smolblog/framework-foundation": "0.5.0",
+        "smolblog/framework-infrastructure": "0.5.0",
+        "smolblog/smolblog-markdown": "0.5.0",
+        "smolblog/test-utils": "0.5.0"
+    },
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Smolblog\\CoreDataSql\\": "packages/product/core-data-sql/src/",
@@ -65,17 +79,5 @@
         "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
         "monorepo": "./vendor/bin/monorepo-builder"
-    },
-    "replace": {
-        "smolblog/activitypub-adapter": "0.5.0",
-        "smolblog/core": "0.5.0",
-        "smolblog/core-data-sql": "0.5.0",
-        "smolblog/core-rest-api": "0.5.0",
-        "smolblog/core-test-utils": "0.5.0",
-        "smolblog/framework-foundation": "0.5.0",
-        "smolblog/framework-infrastructure": "0.5.0",
-        "smolblog/smolblog-markdown": "0.5.0",
-        "smolblog/test-utils": "0.5.0"
-    },
-    "minimum-stability": "stable"
+    }
 }

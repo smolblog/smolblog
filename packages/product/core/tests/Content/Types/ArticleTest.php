@@ -2,10 +2,12 @@
 
 namespace Smolblog\Core\Content\Types\Article;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Test\ContentTypeTest;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ArticleTest extends ContentTypeTest {
 	const string TYPE_KEY = 'article';
 	const string SERVICE_CLASS = ArticleService::class;

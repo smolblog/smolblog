@@ -4,6 +4,7 @@ namespace Smolblog\CoreDataSql;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\MediaChannelEntry;
 use Smolblog\Core\Channel\Events\MediaPushedToChannel;
 use Smolblog\Core\Media\Entities\Media;
@@ -13,6 +14,7 @@ use Smolblog\CoreDataSql\Test\DataTestBase;
 use Smolblog\Foundation\Value\Fields\Url;
 use stdClass;
 
+#[AllowMockObjectsWithoutExpectations]
 final class MediaProjectionTest extends DataTestBase {
 	public function testMediaCreated() {
 		$projection = $this->app->container->get(MediaProjection::class);

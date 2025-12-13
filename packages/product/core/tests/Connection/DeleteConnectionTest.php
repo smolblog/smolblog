@@ -4,11 +4,13 @@ namespace Smolblog\Core\Connection\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Events\ConnectionDeleted;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Value\Fields\Identifier;
 use Smolblog\Test\ConnectionTestBase;
 
+#[AllowMockObjectsWithoutExpectations]
 class DeleteConnectionTest extends ConnectionTestBase {
 	public function testHappyPath() {
 		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');

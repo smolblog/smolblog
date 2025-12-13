@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Connection;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Entities\ConnectionInitData;
@@ -11,6 +12,7 @@ use Smolblog\Test\TestCase;
 
 require_once __DIR__ . '/_base.php';
 
+#[AllowMockObjectsWithoutExpectations]
 final class NoRefreshKitTest extends TestCase {
 	private ConnectionHandler $handler;
 

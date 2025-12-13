@@ -2,10 +2,12 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Core\Test\ContentExtensionTest;
 
+#[AllowMockObjectsWithoutExpectations]
 final class TagsTest extends ContentExtensionTest {
 	const string EXTENSION_KEY = 'tags';
 	const string SERVICE_CLASS = TagsService::class;

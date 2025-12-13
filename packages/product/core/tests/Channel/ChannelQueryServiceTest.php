@@ -4,9 +4,11 @@ namespace Smolblog\Core\Channel\Services;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Foundation\Exceptions\ActionNotAuthorized;
 use Smolblog\Test\ChannelTestBase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ChannelQueryServiceTest extends ChannelTestBase {
 	public function testItChecksPermissionsBeforeProvidingData() {
 		$userId = $this->randomId();

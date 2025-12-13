@@ -2,12 +2,14 @@
 
 namespace Smolblog\Test;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteRepo;
 use Smolblog\Foundation\Service\KeypairGenerator;
 
+#[AllowMockObjectsWithoutExpectations]
 abstract class SiteTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 

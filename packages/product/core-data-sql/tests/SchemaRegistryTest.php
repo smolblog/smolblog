@@ -2,12 +2,14 @@
 
 namespace Smolblog\CoreDataSql;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\CoreDataSql\Test\DataTestBase;
 use Smolblog\CoreDataSql\Test\TestSchemaRegistry;
 
 require_once __DIR__ . '/_base.php';
 
+#[AllowMockObjectsWithoutExpectations]
 final class SchemaRegistryTest extends DataTestBase {
 	public function testSchemaVersionWillBeNullIfRowIsNotPresent() {
 		$service = $this->app->container->get(TestSchemaRegistry::class);

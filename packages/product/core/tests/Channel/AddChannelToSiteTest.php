@@ -4,12 +4,14 @@ namespace Smolblog\Core\Channel\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\BasicChannel;
 use Smolblog\Core\Channel\Events\ChannelAddedToSite;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Test\ChannelTestBase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class AddChannelToSiteTest extends ChannelTestBase {
 	public function testAuthorizedIfUsersMatchAndPermissioned() {
 		$siteId = $this->randomId();

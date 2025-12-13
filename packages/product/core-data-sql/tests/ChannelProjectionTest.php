@@ -2,6 +2,7 @@
 
 namespace Smolblog\CoreDataSql;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\BasicChannel;
 use Smolblog\Core\Channel\Events\ChannelAddedToSite;
 use Smolblog\Core\Channel\Events\ChannelDeleted;
@@ -12,6 +13,7 @@ use stdClass;
 
 require_once __DIR__ . '/_base.php';
 
+#[AllowMockObjectsWithoutExpectations]
 final class ChannelProjectionTest extends DataTestBase {
 	private function setUpTestChannels() {
 		$commonSite = Identifier::fromString('dbbf45e0-08c8-4422-829d-742b1415f4dd');

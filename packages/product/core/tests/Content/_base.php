@@ -2,6 +2,7 @@
 
 namespace Smolblog\Test;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Content\Data\ContentRepo;
@@ -103,6 +104,7 @@ final readonly class TestCustomContentExtension extends ContentExtension {
 	public function __construct(public string $metaval) {}
 }
 
+#[AllowMockObjectsWithoutExpectations]
 abstract class ContentTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 

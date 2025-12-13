@@ -4,6 +4,7 @@ namespace Smolblog\CoreDataSql;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\BasicChannel;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\ChannelSaved;
@@ -16,6 +17,7 @@ use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\CoreDataSql\Test\DataTestBase;
 use Smolblog\Foundation\Value\Messages\DomainEvent;
 
+#[AllowMockObjectsWithoutExpectations]
 final class EventStreamTest extends DataTestBase {
 	public function testEventPersistence() {
 		$env = $this->app->container->get(DatabaseEnvironment::class);

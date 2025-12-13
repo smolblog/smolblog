@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Media\Services;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
@@ -14,6 +15,7 @@ abstract class MediaHandlerRegistryTestHandlerTwo implements MediaHandler {
 	public static function getKey(): string { return 'two'; }
 }
 
+#[AllowMockObjectsWithoutExpectations]
 final class MediaHandlerRegistryTest extends TestCase {
 	private MediaHandler & MockObject $mockHandlerOne;
 	private MediaHandler & MockObject $mockHandlerTwo;

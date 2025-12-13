@@ -4,6 +4,7 @@ namespace Smolblog\CoreDataSql;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
@@ -19,6 +20,7 @@ use Smolblog\CoreDataSql\Test\DataTestBase;
 use Smolblog\Foundation\Value\Fields\Url;
 use stdClass;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ContentProjectionTest extends DataTestBase {
 	public function testContentList() {
 		$projection = $this->app->container->get(ContentProjection::class);

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Test;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Media\Data\MediaRepo;
 use Smolblog\Core\Media\Services\MediaHandler;
@@ -16,6 +17,7 @@ abstract class MediaHandlerTestBase implements MediaHandler {
 	}
 }
 
+#[AllowMockObjectsWithoutExpectations]
 abstract class MediaTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 

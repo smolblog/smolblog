@@ -2,6 +2,7 @@
 
 namespace Smolblog\Test;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
@@ -19,6 +20,7 @@ abstract class ConnectionHandlerTestBase implements ConnectionHandler {
 	}
 }
 
+#[AllowMockObjectsWithoutExpectations]
 abstract class ConnectionTestBase extends ModelTest {
 	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 

@@ -4,12 +4,14 @@ namespace Smolblog\Core\Site\Commands;
 
 require_once __DIR__ . '/_base.php';
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Site\Events\SiteDetailsUpdated;
 use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
 use Smolblog\Foundation\Exceptions\EntityNotFound;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Test\SiteTestBase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class UpdateSiteDetailsTest extends SiteTestBase {
 	public function testHappyPath() {
 		$command = new UpdateSiteDetails(
