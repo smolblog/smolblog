@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" colors="true" testdox="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd" 
+         displayDetailsOnTestsThatTriggerDeprecations="true">
+  <testsuites>
+    <testsuite name="core">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage ignoreDeprecatedCodeUnits="true" pathCoverage="true">
+    <report>
+      <text outputFile="coverage.txt" showOnlySummary="true"/>
+      <html outputDirectory="test-coverage"/>
+      <php outputFile="coverage.php"/>
+    </report>
+  </coverage>
+  <php>
+    <ini name="xdebug.mode" value="coverage"/>
+    <ini name="memory_limit" value="1024M"/>
+  </php>
+  <source>
+    <include>
+      <directory>src</directory>
+    </include>
+  </source>
+</phpunit>

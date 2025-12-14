@@ -1,0 +1,36 @@
+flowchart TD
+    A{{Commands}}
+    B(C/U/D Content)
+    C(Custom Commands)
+
+    A ==> B
+    A --> C
+
+    D[ContentService]
+    E[[ContentTypeRepo::get]]
+    F{{Override Base Methods}}
+    G[[ContentTypeService::C/U/D]]
+    H[[ContentTypeService::Custom]]
+    I[[GenericContentTypeService::C/U/D]]
+
+    B ==> D ==> E ==> F
+    F ==> I
+    F --> G
+    C -----> H
+
+    N{{Provide Custom Events}}
+    J(C/U/D Events)
+    K(Custom Events)
+
+    I ==> N
+    N ==> J
+    N --> K
+    G ---> K
+    H ---> K
+
+    L[StandardContentProjection]
+    M[CustomContentProjection]
+
+    J ==> L
+    K --> L
+    K --> M
