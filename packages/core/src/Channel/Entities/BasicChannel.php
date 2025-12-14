@@ -2,11 +2,8 @@
 
 namespace Smolblog\Core\Channel\Entities;
 
-use Override;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
-use Smolblog\Foundation\Value\Traits\SerializableSupertypeBackupKit;
-use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Cavatappi\Foundation\Reflection\MapType;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * A basic Channel type that doesn't need anything special; also used as a backup for deserialization.
@@ -14,18 +11,7 @@ use Smolblog\Foundation\Value\Traits\SerializableValue;
  * This is most useful for Connection-backed Channels since those are typically created and consumed in the same
  * package and thus don't need special data structures or type checking.
  */
-readonly class BasicChannel extends Channel {
-	use SerializableSupertypeBackupKit;
-
-	/**
-	 * Store extra properties in $details.
-	 *
-	 * @return string
-	 */
-	private static function extraPropsField(): string {
-		return 'details';
-	}
-
+class BasicChannel extends Channel {
 	/**
 	 * Create the Channel.
 	 *
@@ -33,16 +19,16 @@ readonly class BasicChannel extends Channel {
 	 * @param string          $handlerKey   Unique identifier for this account at this provider.
 	 * @param string          $displayName  Recognizable name for the channel (URL or handle?).
 	 * @param array           $details      Extra properties used by the handler.
-	 * @param Identifier|null $userId       User responsible for this Channel (if applicable).
-	 * @param Identifier|null $connectionId Connection needed to authenticate for this channel (if necessary).
+	 * @param UuidInterface|null $userId       User responsible for this Channel (if applicable).
+	 * @param UuidInterface|null $connectionId Connection needed to authenticate for this channel (if necessary).
 	 */
 	public function __construct(
 		string $handler,
 		string $handlerKey,
 		string $displayName,
-		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details,
-		?Identifier $userId = null,
-		?Identifier $connectionId = null,
+		#[MapType('string')] public readonly array $details,
+		?UuidInterface $userId = null,
+		?UuidInterface $connectionId = null,
 	) {
 		parent::__construct(
 			handler: $handler,

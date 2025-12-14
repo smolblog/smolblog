@@ -2,19 +2,18 @@
 
 namespace Smolblog\Core\Channel\Entities;
 
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Fields\NamedIdentifier;
-use Smolblog\Foundation\Value\Traits\Entity;
-use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
-use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Cavatappi\Foundation\DomainEvent\Entity;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media
  * providers allow multiple profiles/blogs/channels/etc. per account, this is its own Entity.
  */
-readonly abstract class Channel extends Value implements Entity, SerializableValue {
-	use SerializableSupertypeKit;
+abstract class Channel implements Entity, Value {
+	use ValueKit;
 
 	public const NAMESPACE = '144af6d4-b4fb-4500-bb28-8e729cc7f585';
 
@@ -23,19 +22,10 @@ readonly abstract class Channel extends Value implements Entity, SerializableVal
 	 *
 	 * @param string $handler    Key for the handler this is tied to (usually provider name).
 	 * @param string $handlerKey Unique identifier for this account at this provider.
-	 * @return Identifier ID constructed from provider and key.
+	 * @return UuidInterface ID constructed from provider and key.
 	 */
-	public static function buildId(string $handler, string $handlerKey): Identifier {
-		return new NamedIdentifier(namespace: self::NAMESPACE, name: "$handler|$handlerKey");
-	}
-
-	/**
-	 * Fall back to BasicChannel on deserialization.
-	 *
-	 * @return string
-	 */
-	private static function getFallbackClass(): string {
-		return BasicChannel::class;
+	public static function buildId(string $handler, string $handlerKey): UuidInterface {
+		return UuidFactory::named(namespace: self::NAMESPACE, name: "$handler|$handlerKey");
 	}
 
 	/**
@@ -44,24 +34,24 @@ readonly abstract class Channel extends Value implements Entity, SerializableVal
 	 * @param string          $handler      Key for the handler this is tied to (usually provider name).
 	 * @param string          $handlerKey   Unique identifier for this account at this provider.
 	 * @param string          $displayName  Recognizable name for the channel (URL or handle?).
-	 * @param Identifier|null $userId       User responsible for this Channel (if applicable).
-	 * @param Identifier|null $connectionId Connection needed to authenticate for this channel (if necessary).
+	 * @param UuidInterface|null $userId       User responsible for this Channel (if applicable).
+	 * @param UuidInterface|null $connectionId Connection needed to authenticate for this channel (if necessary).
 	 */
 	public function __construct(
 		public string $handler,
 		public string $handlerKey,
 		public string $displayName,
-		public ?Identifier $userId = null,
-		public ?Identifier $connectionId = null,
+		public ?UuidInterface $userId = null,
+		public ?UuidInterface $connectionId = null,
 	) {
 	}
 
 	/**
 	 * Get the constructed ID from $handler and $handlerKey
 	 *
-	 * @return Identifier
+	 * @var UuidInterface
 	 */
-	public function getId(): Identifier {
-		return self::buildId(handler: $this->handler, handlerKey: $this->handlerKey);
+	public UuidInterface $id {
+		get => self::buildId(handler: $this->handler, handlerKey: $this->handlerKey);
 	}
 }

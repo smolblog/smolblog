@@ -2,41 +2,34 @@
 
 namespace Smolblog\Core\Channel\Events;
 
-use ReflectionClass;
-use ReflectionProperty;
-use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier};
-use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\ValueProperty;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Indicates a Channel is no longer active and has been deleted.
  */
-readonly class ChannelDeleted extends DomainEvent {
+class ChannelDeleted implements DomainEvent {
+	use DomainEventKit;
+
 	/**
 	 * Construct the event.
 	 *
-	 * @param Identifier         $entityId  ID of the channel being deleted.
-	 * @param Identifier         $userId    ID of the user initiating this change.
-	 * @param Identifier|null    $id        Optional ID for the event.
-	 * @param DateTimeField|null $timestamp Optional timestamp for the event (default now).
+	 * @param UuidInterface         $entityId  ID of the channel being deleted.
+	 * @param UuidInterface         $userId    ID of the user initiating this change.
+	 * @param UuidInterface|null    $id        Optional ID for the event.
+	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		Identifier $entityId,
-		Identifier $userId,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
+		public readonly UuidInterface $entityId,
+		public readonly UuidInterface $userId,
+		public readonly ?UuidInterface $processId = null,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
 	) {
-		parent::__construct(entityId: $entityId, userId: $userId, id: $id, timestamp: $timestamp);
+		$this->setTimeAndId($id, $timestamp);
 	}
 
-	/**
-	 * Remove 'aggregateId' from (de)serialization.
-	 *
-	 * @param ReflectionProperty $prop  ReflectionProperty for the property being evaluated.
-	 * @param ReflectionClass    $class ReflectionClass for this class.
-	 * @return ValueProperty|null
-	 */
-	protected static function getPropertyInfo(ReflectionProperty $prop, ReflectionClass $class): ?ValueProperty {
-		return ($prop->getName() === 'aggregateId') ? null : parent::getPropertyInfo(prop: $prop, class: $class);
-	}
+	public null $aggregateId { get => null; }
 }

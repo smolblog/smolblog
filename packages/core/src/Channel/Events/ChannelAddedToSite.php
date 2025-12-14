@@ -2,35 +2,37 @@
 
 namespace Smolblog\Core\Channel\Events;
 
-use Smolblog\Foundation\Value\Fields\{Identifier, DateTimeField};
-use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Indicates that a Channel has been linked to a Site.
  */
-readonly class ChannelAddedToSite extends DomainEvent {
+class ChannelAddedToSite implements DomainEvent {
+	use DomainEventKit;
+
 	/**
 	 * Create the event.
 	 *
-	 * @param Identifier         $aggregateId ID of the Site being linked to.
-	 * @param Identifier         $entityId    ID of the Channel being linked.
-	 * @param Identifier         $userId      ID of the user initiating this change.
-	 * @param Identifier|null    $id          Optional ID for the event.
-	 * @param DateTimeField|null $timestamp   Optional timestamp for the event (default now).
+	 * @param UuidInterface         $aggregateId ID of the Site being linked to.
+	 * @param UuidInterface         $entityId    ID of the Channel being linked.
+	 * @param UuidInterface         $userId      ID of the user initiating this change.
+	 * @param UuidInterface|null    $processId          Optional ID for the overall process.
+	 * @param UuidInterface|null    $id          Optional ID for the event.
+	 * @param DateTimeInterface|null $timestamp   Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		Identifier $aggregateId,
-		Identifier $entityId,
-		Identifier $userId,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
+		public readonly UuidInterface $aggregateId,
+		public readonly UuidInterface $entityId,
+		public readonly UuidInterface $userId,
+		public readonly ?UuidInterface $processId,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
 	) {
-		parent::__construct(
-			entityId: $entityId,
-			aggregateId: $aggregateId,
-			userId: $userId,
-			id: $id,
-			timestamp: $timestamp,
-		);
+		$this->setTimeAndId($id, $timestamp);
 	}
 }

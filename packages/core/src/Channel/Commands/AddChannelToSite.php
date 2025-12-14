@@ -2,25 +2,27 @@
 
 namespace Smolblog\Core\Channel\Commands;
 
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\Command;
+use Cavatappi\Foundation\Command\Command;
+use Cavatappi\Foundation\Value\ValueKit;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Give a Site permission to push to a Channel.
  */
-readonly class AddChannelToSite extends Command {
+readonly class AddChannelToSite implements Command {
+	use ValueKit;
+
 	/**
 	 * Construct the command
 	 *
-	 * @param Identifier $channelId ID of the Channel to link.
-	 * @param Identifier $siteId    ID of the Site to link.
-	 * @param Identifier $userId    ID of the User initiating this command.
+	 * @param UuidInterface $channelId ID of the Channel to link.
+	 * @param UuidInterface $siteId    ID of the Site to link.
+	 * @param UuidInterface $userId    ID of the User initiating this command.
 	 */
 	public function __construct(
-		public Identifier $channelId,
-		public Identifier $siteId,
-		public Identifier $userId,
+		public UuidInterface $channelId,
+		public UuidInterface $siteId,
+		public UuidInterface $userId,
 	) {
-		parent::__construct();
 	}
 }

@@ -2,50 +2,41 @@
 
 namespace Smolblog\Core\Channel\Events;
 
-use ReflectionClass;
-use ReflectionProperty;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\Channel;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\ValueProperty;
 
 /**
  * Indicates a Channel has been created.
  */
-readonly class ChannelSaved extends DomainEvent {
+class ChannelSaved implements DomainEvent {
+	use DomainEventKit;
+
+	public readonly UuidInterface $entityId;
+
 	/**
 	 * Create the event.
 	 *
 	 * @param Channel            $channel   Channel object being saved.
-	 * @param Identifier         $userId    User creating the channel.
-	 * @param Identifier|null    $entityId  Channel ID; will be auto-generated.
-	 * @param Identifier|null    $id        Optional ID for the event.
-	 * @param DateTimeField|null $timestamp Optional timestamp for the event.
+	 * @param UuidInterface         $userId    User creating the channel.
+	 * @param UuidInterface|null    $entityId  Channel ID; will be auto-generated.
+	 * @param UuidInterface|null    $processId  Optional ID for overall process.
+	 * @param UuidInterface|null    $id        Optional ID for the event.
+	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event.
 	 */
 	public function __construct(
-		public Channel $channel,
-		Identifier $userId,
-		?Identifier $entityId = null,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
+		public readonly Channel $channel,
+		public readonly UuidInterface $userId,
+		?UuidInterface $entityId = null,
+		public readonly ?UuidInterface $processId = null,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
 	) {
-		parent::__construct(
-			entityId: $entityId ?? $this->channel->getId(),
-			userId: $userId,
-			id: $id,
-			timestamp: $timestamp
-		);
+		$this->entityId = $entityId ?? $this->channel->id;
+		$this->setTimeAndId($id, $timestamp);
 	}
 
-	/**
-	 * Remove 'aggregateId' from (de)serialization.
-	 *
-	 * @param ReflectionProperty $prop  ReflectionProperty for the property being evaluated.
-	 * @param ReflectionClass    $class ReflectionClass for this class.
-	 * @return ValueProperty|null
-	 */
-	protected static function getPropertyInfo(ReflectionProperty $prop, ReflectionClass $class): ?ValueProperty {
-		return ($prop->getName() === 'aggregateId') ? null : parent::getPropertyInfo(prop: $prop, class: $class);
-	}
+	public null $aggregateId { get => null; }
 }

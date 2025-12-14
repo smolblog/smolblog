@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Channel\Entities;
 
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
-use Smolblog\Foundation\Value\Traits\ServiceConfigurationKit;
+use Cavatappi\Foundation\Registry\RegisterableConfiguration;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
 
 /**
  * Configuration for a ChannelHandler.
@@ -13,8 +13,8 @@ use Smolblog\Foundation\Value\Traits\ServiceConfigurationKit;
  * URLs. This should be something like a personal website and not something like a social media profile and definitely
  * not something like a content relay or machine-readable feed.
  */
-readonly class ChannelHandlerConfiguration extends Value implements ServiceConfiguration {
-	use ServiceConfigurationKit;
+readonly class ChannelHandlerConfiguration implements Value, RegisterableConfiguration {
+	use ValueKit;
 
 	/**
 	 * Create the configuration.
@@ -24,10 +24,9 @@ readonly class ChannelHandlerConfiguration extends Value implements ServiceConfi
 	 * @param boolean $canBeCanonical True if this handler's channel can generate canonical URLs.
 	 */
 	public function __construct(
-		string $key,
+		public string $key,
 		public string $displayName,
 		public bool $canBeCanonical = false,
 	) {
-		$this->key = $key;
 	}
 }

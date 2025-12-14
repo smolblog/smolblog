@@ -2,28 +2,30 @@
 
 namespace Smolblog\Core\Channel\Commands;
 
+use Cavatappi\Foundation\Command\Command;
+use Cavatappi\Foundation\Command\ExpectedResponse;
+use Cavatappi\Foundation\Value\ValueKit;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
-use Smolblog\Foundation\Service\Command\ExpectedResponse;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\Command;
 
 /**
  * Push the given content to the given channel.
  */
 #[ExpectedResponse(type: ContentChannelEntry::class, optional: true)]
-readonly class PushContentToChannel extends Command {
+readonly class PushContentToChannel implements Command {
+	use ValueKit;
+
 	/**
 	 * Create the command.
 	 *
-	 * @param Identifier $contentId Content to push.
-	 * @param Identifier $userId    User making the push.
-	 * @param Identifier $channelId Channel to push content to.
+	 * @param UuidInterface $contentId Content to push.
+	 * @param UuidInterface $userId    User making the push.
+	 * @param UuidInterface $channelId Channel to push content to.
 	 */
 	public function __construct(
-		public Identifier $contentId,
-		public Identifier $userId,
-		public Identifier $channelId,
+		public UuidInterface $contentId,
+		public UuidInterface $userId,
+		public UuidInterface $channelId,
 	) {
-		parent::__construct();
 	}
 }
