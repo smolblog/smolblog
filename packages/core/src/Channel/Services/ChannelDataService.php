@@ -2,12 +2,12 @@
 
 namespace Smolblog\Core\Channel\Services;
 
+use Cavatappi\Foundation\Exceptions\CodePathNotSupported;
+use Cavatappi\Foundation\Service;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Core\Permissions\SitePermissionsService;
-use Smolblog\Foundation\Exceptions\CodePathNotSupported;
-use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Retrieve Channel data for use outside the domain model.
@@ -30,11 +30,11 @@ class ChannelDataService implements Service {
 	/**
 	 * Get the channels the given site is assigned to.
 	 *
-	 * @param Identifier $siteId Site to get channels for.
-	 * @param Identifier $userId User making the query.
+	 * @param UuidInterface $siteId Site to get channels for.
+	 * @param UuidInterface $userId User making the query.
 	 * @return Channel[]
 	 */
-	public function channelsForSite(Identifier $siteId, Identifier $userId): array {
+	public function channelsForSite(UuidInterface $siteId, UuidInterface $userId): array {
 		if (
 			!$this->sitePerms->canManageChannels(userId: $userId, siteId: $siteId)
 			&& !$this->sitePerms->canPushContent(userId: $userId, siteId: $siteId)
@@ -53,11 +53,11 @@ class ChannelDataService implements Service {
 	 * @throws CodePathNotSupported Method is not implemented yet.
 	 * @codeCoverageIgnore
 	 *
-	 * @param Identifier $channelUserId User to get chnnels for.
-	 * @param Identifier $userId        User making the query.
+	 * @param UuidInterface $channelUserId User to get chnnels for.
+	 * @param UuidInterface $userId        User making the query.
 	 * @return array
 	 */
-	public function availableChannels(Identifier $channelUserId, Identifier $userId): array {
+	public function availableChannels(UuidInterface $channelUserId, UuidInterface $userId): array {
 		if ($channelUserId != $userId && !$this->globalPerms->canManageOtherConnections($userId)) {
 			return [];
 		}

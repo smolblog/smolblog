@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Channel\Commands;
 
+use Cavatappi\Foundation\Command\Authenticated;
 use Cavatappi\Foundation\Command\Command;
 use Cavatappi\Foundation\Value\ValueKit;
 use Ramsey\Uuid\UuidInterface;
@@ -9,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * Give a Site permission to push to a Channel.
  */
-readonly class AddChannelToSite implements Command {
+readonly class AddChannelToSite implements Command, Authenticated {
 	use ValueKit;
 
 	/**

@@ -2,51 +2,50 @@
 
 namespace Smolblog\Core\Channel\Events;
 
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Reflection\MapType;
+use DateTimeInterface;
+use Psr\Http\Message\UriInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Fields\Url;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
  * Denotes that an asynchronous content push was successful and provides any applicable URL and/or details.
  */
-readonly class ContentPushSucceeded extends DomainEvent {
+readonly class ContentPushSucceeded implements DomainEvent {
+	use DomainEventKit;
+
+	public readonly UuidInterface $entityId;
+
 	/**
 	 * Create the event.
 	 *
-	 * @param Identifier         $contentId   The content that was pushed (in the state that it was pushed).
-	 * @param Identifier         $channelId   ID of the channel being pushed to.
-	 * @param Identifier         $userId      User who first initiated the action.
-	 * @param Identifier         $aggregateId Site the content belongs to.
-	 * @param Identifier         $processId   Identifier for this push process.
-	 * @param Identifier|null    $id          Optional ID for the event.
-	 * @param DateTimeField|null $timestamp   Optional timestamp for the event.
-	 * @param Identifier|null    $entityId    ContentChannelEntry ID; will be created if not provided.
-	 * @param Url|null           $url         Optional URL of the content on the channel.
+	 * @param UuidInterface         $contentId   The content that was pushed (in the state that it was pushed).
+	 * @param UuidInterface         $channelId   ID of the channel being pushed to.
+	 * @param UuidInterface         $userId      User who first initiated the action.
+	 * @param UuidInterface         $aggregateId Site the content belongs to.
+	 * @param UuidInterface         $processId   UuidInterface for this push process.
+	 * @param UuidInterface|null    $id          Optional ID for the event.
+	 * @param DateTimeInterface|null $timestamp   Optional timestamp for the event.
+	 * @param UuidInterface|null    $entityId    ContentChannelEntry ID; will be created if not provided.
+	 * @param UriInterface|null           $url         Optional URL of the content on the channel.
 	 * @param array              $details     Channel-specific details.
 	 */
 	public function __construct(
-		public Identifier $contentId,
-		public Identifier $channelId,
-		Identifier $userId,
-		Identifier $aggregateId,
-		Identifier $processId,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
-		?Identifier $entityId = null,
-		public ?Url $url = null,
-		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $details = [],
+		public readonly UuidInterface $contentId,
+		UuidInterface $channelId,
+		public readonly UuidInterface $userId,
+		public readonly UuidInterface $aggregateId,
+		public readonly UuidInterface $processId,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
+		?UuidInterface $entityId = null,
+		public ?UriInterface $url = null,
+		#[MapType('string')] public array $details = [],
 	) {
-		parent::__construct(
-			userId: $userId,
-			id: $id,
-			timestamp: $timestamp,
-			aggregateId: $aggregateId,
-			entityId: $entityId ?? ContentChannelEntry::buildId(contentId: $contentId, channelId: $channelId),
-			processId: $processId,
-		);
+		$this->entityId = $entityId ?? ContentChannelEntry::buildId(contentId: $content->id, channelId: $channelId);
+		$this->setTimeAndId($id, $timestamp);
 	}
 
 	/**

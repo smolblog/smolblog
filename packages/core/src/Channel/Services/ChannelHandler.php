@@ -2,13 +2,14 @@
 
 namespace Smolblog\Core\Channel\Services;
 
+use Cavatappi\Foundation\Registry\ConfiguredRegisterable;
+use Cavatappi\Foundation\Service;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Entities\ChannelHandlerConfiguration;
 use Smolblog\Core\Content\Entities\Content;
-use Smolblog\Foundation\Service\Registry\ConfiguredRegisterable;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
-interface ChannelHandler extends ConfiguredRegisterable {
+interface ChannelHandler extends ConfiguredRegisterable, Service {
 	/**
 	 * Get the configuration for this handler.
 	 *
@@ -24,12 +25,12 @@ interface ChannelHandler extends ConfiguredRegisterable {
 	 *
 	 * @param Content    $content Content object to push.
 	 * @param Channel    $channel Channel to push content to.
-	 * @param Identifier $userId  User initiating the push.
+	 * @param UuidInterface $userId  User initiating the push.
 	 * @return void
 	 */
 	public function pushContentToChannel(
 		Content $content,
 		Channel $channel,
-		Identifier $userId
+		UuidInterface $userId
 	): void;
 }

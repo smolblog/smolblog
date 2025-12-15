@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Channel\Commands;
 
+use Cavatappi\Foundation\Command\Authenticated;
 use Cavatappi\Foundation\Command\Command;
 use Cavatappi\Foundation\Command\ExpectedResponse;
 use Cavatappi\Foundation\Value\ValueKit;
@@ -12,7 +13,7 @@ use Smolblog\Core\Channel\Entities\ContentChannelEntry;
  * Push the given content to the given channel.
  */
 #[ExpectedResponse(type: ContentChannelEntry::class, optional: true)]
-readonly class PushContentToChannel implements Command {
+readonly class PushContentToChannel implements Command, Authenticated {
 	use ValueKit;
 
 	/**
