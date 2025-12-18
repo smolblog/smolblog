@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Content\Types\Note;
 
+use Cavatappi\Foundation\Fields\Markdown;
 use Smolblog\Core\Content\ContentUtilities;
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Foundation\Value\Fields\Markdown;
 
 /**
  * A short, text-only message. Like a tweet.

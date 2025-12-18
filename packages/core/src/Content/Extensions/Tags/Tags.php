@@ -2,16 +2,17 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Reflection\ListType;
+use Cavatappi\Foundation\Validation\Validated;
 use Smolblog\Core\Content\Entities\ContentExtension;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Store tags for a piece of content.
  *
  * Tags are versitile! They can be used for categorization, keywords, or just an aside comment.
  */
-readonly class Tags extends ContentExtension {
+readonly class Tags extends ContentExtension implements Validated {
 	/**
 	 * Create the extension
 	 *
@@ -19,8 +20,13 @@ readonly class Tags extends ContentExtension {
 	 *
 	 * @param string[] $tags Tags as input by the user.
 	 */
-	public function __construct(#[ArrayType(ArrayType::TYPE_STRING)] public array $tags) {
-		if (!empty(array_filter($tags, fn($tag) => !is_string($tag)))) {
+	public function __construct(#[ListType('string')] public array $tags) {
+		$this->validate();
+	}
+
+	public function validate(): void
+	{
+		if (!empty(array_filter($this->tags, fn($tag) => !is_string($tag)))) {
 			throw new InvalidValueProperties(message: 'All tags must be strings.', field: 'tags');
 		}
 	}

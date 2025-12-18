@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Content\Types\Reblog;
 
+use Cavatappi\Foundation\Fields\Markdown;
+use Psr\Http\Message\UriInterface;
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Foundation\Value\Fields\Markdown;
-use Smolblog\Foundation\Value\Fields\Url;
 
 /**
  * An embedded post from another site, such as YouTube or Tumblr.
@@ -15,12 +15,12 @@ readonly class Reblog extends ContentType {
 	/**
 	 * Construct the Reblog.
 	 *
-	 * @param Url           $url     URL being reblogged.
+	 * @param UriInterface           $url     URL being reblogged.
 	 * @param string|null   $title   Optional title for the content.
 	 * @param Markdown|null $caption Optional caption or comment on the reblogged post.
 	 */
 	public function __construct(
-		public Url $url,
+		public UriInterface $url,
 		public ?string $title = null,
 		public ?Markdown $caption = null,
 	) {

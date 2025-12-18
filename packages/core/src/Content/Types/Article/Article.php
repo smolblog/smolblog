@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Content\Types\Article;
 
+use Cavatappi\Foundation\Fields\Markdown;
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Foundation\Value\Fields\Markdown;
 
 /**
  * A more longform piece of writing with a title.

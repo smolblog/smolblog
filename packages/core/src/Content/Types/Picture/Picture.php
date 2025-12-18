@@ -2,18 +2,19 @@
 
 namespace Smolblog\Core\Content\Types\Picture;
 
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Fields\Markdown;
+use Cavatappi\Foundation\Reflection\ListType;
+use Cavatappi\Foundation\Validation\Validated;
 use Smolblog\Core\Content\ContentUtilities;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\Markdown;
-use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * An embedded post from another site, such as YouTube or Tumblr.
  */
-readonly class Picture extends ContentType {
+readonly class Picture extends ContentType implements Validated {
 	public const KEY = 'picture';
 
 	/**
@@ -25,9 +26,25 @@ readonly class Picture extends ContentType {
 	 * @param Markdown|null $caption  Optional caption for the Picture.
 	 */
 	public function __construct(
-		#[ArrayType(Media::class)] public array $pictures,
+		#[ListType(Media::class)] public array $pictures,
 		public ?Markdown $caption = null,
 	) {
+		$this->validate();
+	}
+
+	/**
+	 * Create the title by truncating the caption or .
+	 *
+	 * @return string
+	 */
+	public function getTitle(): string {
+		return isset($this->caption) ?
+			ContentUtilities::truncateText(strval($this->caption)) :
+			$this->pictures[0]->title;
+	}
+
+	public function validate(): void
+	{
 		if (empty($pictures)) {
 			throw new InvalidValueProperties(
 				message: 'Pictures cannot be empty.',
@@ -48,16 +65,5 @@ readonly class Picture extends ContentType {
 				field: 'pictures',
 			);
 		}
-	}
-
-	/**
-	 * Create the title by truncating the caption or .
-	 *
-	 * @return string
-	 */
-	public function getTitle(): string {
-		return isset($this->caption) ?
-			ContentUtilities::truncateText(strval($this->caption)) :
-			$this->pictures[0]->title;
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace Smolblog\Core\Content\Extensions\Warnings;
 
+use Cavatappi\Foundation\Reflection\ListType;
 use Smolblog\Core\Content\Entities\ContentExtension;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
 
 /**
  * Tag content with content warnings.
@@ -17,6 +17,6 @@ readonly class Warnings extends ContentExtension {
 	 *
 	 * @param ContentWarning[] $warnings Applicable content warnings.
 	 */
-	public function __construct(#[ArrayType(ContentWarning::class)] public array $warnings) {
+	public function __construct(#[ListType(ContentWarning::class)] public array $warnings) {
 	}
 }
