@@ -2,64 +2,50 @@
 
 namespace Smolblog\Core\Site\Events;
 
-use ReflectionClass;
-use ReflectionProperty;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Validation\AtLeastOneOf;
+use Cavatappi\Foundation\Validation\Validated;
+use Cavatappi\Foundation\Validation\ValidatedKit;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Fields\Url;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\ValueProperty;
 
 /**
  * Indicates that the details of a Site have been updated with new values.
  */
-readonly class SiteDetailsUpdated extends DomainEvent {
+#[AtLeastOneOf('displayName', 'description', 'pictureId')]
+class SiteDetailsUpdated implements DomainEvent, Validated {
+	use DomainEventKit;
+	use ValidatedKit;
+
 	/**
 	 * Create the event.
 	 *
 	 * @throws InvalidValueProperties When no updated attributes are provided.
 	 *
-	 * @param Identifier         $userId      User making the change.
-	 * @param Identifier         $aggregateId Site being changed.
+	 * @param UuidInterface         $userId      User making the change.
+	 * @param UuidInterface         $aggregateId Site being changed.
 	 * @param string|null        $displayName New title for the site; null for no change.
 	 * @param string|null        $description New description for the site; null for no change.
-	 * @param Identifier|null    $pictureId   New picture for the site; null for no change.
-	 * @param Identifier|null    $id          ID of the event.
-	 * @param DateTimeField|null $timestamp   Timestamp of the event.
-	 * @param Identifier|null    $processId   Optional process that created this event.
+	 * @param UuidInterface|null    $pictureId   New picture for the site; null for no change.
+	 * @param UuidInterface|null    $id          ID of the event.
+	 * @param DateTimeInterface|null $timestamp   Timestamp of the event.
+	 * @param UuidInterface|null    $processId   Optional process that created this event.
 	 */
 	public function __construct(
-		Identifier $userId,
-		Identifier $aggregateId,
-		public ?string $displayName = null,
-		public ?string $description = null,
-		public ?Identifier $pictureId = null,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
-		?Identifier $processId = null,
+		public readonly UuidInterface $userId,
+		public readonly UuidInterface $aggregateId,
+		public readonly ?string $displayName = null,
+		public readonly ?string $description = null,
+		public readonly ?UuidInterface $pictureId = null,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
+		public readonly ?UuidInterface $processId = null,
 	) {
-		if (!isset($displayName) && !isset($description) && !isset($pictureId)) {
-			throw new InvalidValueProperties(message: 'No updated attributes provided.');
-		}
-
-		parent::__construct(
-			userId: $userId,
-			id: $id,
-			timestamp: $timestamp,
-			aggregateId: $aggregateId,
-			processId: $processId,
-		);
+		$this->setTimeAndId($id, $timestamp);
+		$this->validate();
 	}
 
-	/**
-	 * Remove 'entityId' from (de)serialization.
-	 *
-	 * @param ReflectionProperty $prop  ReflectionProperty for the property being evaluated.
-	 * @param ReflectionClass    $class ReflectionClass for this class.
-	 * @return ValueProperty|null
-	 */
-	protected static function getPropertyInfo(ReflectionProperty $prop, ReflectionClass $class): ?ValueProperty {
-		return ($prop->getName() === 'entityId') ? null : parent::getPropertyInfo(prop: $prop, class: $class);
-	}
+	public null $entityId { get => null; }
 }

@@ -2,41 +2,34 @@
 
 namespace Smolblog\Core\Site\Entities;
 
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Keypair;
-use Smolblog\Foundation\Value\Traits\Entity;
-use Smolblog\Foundation\Value\Traits\EntityKit;
-use Smolblog\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Foundation\Value\Traits\SerializableValueKit;
+use Cavatappi\Foundation\DomainEvent\Entity;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Represents a site with its own URL, posts, etc.
  */
-readonly class Site extends Value implements Entity, SerializableValue {
-	use EntityKit;
-	use SerializableValueKit;
+readonly class Site implements Value, Entity {
+	use ValueKit;
 
 	/**
 	 * Construct the site.
 	 *
-	 * @param Identifier      $id          ID for this site.
+	 * @param UuidInterface      $id          ID for this site.
 	 * @param string          $key         Unique subdomain or subdirectory identifier for this site.
 	 * @param string          $displayName Site title as shown in lists and other admin screens.
-	 * @param Identifier      $userId      Primary administrator for the site.
-	 * @param Keypair         $keypair     Public key tied to the site.
+	 * @param UuidInterface      $userId      Primary administrator for the site.
 	 * @param string|null     $description Optional description for the site.
-	 * @param Identifier|null $pictureId   ID for the site picture.
+	 * @param UuidInterface|null $pictureId   ID for the site picture.
 	 */
 	public function __construct(
-		Identifier $id,
+		public UuidInterface $id,
 		public string $key,
 		public string $displayName,
-		public Identifier $userId,
-		public Keypair $keypair,
+		public UuidInterface $userId,
 		public ?string $description = null,
-		public ?Identifier $pictureId = null,
+		public ?UuidInterface $pictureId = null,
 	) {
-		$this->id = $id;
 	}
 }

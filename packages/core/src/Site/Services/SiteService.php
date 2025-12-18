@@ -2,7 +2,14 @@
 
 namespace Smolblog\Core\Site\Services;
 
+use Cavatappi\Foundation\Command\CommandHandler;
+use Cavatappi\Foundation\Command\CommandHandlerService;
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Commands\CreateSite;
@@ -13,14 +20,6 @@ use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Core\Site\Events\SiteCreated;
 use Smolblog\Core\Site\Events\SiteDetailsUpdated;
 use Smolblog\Core\Site\Events\UserSitePermissionsSet;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Service\Command\CommandHandler;
-use Smolblog\Foundation\Service\Command\CommandHandlerService;
-use Smolblog\Foundation\Service\KeypairGenerator;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Fields\RandomIdentifier;
 
 /**
  * Handle Site-related commands.
@@ -32,14 +31,12 @@ class SiteService implements CommandHandlerService {
 	 * @param GlobalPermissionsService $globalPerms Check global permissions.
 	 * @param SitePermissionsService   $sitePerms   Check site-level permissions.
 	 * @param SiteRepo                 $repo        Retrieve sites.
-	 * @param KeypairGenerator         $keygen      Generate encryption keys.
 	 * @param EventDispatcherInterface $eventBus    Dispatch events.
 	 */
 	public function __construct(
 		private GlobalPermissionsService $globalPerms,
 		private SitePermissionsService $sitePerms,
 		private SiteRepo $repo,
-		private KeypairGenerator $keygen,
 		private EventDispatcherInterface $eventBus,
 	) {
 	}
@@ -51,10 +48,10 @@ class SiteService implements CommandHandlerService {
 	 * @throws CommandNotAuthorized If the user cannot create sites.
 	 *
 	 * @param CreateSite $command Command to execute.
-	 * @return Identifier ID of created site.
+	 * @return UuidInterface ID of created site.
 	 */
 	#[CommandHandler]
-	public function onCreateSite(CreateSite $command): Identifier {
+	public function onCreateSite(CreateSite $command): UuidInterface {
 		$siteId = $command->siteId;
 		if (isset($siteId) && $this->repo->hasSiteWithId($siteId)) {
 			throw new InvalidValueProperties(
@@ -76,7 +73,7 @@ class SiteService implements CommandHandlerService {
 
 		if (!isset($siteId)) {
 			do {
-				$siteId = new RandomIdentifier();
+				$siteId = UuidFactory::random();
 			} while (!$this->repo->hasSiteWithId($siteId));
 		}
 
@@ -92,7 +89,6 @@ class SiteService implements CommandHandlerService {
 
 		$this->eventBus->dispatch($event);
 
-		$command->setReturnValue($siteId);
 		return $siteId;
 	}
 

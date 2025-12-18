@@ -2,66 +2,49 @@
 
 namespace Smolblog\Core\Site\Events;
 
-use ReflectionClass;
-use ReflectionProperty;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Site\Entities\Site;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Keypair;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\ValueProperty;
 
 /**
  * Indicates a Site has been created.
  */
-readonly class SiteCreated extends DomainEvent {
+class SiteCreated implements DomainEvent {
+	use DomainEventKit;
+
 	/**
 	 * Construct the event.
 	 *
-	 * @param Identifier         $userId      User creating the site.
-	 * @param Identifier         $aggregateId ID for this site.
+	 * @param UuidInterface         $userId      User creating the site.
+	 * @param UuidInterface         $aggregateId ID for this site.
 	 * @param string             $key         Unique subdomain or subdirectory identifier for this site.
 	 * @param string             $displayName Site title as shown in lists and other admin screens.
-	 * @param Keypair            $keypair     Key tied to the site.
-	 * @param Identifier|null    $siteUserId  Primary administrator for the site if not $userId.
+	 * @param UuidInterface|null    $siteUserId  Primary administrator for the site if not $userId.
 	 * @param string|null        $description Optional description for the site.
-	 * @param Identifier|null    $pictureId   ID for the site picture.
-	 * @param Identifier|null    $id          ID of the event.
-	 * @param DateTimeField|null $timestamp   Timestamp of the event.
-	 * @param Identifier|null    $processId   Process that spawned this event.
+	 * @param UuidInterface|null    $pictureId   ID for the site picture.
+	 * @param UuidInterface|null    $id          ID of the event.
+	 * @param DateTimeInterface|null $timestamp   Timestamp of the event.
+	 * @param UuidInterface|null    $processId   Process that spawned this event.
 	 */
 	public function __construct(
-		Identifier $userId,
-		Identifier $aggregateId,
-		public string $key,
-		public string $displayName,
-		public Keypair $keypair,
-		public Identifier $siteUserId,
-		public ?string $description = null,
-		public ?Identifier $pictureId = null,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
-		?Identifier $processId = null,
+		public readonly UuidInterface $userId,
+		public readonly UuidInterface $aggregateId,
+		public readonly string $key,
+		public readonly string $displayName,
+		public readonly UuidInterface $siteUserId,
+		public readonly ?string $description = null,
+		public readonly ?UuidInterface $pictureId = null,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
+		public readonly ?UuidInterface $processId = null,
 	) {
-		parent::__construct(
-			userId: $userId,
-			id: $id,
-			timestamp: $timestamp,
-			aggregateId: $aggregateId,
-			processId: $processId,
-		);
+		$this->setTimeAndId($id, $timestamp);
 	}
 
-	/**
-	 * Remove 'entityId' from (de)serialization.
-	 *
-	 * @param ReflectionProperty $prop  ReflectionProperty for the property being evaluated.
-	 * @param ReflectionClass    $class ReflectionClass for this class.
-	 * @return ValueProperty|null
-	 */
-	protected static function getPropertyInfo(ReflectionProperty $prop, ReflectionClass $class): ?ValueProperty {
-		return ($prop->getName() === 'entityId') ? null : parent::getPropertyInfo(prop: $prop, class: $class);
-	}
+	public null $entityId { get => null; }
 
 	/**
 	 * Get the Site created by this event.
@@ -70,7 +53,7 @@ readonly class SiteCreated extends DomainEvent {
 	 */
 	public function getSiteObject(): Site {
 		return new Site(
-			id: $this->aggregateId ?? Identifier::nil(),
+			id: $this->aggregateId ?? UuidFactory::nil(),
 			key: $this->key,
 			displayName: $this->displayName,
 			userId: $this->siteUserId ?? $this->userId,

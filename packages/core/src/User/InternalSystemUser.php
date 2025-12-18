@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\User;
 
-use Smolblog\Foundation\Value\Fields\Identifier;
+use Cavatappi\Foundation\Factories\UuidFactory;
 
 /**
  * A user object to represent actions taken by the core system.
@@ -28,7 +28,7 @@ class InternalSystemUser {
 	 */
 	public static function object(): User {
 		self::$smolbot ??= new User(
-			id: Identifier::fromString(self::ID),
+			id: UuidFactory::fromString(self::ID),
 			key: 'smolbot',
 			displayName: 'Smolblog Internal System',
 			handler: self::class,

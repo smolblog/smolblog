@@ -2,18 +2,17 @@
 
 namespace Smolblog\Core\Site\Data;
 
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Site\Entities\Site;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Keypair;
 
 interface SiteRepo {
 	/**
 	 * Return true if a site with the given ID exists.
 	 *
-	 * @param Identifier $siteId ID to check.
+	 * @param UuidInterface $siteId ID to check.
 	 * @return boolean
 	 */
-	public function hasSiteWithId(Identifier $siteId): bool;
+	public function hasSiteWithId(UuidInterface $siteId): bool;
 
 	/**
 	 * Return true if a site with the given key exists.
@@ -26,32 +25,34 @@ interface SiteRepo {
 	/**
 	 * Get the site object for the given ID.
 	 *
-	 * @param Identifier $siteId Site to retrieve.
+	 * @param UuidInterface $siteId Site to retrieve.
 	 * @return Site|null
 	 */
-	public function siteById(Identifier $siteId): ?Site;
+	public function siteById(UuidInterface $siteId): ?Site;
 
 	/**
 	 * Get the keypair for the given site.
 	 *
-	 * @param Identifier $siteId Site whose keypair to retrieve.
+	 * On hold for now.
+	 *
+	 * @param UuidInterface $siteId Site whose keypair to retrieve.
 	 * @return Keypair
 	 */
-	public function keypairForSite(Identifier $siteId): Keypair;
+	// public function keypairForSite(UuidInterface $siteId): Keypair;
 
 	/**
 	 * Get the IDs for users that have permissions for the given site.
 	 *
-	 * @param Identifier $siteId Site whose users to retrieve.
-	 * @return Identifier[]
+	 * @param UuidInterface $siteId Site whose users to retrieve.
+	 * @return UuidInterface[]
 	 */
-	public function userIdsForSite(Identifier $siteId): array;
+	public function userIdsForSite(UuidInterface $siteId): array;
 
 	/**
 	 * Get the sites belonging to a given user.
 	 *
-	 * @param Identifier $userId User whose sites to retrieve.
+	 * @param UuidInterface $userId User whose sites to retrieve.
 	 * @return Site[]
 	 */
-	public function sitesForUser(Identifier $userId): array;
+	public function sitesForUser(UuidInterface $userId): array;
 }

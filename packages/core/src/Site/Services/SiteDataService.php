@@ -2,11 +2,11 @@
 
 namespace Smolblog\Core\Site\Services;
 
+use Cavatappi\Foundation\Service;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteRepo;
 use Smolblog\Core\Site\Entities\Site;
-use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Retrieve Site data for use outside the domain model.
@@ -26,11 +26,11 @@ class SiteDataService implements Service {
 	/**
 	 * Get detailed information on the given site. User must be able to manage settings on the site.
 	 *
-	 * @param Identifier $siteId Site to query.
-	 * @param Identifier $userId User making the query.
+	 * @param UuidInterface $siteId Site to query.
+	 * @param UuidInterface $userId User making the query.
 	 * @return Site|null
 	 */
-	public function siteById(Identifier $siteId, Identifier $userId): ?Site {
+	public function siteById(UuidInterface $siteId, UuidInterface $userId): ?Site {
 		if (!$this->perms->canManageSettings(userId: $userId, siteId: $siteId)) {
 			return null;
 		}
