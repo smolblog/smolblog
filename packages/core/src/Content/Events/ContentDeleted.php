@@ -2,39 +2,35 @@
 
 namespace Smolblog\Core\Content\Events;
 
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Content has been removed and should be purged from the system. Or at least any projections.
  */
-readonly class ContentDeleted extends DomainEvent {
+class ContentDeleted implements DomainEvent {
+	use DomainEventKit;
+
 	/**
 	 * Construct the event
 	 *
-	 * @param Identifier         $userId      ID of the user that created this event.
-	 * @param Identifier         $aggregateId ID of the site that the content belongs to.
-	 * @param Identifier         $entityId    ID of the content to delete.
-	 * @param Identifier|null    $id          ID of the event.
-	 * @param DateTimeField|null $timestamp   Timestamp of the event.
-	 * @param Identifier|null    $processId   Optional ID of a process (series of events) this event belongs to.
+	 * @param UuidInterface         $userId      ID of the user that created this event.
+	 * @param UuidInterface         $aggregateId ID of the site that the content belongs to.
+	 * @param UuidInterface         $entityId    ID of the content to delete.
+	 * @param UuidInterface|null    $id          ID of the event.
+	 * @param DateTimeInterface|null $timestamp   Timestamp of the event.
+	 * @param UuidInterface|null    $processId   Optional ID of a process (series of events) this event belongs to.
 	 */
 	public function __construct(
-		Identifier $userId,
-		Identifier $aggregateId,
-		Identifier $entityId,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
-		?Identifier $processId = null,
+		public readonly UuidInterface $userId,
+		public readonly UuidInterface $aggregateId,
+		public readonly UuidInterface $entityId,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
+		public readonly ?UuidInterface $processId = null,
 	) {
-		parent::__construct(
-			userId: $userId,
-			id: $id,
-			timestamp: $timestamp,
-			aggregateId: $aggregateId,
-			entityId: $entityId,
-			processId: $processId,
-		);
+		$this->setIdAndTime($id, $timestamp);
 	}
 }

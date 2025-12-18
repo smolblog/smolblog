@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Content\Services;
 
+use Cavatappi\Foundation\Registry\Registry;
+use Cavatappi\Foundation\Registry\ServiceRegistryKit;
 use Psr\Container\ContainerInterface;
-use Smolblog\Foundation\Service\Registry\Registry;
-use Smolblog\Foundation\Service\Registry\RegistryKit;
 
 /**
  * Register available content extensions.
@@ -12,7 +12,7 @@ use Smolblog\Foundation\Service\Registry\RegistryKit;
  * I've avoided it as much as I can, but sometimes you just need to have things centrally registered.
  */
 class ContentExtensionRegistry implements Registry {
-	use RegistryKit;
+	use ServiceRegistryKit;
 
 	/**
 	 * This registry handles ContentExtensionService classes.

@@ -3,10 +3,10 @@
 namespace Smolblog\Core\Content\Services;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\{ContentCreated, ContentDeleted, ContentUpdated};
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * A default ContentTypeService implementation that dispatches the given event for a Command.
@@ -28,10 +28,10 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 * Create the given content as a new piece of content.
 	 *
 	 * @param CreateContent $command   Content being created.
-	 * @param Identifier    $contentId Definitive ID for the content.
+	 * @param UuidInterface    $contentId Definitive ID for the content.
 	 * @return void
 	 */
-	public function create(CreateContent $command, Identifier $contentId): void {
+	public function create(CreateContent $command, UuidInterface $contentId): void {
 		$event = new (static::CREATE_EVENT)(
 			body: $command->body,
 			aggregateId: $command->siteId,

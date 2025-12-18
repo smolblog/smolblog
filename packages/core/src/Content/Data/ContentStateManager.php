@@ -2,11 +2,9 @@
 
 namespace Smolblog\Core\Content\Data;
 
-use Smolblog\Core\Channel\Events\ContentPushedToChannel;
+use Cavatappi\Foundation\DomainEvent\EventListenerService;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Content\Events\{ContentCanonicalUrlSet, ContentCreated, ContentDeleted, ContentUpdated};
-use Smolblog\Foundation\Service\Event\EventListener;
-use Smolblog\Foundation\Service\Event\EventListenerService;
 
 /**
  * A set of Content-related events that the Model expects to be listened to.

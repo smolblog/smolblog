@@ -2,6 +2,13 @@
 
 namespace Smolblog\Core\Content\Services;
 
+use Cavatappi\Foundation\Command\CommandHandler;
+use Cavatappi\Foundation\Command\CommandHandlerService;
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Content\Commands\CreateContent;
 use Smolblog\Core\Content\Commands\DeleteContent;
 use Smolblog\Core\Content\Commands\UpdateContent;
@@ -10,14 +17,6 @@ use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Permissions\SitePermissionsService;
-use Smolblog\Core\Site\Data\SiteRepo;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Service\Command\CommandHandler;
-use Smolblog\Foundation\Service\Command\CommandHandlerService;
-use Smolblog\Foundation\Value\Fields\DateIdentifier;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Handle generic content commands.
@@ -67,7 +66,7 @@ class ContentService implements CommandHandlerService {
 		// Generate a new ID.
 		if (!isset($contentId)) {
 			do {
-				$contentId = new DateIdentifier();
+				$contentId = UuidFactory::date();
 			} while ($this->repo->hasContentWithId($contentId));
 		}
 
@@ -132,11 +131,11 @@ class ContentService implements CommandHandlerService {
 	/**
 	 * Check if the given user can make changes to the given content.
 	 *
-	 * @param Identifier $userId    User to check.
-	 * @param Identifier $contentId Content to check.
+	 * @param UuidInterface $userId    User to check.
+	 * @param UuidInterface $contentId Content to check.
 	 * @return boolean
 	 */
-	public function userCanEditContent(Identifier $userId, Identifier $contentId): bool {
+	public function userCanEditContent(UuidInterface $userId, UuidInterface $contentId): bool {
 		$content = $this->repo->contentById($contentId);
 		if (!isset($content)) {
 			return false;

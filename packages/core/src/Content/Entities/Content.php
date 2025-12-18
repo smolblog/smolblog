@@ -2,11 +2,15 @@
 
 namespace Smolblog\Core\Content\Entities;
 
+use Cavatappi\Foundation\DomainEvent\Entity;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Foundation\Reflection\ListType;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
+use DateTimeInterface;
+use Psr\Http\Message\UriInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
-use Smolblog\Foundation\Value\Traits\{Entity, EntityKit, SerializableValue, SerializableValueKit};
-use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier, DateIdentifier, Url};
 
 /**
  * A unit of Content for the system.
@@ -17,33 +21,31 @@ use Smolblog\Foundation\Value\Fields\{DateTimeField, Identifier, DateIdentifier,
  * 1) Content types can store and handle their data as they see fit. It just needs to be serializable.
  * 2) Content extensions can attach extra data to the content.
  */
-readonly class Content extends Value implements SerializableValue, Entity {
-	use SerializableValueKit;
-	use EntityKit;
+readonly class Content implements Value, Entity {
+	use ValueKit;
 
 	/**
 	 * Create the Content.
 	 *
 	 * @param ContentType           $body             The ContentType for this content.
-	 * @param Identifier            $siteId           ID for the Site this belongs to.
-	 * @param Identifier            $userId           ID of the user responsible for this content.
-	 * @param Identifier|null       $id               ID for the content; will be generated if not given.
-	 * @param DateTimeField|null    $publishTimestamp Time and date the content was first published.
+	 * @param UuidInterface            $siteId           ID for the Site this belongs to.
+	 * @param UuidInterface            $userId           ID of the user responsible for this content.
+	 * @param UuidInterface       $id               ID for the content.
+	 * @param DateTimeInterface|null    $publishTimestamp Time and date the content was first published.
 	 * @param Url|null              $canonicalUrl     Canonical absolute URL to the content if it exists.
 	 * @param ContentExtension[]    $extensions       Data for any extensions attached to this content.
 	 * @param ContentChannelEntry[] $links            Channels this Content has been pushed to with relevant details.
 	 */
 	public function __construct(
 		public ContentType $body,
-		public Identifier $siteId,
-		public Identifier $userId,
-		?Identifier $id = null,
-		public ?DateTimeField $publishTimestamp = null,
-		public ?Url $canonicalUrl = null,
-		#[ArrayType(ContentExtension::class)] public array $extensions = [],
-		#[ArrayType(ContentChannelEntry::class)] public array $links = [],
+		public UuidInterface $siteId,
+		public UuidInterface $userId,
+		public UuidInterface $id,
+		public ?DateTimeInterface $publishTimestamp = null,
+		public ?UriInterface $canonicalUrl = null,
+		#[ListType(ContentExtension::class)] public array $extensions = [],
+		#[ListType(ContentChannelEntry::class)] public array $links = [],
 	) {
-		$this->id = $id ?? new DateIdentifier();
 	}
 
 	/**

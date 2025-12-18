@@ -2,11 +2,11 @@
 
 namespace Smolblog\Core\Content\Services;
 
+use Cavatappi\Foundation\Service;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Permissions\SitePermissionsService;
-use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Retrieve Content data for use outside the domain model.
@@ -29,11 +29,11 @@ class ContentDataService implements Service {
 	/**
 	 * Fetch the list of content available to this user.
 	 *
-	 * @param Identifier $siteId Site to retrieve content for.
-	 * @param Identifier $userId User making the request.
+	 * @param UuidInterface $siteId Site to retrieve content for.
+	 * @param UuidInterface $userId User making the request.
 	 * @return array
 	 */
-	public function contentList(Identifier $siteId, Identifier $userId): array {
+	public function contentList(UuidInterface $siteId, UuidInterface $userId): array {
 		if ($this->perms->canEditAllContent(userId: $userId, siteId: $siteId)) {
 			// Show all content.
 			return $this->repo->contentList(forSite: $siteId);
@@ -46,11 +46,11 @@ class ContentDataService implements Service {
 	/**
 	 * Get an individual piece of content.
 	 *
-	 * @param Identifier $contentId Content to retrieve.
-	 * @param Identifier $userId    User making the request.
+	 * @param UuidInterface $contentId Content to retrieve.
+	 * @param UuidInterface $userId    User making the request.
 	 * @return Content|null Null if content does not exist or user does not have permission.
 	 */
-	public function contentById(Identifier $contentId, Identifier $userId): ?Content {
+	public function contentById(UuidInterface $contentId, UuidInterface $userId): ?Content {
 		$content = $this->repo->contentById($contentId);
 		if (!isset($content)) {
 			return null;

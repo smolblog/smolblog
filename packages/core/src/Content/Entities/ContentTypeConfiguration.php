@@ -2,15 +2,15 @@
 
 namespace Smolblog\Core\Content\Entities;
 
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
-use Smolblog\Foundation\Value\Traits\ServiceConfigurationKit;
+use Cavatappi\Foundation\Registry\RegisterableConfiguration;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
 
 /**
  * Store configuration information for a Content Type.
  */
-readonly class ContentTypeConfiguration extends Value implements ServiceConfiguration {
-	use ServiceConfigurationKit;
+readonly class ContentTypeConfiguration implements Value, RegisterableConfiguration {
+	use ValueKit;
 
 	/**
 	 * Create the configuration.
@@ -20,10 +20,9 @@ readonly class ContentTypeConfiguration extends Value implements ServiceConfigur
 	 * @param string $typeClass   PHP class implementing this type.
 	 */
 	public function __construct(
-		string $key,
+		public string $key,
 		public string $displayName,
 		public string $typeClass,
 	) {
-		$this->key = $key;
 	}
 }

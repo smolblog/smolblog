@@ -2,39 +2,42 @@
 
 namespace Smolblog\Core\Content\Commands;
 
+use Cavatappi\Foundation\Command\Authenticated;
+use Cavatappi\Foundation\Command\Command;
+use Cavatappi\Foundation\Command\ExpectedResponse;
+use Cavatappi\Foundation\Reflection\ListType;
+use Cavatappi\Foundation\Value\ValueKit;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Content\Entities\ContentExtension;
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Foundation\Service\Command\ExpectedResponse;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\Command;
-use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Create a new piece of Content.
  */
-#[ExpectedResponse(type: Identifier::class, name: 'id', description: 'ID of the created content.')]
-readonly class CreateContent extends Command {
+#[ExpectedResponse(type: UuidInterface::class, name: 'id', description: 'ID of the created content.')]
+readonly class CreateContent implements Command, Authenticated {
+	use ValueKit;
+
 	/**
 	 * Create the command.
 	 *
-	 * @param Identifier         $userId           ID of the user performing this action.
+	 * @param UuidInterface         $userId           ID of the user performing this action.
 	 * @param ContentType        $body             ContentType being created.
-	 * @param Identifier         $siteId           Site this content is being created for.
-	 * @param Identifier|null    $contentId        ID of the new content; will be created if omitted.
-	 * @param Identifier|null    $contentUserId    User that is responsible for this content; uses $userId by default.
-	 * @param DateTimeField|null $publishTimestamp Time and date content was originally published.
+	 * @param UuidInterface         $siteId           Site this content is being created for.
+	 * @param UuidInterface|null    $contentId        ID of the new content; will be created if omitted.
+	 * @param UuidInterface|null    $contentUserId    User that is responsible for this content; uses $userId by default.
+	 * @param DateTimeInterface|null $publishTimestamp Time and date content was originally published.
 	 * @param ContentExtension[] $extensions       Extension information for this Content.
 	 */
 	public function __construct(
-		public Identifier $userId,
+		public UuidInterface $userId,
 		public ContentType $body,
-		public Identifier $siteId,
-		public ?Identifier $contentId = null,
-		public ?Identifier $contentUserId = null,
-		public ?DateTimeField $publishTimestamp = null,
-		#[ArrayType(ContentExtension::class)] public array $extensions = [],
+		public UuidInterface $siteId,
+		public ?UuidInterface $contentId = null,
+		public ?UuidInterface $contentUserId = null,
+		public ?DateTimeInterface $publishTimestamp = null,
+		#[ListType(ContentExtension::class)] public array $extensions = [],
 	) {
-		parent::__construct();
 	}
 }

@@ -2,15 +2,15 @@
 
 namespace Smolblog\Core\Content\Entities;
 
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\ServiceConfiguration;
-use Smolblog\Foundation\Value\Traits\ServiceConfigurationKit;
+use Cavatappi\Foundation\Registry\RegisterableConfiguration;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
 
 /**
  * Store configuration information for a Content Extension.
  */
-readonly class ContentExtensionConfiguration extends Value implements ServiceConfiguration {
-	use ServiceConfigurationKit;
+class ContentExtensionConfiguration implements Value, RegisterableConfiguration {
+	use ValueKit;
 
 	/**
 	 * Construct the configuration.
@@ -20,10 +20,9 @@ readonly class ContentExtensionConfiguration extends Value implements ServiceCon
 	 * @param string $extensionClass Fully-qualified class name of the content extension.
 	 */
 	public function __construct(
-		string $key,
+		public readonly string $key,
 		public readonly string $displayName,
 		public readonly string $extensionClass,
 	) {
-		$this->key = $key;
 	}
 }

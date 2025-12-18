@@ -2,9 +2,8 @@
 
 namespace Smolblog\Core\Content\Entities;
 
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Traits\SerializableSupertypeKit;
-use Smolblog\Foundation\Value\Traits\SerializableValue;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
 
 /**
  * A piece of data attached to every piece of content.
@@ -14,6 +13,6 @@ use Smolblog\Foundation\Value\Traits\SerializableValue;
  *
  * See: WordPress Post Meta
  */
-abstract readonly class ContentExtension extends Value implements SerializableValue {
-	use SerializableSupertypeKit;
+abstract readonly class ContentExtension implements Value {
+	use ValueKit;
 }

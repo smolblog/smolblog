@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Content\Services;
 
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
 use Smolblog\Core\Content\Entities\Content;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * A default ContentExtensionService implementation that does nothing.
@@ -17,10 +17,10 @@ abstract class DefaultContentExtensionService implements ContentExtensionService
 	 * Create the given content as a new piece of content.
 	 *
 	 * @param CreateContent $command   Content being created.
-	 * @param Identifier    $contentId Definitive ID for the content.
+	 * @param UuidInterface    $contentId Definitive ID for the content.
 	 * @return void
 	 */
-	public function create(CreateContent $command, Identifier $contentId): void {
+	public function create(CreateContent $command, UuidInterface $contentId): void {
 	}
 
 	/**
