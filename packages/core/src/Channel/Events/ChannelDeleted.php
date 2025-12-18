@@ -28,7 +28,7 @@ class ChannelDeleted implements DomainEvent {
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 	) {
-		$this->setTimeAndId($id, $timestamp);
+		$this->setIdAndTime($id, $timestamp);
 	}
 
 	public null $aggregateId { get => null; }

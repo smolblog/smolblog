@@ -41,7 +41,7 @@ class SiteCreated implements DomainEvent {
 		?DateTimeInterface $timestamp = null,
 		public readonly ?UuidInterface $processId = null,
 	) {
-		$this->setTimeAndId($id, $timestamp);
+		$this->setIdAndTime($id, $timestamp);
 	}
 
 	public null $entityId { get => null; }

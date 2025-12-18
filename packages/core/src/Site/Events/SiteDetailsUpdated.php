@@ -43,7 +43,7 @@ class SiteDetailsUpdated implements DomainEvent, Validated {
 		?DateTimeInterface $timestamp = null,
 		public readonly ?UuidInterface $processId = null,
 	) {
-		$this->setTimeAndId($id, $timestamp);
+		$this->setIdAndTime($id, $timestamp);
 		$this->validate();
 	}
 

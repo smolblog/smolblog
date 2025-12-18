@@ -42,7 +42,7 @@ class ConnectionEstablished implements DomainEvent {
 		?DateTimeInterface $timestamp = null,
 	) {
 		$this->entityId = $entityId ?? Connection::buildId(handler: $handler, handlerKey: $handlerKey);
-		$this->setTimeAndId($id, $timestamp);
+		$this->setIdAndTime($id, $timestamp);
 	}
 
 	/**

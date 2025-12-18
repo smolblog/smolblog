@@ -35,7 +35,7 @@ class ChannelSaved implements DomainEvent {
 		?DateTimeInterface $timestamp = null,
 	) {
 		$this->entityId = $entityId ?? $this->channel->id;
-		$this->setTimeAndId($id, $timestamp);
+		$this->setIdAndTime($id, $timestamp);
 	}
 
 	public null $aggregateId { get => null; }
