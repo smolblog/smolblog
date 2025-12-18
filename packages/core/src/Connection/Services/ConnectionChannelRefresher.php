@@ -2,21 +2,18 @@
 
 namespace Smolblog\Core\Connection\Services;
 
+use Cavatappi\Foundation\Command\CommandHandler;
+use Cavatappi\Foundation\Command\CommandHandlerService;
+use Cavatappi\Foundation\DomainEvent\EventListenerService;
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Data\ChannelRepo;
-use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\ChannelDeleted;
 use Smolblog\Core\Channel\Events\ChannelSaved;
 use Smolblog\Core\Connection\Commands\RefreshChannels;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Entities\Connection;
-use Smolblog\Core\Connection\Events\ConnectionEstablished;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Service\Command\CommandHandler;
-use Smolblog\Foundation\Service\Command\CommandHandlerService;
-use Smolblog\Foundation\Service\Event\EventListener;
-use Smolblog\Foundation\Service\Event\EventListenerService;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Service to update Channels for a Connection based on a handler.
@@ -60,10 +57,10 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 	 * Update Channels for the given Connection based on the handler.
 	 *
 	 * @param Connection $connection Connection to refresh.
-	 * @param Identifier $userId     ID of User instigating this change.
+	 * @param UuidInterface $userId     ID of User instigating this change.
 	 * @return void
 	 */
-	public function refresh(Connection $connection, Identifier $userId): void {
+	public function refresh(Connection $connection, UuidInterface $userId): void {
 		$connector = $this->handlers->get($connection->handler);
 
 		$currentChannels = $this->channels->channelsForConnection(connectionId: $connection->getId());

@@ -2,23 +2,26 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\Command;
+use Cavatappi\Foundation\Command\Authenticated;
+use Cavatappi\Foundation\Command\Command;
+use Cavatappi\Foundation\Value\ValueKit;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Delete a Connection.
  */
-readonly class DeleteConnection extends Command {
+readonly class DeleteConnection implements Command, Authenticated {
+	use ValueKit;
+
 	/**
 	 * Construct the query.
 	 *
-	 * @param Identifier $userId       User making the request.
-	 * @param Identifier $connectionId Connection to delete.
+	 * @param UuidInterface $userId       User making the request.
+	 * @param UuidInterface $connectionId Connection to delete.
 	 */
 	public function __construct(
-		public readonly Identifier $userId,
-		public readonly Identifier $connectionId,
+		public readonly UuidInterface $userId,
+		public readonly UuidInterface $connectionId,
 	) {
-		parent::__construct();
 	}
 }

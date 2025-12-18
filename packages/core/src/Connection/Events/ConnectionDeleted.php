@@ -2,28 +2,35 @@
 
 namespace Smolblog\Core\Connection\Events;
 
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Indicates that a given connection should be deleted and its associated artifacts removed.
  */
-readonly class ConnectionDeleted extends DomainEvent {
+class ConnectionDeleted implements DomainEvent {
+	use DomainEventKit;
+
 	/**
 	 * Create the Event
 	 *
-	 * @param Identifier         $entityId  ID of the connection this event belongs to.
-	 * @param Identifier         $userId    ID of the user initiating this change.
-	 * @param Identifier|null    $id        Optional ID for the event.
-	 * @param DateTimeField|null $timestamp Optional timestamp for the event (default now).
+	 * @param UuidInterface         $entityId  ID of the connection this event belongs to.
+	 * @param UuidInterface         $userId    ID of the user initiating this change.
+	 * @param UuidInterface|null    $processId        Optional ID for the process causing the event.
+	 * @param UuidInterface|null    $id        Optional ID for the event.
+	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		Identifier $entityId,
-		Identifier $userId,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
+		public readonly UuidInterface $entityId,
+		public readonly UuidInterface $userId,
+		public readonly ?UuidInterface $processId = null,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
 	) {
-		parent::__construct(entityId: $entityId, userId: $userId, id: $id, timestamp: $timestamp);
+		$this->setTimeAndId($id, $timestamp);
 	}
+
+	public null $aggregateId { get => null; }
 }

@@ -2,23 +2,26 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\Command;
+use Cavatappi\Foundation\Command\Authenticated;
+use Cavatappi\Foundation\Command\Command;
+use Cavatappi\Foundation\Value\ValueKit;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Check the connection to see if any access tokens need to be refreshed.
  */
-readonly class RefreshConnection extends Command {
+readonly class RefreshConnection implements Command, Authenticated {
+	use ValueKit;
+
 	/**
 	 * Create the command
 	 *
-	 * @param Identifier $connectionId Connection to refresh.
-	 * @param Identifier $userId       User initiating the refresh.
+	 * @param UuidInterface $connectionId Connection to refresh.
+	 * @param UuidInterface $userId       User initiating the refresh.
 	 */
 	public function __construct(
-		public Identifier $connectionId,
-		public Identifier $userId,
+		public UuidInterface $connectionId,
+		public UuidInterface $userId,
 	) {
-		parent::__construct();
 	}
 }

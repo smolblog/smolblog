@@ -2,16 +2,15 @@
 
 namespace Smolblog\Core\Connection\Entities;
 
-use Smolblog\Foundation\Value;
-use Smolblog\Foundation\Value\Attributes\ArrayType;
-use Smolblog\Foundation\Value\Traits\SerializableValue;
-use Smolblog\Foundation\Value\Traits\SerializableValueKit;
+use Cavatappi\Foundation\Reflection\MapType;
+use Cavatappi\Foundation\Value;
+use Cavatappi\Foundation\Value\ValueKit;
 
 /**
  * Data required from a Connector to initialize an OAuth2 request.
  */
-readonly class ConnectionInitData extends Value implements SerializableValue {
-	use SerializableValueKit;
+readonly class ConnectionInitData implements Value {
+	use ValueKit;
 
 	/**
 	 * Create the data object.
@@ -23,7 +22,7 @@ readonly class ConnectionInitData extends Value implements SerializableValue {
 	public function __construct(
 		public string $url,
 		public string $state,
-		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $info
+		#[MapType('string')] public array $info
 ) {
 	}
 }

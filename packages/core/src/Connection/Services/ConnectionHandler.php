@@ -2,11 +2,11 @@
 
 namespace Smolblog\Core\Connection\Services;
 
+use Cavatappi\Foundation\Registry\Registerable;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Entities\ConnectionInitData;
-use Smolblog\Foundation\Service\Registry\Registerable;
 
 /**
  * Class to handle authenticating against an external handler.

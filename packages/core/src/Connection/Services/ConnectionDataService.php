@@ -2,10 +2,10 @@
 
 namespace Smolblog\Core\Connection\Services;
 
+use Cavatappi\Foundation\Service;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
-use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Get Connection information with security checks.
@@ -23,11 +23,11 @@ class ConnectionDataService implements Service {
 	/**
 	 * Get all Connections owned by a user. Current user must be the user or have canManageOtherConnections.
 	 *
-	 * @param Identifier $connectionUserId User being queried.
-	 * @param Identifier $userId           User making the request.
+	 * @param UuidInterface $connectionUserId User being queried.
+	 * @param UuidInterface $userId           User making the request.
 	 * @return array
 	 */
-	public function connectionsForUser(Identifier $connectionUserId, Identifier $userId): array {
+	public function connectionsForUser(UuidInterface $connectionUserId, UuidInterface $userId): array {
 		if ($connectionUserId != $userId && !$this->perms->canManageOtherConnections($userId)) {
 			return [];
 		}

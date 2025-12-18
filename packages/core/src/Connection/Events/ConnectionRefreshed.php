@@ -2,31 +2,38 @@
 
 namespace Smolblog\Core\Connection\Events;
 
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\Traits\ArrayType;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Reflection\MapType;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Indicates a Connection has been formed or re-formed between a user account and an external handler.
  */
-readonly class ConnectionRefreshed extends DomainEvent {
+class ConnectionRefreshed implements DomainEvent {
+	use DomainEventKit;
+
 	/**
 	 * Create the Event
 	 *
 	 * @param array              $details   Updated information needed to connect to this handler.
-	 * @param Identifier         $entityId  ID of the connection this event belongs to.
-	 * @param Identifier         $userId    ID of the user initiating this change.
-	 * @param Identifier|null    $id        Optional ID for the event.
-	 * @param DateTimeField|null $timestamp Optional timestamp for the event (default now).
+	 * @param UuidInterface         $entityId  ID of the connection this event belongs to.
+	 * @param UuidInterface         $userId    ID of the user initiating this change.
+	 * @param UuidInterface|null    $processId        Optional ID for the event.
+	 * @param UuidInterface|null    $id        Optional ID for the event.
+	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public readonly array $details,
-		Identifier $entityId,
-		Identifier $userId,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
+		#[MapType('string')] public readonly array $details,
+		public readonly UuidInterface $entityId,
+		public readonly UuidInterface $userId,
+		public readonly ?UuidInterface $processId = null,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
 	) {
-		parent::__construct(entityId: $entityId, userId: $userId, id: $id, timestamp: $timestamp);
+		$this->setTimeAndId($id, $timestamp);
 	}
+
+	public null $aggregateId { get => null; }
 }

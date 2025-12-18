@@ -2,13 +2,13 @@
 
 namespace Smolblog\Core\Connection\Services;
 
+use Cavatappi\Foundation\Command\CommandHandler;
+use Cavatappi\Foundation\Command\CommandHandlerService;
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Smolblog\Core\Connection\Commands\DeleteConnection;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Events\ConnectionDeleted;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Service\Command\CommandHandler;
-use Smolblog\Foundation\Service\Command\CommandHandlerService;
 
 /**
  * Service for basic Connection operations.

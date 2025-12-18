@@ -2,26 +2,21 @@
 
 namespace Smolblog\Core\Connection\Services;
 
+use Cavatappi\Foundation\Command\CommandHandler;
+use Cavatappi\Foundation\Command\CommandHandlerService;
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
+use Cavatappi\Foundation\Service;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Connection\Commands\RefreshConnection;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Events\ConnectionRefreshed;
-use Smolblog\Core\Connection\Queries\ConnectionById;
-use Smolblog\Core\User\User;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Service;
-use Smolblog\Foundation\Service\Command\CommandHandler;
-use Smolblog\Foundation\Service\Command\CommandHandlerService;
-use Smolblog\Framework\Messages\Attributes\ExecutionLayerListener;
-use Smolblog\Framework\Messages\Listener;
-use Smolblog\Framework\Messages\MessageBus;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Service to check if a Connection needs a refresh and save the refreshed Connection if so.
  */
-class ConnectionRefresher implements Service, CommandHandlerService {
+class ConnectionRefresher implements CommandHandlerService {
 	/**
 	 * Create the service
 	 *
@@ -58,10 +53,10 @@ class ConnectionRefresher implements Service, CommandHandlerService {
 	 * Check the given Connection to see if it needs to be refreshed. If it does, refresh it and save the result.
 	 *
 	 * @param Connection $connection Connection object to check.
-	 * @param Identifier $userId     User initiating the check.
+	 * @param UuidInterface $userId     User initiating the check.
 	 * @return Connection Connection object ready to be used.
 	 */
-	public function refresh(Connection $connection, Identifier $userId): Connection {
+	public function refresh(Connection $connection, UuidInterface $userId): Connection {
 		$connector = $this->handlers->get($connection->handler);
 		if (!$connector->connectionNeedsRefresh($connection)) {
 			return $connection;
