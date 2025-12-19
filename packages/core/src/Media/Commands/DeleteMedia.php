@@ -2,23 +2,26 @@
 
 namespace Smolblog\Core\Media\Commands;
 
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\Command;
+use Cavatappi\Foundation\Command\Authenticated;
+use Cavatappi\Foundation\Command\Command;
+use Cavatappi\Foundation\Value\ValueKit;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Delete a media object.
  */
-readonly class DeleteMedia extends Command {
+readonly class DeleteMedia implements Command, Authenticated {
+	use ValueKit;
+
 	/**
 	 * Construct the command.
 	 *
-	 * @param Identifier $userId  User making this change.
-	 * @param Identifier $mediaId ID of the media being edited.
+	 * @param UuidInterface $userId  User making this change.
+	 * @param UuidInterface $mediaId ID of the media being edited.
 	 */
 	public function __construct(
-		public readonly Identifier $userId,
-		public readonly Identifier $mediaId
+		public readonly UuidInterface $userId,
+		public readonly UuidInterface $mediaId
 	) {
-		parent::__construct();
 	}
 }

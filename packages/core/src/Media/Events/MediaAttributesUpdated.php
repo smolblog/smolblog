@@ -2,50 +2,54 @@
 
 namespace Smolblog\Core\Media\Events;
 
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Validation\Validated;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Indicate that attributes have been changed on a piece of media.
  */
-readonly class MediaAttributesUpdated extends DomainEvent {
+readonly class MediaAttributesUpdated implements DomainEvent, Validated {
+	use DomainEventKit;
+
 	/**
 	 * Construct the event.
 	 *
 	 * @throws InvalidValueProperties Thrown if no updated attributes are given.
 	 *
-	 * @param Identifier         $entityId          ID of the Media object.
-	 * @param Identifier         $userId            User uploading the media.
-	 * @param Identifier         $aggregateId       Site media is being uploaded to.
+	 * @param UuidInterface         $entityId          ID of the Media object.
+	 * @param UuidInterface         $userId            User uploading the media.
+	 * @param UuidInterface         $aggregateId       Site media is being uploaded to.
 	 * @param string|null        $title             Updated title of the media.
 	 * @param string|null        $accessibilityText Updated text-only description of the media.
-	 * @param Identifier|null    $id                ID of the event.
-	 * @param DateTimeField|null $timestamp         Timestamp of the event.
+	 * @param UuidInterface|null    $id                ID of the event.
+	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
+	 * @param UuidInterface|null    $processId                ID of the process responsible for this event.
 	 */
 	public function __construct(
-		Identifier $entityId,
-		Identifier $userId,
-		Identifier $aggregateId,
-		public ?string $title = null,
-		public ?string $accessibilityText = null,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null
+		public readonly UuidInterface $entityId,
+		public readonly UuidInterface $userId,
+		public readonly UuidInterface $aggregateId,
+		public readonly ?string $title = null,
+		public readonly ?string $accessibilityText = null,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
+		public readonly ?UuidInterface $processId,
 	) {
+		$this->setIdAndTime($id, $timestamp);
+		$this->validate();
+	}
+
+	public function validate(): void
+	{
 		if (!isset($title) && !isset($accessibilityText)) {
 			throw new InvalidValueProperties('No updated attributes provided.');
 		}
 		if ((isset($title) && empty($title)) || (isset($accessibilityText) && empty($accessibilityText))) {
 			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
 		}
-
-		parent::__construct(
-			id: $id,
-			timestamp: $timestamp,
-			userId: $userId,
-			aggregateId: $aggregateId,
-			entityId: $entityId,
-		);
 	}
 }

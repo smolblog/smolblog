@@ -2,23 +2,23 @@
 
 namespace Smolblog\Core\Media\Data;
 
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Entities\Media;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 interface MediaRepo {
 	/**
 	 * Check if a given media object exists.
 	 *
-	 * @param Identifier $mediaId ID to check.
+	 * @param UuidInterface $mediaId ID to check.
 	 * @return boolean
 	 */
-	public function hasMediaWithId(Identifier $mediaId): bool;
+	public function hasMediaWithId(UuidInterface $mediaId): bool;
 
 	/**
 	 * Get the specified Media object.
 	 *
-	 * @param Identifier $mediaId Media to fetch.
+	 * @param UuidInterface $mediaId Media to fetch.
 	 * @return Media|null
 	 */
-	public function mediaById(Identifier $mediaId): ?Media;
+	public function mediaById(UuidInterface $mediaId): ?Media;
 }

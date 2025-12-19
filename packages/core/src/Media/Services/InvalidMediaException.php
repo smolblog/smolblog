@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core\Media;
 
-use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 
 /**

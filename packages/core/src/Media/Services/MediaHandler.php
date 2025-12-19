@@ -2,12 +2,12 @@
 
 namespace Smolblog\Core\Media\Services;
 
+use Cavatappi\Foundation\Registry\Registerable;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Commands\DeleteMedia;
 use Smolblog\Core\Media\Commands\HandleUploadedMedia;
 use Smolblog\Core\Media\Commands\SideloadMedia;
 use Smolblog\Core\Media\Entities\Media;
-use Smolblog\Foundation\Service\Registry\Registerable;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Service that handles media uploads.
@@ -28,10 +28,10 @@ interface MediaHandler extends Registerable {
 	 * @throws InvalidMediaException If the file cannot be processed.
 	 *
 	 * @param HandleUploadedMedia $command Original command being executed.
-	 * @param Identifier          $mediaId ID to use to create the Media object.
+	 * @param UuidInterface          $mediaId ID to use to create the Media object.
 	 * @return Media
 	 */
-	public function handleUploadedFile(HandleUploadedMedia $command, Identifier $mediaId): Media;
+	public function handleUploadedFile(HandleUploadedMedia $command, UuidInterface $mediaId): Media;
 
 	/**
 	 * Sideload the result of the given URL and return the resulting Media object.
@@ -39,10 +39,10 @@ interface MediaHandler extends Registerable {
 	 * @throws InvalidMediaException If the file at the URL cannot be processed.
 	 *
 	 * @param SideloadMedia $command Original command being executed.
-	 * @param Identifier    $mediaId ID to use to create the Media object.
+	 * @param UuidInterface    $mediaId ID to use to create the Media object.
 	 * @return Media
 	 */
-	public function sideloadFile(SideloadMedia $command, Identifier $mediaId): Media;
+	public function sideloadFile(SideloadMedia $command, UuidInterface $mediaId): Media;
 
 	/**
 	 * Delete the given Media file from the system.

@@ -2,7 +2,14 @@
 
 namespace Smolblog\Core\Media\Services;
 
+use Cavatappi\Foundation\Command\CommandHandler;
+use Cavatappi\Foundation\Command\CommandHandlerService;
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Commands\DeleteMedia;
 use Smolblog\Core\Media\Commands\EditMediaAttributes;
 use Smolblog\Core\Media\Commands\HandleUploadedMedia;
@@ -14,13 +21,6 @@ use Smolblog\Core\Media\Events\MediaAttributesUpdated;
 use Smolblog\Core\Media\Events\MediaCreated;
 use Smolblog\Core\Media\Events\MediaDeleted;
 use Smolblog\Core\Permissions\SitePermissionsService;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Service\Command\CommandHandler;
-use Smolblog\Foundation\Service\Command\CommandHandlerService;
-use Smolblog\Foundation\Value\Fields\DateIdentifier;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Handle tasks related to Media.
@@ -146,11 +146,11 @@ class MediaService implements CommandHandlerService {
 	/**
 	 * Determine if the given user can edit the given Media.
 	 *
-	 * @param Identifier $userId  User to check.
-	 * @param Identifier $mediaId Media to check.
+	 * @param UuidInterface $userId  User to check.
+	 * @param UuidInterface $mediaId Media to check.
 	 * @return boolean
 	 */
-	public function userCanEditMedia(Identifier $userId, Identifier $mediaId): bool {
+	public function userCanEditMedia(UuidInterface $userId, UuidInterface $mediaId): bool {
 		$media = $this->mediaRepo->mediaById($mediaId);
 		if (!isset($media)) {
 			return false;
@@ -170,9 +170,9 @@ class MediaService implements CommandHandlerService {
 	 * @throws CommandNotAuthorized When the user does not have sufficient permissions.
 	 *
 	 * @param HandleUploadedMedia|SideloadMedia $command Command being executed.
-	 * @return Identifier Valid ID for the new Media object.
+	 * @return UuidInterface Valid ID for the new Media object.
 	 */
-	private function checkNewPermsAndId(HandleUploadedMedia|SideloadMedia $command): Identifier {
+	private function checkNewPermsAndId(HandleUploadedMedia|SideloadMedia $command): UuidInterface {
 		// Check for existing ID.
 		$mediaId = $command->mediaId;
 		if (isset($mediaId) && $this->mediaRepo->hasMediaWithId($mediaId)) {
@@ -190,7 +190,7 @@ class MediaService implements CommandHandlerService {
 		// Generate a new ID.
 		if (!isset($mediaId)) {
 			do {
-				$mediaId = new DateIdentifier();
+				$mediaId = UuidFactory::date();
 			} while (!$this->mediaRepo->hasMediaWithId($mediaId));
 		}
 

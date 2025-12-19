@@ -2,68 +2,62 @@
 
 namespace Smolblog\Core\Media\Events;
 
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Reflection\MapType;
+use Cavatappi\Foundation\Validation\Validated;
+use DateTimeInterface;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\DateTimeField;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
-use Smolblog\Foundation\Value\Traits\ArrayType;
 
 /**
  * Indicate that a new piece of media has been uploaded and processed.
  */
-readonly class MediaCreated extends DomainEvent {
+class MediaCreated implements DomainEvent, Validated {
+	use DomainEventKit;
+
 	/**
 	 * User responsible for the Media object.
 	 *
-	 * @var Identifier
+	 * @var UuidInterface
 	 */
-	public Identifier $mediaUserId;
+	public UuidInterface $mediaUserId;
 
 	/**
 	 * Create the event.
 	 *
 	 * @throws InvalidValueProperties When title or accessibilityText are empty.
 	 *
-	 * @param Identifier         $entityId          ID of the media object.
-	 * @param Identifier         $aggregateId       ID of the site media is uploaded to.
-	 * @param Identifier         $userId            User creating the Media.
+	 * @param UuidInterface         $entityId          ID of the media object.
+	 * @param UuidInterface         $aggregateId       ID of the site media is uploaded to.
+	 * @param UuidInterface         $userId            User creating the Media.
 	 * @param string             $title             Title for the media (usually filename). Must not be empty.
 	 * @param string             $accessibilityText Text description of the media. Must not be empty.
 	 * @param MediaType          $mediaType         Broad type of media (image, video, etc).
 	 * @param string             $handler           Key for handler for this media.
 	 * @param array              $fileDetails       Information needed by file handler.
-	 * @param Identifier|null    $id                ID of the event.
-	 * @param DateTimeField|null $timestamp         Timestamp of the event.
-	 * @param Identifier|null    $mediaUserId       User responsible for the media; defaults to $userId.
+	 * @param UuidInterface|null    $id                ID of the event.
+	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
+	 * @param UuidInterface|null    $mediaUserId       User responsible for the media; defaults to $userId.
 	 */
 	public function __construct(
-		Identifier $entityId,
-		Identifier $aggregateId,
-		Identifier $userId,
-		public string $title,
-		public string $accessibilityText,
-		public MediaType $mediaType,
-		public string $handler,
-		#[ArrayType(ArrayType::NO_TYPE, isMap: true)] public array $fileDetails,
-		?Identifier $id = null,
-		?DateTimeField $timestamp = null,
-		?Identifier $mediaUserId = null,
+		public readonly UuidInterface $entityId,
+		public readonly UuidInterface $aggregateId,
+		public readonly UuidInterface $userId,
+		public readonly string $title,
+		public readonly string $accessibilityText,
+		public readonly MediaType $mediaType,
+		public readonly string $handler,
+		#[MapType('string')] public array $fileDetails,
+		?UuidInterface $id = null,
+		?DateTimeInterface $timestamp = null,
+		?UuidInterface $mediaUserId = null,
 	) {
-		if (empty($this->title) || empty($this->accessibilityText)) {
-			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
-		}
-
 		$this->mediaUserId = $mediaUserId ?? $userId;
-
-		parent::__construct(
-			id: $id,
-			timestamp: $timestamp,
-			userId: $userId,
-			aggregateId: $aggregateId,
-			entityId: $entityId,
-		);
+		$this->setIdAndTime($id, $timestamp);
+		$this->validate();
 	}
 
 	/**
@@ -94,14 +88,21 @@ readonly class MediaCreated extends DomainEvent {
 	 */
 	public function getMediaObject(): Media {
 		return new Media(
-			id: $this->entityId ?? Identifier::nil(),
+			id: $this->entityId ?? UuidInterface::nil(),
 			userId: $this->mediaUserId,
-			siteId: $this->aggregateId ?? Identifier::nil(),
+			siteId: $this->aggregateId ?? UuidInterface::nil(),
 			title: $this->title,
 			accessibilityText: $this->accessibilityText,
 			type: $this->mediaType,
 			handler: $this->handler,
 			fileDetails: $this->fileDetails,
 		);
+	}
+
+	public function validate(): void
+	{
+		if (empty($this->title) || empty($this->accessibilityText)) {
+			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
+		}
 	}
 }

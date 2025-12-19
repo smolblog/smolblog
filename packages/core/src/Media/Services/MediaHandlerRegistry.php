@@ -2,16 +2,16 @@
 
 namespace Smolblog\Core\Media\Services;
 
+use Cavatappi\Foundation\Exceptions\ServiceNotRegistered;
+use Cavatappi\Foundation\Registry\Registry;
+use Cavatappi\Foundation\Registry\ServiceRegistryKit;
 use Psr\Container\ContainerInterface;
-use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
-use Smolblog\Foundation\Service\Registry\Registry;
-use Smolblog\Foundation\Service\Registry\RegistryKit;
 
 /**
  * Register MediaHandlers.
  */
 class MediaHandlerRegistry implements Registry {
-	use RegistryKit;
+	use ServiceRegistryKit;
 
 	/**
 	 * This registry handles MediaHandler services.
