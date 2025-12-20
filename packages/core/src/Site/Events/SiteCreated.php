@@ -57,7 +57,6 @@ class SiteCreated implements DomainEvent {
 			key: $this->key,
 			displayName: $this->displayName,
 			userId: $this->siteUserId ?? $this->userId,
-			keypair: $this->keypair,
 			description: $this->description,
 			pictureId: $this->pictureId,
 		);

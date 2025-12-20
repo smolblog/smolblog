@@ -2,15 +2,12 @@
 
 namespace Smolblog\Core\Site\Commands;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Site\Entities\SitePermissionLevel;
 use Smolblog\Core\Site\Events\UserSitePermissionsSet;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Test\SiteTestBase;
+use Smolblog\Core\Test\SiteTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class SetUserSitePermissionsTest extends SiteTestBase {

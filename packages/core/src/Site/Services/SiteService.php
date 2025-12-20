@@ -82,7 +82,6 @@ class SiteService implements CommandHandlerService {
 			aggregateId: $siteId,
 			key: $command->key,
 			displayName: $command->displayName,
-			keypair: $this->keygen->generate(),
 			siteUserId: $command->siteUser ?? $command->userId,
 			description: $command->description,
 		);

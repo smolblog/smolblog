@@ -2,7 +2,7 @@
 
 namespace Smolblog\Core\User;
 
-use Smolblog\Test\TestCase;
+use Cavatappi\Test\TestCase;
 
 final class EntityTest extends TestCase {
 	public function testAUserObjectCanBeCreated() {
