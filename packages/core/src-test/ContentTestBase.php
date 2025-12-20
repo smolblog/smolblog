@@ -1,7 +1,8 @@
 <?php
 
-namespace Smolblog\Test;
+namespace Smolblog\Core\Test;
 
+use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -16,8 +17,6 @@ use Smolblog\Core\Content\Services\ContentTypeService;
 use Smolblog\Core\Content\Services\DefaultContentExtensionService;
 use Smolblog\Core\Content\Services\DefaultContentTypeService;
 use Smolblog\Core\Permissions\SitePermissionsService;
-use Smolblog\Core\Site\Data\SiteRepo;
-use Smolblog\Test\ModelTest;
 
 abstract readonly class TestContentTypeBase extends ContentType {
 	public function __construct(public string $title, public string $body) {}
@@ -43,9 +42,9 @@ final readonly class TestDefaultContentType extends TestContentTypeBase {
 /**
  * Provides a ContentType with key 'testevents'
  */
-final readonly class TestEventsContentTypeCreated extends ContentCreated {}
-final readonly class TestEventsContentTypeUpdated extends ContentUpdated {}
-final readonly class TestEventsContentTypeDeleted extends ContentDeleted {}
+final class TestEventsContentTypeCreated extends ContentCreated {}
+final class TestEventsContentTypeUpdated extends ContentUpdated {}
+final class TestEventsContentTypeDeleted extends ContentDeleted {}
 final class TestEventsContentTypeService extends DefaultContentTypeService {
 	public static function getConfiguration(): ContentTypeConfiguration {
 		return new ContentTypeConfiguration(

@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content\Services;
 
 use Cavatappi\Foundation\Registry\ConfiguredRegisterable;
+use Cavatappi\Foundation\Service;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Content\Commands\{CreateContent, DeleteContent, UpdateContent};
 use Smolblog\Core\Content\Entities\Content;
@@ -13,7 +14,7 @@ use Smolblog\Core\Content\Entities\ContentTypeConfiguration;
  *
  * Mostly exists to be auto-discovered and added to the registry.
  */
-interface ContentTypeService extends ConfiguredRegisterable {
+interface ContentTypeService extends ConfiguredRegisterable, Service {
 	/**
 	 * Get the configuration for this content type.
 	 *

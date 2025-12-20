@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb8c7397ae5d6cf47d5c964ebfd333cb",
+    "content-hash": "fd08f39de3a38e7382a46af5305d9e9b",
     "packages": [
         {
             "name": "brick/math",
@@ -68,19 +68,20 @@
         },
         {
             "name": "cavatappi/foundation",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cavatappiphp/foundation.git",
-                "reference": "a8354eb27512d655b6d180b9f36f6e2d85ea07bc"
+                "reference": "3747de8705a56895595c053ae1a356f0d9a86790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cavatappiphp/foundation/zipball/a8354eb27512d655b6d180b9f36f6e2d85ea07bc",
-                "reference": "a8354eb27512d655b6d180b9f36f6e2d85ea07bc",
+                "url": "https://api.github.com/repos/cavatappiphp/foundation/zipball/3747de8705a56895595c053ae1a356f0d9a86790",
+                "reference": "3747de8705a56895595c053ae1a356f0d9a86790",
                 "shasum": ""
             },
             "require": {
+                "crell/serde": "^1.5",
                 "crell/tukio": "^2.0",
                 "league/construct-finder": "^1.5",
                 "nyholm/psr7": "^1.8",
@@ -90,7 +91,7 @@
                 "ramsey/uuid": "^4.9"
             },
             "require-dev": {
-                "cavatappi/testing": "^0.1.1"
+                "cavatappi/testing": "^0.1.2"
             },
             "type": "library",
             "autoload": {
@@ -111,9 +112,9 @@
             "description": "A PHP framework for domain-driven design, event sourcing, and SOLID architecture.",
             "support": {
                 "issues": "https://github.com/cavatappiphp/foundation/issues",
-                "source": "https://github.com/cavatappiphp/foundation/tree/0.1.1"
+                "source": "https://github.com/cavatappiphp/foundation/tree/0.1.2"
             },
-            "time": "2025-10-26T19:27:33+00:00"
+            "time": "2025-12-20T21:43:08+00:00"
         },
         {
             "name": "crell/attributeutils",
@@ -1132,20 +1133,20 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.9.1",
+            "version": "4.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "81f941f6f729b1e3ceea61d9d014f8b6c6800440"
+                "reference": "8429c78ca35a09f27565311b98101e2826affde0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/81f941f6f729b1e3ceea61d9d014f8b6c6800440",
-                "reference": "81f941f6f729b1e3ceea61d9d014f8b6c6800440",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/8429c78ca35a09f27565311b98101e2826affde0",
+                "reference": "8429c78ca35a09f27565311b98101e2826affde0",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
+                "brick/math": "^0.8.16 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
                 "php": "^8.0",
                 "ramsey/collection": "^1.2 || ^2.0"
             },
@@ -1204,28 +1205,28 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.9.1"
+                "source": "https://github.com/ramsey/uuid/tree/4.9.2"
             },
-            "time": "2025-09-04T20:59:21+00:00"
+            "time": "2025-12-14T04:43:48+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "cavatappi/infrastructure",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cavatappiphp/infrastructure.git",
-                "reference": "8050004caeee388e51e5b8f99a713a3106cb4282"
+                "reference": "4b2cd994b64121188edee6fc24d94860ab4990a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cavatappiphp/infrastructure/zipball/8050004caeee388e51e5b8f99a713a3106cb4282",
-                "reference": "8050004caeee388e51e5b8f99a713a3106cb4282",
+                "url": "https://api.github.com/repos/cavatappiphp/infrastructure/zipball/4b2cd994b64121188edee6fc24d94860ab4990a3",
+                "reference": "4b2cd994b64121188edee6fc24d94860ab4990a3",
                 "shasum": ""
             },
             "require": {
-                "cavatappi/foundation": "^0.1.1",
+                "cavatappi/foundation": "^0.1.2",
                 "crell/tukio": "^2.0",
                 "php": "^8.4",
                 "phpseclib/phpseclib": "^3.0",
@@ -1239,7 +1240,7 @@
                 "psr/container-implementation": "^2.0"
             },
             "require-dev": {
-                "cavatappi/testing": "^0.1.1"
+                "cavatappi/testing": "^0.1.2"
             },
             "type": "library",
             "autoload": {
@@ -1260,26 +1261,26 @@
             "description": "Framework built around Domain Driven Design and Event Sourcing",
             "support": {
                 "issues": "https://github.com/cavatappiphp/infrastructure/issues",
-                "source": "https://github.com/cavatappiphp/infrastructure/tree/0.1.1"
+                "source": "https://github.com/cavatappiphp/infrastructure/tree/0.1.2"
             },
-            "time": "2025-10-26T19:27:35+00:00"
+            "time": "2025-12-20T21:43:14+00:00"
         },
         {
             "name": "cavatappi/testing",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cavatappiphp/testing.git",
-                "reference": "63b7b47c9df07e0ceb73272db4678d91ae16aeec"
+                "reference": "dc8c30a430c6d74fd2db1458dedcf24073134a82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cavatappiphp/testing/zipball/63b7b47c9df07e0ceb73272db4678d91ae16aeec",
-                "reference": "63b7b47c9df07e0ceb73272db4678d91ae16aeec",
+                "url": "https://api.github.com/repos/cavatappiphp/testing/zipball/dc8c30a430c6d74fd2db1458dedcf24073134a82",
+                "reference": "dc8c30a430c6d74fd2db1458dedcf24073134a82",
                 "shasum": ""
             },
             "require": {
-                "cavatappi/infrastructure": "^0.1.1",
+                "cavatappi/infrastructure": "^0.1.2",
                 "phpunit/phpunit": "^12"
             },
             "type": "library",
@@ -1301,9 +1302,9 @@
             "description": "Test utilities for Cavatappi projects",
             "support": {
                 "issues": "https://github.com/cavatappiphp/testing/issues",
-                "source": "https://github.com/cavatappiphp/testing/tree/0.1.1"
+                "source": "https://github.com/cavatappiphp/testing/tree/0.1.2"
             },
-            "time": "2025-10-26T19:27:36+00:00"
+            "time": "2025-12-20T21:43:07+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1662,16 +1663,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.47",
+            "version": "3.0.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d"
+                "reference": "64065a5679c50acb886e82c07aa139b0f757bb89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/9d6ca36a6c2dd434765b1071b2644a1c683b385d",
-                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/64065a5679c50acb886e82c07aa139b0f757bb89",
+                "reference": "64065a5679c50acb886e82c07aa139b0f757bb89",
                 "shasum": ""
             },
             "require": {
@@ -1752,7 +1753,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.47"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.48"
             },
             "funding": [
                 {
@@ -1768,7 +1769,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-10-06T01:07:24+00:00"
+            "time": "2025-12-15T11:51:42+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2106,16 +2107,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.3",
+            "version": "12.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e"
+                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6dc2e076d09960efbb0c1272aa9bc156fc80955e",
-                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
+                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
                 "shasum": ""
             },
             "require": {
@@ -2183,7 +2184,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.3"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.4"
             },
             "funding": [
                 {
@@ -2207,7 +2208,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-11T08:52:59+00:00"
+            "time": "2025-12-15T06:05:34+00:00"
         },
         {
             "name": "psr/http-server-handler",
@@ -3224,7 +3225,7 @@
             "version": "dev-refactor/cavatappi-foundation",
             "dist": {
                 "type": "path",
-                "url": "../product/core-test-utils",
+                "url": "../core-test-utils",
                 "reference": "3bc431d3bf7ab05865a114e3bc8ea3fabe74c03d"
             },
             "require": {

@@ -2,16 +2,11 @@
 
 namespace Smolblog\Core\Content\Services;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Fields\Markdown;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
-use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Types\Note\Note;
-use Smolblog\Core\Site\Entities\UserSitePermissions;
-use Smolblog\Foundation\Value\Fields\Markdown;
-use Smolblog\Test\ContentTestBase;
-use Smolblog\Test\TestDefaultContentType;
+use Smolblog\Core\Test\ContentTestBase;
 use stdClass;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -53,6 +48,7 @@ final class ContentDataServiceTest extends ContentTestBase {
 		$this->perms->method('canEditAllContent')->willReturn(false);
 		$userId = $this->randomId();
 		$content = new Content(
+			id: $this->randomId(),
 			body: new Note(new Markdown('This is a drill.')),
 			siteId: $this->randomId(),
 			userId: $userId,
@@ -61,13 +57,14 @@ final class ContentDataServiceTest extends ContentTestBase {
 		$this->contentRepo->method('contentById')->willReturn($content);
 
 		$result = $this->service->contentById(contentId: $content->id, userId: $userId);
-		$this->assertObjectEquals($content, $result ?? new stdClass());
+		$this->assertEquals($content, $result ?? new stdClass());
 	}
 
 	public function testContentByIdWillReturnAllContentIfPermissioned() {
 		$this->perms->method('canEditAllContent')->willReturn(true);
 		$userId = $this->randomId();
 		$content = new Content(
+			id: $this->randomId(),
 			body: new Note(new Markdown('This is a drill.')),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
@@ -76,13 +73,14 @@ final class ContentDataServiceTest extends ContentTestBase {
 		$this->contentRepo->method('contentById')->willReturn($content);
 
 		$result = $this->service->contentById(contentId: $content->id, userId: $userId);
-		$this->assertObjectEquals($content, $result ?? new stdClass());
+		$this->assertEquals($content, $result ?? new stdClass());
 	}
 
 	public function testContentByIdWillReturnNullIfNotPermissionedAndNotOwnContent() {
 		$this->perms->method('canEditAllContent')->willReturn(false);
 		$userId = $this->randomId();
 		$content = new Content(
+			id: $this->randomId(),
 			body: new Note(new Markdown('This is a drill.')),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),

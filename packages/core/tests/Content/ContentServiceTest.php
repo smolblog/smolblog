@@ -2,14 +2,11 @@
 
 namespace Smolblog\Core\Content\Services;
 
-require_once __DIR__ . '/_base.php';
-
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\TestDox;
 use Smolblog\Core\Content\Entities\Content;
-use Smolblog\Core\Site\Entities\UserSitePermissions;
-use Smolblog\Test\ContentTestBase;
-use Smolblog\Test\TestDefaultContentType;
+use Smolblog\Core\Test\ContentTestBase;
+use Smolblog\Core\Test\TestDefaultContentType;
 
 #[AllowMockObjectsWithoutExpectations]
 final class ContentServiceTest extends ContentTestBase {
@@ -37,6 +34,7 @@ final class ContentServiceTest extends ContentTestBase {
 	public function testEditContentMatchesId() {
 		$userId = $this->randomId();
 		$content = new Content(
+			id: $this->randomId(),
 			body: new TestDefaultContentType(title: 'One', body: 'Two'),
 			siteId: $this->randomId(),
 			userId: $userId,
@@ -52,6 +50,7 @@ final class ContentServiceTest extends ContentTestBase {
 	public function testEditContentHasPermission() {
 		$userId = $this->randomId();
 		$content = new Content(
+			id: $this->randomId(),
 			body: new TestDefaultContentType(title: 'One', body: 'Two'),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
@@ -67,6 +66,7 @@ final class ContentServiceTest extends ContentTestBase {
 	public function testEditContentLacksPermission() {
 		$userId = $this->randomId();
 		$content = new Content(
+			id: $this->randomId(),
 			body: new TestDefaultContentType(title: 'One', body: 'Two'),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),

@@ -2,13 +2,12 @@
 
 namespace Smolblog\Core\Content\Types\Picture;
 
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Fields\Markdown;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Foundation\Value\Fields\Url;
 use Smolblog\Core\Test\ContentTypeTest;
 
 #[AllowMockObjectsWithoutExpectations]

@@ -4,6 +4,7 @@ namespace Smolblog\Core\Content\Services;
 
 use Cavatappi\Foundation\Registry\Registry;
 use Cavatappi\Foundation\Registry\ServiceRegistryKit;
+use Cavatappi\Foundation\Service;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -11,7 +12,7 @@ use Psr\Container\ContainerInterface;
  *
  * I've avoided it as much as I can, but sometimes you just need to have things centrally registered.
  */
-class ContentTypeRegistry implements Registry {
+class ContentTypeRegistry implements Registry, Service {
 	use ServiceRegistryKit;
 
 	/**

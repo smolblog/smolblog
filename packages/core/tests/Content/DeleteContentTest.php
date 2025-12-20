@@ -2,21 +2,18 @@
 
 namespace Smolblog\Core\Content\Commands;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\ContentDeleted;
-use Smolblog\Core\Site\Entities\UserSitePermissions;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Test\ContentTestBase;
-use Smolblog\Test\TestCustomContentExtension;
-use Smolblog\Test\TestCustomContentType;
-use Smolblog\Test\TestDefaultContentExtension;
-use Smolblog\Test\TestDefaultContentType;
-use Smolblog\Test\TestEventsContentType;
-use Smolblog\Test\TestEventsContentTypeDeleted;
+use Smolblog\Core\Test\ContentTestBase;
+use Smolblog\Core\Test\TestCustomContentExtension;
+use Smolblog\Core\Test\TestCustomContentType;
+use Smolblog\Core\Test\TestDefaultContentExtension;
+use Smolblog\Core\Test\TestDefaultContentType;
+use Smolblog\Core\Test\TestEventsContentType;
+use Smolblog\Core\Test\TestEventsContentTypeDeleted;
 
 #[AllowMockObjectsWithoutExpectations]
 final class DeleteContentTest extends ContentTestBase {

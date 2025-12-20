@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Content\Extensions\Tags;
 
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentExtension;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
 use Smolblog\Core\Test\ContentExtensionTest;
 
 #[AllowMockObjectsWithoutExpectations]

@@ -2,9 +2,9 @@
 
 namespace Smolblog\Core\Content\Types\Article;
 
+use Cavatappi\Foundation\Fields\Markdown;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentType;
-use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Test\ContentTypeTest;
 
 #[AllowMockObjectsWithoutExpectations]

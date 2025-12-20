@@ -45,7 +45,7 @@ readonly class Picture extends ContentType implements Validated {
 
 	public function validate(): void
 	{
-		if (empty($pictures)) {
+		if (empty($this->pictures)) {
 			throw new InvalidValueProperties(
 				message: 'Pictures cannot be empty.',
 				field: 'pictures',
@@ -53,7 +53,7 @@ readonly class Picture extends ContentType implements Validated {
 		}
 
 		$rejects = array_filter(
-			$pictures,
+			$this->pictures,
 			fn($pic) => !(
 				is_a($pic, Media::class) &&
 				($pic->type === MediaType::Image || $pic->type === MediaType::Video)
