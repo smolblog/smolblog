@@ -37,11 +37,12 @@ readonly class SideloadMedia implements Command, Authenticated, Validated {
 		public readonly ?string $title = null,
 		public readonly ?UuidInterface $mediaId = null,
 	) {
+		$this->validate();
 	}
 
 	public function validate(): void
 	{
-		if ((isset($title) && empty($title)) || empty($accessibilityText)) {
+		if ((isset($this->title) && empty($this->title)) || empty($this->accessibilityText)) {
 			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
 		}
 	}

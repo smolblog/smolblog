@@ -40,6 +40,7 @@ readonly class Media implements Entity, Value, Validated {
 		public string $handler,
 		#[MapType('string')] public array $fileDetails,
 	) {
+		$this->validate();
 	}
 
 	public function validate(): void {

@@ -2,13 +2,11 @@
 
 namespace Smolblog\Core\Media\Commands;
 
-require_once __DIR__ . '/_base.php';
-
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Core\Media\Events\MediaDeleted;
-use Smolblog\Test\MediaTestBase;
+use Smolblog\Core\Test\MediaTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class DeleteMediaTest extends MediaTestBase {

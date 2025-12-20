@@ -1,7 +1,8 @@
 <?php
 
-namespace Smolblog\Test;
+namespace Smolblog\Core\Test;
 
+use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Media\Data\MediaRepo;

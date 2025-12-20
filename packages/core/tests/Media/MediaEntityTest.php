@@ -4,8 +4,8 @@ namespace Smolblog\Core\Media\Entities;
 
 use Smolblog\Core\Media\Events\MediaAttributesUpdated;
 use Smolblog\Core\Media\Events\MediaCreated;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Test\TestCase;
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Test\TestCase;
 
 final class MediaEntityTest extends TestCase {
 	public function testMediaRequiresANonemptyTitle() {

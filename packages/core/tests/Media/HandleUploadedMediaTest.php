@@ -2,16 +2,14 @@
 
 namespace Smolblog\Core\Media\Commands;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
+use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Core\Media\Events\MediaCreated;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Exceptions\InvalidValueProperties;
-use Smolblog\Test\MediaTestBase;
+use Smolblog\Core\Test\MediaTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class HandleUploadedMediaTest extends MediaTestBase {
@@ -52,7 +50,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			fileDetails: []
 		);
 		$this->expectEvent($event);
-		$this->assertObjectEquals($media, $event->getMediaObject());
+		$this->assertEquals($media, $event->getMediaObject());
 
 		$this->app->execute($command);
 	}
