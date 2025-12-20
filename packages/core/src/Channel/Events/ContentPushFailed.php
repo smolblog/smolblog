@@ -33,7 +33,7 @@ class ContentPushFailed implements DomainEvent {
 	 */
 	public function __construct(
 		public readonly UuidInterface $contentId,
-		UuidInterface $channelId,
+		public readonly UuidInterface $channelId,
 		public readonly string $message,
 		public readonly UuidInterface $userId,
 		public readonly UuidInterface $aggregateId,
@@ -43,7 +43,7 @@ class ContentPushFailed implements DomainEvent {
 		?UuidInterface $entityId = null,
 		#[MapType('string')] public array $details = [],
 	) {
-		$this->entityId = $entityId ?? ContentChannelEntry::buildId(contentId: $content->id, channelId: $channelId);
+		$this->entityId = $entityId ?? ContentChannelEntry::buildId(contentId: $this->contentId, channelId: $this->channelId);
 		$this->setIdAndTime($id, $timestamp);
 	}
 }

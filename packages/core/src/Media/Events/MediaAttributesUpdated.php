@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * Indicate that attributes have been changed on a piece of media.
  */
-readonly class MediaAttributesUpdated implements DomainEvent, Validated {
+class MediaAttributesUpdated implements DomainEvent, Validated {
 	use DomainEventKit;
 
 	/**
@@ -37,7 +37,7 @@ readonly class MediaAttributesUpdated implements DomainEvent, Validated {
 		public readonly ?string $accessibilityText = null,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
-		public readonly ?UuidInterface $processId,
+		public readonly ?UuidInterface $processId = null,
 	) {
 		$this->setIdAndTime($id, $timestamp);
 		$this->validate();

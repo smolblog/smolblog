@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * Indicate that attributes have been changed on a piece of media.
  */
-readonly class MediaDeleted implements DomainEvent {
+class MediaDeleted implements DomainEvent {
 	use DomainEventKit;
 
 	/**
@@ -28,7 +28,7 @@ readonly class MediaDeleted implements DomainEvent {
 		public readonly UuidInterface $aggregateId,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
-		public readonly ?UuidInterface $processId,
+		public readonly ?UuidInterface $processId = null,
 	) {
 		$this->setIdAndTime($id, $timestamp);
 	}

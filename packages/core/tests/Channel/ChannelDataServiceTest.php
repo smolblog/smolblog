@@ -2,14 +2,12 @@
 
 namespace Smolblog\Core\Channel\Services;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\ActionNotAuthorized;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
-use Smolblog\Foundation\Exceptions\ActionNotAuthorized;
-use Smolblog\Test\ChannelTestBase;
+use Smolblog\Core\Test\ChannelTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
-final class ChannelQueryServiceTest extends ChannelTestBase {
+final class ChannelDataServiceTest extends ChannelTestBase {
 	public function testItChecksPermissionsBeforeProvidingData() {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
@@ -17,19 +15,18 @@ final class ChannelQueryServiceTest extends ChannelTestBase {
 		$this->perms->expects($this->once())->method('canPushContent')->with($userId, $siteId)->willReturn(true);
 		$this->channels->expects($this->once())->method('channelsForSite')->with($siteId)->willReturn([]);
 
-		$result = $this->app->container->get(ChannelQueryService::class)->channelsForSite($siteId, $userId);
+		$result = $this->app->container->get(ChannelDataService::class)->channelsForSite($siteId, $userId);
 		$this->assertEquals([], $result);
 	}
 
-	public function testItThrowsExceptionIfUserCannotPushContent() {
-		$this->expectException(ActionNotAuthorized::class);
-
+	public function testItReturnsNothingIfUserCannotPushContent() {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
 		$this->perms->expects($this->once())->method('canPushContent')->with($userId, $siteId)->willReturn(false);
 		$this->channels->expects($this->never())->method('channelsForSite');
 
-		$this->app->container->get(ChannelQueryService::class)->channelsForSite($siteId, $userId);
+		$actual = $this->app->container->get(ChannelDataService::class)->channelsForSite($siteId, $userId);
+		$this->assertEmpty($actual);
 	}
 }

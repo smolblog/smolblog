@@ -29,7 +29,7 @@ class ChannelAddedToSite implements DomainEvent {
 		public readonly UuidInterface $aggregateId,
 		public readonly UuidInterface $entityId,
 		public readonly UuidInterface $userId,
-		public readonly ?UuidInterface $processId,
+		public readonly ?UuidInterface $processId = null,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 	) {

@@ -11,7 +11,7 @@ use Smolblog\Core\Site\Entities\SitePermissionLevel;
 /**
  * Indicates that user permissions have been set for a site.
  */
-readonly class UserSitePermissionsSet implements DomainEvent {
+class UserSitePermissionsSet implements DomainEvent {
 	use DomainEventKit;
 
 	/**

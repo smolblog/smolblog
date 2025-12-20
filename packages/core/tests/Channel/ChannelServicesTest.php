@@ -2,13 +2,11 @@
 
 namespace Smolblog\Core\Channel;
 
-require_once __DIR__ . '/_base.php';
-
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\ChannelHandlerConfiguration;
 use Smolblog\Core\Channel\Services\ChannelDataService;
 use Smolblog\Core\Channel\Services\ChannelHandlerRegistry;
-use Smolblog\Test\ChannelTestBase;
+use Smolblog\Core\Test\ChannelTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class ChannelServicesTest extends ChannelTestBase {

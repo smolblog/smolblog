@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8289d17019e1e9709a661d3765a9fdf2",
+    "content-hash": "eb8c7397ae5d6cf47d5c964ebfd333cb",
     "packages": [
         {
             "name": "brick/math",
@@ -317,6 +317,77 @@
                 }
             ],
             "time": "2024-04-08T01:06:46+00:00"
+        },
+        {
+            "name": "crell/serde",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Crell/Serde.git",
+                "reference": "aefce5d7030d6ea76f86b67f029c35fcd1774ad0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Crell/Serde/zipball/aefce5d7030d6ea76f86b67f029c35fcd1774ad0",
+                "reference": "aefce5d7030d6ea76f86b67f029c35fcd1774ad0",
+                "shasum": ""
+            },
+            "require": {
+                "crell/attributeutils": "~1.3",
+                "crell/fp": "~1.0",
+                "php": "~8.2"
+            },
+            "require-dev": {
+                "devium/toml": "^1.0.5",
+                "phpbench/phpbench": "^1.3.0",
+                "phpstan/phpstan": "^2.1.17",
+                "phpunit/phpunit": "~10.5",
+                "symfony/yaml": "^5.4"
+            },
+            "suggest": {
+                "devium/toml": "Enables serializing to/from TOML files.",
+                "symfony/yaml": "Enables serializing to/from YAML files."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Crell\\Serde\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "http://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A general purpose serialization and deserialization library",
+            "homepage": "https://github.com/Crell/Serde",
+            "keywords": [
+                "Serde",
+                "database"
+            ],
+            "support": {
+                "issues": "https://github.com/Crell/Serde/issues",
+                "source": "https://github.com/Crell/Serde/tree/1.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Crell",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-07-15T15:56:00+00:00"
         },
         {
             "name": "crell/tukio",

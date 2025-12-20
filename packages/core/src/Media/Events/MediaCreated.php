@@ -23,7 +23,7 @@ class MediaCreated implements DomainEvent, Validated {
 	 *
 	 * @var UuidInterface
 	 */
-	public UuidInterface $mediaUserId;
+	public readonly UuidInterface $mediaUserId;
 
 	/**
 	 * Create the event.
@@ -50,10 +50,11 @@ class MediaCreated implements DomainEvent, Validated {
 		public readonly string $accessibilityText,
 		public readonly MediaType $mediaType,
 		public readonly string $handler,
-		#[MapType('string')] public array $fileDetails,
+		#[MapType('string')] public readonly array $fileDetails,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 		?UuidInterface $mediaUserId = null,
+		public readonly ?UuidInterface $processId = null,
 	) {
 		$this->mediaUserId = $mediaUserId ?? $userId;
 		$this->setIdAndTime($id, $timestamp);

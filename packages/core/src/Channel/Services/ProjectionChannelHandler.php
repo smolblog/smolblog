@@ -61,7 +61,7 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 		$processId = UuidFactory::random();
 		$startEvent = new (static::PUSH_EVENT)(
 			content: $content,
-			channelId: $channel->getId(),
+			channelId: $channel->id,
 			userId: $userId,
 			aggregateId: $content->siteId,
 			processId: $processId,
@@ -97,7 +97,7 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 		} catch (ContentPushException $exc) {
 			$this->eventBus->dispatch(new ContentPushFailed(
 				contentId: $event->content->id,
-				channelId: $channel->getId(),
+				channelId: $channel->id,
 				processId: $processId,
 				message: $exc->getMessage(),
 				userId: $event->userId,
@@ -109,7 +109,7 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 
 		$this->eventBus->dispatch(new ContentPushSucceeded(
 			contentId: $event->content->id,
-			channelId: $channel->getId(),
+			channelId: $channel->id,
 			processId: $processId,
 			url: $result->url,
 			userId: $event->userId,

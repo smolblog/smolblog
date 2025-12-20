@@ -15,7 +15,7 @@ use Smolblog\Core\Content\Entities\ContentType;
  * Something in a piece of content has been changed. Updates the content to match all values here; any values omitted
  * should be considered removed.
  */
-readonly class ContentUpdated implements DomainEvent {
+class ContentUpdated implements DomainEvent {
 	use DomainEventKit;
 
 	/**

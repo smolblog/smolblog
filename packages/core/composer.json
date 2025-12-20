@@ -8,6 +8,11 @@
             "Smolblog\\Core\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Smolblog\\Core\\Test\\": "src-test/"
+        }
+    },
     "authors": [
         {
             "name": "Smolblog",
@@ -43,6 +48,7 @@
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "elephox/mimey": "^4.0",
-        "cavatappi/foundation": "^0.1"
+        "cavatappi/foundation": "^0.1",
+        "crell/serde": "^1.5"
     }
 }

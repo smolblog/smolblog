@@ -13,7 +13,7 @@ use Smolblog\Core\Channel\Entities\ContentChannelEntry;
 /**
  * Denotes that an asynchronous content push was successful and provides any applicable URL and/or details.
  */
-readonly class ContentPushSucceeded implements DomainEvent {
+class ContentPushSucceeded implements DomainEvent {
 	use DomainEventKit;
 
 	public readonly UuidInterface $entityId;
@@ -34,17 +34,20 @@ readonly class ContentPushSucceeded implements DomainEvent {
 	 */
 	public function __construct(
 		public readonly UuidInterface $contentId,
-		UuidInterface $channelId,
+		public readonly UuidInterface $channelId,
 		public readonly UuidInterface $userId,
 		public readonly UuidInterface $aggregateId,
 		public readonly UuidInterface $processId,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 		?UuidInterface $entityId = null,
-		public ?UriInterface $url = null,
+		public readonly ?UriInterface $url = null,
 		#[MapType('string')] public array $details = [],
 	) {
-		$this->entityId = $entityId ?? ContentChannelEntry::buildId(contentId: $content->id, channelId: $channelId);
+		$this->entityId = $entityId ?? ContentChannelEntry::buildId(
+			contentId: $this->contentId,
+			channelId: $this->channelId
+		);
 		$this->setIdAndTime($id, $timestamp);
 	}
 
