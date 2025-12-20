@@ -63,14 +63,14 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 	public function refresh(Connection $connection, UuidInterface $userId): void {
 		$connector = $this->handlers->get($connection->handler);
 
-		$currentChannels = $this->channels->channelsForConnection(connectionId: $connection->getId());
+		$currentChannels = $this->channels->channelsForConnection(connectionId: $connection->id);
 		$newChannels = $connector->getChannels(connection: $connection);
 
 		// $toDeactivate = array_diff($currentChannels, $newChannels);
 		$toDeactivate = \array_filter($currentChannels, fn($channel) => !\in_array($channel, $newChannels));
 		foreach ($toDeactivate as $deleteMe) {
 			$this->eventBus->dispatch(new ChannelDeleted(
-				entityId: $deleteMe->getId(),
+				entityId: $deleteMe->id,
 				userId: $userId,
 			));
 		}

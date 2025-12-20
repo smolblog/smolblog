@@ -65,7 +65,7 @@ class ConnectionRefresher implements CommandHandlerService {
 		$refreshed = $connector->refreshConnection($connection);
 		$this->eventBus->dispatch(new ConnectionRefreshed(
 			details: $refreshed->details,
-			entityId: $refreshed->getId(),
+			entityId: $refreshed->id,
 			userId: $userId,
 		));
 		return $refreshed;

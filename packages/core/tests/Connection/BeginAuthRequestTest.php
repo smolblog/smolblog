@@ -2,19 +2,17 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\ServiceNotRegistered;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\ConnectionInitData;
-use Smolblog\Foundation\Exceptions\ServiceNotRegistered;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\ConnectionTestBase;
+use Smolblog\Core\Test\ConnectionTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 class BeginAuthRequestTest extends ConnectionTestBase {
 	public function testHappyPath() {
-		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
+		$userId = UuidFactory::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$command = new BeginAuthRequest(
 			handler: 'testmock',
 			userId: $userId,
@@ -45,7 +43,7 @@ class BeginAuthRequestTest extends ConnectionTestBase {
 
 		$this->app->execute(new BeginAuthRequest(
 			handler: 'not registered',
-			userId: Identifier::fromString('d18ba802-2a29-4c3e-b4db-d3dd7e6962de'),
+			userId: UuidFactory::fromString('d18ba802-2a29-4c3e-b4db-d3dd7e6962de'),
 			callbackUrl: '//smol.blog/callback/testmock',
 		));
 	}

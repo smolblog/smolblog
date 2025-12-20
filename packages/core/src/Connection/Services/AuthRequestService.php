@@ -57,7 +57,6 @@ class AuthRequestService implements CommandHandlerService {
 			returnToUrl: $request->returnToUrl,
 		));
 
-		$request->setReturnValue($data->url);
 		return $data->url;
 	}
 
@@ -85,7 +84,7 @@ class AuthRequestService implements CommandHandlerService {
 			handlerKey: $connection->handlerKey,
 			displayName: $connection->displayName,
 			details: $connection->details,
-			entityId: $connection->getId(),
+			entityId: $connection->id,
 			userId: $info->userId
 		));
 

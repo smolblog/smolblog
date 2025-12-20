@@ -2,19 +2,17 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Events\ConnectionDeleted;
-use Smolblog\Foundation\Exceptions\CommandNotAuthorized;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\ConnectionTestBase;
+use Smolblog\Core\Test\ConnectionTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 class DeleteConnectionTest extends ConnectionTestBase {
 	public function testHappyPath() {
-		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
-		$connectionId = Identifier::fromString('267bef97-2fb9-4c76-b709-472578f46091');
+		$userId = UuidFactory::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
+		$connectionId = UuidFactory::fromString('267bef97-2fb9-4c76-b709-472578f46091');
 		$command = new DeleteConnection(userId: $userId, connectionId: $connectionId);
 
 		$this->connections->method('connectionBelongsToUser')->willReturn(true);

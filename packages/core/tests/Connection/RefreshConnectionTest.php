@@ -2,19 +2,17 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Events\ConnectionRefreshed;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\ConnectionTestBase;
+use Smolblog\Core\Test\ConnectionTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 class RefreshConnectionTest extends ConnectionTestBase {
 	public function testHappyPath() {
-		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
+		$userId = UuidFactory::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$connection = new Connection(
 			userId: $userId,
 			handler: 'testmock',
@@ -22,7 +20,7 @@ class RefreshConnectionTest extends ConnectionTestBase {
 			displayName: 'Test Account',
 			details: ['smol' => 'blog'],
 		);
-		$command = new RefreshConnection(userId: $userId, connectionId: $connection->getId());
+		$command = new RefreshConnection(userId: $userId, connectionId: $connection->id);
 
 		$this->connections->method('connectionById')->willReturn($connection);
 
@@ -34,7 +32,7 @@ class RefreshConnectionTest extends ConnectionTestBase {
 
 		$this->expectEvent(new ConnectionRefreshed(
 			details: ['shop' => 'small'],
-			entityId: $connection->getId(),
+			entityId: $connection->id,
 			userId: $userId,
 		));
 
@@ -49,7 +47,7 @@ class RefreshConnectionTest extends ConnectionTestBase {
 	}
 
 	public function testNoRefreshNeeded() {
-		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
+		$userId = UuidFactory::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$connection = new Connection(
 			userId: $userId,
 			handler: 'testmock',
@@ -57,7 +55,7 @@ class RefreshConnectionTest extends ConnectionTestBase {
 			displayName: 'Test Account',
 			details: ['smol' => 'blog'],
 		);
-		$command = new RefreshConnection(userId: $userId, connectionId: $connection->getId());
+		$command = new RefreshConnection(userId: $userId, connectionId: $connection->id);
 
 		$this->connections->method('connectionById')->willReturn($connection);
 

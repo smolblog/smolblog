@@ -1,7 +1,8 @@
 <?php
 
-namespace Smolblog\Test;
+namespace Smolblog\Core\Test;
 
+use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Channel\Data\ChannelRepo;
@@ -9,7 +10,6 @@ use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Services\ConnectionHandler;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
-use Smolblog\Test\ModelTest;
 
 /**
  * Provices a ConnectionHandler with key 'testmock'

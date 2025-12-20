@@ -2,21 +2,19 @@
 
 namespace Smolblog\Core\Connection\Commands;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\Exceptions\EntityNotFound;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Channel\Entities\BasicChannel;
 use Smolblog\Core\Channel\Events\ChannelDeleted;
 use Smolblog\Core\Channel\Events\ChannelSaved;
 use Smolblog\Core\Connection\Entities\Connection;
-use Smolblog\Foundation\Exceptions\EntityNotFound;
-use Smolblog\Foundation\Value\Fields\Identifier;
-use Smolblog\Test\ConnectionTestBase;
+use Smolblog\Core\Test\ConnectionTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 class RefreshChannelsTest extends ConnectionTestBase {
 	public function testHappyPathWithCommand() {
-		$userId = Identifier::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
+		$userId = UuidFactory::fromString('8de40399-240e-4e04-bfc5-a7a4bfeffdd5');
 		$connection = new Connection(
 			userId: $userId,
 			handler: 'testmock',
@@ -25,7 +23,7 @@ class RefreshChannelsTest extends ConnectionTestBase {
 			details: ['smol' => 'blog'],
 		);
 
-		$command = new RefreshChannels(userId: $userId, connectionId: $connection->getId());
+		$command = new RefreshChannels(userId: $userId, connectionId: $connection->id);
 
 		$this->connections->method('connectionById')->willReturn($connection);
 
@@ -34,7 +32,7 @@ class RefreshChannelsTest extends ConnectionTestBase {
 			handlerKey: 'old',
 			displayName: 'Old Channel',
 			userId: $userId,
-			connectionId: $connection->getId(),
+			connectionId: $connection->id,
 			details: ['authkey' => 'abc'],
 		);
 		$sameChannel = new BasicChannel(
@@ -42,7 +40,7 @@ class RefreshChannelsTest extends ConnectionTestBase {
 			handlerKey: 'same',
 			displayName: 'Same Channel',
 			userId: $userId,
-			connectionId: $connection->getId(),
+			connectionId: $connection->id,
 			details: ['authkey' => '123'],
 		);
 		$newChannel = new BasicChannel(
@@ -50,7 +48,7 @@ class RefreshChannelsTest extends ConnectionTestBase {
 			handlerKey: 'new',
 			displayName: 'New Channel',
 			userId: $userId,
-			connectionId: $connection->getId(),
+			connectionId: $connection->id,
 			details: ['authkey' => 'doremi'],
 		);
 
@@ -58,7 +56,7 @@ class RefreshChannelsTest extends ConnectionTestBase {
 		$this->handler->method('getChannels')->willReturn([$sameChannel, $newChannel]);
 
 		$this->expectEvents([
-			new ChannelDeleted(entityId: $oldChannel->getId(), userId: $userId),
+			new ChannelDeleted(entityId: $oldChannel->id, userId: $userId),
 			new ChannelSaved(channel: $sameChannel, userId: $userId),
 			new ChannelSaved(channel: $newChannel, userId: $userId),
 		]);

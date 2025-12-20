@@ -2,12 +2,10 @@
 
 namespace Smolblog\Core\Connection;
 
-require_once __DIR__ . '/_base.php';
-
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Connection\Services\ConnectionDataService;
 use Smolblog\Core\Connection\Services\ConnectionHandlerRegistry;
-use Smolblog\Test\ConnectionTestBase;
+use Smolblog\Core\Test\ConnectionTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class ConnectionServicesTest extends ConnectionTestBase {
