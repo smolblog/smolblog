@@ -2,13 +2,13 @@
 
 namespace Smolblog\CoreDataSql;
 
+use Cavatappi\Foundation\DomainEvent\EventListenerService;
+use Cavatappi\Foundation\DomainEvent\ProjectionListener;
 use Doctrine\DBAL\Schema\Schema;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\{ChannelAddedToSite, ChannelDeleted, ChannelSaved};
-use Smolblog\Foundation\Service\Event\EventListenerService;
-use Smolblog\Foundation\Service\Event\ProjectionListener;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Store and retrieve Content objects.
@@ -57,10 +57,10 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	/**
 	 * Get a Channel.
 	 *
-	 * @param Identifier $channelId ID of the Channel.
+	 * @param UuidInterface $channelId ID of the Channel.
 	 * @return Channel|null
 	 */
-	public function channelById(Identifier $channelId): ?Channel {
+	public function channelById(UuidInterface $channelId): ?Channel {
 		$query = $this->db->createQueryBuilder();
 		$query
 			->select('channel_obj')
@@ -81,10 +81,10 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	/**
 	 * Get all Channels linked to a particular Connection.
 	 *
-	 * @param Identifier $connectionId ID of Connection in question.
+	 * @param UuidInterface $connectionId ID of Connection in question.
 	 * @return Channel[]
 	 */
-	public function channelsForConnection(Identifier $connectionId): array {
+	public function channelsForConnection(UuidInterface $connectionId): array {
 		$query = $this->db->createQueryBuilder();
 		$query
 			->select('channel_obj')
@@ -102,10 +102,10 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	/**
 	 * Get all Channels linked to a Site.
 	 *
-	 * @param Identifier $siteId ID of Site to check.
+	 * @param UuidInterface $siteId ID of Site to check.
 	 * @return Channel[]
 	 */
-	public function channelsForSite(Identifier $siteId): array {
+	public function channelsForSite(UuidInterface $siteId): array {
 		$query = $this->db->createQueryBuilder();
 		$query->
 			select('c.channel_obj')->
@@ -124,11 +124,11 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	/**
 	 * Check if a given site can push to a given channel.
 	 *
-	 * @param Identifier $siteId    ID of site in question.
-	 * @param Identifier $channelId ID of channel in question.
+	 * @param UuidInterface $siteId    ID of site in question.
+	 * @param UuidInterface $channelId ID of channel in question.
 	 * @return boolean
 	 */
-	public function siteCanUseChannel(Identifier $siteId, Identifier $channelId): bool {
+	public function siteCanUseChannel(UuidInterface $siteId, UuidInterface $channelId): bool {
 		$query = $this->db->createQueryBuilder();
 		$query->select('1')
 			->from('channels_sites')
@@ -180,8 +180,8 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	public function onChannelAddedToSite(ChannelAddedToSite $event): void {
 		if (
 			$this->siteCanUseChannel(
-				siteId: $event->aggregateId ?? Identifier::nil(),
-				channelId: $event->entityId ?? Identifier::nil()
+				siteId: $event->aggregateId ?? UuidInterface::nil(),
+				channelId: $event->entityId ?? UuidInterface::nil()
 			)
 		) {
 			return;

@@ -2,9 +2,9 @@
 
 namespace Smolblog\CoreDataSql\Test;
 
+use Cavatappi\Test\AppTest;
 use Smolblog\CoreDataSql\DatabaseEnvironment;
 use Smolblog\CoreDataSql\SchemaRegistry;
-use Smolblog\Test\AppTest;
 
 final class TestSchemaRegistry extends SchemaRegistry {
 	public function testGetSchemaVersion(): ?string { return $this->getSchemaVersion(); }
