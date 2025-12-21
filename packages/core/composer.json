@@ -23,12 +23,6 @@
             "email": "me@eph.me"
         }
     ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../core-test-utils"
-        }
-    ],
     "require-dev": {
         "cavatappi/testing": "^0.1",
         "smolblog/core-test-utils": "@dev"
@@ -48,7 +42,6 @@
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "elephox/mimey": "^4.0",
-        "cavatappi/foundation": "^0.1",
-        "crell/serde": "^1.5"
+        "cavatappi/foundation": "^0.1"
     }
 }

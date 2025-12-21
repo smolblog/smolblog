@@ -8,6 +8,11 @@
             "Smolblog\\CoreDataSql\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Smolblog\\CoreDataSql\\Test\\": "src-test/"
+        }
+    },
     "authors": [
         {
             "name": "Smolblog",

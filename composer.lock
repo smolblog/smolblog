@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5811004c37dda787df354f78ad15c2e",
+    "content-hash": "fcd686c0a94f512192a8e3c4f938a0de",
     "packages": [
         {
             "name": "brick/math",
@@ -68,19 +68,20 @@
         },
         {
             "name": "cavatappi/foundation",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cavatappiphp/foundation.git",
-                "reference": "a8354eb27512d655b6d180b9f36f6e2d85ea07bc"
+                "reference": "3747de8705a56895595c053ae1a356f0d9a86790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cavatappiphp/foundation/zipball/a8354eb27512d655b6d180b9f36f6e2d85ea07bc",
-                "reference": "a8354eb27512d655b6d180b9f36f6e2d85ea07bc",
+                "url": "https://api.github.com/repos/cavatappiphp/foundation/zipball/3747de8705a56895595c053ae1a356f0d9a86790",
+                "reference": "3747de8705a56895595c053ae1a356f0d9a86790",
                 "shasum": ""
             },
             "require": {
+                "crell/serde": "^1.5",
                 "crell/tukio": "^2.0",
                 "league/construct-finder": "^1.5",
                 "nyholm/psr7": "^1.8",
@@ -90,7 +91,7 @@
                 "ramsey/uuid": "^4.9"
             },
             "require-dev": {
-                "cavatappi/testing": "^0.1.1"
+                "cavatappi/testing": "^0.1.2"
             },
             "type": "library",
             "autoload": {
@@ -111,26 +112,26 @@
             "description": "A PHP framework for domain-driven design, event sourcing, and SOLID architecture.",
             "support": {
                 "issues": "https://github.com/cavatappiphp/foundation/issues",
-                "source": "https://github.com/cavatappiphp/foundation/tree/0.1.1"
+                "source": "https://github.com/cavatappiphp/foundation/tree/0.1.2"
             },
-            "time": "2025-10-26T19:27:33+00:00"
+            "time": "2025-12-20T21:43:08+00:00"
         },
         {
             "name": "cavatappi/infrastructure",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cavatappiphp/infrastructure.git",
-                "reference": "8050004caeee388e51e5b8f99a713a3106cb4282"
+                "reference": "4b2cd994b64121188edee6fc24d94860ab4990a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cavatappiphp/infrastructure/zipball/8050004caeee388e51e5b8f99a713a3106cb4282",
-                "reference": "8050004caeee388e51e5b8f99a713a3106cb4282",
+                "url": "https://api.github.com/repos/cavatappiphp/infrastructure/zipball/4b2cd994b64121188edee6fc24d94860ab4990a3",
+                "reference": "4b2cd994b64121188edee6fc24d94860ab4990a3",
                 "shasum": ""
             },
             "require": {
-                "cavatappi/foundation": "^0.1.1",
+                "cavatappi/foundation": "^0.1.2",
                 "crell/tukio": "^2.0",
                 "php": "^8.4",
                 "phpseclib/phpseclib": "^3.0",
@@ -144,7 +145,7 @@
                 "psr/container-implementation": "^2.0"
             },
             "require-dev": {
-                "cavatappi/testing": "^0.1.1"
+                "cavatappi/testing": "^0.1.2"
             },
             "type": "library",
             "autoload": {
@@ -165,26 +166,26 @@
             "description": "Framework built around Domain Driven Design and Event Sourcing",
             "support": {
                 "issues": "https://github.com/cavatappiphp/infrastructure/issues",
-                "source": "https://github.com/cavatappiphp/infrastructure/tree/0.1.1"
+                "source": "https://github.com/cavatappiphp/infrastructure/tree/0.1.2"
             },
-            "time": "2025-10-26T19:27:35+00:00"
+            "time": "2025-12-20T21:43:14+00:00"
         },
         {
             "name": "cavatappi/testing",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cavatappiphp/testing.git",
-                "reference": "63b7b47c9df07e0ceb73272db4678d91ae16aeec"
+                "reference": "dc8c30a430c6d74fd2db1458dedcf24073134a82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cavatappiphp/testing/zipball/63b7b47c9df07e0ceb73272db4678d91ae16aeec",
-                "reference": "63b7b47c9df07e0ceb73272db4678d91ae16aeec",
+                "url": "https://api.github.com/repos/cavatappiphp/testing/zipball/dc8c30a430c6d74fd2db1458dedcf24073134a82",
+                "reference": "dc8c30a430c6d74fd2db1458dedcf24073134a82",
                 "shasum": ""
             },
             "require": {
-                "cavatappi/infrastructure": "^0.1.1",
+                "cavatappi/infrastructure": "^0.1.2",
                 "phpunit/phpunit": "^12"
             },
             "type": "library",
@@ -206,73 +207,9 @@
             "description": "Test utilities for Cavatappi projects",
             "support": {
                 "issues": "https://github.com/cavatappiphp/testing/issues",
-                "source": "https://github.com/cavatappiphp/testing/tree/0.1.1"
+                "source": "https://github.com/cavatappiphp/testing/tree/0.1.2"
             },
-            "time": "2025-10-26T19:27:36+00:00"
-        },
-        {
-            "name": "cebe/markdown",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cebe/markdown.git",
-                "reference": "9bac5e971dd391e2802dca5400bbeacbaea9eb86"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cebe/markdown/zipball/9bac5e971dd391e2802dca5400bbeacbaea9eb86",
-                "reference": "9bac5e971dd391e2802dca5400bbeacbaea9eb86",
-                "shasum": ""
-            },
-            "require": {
-                "lib-pcre": "*",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "cebe/indent": "*",
-                "facebook/xhprof": "*@dev",
-                "phpunit/phpunit": "4.1.*"
-            },
-            "bin": [
-                "bin/markdown"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "cebe\\markdown\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Carsten Brandt",
-                    "email": "mail@cebe.cc",
-                    "homepage": "http://cebe.cc/",
-                    "role": "Creator"
-                }
-            ],
-            "description": "A super fast, highly extensible markdown parser for PHP",
-            "homepage": "https://github.com/cebe/markdown#readme",
-            "keywords": [
-                "extensible",
-                "fast",
-                "gfm",
-                "markdown",
-                "markdown-extra"
-            ],
-            "support": {
-                "issues": "https://github.com/cebe/markdown/issues",
-                "source": "https://github.com/cebe/markdown"
-            },
-            "time": "2018-03-26T11:24:36+00:00"
+            "time": "2025-12-20T21:43:07+00:00"
         },
         {
             "name": "crell/attributeutils",
@@ -476,6 +413,77 @@
                 }
             ],
             "time": "2024-04-08T01:06:46+00:00"
+        },
+        {
+            "name": "crell/serde",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Crell/Serde.git",
+                "reference": "aefce5d7030d6ea76f86b67f029c35fcd1774ad0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Crell/Serde/zipball/aefce5d7030d6ea76f86b67f029c35fcd1774ad0",
+                "reference": "aefce5d7030d6ea76f86b67f029c35fcd1774ad0",
+                "shasum": ""
+            },
+            "require": {
+                "crell/attributeutils": "~1.3",
+                "crell/fp": "~1.0",
+                "php": "~8.2"
+            },
+            "require-dev": {
+                "devium/toml": "^1.0.5",
+                "phpbench/phpbench": "^1.3.0",
+                "phpstan/phpstan": "^2.1.17",
+                "phpunit/phpunit": "~10.5",
+                "symfony/yaml": "^5.4"
+            },
+            "suggest": {
+                "devium/toml": "Enables serializing to/from TOML files.",
+                "symfony/yaml": "Enables serializing to/from YAML files."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Crell\\Serde\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "http://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A general purpose serialization and deserialization library",
+            "homepage": "https://github.com/Crell/Serde",
+            "keywords": [
+                "Serde",
+                "database"
+            ],
+            "support": {
+                "issues": "https://github.com/Crell/Serde/issues",
+                "source": "https://github.com/Crell/Serde/tree/1.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Crell",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-07-15T15:56:00+00:00"
         },
         {
             "name": "crell/tukio",
@@ -812,122 +820,6 @@
                 "source": "https://github.com/php-fig/event-dispatcher-util/tree/1.3.1"
             },
             "time": "2022-03-30T18:25:35+00:00"
-        },
-        {
-            "name": "guzzlehttp/psr7",
-            "version": "2.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/psr7.git",
-                "reference": "21dc724a0583619cd1652f673303492272778051"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/21dc724a0583619cd1652f673303492272778051",
-                "reference": "21dc724a0583619cd1652f673303492272778051",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2.5 || ^8.0",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.1 || ^2.0",
-                "ralouphie/getallheaders": "^3.0"
-            },
-            "provide": {
-                "psr/http-factory-implementation": "1.0",
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.2",
-                "http-interop/http-factory-tests": "0.9.0",
-                "phpunit/phpunit": "^8.5.44 || ^9.6.25"
-            },
-            "suggest": {
-                "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
-            },
-            "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": true,
-                    "forward-command": false
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Psr7\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Graham Campbell",
-                    "email": "hello@gjcampbell.co.uk",
-                    "homepage": "https://github.com/GrahamCampbell"
-                },
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "George Mponos",
-                    "email": "gmponos@gmail.com",
-                    "homepage": "https://github.com/gmponos"
-                },
-                {
-                    "name": "Tobias Nyholm",
-                    "email": "tobias.nyholm@gmail.com",
-                    "homepage": "https://github.com/Nyholm"
-                },
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com",
-                    "homepage": "https://github.com/sagikazarmark"
-                },
-                {
-                    "name": "Tobias Schultze",
-                    "email": "webmaster@tubo-world.de",
-                    "homepage": "https://github.com/Tobion"
-                },
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com",
-                    "homepage": "https://sagikazarmark.hu"
-                }
-            ],
-            "description": "PSR-7 message implementation that also provides common utility methods",
-            "keywords": [
-                "http",
-                "message",
-                "psr-7",
-                "request",
-                "response",
-                "stream",
-                "uri",
-                "url"
-            ],
-            "support": {
-                "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.8.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/Nyholm",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/guzzlehttp/psr7",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2025-08-23T21:21:41+00:00"
         },
         {
             "name": "jetbrains/phpstorm-attributes",
@@ -1456,16 +1348,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.47",
+            "version": "3.0.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d"
+                "reference": "64065a5679c50acb886e82c07aa139b0f757bb89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/9d6ca36a6c2dd434765b1071b2644a1c683b385d",
-                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/64065a5679c50acb886e82c07aa139b0f757bb89",
+                "reference": "64065a5679c50acb886e82c07aa139b0f757bb89",
                 "shasum": ""
             },
             "require": {
@@ -1546,7 +1438,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.47"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.48"
             },
             "funding": [
                 {
@@ -1562,7 +1454,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-10-06T01:07:24+00:00"
+            "time": "2025-12-15T11:51:42+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1900,16 +1792,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.3",
+            "version": "12.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e"
+                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6dc2e076d09960efbb0c1272aa9bc156fc80955e",
-                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
+                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
                 "shasum": ""
             },
             "require": {
@@ -1977,7 +1869,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.3"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.4"
             },
             "funding": [
                 {
@@ -2001,7 +1893,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-11T08:52:59+00:00"
+            "time": "2025-12-15T06:05:34+00:00"
         },
         {
             "name": "psr/cache",
@@ -2264,16 +2156,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.1",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba"
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
                 "shasum": ""
             },
             "require": {
@@ -2282,7 +2174,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -2297,7 +2189,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for HTTP messages",
@@ -2311,9 +2203,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-message/tree/1.1"
+                "source": "https://github.com/php-fig/http-message/tree/2.0"
             },
-            "time": "2023-04-04T09:50:52+00:00"
+            "time": "2023-04-04T09:54:51+00:00"
         },
         {
             "name": "psr/http-server-handler",
@@ -2479,50 +2371,6 @@
             "time": "2024-09-11T13:17:53+00:00"
         },
         {
-            "name": "ralouphie/getallheaders",
-            "version": "3.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ralouphie/getallheaders.git",
-                "reference": "120b605dfeb996808c31b6477290a714d356e822"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/120b605dfeb996808c31b6477290a714d356e822",
-                "reference": "120b605dfeb996808c31b6477290a714d356e822",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpunit": "^5 || ^6.5"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/getallheaders.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ralph Khattar",
-                    "email": "ralph.khattar@gmail.com"
-                }
-            ],
-            "description": "A polyfill for getallheaders.",
-            "support": {
-                "issues": "https://github.com/ralouphie/getallheaders/issues",
-                "source": "https://github.com/ralouphie/getallheaders/tree/develop"
-            },
-            "time": "2019-03-08T08:55:37+00:00"
-        },
-        {
             "name": "ramsey/collection",
             "version": "2.1.1",
             "source": {
@@ -2600,20 +2448,20 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.9.1",
+            "version": "4.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "81f941f6f729b1e3ceea61d9d014f8b6c6800440"
+                "reference": "8429c78ca35a09f27565311b98101e2826affde0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/81f941f6f729b1e3ceea61d9d014f8b6c6800440",
-                "reference": "81f941f6f729b1e3ceea61d9d014f8b6c6800440",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/8429c78ca35a09f27565311b98101e2826affde0",
+                "reference": "8429c78ca35a09f27565311b98101e2826affde0",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
+                "brick/math": "^0.8.16 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
                 "php": "^8.0",
                 "ramsey/collection": "^1.2 || ^2.0"
             },
@@ -2672,9 +2520,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.9.1"
+                "source": "https://github.com/ramsey/uuid/tree/4.9.2"
             },
-            "time": "2025-09-04T20:59:21+00:00"
+            "time": "2025-12-14T04:43:48+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -3572,85 +3420,6 @@
                 }
             ],
             "time": "2025-02-07T05:00:38+00:00"
-        },
-        {
-            "name": "squizlabs/php_codesniffer",
-            "version": "3.13.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "0ca86845ce43291e8f5692c7356fccf3bcf02bf4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/0ca86845ce43291e8f5692c7356fccf3bcf02bf4",
-                "reference": "0ca86845ce43291e8f5692c7356fccf3bcf02bf4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-simplexml": "*",
-                "ext-tokenizer": "*",
-                "ext-xmlwriter": "*",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4"
-            },
-            "bin": [
-                "bin/phpcbf",
-                "bin/phpcs"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Greg Sherwood",
-                    "role": "Former lead"
-                },
-                {
-                    "name": "Juliette Reinders Folmer",
-                    "role": "Current lead"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/PHPCSStandards/PHP_CodeSniffer/graphs/contributors"
-                }
-            ],
-            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
-            "homepage": "https://github.com/PHPCSStandards/PHP_CodeSniffer",
-            "keywords": [
-                "phpcs",
-                "standards",
-                "static analysis"
-            ],
-            "support": {
-                "issues": "https://github.com/PHPCSStandards/PHP_CodeSniffer/issues",
-                "security": "https://github.com/PHPCSStandards/PHP_CodeSniffer/security/policy",
-                "source": "https://github.com/PHPCSStandards/PHP_CodeSniffer",
-                "wiki": "https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/PHPCSStandards",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/jrfnl",
-                    "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/php_codesniffer",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://thanks.dev/u/gh/phpcsstandards",
-                    "type": "thanks_dev"
-                }
-            ],
-            "time": "2025-11-04T16:30:35+00:00"
         },
         {
             "name": "staabm/side-effects-detector",

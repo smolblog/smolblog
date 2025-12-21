@@ -16,8 +16,7 @@ return static function (MBConfig $mbConfig): void {
 	$mbConfig->defaultBranch('main');
 
 	$mbConfig->packageDirectories([
-		__DIR__ . '/packages/framework',
-		__DIR__ . '/packages/product',
+		__DIR__ . '/packages',
 	]);
 
 	$mbConfig->dataToAppend([
