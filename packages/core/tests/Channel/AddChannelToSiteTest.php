@@ -23,7 +23,7 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		);
 
 		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $channel->id)->
+			with(channelId: $this->uuidEquals($channel->id))->
 			willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
@@ -53,7 +53,7 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		);
 
 		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $channel->id)->
+			with(channelId: $this->uuidEquals($channel->id))->
 			willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
@@ -84,7 +84,7 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		);
 
 		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $channel->id)->
+			with(channelId: $this->uuidEquals($channel->id))->
 			willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
@@ -112,7 +112,7 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 		);
 
 		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $channel->id)->
+			with(channelId: $this->uuidEquals($channel->id))->
 			willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(false);
 

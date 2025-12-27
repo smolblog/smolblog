@@ -44,9 +44,9 @@ final class PushContentToChannelTest extends ChannelTestBase {
 		$this->perms->method('canPushContent')->willReturn(true);
 
 		$this->handlerMock->expects($this->once())->method('pushContentToChannel')->with(
-			content: $content,
-			channel: $channel,
-			userId: $content->userId,
+			content: $this->objectEquals($content, 'objectEquals'),
+			channel: $this->objectEquals($channel, 'objectEquals'),
+			userId: $this->uuidEquals($content->userId),
 		);
 
 		$this->app->execute($command);

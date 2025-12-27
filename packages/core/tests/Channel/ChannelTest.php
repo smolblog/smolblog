@@ -33,6 +33,6 @@ final class ChannelTest extends TestCase {
 			details: $entry->details,
 		);
 
-		$this->assertEquals($entry, $event->getEntryObject());
+		$this->assertObjectEquals($entry, $event->getEntryObject(), 'objectEquals');
 	}
 }

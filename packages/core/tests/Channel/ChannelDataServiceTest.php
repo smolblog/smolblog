@@ -12,8 +12,8 @@ final class ChannelDataServiceTest extends ChannelTestBase {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->perms->expects($this->once())->method('canPushContent')->with($userId, $siteId)->willReturn(true);
-		$this->channels->expects($this->once())->method('channelsForSite')->with($siteId)->willReturn([]);
+		$this->perms->expects($this->once())->method('canPushContent')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(true);
+		$this->channels->expects($this->once())->method('channelsForSite')->with($this->uuidEquals($siteId))->willReturn([]);
 
 		$result = $this->app->container->get(ChannelDataService::class)->channelsForSite($siteId, $userId);
 		$this->assertEquals([], $result);
@@ -23,7 +23,7 @@ final class ChannelDataServiceTest extends ChannelTestBase {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->perms->expects($this->once())->method('canPushContent')->with($userId, $siteId)->willReturn(false);
+		$this->perms->expects($this->once())->method('canPushContent')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(false);
 		$this->channels->expects($this->never())->method('channelsForSite');
 
 		$actual = $this->app->container->get(ChannelDataService::class)->channelsForSite($siteId, $userId);

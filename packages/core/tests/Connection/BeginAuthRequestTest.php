@@ -26,13 +26,14 @@ class BeginAuthRequestTest extends ConnectionTestBase {
 			info: ['smol' => 'blog'],
 		));
 
-		$this->stateRepo->expects($this->once())->method('saveAuthRequestState')->with(new AuthRequestState(
+		$this->stateRepo->expects($this->once())->method('saveAuthRequestState')->with(
+			$this->objectEquals(new AuthRequestState(
 			key: '0ab41adf-ef37-4b51-bee3-d38bfb1b0b7a',
 			userId: $userId,
 			handler: 'testmock',
 			info: ['smol' => 'blog'],
 			returnToUrl: '//dashboard.smolblog.com/account/connections',
-		));
+		), 'objectEquals'));
 
 		$redirectUrl = $this->app->execute($command);
 		$this->assertEquals('//smol.blog/callback/testmock', $redirectUrl);

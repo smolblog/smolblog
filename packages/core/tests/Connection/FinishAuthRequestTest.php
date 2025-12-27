@@ -39,7 +39,7 @@ class FinishAuthRequestTest extends ConnectionTestBase {
 		$this->stateRepo->method('getAuthRequestState')->willReturn($state);
 		$this->handler->expects($this->once())->method('createConnection')->with(
 			code: '2d6532ef-0def-44fa-b573-5f7ec226934d',
-			info: $state,
+			info: $this->objectEquals($state, 'objectEquals'),
 		)->willReturn($connection);
 
 		$event = new ConnectionEstablished(
@@ -51,7 +51,7 @@ class FinishAuthRequestTest extends ConnectionTestBase {
 			entityId: $connection->id,
 		);
 
-		$this->assertEquals($connection, $event->getConnectionObject());
+		$this->assertObjectEquals($connection, $event->getConnectionObject(), 'objectEquals');
 		$this->expectEvent($event);
 
 		$redirectUrl = $this->app->execute($command);

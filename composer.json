@@ -13,9 +13,14 @@
             "email": "me@eph.me"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/cavatappiphp/cavatappi"
+        }
+    ],
     "require": {
-        "cavatappi/foundation": "^0.1",
-        "cavatappi/testing": "^0.1",
+        "cavatappi/cavatappi": "dev-feature/serialization",
         "doctrine/dbal": "^4.2",
         "elephox/mimey": "^4.0",
         "php": "^8.4",

@@ -38,7 +38,7 @@ class ContentChannelEntry implements Value, Entity {
 	 *
 	 * @param UuidInterface $contentId ID of the content.
 	 * @param UuidInterface $channelId ID of the channel.
-	 * @param Url|null   $url       Optional URL of the content on the channel.
+	 * @param UriInterface|null   $url       Optional URL of the content on the channel.
 	 * @param array      $details   Channel-specific details.
 	 */
 	public function __construct(
