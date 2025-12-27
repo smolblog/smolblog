@@ -32,7 +32,10 @@ final class DeleteMediaTest extends MediaTestBase {
 
 		$this->mockHandler->expects($this->once())
 			->method('deleteFile')
-			->with($command, $media);
+			->with(
+				$this->valueObjectEquals($command),
+				$this->valueObjectEquals($media),
+			);
 
 		$this->expectEvent(new MediaDeleted(
 			entityId: $mediaId,

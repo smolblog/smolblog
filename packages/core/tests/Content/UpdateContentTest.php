@@ -42,7 +42,7 @@ final class UpdateContentTest extends ContentTestBase {
 		));
 
 		$this->customExtensionService->expects($this->once())->method('update')->with(
-			command: $command,
+			command: $this->valueObjectEquals($command),
 		);
 		$event = new ContentUpdated(
 			body: $command->body,
@@ -92,7 +92,7 @@ final class UpdateContentTest extends ContentTestBase {
 		));
 
 		$this->customExtensionService->expects($this->once())->method('update')->with(
-			command: $command,
+			command: $this->valueObjectEquals($command),
 		);
 		$this->expectEvent(new TestEventsContentTypeUpdated(
 			body: $command->body,
@@ -131,10 +131,10 @@ final class UpdateContentTest extends ContentTestBase {
 		));
 
 		$this->customExtensionService->expects($this->once())->method('update')->with(
-			command: $command,
+			command: $this->valueObjectEquals($command),
 		);
 		$this->customContentService->expects($this->once())->method('update')->with(
-			command: $command,
+			command: $this->valueObjectEquals($command),
 		);
 
 		$this->app->execute($command);

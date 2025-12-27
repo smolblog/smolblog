@@ -33,7 +33,7 @@ final class SideloadMediaTest extends MediaTestBase {
 
 		$this->mockHandler->expects($this->once())
 			->method('sideloadFile')
-			->with($command, $command->mediaId)
+			->with($this->valueObjectEquals($command), $this->uuidEquals($mediaId))
 			->willReturn($media);
 		$this->perms->method('canUploadMedia')->willReturn(true);
 

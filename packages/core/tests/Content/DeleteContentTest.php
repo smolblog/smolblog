@@ -39,8 +39,8 @@ final class DeleteContentTest extends ContentTestBase {
 		$this->contentRepo->method('contentById')->willReturn($content);
 
 		$this->customExtensionService->expects($this->once())->method('delete')->with(
-			command: $command,
-			content: $content
+			command: $this->valueObjectEquals($command),
+			content: $this->valueObjectEquals($content)
 		);
 		$this->expectEvent(new ContentDeleted(
 			aggregateId: $content->siteId,
@@ -73,8 +73,8 @@ final class DeleteContentTest extends ContentTestBase {
 		$this->contentRepo->method('contentById')->willReturn($content);
 
 		$this->customExtensionService->expects($this->once())->method('delete')->with(
-			command: $command,
-			content: $content
+			command: $this->valueObjectEquals($command),
+			content: $this->valueObjectEquals($content)
 		);
 		$this->expectEvent(new TestEventsContentTypeDeleted(
 			aggregateId: $content->siteId,
@@ -107,12 +107,12 @@ final class DeleteContentTest extends ContentTestBase {
 		$this->contentRepo->method('contentById')->willReturn($content);
 
 		$this->customExtensionService->expects($this->once())->method('delete')->with(
-			command: $command,
-			content: $content
+			command: $this->valueObjectEquals($command),
+			content: $this->valueObjectEquals($content)
 		);
 		$this->customContentService->expects($this->once())->method('delete')->with(
-			command: $command,
-			content: $content
+			command: $this->valueObjectEquals($command),
+			content: $this->valueObjectEquals($content)
 		);
 
 		$this->app->execute($command);

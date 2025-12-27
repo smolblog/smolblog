@@ -39,7 +39,7 @@ class FinishAuthRequestTest extends ConnectionTestBase {
 		$this->stateRepo->method('getAuthRequestState')->willReturn($state);
 		$this->handler->expects($this->once())->method('createConnection')->with(
 			code: '2d6532ef-0def-44fa-b573-5f7ec226934d',
-			info: $this->objectEquals($state, 'objectEquals'),
+			info: $this->valueObjectEquals($state),
 		)->willReturn($connection);
 
 		$event = new ConnectionEstablished(

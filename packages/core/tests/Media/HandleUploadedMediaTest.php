@@ -35,7 +35,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 
 		$this->mockHandler->expects($this->once())
 			->method('handleUploadedFile')
-			->with($command, $command->mediaId)
+			->with($this->valueObjectEquals($command), $this->uuidEquals($mediaId))
 			->willReturn($media);
 		$this->perms->method('canUploadMedia')->willReturn(true);
 

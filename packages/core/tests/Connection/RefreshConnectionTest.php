@@ -27,7 +27,7 @@ class RefreshConnectionTest extends ConnectionTestBase {
 		$this->handler->method('connectionNeedsRefresh')->willReturn(true);
 		$this->handler->expects($this->once())
 			->method('refreshConnection')
-			->with(connection: $connection)
+			->with(connection: $this->valueObjectEquals($connection))
 			->willReturn($connection->with(details: ['shop' => 'small']));
 
 		$this->expectEvent(new ConnectionRefreshed(

@@ -26,7 +26,7 @@ final class ContentDataServiceTest extends ContentTestBase {
 		$siteId = $this->randomId();
 
 		$this->contentRepo->expects($this->once())->method('contentList')->with(
-			siteId: $siteId, userId: $userId
+			siteId: $this->uuidEquals($siteId), userId: $this->uuidEquals($userId)
 		);
 
 		$this->service->contentList(siteId: $siteId, userId: $userId);
@@ -38,7 +38,7 @@ final class ContentDataServiceTest extends ContentTestBase {
 		$siteId = $this->randomId();
 
 		$this->contentRepo->expects($this->once())->method('contentList')->with(
-			siteId: $siteId, userId: null
+			siteId: $this->uuidEquals($siteId), userId: null
 		);
 
 		$this->service->contentList(siteId: $siteId, userId: $userId);

@@ -35,8 +35,8 @@ final class CreateContentTest extends ContentTestBase {
 		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->customExtensionService->expects($this->once())->method('create')->with(
-			command: $command,
-			contentId: $contentId,
+			command: $this->valueObjectEquals($command),
+			contentId: $this->uuidEquals($contentId),
 		);
 		$this->expectEvent(new ContentCreated(
 			body: $command->body,
@@ -67,8 +67,8 @@ final class CreateContentTest extends ContentTestBase {
 		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->customExtensionService->expects($this->once())->method('create')->with(
-			command: $command,
-			contentId: $contentId,
+			command: $this->valueObjectEquals($command),
+			contentId: $this->uuidEquals($contentId),
 		);
 		$event = new TestEventsContentTypeCreated(
 			body: $command->body,
@@ -110,12 +110,12 @@ final class CreateContentTest extends ContentTestBase {
 		$this->perms->method('canCreateContent')->willReturn(true);
 
 		$this->customContentService->expects($this->once())->method('create')->with(
-			command: $command,
-			contentId: $contentId,
+			command: $this->valueObjectEquals($command),
+			contentId: $this->uuidEquals($contentId),
 		);
 		$this->customExtensionService->expects($this->once())->method('create')->with(
-			command: $command,
-			contentId: $contentId,
+			command: $this->valueObjectEquals($command),
+			contentId: $this->uuidEquals($contentId),
 		);
 
 		$this->app->execute($command);

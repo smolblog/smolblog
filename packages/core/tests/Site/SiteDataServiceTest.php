@@ -31,7 +31,7 @@ final class SiteDataServiceTest extends SiteTestBase {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->repo->expects($this->once())->method('siteById')->with(siteId: $siteId);
+		$this->repo->expects($this->once())->method('siteById')->with(siteId: $this->uuidEquals($siteId));
 
 		$this->service->siteById(siteId: $siteId, userId: $userId);
 	}
