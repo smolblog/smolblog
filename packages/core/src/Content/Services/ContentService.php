@@ -140,7 +140,7 @@ class ContentService implements CommandHandlerService {
 		if (!isset($content)) {
 			return false;
 		}
-		if ($content?->userId == $userId) {
+		if ($content->userId->equals($userId)) {
 			return true;
 		}
 

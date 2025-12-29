@@ -40,7 +40,7 @@ final class MediaHandlerRegistryTest extends TestCase {
 			->with(MediaHandlerRegistryTestHandlerTwo::class)
 			->willReturn($this->mockHandlerTwo);
 
-		$this->assertObjectEquals($this->mockHandlerTwo, $registry->get(), 'objectEquals');
+		$this->assertEquals($this->mockHandlerTwo, $registry->get());
 	}
 
 	public function testFirstHandlerWillBeDefault() {
@@ -56,7 +56,7 @@ final class MediaHandlerRegistryTest extends TestCase {
 			->with(MediaHandlerRegistryTestHandlerOne::class)
 			->willReturn($this->mockHandlerOne);
 
-		$this->assertObjectEquals($this->mockHandlerOne, $registry->get(), 'objectEquals');
+		$this->assertEquals($this->mockHandlerOne, $registry->get());
 	}
 
 	public function testItFailsIfNoHandlersRegistered() {
@@ -83,6 +83,6 @@ final class MediaHandlerRegistryTest extends TestCase {
 			->with(MediaHandlerRegistryTestHandlerOne::class)
 			->willReturn($this->mockHandlerOne);
 
-		$this->assertObjectEquals($this->mockHandlerOne, $registry->get('one'), 'objectEquals');
+		$this->assertTrue($this->mockHandlerOne === $registry->get('one'));
 	}
 }

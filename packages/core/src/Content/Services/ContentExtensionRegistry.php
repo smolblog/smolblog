@@ -2,17 +2,19 @@
 
 namespace Smolblog\Core\Content\Services;
 
+use Cavatappi\Foundation\Reflection\TypeRegistry;
 use Cavatappi\Foundation\Registry\Registry;
 use Cavatappi\Foundation\Registry\ServiceRegistryKit;
 use Cavatappi\Foundation\Service;
 use Psr\Container\ContainerInterface;
+use Smolblog\Core\Content\Entities\ContentExtension;
 
 /**
  * Register available content extensions.
  *
  * I've avoided it as much as I can, but sometimes you just need to have things centrally registered.
  */
-class ContentExtensionRegistry implements Registry, Service {
+class ContentExtensionRegistry implements Registry, Service, TypeRegistry {
 	use ServiceRegistryKit;
 
 	/**
@@ -22,6 +24,10 @@ class ContentExtensionRegistry implements Registry, Service {
 	 */
 	public static function getInterfaceToRegister(): string {
 		return ContentExtensionService::class;
+	}
+
+	public static function getTypeToRegister(): string {
+		return ContentExtension::class;
 	}
 
 	/**
@@ -45,10 +51,24 @@ class ContentExtensionRegistry implements Registry, Service {
 	/**
 	 * Get the name of the given extension's Extension class.
 	 *
+	 * @deprecated 0.6 use findClass()
+	 *
 	 * @param string $extension Handle for the content extension.
 	 * @return string
 	 */
 	public function extensionClassFor(string $extension): string {
 		return $this->configs[$extension]->extensionClass;
+	}
+
+	public function keyField(): string {
+		return 'type';
+	}
+
+	public function findClass(string $id): ?string {
+		return $this->configs[$id]?->extensionClass ?? null;
+	}
+
+	public function findIdentifier(string $class): ?string {
+		return array_find_key($this->configs, fn($config) => $config->extensionClass === $class);
 	}
 }

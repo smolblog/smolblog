@@ -156,7 +156,7 @@ class MediaService implements CommandHandlerService {
 			return false;
 		}
 
-		if ($media->userId == $userId) {
+		if ($media->userId->equals($userId)) {
 			return true;
 		}
 

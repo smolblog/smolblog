@@ -35,7 +35,7 @@
         "smolblog/core-data-sql": "self.version",
         "smolblog/core-test-utils": "self.version"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Smolblog\\CoreDataSql\\": "packages/core-data-sql/src/",
