@@ -72,12 +72,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cavatappiphp/cavatappi.git",
-                "reference": "1eb95bc80d90f92dac1990238a18935112e9bc45"
+                "reference": "b5dab91fbfe9d571a71106f0ddd082a8872b8bc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cavatappiphp/cavatappi/zipball/1eb95bc80d90f92dac1990238a18935112e9bc45",
-                "reference": "1eb95bc80d90f92dac1990238a18935112e9bc45",
+                "url": "https://api.github.com/repos/cavatappiphp/cavatappi/zipball/b5dab91fbfe9d571a71106f0ddd082a8872b8bc1",
+                "reference": "b5dab91fbfe9d571a71106f0ddd082a8872b8bc1",
                 "shasum": ""
             },
             "require": {
@@ -162,7 +162,7 @@
                 "source": "https://github.com/cavatappiphp/cavatappi/tree/feature/serialization",
                 "issues": "https://github.com/cavatappiphp/cavatappi/issues"
             },
-            "time": "2025-12-29T01:23:44+00:00"
+            "time": "2025-12-30T15:51:16+00:00"
         },
         {
             "name": "crell/attributeutils",

@@ -71,4 +71,9 @@ class ContentExtensionRegistry implements Registry, Service, TypeRegistry {
 	public function findIdentifier(string $class): ?string {
 		return array_find_key($this->configs, fn($config) => $config->extensionClass === $class);
 	}
+
+	public function serviceForExtensionObject(ContentExtension $ext): ContentExtensionService {
+		$id = $this->findIdentifier(get_class($ext));
+		return $this->getService($id);
+	}
 }

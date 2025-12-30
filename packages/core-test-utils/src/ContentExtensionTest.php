@@ -67,7 +67,7 @@ abstract class ContentExtensionTest extends ModelTest {
 			body: $this->createExampleContentBody(),
 			siteId: $this->randomId(),
 			contentId: $contentId,
-			extensions: [static::EXTENSION_KEY => $this->createExampleExtension()],
+			extensions: [$this->createExampleExtension()],
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);
@@ -93,7 +93,7 @@ abstract class ContentExtensionTest extends ModelTest {
 			userId: $userId,
 			contentId: $contentId,
 			contentUserId: $userId,
-			extensions: [static::EXTENSION_KEY => $this->createModifiedExtension()]
+			extensions: [$this->createModifiedExtension()]
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);
@@ -102,7 +102,7 @@ abstract class ContentExtensionTest extends ModelTest {
 			siteId: $command->siteId,
 			userId: $userId,
 			id: $contentId,
-			extensions: [static::EXTENSION_KEY => $this->createExampleExtension()],
+			extensions: [$this->createExampleExtension()],
 		));
 
 		$this->expectEvent(new ContentUpdated(
@@ -129,7 +129,7 @@ abstract class ContentExtensionTest extends ModelTest {
 			siteId: $this->randomId(),
 			userId: $userId,
 			id: $contentId,
-			extensions: [static::EXTENSION_KEY => $this->createExampleExtension()],
+			extensions: [$this->createExampleExtension()],
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);

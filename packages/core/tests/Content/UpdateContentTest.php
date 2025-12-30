@@ -19,8 +19,8 @@ use Smolblog\Core\Test\TestEventsContentTypeUpdated;
 final class UpdateContentTest extends ContentTestBase {
 	public function testTypeWithDefaultService() {
 		$extensions = [
-			'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
-			'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+			new TestDefaultContentExtension(metaval: 'hello'),
+			new TestCustomContentExtension(metaval: 'hello'),
 		];
 		$contentId = $this->randomId();
 		$userId = $this->randomId();
@@ -69,8 +69,8 @@ final class UpdateContentTest extends ContentTestBase {
 
 	public function testTypeWithDefaultServiceAndCustomEvents() {
 		$extensions = [
-			'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
-			'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+			new TestDefaultContentExtension(metaval: 'hello'),
+			new TestCustomContentExtension(metaval: 'hello'),
 		];
 		$contentId = $this->randomId();
 		$userId = $this->randomId();
@@ -108,8 +108,8 @@ final class UpdateContentTest extends ContentTestBase {
 
 	public function testTypeWithCustomService() {
 		$extensions = [
-			'testdefaultext' => new TestDefaultContentExtension(metaval: 'hello'),
-			'testcustomext' => new TestCustomContentExtension(metaval: 'hello'),
+			new TestDefaultContentExtension(metaval: 'hello'),
+			new TestCustomContentExtension(metaval: 'hello'),
 		];
 		$contentId = $this->randomId();
 		$userId = $this->randomId();

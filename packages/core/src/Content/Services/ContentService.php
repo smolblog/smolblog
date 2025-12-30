@@ -164,6 +164,6 @@ class ContentService implements CommandHandlerService {
 	 * @return ContentExtensionService[]
 	 */
 	private function getServicesForContentExtensions(array $extensions): array {
-		return array_map(fn($srv) => $this->extensions->getService($srv), array_keys($extensions));
+		return array_map(fn($ext) => $this->extensions->serviceForExtensionObject($ext), $extensions);
 	}
 }
