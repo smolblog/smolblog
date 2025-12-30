@@ -8,6 +8,7 @@ use Cavatappi\Foundation\Command\ExpectedResponse;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Value\ValueKit;
+use Crell\Serde\Attributes\ClassNameTypeMap;
 use Psr\Http\Message\UploadedFileInterface;
 use Ramsey\Uuid\UuidInterface;
 
@@ -31,7 +32,7 @@ readonly class HandleUploadedMedia implements Command, Authenticated, Validated 
 	 * @param UuidInterface|null       $mediaId           ID for the new media; will auto-generate if not given.
 	 */
 	public function __construct(
-		public UploadedFileInterface $file,
+		#[ClassNameTypeMap(key: 'implementationType')] public UploadedFileInterface $file,
 		public readonly UuidInterface $userId,
 		public readonly UuidInterface $siteId,
 		public string $accessibilityText,
