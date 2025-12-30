@@ -35,7 +35,7 @@ final class NoRefreshKitTest extends TestCase {
 
 	public function testRefreshConnection() {
 		$conn = $this->makeConnection();
-		$this->assertObjectEquals($conn, $this->handler->refreshConnection($conn), 'objectEquals');
+		$this->assertValueObjectEquals($conn, $this->handler->refreshConnection($conn));
 	}
 
 	private function makeConnection(): Connection {

@@ -50,7 +50,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			fileDetails: []
 		);
 		$this->expectEvent($event);
-		$this->assertObjectEquals($media, $event->getMediaObject(), 'objectEquals');
+		$this->assertValueObjectEquals($media, $event->getMediaObject());
 
 		$this->app->execute($command);
 	}

@@ -51,7 +51,7 @@ class FinishAuthRequestTest extends ConnectionTestBase {
 			entityId: $connection->id,
 		);
 
-		$this->assertObjectEquals($connection, $event->getConnectionObject(), 'objectEquals');
+		$this->assertValueObjectEquals($connection, $event->getConnectionObject());
 		$this->expectEvent($event);
 
 		$redirectUrl = $this->app->execute($command);

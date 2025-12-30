@@ -34,7 +34,7 @@ final class CreateSiteTest extends SiteTestBase {
 		);
 
 		$this->expectEvent($event);
-		$this->assertObjectEquals($expected, $event->getSiteObject(), 'objectEquals');
+		$this->assertValueObjectEquals($expected, $event->getSiteObject());
 
 		$this->app->execute(new CreateSite(
 			userId: $expected->userId,

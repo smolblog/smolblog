@@ -57,7 +57,7 @@ final class ContentDataServiceTest extends ContentTestBase {
 		$this->contentRepo->method('contentById')->willReturn($content);
 
 		$result = $this->service->contentById(contentId: $content->id, userId: $userId);
-		$this->assertObjectEquals($content, $result ?? new stdClass(), 'objectEquals');
+		$this->assertValueObjectEquals($content, $result);
 	}
 
 	public function testContentByIdWillReturnAllContentIfPermissioned() {
@@ -73,7 +73,7 @@ final class ContentDataServiceTest extends ContentTestBase {
 		$this->contentRepo->method('contentById')->willReturn($content);
 
 		$result = $this->service->contentById(contentId: $content->id, userId: $userId);
-		$this->assertObjectEquals($content, $result ?? new stdClass(), 'objectEquals');
+		$this->assertValueObjectEquals($content, $result);
 	}
 
 	public function testContentByIdWillReturnNullIfNotPermissionedAndNotOwnContent() {
