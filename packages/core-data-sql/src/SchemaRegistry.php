@@ -2,13 +2,14 @@
 
 namespace Smolblog\CoreDataSql;
 
+use Cavatappi\Foundation\Registry\Registry;
+use Cavatappi\Foundation\Service;
 use Doctrine\DBAL\Schema\Schema;
-use Smolblog\Foundation\Service\Registry\Registry;
 
 /**
  * Collect services that handle database tables to assist with creating/migrating schema.
  */
-class SchemaRegistry implements Registry {
+class SchemaRegistry implements Registry, Service {
 	/**
 	 * This registry is for DatabaseTableHandlers.
 	 *

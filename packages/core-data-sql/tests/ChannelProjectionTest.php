@@ -11,8 +11,6 @@ use Smolblog\Core\Channel\Events\ChannelSaved;
 use Smolblog\CoreDataSql\Test\DataTestBase;
 use stdClass;
 
-require_once __DIR__ . '/_base.php';
-
 #[AllowMockObjectsWithoutExpectations]
 final class ChannelProjectionTest extends DataTestBase {
 	private function setUpTestChannels() {

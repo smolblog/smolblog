@@ -26,6 +26,7 @@
     "require": {
         "php": "^8.4",
         "cavatappi/foundation": "^0.1",
+        "cavatappi/infrastructure": "^0.1",
         "smolblog/core": "^0.6",
         "doctrine/dbal": "^4.2"
     },

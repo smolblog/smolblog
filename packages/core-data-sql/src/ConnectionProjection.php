@@ -2,14 +2,15 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Doctrine\DBAL\Connection as DatabaseConnection;
+use Cavatappi\Foundation\DomainEvent\EventListenerService;
+use Cavatappi\Foundation\DomainEvent\ProjectionListener;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Infrastructure\Serialization\SerializationService;
 use Doctrine\DBAL\Schema\Schema;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Events\{ConnectionDeleted, ConnectionEstablished, ConnectionRefreshed};
-use Smolblog\Foundation\Service\Event\EventListenerService;
-use Smolblog\Foundation\Service\Event\ProjectionListener;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Store and retrieve Connection objects.
@@ -43,18 +44,22 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 * Create the service.
 	 *
 	 * @param DatabaseService $db Working database connection.
+	 * @param SerializationService $serde Configured (de)serialization service.
 	 */
-	public function __construct(private DatabaseService $db) {
+	public function __construct(
+		private DatabaseService $db,
+		private SerializationService $serde,
+	) {
 	}
 
 	/**
 	 * Find out if the given Connection belongs to the given User.
 	 *
-	 * @param Identifier $connectionId Connection to check.
-	 * @param Identifier $userId       User to check.
+	 * @param UuidInterface $connectionId Connection to check.
+	 * @param UuidInterface $userId       User to check.
 	 * @return boolean True if the given User created the given Connection.
 	 */
-	public function connectionBelongsToUser(Identifier $connectionId, Identifier $userId): bool {
+	public function connectionBelongsToUser(UuidInterface $connectionId, UuidInterface $userId): bool {
 		$query = $this->db->createUnprefixedQueryBuilder();
 		$query->select('1')
 			->from($this->db->tableName('connections'))
@@ -70,10 +75,10 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	/**
 	 * Fetch the given Connection from the repo; null if none is found.
 	 *
-	 * @param Identifier $connectionId Connection to fetch.
+	 * @param UuidInterface $connectionId Connection to fetch.
 	 * @return Connection|null
 	 */
-	public function connectionById(Identifier $connectionId): ?Connection {
+	public function connectionById(UuidInterface $connectionId): ?Connection {
 		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('connection_obj')
@@ -88,17 +93,17 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 
 		// This has to do with different DB engines which we cannot currently test.
 		return is_string($result) ?
-			Connection::fromJson($result) :
-			Connection::deserializeValue($result); // @codeCoverageIgnore
+			$this->serde->fromJson($result, as: Connection::class) :
+			$this->serde->fromArray($result, as: Connection::class); // @codeCoverageIgnore
 	}
 
 	/**
 	 * Get all Connections for a given User.
 	 *
-	 * @param Identifier $userId User whose Connections are being fetched.
+	 * @param UuidInterface $userId User whose Connections are being fetched.
 	 * @return Connection[]
 	 */
-	public function connectionsForUser(Identifier $userId): array {
+	public function connectionsForUser(UuidInterface $userId): array {
 		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('connection_obj')
@@ -108,7 +113,7 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
-			fn($res) => is_string($res) ? Connection::fromJson($res) : Connection::deserializeValue($res),
+			fn($res) => is_string($res) ? $this->serde->fromJson($res, as: Connection::class) : $this->serde->fromArray($res, as: Connection::class),
 			$results,
 		);
 	}
@@ -132,7 +137,7 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 		$data = [
 			'connection_uuid' => $event->entityId,
 			'user_uuid' => $event->userId,
-			'connection_obj' => json_encode($event->getConnectionObject()),
+			'connection_obj' => $this->serde->toJson($event->getConnectionObject()),
 		];
 
 		if ($dbid) {
@@ -150,7 +155,7 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	 */
 	#[ProjectionListener]
 	public function onConnectionRefreshed(ConnectionRefreshed $event): void {
-		$current = $this->connectionById($event->entityId ?? Identifier::nil());
+		$current = $this->connectionById($event->entityId ?? UuidFactory::nil());
 		if (!isset($current)) {
 			return;
 		}
@@ -158,7 +163,7 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 		$updated = $current->with(details: $event->details);
 		$this->db->update(
 			'connections',
-			['connection_obj' => json_encode($updated)],
+			['connection_obj' => $this->serde->toJson($updated)],
 			['connection_uuid' => $event->entityId]
 		);
 	}

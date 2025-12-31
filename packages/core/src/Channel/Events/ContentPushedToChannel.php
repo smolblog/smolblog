@@ -42,7 +42,7 @@ class ContentPushedToChannel implements DomainEvent {
 		?DateTimeInterface $timestamp = null,
 		?UuidInterface $entityId = null,
 		public readonly ?UuidInterface $processId = null,
-		#[MapType('string')] public array $details = [],
+		#[MapType('mixed')] public array $details = [],
 	) {
 		$this->entityId = $entityId ?? ContentChannelEntry::buildId(contentId: $content->id, channelId: $channelId);
 		$this->setIdAndTime($id, $timestamp);

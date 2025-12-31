@@ -38,7 +38,7 @@ readonly class Media implements Entity, Value, Validated {
 		public string $accessibilityText,
 		public MediaType $type,
 		public string $handler,
-		#[MapType('string')] public array $fileDetails,
+		#[MapType('mixed')] public array $fileDetails,
 	) {
 		$this->validate();
 	}

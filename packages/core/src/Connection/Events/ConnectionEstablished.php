@@ -34,7 +34,7 @@ class ConnectionEstablished implements DomainEvent {
 		public readonly string $handler,
 		public readonly string $handlerKey,
 		public readonly string $displayName,
-		#[MapType('string')] public readonly array $details,
+		#[MapType('mixed')] public readonly array $details,
 		public readonly UuidInterface $userId,
 		public readonly ?UuidInterface $processId = null,
 		?UuidInterface $entityId = null,

@@ -5,8 +5,10 @@ namespace Smolblog\Core\Media\Events;
 use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use Cavatappi\Foundation\Reflection\MapType;
 use Cavatappi\Foundation\Validation\Validated;
+use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Entities\Media;
@@ -50,7 +52,7 @@ class MediaCreated implements DomainEvent, Validated {
 		public readonly string $accessibilityText,
 		public readonly MediaType $mediaType,
 		public readonly string $handler,
-		#[MapType('string')] public readonly array $fileDetails,
+		#[MapType('mixed')] public readonly array $fileDetails,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 		?UuidInterface $mediaUserId = null,
@@ -89,9 +91,9 @@ class MediaCreated implements DomainEvent, Validated {
 	 */
 	public function getMediaObject(): Media {
 		return new Media(
-			id: $this->entityId ?? UuidInterface::nil(),
+			id: $this->entityId,
 			userId: $this->mediaUserId,
-			siteId: $this->aggregateId ?? UuidInterface::nil(),
+			siteId: $this->aggregateId,
 			title: $this->title,
 			accessibilityText: $this->accessibilityText,
 			type: $this->mediaType,

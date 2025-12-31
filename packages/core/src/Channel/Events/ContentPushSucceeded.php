@@ -42,7 +42,7 @@ class ContentPushSucceeded implements DomainEvent {
 		?DateTimeInterface $timestamp = null,
 		?UuidInterface $entityId = null,
 		public readonly ?UriInterface $url = null,
-		#[MapType('string')] public array $details = [],
+		#[MapType('mixed')] public array $details = [],
 	) {
 		$this->entityId = $entityId ?? ContentChannelEntry::buildId(
 			contentId: $this->contentId,

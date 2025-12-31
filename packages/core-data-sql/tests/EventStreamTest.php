@@ -2,20 +2,18 @@
 
 namespace Smolblog\CoreDataSql;
 
-require_once __DIR__ . '/_base.php';
-
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Cavatappi\Foundation\Fields\Markdown;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\BasicChannel;
-use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\ChannelSaved;
-use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Events\ConnectionEstablished;
 use Smolblog\Core\Content\Events\ContentCreated;
-use Smolblog\Foundation\Value\Fields\Markdown;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\CoreDataSql\Test\DataTestBase;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 #[AllowMockObjectsWithoutExpectations]
 final class EventStreamTest extends DataTestBase {
@@ -55,11 +53,21 @@ final class EventStreamTest extends DataTestBase {
 				userId: $userId,
 				entityId: $contentId,
 			),
-			new readonly class(
+			new class(
 				userId: $userId,
 				aggregateId: $siteId,
 				processId: $this->randomId()
-			) extends DomainEvent {}
+			) implements DomainEvent {
+				use DomainEventKit;
+				public function __construct(
+					public readonly UuidInterface $userId,
+					public readonly UuidInterface $aggregateId,
+					public readonly UuidInterface $processId,
+				) {
+					$this->setIdAndTime(null, null);
+				}
+				public null $entityId { get => null; }
+			}
 		];
 
 		foreach($expected as $event) {

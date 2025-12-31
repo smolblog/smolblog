@@ -2,14 +2,15 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Doctrine\DBAL\Connection;
+use Cavatappi\Foundation\DomainEvent\EventListenerService;
+use Cavatappi\Foundation\DomainEvent\ProjectionListener;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Infrastructure\Serialization\SerializationService;
 use Doctrine\DBAL\Schema\Schema;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Data\MediaRepo;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Events\{MediaAttributesUpdated, MediaCreated, MediaDeleted};
-use Smolblog\Foundation\Service\Event\EventListenerService;
-use Smolblog\Foundation\Service\Event\ProjectionListener;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Save state for media objects.
@@ -40,17 +41,21 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 * Create the service.
 	 *
 	 * @param DatabaseService $db Working database connection.
+	 * @param SerializationService $serde Configured (de)serialization service.
 	 */
-	public function __construct(private DatabaseService $db) {
+	public function __construct(
+		private DatabaseService $db,
+		private SerializationService $serde,
+	) {
 	}
 
 	/**
 	 * Check if a given media object exists.
 	 *
-	 * @param Identifier $mediaId ID to check.
+	 * @param UuidInterface $mediaId ID to check.
 	 * @return boolean
 	 */
-	public function hasMediaWithId(Identifier $mediaId): bool {
+	public function hasMediaWithId(UuidInterface $mediaId): bool {
 		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('1')
@@ -65,10 +70,10 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	/**
 	 * Get the specified Media object.
 	 *
-	 * @param Identifier $mediaId Media to fetch.
+	 * @param UuidInterface $mediaId Media to fetch.
 	 * @return Media|null
 	 */
-	public function mediaById(Identifier $mediaId): ?Media {
+	public function mediaById(UuidInterface $mediaId): ?Media {
 		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('media_obj')
@@ -83,8 +88,8 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 
 		// This has to do with different DB engines which we cannot currently test.
 		return is_string($result) ?
-			Media::fromJson($result) :
-			Media::deserializeValue($result); // @codeCoverageIgnore
+			$this->serde->fromJson($result, Media::class) :
+			$this->serde->fromArray($result, Media::class); // @codeCoverageIgnore
 	}
 
 	/**
@@ -100,7 +105,7 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 		$this->db->insert('media', [
 			'media_uuid' => $media->id,
 			'site_uuid' => $media->siteId,
-			'media_obj' => json_encode($media),
+			'media_obj' => $this->serde->toJson($media),
 		]);
 	}
 
@@ -112,7 +117,7 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	 */
 	#[ProjectionListener]
 	public function onMediaAttributesUpdated(MediaAttributesUpdated $event): void {
-		$existing = $this->mediaById($event->entityId ?? Identifier::nil());
+		$existing = $this->mediaById($event->entityId ?? UuidFactory::nil());
 		if (!isset($existing)) {
 			return;
 		}
@@ -123,7 +128,7 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 		);
 		$this->db->update(
 			'media',
-			['media_obj' => json_encode($updated)],
+			['media_obj' => $this->serde->toJson($updated)],
 			['media_uuid' => $updated->id],
 		);
 	}

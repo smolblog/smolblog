@@ -41,7 +41,7 @@ class ContentPushFailed implements DomainEvent {
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 		?UuidInterface $entityId = null,
-		#[MapType('string')] public array $details = [],
+		#[MapType('mixed')] public array $details = [],
 	) {
 		$this->entityId = $entityId ?? ContentChannelEntry::buildId(contentId: $this->contentId, channelId: $this->channelId);
 		$this->setIdAndTime($id, $timestamp);

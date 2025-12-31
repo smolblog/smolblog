@@ -22,7 +22,7 @@ readonly class ConnectionInitData implements Value {
 	public function __construct(
 		public string $url,
 		public string $state,
-		#[MapType('string')] public array $info
+		#[MapType('mixed')] public array $info
 ) {
 	}
 }

@@ -3,12 +3,8 @@
 namespace Smolblog\CoreDataSql;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
-use Doctrine\DBAL\Schema\Schema;
 use Exception;
 use Smolblog\CoreDataSql\Test\DataTestBase;
-use Smolblog\CoreDataSql\Test\TestDatabaseManager;
-
-require_once __DIR__ . '/_base.php';
 
 #[AllowMockObjectsWithoutExpectations]
 final class DatabaseEnvironmentTest extends DataTestBase {

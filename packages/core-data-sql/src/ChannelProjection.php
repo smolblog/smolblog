@@ -4,6 +4,8 @@ namespace Smolblog\CoreDataSql;
 
 use Cavatappi\Foundation\DomainEvent\EventListenerService;
 use Cavatappi\Foundation\DomainEvent\ProjectionListener;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Infrastructure\Serialization\SerializationService;
 use Doctrine\DBAL\Schema\Schema;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Data\ChannelRepo;
@@ -50,8 +52,12 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 * Create the service.
 	 *
 	 * @param DatabaseService $db Working database connection.
+	 * @param SerializationService $serde Configured (de)serialization service.
 	 */
-	public function __construct(private DatabaseService $db) {
+	public function __construct(
+		private DatabaseService $db,
+		private SerializationService $serde,
+	) {
 	}
 
 	/**
@@ -74,8 +80,8 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 
 		// This has to do with different DB engines which we cannot currently test.
 		return is_string($result) ?
-			Channel::fromJson($result) :
-			Channel::deserializeValue($result); // @codeCoverageIgnore
+			$this->serde->fromJson($result, as: Channel::class) :
+			$this->serde->fromArray($result, as: Channel::class); // @codeCoverageIgnore
 	}
 
 	/**
@@ -94,7 +100,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
-			fn($res) => is_string($res) ? Channel::fromJson($res) : Channel::deserializeValue($res),
+			fn($res) => is_string($res) ? $this->serde->fromJson($res, as: Channel::class) : $this->serde->fromArray($res, as: Channel::class),
 			$results,
 		);
 	}
@@ -116,7 +122,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
-			fn($res) => is_string($res) ? Channel::fromJson($res) : Channel::deserializeValue($res),
+			fn($res) => is_string($res) ? $this->serde->fromJson($res, as: Channel::class) : $this->serde->fromArray($res, as: Channel::class),
 			$results,
 		);
 	}
@@ -160,7 +166,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		$data = [
 			'channel_uuid' => $event->entityId,
 			'connection_uuid' => $event->channel->connectionId,
-			'channel_obj' => json_encode($event->channel),
+			'channel_obj' => $this->serde->toJson($event->channel),
 		];
 
 		if ($dbid) {
@@ -180,8 +186,8 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	public function onChannelAddedToSite(ChannelAddedToSite $event): void {
 		if (
 			$this->siteCanUseChannel(
-				siteId: $event->aggregateId ?? UuidInterface::nil(),
-				channelId: $event->entityId ?? UuidInterface::nil()
+				siteId: $event->aggregateId ?? UuidFactory::nil(),
+				channelId: $event->entityId ?? UuidFactory::nil()
 			)
 		) {
 			return;

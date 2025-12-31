@@ -7,8 +7,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Smolblog\CoreDataSql\Test\DataTestBase;
 use Smolblog\CoreDataSql\Test\TestSchemaRegistry;
 
-require_once __DIR__ . '/_base.php';
-
 #[AllowMockObjectsWithoutExpectations]
 final class SchemaRegistryTest extends DataTestBase {
 	public function testSchemaVersionWillBeNullIfRowIsNotPresent() {

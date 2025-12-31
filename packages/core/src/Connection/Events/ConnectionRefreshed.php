@@ -25,7 +25,7 @@ class ConnectionRefreshed implements DomainEvent {
 	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(
-		#[MapType('string')] public readonly array $details,
+		#[MapType('mixed')] public readonly array $details,
 		public readonly UuidInterface $entityId,
 		public readonly UuidInterface $userId,
 		public readonly ?UuidInterface $processId = null,

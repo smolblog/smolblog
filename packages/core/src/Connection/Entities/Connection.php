@@ -43,7 +43,7 @@ class Connection implements Value, Entity {
 		public readonly string $handler,
 		public readonly string $handlerKey,
 		public readonly string $displayName,
-		#[MapType('string')] public readonly array $details,
+		#[MapType('mixed')] public readonly array $details,
 	) {
 	}
 

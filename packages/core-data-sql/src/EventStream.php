@@ -2,12 +2,12 @@
 
 namespace Smolblog\CoreDataSql;
 
+use Cavatappi\Foundation\DomainEvent\DomainEvent;
+use Cavatappi\Foundation\DomainEvent\EventListener;
+use Cavatappi\Foundation\DomainEvent\EventListenerService;
+use Cavatappi\Infrastructure\Serialization\SerializationService;
 use DateTimeZone;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use Smolblog\Foundation\Service\Event\EventListener;
-use Smolblog\Foundation\Service\Event\EventListenerService;
-use Smolblog\Foundation\Value\Messages\DomainEvent;
 
 /**
  * Store events for playback later.
@@ -43,8 +43,12 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	 * Create the service.
 	 *
 	 * @param DatabaseService $db Working database connection.
+	 * @param SerializationService $serde Configured (de)serialization service.
 	 */
-	public function __construct(private DatabaseService $db) {
+	public function __construct(
+		private DatabaseService $db,
+		private SerializationService $serde,
+	) {
 	}
 
 	/**
@@ -62,7 +66,7 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 				'aggregate_uuid' => $event->aggregateId,
 				'entity_uuid' => $event->entityId,
 				'process_uuid' => $event->processId,
-				'event_obj' => json_encode($event),
+				'event_obj' => $this->serde->toJson($event),
 		]);
 	}
 }

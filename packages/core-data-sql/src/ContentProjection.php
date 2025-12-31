@@ -2,16 +2,17 @@
 
 namespace Smolblog\CoreDataSql;
 
+use Cavatappi\Foundation\DomainEvent\ProjectionListener;
+use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Infrastructure\Serialization\SerializationService;
 use Doctrine\DBAL\Schema\Schema;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Events\ContentPushedToChannel;
 use Smolblog\Core\Channel\Events\ContentPushSucceeded;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Data\ContentStateManager;
 use Smolblog\Core\Content\Entities\Content;
 use Smolblog\Core\Content\Events\{ContentCanonicalUrlSet, ContentCreated, ContentDeleted, ContentUpdated};
-use Smolblog\Foundation\Exceptions\CodePathNotSupported;
-use Smolblog\Foundation\Service\Event\ProjectionListener;
-use Smolblog\Foundation\Value\Fields\Identifier;
 
 /**
  * Store and retrieve Content objects.
@@ -44,17 +45,21 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 * Create the service.
 	 *
 	 * @param DatabaseService $db Working database connection.
+	 * @param SerializationService $serde Configured (de)serialization service.
 	 */
-	public function __construct(private DatabaseService $db) {
+	public function __construct(
+		private DatabaseService $db,
+		private SerializationService $serde,
+	) {
 	}
 
 	/**
 	 * Find out if any content exists with this ID.
 	 *
-	 * @param Identifier $contentId ID to check.
+	 * @param UuidInterface $contentId ID to check.
 	 * @return boolean
 	 */
-	public function hasContentWithId(Identifier $contentId): bool {
+	public function hasContentWithId(UuidInterface $contentId): bool {
 		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('1')
@@ -69,10 +74,10 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	/**
 	 * Get the content object associated with the given ID.
 	 *
-	 * @param Identifier $contentId ID to retrieve.
+	 * @param UuidInterface $contentId ID to retrieve.
 	 * @return Content|null
 	 */
-	public function contentById(Identifier $contentId): ?Content {
+	public function contentById(UuidInterface $contentId): ?Content {
 		$query = $this->db->createUnprefixedQueryBuilder();
 		$query
 			->select('content_obj')
@@ -87,18 +92,18 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 
 		// This has to do with different DB engines which we cannot currently test.
 		return is_string($result) ?
-			Content::fromJson($result) :
-			Content::deserializeValue($result); // @codeCoverageIgnore
+			$this->serde->fromJson($result, Content::class) :
+			$this->serde->fromArray($result, Content::class); // @codeCoverageIgnore
 	}
 
 	/**
 	 * Retrieve a list of Content objects
 	 *
-	 * @param Identifier      $forSite     Content assigned to the given site.
-	 * @param Identifier|null $ownedByUser Content owned by the given user.
+	 * @param UuidInterface      $forSite     Content assigned to the given site.
+	 * @param UuidInterface|null $ownedByUser Content owned by the given user.
 	 * @return array Content objects meeting the given parameters.
 	 */
-	public function contentList(Identifier $forSite, ?Identifier $ownedByUser = null): array {
+	public function contentList(UuidInterface $forSite, ?UuidInterface $ownedByUser = null): array {
 		$query = $this->db->createQueryBuilder();
 		$query
 			->select('content_obj')
@@ -116,8 +121,8 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 
 		return array_map(
 			fn($ser) => is_string($ser) ?
-				Content::fromJson($ser) :
-				Content::deserializeValue($ser), // @codeCoverageIgnore
+				$this->serde->fromJson($ser, Content::class) :
+				$this->serde->fromArray($ser, Content::class), // @codeCoverageIgnore
 			$results
 		);
 	}
@@ -136,7 +141,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 				'content_uuid' => $content->id,
 				'site_uuid' => $content->siteId,
 				'user_uuid' => $content->userId,
-				'content_obj' => json_encode($content),
+				'content_obj' => $this->serde->toJson($content),
 		]);
 	}
 
@@ -148,7 +153,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 */
 	#[ProjectionListener()]
 	public function onContentUpdated(ContentUpdated $event): void {
-		$current = $this->contentById($event->entityId ?? Identifier::nil());
+		$current = $this->contentById($event->entityId ?? UuidFactory::nil());
 		if (!isset($current)) {
 			return;
 		}
@@ -161,7 +166,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		);
 		$this->db->update(
 			'content',
-			['content_obj' => json_encode($updated), 'user_uuid' => $updated->userId],
+			['content_obj' => $this->serde->toJson($updated), 'user_uuid' => $updated->userId],
 			['content_uuid' => $updated->id],
 		);
 	}
@@ -185,7 +190,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	 */
 	#[ProjectionListener()]
 	public function onContentCanonicalUrlSet(ContentCanonicalUrlSet $event): void {
-		$current = $this->contentById($event->entityId ?? Identifier::nil());
+		$current = $this->contentById($event->entityId ?? UuidFactory::nil());
 		if (!isset($current)) {
 			return;
 		}
@@ -193,7 +198,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$updated = $current->with(canonicalUrl: $event->url);
 		$this->db->update(
 			'content',
-			['content_obj' => json_encode($updated)],
+			['content_obj' => $this->serde->toJson($updated)],
 			['content_uuid' => $updated->id],
 		);
 	}
@@ -213,12 +218,12 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 
 		$pushInfo = $event->getEntryObject();
 		$links = $current->links;
-		$links[$pushInfo->getId()->toString()] = $pushInfo;
+		$links[$pushInfo->id->toString()] = $pushInfo;
 
 		$updated = $current->with(links: $links);
 		$this->db->update(
 			'content',
-			['content_obj' => json_encode($updated)],
+			['content_obj' => $this->serde->toJson($updated)],
 			['content_uuid' => $updated->id]
 		);
 	}

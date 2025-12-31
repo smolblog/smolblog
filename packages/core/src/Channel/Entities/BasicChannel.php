@@ -26,7 +26,7 @@ class BasicChannel extends Channel {
 		string $handler,
 		string $handlerKey,
 		string $displayName,
-		#[MapType('string')] public readonly array $details,
+		#[MapType('mixed')] public readonly array $details,
 		?UuidInterface $userId = null,
 		?UuidInterface $connectionId = null,
 	) {
