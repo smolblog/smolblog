@@ -5,6 +5,8 @@ namespace Smolblog\CoreDataSql;
 use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Fields\Markdown;
+use Cavatappi\Infrastructure\Serialization\SerializationService;
+use Crell\Serde\Attributes\Field;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\BasicChannel;
@@ -66,6 +68,7 @@ final class EventStreamTest extends DataTestBase {
 				) {
 					$this->setIdAndTime(null, null);
 				}
+				#[Field(exclude: true)]
 				public null $entityId { get => null; }
 			}
 		];
@@ -74,8 +77,10 @@ final class EventStreamTest extends DataTestBase {
 			$this->app->dispatch($event);
 		}
 
+		$serde = $this->app->container->get(SerializationService::class);
+
 		$this->assertEquals(
-			array_map(fn($evt) => json_encode($evt), $expected),
+			array_map(fn($evt) => $serde->toJson($evt), $expected),
 			$db->fetchFirstColumn('SELECT event_obj FROM ' . $env->tableName('event_stream'))
 		);
 	}

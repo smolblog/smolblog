@@ -81,7 +81,7 @@ final class ConnectionProjectionTest extends DataTestBase {
 		$this->assertNull($projection->connectionById($connection->id));
 
 		$this->app->dispatch($event);
-		$this->assertObjectEquals($connection, $projection->connectionById($connection->id) ?? new stdClass());
+		$this->assertValueObjectEquals($connection, $projection->connectionById($connection->id));
 
 		$newConnection = $connection->with(details: ['abc' => 456]);
 		$this->app->dispatch(new ConnectionEstablished(
@@ -91,7 +91,7 @@ final class ConnectionProjectionTest extends DataTestBase {
 			details: ['abc' => 456],
 			userId: $connection->userId,
 		));
-		$this->assertObjectEquals($newConnection, $projection->connectionById($connection->id) ?? new stdClass());
+		$this->assertValueObjectEquals($newConnection, $projection->connectionById($connection->id));
 	}
 
 	public function testConnectionRefreshed() {
@@ -110,16 +110,16 @@ final class ConnectionProjectionTest extends DataTestBase {
 			details: ['one' => 2],
 			userId: $connection->userId,
 		));
-		$this->assertObjectEquals($connection, $projection->connectionById($connection->id) ?? new stdClass());
+		$this->assertValueObjectEquals($connection, $projection->connectionById($connection->id));
 
 		$this->app->dispatch(new ConnectionRefreshed(
 			details: ['answer' => 42],
 			entityId: $connection->id,
 			userId: $connection->userId,
 		));
-		$this->assertObjectEquals(
+		$this->assertValueObjectEquals(
 			$connection->with(details: ['answer' => 42]),
-			$projection->connectionById($connection->id) ?? new stdClass()
+			$projection->connectionById($connection->id)
 		);
 	}
 
@@ -134,9 +134,9 @@ final class ConnectionProjectionTest extends DataTestBase {
 			userId: $this->randomId(),
 		);
 		$this->app->dispatch($addEvent);
-		$this->assertObjectEquals(
+		$this->assertValueObjectEquals(
 			$addEvent->getConnectionObject(),
-			$projection->connectionById($addEvent->entityId ?? UuidFactory::nil()) ?? new stdClass()
+			$projection->connectionById($addEvent->entityId ?? UuidFactory::nil())
 		);
 
 		$this->app->dispatch(new ConnectionDeleted(

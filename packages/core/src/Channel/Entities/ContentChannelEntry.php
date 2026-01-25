@@ -7,6 +7,7 @@ use Cavatappi\Foundation\Factories\UuidFactory;
 use Cavatappi\Foundation\Reflection\MapType;
 use Cavatappi\Foundation\Value;
 use Cavatappi\Foundation\Value\ValueKit;
+use Crell\Serde\Attributes\Field;
 use Psr\Http\Message\UriInterface;
 use Ramsey\Uuid\UuidInterface;
 
@@ -55,6 +56,7 @@ class ContentChannelEntry implements Value, Entity {
 	 *
 	 * @var UuidInterface
 	 */
+	#[Field(exclude: true)]
 	public UuidInterface $id {
 		get => self::buildId(contentId: $this->contentId, channelId: $this->channelId);
 	}

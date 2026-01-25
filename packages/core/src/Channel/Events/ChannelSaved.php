@@ -4,6 +4,7 @@ namespace Smolblog\Core\Channel\Events;
 
 use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
+use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\Channel;
@@ -38,5 +39,6 @@ class ChannelSaved implements DomainEvent {
 		$this->setIdAndTime($id, $timestamp);
 	}
 
+	#[Field(exclude: true)]
 	public null $aggregateId { get => null; }
 }

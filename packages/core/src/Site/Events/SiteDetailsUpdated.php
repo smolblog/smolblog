@@ -7,6 +7,7 @@ use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Validation\AtLeastOneOf;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Validation\ValidatedKit;
+use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Foundation\Exceptions\InvalidValueProperties;
@@ -47,5 +48,6 @@ class SiteDetailsUpdated implements DomainEvent, Validated {
 		$this->validate();
 	}
 
+	#[Field(exclude: true)]
 	public null $entityId { get => null; }
 }

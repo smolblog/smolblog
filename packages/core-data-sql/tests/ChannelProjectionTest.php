@@ -127,14 +127,14 @@ final class ChannelProjectionTest extends DataTestBase {
 			channel: $channel,
 			userId: $this->randomId(),
 		));
-		$this->assertObjectEquals($channel, $projection->channelById($channel->id) ?? new stdClass());
+		$this->assertValueObjectEquals($channel, $projection->channelById($channel->id));
 
 		$newChannel = $channel->with(details: ['abc' => 456]);
 		$this->app->dispatch(new ChannelSaved(
 			channel: $newChannel,
 			userId: $this->randomId(),
 		));
-		$this->assertObjectEquals($newChannel, $projection->channelById($channel->id) ?? new stdClass());
+		$this->assertValueObjectEquals($newChannel, $projection->channelById($channel->id));
 	}
 
 	public function testChannelAddedToSite() {
@@ -173,7 +173,7 @@ final class ChannelProjectionTest extends DataTestBase {
 			channel: $channel,
 			userId: $this->randomId(),
 		));
-		$this->assertObjectEquals($channel, $projection->channelById($channel->id) ?? new stdClass());
+		$this->assertValueObjectEquals($channel, $projection->channelById($channel->id));
 
 		$this->app->dispatch(new ChannelDeleted(
 			entityId: $channel->id,
@@ -207,6 +207,9 @@ final class ChannelProjectionTest extends DataTestBase {
 		];
 		$siteId = UuidFactory::fromString('dbbf45e0-08c8-4422-829d-742b1415f4dd');
 
-		$this->assertEquals($expected, $projection->channelsForSite($siteId));
+		$actual = $projection->channelsForSite($siteId);
+		foreach ($expected as $ind => $expectedChannel) {
+			$this->assertValueObjectEquals($expectedChannel, $actual[$ind]);
+		}
 	}
 }

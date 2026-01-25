@@ -5,6 +5,7 @@ namespace Smolblog\Core\Channel\Events;
 use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Reflection\MapType;
+use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Entities\ContentChannelEntry;

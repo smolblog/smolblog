@@ -7,6 +7,7 @@ use Cavatappi\Foundation\Factories\UuidFactory;
 use Cavatappi\Foundation\Reflection\MapType;
 use Cavatappi\Foundation\Value;
 use Cavatappi\Foundation\Value\ValueKit;
+use Crell\Serde\Attributes\Field;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -52,6 +53,7 @@ class Connection implements Value, Entity {
 	 *
 	 * @var UuidInterface
 	 */
+	#[Field(exclude: true)]
 	public UuidInterface $id {
 		get => self::BuildId(handler: $this->handler, handlerKey: $this->handlerKey);
 	}

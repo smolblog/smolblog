@@ -5,6 +5,7 @@ namespace Smolblog\Core\Site\Events;
 use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Factories\UuidFactory;
+use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Site\Entities\Site;
@@ -44,6 +45,7 @@ class SiteCreated implements DomainEvent {
 		$this->setIdAndTime($id, $timestamp);
 	}
 
+	#[Field(exclude: true)]
 	public null $entityId { get => null; }
 
 	/**
