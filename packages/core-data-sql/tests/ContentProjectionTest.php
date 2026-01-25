@@ -264,7 +264,7 @@ final class ContentProjectionTest extends DataTestBase {
 			url: HttpMessageFactory::uri('https://test.smol.blog/note/this-was-a-test'),
 			details: ['wpid' => '1234'],
 		);
-		$contentOne = $contentBase->with(links: [$entryOne->id->toString() => $entryOne]);
+		$contentOne = $contentBase->with(links: [$entryOne]);
 		$eventOne = new ContentPushSucceeded(
 			contentId: $contentBase->id,
 			channelId: $entryOne->channelId,
@@ -274,6 +274,7 @@ final class ContentProjectionTest extends DataTestBase {
 			url: $entryOne->url,
 			details: $entryOne->details,
 		);
+		$this->assertValueObjectEquals($entryOne, $eventOne->getEntryObject());
 
 		$entryTwo = new ContentChannelEntry(
 			contentId: $contentBase->id,
@@ -281,25 +282,26 @@ final class ContentProjectionTest extends DataTestBase {
 			details: ['esid' => '1234'],
 		);
 		$contentTwo = $contentBase->with(links: [
-			$entryOne->id->toString() => $entryOne,
-			$entryTwo->id->toString() => $entryTwo,
+			$entryOne,
+			$entryTwo,
 		]);
 		$eventTwo = new ContentPushSucceeded(
-			contentId: $contentOne->id,
+			contentId: $contentBase->id,
 			channelId: $entryTwo->channelId,
 			userId: $contentBase->userId,
 			aggregateId: $contentBase->siteId,
 			processId: $this->randomId(),
 			details: $entryTwo->details,
 		);
+		$this->assertValueObjectEquals($entryTwo, $eventTwo->getEntryObject());
 
 		$entryThree = $entryOne->with(details: ['wpid' => '1234', 'edited' => true]);
 		$contentThree = $contentBase->with(links: [
-			$entryOne->id->toString() => $entryThree,
-			$entryTwo->id->toString() => $entryTwo,
+			$entryThree,
+			$entryTwo,
 		]);
 		$eventThree = new ContentPushSucceeded(
-			contentId: $contentTwo->id,
+			contentId: $contentBase->id,
 			channelId: $entryThree->channelId,
 			userId: $contentBase->userId,
 			aggregateId: $contentBase->siteId,
@@ -307,6 +309,7 @@ final class ContentProjectionTest extends DataTestBase {
 			url: $entryThree->url,
 			details: $entryThree->details,
 		);
+		$this->assertValueObjectEquals($entryThree, $eventThree->getEntryObject());
 
 		$db->insert($env->tableName('content'), [
 			'content_uuid' => $contentBase->id,

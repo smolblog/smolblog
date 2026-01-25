@@ -218,7 +218,9 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 
 		$pushInfo = $event->getEntryObject();
 		$links = $current->links;
-		$links[$pushInfo->id->toString()] = $pushInfo;
+
+		$index = array_find_key($links, fn($entry) => $entry->id->equals($pushInfo->id)) ?? count($links);
+		$links[$index] = $pushInfo;
 
 		$updated = $current->with(links: $links);
 		$this->db->update(
