@@ -5,6 +5,7 @@ namespace Smolblog\Core\Connection\Events;
 use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Reflection\MapType;
+use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Connection\Entities\Connection;
@@ -15,8 +16,6 @@ use Smolblog\Core\Connection\Entities\Connection;
 class ConnectionEstablished implements DomainEvent {
 	use DomainEventKit;
 
-	public readonly UuidInterface $entityId;
-
 	/**
 	 * Create the Event
 	 *
@@ -26,7 +25,6 @@ class ConnectionEstablished implements DomainEvent {
 	 * @param array              $details     Additional information needed to connect to this handler.
 	 * @param UuidInterface         $userId      ID of the user initiating this change.
 	 * @param UuidInterface|null    $processId    ID of the process this event belongs to.
-	 * @param UuidInterface|null    $entityId    ID of the connection this event belongs to.
 	 * @param UuidInterface|null    $id          Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp   Optional timestamp for the event (default now).
 	 */
@@ -37,11 +35,9 @@ class ConnectionEstablished implements DomainEvent {
 		#[MapType('mixed')] public readonly array $details,
 		public readonly UuidInterface $userId,
 		public readonly ?UuidInterface $processId = null,
-		?UuidInterface $entityId = null,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 	) {
-		$this->entityId = $entityId ?? Connection::buildId(handler: $handler, handlerKey: $handlerKey);
 		$this->setIdAndTime($id, $timestamp);
 	}
 
@@ -60,5 +56,11 @@ class ConnectionEstablished implements DomainEvent {
 		);
 	}
 
+	#[Field(exclude: true)]
 	public null $aggregateId { get => null; }
+
+	#[Field(exclude: true)]
+	public UuidInterface $entityId {
+		get => Connection::buildId(handler: $this->handler, handlerKey: $this->handlerKey);
+	}
 }

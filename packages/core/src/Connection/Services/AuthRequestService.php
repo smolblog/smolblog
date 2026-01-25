@@ -84,7 +84,6 @@ class AuthRequestService implements CommandHandlerService {
 			handlerKey: $connection->handlerKey,
 			displayName: $connection->displayName,
 			details: $connection->details,
-			entityId: $connection->id,
 			userId: $info->userId
 		));
 

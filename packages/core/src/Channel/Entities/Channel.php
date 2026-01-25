@@ -6,12 +6,15 @@ use Cavatappi\Foundation\DomainEvent\Entity;
 use Cavatappi\Foundation\Factories\UuidFactory;
 use Cavatappi\Foundation\Value;
 use Cavatappi\Foundation\Value\ValueKit;
+use Crell\Serde\Attributes\ClassNameTypeMap;
+use Crell\Serde\Attributes\Field;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * Represents a single content channel, such as a blog, RSS feed, or social media profile. Since some social media
  * providers allow multiple profiles/blogs/channels/etc. per account, this is its own Entity.
  */
+#[ClassNameTypeMap(key: 'class')]
 abstract class Channel implements Entity, Value {
 	use ValueKit;
 
@@ -51,6 +54,7 @@ abstract class Channel implements Entity, Value {
 	 *
 	 * @var UuidInterface
 	 */
+	#[Field(exclude: true)]
 	public UuidInterface $id {
 		get => self::buildId(handler: $this->handler, handlerKey: $this->handlerKey);
 	}

@@ -61,7 +61,7 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	public function onDomainEvent(DomainEvent $event) {
 		$this->db->insert('event_stream', [
 				'event_uuid' => $event->id,
-				'timestamp' => $event->timestamp->object->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.u'),
+				'timestamp' => $event->timestamp->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.u'),
 				'user_uuid' => $event->userId,
 				'aggregate_uuid' => $event->aggregateId,
 				'entity_uuid' => $event->entityId,

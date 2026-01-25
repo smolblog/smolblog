@@ -48,7 +48,6 @@ class FinishAuthRequestTest extends ConnectionTestBase {
 			displayName: $connection->displayName,
 			details: $connection->details,
 			userId: $userId,
-			entityId: $connection->id,
 		);
 
 		$this->assertValueObjectEquals($connection, $event->getConnectionObject());
