@@ -25,13 +25,13 @@
     ],
     "require": {
         "php": "^8.4",
-        "cavatappi/foundation": "^0.1",
-        "cavatappi/infrastructure": "^0.1",
+        "cavatappi/foundation": "^0.2",
+        "cavatappi/infrastructure": "^0.2",
         "smolblog/core": "^0.6",
         "doctrine/dbal": "^4.2"
     },
     "require-dev": {
-        "cavatappi/testing": "^0.1"
+        "cavatappi/testing": "^0.2"
     },
     "scripts": {
         "test": "phpunit",

@@ -24,7 +24,7 @@
         }
     ],
     "require-dev": {
-        "cavatappi/testing": "^0.1",
+        "cavatappi/testing": "^0.2",
         "smolblog/core-test-utils": "@dev"
     },
     "scripts": {
@@ -42,6 +42,6 @@
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "elephox/mimey": "^4.0",
-        "cavatappi/foundation": "^0.1"
+        "cavatappi/foundation": "^0.2"
     }
 }

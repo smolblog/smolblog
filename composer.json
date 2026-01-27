@@ -13,19 +13,15 @@
             "email": "me@eph.me"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/cavatappiphp/cavatappi"
-        }
-    ],
     "require": {
-        "cavatappi/cavatappi": "dev-feature/serialization",
+        "cavatappi/foundation": "^0.2",
+        "cavatappi/testing": "^0.2",
         "doctrine/dbal": "^4.2",
         "elephox/mimey": "^4.0",
         "php": "^8.4",
         "psr/container": "^2.0",
-        "psr/event-dispatcher": "^1.0"
+        "psr/event-dispatcher": "^1.0",
+        "crell/serde": "dev-master"
     },
     "require-dev": {
         "symplify/monorepo-builder": "^11.2"
@@ -35,7 +31,6 @@
         "smolblog/core-data-sql": "self.version",
         "smolblog/core-test-utils": "self.version"
     },
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Smolblog\\CoreDataSql\\": "packages/core-data-sql/src/",

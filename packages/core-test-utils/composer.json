@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "cavatappi/testing": "^0.1"
+        "cavatappi/testing": "^0.2"
     },
     "minimum-stability": "stable"
 }
