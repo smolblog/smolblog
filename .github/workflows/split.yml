@@ -17,16 +17,12 @@ jobs:
       matrix:
         # define package to repository map
         package:
-          - local_path: 'framework/foundation'
-            split_repository: 'framework-foundation'
-          - local_path: 'framework/infrastructure'
-            split_repository: 'framework-infrastructure'
-          - local_path: 'framework/markdown'
-            split_repository: 'smolblog-markdown'
-          - local_path: 'product/core'
+          - local_path: 'core'
             split_repository: 'core'
-          - local_path: 'product/core-data-sql'
+          - local_path: 'core-data-sql'
             split_repository: 'core-data-sql'
+          - local_path: 'core-test-utils'
+            split_repository: 'core-test-utils'
 
     steps:
       - uses: actions/checkout@v2

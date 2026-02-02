@@ -48,13 +48,9 @@ jobs:
       fail-fast: true
       matrix:
         package_path:
-          - framework/foundation
-          - framework/infrastructure
-          - framework/markdown
-          - framework/test-utils
-          - product/core
-          - product/core-data-sql
-          - product/core-test-utils
+          - core
+          - core-data-sql
+          - core-test-utils
 
     name: After Split Testing of ${{ matrix.package_path }}
 
