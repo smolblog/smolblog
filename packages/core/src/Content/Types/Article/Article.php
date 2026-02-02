@@ -20,8 +20,7 @@ readonly class Article extends ContentType {
 	public function __construct(
 		public string $title,
 		public Markdown $text,
-	) {
-	}
+	) {}
 
 	/**
 	 * Provide the title.

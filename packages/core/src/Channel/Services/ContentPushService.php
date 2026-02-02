@@ -31,8 +31,7 @@ class ContentPushService implements CommandHandlerService {
 		private ContentRepo $contentRepo,
 		private ChannelRepo $channelRepo,
 		private ChannelHandlerRegistry $handlers,
-	) {
-	}
+	) {}
 
 	/**
 	 * Handle the PushContentToChannel command
@@ -62,7 +61,7 @@ class ContentPushService implements CommandHandlerService {
 		$this->handlers->get($channel->handler)->pushContentToChannel(
 			content: $content,
 			channel: $channel,
-			userId: $command->userId
+			userId: $command->userId,
 		);
 	}
 }

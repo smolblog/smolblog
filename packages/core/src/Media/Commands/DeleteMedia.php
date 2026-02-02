@@ -21,7 +21,6 @@ readonly class DeleteMedia implements Command, Authenticated {
 	 */
 	public function __construct(
 		public readonly UuidInterface $userId,
-		public readonly UuidInterface $mediaId
-	) {
-	}
+		public readonly UuidInterface $mediaId,
+	) {}
 }

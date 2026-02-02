@@ -24,8 +24,7 @@ class SchemaRegistry implements Registry, Service {
 	 *
 	 * @param DatabaseEnvironment $env DB Connection and configuration.
 	 */
-	public function __construct(private DatabaseEnvironment $env) {
-	}
+	public function __construct(private DatabaseEnvironment $env) {}
 
 	/**
 	 * Store the handler services.
@@ -38,7 +37,7 @@ class SchemaRegistry implements Registry, Service {
 		$expectedSchema = array_reduce(
 			array: $configuration,
 			callback: fn($schema, $srv) => $srv::addTableToSchema($schema, $this->env->tableName(...)),
-			initial: new Schema()
+			initial: new Schema(),
 		);
 
 		$expectedSchema
@@ -46,7 +45,7 @@ class SchemaRegistry implements Registry, Service {
 			->addColumn('schema_version', 'string', ['length' => 32]);
 		$schemaVersion = md5(implode(
 			array: $expectedSchema->toSql($this->env->getConnection()->getDatabasePlatform()),
-			separator: ' '
+			separator: ' ',
 		));
 
 		if ($schemaVersion !== $this->getSchemaVersion()) {

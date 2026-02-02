@@ -23,6 +23,5 @@ readonly class ContentTypeConfiguration implements Value, RegisterableConfigurat
 		public string $key,
 		public string $displayName,
 		public string $typeClass,
-	) {
-	}
+	) {}
 }

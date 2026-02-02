@@ -32,8 +32,7 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 		private ChannelRepo $channels,
 		private ConnectionHandlerRegistry $handlers,
 		private EventDispatcherInterface $eventBus,
-	) {
-	}
+	) {}
 
 	/**
 	 * Respond to the RefreshChannels command.

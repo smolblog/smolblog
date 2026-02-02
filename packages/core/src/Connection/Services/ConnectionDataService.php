@@ -17,8 +17,7 @@ class ConnectionDataService implements Service {
 	 * @param ConnectionRepo           $repo  Base Connection data store.
 	 * @param GlobalPermissionsService $perms Permissions to check.
 	 */
-	public function __construct(private ConnectionRepo $repo, private GlobalPermissionsService $perms) {
-	}
+	public function __construct(private ConnectionRepo $repo, private GlobalPermissionsService $perms) {}
 
 	/**
 	 * Get all Connections owned by a user. Current user must be the user or have canManageOtherConnections.

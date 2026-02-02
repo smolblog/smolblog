@@ -46,8 +46,7 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 	public function __construct(
 		private DatabaseService $db,
 		private SerializationService $serde,
-	) {
-	}
+	) {}
 
 	/**
 	 * Check if a given media object exists.
@@ -87,9 +86,9 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 		}
 
 		// This has to do with different DB engines which we cannot currently test.
-		return is_string($result) ?
-			$this->serde->fromJson($result, Media::class) :
-			$this->serde->fromArray($result, Media::class); // @codeCoverageIgnore
+		return is_string($result)
+			? $this->serde->fromJson($result, Media::class)
+			: $this->serde->fromArray($result, Media::class); // @codeCoverageIgnore
 	}
 
 	/**

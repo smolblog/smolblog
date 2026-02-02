@@ -31,7 +31,6 @@ readonly class CreateSite implements Command, Authenticated {
 		public string $displayName,
 		public ?string $description = null,
 		public ?UuidInterface $siteId = null,
-		public ?UuidInterface $siteUser = null
-	) {
-	}
+		public ?UuidInterface $siteUser = null,
+	) {}
 }

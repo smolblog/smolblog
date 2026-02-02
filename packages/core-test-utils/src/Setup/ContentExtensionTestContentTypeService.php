@@ -10,7 +10,7 @@ final class ContentExtensionTestContentTypeService extends DefaultContentTypeSer
 		return new ContentTypeConfiguration(
 			key: 'exttest',
 			displayName: 'Extension Test',
-			typeClass: ContentExtensionTestContentType::class
+			typeClass: ContentExtensionTestContentType::class,
 		);
 	}
 }

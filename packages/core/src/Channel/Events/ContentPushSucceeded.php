@@ -46,7 +46,7 @@ class ContentPushSucceeded implements DomainEvent {
 	) {
 		$this->entityId = $entityId ?? ContentChannelEntry::buildId(
 			contentId: $this->contentId,
-			channelId: $this->channelId
+			channelId: $this->channelId,
 		);
 		$this->setIdAndTime($id, $timestamp);
 	}

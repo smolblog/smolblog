@@ -22,6 +22,5 @@ readonly class RefreshChannels implements Command, Authenticated {
 	public function __construct(
 		public readonly UuidInterface $connectionId,
 		public readonly UuidInterface $userId,
-	) {
-	}
+	) {}
 }

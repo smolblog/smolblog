@@ -31,6 +31,5 @@ readonly class BeginAuthRequest implements Command, Authenticated {
 		public readonly UuidInterface $userId,
 		public readonly string $callbackUrl,
 		public readonly ?string $returnToUrl = null,
-	) {
-	}
+	) {}
 }

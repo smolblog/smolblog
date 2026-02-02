@@ -23,9 +23,8 @@ class ChannelDataService implements Service {
 	public function __construct(
 		private ChannelRepo $repo,
 		private GlobalPermissionsService $globalPerms,
-		private SitePermissionsService $sitePerms
-	) {
-	}
+		private SitePermissionsService $sitePerms,
+	) {}
 
 	/**
 	 * Get the channels the given site is assigned to.

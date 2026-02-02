@@ -29,6 +29,5 @@ readonly class SetUserSitePermissions implements Command, Authenticated {
 		public UuidInterface $linkedUserId,
 		public UuidInterface $userId,
 		public SitePermissionLevel $level,
-	) {
-	}
+	) {}
 }

@@ -22,9 +22,9 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 			userId: $userId,
 		);
 
-		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $this->uuidEquals($channel->id))->
-			willReturn($channel);
+		$this->channels->expects($this->once())->method('channelById')
+			->with(channelId: $this->uuidEquals($channel->id))
+			->willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
 		$command = new AddChannelToSite(
@@ -52,9 +52,9 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 			details: [],
 		);
 
-		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $this->uuidEquals($channel->id))->
-			willReturn($channel);
+		$this->channels->expects($this->once())->method('channelById')
+			->with(channelId: $this->uuidEquals($channel->id))
+			->willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
 		$command = new AddChannelToSite(
@@ -83,9 +83,9 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 			userId: $this->randomId(),
 		);
 
-		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $this->uuidEquals($channel->id))->
-			willReturn($channel);
+		$this->channels->expects($this->once())->method('channelById')
+			->with(channelId: $this->uuidEquals($channel->id))
+			->willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(true);
 
 		$command = new AddChannelToSite(
@@ -111,9 +111,9 @@ final class AddChannelToSiteTest extends ChannelTestBase {
 			userId: $userId,
 		);
 
-		$this->channels->expects($this->once())->method('channelById')->
-			with(channelId: $this->uuidEquals($channel->id))->
-			willReturn($channel);
+		$this->channels->expects($this->once())->method('channelById')
+			->with(channelId: $this->uuidEquals($channel->id))
+			->willReturn($channel);
 		$this->perms->method('canManageChannels')->willReturn(false);
 
 		$command = new AddChannelToSite(

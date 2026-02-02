@@ -30,6 +30,5 @@ readonly class Site implements Value, Entity {
 		public UuidInterface $userId,
 		public ?string $description = null,
 		public ?UuidInterface $pictureId = null,
-	) {
-	}
+	) {}
 }

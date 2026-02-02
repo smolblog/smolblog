@@ -46,7 +46,7 @@ class MediaHandlerRegistry implements Registry {
 			throw new ServiceNotRegistered(
 				service: 'default',
 				registry: self::class,
-				message: 'No default MediaHandler set.'
+				message: 'No default MediaHandler set.',
 			);
 		}
 		return $this->getService($keyToUse);

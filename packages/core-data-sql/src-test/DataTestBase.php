@@ -7,12 +7,16 @@ use Smolblog\CoreDataSql\DatabaseEnvironment;
 use Smolblog\CoreDataSql\SchemaRegistry;
 
 final class TestSchemaRegistry extends SchemaRegistry {
-	public function testGetSchemaVersion(): ?string { return $this->getSchemaVersion(); }
-	public function testSetSchemaVersion(string $version): void { $this->setSchemaVersion($version); }
+	public function testGetSchemaVersion(): ?string {
+		return $this->getSchemaVersion();
+	}
+	public function testSetSchemaVersion(string $version): void {
+		$this->setSchemaVersion($version);
+	}
 }
 
 abstract class DataTestBase extends AppTest {
-	const INCLUDED_MODELS = [
+	public const INCLUDED_MODELS = [
 		\Smolblog\Core\Model::class,
 		\Smolblog\CoreDataSql\Model::class,
 	];
@@ -22,10 +26,13 @@ abstract class DataTestBase extends AppTest {
 		$randomPrefix = substr(
 			str_shuffle(
 				str_repeat(
-					$x='abcdefghijklmnopqrstuvwxyz',
-					ceil(8/strlen($x))
-				)
-			),1,8);
+					$x = 'abcdefghijklmnopqrstuvwxyz',
+					ceil(8 / strlen($x)),
+				),
+			),
+			1,
+			8,
+		);
 		return [
 			...parent::createMockServices(),
 			SchemaRegistry::class => TestSchemaRegistry::class,

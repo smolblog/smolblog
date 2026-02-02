@@ -43,9 +43,9 @@ abstract class DefaultChannelHandlerTestBase extends AsyncChannelHandler {
 
 	public function __construct(
 		JobManager $jobManager,
-		EventDispatcherInterface $eventBus
+		EventDispatcherInterface $eventBus,
 	) {
-		$jobManagerProxy = new class($jobManager) implements JobManager {
+		$jobManagerProxy = new class ($jobManager) implements JobManager {
 			public function __construct(private JobManager $actual) {}
 			public function enqueue(Job $job): void {
 				if (get_class($job) === ContentPushJob::class) {
@@ -74,15 +74,15 @@ abstract class ProjectionChannelHandlerTestBase extends ProjectionChannelHandler
 
 #[AllowMockObjectsWithoutExpectations]
 abstract class ChannelTestBase extends ModelTest {
-	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
+	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
-	protected ChannelRepo & MockObject $channels;
-	protected SitePermissionsService & MockObject $perms;
-	protected GlobalPermissionsService & MockObject $globalPerms;
-	protected ContentRepo & MockObject $contentRepo;
-	protected ChannelHandlerTestBase & MockObject $handlerMock;
-	protected DefaultChannelHandlerTestBase & MockObject $defaultHandlerMock;
-	protected ProjectionChannelHandlerTestBase & MockObject $defaultProjectionMock;
+	protected ChannelRepo&MockObject $channels;
+	protected SitePermissionsService&MockObject $perms;
+	protected GlobalPermissionsService&MockObject $globalPerms;
+	protected ContentRepo&MockObject $contentRepo;
+	protected ChannelHandlerTestBase&MockObject $handlerMock;
+	protected DefaultChannelHandlerTestBase&MockObject $defaultHandlerMock;
+	protected ProjectionChannelHandlerTestBase&MockObject $defaultProjectionMock;
 
 	protected function createMockServices(): array {
 		$this->channels = $this->createMock(ChannelRepo::class);
@@ -111,7 +111,7 @@ abstract class ChannelTestBase extends ModelTest {
 			->onlyMethods(['push'])
 			->setConstructorArgs([
 				'jobManager' => $this->app->container->get(JobManager::class),
-				'eventBus' => $this->app->container->get(EventDispatcherInterface::class)
+				'eventBus' => $this->app->container->get(EventDispatcherInterface::class),
 			])
 			->getMock();
 

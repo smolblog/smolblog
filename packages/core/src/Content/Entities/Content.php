@@ -45,8 +45,7 @@ readonly class Content implements Value, Entity {
 		public ?UriInterface $canonicalUrl = null,
 		#[ListType(ContentExtension::class)] public array $extensions = [],
 		#[ListType(ContentChannelEntry::class)] public array $links = [],
-	) {
-	}
+	) {}
 
 	/**
 	 * Title for this content.

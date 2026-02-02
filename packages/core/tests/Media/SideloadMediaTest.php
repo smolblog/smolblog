@@ -45,7 +45,7 @@ final class SideloadMediaTest extends MediaTestBase {
 			accessibilityText: $command->accessibilityText,
 			mediaType: $media->type,
 			handler: $media->handler,
-			fileDetails: []
+			fileDetails: [],
 		));
 
 		$this->app->execute($command);

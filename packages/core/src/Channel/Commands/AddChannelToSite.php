@@ -24,6 +24,5 @@ readonly class AddChannelToSite implements Command, Authenticated {
 		public UuidInterface $channelId,
 		public UuidInterface $siteId,
 		public UuidInterface $userId,
-	) {
-	}
+	) {}
 }

@@ -31,6 +31,6 @@ interface ChannelHandler extends ConfiguredRegisterable, Service {
 	public function pushContentToChannel(
 		Content $content,
 		Channel $channel,
-		UuidInterface $userId
+		UuidInterface $userId,
 	): void;
 }

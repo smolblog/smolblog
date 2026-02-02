@@ -38,8 +38,7 @@ class SiteService implements CommandHandlerService {
 		private SitePermissionsService $sitePerms,
 		private SiteRepo $repo,
 		private EventDispatcherInterface $eventBus,
-	) {
-	}
+	) {}
 
 	/**
 	 * Create a new Site

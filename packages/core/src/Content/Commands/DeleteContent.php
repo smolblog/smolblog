@@ -22,6 +22,5 @@ readonly class DeleteContent implements Command, Authenticated {
 	public function __construct(
 		public UuidInterface $userId,
 		public UuidInterface $contentId,
-	) {
-	}
+	) {}
 }

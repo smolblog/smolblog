@@ -87,22 +87,28 @@ final class ContentProjectionTest extends DataTestBase {
 		}
 
 		$this->assertJsonStringEqualsJsonString(
-			json_encode([$site1userB, $site1userA]), json_encode($projection->contentList(forSite: $site1))
+			json_encode([$site1userB, $site1userA]),
+			json_encode($projection->contentList(forSite: $site1)),
 		);
 		$this->assertJsonStringEqualsJsonString(
-			json_encode([$site1userA]), json_encode($projection->contentList(forSite: $site1, ownedByUser: $userA))
+			json_encode([$site1userA]),
+			json_encode($projection->contentList(forSite: $site1, ownedByUser: $userA)),
 		);
 		$this->assertJsonStringEqualsJsonString(
-			json_encode([$site1userB]), json_encode($projection->contentList(forSite: $site1, ownedByUser: $userB))
+			json_encode([$site1userB]),
+			json_encode($projection->contentList(forSite: $site1, ownedByUser: $userB)),
 		);
 		$this->assertJsonStringEqualsJsonString(
-			json_encode([$site2userB, $site2userA]), json_encode($projection->contentList(forSite: $site2))
+			json_encode([$site2userB, $site2userA]),
+			json_encode($projection->contentList(forSite: $site2)),
 		);
 		$this->assertJsonStringEqualsJsonString(
-			json_encode([$site2userA]), json_encode($projection->contentList(forSite: $site2, ownedByUser: $userA))
+			json_encode([$site2userA]),
+			json_encode($projection->contentList(forSite: $site2, ownedByUser: $userA)),
 		);
 		$this->assertJsonStringEqualsJsonString(
-			json_encode([$site2userB]), json_encode($projection->contentList(forSite: $site2, ownedByUser: $userB))
+			json_encode([$site2userB]),
+			json_encode($projection->contentList(forSite: $site2, ownedByUser: $userB)),
 		);
 		$this->assertEmpty($projection->contentList(forSite: $this->randomId()));
 		$this->assertEmpty($projection->contentList(forSite: $site1, ownedByUser: $this->randomId()));
@@ -239,7 +245,7 @@ final class ContentProjectionTest extends DataTestBase {
 
 		$this->assertValueObjectEquals(
 			$content->with(canonicalUrl: HttpMessageFactory::uri('https://test.smol.blog/note/this-was-a-test')),
-			$projection->contentById($content->id)
+			$projection->contentById($content->id),
 		);
 	}
 
@@ -346,7 +352,7 @@ final class ContentProjectionTest extends DataTestBase {
 				aggregateId: $missingContent->siteId,
 				userId: $missingContent->userId,
 				entityId: $missingContent->id,
-			)
+			),
 		);
 		$this->assertFalse($projection->hasContentWithId($missingContent->id));
 
@@ -356,7 +362,7 @@ final class ContentProjectionTest extends DataTestBase {
 				aggregateId: $missingContent->siteId,
 				userId: $missingContent->userId,
 				entityId: $missingContent->id,
-			)
+			),
 		);
 		$this->assertFalse($projection->hasContentWithId($missingContent->id));
 
@@ -367,7 +373,7 @@ final class ContentProjectionTest extends DataTestBase {
 				userId: $missingContent->userId,
 				aggregateId: $missingContent->siteId,
 				processId: $this->randomId(),
-			)
+			),
 		);
 		$this->assertFalse($projection->hasContentWithId($missingContent->id));
 	}

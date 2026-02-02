@@ -25,9 +25,8 @@ class ConnectionDeletionService implements CommandHandlerService {
 	 */
 	public function __construct(
 		private ConnectionRepo $connections,
-		private EventDispatcherInterface $eventBus
-	) {
-	}
+		private EventDispatcherInterface $eventBus,
+	) {}
 
 	/**
 	 * Handle the DeleteConnection command and delete a connection.

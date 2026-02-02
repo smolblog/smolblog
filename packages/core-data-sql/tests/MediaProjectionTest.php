@@ -50,7 +50,7 @@ final class MediaProjectionTest extends DataTestBase {
 			fileDetails: ['one' => 2],
 		);
 		$newMedia = $oldMedia->with(
-			title: 'i said hey'
+			title: 'i said hey',
 		);
 		$event = new MediaAttributesUpdated(
 			aggregateId: $oldMedia->siteId,
@@ -122,7 +122,7 @@ final class MediaProjectionTest extends DataTestBase {
 				aggregateId: $missingMedia->siteId,
 				userId: $missingMedia->userId,
 				entityId: $missingMedia->id,
-			)
+			),
 		);
 		$this->assertFalse($projection->hasMediaWithId($missingMedia->id));
 	}

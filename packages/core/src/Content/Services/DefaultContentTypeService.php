@@ -17,8 +17,7 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 *
 	 * @param EventDispatcherInterface $eventBus For sending the final events.
 	 */
-	public function __construct(private EventDispatcherInterface $eventBus) {
-	}
+	public function __construct(private EventDispatcherInterface $eventBus) {}
 
 	protected const CREATE_EVENT = ContentCreated::class;
 	protected const UPDATE_EVENT = ContentUpdated::class;

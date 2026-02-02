@@ -23,6 +23,5 @@ class ContentExtensionConfiguration implements Value, RegisterableConfiguration 
 		public readonly string $key,
 		public readonly string $displayName,
 		public readonly string $extensionClass,
-	) {
-	}
+	) {}
 }

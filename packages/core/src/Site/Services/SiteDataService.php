@@ -20,8 +20,7 @@ class SiteDataService implements Service {
 	 * @param SiteRepo               $repo  Site object store.
 	 * @param SitePermissionsService $perms Permission checks.
 	 */
-	public function __construct(private SiteRepo $repo, private SitePermissionsService $perms) {
-	}
+	public function __construct(private SiteRepo $repo, private SitePermissionsService $perms) {}
 
 	/**
 	 * Get detailed information on the given site. User must be able to manage settings on the site.

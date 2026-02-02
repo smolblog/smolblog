@@ -27,6 +27,5 @@ readonly class PushContentToChannel implements Command, Authenticated {
 		public UuidInterface $contentId,
 		public UuidInterface $userId,
 		public UuidInterface $channelId,
-	) {
-	}
+	) {}
 }

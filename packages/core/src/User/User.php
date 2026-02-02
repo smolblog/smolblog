@@ -26,6 +26,5 @@ readonly class User implements Value, Entity {
 		public string $key,
 		public string $displayName,
 		public string $handler,
-	) {
-	}
+	) {}
 }

@@ -92,7 +92,7 @@ final class CreateSiteTest extends SiteTestBase {
 		$command = new CreateSite(
 			userId: $this->randomId(),
 			key: 'test',
-			displayName: 'Test Site'
+			displayName: 'Test Site',
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(true, true, false);

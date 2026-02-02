@@ -55,7 +55,7 @@ class DatabaseEnvironment {
 						$assetName = $assetName->getName(); // @codeCoverageIgnore
 					}
 					return str_starts_with($assetName, $tablePrefix);
-				}
+				},
 			);
 		}
 	}

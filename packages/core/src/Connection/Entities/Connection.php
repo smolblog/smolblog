@@ -45,8 +45,7 @@ class Connection implements Value, Entity {
 		public readonly string $handlerKey,
 		public readonly string $displayName,
 		#[MapType('mixed')] public readonly array $details,
-	) {
-	}
+	) {}
 
 	/**
 	 * Get the constructed ID from $handler and $handlerKey

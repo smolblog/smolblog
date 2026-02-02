@@ -42,8 +42,7 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 	public function __construct(
 		private EventDispatcherInterface $eventBus,
 		private ChannelRepo $channels,
-	) {
-	}
+	) {}
 
 	/**
 	 * Dispatch the push event.
@@ -56,7 +55,7 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 	public function pushContentToChannel(
 		Content $content,
 		Channel $channel,
-		UuidInterface $userId
+		UuidInterface $userId,
 	): void {
 		$processId = UuidFactory::random();
 		$startEvent = new (static::PUSH_EVENT)(
@@ -133,6 +132,6 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 		Content $content,
 		Channel $channel,
 		UuidInterface $userId,
-		?UuidInterface $processId
+		?UuidInterface $processId,
 	): ContentChannelEntry;
 }

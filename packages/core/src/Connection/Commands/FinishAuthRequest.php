@@ -16,7 +16,7 @@ use Psr\Http\Message\UriInterface;
 	type: UriInterface::class,
 	name: 'url',
 	description: 'URL to redirect the end-user to.',
-	optional: true
+	optional: true,
 )]
 readonly class FinishAuthRequest implements Command {
 	use ValueKit;
@@ -32,6 +32,5 @@ readonly class FinishAuthRequest implements Command {
 		public readonly string $handler,
 		public readonly string $stateKey,
 		public readonly string $code,
-	) {
-	}
+	) {}
 }

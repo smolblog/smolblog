@@ -37,6 +37,5 @@ readonly class UpdateContent implements Command, Authenticated {
 		public UuidInterface $contentUserId,
 		public ?DateTimeInterface $publishTimestamp = null,
 		#[ListType(ContentExtension::class)] public array $extensions = [],
-	) {
-	}
+	) {}
 }

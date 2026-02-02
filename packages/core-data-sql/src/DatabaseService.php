@@ -26,8 +26,7 @@ class DatabaseService implements Service {
 	public function __construct(
 		private DatabaseEnvironment $env,
 		private SchemaRegistry $schema,
-	) {
-	}
+	) {}
 
 	/**
 	 * Prefix the given table name with the environment's prefix.

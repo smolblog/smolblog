@@ -23,8 +23,7 @@ class ContentDataService implements Service {
 	public function __construct(
 		private SitePermissionsService $perms,
 		private ContentRepo $repo,
-	) {
-	}
+	) {}
 
 	/**
 	 * Fetch the list of content available to this user.
@@ -57,8 +56,8 @@ class ContentDataService implements Service {
 		}
 
 		if (
-			$content->userId == $userId ||
-			$this->perms->canEditAllContent(userId: $userId, siteId: $content->siteId)
+			$content->userId == $userId
+			|| $this->perms->canEditAllContent(userId: $userId, siteId: $content->siteId)
 		) {
 			return $content;
 		}

@@ -10,9 +10,9 @@ use Smolblog\Core\Test\ContentTypeTest;
 
 #[AllowMockObjectsWithoutExpectations]
 final class ReblogTest extends ContentTypeTest {
-	const string TYPE_KEY = 'reblog';
-	const string SERVICE_CLASS = ReblogService::class;
-	const string TYPE_CLASS = Reblog::class;
+	public const string TYPE_KEY = 'reblog';
+	public const string SERVICE_CLASS = ReblogService::class;
+	public const string TYPE_CLASS = Reblog::class;
 
 	protected const CREATE_EVENT = ReblogCreated::class;
 	protected const UPDATE_EVENT = ReblogUpdated::class;

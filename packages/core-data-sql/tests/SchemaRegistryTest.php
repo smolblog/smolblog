@@ -83,13 +83,13 @@ final class SchemaRegistryTest extends DataTestBase {
 
 		$this->assertEquals(
 			'0d1d4377-8003-4b15-a189-028cb93013df',
-			$db->fetchOne('SELECT first_uuid FROM '.$env->tableName('test_projection').' WHERE second_uuid IS NULL'),
+			$db->fetchOne('SELECT first_uuid FROM ' . $env->tableName('test_projection') . ' WHERE second_uuid IS NULL'),
 		);
 
 		$this->assertEquals(
 			'madcrasher',
 			$db->fetchOne('SELECT other_mc FROM mc_hammer WHERE id = 2'),
-			'Migrations should not touch non-prefixed tables.'
+			'Migrations should not touch non-prefixed tables.',
 		);
 	}
 }

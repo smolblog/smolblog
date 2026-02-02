@@ -20,11 +20,11 @@ abstract class MediaHandlerTestBase implements MediaHandler {
 
 #[AllowMockObjectsWithoutExpectations]
 abstract class MediaTestBase extends ModelTest {
-	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
+	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
-	protected MediaHandler & MockObject $mockHandler;
-	protected MediaRepo & MockObject $contentRepo;
-	protected SitePermissionsService & MockObject $perms;
+	protected MediaHandler&MockObject $mockHandler;
+	protected MediaRepo&MockObject $contentRepo;
+	protected SitePermissionsService&MockObject $perms;
 
 	protected function createMockServices(): array {
 		$this->mockHandler = $this->createMock(MediaHandlerTestBase::class);

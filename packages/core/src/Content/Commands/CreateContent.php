@@ -38,6 +38,5 @@ readonly class CreateContent implements Command, Authenticated {
 		public ?UuidInterface $contentUserId = null,
 		public ?DateTimeInterface $publishTimestamp = null,
 		#[ListType(ContentExtension::class)] public array $extensions = [],
-	) {
-	}
+	) {}
 }

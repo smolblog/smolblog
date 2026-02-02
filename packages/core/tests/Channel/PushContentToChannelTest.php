@@ -101,7 +101,7 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				aggregateId: $content->siteId,
 				url: HttpMessageFactory::uri('https://test.smol.blog/post/test'),
 				details: [ 'post_id' => '12345' ],
-			)
+			),
 		], checkProcess: true);
 
 		$this->app->execute($command);
@@ -151,7 +151,7 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				aggregateId: $content->siteId,
 				message: 'Authentication expired',
 				details: ['code' => 403],
-			)
+			),
 		], checkProcess: true);
 
 		$this->app->execute($command);
@@ -209,7 +209,7 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				aggregateId: $content->siteId,
 				url: HttpMessageFactory::uri('https://test.smol.blog/post/test'),
 				details: [ 'post_id' => '12345' ],
-			)
+			),
 		], checkProcess: true);
 
 		$this->app->execute($command);
@@ -260,7 +260,7 @@ final class PushContentToChannelTest extends ChannelTestBase {
 				aggregateId: $content->siteId,
 				message: 'Authentication expired',
 				details: ['code' => 403],
-			)
+			),
 		], checkProcess: true);
 
 		$this->app->execute($command);

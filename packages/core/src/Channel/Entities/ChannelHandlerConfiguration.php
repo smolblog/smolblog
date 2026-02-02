@@ -27,6 +27,5 @@ readonly class ChannelHandlerConfiguration implements Value, RegisterableConfigu
 		public string $key,
 		public string $displayName,
 		public bool $canBeCanonical = false,
-	) {
-	}
+	) {}
 }

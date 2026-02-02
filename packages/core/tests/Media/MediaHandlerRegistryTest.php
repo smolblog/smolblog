@@ -9,17 +9,21 @@ use Cavatappi\Foundation\Exceptions\ServiceNotRegistered;
 use Cavatappi\Test\TestCase;
 
 abstract class MediaHandlerRegistryTestHandlerOne implements MediaHandler {
-	public static function getKey(): string { return 'one'; }
+	public static function getKey(): string {
+		return 'one';
+	}
 }
 abstract class MediaHandlerRegistryTestHandlerTwo implements MediaHandler {
-	public static function getKey(): string { return 'two'; }
+	public static function getKey(): string {
+		return 'two';
+	}
 }
 
 #[AllowMockObjectsWithoutExpectations]
 final class MediaHandlerRegistryTest extends TestCase {
-	private MediaHandler & MockObject $mockHandlerOne;
-	private MediaHandler & MockObject $mockHandlerTwo;
-	private ContainerInterface & MockObject $container;
+	private MediaHandler&MockObject $mockHandlerOne;
+	private MediaHandler&MockObject $mockHandlerTwo;
+	private ContainerInterface&MockObject $container;
 
 	protected function setUp(): void {
 		$this->mockHandlerOne = $this->createMock(MediaHandlerRegistryTestHandlerOne::class);

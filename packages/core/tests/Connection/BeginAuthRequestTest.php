@@ -33,7 +33,7 @@ class BeginAuthRequestTest extends ConnectionTestBase {
 				handler: 'testmock',
 				info: ['smol' => 'blog'],
 				returnToUrl: '//dashboard.smolblog.com/account/connections',
-			))
+			)),
 		);
 
 		$redirectUrl = $this->app->execute($command);

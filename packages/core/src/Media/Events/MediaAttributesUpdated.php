@@ -48,8 +48,8 @@ class MediaAttributesUpdated implements DomainEvent, Validated {
 			throw new InvalidValueProperties('No updated attributes provided.');
 		}
 		if (
-			(isset($this->title) && empty($this->title)) ||
-			(isset($this->accessibilityText) && empty($this->accessibilityText))
+			(isset($this->title) && empty($this->title))
+			|| (isset($this->accessibilityText) && empty($this->accessibilityText))
 		) {
 			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
 		}

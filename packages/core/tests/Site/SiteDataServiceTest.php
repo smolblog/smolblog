@@ -9,8 +9,7 @@ use Smolblog\Core\Test\SiteTestBase;
 final class SiteDataServiceTest extends SiteTestBase {
 	private SiteDataService $service;
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->service = $this->app->container->get(SiteDataService::class);

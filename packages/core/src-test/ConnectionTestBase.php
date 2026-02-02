@@ -22,13 +22,13 @@ abstract class ConnectionHandlerTestBase implements ConnectionHandler {
 
 #[AllowMockObjectsWithoutExpectations]
 abstract class ConnectionTestBase extends ModelTest {
-	const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
+	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
-	protected AuthRequestStateRepo & MockObject $stateRepo;
-	protected ChannelRepo & MockObject $channels;
-	protected ConnectionRepo & MockObject $connections;
-	protected ConnectionHandler & MockObject $handler;
-	protected GlobalPermissionsService & MockObject $globalPerms;
+	protected AuthRequestStateRepo&MockObject $stateRepo;
+	protected ChannelRepo&MockObject $channels;
+	protected ConnectionRepo&MockObject $connections;
+	protected ConnectionHandler&MockObject $handler;
+	protected GlobalPermissionsService&MockObject $globalPerms;
 
 	protected function createMockServices(): array {
 		$this->stateRepo = $this->createMock(AuthRequestStateRepo::class);

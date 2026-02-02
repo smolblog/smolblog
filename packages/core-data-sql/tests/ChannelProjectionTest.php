@@ -104,7 +104,7 @@ final class ChannelProjectionTest extends DataTestBase {
 		}
 
 		return $channels;
- 	}
+	}
 
 	public function testChannelSaved() {
 		$projection = $this->app->container->get(ChannelProjection::class);

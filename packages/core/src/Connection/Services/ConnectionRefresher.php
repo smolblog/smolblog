@@ -28,8 +28,7 @@ class ConnectionRefresher implements CommandHandlerService {
 		private ConnectionRepo $connections,
 		private ConnectionHandlerRegistry $handlers,
 		private EventDispatcherInterface $eventBus,
-	) {
-	}
+	) {}
 
 	/**
 	 * Handle the RefreshConnection command

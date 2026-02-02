@@ -38,9 +38,9 @@ readonly class Picture extends ContentType implements Validated {
 	 * @return string
 	 */
 	public function getTitle(): string {
-		return isset($this->caption) ?
-			ContentUtilities::truncateText(strval($this->caption)) :
-			$this->pictures[0]->title;
+		return isset($this->caption)
+			? ContentUtilities::truncateText(strval($this->caption))
+			: $this->pictures[0]->title;
 	}
 
 	public function validate(): void {
@@ -54,9 +54,9 @@ readonly class Picture extends ContentType implements Validated {
 		$rejects = array_filter(
 			$this->pictures,
 			fn($pic) => !(
-				is_a($pic, Media::class) &&
-				($pic->type === MediaType::Image || $pic->type === MediaType::Video)
-			)
+				is_a($pic, Media::class)
+				&& ($pic->type === MediaType::Image || $pic->type === MediaType::Video)
+			),
 		);
 		if (!empty($rejects)) {
 			throw new InvalidValueProperties(

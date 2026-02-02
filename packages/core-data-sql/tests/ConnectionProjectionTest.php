@@ -22,28 +22,28 @@ final class ConnectionProjectionTest extends DataTestBase {
 				handler: 'test',
 				handlerKey: 'sameUserOne',
 				displayName: 'Same User One',
-				details: ['one' => 2]
+				details: ['one' => 2],
 			),
 			'otherUserOne' => new Connection(
 				userId: $this->randomId(),
 				handler: 'test',
 				handlerKey: 'otherUser',
 				displayName: 'Other User',
-				details: ['five' => 6]
+				details: ['five' => 6],
 			),
 			'sameUserTwo' => new Connection(
 				userId: $userId,
 				handler: 'other',
 				handlerKey: 'sameUserTwo',
 				displayName: 'Same User Two',
-				details: ['three' => 4]
+				details: ['three' => 4],
 			),
 			'otherUserTwo' => new Connection(
 				userId: $this->randomId(),
 				handler: 'other',
 				handlerKey: 'otherUserTwo',
 				displayName: 'Other User Two',
-				details: ['seven' => 8]
+				details: ['seven' => 8],
 			),
 		];
 
@@ -119,7 +119,7 @@ final class ConnectionProjectionTest extends DataTestBase {
 		));
 		$this->assertValueObjectEquals(
 			$connection->with(details: ['answer' => 42]),
-			$projection->connectionById($connection->id)
+			$projection->connectionById($connection->id),
 		);
 	}
 
@@ -136,7 +136,7 @@ final class ConnectionProjectionTest extends DataTestBase {
 		$this->app->dispatch($addEvent);
 		$this->assertValueObjectEquals(
 			$addEvent->getConnectionObject(),
-			$projection->connectionById($addEvent->entityId ?? UuidFactory::nil())
+			$projection->connectionById($addEvent->entityId ?? UuidFactory::nil()),
 		);
 
 		$this->app->dispatch(new ConnectionDeleted(

@@ -23,8 +23,8 @@ abstract class ContentTypeTest extends ModelTest {
 	protected const UPDATE_EVENT = ContentUpdated::class;
 	protected const DELETE_EVENT = ContentDeleted::class;
 
-	protected ContentRepo & MockObject $contentRepo;
-	protected SitePermissionsService & MockObject $perms;
+	protected ContentRepo&MockObject $contentRepo;
+	protected SitePermissionsService&MockObject $perms;
 
 	protected function createMockServices(): array {
 		$this->contentRepo = $this->createMock(ContentRepo::class);

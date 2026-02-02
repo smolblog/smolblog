@@ -30,8 +30,7 @@ class AuthRequestService implements CommandHandlerService {
 		private AuthRequestStateRepo $stateRepo,
 		private EventDispatcherInterface $eventBus,
 		private ConnectionChannelRefresher $refresher,
-	) {
-	}
+	) {}
 
 	/**
 	 * Start an OAuth request and provide the URL to redirect the user to.
@@ -84,7 +83,7 @@ class AuthRequestService implements CommandHandlerService {
 			handlerKey: $connection->handlerKey,
 			displayName: $connection->displayName,
 			details: $connection->details,
-			userId: $info->userId
+			userId: $info->userId,
 		));
 
 		// Get the latest list of channels.

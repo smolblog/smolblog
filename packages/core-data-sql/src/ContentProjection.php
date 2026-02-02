@@ -50,8 +50,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 	public function __construct(
 		private DatabaseService $db,
 		private SerializationService $serde,
-	) {
-	}
+	) {}
 
 	/**
 	 * Find out if any content exists with this ID.
@@ -91,9 +90,9 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		}
 
 		// This has to do with different DB engines which we cannot currently test.
-		return is_string($result) ?
-			$this->serde->fromJson($result, Content::class) :
-			$this->serde->fromArray($result, Content::class); // @codeCoverageIgnore
+		return is_string($result)
+			? $this->serde->fromJson($result, Content::class)
+			: $this->serde->fromArray($result, Content::class); // @codeCoverageIgnore
 	}
 
 	/**
@@ -120,10 +119,10 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
-			fn($ser) => is_string($ser) ?
-				$this->serde->fromJson($ser, Content::class) :
-				$this->serde->fromArray($ser, Content::class), // @codeCoverageIgnore
-			$results
+			fn($ser) => is_string($ser)
+				? $this->serde->fromJson($ser, Content::class)
+				: $this->serde->fromArray($ser, Content::class), // @codeCoverageIgnore
+			$results,
 		);
 	}
 
@@ -138,10 +137,10 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$content = $event->getContentObject();
 
 		$this->db->insert('content', [
-				'content_uuid' => $content->id,
-				'site_uuid' => $content->siteId,
-				'user_uuid' => $content->userId,
-				'content_obj' => $this->serde->toJson($content),
+			'content_uuid' => $content->id,
+			'site_uuid' => $content->siteId,
+			'user_uuid' => $content->userId,
+			'content_obj' => $this->serde->toJson($content),
 		]);
 	}
 
@@ -226,7 +225,7 @@ class ContentProjection implements ContentRepo, ContentStateManager, DatabaseTab
 		$this->db->update(
 			'content',
 			['content_obj' => $this->serde->toJson($updated)],
-			['content_uuid' => $updated->id]
+			['content_uuid' => $updated->id],
 		);
 	}
 }

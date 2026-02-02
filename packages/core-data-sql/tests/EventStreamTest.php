@@ -55,10 +55,10 @@ final class EventStreamTest extends DataTestBase {
 				userId: $userId,
 				entityId: $contentId,
 			),
-			new class(
+			new class (
 				userId: $userId,
 				aggregateId: $siteId,
-				processId: $this->randomId()
+				processId: $this->randomId(),
 			) implements DomainEvent {
 				use DomainEventKit;
 				public function __construct(
@@ -70,10 +70,10 @@ final class EventStreamTest extends DataTestBase {
 				}
 				#[Field(exclude: true)]
 				public null $entityId { get => null; }
-			}
+			},
 		];
 
-		foreach($expected as $event) {
+		foreach ($expected as $event) {
 			$this->app->dispatch($event);
 		}
 
@@ -81,7 +81,7 @@ final class EventStreamTest extends DataTestBase {
 
 		$this->assertEquals(
 			array_map(fn($evt) => $serde->toJson($evt), $expected),
-			$db->fetchFirstColumn('SELECT event_obj FROM ' . $env->tableName('event_stream'))
+			$db->fetchFirstColumn('SELECT event_obj FROM ' . $env->tableName('event_stream')),
 		);
 	}
 }

@@ -21,8 +21,8 @@ abstract class ContentExtensionTest extends ModelTest {
 	public const string SERVICE_CLASS = self::class;
 	public const string EXTENSION_CLASS = self::class;
 
-	protected ContentRepo & MockObject $contentRepo;
-	protected SitePermissionsService & MockObject $perms;
+	protected ContentRepo&MockObject $contentRepo;
+	protected SitePermissionsService&MockObject $perms;
 
 	protected function createMockServices(): array {
 		$this->contentRepo = $this->createMock(ContentRepo::class);
@@ -93,7 +93,7 @@ abstract class ContentExtensionTest extends ModelTest {
 			userId: $userId,
 			contentId: $contentId,
 			contentUserId: $userId,
-			extensions: [$this->createModifiedExtension()]
+			extensions: [$this->createModifiedExtension()],
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(true);

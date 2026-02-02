@@ -7,5 +7,4 @@ use Smolblog\Core\Content\Events\ContentUpdated;
 /**
  * Event noting that a Reblog specifically has been updated.
  */
-class ReblogUpdated extends ContentUpdated {
-}
+class ReblogUpdated extends ContentUpdated {}

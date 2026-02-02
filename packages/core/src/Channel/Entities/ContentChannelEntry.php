@@ -47,8 +47,7 @@ class ContentChannelEntry implements Value, Entity {
 		public UuidInterface $channelId,
 		public ?UriInterface $url = null,
 		#[MapType('mixed')] public array $details = [],
-	) {
-	}
+	) {}
 
 
 	/**

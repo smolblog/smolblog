@@ -12,9 +12,9 @@ use Smolblog\Core\Test\ContentTypeTest;
 
 #[AllowMockObjectsWithoutExpectations]
 final class PictureTest extends ContentTypeTest {
-	const string TYPE_KEY = 'picture';
-	const string SERVICE_CLASS = PictureService::class;
-	const string TYPE_CLASS = Picture::class;
+	public const string TYPE_KEY = 'picture';
+	public const string SERVICE_CLASS = PictureService::class;
+	public const string TYPE_CLASS = Picture::class;
 
 	protected const CREATE_EVENT = PictureCreated::class;
 	protected const UPDATE_EVENT = PictureUpdated::class;

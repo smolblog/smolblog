@@ -57,8 +57,7 @@ class MediaService implements CommandHandlerService {
 		private MediaHandlerRegistry $registry,
 		private MediaRepo $mediaRepo,
 		private SitePermissionsService $perms,
-	) {
-	}
+	) {}
 
 	/**
 	 * Handle the HandleUploadMedia command.

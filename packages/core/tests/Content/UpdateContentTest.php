@@ -61,7 +61,7 @@ final class UpdateContentTest extends ContentTestBase {
 				id: $contentId,
 				extensions: $extensions,
 			),
-			$event->getContentObject()
+			$event->getContentObject(),
 		);
 
 		$this->app->execute($command);
@@ -148,7 +148,7 @@ final class UpdateContentTest extends ContentTestBase {
 			siteId: $this->randomId(),
 			userId: $userId,
 			contentId: $contentId,
-			contentUserId: $userId
+			contentUserId: $userId,
 		);
 
 		$this->contentRepo->method('hasContentWithId')->willReturn(false);

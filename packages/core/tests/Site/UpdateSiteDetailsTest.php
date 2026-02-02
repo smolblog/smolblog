@@ -28,7 +28,7 @@ final class UpdateSiteDetailsTest extends SiteTestBase {
 			aggregateId: $command->siteId,
 			displayName: 'New Site',
 			description: 'I shoulda done this like a million years ago.',
-			pictureId: $command->pictureId
+			pictureId: $command->pictureId,
 		));
 
 		$this->app->execute($command);

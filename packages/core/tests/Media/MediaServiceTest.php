@@ -20,8 +20,8 @@ final class MediaServiceTest extends MediaTestBase {
 		$this->contentRepo->method('mediaById')->willReturn(null);
 
 		$this->assertFalse(
-			$this->app->container->get(MediaService::class)->
-				userCanEditMedia(userId: $this->randomId(), mediaId: $this->randomId())
+			$this->app->container->get(MediaService::class)
+				->userCanEditMedia(userId: $this->randomId(), mediaId: $this->randomId()),
 		);
 	}
 }

@@ -7,5 +7,4 @@ use Smolblog\Core\Content\Events\ContentCreated;
 /**
  * Event noting that a Picture specifically has been created.
  */
-class PictureCreated extends ContentCreated {
-}
+class PictureCreated extends ContentCreated {}

@@ -35,8 +35,7 @@ class ContentService implements CommandHandlerService {
 		private ContentExtensionRegistry $extensions,
 		private ContentRepo $repo,
 		private SitePermissionsService $perms,
-	) {
-	}
+	) {}
 
 	/**
 	 * Execute the CreateContent Command.

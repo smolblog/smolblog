@@ -14,12 +14,22 @@ use Smolblog\Core\Media\Events\MediaCreated;
 use Smolblog\Core\Test\MediaTestBase;
 
 final class TestUploadedFileInterface implements UploadedFileInterface {
-	public function getStream(): StreamInterface { return new Stream(''); }
+	public function getStream(): StreamInterface {
+		return new Stream('');
+	}
 	public function moveTo(string $targetPath): void {}
-	public function getSize(): ?int { return null; }
-	public function getError(): int { return \UPLOAD_ERR_OK; }
-	public function getClientFilename(): ?string { return null; }
-	public function getClientMediaType(): ?string { return null; }
+	public function getSize(): ?int {
+		return null;
+	}
+	public function getError(): int {
+		return \UPLOAD_ERR_OK;
+	}
+	public function getClientFilename(): ?string {
+		return null;
+	}
+	public function getClientMediaType(): ?string {
+		return null;
+	}
 }
 
 #[AllowMockObjectsWithoutExpectations]
@@ -27,7 +37,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 	public function testHappyPath() {
 		$mediaId = $this->randomId();
 		$command = new HandleUploadedMedia(
-			file: new TestUploadedFileInterface,
+			file: new TestUploadedFileInterface(),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: 'Image for testing',
@@ -58,7 +68,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			accessibilityText: $command->accessibilityText,
 			mediaType: $media->type,
 			handler: $media->handler,
-			fileDetails: []
+			fileDetails: [],
 		);
 		$this->expectEvent($event);
 		$this->assertValueObjectEquals($media, $event->getMediaObject());
@@ -70,7 +80,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 		$this->expectException(InvalidValueProperties::class);
 
 		new HandleUploadedMedia(
-			file: new TestUploadedFileInterface,
+			file: new TestUploadedFileInterface(),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: '',
@@ -81,7 +91,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 		$this->expectException(InvalidValueProperties::class);
 
 		new HandleUploadedMedia(
-			file: new TestUploadedFileInterface,
+			file: new TestUploadedFileInterface(),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: 'alt text',
@@ -92,7 +102,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 	public function testItFailsIfTheGivenContentIdExists() {
 		$mediaId = $this->randomId();
 		$command = new HandleUploadedMedia(
-			file: new TestUploadedFileInterface,
+			file: new TestUploadedFileInterface(),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
 			mediaId: $mediaId,
@@ -109,7 +119,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 
 	public function testItFailsIfTheUserCannotHandleUploadedMedia() {
 		$command = new HandleUploadedMedia(
-			file: new TestUploadedFileInterface,
+			file: new TestUploadedFileInterface(),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
 			accessibilityText: 'alt text',
@@ -125,7 +135,7 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 
 	public function testItGeneratesANewIdThatDoesNotExist() {
 		$command = new HandleUploadedMedia(
-			file: new TestUploadedFileInterface,
+			file: new TestUploadedFileInterface(),
 			siteId: $this->randomId(),
 			userId: $this->randomId(),
 			accessibilityText: 'alt text',

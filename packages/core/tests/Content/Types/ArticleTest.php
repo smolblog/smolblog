@@ -9,9 +9,9 @@ use Smolblog\Core\Test\ContentTypeTest;
 
 #[AllowMockObjectsWithoutExpectations]
 final class ArticleTest extends ContentTypeTest {
-	const string TYPE_KEY = 'article';
-	const string SERVICE_CLASS = ArticleService::class;
-	const string TYPE_CLASS = Article::class;
+	public const string TYPE_KEY = 'article';
+	public const string SERVICE_CLASS = ArticleService::class;
+	public const string TYPE_CLASS = Article::class;
 
 	protected function createExampleType(): ContentType {
 		return new Article(title: 'This is a test', text: new Markdown('This is _only_ a test.'));

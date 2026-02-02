@@ -19,8 +19,7 @@ readonly class Note extends ContentType {
 	 */
 	public function __construct(
 		public Markdown $text,
-	) {
-	}
+	) {}
 
 	/**
 	 * Create the title by truncating the text.

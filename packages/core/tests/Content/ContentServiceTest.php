@@ -12,8 +12,7 @@ use Smolblog\Core\Test\TestDefaultContentType;
 final class ContentServiceTest extends ContentTestBase {
 	private ContentService $service;
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->service = $this->app->container->get(ContentService::class);

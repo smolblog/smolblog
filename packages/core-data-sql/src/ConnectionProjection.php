@@ -49,8 +49,7 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 	public function __construct(
 		private DatabaseService $db,
 		private SerializationService $serde,
-	) {
-	}
+	) {}
 
 	/**
 	 * Find out if the given Connection belongs to the given User.
@@ -92,9 +91,9 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 		}
 
 		// This has to do with different DB engines which we cannot currently test.
-		return is_string($result) ?
-			$this->serde->fromJson($result, as: Connection::class) :
-			$this->serde->fromArray($result, as: Connection::class); // @codeCoverageIgnore
+		return is_string($result)
+			? $this->serde->fromJson($result, as: Connection::class)
+			: $this->serde->fromArray($result, as: Connection::class); // @codeCoverageIgnore
 	}
 
 	/**
@@ -164,7 +163,7 @@ class ConnectionProjection implements ConnectionRepo, EventListenerService, Data
 		$this->db->update(
 			'connections',
 			['connection_obj' => $this->serde->toJson($updated)],
-			['connection_uuid' => $event->entityId]
+			['connection_uuid' => $event->entityId],
 		);
 	}
 

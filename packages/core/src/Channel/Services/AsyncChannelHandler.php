@@ -30,8 +30,7 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 	public function __construct(
 		private JobManager $jobManager,
 		private EventDispatcherInterface $eventBus,
-	) {
-	}
+	) {}
 
 	/**
 	 * Dispatch an async process to complete the push later.
@@ -44,7 +43,7 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 	public function pushContentToChannel(
 		Content $content,
 		Channel $channel,
-		UuidInterface $userId
+		UuidInterface $userId,
 	): void {
 		$processId = UuidFactory::random();
 		$startEvent = new ContentPushedToChannel(
@@ -63,7 +62,7 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 				userId: $userId,
 				processId: $processId,
 				service: static::class,
-			)
+			),
 		);
 	}
 
@@ -80,7 +79,7 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 		Content $content,
 		Channel $channel,
 		UuidInterface $userId,
-		UuidInterface $processId
+		UuidInterface $processId,
 	): void {
 		try {
 			$result = $this->push(
@@ -128,6 +127,6 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 		Content $content,
 		Channel $channel,
 		UuidInterface $userId,
-		UuidInterface $processId
+		UuidInterface $processId,
 	): ContentChannelEntry;
 }

@@ -23,8 +23,7 @@ readonly class Reblog extends ContentType {
 		public UriInterface $url,
 		public ?string $title = null,
 		public ?Markdown $caption = null,
-	) {
-	}
+	) {}
 
 	/**
 	 * Construct the title from the URL if no title is given.

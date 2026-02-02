@@ -20,6 +20,5 @@ readonly class ContentWarning implements Value {
 	public function __construct(
 		public string $content,
 		public bool $mention = false,
-	) {
-	}
+	) {}
 }

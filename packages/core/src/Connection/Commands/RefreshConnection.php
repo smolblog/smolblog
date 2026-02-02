@@ -22,6 +22,5 @@ readonly class RefreshConnection implements Command, Authenticated {
 	public function __construct(
 		public UuidInterface $connectionId,
 		public UuidInterface $userId,
-	) {
-	}
+	) {}
 }

@@ -22,6 +22,5 @@ readonly class DeleteConnection implements Command, Authenticated {
 	public function __construct(
 		public readonly UuidInterface $userId,
 		public readonly UuidInterface $connectionId,
-	) {
-	}
+	) {}
 }

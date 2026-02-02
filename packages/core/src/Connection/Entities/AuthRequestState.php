@@ -29,6 +29,5 @@ readonly class AuthRequestState implements Value {
 		public readonly string $handler,
 		#[MapType('mixed')] public readonly array $info,
 		public readonly ?string $returnToUrl = null,
-	) {
-	}
+	) {}
 }

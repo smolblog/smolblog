@@ -17,6 +17,5 @@ readonly class Warnings extends ContentExtension {
 	 *
 	 * @param ContentWarning[] $warnings Applicable content warnings.
 	 */
-	public function __construct(#[ListType(ContentWarning::class)] public array $warnings) {
-	}
+	public function __construct(#[ListType(ContentWarning::class)] public array $warnings) {}
 }

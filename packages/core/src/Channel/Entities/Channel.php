@@ -46,8 +46,7 @@ abstract class Channel implements Entity, Value {
 		public string $displayName,
 		public ?UuidInterface $userId = null,
 		public ?UuidInterface $connectionId = null,
-	) {
-	}
+	) {}
 
 	/**
 	 * Get the constructed ID from $handler and $handlerKey

@@ -48,8 +48,7 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	public function __construct(
 		private DatabaseService $db,
 		private SerializationService $serde,
-	) {
-	}
+	) {}
 
 	/**
 	 * Persist a DomainEvent.
@@ -60,13 +59,13 @@ class EventStream implements EventListenerService, DatabaseTableHandler {
 	#[EventListener]
 	public function onDomainEvent(DomainEvent $event) {
 		$this->db->insert('event_stream', [
-				'event_uuid' => $event->id,
-				'timestamp' => $event->timestamp->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.u'),
-				'user_uuid' => $event->userId,
-				'aggregate_uuid' => $event->aggregateId,
-				'entity_uuid' => $event->entityId,
-				'process_uuid' => $event->processId,
-				'event_obj' => $this->serde->toJson($event),
+			'event_uuid' => $event->id,
+			'timestamp' => $event->timestamp->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.u'),
+			'user_uuid' => $event->userId,
+			'aggregate_uuid' => $event->aggregateId,
+			'entity_uuid' => $event->entityId,
+			'process_uuid' => $event->processId,
+			'event_obj' => $this->serde->toJson($event),
 		]);
 	}
 }

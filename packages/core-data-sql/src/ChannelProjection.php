@@ -57,8 +57,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	public function __construct(
 		private DatabaseService $db,
 		private SerializationService $serde,
-	) {
-	}
+	) {}
 
 	/**
 	 * Get a Channel.
@@ -79,9 +78,9 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		}
 
 		// This has to do with different DB engines which we cannot currently test.
-		return is_string($result) ?
-			$this->serde->fromJson($result, as: Channel::class) :
-			$this->serde->fromArray($result, as: Channel::class); // @codeCoverageIgnore
+		return is_string($result)
+			? $this->serde->fromJson($result, as: Channel::class)
+			: $this->serde->fromArray($result, as: Channel::class); // @codeCoverageIgnore
 	}
 
 	/**
@@ -113,12 +112,12 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	 */
 	public function channelsForSite(UuidInterface $siteId): array {
 		$query = $this->db->createQueryBuilder();
-		$query->
-			select('c.channel_obj')->
-			from('channels', 'c')->
-			innerJoin('c', 'channels_sites', 'cs', 'c.channel_uuid = cs.channel_uuid')->
-			where('cs.site_uuid = ?')->
-			setParameter(0, $siteId);
+		$query
+			->select('c.channel_obj')
+			->from('channels', 'c')
+			->innerJoin('c', 'channels_sites', 'cs', 'c.channel_uuid = cs.channel_uuid')
+			->where('cs.site_uuid = ?')
+			->setParameter(0, $siteId);
 		$results = $query->fetchFirstColumn();
 
 		return array_map(
@@ -187,7 +186,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 		if (
 			$this->siteCanUseChannel(
 				siteId: $event->aggregateId ?? UuidFactory::nil(),
-				channelId: $event->entityId ?? UuidFactory::nil()
+				channelId: $event->entityId ?? UuidFactory::nil(),
 			)
 		) {
 			return;
