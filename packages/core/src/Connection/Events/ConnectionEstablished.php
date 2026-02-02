@@ -19,13 +19,13 @@ class ConnectionEstablished implements DomainEvent {
 	/**
 	 * Create the Event
 	 *
-	 * @param string             $handler     Key for the handler this connection is for.
-	 * @param string             $handlerKey  Unique identifier for this connection for this handler.
-	 * @param string             $displayName Human-readable name for this connection.
-	 * @param array              $details     Additional information needed to connect to this handler.
-	 * @param UuidInterface         $userId      ID of the user initiating this change.
-	 * @param UuidInterface|null    $processId    ID of the process this event belongs to.
-	 * @param UuidInterface|null    $id          Optional ID for the event.
+	 * @param string                 $handler     Key for the handler this connection is for.
+	 * @param string                 $handlerKey  Unique identifier for this connection for this handler.
+	 * @param string                 $displayName Human-readable name for this connection.
+	 * @param array                  $details     Additional information needed to connect to this handler.
+	 * @param UuidInterface          $userId      ID of the user initiating this change.
+	 * @param UuidInterface|null     $processId   ID of the process this event belongs to.
+	 * @param UuidInterface|null     $id          Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp   Optional timestamp for the event (default now).
 	 */
 	public function __construct(
@@ -56,9 +56,19 @@ class ConnectionEstablished implements DomainEvent {
 		);
 	}
 
+	/**
+	 * Aggregate ID is not used
+	 *
+	 * @var null
+	 */
 	#[Field(exclude: true)]
 	public null $aggregateId { get => null; }
 
+	/**
+	 * Entity ID is created from handler and handler key.
+	 *
+	 * @var null
+	 */
 	#[Field(exclude: true)]
 	public UuidInterface $entityId {
 		get => Connection::buildId(handler: $this->handler, handlerKey: $this->handlerKey);

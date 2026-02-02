@@ -36,6 +36,11 @@ class ConnectionRefreshed implements DomainEvent {
 		$this->setIdAndTime($id, $timestamp);
 	}
 
+	/**
+	 * Aggregate ID is not used
+	 *
+	 * @var null
+	 */
 	#[Field(exclude: true)]
 	public null $aggregateId { get => null; }
 }

@@ -48,6 +48,11 @@ class SiteDetailsUpdated implements DomainEvent, Validated {
 		$this->validate();
 	}
 
+	/**
+	 * Entity ID is not used
+	 *
+	 * @var null
+	 */
 	#[Field(exclude: true)]
 	public null $entityId { get => null; }
 }
