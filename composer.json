@@ -24,7 +24,8 @@
         "crell/serde": "dev-master"
     },
     "require-dev": {
-        "symplify/monorepo-builder": "^11.2"
+        "symplify/monorepo-builder": "^11.2",
+        "friendsofphp/php-cs-fixer": "^3.93"
     },
     "replace": {
         "smolblog/core": "self.version",
@@ -52,8 +53,9 @@
             "phpunit --testsuite unit",
             "Smolblog\\Test\\CoverageReport::report"
         ],
-        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
-        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+        "lint": "./vendor/bin/php-cs-fixer check",
+        "lintfix": "./vendor/bin/php-cs-fixer fix",
+        "linter": "./vendor/bin/php-cs-fixer",
         "monorepo": "./vendor/bin/monorepo-builder"
     }
 }
