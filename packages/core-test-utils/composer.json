@@ -1,0 +1,25 @@
+{
+    "name": "smolblog/core-test-utils",
+    "description": "Test utilities for the Smolblog core library.",
+    "type": "library",
+    "license": "AGPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\Core\\Test\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Smolblog",
+            "email": "dev@smolblog.org"
+        },
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me"
+        }
+    ],
+    "require": {
+        "cavatappi/testing": "^0.2"
+    },
+    "minimum-stability": "stable"
+}

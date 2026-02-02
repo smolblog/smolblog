@@ -1,0 +1,41 @@
+{
+    "name": "smolblog/core-data-sql",
+    "description": "Data persistance and retrieval for Smolblog using a SQL database",
+    "type": "smolblog-plugin",
+    "license": "AGPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\CoreDataSql\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Smolblog\\CoreDataSql\\Test\\": "src-test/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Smolblog",
+            "email": "dev@smolblog.org"
+        },
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "cavatappi/foundation": "^0.2",
+        "cavatappi/infrastructure": "^0.2",
+        "smolblog/core": "^0.6",
+        "doctrine/dbal": "^4.2"
+    },
+    "require-dev": {
+        "cavatappi/testing": "^0.2"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    }
+}

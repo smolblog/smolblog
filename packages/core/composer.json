@@ -1,0 +1,47 @@
+{
+    "name": "smolblog/core",
+    "description": "Core features for Smolblog",
+    "type": "library",
+    "license": "AGPL-3.0-only",
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Smolblog\\Core\\Test\\": "src-test/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Smolblog",
+            "email": "dev@smolblog.org"
+        },
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me"
+        }
+    ],
+    "require-dev": {
+        "cavatappi/testing": "^0.2",
+        "smolblog/core-test-utils": "@dev"
+    },
+    "scripts": {
+        "test": "phpunit --testsuite core --no-coverage",
+        "test-coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --testsuite core --coverage-text"
+        ],
+        "lint": "./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "lintfix": "./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+        "endpoints": "Smolblog\\Core\\Endpoints::listEndpoints"
+    },
+    "require": {
+        "php": "^8.4",
+        "psr/container": "^2.0",
+        "psr/event-dispatcher": "^1.0",
+        "elephox/mimey": "^4.0",
+        "cavatappi/foundation": "^0.2"
+    }
+}

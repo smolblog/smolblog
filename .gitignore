@@ -8,3 +8,5 @@ test-coverage
 html-coverage
 .DS_Store
 registration.json
+.php-cs-fixer.php
+.php-cs-fixer.cache

@@ -1,0 +1,127 @@
+<?php
+
+namespace Smolblog\Core\Test;
+
+use Cavatappi\Foundation\Job\Job;
+use Cavatappi\Foundation\Job\JobManager;
+use Cavatappi\Test\ModelTest;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Channel\Entities\ChannelHandlerConfiguration;
+use Smolblog\Core\Channel\Jobs\ContentPushJob;
+use Smolblog\Core\Channel\Services\AsyncChannelHandler;
+use Smolblog\Core\Channel\Services\ChannelHandler;
+use Smolblog\Core\Channel\Services\ProjectionChannelHandler;
+use Smolblog\Core\Content\Data\ContentRepo;
+use Smolblog\Core\Permissions\GlobalPermissionsService;
+use Smolblog\Core\Permissions\SitePermissionsService;
+
+/**
+ * Provices a ChannelHandler with key 'testmock'
+ */
+abstract class ChannelHandlerTestBase implements ChannelHandler {
+	public static function getConfiguration(): ChannelHandlerConfiguration {
+		return new ChannelHandlerConfiguration(
+			key: 'testmock',
+			displayName: 'Test',
+		);
+	}
+}
+
+/**
+ * Provices a ChannelHandler with key 'asyncmock'
+ */
+abstract class DefaultChannelHandlerTestBase extends AsyncChannelHandler {
+	public static function getConfiguration(): ChannelHandlerConfiguration {
+		return new ChannelHandlerConfiguration(
+			key: 'asyncmock',
+			displayName: 'Default',
+		);
+	}
+
+	public function __construct(
+		JobManager $jobManager,
+		EventDispatcherInterface $eventBus,
+	) {
+		$jobManagerProxy = new class ($jobManager) implements JobManager {
+			public function __construct(private JobManager $actual) {}
+			public function enqueue(Job $job): void {
+				if (get_class($job) === ContentPushJob::class) {
+					// Since our service is actually an anonymous class, we need to override the job.
+					$this->actual->enqueue($job->with(service: DefaultChannelHandlerTestBase::class));
+					return;
+				}
+				$this->actual->enqueue($job);
+			}
+		};
+		parent::__construct($jobManagerProxy, $eventBus);
+	}
+}
+
+/**
+ * Provices a ChannelHandler with key 'projectionmock'
+ */
+abstract class ProjectionChannelHandlerTestBase extends ProjectionChannelHandler {
+	public static function getConfiguration(): ChannelHandlerConfiguration {
+		return new ChannelHandlerConfiguration(
+			key: 'projectionmock',
+			displayName: 'Default',
+		);
+	}
+}
+
+#[AllowMockObjectsWithoutExpectations]
+abstract class ChannelTestBase extends ModelTest {
+	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
+
+	protected ChannelRepo&MockObject $channels;
+	protected SitePermissionsService&MockObject $perms;
+	protected GlobalPermissionsService&MockObject $globalPerms;
+	protected ContentRepo&MockObject $contentRepo;
+	protected ChannelHandlerTestBase&MockObject $handlerMock;
+	protected DefaultChannelHandlerTestBase&MockObject $defaultHandlerMock;
+	protected ProjectionChannelHandlerTestBase&MockObject $defaultProjectionMock;
+
+	protected function createMockServices(): array {
+		$this->channels = $this->createMock(ChannelRepo::class);
+		$this->perms = $this->createMock(SitePermissionsService::class);
+		$this->globalPerms = $this->createMock(GlobalPermissionsService::class);
+		$this->contentRepo = $this->createMock(ContentRepo::class);
+		$this->handlerMock = $this->createMock(ChannelHandlerTestBase::class);
+
+		return [
+			ChannelRepo::class => fn() => $this->channels,
+			SitePermissionsService::class => fn() => $this->perms,
+			GlobalPermissionsService::class => fn() => $this->globalPerms,
+			ContentRepo::class => fn() => $this->contentRepo,
+			ChannelHandlerTestBase::class => fn() => $this->handlerMock,
+			DefaultChannelHandlerTestBase::class => fn() => $this->defaultHandlerMock,
+			ProjectionChannelHandlerTestBase::class => fn() => $this->defaultProjectionMock,
+			...parent::createMockServices(),
+		];
+	}
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->defaultHandlerMock = $this
+			->getMockBuilder(DefaultChannelHandlerTestBase::class)
+			->onlyMethods(['push'])
+			->setConstructorArgs([
+				'jobManager' => $this->app->container->get(JobManager::class),
+				'eventBus' => $this->app->container->get(EventDispatcherInterface::class),
+			])
+			->getMock();
+
+		$this->defaultProjectionMock = $this
+			->getMockBuilder(ProjectionChannelHandlerTestBase::class)
+			->onlyMethods(['project'])
+			->setConstructorArgs([
+				'eventBus' => $this->app->container->get(EventDispatcherInterface::class),
+				'channels' => $this->channels,
+			])
+			->getMock();
+	}
+}
