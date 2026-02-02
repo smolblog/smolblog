@@ -19,9 +19,9 @@ readonly class CreateSite implements Command, Authenticated {
 	 * Create the command.
 	 *
 	 * @param UuidInterface      $userId      User creating the site.
-	 * @param string          $key         Uniquely identifiable name for the site.
-	 * @param string          $displayName Displayed title for the site.
-	 * @param string|null     $description Description or tagline for the site.
+	 * @param string             $key         Uniquely identifiable name for the site.
+	 * @param string             $displayName Displayed title for the site.
+	 * @param string|null        $description Description or tagline for the site.
 	 * @param UuidInterface|null $siteId      Optional ID for the new site.
 	 * @param UuidInterface|null $siteUser    User who will manage the site.
 	 */

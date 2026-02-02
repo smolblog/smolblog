@@ -12,6 +12,7 @@ use Smolblog\Core\Channel\Data\ChannelRepo;
 use Smolblog\Core\Channel\Entities\Channel;
 use Smolblog\Core\Channel\Events\ChannelAddedToSite;
 use Smolblog\Core\Permissions\SitePermissionsService;
+
 /**
  * Service to handle setting permissions for a Site and Channel.
  */

@@ -24,15 +24,15 @@ class ContentPushedToChannel implements DomainEvent {
 	/**
 	 * Create the event.
 	 *
-	 * @param Content            $content     The content that was pushed (in the state that it was pushed).
-	 * @param UuidInterface         $channelId   ID of the channel being pushed to.
-	 * @param UuidInterface         $userId      User who first initiated the action.
-	 * @param UuidInterface         $aggregateId Site the content belongs to.
-	 * @param UuidInterface|null    $id          Optional ID for the event.
+	 * @param Content                $content     The content that was pushed (in the state that it was pushed).
+	 * @param UuidInterface          $channelId   ID of the channel being pushed to.
+	 * @param UuidInterface          $userId      User who first initiated the action.
+	 * @param UuidInterface          $aggregateId Site the content belongs to.
+	 * @param UuidInterface|null     $id          Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp   Optional timestamp for the event.
-	 * @param UuidInterface|null    $entityId    ContentChannelEntry ID; will be created if not provided.
-	 * @param UuidInterface|null    $processId   UuidInterface for this push process if applicable.
-	 * @param array              $details     Channel-specific details.
+	 * @param UuidInterface|null     $entityId    ContentChannelEntry ID; will be created if not provided.
+	 * @param UuidInterface|null     $processId   UuidInterface for this push process if applicable.
+	 * @param array                  $details     Channel-specific details.
 	 */
 	public function __construct(
 		public readonly Content $content,

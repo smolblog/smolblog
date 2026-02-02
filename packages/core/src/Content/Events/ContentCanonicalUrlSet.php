@@ -22,13 +22,13 @@ class ContentCanonicalUrlSet implements DomainEvent {
 	/**
 	 * Create the event.
 	 *
-	 * @param UriInterface                $url         New canonical URL for the Content.
-	 * @param UuidInterface         $aggregateId Site the content belongs to.
-	 * @param UuidInterface         $userId      User making the change.
-	 * @param UuidInterface         $entityId    ID of the content object.
-	 * @param UuidInterface|null    $id          ID for this event.
+	 * @param UriInterface           $url         New canonical URL for the Content.
+	 * @param UuidInterface          $aggregateId Site the content belongs to.
+	 * @param UuidInterface          $userId      User making the change.
+	 * @param UuidInterface          $entityId    ID of the content object.
+	 * @param UuidInterface|null     $id          ID for this event.
 	 * @param DateTimeInterface|null $timestamp   Timestamp for this event.
-	 * @param UuidInterface|null    $processId   Optional process ID this belongs to.
+	 * @param UuidInterface|null     $processId   Optional process ID this belongs to.
 	 */
 	public function __construct(
 		public readonly UriInterface $url,

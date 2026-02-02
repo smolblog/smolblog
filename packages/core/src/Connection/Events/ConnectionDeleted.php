@@ -17,10 +17,10 @@ class ConnectionDeleted implements DomainEvent {
 	/**
 	 * Create the Event
 	 *
-	 * @param UuidInterface         $entityId  ID of the connection this event belongs to.
-	 * @param UuidInterface         $userId    ID of the user initiating this change.
-	 * @param UuidInterface|null    $processId        Optional ID for the process causing the event.
-	 * @param UuidInterface|null    $id        Optional ID for the event.
+	 * @param UuidInterface          $entityId  ID of the connection this event belongs to.
+	 * @param UuidInterface          $userId    ID of the user initiating this change.
+	 * @param UuidInterface|null     $processId Optional ID for the process causing the event.
+	 * @param UuidInterface|null     $id        Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(

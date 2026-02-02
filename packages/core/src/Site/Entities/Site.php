@@ -17,10 +17,10 @@ readonly class Site implements Value, Entity {
 	 * Construct the site.
 	 *
 	 * @param UuidInterface      $id          ID for this site.
-	 * @param string          $key         Unique subdomain or subdirectory identifier for this site.
-	 * @param string          $displayName Site title as shown in lists and other admin screens.
+	 * @param string             $key         Unique subdomain or subdirectory identifier for this site.
+	 * @param string             $displayName Site title as shown in lists and other admin screens.
 	 * @param UuidInterface      $userId      Primary administrator for the site.
-	 * @param string|null     $description Optional description for the site.
+	 * @param string|null        $description Optional description for the site.
 	 * @param UuidInterface|null $pictureId   ID for the site picture.
 	 */
 	public function __construct(

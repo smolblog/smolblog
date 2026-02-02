@@ -15,7 +15,7 @@ readonly class Reblog extends ContentType {
 	/**
 	 * Construct the Reblog.
 	 *
-	 * @param UriInterface           $url     URL being reblogged.
+	 * @param UriInterface  $url     URL being reblogged.
 	 * @param string|null   $title   Optional title for the content.
 	 * @param Markdown|null $caption Optional caption or comment on the reblogged post.
 	 */

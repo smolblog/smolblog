@@ -17,11 +17,11 @@ readonly class AuthRequestState implements Value {
 	/**
 	 * Create the state
 	 *
-	 * @param string     $key         String used by both parties to identify the request.
+	 * @param string        $key         String used by both parties to identify the request.
 	 * @param UuidInterface $userId      User this request is attached to.
-	 * @param string     $handler     Connector this request is using.
-	 * @param array      $info        Information to store with this request.
-	 * @param string     $returnToUrl Optional URL to return the user to after completion.
+	 * @param string        $handler     Connector this request is using.
+	 * @param array         $info        Information to store with this request.
+	 * @param string        $returnToUrl Optional URL to return the user to after completion.
 	 */
 	public function __construct(
 		public readonly string $key,

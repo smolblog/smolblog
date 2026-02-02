@@ -28,7 +28,7 @@ interface MediaHandler extends Registerable {
 	 * @throws InvalidMediaException If the file cannot be processed.
 	 *
 	 * @param HandleUploadedMedia $command Original command being executed.
-	 * @param UuidInterface          $mediaId ID to use to create the Media object.
+	 * @param UuidInterface       $mediaId ID to use to create the Media object.
 	 * @return Media
 	 */
 	public function handleUploadedFile(HandleUploadedMedia $command, UuidInterface $mediaId): Media;
@@ -39,7 +39,7 @@ interface MediaHandler extends Registerable {
 	 * @throws InvalidMediaException If the file at the URL cannot be processed.
 	 *
 	 * @param SideloadMedia $command Original command being executed.
-	 * @param UuidInterface    $mediaId ID to use to create the Media object.
+	 * @param UuidInterface $mediaId ID to use to create the Media object.
 	 * @return Media
 	 */
 	public function sideloadFile(SideloadMedia $command, UuidInterface $mediaId): Media;

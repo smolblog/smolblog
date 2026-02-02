@@ -25,11 +25,11 @@ readonly class HandleUploadedMedia implements Command, Authenticated, Validated 
 	 * @throws InvalidValueProperties When no accessibility text is provided.
 	 *
 	 * @param UploadedFileInterface $file              Uploaded file.
-	 * @param UuidInterface            $userId            User uploading the file.
-	 * @param UuidInterface            $siteId            Site file is being uploaded to.
+	 * @param UuidInterface         $userId            User uploading the file.
+	 * @param UuidInterface         $siteId            Site file is being uploaded to.
 	 * @param string                $accessibilityText Alt text.
 	 * @param string|null           $title             Title of the media.
-	 * @param UuidInterface|null       $mediaId           ID for the new media; will auto-generate if not given.
+	 * @param UuidInterface|null    $mediaId           ID for the new media; will auto-generate if not given.
 	 */
 	public function __construct(
 		#[ClassNameTypeMap(key: 'implementationType')] public UploadedFileInterface $file,
@@ -42,8 +42,7 @@ readonly class HandleUploadedMedia implements Command, Authenticated, Validated 
 		$this->validate();
 	}
 
-	public function validate(): void
-	{
+	public function validate(): void {
 		if ((isset($this->title) && empty($this->title)) || empty($this->accessibilityText)) {
 			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
 		}

@@ -17,12 +17,12 @@ readonly class ContentPushJob implements Job {
 	/**
 	 * Construct the job.
 	 *
-	 * @param string      $service   AsyncChannelHandler subclass that should handle this command.
-	 * @param Content     $content   Content to push.
-	 * @param Channel     $channel   Channel to push to.
-	 * @param UuidInterface  $userId    ID of the user who initiatied the push.
-	 * @param UuidInterface  $processId ID of the push process.
-	 * @param string|null $method    Optional method to call; default 'completeContentPush'.
+	 * @param string        $service   AsyncChannelHandler subclass that should handle this command.
+	 * @param Content       $content   Content to push.
+	 * @param Channel       $channel   Channel to push to.
+	 * @param UuidInterface $userId    ID of the user who initiatied the push.
+	 * @param UuidInterface $processId ID of the push process.
+	 * @param string|null   $method    Optional method to call; default 'completeContentPush'.
 	 */
 	public function __construct(
 		string $service,

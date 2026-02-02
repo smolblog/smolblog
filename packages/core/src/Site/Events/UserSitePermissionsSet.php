@@ -20,9 +20,9 @@ class UserSitePermissionsSet implements DomainEvent {
 	 * @param UuidInterface          $userId      User making the change.
 	 * @param UuidInterface          $aggregateId Site user permissions are being set for.
 	 * @param UuidInterface          $entityId    User permissions are being set for.
-	 * @param SitePermissionLevel $level       Level of permissions to set.
+	 * @param SitePermissionLevel    $level       Level of permissions to set.
 	 * @param UuidInterface|null     $id          ID for the event.
-	 * @param DateTimeInterface|null  $timestamp   Timestamp for the event.
+	 * @param DateTimeInterface|null $timestamp   Timestamp for the event.
 	 * @param UuidInterface|null     $processId   Optional process this event is part of.
 	 */
 	public function __construct(

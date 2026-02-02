@@ -21,13 +21,13 @@ readonly class UpdateContent implements Command, Authenticated {
 	/**
 	 * Create the command.
 	 *
-	 * @param UuidInterface         $contentId        ID of the new content; will be created if omitted.
-	 * @param UuidInterface         $userId           ID of the user performing this action.
-	 * @param ContentType        $body             ContentType being created.
-	 * @param UuidInterface         $siteId           Site this content is being created for.
-	 * @param UuidInterface         $contentUserId    User that is responsible for this content.
+	 * @param UuidInterface          $contentId        ID of the new content; will be created if omitted.
+	 * @param UuidInterface          $userId           ID of the user performing this action.
+	 * @param ContentType            $body             ContentType being created.
+	 * @param UuidInterface          $siteId           Site this content is being created for.
+	 * @param UuidInterface          $contentUserId    User that is responsible for this content.
 	 * @param DateTimeInterface|null $publishTimestamp Time and date content was originally published.
-	 * @param ContentExtension[] $extensions       Extension information for this Content.
+	 * @param ContentExtension[]     $extensions       Extension information for this Content.
 	 */
 	public function __construct(
 		public UuidInterface $contentId,

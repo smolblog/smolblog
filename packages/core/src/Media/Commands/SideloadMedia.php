@@ -22,11 +22,11 @@ readonly class SideloadMedia implements Command, Authenticated, Validated {
 	 *
 	 * @throws InvalidValueProperties If title or accessibility text are given and empty.
 	 *
-	 * @param string          $url               File to sideload.
+	 * @param string             $url               File to sideload.
 	 * @param UuidInterface      $userId            User uploading the file.
 	 * @param UuidInterface      $siteId            Site file is being uploaded to.
-	 * @param string          $accessibilityText Alt text.
-	 * @param string|null     $title             Title of the media.
+	 * @param string             $accessibilityText Alt text.
+	 * @param string|null        $title             Title of the media.
 	 * @param UuidInterface|null $mediaId           ID for the new media; will auto-generate if not given.
 	 */
 	public function __construct(
@@ -40,8 +40,7 @@ readonly class SideloadMedia implements Command, Authenticated, Validated {
 		$this->validate();
 	}
 
-	public function validate(): void
-	{
+	public function validate(): void {
 		if ((isset($this->title) && empty($this->title)) || empty($this->accessibilityText)) {
 			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
 		}

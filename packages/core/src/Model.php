@@ -14,8 +14,7 @@ class Model implements Module {
 	use FileDiscoveryKit;
 	use ModuleKit;
 
-	private static function serviceMapOverrides(): array
-	{
+	private static function serviceMapOverrides(): array {
 		return [
 			// Defined here because there is an optional parameter.
 			Media\Services\MediaHandlerRegistry::class => [

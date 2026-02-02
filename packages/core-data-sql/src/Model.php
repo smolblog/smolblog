@@ -18,8 +18,7 @@ class Model implements Module {
 	use FileDiscoveryKit;
 	use ModuleKit;
 
-	private static function serviceMapOverrides(): array
-	{
+	private static function serviceMapOverrides(): array {
 		return [
 			ChannelRepo::class => ChannelProjection::class,
 			ConnectionRepo::class => ConnectionProjection::class,

@@ -20,10 +20,10 @@ readonly class EditMediaAttributes implements Command, Authenticated, Validated 
 	 *
 	 * @throws InvalidValueProperties Thrown if no updated attributes are given.
 	 *
-	 * @param UuidInterface  $mediaId           ID of the media being edited.
-	 * @param UuidInterface  $userId            User making this change.
-	 * @param string|null $title             New title.
-	 * @param string|null $accessibilityText New alt text.
+	 * @param UuidInterface $mediaId           ID of the media being edited.
+	 * @param UuidInterface $userId            User making this change.
+	 * @param string|null   $title             New title.
+	 * @param string|null   $accessibilityText New alt text.
 	 */
 	public function __construct(
 		public readonly UuidInterface $mediaId,
@@ -34,8 +34,7 @@ readonly class EditMediaAttributes implements Command, Authenticated, Validated 
 		$this->validate();
 	}
 
-	public function validate(): void
-	{
+	public function validate(): void {
 		if (!isset($this->title) && !isset($this->accessibilityText)) {
 			throw new InvalidValueProperties('No updated attributes provided.');
 		}

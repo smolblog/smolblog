@@ -52,7 +52,7 @@ class ConnectionRefresher implements CommandHandlerService {
 	/**
 	 * Check the given Connection to see if it needs to be refreshed. If it does, refresh it and save the result.
 	 *
-	 * @param Connection $connection Connection object to check.
+	 * @param Connection    $connection Connection object to check.
 	 * @param UuidInterface $userId     User initiating the check.
 	 * @return Connection Connection object ready to be used.
 	 */

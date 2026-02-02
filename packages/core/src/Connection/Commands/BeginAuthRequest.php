@@ -21,10 +21,10 @@ readonly class BeginAuthRequest implements Command, Authenticated {
 	/**
 	 * Create the command
 	 *
-	 * @param string     $handler     Identifier for a registered Connector.
+	 * @param string        $handler     Identifier for a registered Connector.
 	 * @param UuidInterface $userId      Identifier for the authenticated User.
-	 * @param string     $callbackUrl Callback URL to give to the handler.
-	 * @param string     $returnToUrl Optional URL to return the end-user to upon completion.
+	 * @param string        $callbackUrl Callback URL to give to the handler.
+	 * @param string        $returnToUrl Optional URL to return the end-user to upon completion.
 	 */
 	public function __construct(
 		public readonly string $handler,

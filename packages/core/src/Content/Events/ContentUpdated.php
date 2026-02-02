@@ -21,16 +21,16 @@ class ContentUpdated implements DomainEvent {
 	/**
 	 * Undocumented function
 	 *
-	 * @param ContentType        $body             Body of the content.
-	 * @param UuidInterface         $aggregateId      Site the content belongs to.
-	 * @param UuidInterface         $userId           User making the change.
-	 * @param UuidInterface         $entityId         ID of the content object.
-	 * @param UuidInterface|null    $id               ID for this event.
+	 * @param ContentType            $body             Body of the content.
+	 * @param UuidInterface          $aggregateId      Site the content belongs to.
+	 * @param UuidInterface          $userId           User making the change.
+	 * @param UuidInterface          $entityId         ID of the content object.
+	 * @param UuidInterface|null     $id               ID for this event.
 	 * @param DateTimeInterface|null $timestamp        Timestamp for this event.
-	 * @param UuidInterface|null    $processId    Process responsible for the event.
-	 * @param UuidInterface|null    $contentUserId    User responsible for the content if not $userId.
+	 * @param UuidInterface|null     $processId        Process responsible for the event.
+	 * @param UuidInterface|null     $contentUserId    User responsible for the content if not $userId.
 	 * @param DateTimeInterface|null $publishTimestamp Time and date the content was first published.
-	 * @param ContentExtension[] $extensions       Extensions on the content.
+	 * @param ContentExtension[]     $extensions       Extensions on the content.
 	 */
 	public function __construct(
 		public readonly ContentType $body,

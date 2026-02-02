@@ -24,11 +24,11 @@ readonly class Media implements Entity, Value, Validated {
 	 * @param UuidInterface $id                ID for this object.
 	 * @param UuidInterface $userId            User who owns this object.
 	 * @param UuidInterface $siteId            Site this object belongs to.
-	 * @param string     $title             Title for the media (usually filename). Must not be empty.
-	 * @param string     $accessibilityText Text description of the media. Must not be empty.
-	 * @param MediaType  $type              Broad type of media (image, video, etc).
-	 * @param string     $handler           Key for handler for this media.
-	 * @param array      $fileDetails       Information needed by file handler.
+	 * @param string        $title             Title for the media (usually filename). Must not be empty.
+	 * @param string        $accessibilityText Text description of the media. Must not be empty.
+	 * @param MediaType     $type              Broad type of media (image, video, etc).
+	 * @param string        $handler           Key for handler for this media.
+	 * @param array         $fileDetails       Information needed by file handler.
 	 */
 	public function __construct(
 		public UuidInterface $id,

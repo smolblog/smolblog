@@ -20,14 +20,14 @@ class MediaAttributesUpdated implements DomainEvent, Validated {
 	 *
 	 * @throws InvalidValueProperties Thrown if no updated attributes are given.
 	 *
-	 * @param UuidInterface         $entityId          ID of the Media object.
-	 * @param UuidInterface         $userId            User uploading the media.
-	 * @param UuidInterface         $aggregateId       Site media is being uploaded to.
-	 * @param string|null        $title             Updated title of the media.
-	 * @param string|null        $accessibilityText Updated text-only description of the media.
-	 * @param UuidInterface|null    $id                ID of the event.
+	 * @param UuidInterface          $entityId          ID of the Media object.
+	 * @param UuidInterface          $userId            User uploading the media.
+	 * @param UuidInterface          $aggregateId       Site media is being uploaded to.
+	 * @param string|null            $title             Updated title of the media.
+	 * @param string|null            $accessibilityText Updated text-only description of the media.
+	 * @param UuidInterface|null     $id                ID of the event.
 	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
-	 * @param UuidInterface|null    $processId                ID of the process responsible for this event.
+	 * @param UuidInterface|null     $processId         ID of the process responsible for this event.
 	 */
 	public function __construct(
 		public readonly UuidInterface $entityId,
@@ -43,8 +43,7 @@ class MediaAttributesUpdated implements DomainEvent, Validated {
 		$this->validate();
 	}
 
-	public function validate(): void
-	{
+	public function validate(): void {
 		if (!isset($this->title) && !isset($this->accessibilityText)) {
 			throw new InvalidValueProperties('No updated attributes provided.');
 		}

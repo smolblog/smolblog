@@ -48,8 +48,8 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 	/**
 	 * Dispatch the push event.
 	 *
-	 * @param Content    $content Content object to push.
-	 * @param Channel    $channel Channel to push object to.
+	 * @param Content       $content Content object to push.
+	 * @param Channel       $channel Channel to push object to.
 	 * @param UuidInterface $userId  ID of the user who initiated the push.
 	 * @return void
 	 */
@@ -73,7 +73,7 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 	 * Handle the push event
 	 *
 	 * @param ContentPushedToChannel $event          Content push event to handle.
-	 * @param UuidInterface|null        $regenerationId Optional ID for the current regeneration process.
+	 * @param UuidInterface|null     $regenerationId Optional ID for the current regeneration process.
 	 * @return void
 	 */
 	#[ProjectionListener]
@@ -123,8 +123,8 @@ abstract class ProjectionChannelHandler implements ChannelHandler, EventListener
 	 *
 	 * @throws ContentPushFailure On failure.
 	 *
-	 * @param Content    $content   Content object to push.
-	 * @param Channel    $channel   Channel to push object to.
+	 * @param Content       $content   Content object to push.
+	 * @param Channel       $channel   Channel to push object to.
 	 * @param UuidInterface $userId    ID of the user who initiated the push.
 	 * @param UuidInterface $processId ID of this particular push or regeneration process.
 	 * @return ContentChannelEntry Information about the successfully completed push.

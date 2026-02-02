@@ -36,8 +36,8 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 	/**
 	 * Dispatch an async process to complete the push later.
 	 *
-	 * @param Content    $content Content object to push.
-	 * @param Channel    $channel Channel to push object to.
+	 * @param Content       $content Content object to push.
+	 * @param Channel       $channel Channel to push object to.
 	 * @param UuidInterface $userId  ID of the user who initiated the push.
 	 * @return void
 	 */
@@ -70,8 +70,8 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 	/**
 	 * Handle the ContentPushJob command when it is eventually executed.
 	 *
-	 * @param Content    $content   Content object to push.
-	 * @param Channel    $channel   Channel to push object to.
+	 * @param Content       $content   Content object to push.
+	 * @param Channel       $channel   Channel to push object to.
 	 * @param UuidInterface $userId    ID of the user who initiated the push.
 	 * @param UuidInterface $processId ID of this particular push process.
 	 * @return void
@@ -118,8 +118,8 @@ abstract class AsyncChannelHandler implements ChannelHandler {
 	 *
 	 * @throws ContentPushFailure On failure.
 	 *
-	 * @param Content    $content   Content object to push.
-	 * @param Channel    $channel   Channel to push object to.
+	 * @param Content       $content   Content object to push.
+	 * @param Channel       $channel   Channel to push object to.
 	 * @param UuidInterface $userId    ID of the user who initiated the push.
 	 * @param UuidInterface $processId ID of this particular push process.
 	 * @return ContentChannelEntry Information about the successfully completed push.

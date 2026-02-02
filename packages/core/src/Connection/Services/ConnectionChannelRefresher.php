@@ -56,7 +56,7 @@ class ConnectionChannelRefresher implements CommandHandlerService, EventListener
 	/**
 	 * Update Channels for the given Connection based on the handler.
 	 *
-	 * @param Connection $connection Connection to refresh.
+	 * @param Connection    $connection Connection to refresh.
 	 * @param UuidInterface $userId     ID of User instigating this change.
 	 * @return void
 	 */

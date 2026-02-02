@@ -24,8 +24,7 @@ readonly class Tags extends ContentExtension implements Validated {
 		$this->validate();
 	}
 
-	public function validate(): void
-	{
+	public function validate(): void {
 		if (!empty(array_filter($this->tags, fn($tag) => !is_string($tag)))) {
 			throw new InvalidValueProperties(message: 'All tags must be strings.', field: 'tags');
 		}

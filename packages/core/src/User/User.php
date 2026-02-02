@@ -17,9 +17,9 @@ readonly class User implements Value, Entity {
 	 * Construct the User
 	 *
 	 * @param UuidInterface $id          Permanent ID of the User.
-	 * @param string     $key         Human readable handle for the user.
-	 * @param string     $displayName Full name to display.
-	 * @param string     $handler     Subsystem to handle authentication.
+	 * @param string        $key         Human readable handle for the user.
+	 * @param string        $displayName Full name to display.
+	 * @param string        $handler     Subsystem to handle authentication.
 	 */
 	public function __construct(
 		public UuidInterface $id,

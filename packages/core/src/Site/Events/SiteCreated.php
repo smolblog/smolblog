@@ -19,16 +19,16 @@ class SiteCreated implements DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param UuidInterface         $userId      User creating the site.
-	 * @param UuidInterface         $aggregateId ID for this site.
-	 * @param string             $key         Unique subdomain or subdirectory identifier for this site.
-	 * @param string             $displayName Site title as shown in lists and other admin screens.
-	 * @param UuidInterface|null    $siteUserId  Primary administrator for the site if not $userId.
-	 * @param string|null        $description Optional description for the site.
-	 * @param UuidInterface|null    $pictureId   ID for the site picture.
-	 * @param UuidInterface|null    $id          ID of the event.
+	 * @param UuidInterface          $userId      User creating the site.
+	 * @param UuidInterface          $aggregateId ID for this site.
+	 * @param string                 $key         Unique subdomain or subdirectory identifier for this site.
+	 * @param string                 $displayName Site title as shown in lists and other admin screens.
+	 * @param UuidInterface|null     $siteUserId  Primary administrator for the site if not $userId.
+	 * @param string|null            $description Optional description for the site.
+	 * @param UuidInterface|null     $pictureId   ID for the site picture.
+	 * @param UuidInterface|null     $id          ID of the event.
 	 * @param DateTimeInterface|null $timestamp   Timestamp of the event.
-	 * @param UuidInterface|null    $processId   Process that spawned this event.
+	 * @param UuidInterface|null     $processId   Process that spawned this event.
 	 */
 	public function __construct(
 		public readonly UuidInterface $userId,

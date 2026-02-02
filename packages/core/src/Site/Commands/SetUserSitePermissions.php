@@ -19,9 +19,9 @@ readonly class SetUserSitePermissions implements Command, Authenticated {
 	/**
 	 * Construct the command.
 	 *
-	 * @param UuidInterface          $siteId       ID of the site for the permissions.
-	 * @param UuidInterface          $linkedUserId ID of the user whose permissions are being changed.
-	 * @param UuidInterface          $userId       ID of the user making the change.
+	 * @param UuidInterface       $siteId       ID of the site for the permissions.
+	 * @param UuidInterface       $linkedUserId ID of the user whose permissions are being changed.
+	 * @param UuidInterface       $userId       ID of the user making the change.
 	 * @param SitePermissionLevel $level        Permssion level to set.
 	 */
 	public function __construct(

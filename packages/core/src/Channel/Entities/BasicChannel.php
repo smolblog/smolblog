@@ -15,10 +15,10 @@ class BasicChannel extends Channel {
 	/**
 	 * Create the Channel.
 	 *
-	 * @param string          $handler      Key for the handler this is tied to (usually provider name).
-	 * @param string          $handlerKey   Unique identifier for this account at this provider.
-	 * @param string          $displayName  Recognizable name for the channel (URL or handle?).
-	 * @param array           $details      Extra properties used by the handler.
+	 * @param string             $handler      Key for the handler this is tied to (usually provider name).
+	 * @param string             $handlerKey   Unique identifier for this account at this provider.
+	 * @param string             $displayName  Recognizable name for the channel (URL or handle?).
+	 * @param array              $details      Extra properties used by the handler.
 	 * @param UuidInterface|null $userId       User responsible for this Channel (if applicable).
 	 * @param UuidInterface|null $connectionId Connection needed to authenticate for this channel (if necessary).
 	 */

@@ -27,14 +27,14 @@ readonly class Content implements Value, Entity {
 	/**
 	 * Create the Content.
 	 *
-	 * @param ContentType           $body             The ContentType for this content.
-	 * @param UuidInterface            $siteId           ID for the Site this belongs to.
-	 * @param UuidInterface            $userId           ID of the user responsible for this content.
-	 * @param UuidInterface       $id               ID for the content.
-	 * @param DateTimeInterface|null    $publishTimestamp Time and date the content was first published.
-	 * @param Url|null              $canonicalUrl     Canonical absolute URL to the content if it exists.
-	 * @param ContentExtension[]    $extensions       Data for any extensions attached to this content.
-	 * @param ContentChannelEntry[] $links            Channels this Content has been pushed to with relevant details.
+	 * @param ContentType            $body             The ContentType for this content.
+	 * @param UuidInterface          $siteId           ID for the Site this belongs to.
+	 * @param UuidInterface          $userId           ID of the user responsible for this content.
+	 * @param UuidInterface          $id               ID for the content.
+	 * @param DateTimeInterface|null $publishTimestamp Time and date the content was first published.
+	 * @param Url|null               $canonicalUrl     Canonical absolute URL to the content if it exists.
+	 * @param ContentExtension[]     $extensions       Data for any extensions attached to this content.
+	 * @param ContentChannelEntry[]  $links            Channels this Content has been pushed to with relevant details.
 	 */
 	public function __construct(
 		public ContentType $body,

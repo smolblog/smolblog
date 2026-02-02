@@ -28,7 +28,7 @@ abstract class DefaultContentTypeService implements ContentTypeService {
 	 * Create the given content as a new piece of content.
 	 *
 	 * @param CreateContent $command   Content being created.
-	 * @param UuidInterface    $contentId Definitive ID for the content.
+	 * @param UuidInterface $contentId Definitive ID for the content.
 	 * @return void
 	 */
 	public function create(CreateContent $command, UuidInterface $contentId): void {

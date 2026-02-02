@@ -26,8 +26,8 @@ readonly class UpdateSiteDetails implements Command, Authenticated, Validated {
 	 *
 	 * @param UuidInterface      $siteId      ID of site being changed.
 	 * @param UuidInterface      $userId      ID of user making the change.
-	 * @param string|null     $displayName Title of the site.
-	 * @param string|null     $description Description or tagline for the site.
+	 * @param string|null        $displayName Title of the site.
+	 * @param string|null        $description Description or tagline for the site.
 	 * @param UuidInterface|null $pictureId   ID of a picture Media for the site's avatar.
 	 */
 	public function __construct(

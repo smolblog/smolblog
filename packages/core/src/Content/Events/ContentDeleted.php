@@ -16,12 +16,12 @@ class ContentDeleted implements DomainEvent {
 	/**
 	 * Construct the event
 	 *
-	 * @param UuidInterface         $userId      ID of the user that created this event.
-	 * @param UuidInterface         $aggregateId ID of the site that the content belongs to.
-	 * @param UuidInterface         $entityId    ID of the content to delete.
-	 * @param UuidInterface|null    $id          ID of the event.
+	 * @param UuidInterface          $userId      ID of the user that created this event.
+	 * @param UuidInterface          $aggregateId ID of the site that the content belongs to.
+	 * @param UuidInterface          $entityId    ID of the content to delete.
+	 * @param UuidInterface|null     $id          ID of the event.
 	 * @param DateTimeInterface|null $timestamp   Timestamp of the event.
-	 * @param UuidInterface|null    $processId   Optional ID of a process (series of events) this event belongs to.
+	 * @param UuidInterface|null     $processId   Optional ID of a process (series of events) this event belongs to.
 	 */
 	public function __construct(
 		public readonly UuidInterface $userId,

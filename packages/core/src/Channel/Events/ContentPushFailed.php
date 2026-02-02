@@ -20,16 +20,16 @@ class ContentPushFailed implements DomainEvent {
 	/**
 	 * Undocumented function
 	 *
-	 * @param UuidInterface         $contentId   ID of the content being pushed.
-	 * @param UuidInterface         $channelId   ID of the channel being pushed to.
-	 * @param string             $message     User-facing message describing the failure.
-	 * @param UuidInterface         $userId      User who first initiated the action.
-	 * @param UuidInterface         $aggregateId Site the content belongs to.
-	 * @param UuidInterface         $processId   UuidInterface for this push process.
-	 * @param UuidInterface|null    $id          Optional ID for the event.
+	 * @param UuidInterface          $contentId   ID of the content being pushed.
+	 * @param UuidInterface          $channelId   ID of the channel being pushed to.
+	 * @param string                 $message     User-facing message describing the failure.
+	 * @param UuidInterface          $userId      User who first initiated the action.
+	 * @param UuidInterface          $aggregateId Site the content belongs to.
+	 * @param UuidInterface          $processId   UuidInterface for this push process.
+	 * @param UuidInterface|null     $id          Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp   Optional timestamp for the event.
-	 * @param UuidInterface|null    $entityId    ContentChannelEntry ID; will be created if not provided.
-	 * @param array              $details     Channel-specific details.
+	 * @param UuidInterface|null     $entityId    ContentChannelEntry ID; will be created if not provided.
+	 * @param array                  $details     Channel-specific details.
 	 */
 	public function __construct(
 		public readonly UuidInterface $contentId,

@@ -51,7 +51,7 @@ class ChannelProjection implements ChannelRepo, EventListenerService, DatabaseTa
 	/**
 	 * Create the service.
 	 *
-	 * @param DatabaseService $db Working database connection.
+	 * @param DatabaseService      $db    Working database connection.
 	 * @param SerializationService $serde Configured (de)serialization service.
 	 */
 	public function __construct(

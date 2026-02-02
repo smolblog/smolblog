@@ -21,10 +21,10 @@ class ContentPushService implements CommandHandlerService {
 	/**
 	 * Construct the service.
 	 *
-	 * @param SitePermissionsService   $perms       Check permissions.
-	 * @param ContentRepo              $contentRepo Get content objects.
-	 * @param ChannelRepo              $channelRepo Get channel objects.
-	 * @param ChannelHandlerRegistry   $handlers    Get handlers.
+	 * @param SitePermissionsService $perms       Check permissions.
+	 * @param ContentRepo            $contentRepo Get content objects.
+	 * @param ChannelRepo            $channelRepo Get channel objects.
+	 * @param ChannelHandlerRegistry $handlers    Get handlers.
 	 */
 	public function __construct(
 		private SitePermissionsService $perms,

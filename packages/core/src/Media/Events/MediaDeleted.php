@@ -16,10 +16,10 @@ class MediaDeleted implements DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param UuidInterface         $entityId    ID of the Media object.
-	 * @param UuidInterface         $userId      User deleting the media.
-	 * @param UuidInterface         $aggregateId Site media is being deleting from.
-	 * @param UuidInterface|null    $id          ID of the event.
+	 * @param UuidInterface          $entityId    ID of the Media object.
+	 * @param UuidInterface          $userId      User deleting the media.
+	 * @param UuidInterface          $aggregateId Site media is being deleting from.
+	 * @param UuidInterface|null     $id          ID of the event.
 	 * @param DateTimeInterface|null $timestamp   Timestamp of the event.
 	 */
 	public function __construct(

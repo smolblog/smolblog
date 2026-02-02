@@ -43,8 +43,7 @@ readonly class Picture extends ContentType implements Validated {
 			$this->pictures[0]->title;
 	}
 
-	public function validate(): void
-	{
+	public function validate(): void {
 		if (empty($this->pictures)) {
 			throw new InvalidValueProperties(
 				message: 'Pictures cannot be empty.',

@@ -17,9 +17,9 @@ class ChannelDeleted implements DomainEvent {
 	/**
 	 * Construct the event.
 	 *
-	 * @param UuidInterface         $entityId  ID of the channel being deleted.
-	 * @param UuidInterface         $userId    ID of the user initiating this change.
-	 * @param UuidInterface|null    $id        Optional ID for the event.
+	 * @param UuidInterface          $entityId  ID of the channel being deleted.
+	 * @param UuidInterface          $userId    ID of the user initiating this change.
+	 * @param UuidInterface|null     $id        Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event (default now).
 	 */
 	public function __construct(

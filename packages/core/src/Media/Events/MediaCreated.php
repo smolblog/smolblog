@@ -32,17 +32,17 @@ class MediaCreated implements DomainEvent, Validated {
 	 *
 	 * @throws InvalidValueProperties When title or accessibilityText are empty.
 	 *
-	 * @param UuidInterface         $entityId          ID of the media object.
-	 * @param UuidInterface         $aggregateId       ID of the site media is uploaded to.
-	 * @param UuidInterface         $userId            User creating the Media.
-	 * @param string             $title             Title for the media (usually filename). Must not be empty.
-	 * @param string             $accessibilityText Text description of the media. Must not be empty.
-	 * @param MediaType          $mediaType         Broad type of media (image, video, etc).
-	 * @param string             $handler           Key for handler for this media.
-	 * @param array              $fileDetails       Information needed by file handler.
-	 * @param UuidInterface|null    $id                ID of the event.
+	 * @param UuidInterface          $entityId          ID of the media object.
+	 * @param UuidInterface          $aggregateId       ID of the site media is uploaded to.
+	 * @param UuidInterface          $userId            User creating the Media.
+	 * @param string                 $title             Title for the media (usually filename). Must not be empty.
+	 * @param string                 $accessibilityText Text description of the media. Must not be empty.
+	 * @param MediaType              $mediaType         Broad type of media (image, video, etc).
+	 * @param string                 $handler           Key for handler for this media.
+	 * @param array                  $fileDetails       Information needed by file handler.
+	 * @param UuidInterface|null     $id                ID of the event.
 	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
-	 * @param UuidInterface|null    $mediaUserId       User responsible for the media; defaults to $userId.
+	 * @param UuidInterface|null     $mediaUserId       User responsible for the media; defaults to $userId.
 	 */
 	public function __construct(
 		public readonly UuidInterface $entityId,
@@ -102,8 +102,7 @@ class MediaCreated implements DomainEvent, Validated {
 		);
 	}
 
-	public function validate(): void
-	{
+	public function validate(): void {
 		if (empty($this->title) || empty($this->accessibilityText)) {
 			throw new InvalidValueProperties('title and accessibilityText must not be empty.');
 		}

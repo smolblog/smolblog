@@ -20,11 +20,11 @@ class ChannelSaved implements DomainEvent {
 	/**
 	 * Create the event.
 	 *
-	 * @param Channel            $channel   Channel object being saved.
-	 * @param UuidInterface         $userId    User creating the channel.
-	 * @param UuidInterface|null    $entityId  Channel ID; will be auto-generated.
-	 * @param UuidInterface|null    $processId  Optional ID for overall process.
-	 * @param UuidInterface|null    $id        Optional ID for the event.
+	 * @param Channel                $channel   Channel object being saved.
+	 * @param UuidInterface          $userId    User creating the channel.
+	 * @param UuidInterface|null     $entityId  Channel ID; will be auto-generated.
+	 * @param UuidInterface|null     $processId Optional ID for overall process.
+	 * @param UuidInterface|null     $id        Optional ID for the event.
 	 * @param DateTimeInterface|null $timestamp Optional timestamp for the event.
 	 */
 	public function __construct(

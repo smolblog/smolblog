@@ -25,14 +25,14 @@ class SiteDetailsUpdated implements DomainEvent, Validated {
 	 *
 	 * @throws InvalidValueProperties When no updated attributes are provided.
 	 *
-	 * @param UuidInterface         $userId      User making the change.
-	 * @param UuidInterface         $aggregateId Site being changed.
-	 * @param string|null        $displayName New title for the site; null for no change.
-	 * @param string|null        $description New description for the site; null for no change.
-	 * @param UuidInterface|null    $pictureId   New picture for the site; null for no change.
-	 * @param UuidInterface|null    $id          ID of the event.
+	 * @param UuidInterface          $userId      User making the change.
+	 * @param UuidInterface          $aggregateId Site being changed.
+	 * @param string|null            $displayName New title for the site; null for no change.
+	 * @param string|null            $description New description for the site; null for no change.
+	 * @param UuidInterface|null     $pictureId   New picture for the site; null for no change.
+	 * @param UuidInterface|null     $id          ID of the event.
 	 * @param DateTimeInterface|null $timestamp   Timestamp of the event.
-	 * @param UuidInterface|null    $processId   Optional process that created this event.
+	 * @param UuidInterface|null     $processId   Optional process that created this event.
 	 */
 	public function __construct(
 		public readonly UuidInterface $userId,
