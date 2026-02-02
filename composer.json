@@ -2,7 +2,6 @@
     "name": "smolblog/smolblog",
     "description": "Blogging for the Social Web",
     "license": "AGPL-3.0-only",
-    "type": "project",
     "authors": [
         {
             "name": "Smolblog",
@@ -13,6 +12,7 @@
             "email": "me@eph.me"
         }
     ],
+    "type": "project",
     "require": {
         "cavatappi/foundation": "^0.2",
         "cavatappi/testing": "^0.2",
@@ -26,11 +26,6 @@
     "require-dev": {
         "symplify/monorepo-builder": "^11.2",
         "friendsofphp/php-cs-fixer": "^3.93"
-    },
-    "replace": {
-        "smolblog/core": "self.version",
-        "smolblog/core-data-sql": "self.version",
-        "smolblog/core-test-utils": "self.version"
     },
     "autoload": {
         "psr-4": {
@@ -57,5 +52,10 @@
         "lintfix": "./vendor/bin/php-cs-fixer fix",
         "linter": "./vendor/bin/php-cs-fixer",
         "monorepo": "./vendor/bin/monorepo-builder"
+    },
+    "replace": {
+        "smolblog/core": "0.6.0",
+        "smolblog/core-data-sql": "0.6.0",
+        "smolblog/core-test-utils": "0.6.0"
     }
 }
