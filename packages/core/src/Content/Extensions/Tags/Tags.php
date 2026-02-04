@@ -5,6 +5,7 @@ namespace Smolblog\Core\Content\Extensions\Tags;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
+use Cavatappi\Foundation\Value\ValueKit;
 use Smolblog\Core\Content\Entities\ContentExtension;
 
 /**
@@ -12,7 +13,9 @@ use Smolblog\Core\Content\Entities\ContentExtension;
  *
  * Tags are versitile! They can be used for categorization, keywords, or just an aside comment.
  */
-readonly class Tags extends ContentExtension implements Validated {
+readonly class Tags implements ContentExtension, Validated {
+	use ValueKit;
+
 	/**
 	 * Create the extension
 	 *

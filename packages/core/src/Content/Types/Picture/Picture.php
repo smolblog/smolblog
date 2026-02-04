@@ -6,6 +6,8 @@ use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Fields\Markdown;
 use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
+use Cavatappi\Foundation\Value\ValueKit;
+use Crell\Serde\Attributes\Field;
 use Smolblog\Core\Content\ContentUtilities;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Media\Entities\Media;
@@ -14,8 +16,11 @@ use Smolblog\Core\Media\Entities\MediaType;
 /**
  * An embedded post from another site, such as YouTube or Tumblr.
  */
-readonly class Picture extends ContentType implements Validated {
-	public const KEY = 'picture';
+class Picture implements ContentType, Validated {
+	use ValueKit;
+
+	public static function getKey(): string
+	{return  'picture';}
 
 	/**
 	 * Construct the Picture.
@@ -26,8 +31,8 @@ readonly class Picture extends ContentType implements Validated {
 	 * @param Markdown|null $caption  Optional caption for the Picture.
 	 */
 	public function __construct(
-		#[ListType(Media::class)] public array $pictures,
-		public ?Markdown $caption = null,
+		#[ListType(Media::class)] public readonly array $pictures,
+		public readonly ?Markdown $caption = null,
 	) {
 		$this->validate();
 	}
@@ -37,8 +42,9 @@ readonly class Picture extends ContentType implements Validated {
 	 *
 	 * @return string
 	 */
-	public function getTitle(): string {
-		return isset($this->caption)
+	#[Field(exclude: true)]
+	public string $title {
+		get => isset($this->caption)
 			? ContentUtilities::truncateText(strval($this->caption))
 			: $this->pictures[0]->title;
 	}

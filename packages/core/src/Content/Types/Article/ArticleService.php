@@ -16,7 +16,7 @@ class ArticleService extends DefaultContentTypeService {
 	 */
 	public static function getConfiguration(): ContentTypeConfiguration {
 		return new ContentTypeConfiguration(
-			key: Article::KEY,
+			key: Article::getKey(),
 			displayName: 'Article',
 			typeClass: Article::class,
 		);

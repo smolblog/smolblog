@@ -16,7 +16,7 @@ class PictureService extends DefaultContentTypeService {
 	 */
 	public static function getConfiguration(): ContentTypeConfiguration {
 		return new ContentTypeConfiguration(
-			key: Picture::KEY,
+			key: Picture::getKey(),
 			displayName: 'Picture',
 			typeClass: Picture::class,
 		);

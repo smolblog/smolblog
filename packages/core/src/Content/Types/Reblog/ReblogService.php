@@ -16,7 +16,7 @@ class ReblogService extends DefaultContentTypeService {
 	 */
 	public static function getConfiguration(): ContentTypeConfiguration {
 		return new ContentTypeConfiguration(
-			key: Reblog::KEY,
+			key: Reblog::getKey(),
 			displayName: 'Reblog',
 			typeClass: Reblog::class,
 		);

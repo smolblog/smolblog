@@ -3,7 +3,6 @@
 namespace Smolblog\Core\Content\Entities;
 
 use Cavatappi\Foundation\Value;
-use Cavatappi\Foundation\Value\ValueKit;
 
 /**
  * A piece of data attached to every piece of content.
@@ -13,6 +12,5 @@ use Cavatappi\Foundation\Value\ValueKit;
  *
  * See: WordPress Post Meta
  */
-abstract readonly class ContentExtension implements Value {
-	use ValueKit;
+interface ContentExtension extends Value {
 }

@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Test;
 
+use Cavatappi\Foundation\Value\ValueKit;
 use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,11 +19,10 @@ use Smolblog\Core\Content\Services\DefaultContentExtensionService;
 use Smolblog\Core\Content\Services\DefaultContentTypeService;
 use Smolblog\Core\Permissions\SitePermissionsService;
 
-abstract readonly class TestContentTypeBase extends ContentType {
-	public function __construct(public string $title, public string $body) {}
-	public function getTitle(): string {
-		return $this->title;
-	}
+abstract class TestContentTypeBase implements ContentType {
+	use ValueKit;
+
+	public function __construct(public readonly string $title, public readonly string $body) {}
 }
 
 /**
@@ -37,8 +37,8 @@ final class TestDefaultContentTypeService extends DefaultContentTypeService {
 		);
 	}
 }
-final readonly class TestDefaultContentType extends TestContentTypeBase {
-	public const KEY = 'testdefault';
+final class TestDefaultContentType extends TestContentTypeBase {
+	public static function getKey() : string { return 'testdefault'; }
 }
 
 /**
@@ -59,8 +59,8 @@ final class TestEventsContentTypeService extends DefaultContentTypeService {
 	protected const UPDATE_EVENT = TestEventsContentTypeUpdated::class;
 	protected const DELETE_EVENT = TestEventsContentTypeDeleted::class;
 }
-final readonly class TestEventsContentType extends TestContentTypeBase {
-	public const KEY = 'testevents';
+final class TestEventsContentType extends TestContentTypeBase {
+	public static function getKey(): string { return 'testevents'; }
 }
 
 /**
@@ -75,8 +75,8 @@ abstract class TestCustomContentTypeService implements ContentTypeService {
 		);
 	}
 }
-final readonly class TestCustomContentType extends TestContentTypeBase {
-	public const KEY = 'testcustom';
+final class TestCustomContentType extends TestContentTypeBase {
+	public static function getKey(): string { return 'testcustom'; }
 }
 
 final class TestDefaultContentExtensionService extends DefaultContentExtensionService {
@@ -88,7 +88,8 @@ final class TestDefaultContentExtensionService extends DefaultContentExtensionSe
 		);
 	}
 }
-final readonly class TestDefaultContentExtension extends ContentExtension {
+final readonly class TestDefaultContentExtension implements ContentExtension {
+	use ValueKit;
 	public function __construct(public string $metaval) {}
 }
 
@@ -101,7 +102,8 @@ abstract class TestCustomContentExtensionService implements ContentExtensionServ
 		);
 	}
 }
-final readonly class TestCustomContentExtension extends ContentExtension {
+final readonly class TestCustomContentExtension implements ContentExtension {
+	use ValueKit;
 	public function __construct(public string $metaval) {}
 }
 

@@ -153,7 +153,7 @@ class ContentService implements CommandHandlerService {
 	 * @return ContentTypeService
 	 */
 	private function getServiceForContentType(ContentType $body): ?ContentTypeService {
-		return $this->types->getService(get_class($body)::KEY);
+		return $this->types->getService(get_class($body)::getKey());
 	}
 
 	/**

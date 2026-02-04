@@ -10,10 +10,13 @@ use Cavatappi\Foundation\Value\ValueKit;
  *
  * Even if the title isn't shown on the web or in feeds, it's still needed for administration views and such.
  */
-abstract readonly class ContentType implements Value {
-	use ValueKit;
-
-	public const KEY = '';
+interface ContentType extends Value {
+	/**
+	 * Key for this content type.
+	 *
+	 * @return string
+	 */
+	public static function getKey(): string;
 
 	/**
 	 * Get the title of the content.
@@ -24,5 +27,5 @@ abstract readonly class ContentType implements Value {
 	 *
 	 * @return string
 	 */
-	abstract public function getTitle(): string;
+	public string $title { get; }
 }

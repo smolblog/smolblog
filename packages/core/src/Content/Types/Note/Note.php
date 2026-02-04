@@ -3,14 +3,18 @@
 namespace Smolblog\Core\Content\Types\Note;
 
 use Cavatappi\Foundation\Fields\Markdown;
+use Cavatappi\Foundation\Value\ValueKit;
+use Crell\Serde\Attributes\Field;
 use Smolblog\Core\Content\ContentUtilities;
 use Smolblog\Core\Content\Entities\ContentType;
 
 /**
  * A short, text-only message. Like a tweet.
  */
-readonly class Note extends ContentType {
-	public const KEY = 'note';
+class Note implements ContentType {
+	use ValueKit;
+
+	public static function getKey(): string { return 'note';}
 
 	/**
 	 * Construct the Note.
@@ -18,7 +22,7 @@ readonly class Note extends ContentType {
 	 * @param Markdown $text Markdown-formatted text of the Note.
 	 */
 	public function __construct(
-		public Markdown $text,
+		public readonly Markdown $text,
 	) {}
 
 	/**
@@ -26,7 +30,8 @@ readonly class Note extends ContentType {
 	 *
 	 * @return string
 	 */
-	public function getTitle(): string {
-		return ContentUtilities::truncateText(strval($this->text));
+	#[Field(exclude: true)]
+	public string $title {
+		get => ContentUtilities::truncateText(strval($this->text));
 	}
 }

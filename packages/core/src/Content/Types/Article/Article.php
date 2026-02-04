@@ -3,13 +3,16 @@
 namespace Smolblog\Core\Content\Types\Article;
 
 use Cavatappi\Foundation\Fields\Markdown;
+use Cavatappi\Foundation\Value\ValueKit;
 use Smolblog\Core\Content\Entities\ContentType;
 
 /**
  * A more longform piece of writing with a title.
  */
-readonly class Article extends ContentType {
-	public const KEY = 'article';
+readonly class Article implements ContentType {
+	use ValueKit;
+
+	public static function getKey(): string { return 'article';}
 
 	/**
 	 * Construct the Article.

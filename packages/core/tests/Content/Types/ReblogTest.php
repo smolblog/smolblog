@@ -34,10 +34,10 @@ final class ReblogTest extends ContentTypeTest {
 
 	public function testItUsesTheGivenTitle() {
 		$actual = $this->createExampleType()->with(title: 'A video essay.');
-		$this->assertEquals('A video essay.', $actual->getTitle());
+		$this->assertEquals('A video essay.', $actual->title);
 	}
 
 	public function testItGeneratesATitleIfNoneGiven() {
-		$this->assertNotEmpty($this->createExampleType()->getTitle());
+		$this->assertNotEmpty($this->createExampleType()->title);
 	}
 }

@@ -49,12 +49,12 @@ final class PictureTest extends ContentTypeTest {
 
 	public function testItUsesTheCaptionIfGivenForTheTitle() {
 		$actual = $this->createExampleType()->with(caption: new Markdown('Something wistful.'));
-		$this->assertEquals('Something wistful.', $actual->getTitle());
+		$this->assertEquals('Something wistful.', $actual->title);
 	}
 
 	public function testItUsesTheFirstImageTitleIfNoneGiven() {
 		$actual = $this->createExampleType()->with(caption: null);
-		$this->assertEquals('Title.jpg', $actual->getTitle());
+		$this->assertEquals('Title.jpg', $actual->title);
 	}
 
 	public function testPicturesCannotBeEmpty() {

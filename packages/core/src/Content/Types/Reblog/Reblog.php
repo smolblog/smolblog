@@ -3,14 +3,26 @@
 namespace Smolblog\Core\Content\Types\Reblog;
 
 use Cavatappi\Foundation\Fields\Markdown;
+use Cavatappi\Foundation\Value\ValueKit;
 use Psr\Http\Message\UriInterface;
 use Smolblog\Core\Content\Entities\ContentType;
 
 /**
  * An embedded post from another site, such as YouTube or Tumblr.
  */
-readonly class Reblog extends ContentType {
-	public const KEY = 'reblog';
+readonly class Reblog implements ContentType {
+	use ValueKit;
+
+	public static function getKey(): string
+	{
+		return 'reblog';}
+
+	/**
+	 * Title of the content.
+	 *
+	 * @var string
+	 */
+	public string $title;
 
 	/**
 	 * Construct the Reblog.
@@ -21,16 +33,9 @@ readonly class Reblog extends ContentType {
 	 */
 	public function __construct(
 		public UriInterface $url,
-		public ?string $title = null,
+		?string $title = null,
 		public ?Markdown $caption = null,
-	) {}
-
-	/**
-	 * Construct the title from the URL if no title is given.
-	 *
-	 * @return string
-	 */
-	public function getTitle(): string {
-		return $this->title ?? 'Reblog from ' . $this->url->getHost();
+	) {
+		$this->title = $title ?? 'Reblog from ' . $this->url->getHost();
 	}
 }

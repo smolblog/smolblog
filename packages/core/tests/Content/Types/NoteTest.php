@@ -36,7 +36,7 @@ utilities and vital system components comprising a full platform as defined by b
 everywhere.",
 		));
 
-		$this->assertEquals($expected, $actual->getTitle());
+		$this->assertEquals($expected, $actual->title);
 	}
 
 	public function testItCreatesTheTileFromTruncatedTextToOneHundredCharacters() {
@@ -45,7 +45,7 @@ everywhere.",
 			"I'd just like to interject for a moment. What _you're_ refering to as Smolblog, is in fact, WordPress/Smolblog.",
 		));
 
-		$this->assertEquals($expected, $actual->getTitle());
+		$this->assertEquals($expected, $actual->title);
 	}
 
 	public function testItUsesTheTextOfAShortPostAsTheTitle() {
@@ -54,6 +54,6 @@ everywhere.",
 			"I'd just like to interject for a moment.",
 		));
 
-		$this->assertEquals($expected, $actual->getTitle());
+		$this->assertEquals($expected, $actual->title);
 	}
 }

@@ -16,7 +16,7 @@ class NoteService extends DefaultContentTypeService {
 	 */
 	public static function getConfiguration(): ContentTypeConfiguration {
 		return new ContentTypeConfiguration(
-			key: Note::KEY,
+			key: Note::getKey(),
 			displayName: 'Note',
 			typeClass: Note::class,
 		);

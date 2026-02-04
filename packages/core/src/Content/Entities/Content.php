@@ -53,7 +53,7 @@ readonly class Content implements Value, Entity {
 	 * @return string
 	 */
 	public function title(): string {
-		return $this->body->getTitle();
+		return $this->body->title;
 	}
 
 	/**
@@ -62,6 +62,6 @@ readonly class Content implements Value, Entity {
 	 * @return string
 	 */
 	public function type(): string {
-		return get_class($this->body)::KEY;
+		return get_class($this->body)::getKey();
 	}
 }
