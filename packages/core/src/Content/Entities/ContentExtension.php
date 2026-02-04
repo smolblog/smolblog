@@ -12,5 +12,4 @@ use Cavatappi\Foundation\Value;
  *
  * See: WordPress Post Meta
  */
-interface ContentExtension extends Value {
-}
+interface ContentExtension extends Value {}

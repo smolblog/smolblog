@@ -14,7 +14,9 @@ use Smolblog\Core\Content\Entities\ContentType;
 class Note implements ContentType {
 	use ValueKit;
 
-	public static function getKey(): string { return 'note';}
+	public static function getKey(): string {
+		return 'note';
+	}
 
 	/**
 	 * Construct the Note.

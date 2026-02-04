@@ -13,9 +13,9 @@ use Smolblog\Core\Content\Entities\ContentType;
 readonly class Reblog implements ContentType {
 	use ValueKit;
 
-	public static function getKey(): string
-	{
-		return 'reblog';}
+	public static function getKey(): string {
+		return 'reblog';
+	}
 
 	/**
 	 * Title of the content.

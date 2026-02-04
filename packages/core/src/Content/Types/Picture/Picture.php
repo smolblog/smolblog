@@ -19,8 +19,9 @@ use Smolblog\Core\Media\Entities\MediaType;
 class Picture implements ContentType, Validated {
 	use ValueKit;
 
-	public static function getKey(): string
-	{return  'picture';}
+	public static function getKey(): string {
+		return  'picture';
+	}
 
 	/**
 	 * Construct the Picture.

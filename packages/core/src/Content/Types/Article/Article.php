@@ -12,7 +12,9 @@ use Smolblog\Core\Content\Entities\ContentType;
 readonly class Article implements ContentType {
 	use ValueKit;
 
-	public static function getKey(): string { return 'article';}
+	public static function getKey(): string {
+		return 'article';
+	}
 
 	/**
 	 * Construct the Article.

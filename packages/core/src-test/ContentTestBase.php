@@ -38,7 +38,9 @@ final class TestDefaultContentTypeService extends DefaultContentTypeService {
 	}
 }
 final class TestDefaultContentType extends TestContentTypeBase {
-	public static function getKey() : string { return 'testdefault'; }
+	public static function getKey(): string {
+		return 'testdefault';
+	}
 }
 
 /**
@@ -60,7 +62,9 @@ final class TestEventsContentTypeService extends DefaultContentTypeService {
 	protected const DELETE_EVENT = TestEventsContentTypeDeleted::class;
 }
 final class TestEventsContentType extends TestContentTypeBase {
-	public static function getKey(): string { return 'testevents'; }
+	public static function getKey(): string {
+		return 'testevents';
+	}
 }
 
 /**
@@ -76,7 +80,9 @@ abstract class TestCustomContentTypeService implements ContentTypeService {
 	}
 }
 final class TestCustomContentType extends TestContentTypeBase {
-	public static function getKey(): string { return 'testcustom'; }
+	public static function getKey(): string {
+		return 'testcustom';
+	}
 }
 
 final class TestDefaultContentExtensionService extends DefaultContentExtensionService {
