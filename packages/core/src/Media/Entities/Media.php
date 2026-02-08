@@ -4,6 +4,7 @@ namespace Smolblog\Core\Media\Entities;
 
 use Cavatappi\Foundation\DomainEvent\Entity;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Reflection\MapType;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Value;
@@ -29,6 +30,7 @@ readonly class Media implements Entity, Value, Validated {
 	 * @param MediaType     $type              Broad type of media (image, video, etc).
 	 * @param string        $handler           Key for handler for this media.
 	 * @param array         $fileDetails       Information needed by file handler.
+	 * @param MediaExtension[] $extensions Any extensions added to this media.
 	 */
 	public function __construct(
 		public UuidInterface $id,
@@ -39,6 +41,7 @@ readonly class Media implements Entity, Value, Validated {
 		public MediaType $type,
 		public string $handler,
 		#[MapType('mixed')] public array $fileDetails,
+		#[ListType(MediaExtension::class)] public array $extensions = [],
 	) {
 		$this->validate();
 	}

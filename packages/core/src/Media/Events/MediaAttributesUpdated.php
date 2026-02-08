@@ -5,9 +5,11 @@ namespace Smolblog\Core\Media\Events;
 use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
+use Smolblog\Core\Media\Entities\MediaExtension;
 
 /**
  * Indicate that attributes have been changed on a piece of media.
@@ -28,6 +30,7 @@ class MediaAttributesUpdated implements DomainEvent, Validated {
 	 * @param UuidInterface|null     $id                ID of the event.
 	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
 	 * @param UuidInterface|null     $processId         ID of the process responsible for this event.
+	 * @param MediaExtension[]|null $extensions Any extensions added to this media.
 	 */
 	public function __construct(
 		public readonly UuidInterface $entityId,
@@ -38,13 +41,14 @@ class MediaAttributesUpdated implements DomainEvent, Validated {
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 		public readonly ?UuidInterface $processId = null,
+		#[ListType(MediaExtension::class)] public readonly ?array $extensions = null,
 	) {
 		$this->setIdAndTime($id, $timestamp);
 		$this->validate();
 	}
 
 	public function validate(): void {
-		if (!isset($this->title) && !isset($this->accessibilityText)) {
+		if (!isset($this->title) && !isset($this->accessibilityText) && !isset($this->extensions)) {
 			throw new InvalidValueProperties('No updated attributes provided.');
 		}
 		if (

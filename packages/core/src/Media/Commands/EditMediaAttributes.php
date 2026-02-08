@@ -8,6 +8,7 @@ use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Value\ValueKit;
 use Ramsey\Uuid\UuidInterface;
+use Smolblog\Core\Media\Entities\MediaExtension;
 
 /**
  * Change the attributes on a media object.
@@ -24,18 +25,20 @@ readonly class EditMediaAttributes implements Command, Authenticated, Validated 
 	 * @param UuidInterface $userId            User making this change.
 	 * @param string|null   $title             New title.
 	 * @param string|null   $accessibilityText New alt text.
+	 * @param MediaExtension[]|null $extensions New or updated extensions.
 	 */
 	public function __construct(
 		public readonly UuidInterface $mediaId,
 		public readonly UuidInterface $userId,
 		public readonly ?string $title = null,
 		public readonly ?string $accessibilityText = null,
+		public readonly ?array $extensions = null,
 	) {
 		$this->validate();
 	}
 
 	public function validate(): void {
-		if (!isset($this->title) && !isset($this->accessibilityText)) {
+		if (!isset($this->title) && !isset($this->accessibilityText) && !isset($this->extensions)) {
 			throw new InvalidValueProperties('No updated attributes provided.');
 		}
 		if (

@@ -6,12 +6,14 @@ use Cavatappi\Foundation\DomainEvent\DomainEvent;
 use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Reflection\MapType;
 use Cavatappi\Foundation\Validation\Validated;
 use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Entities\Media;
+use Smolblog\Core\Media\Entities\MediaExtension;
 use Smolblog\Core\Media\Entities\MediaType;
 
 /**
@@ -43,6 +45,8 @@ class MediaCreated implements DomainEvent, Validated {
 	 * @param UuidInterface|null     $id                ID of the event.
 	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
 	 * @param UuidInterface|null     $mediaUserId       User responsible for the media; defaults to $userId.
+	 * @param UuidInterface|null $processId Optional process ID.
+	 * @param MediaExtension[] $extensions Any extensions added to this media.
 	 */
 	public function __construct(
 		public readonly UuidInterface $entityId,
@@ -57,6 +61,7 @@ class MediaCreated implements DomainEvent, Validated {
 		?DateTimeInterface $timestamp = null,
 		?UuidInterface $mediaUserId = null,
 		public readonly ?UuidInterface $processId = null,
+		#[ListType(MediaExtension::class)] public array $extensions = [],
 	) {
 		$this->mediaUserId = $mediaUserId ?? $userId;
 		$this->setIdAndTime($id, $timestamp);

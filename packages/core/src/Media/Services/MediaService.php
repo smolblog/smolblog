@@ -17,6 +17,7 @@ use Smolblog\Core\Media\Commands\SideloadMedia;
 use Smolblog\Core\Media\Data\MediaRepo;
 use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
+use Smolblog\Core\Media\Entities\MediaExtension;
 use Smolblog\Core\Media\Events\MediaAttributesUpdated;
 use Smolblog\Core\Media\Events\MediaCreated;
 use Smolblog\Core\Media\Events\MediaDeleted;
@@ -51,12 +52,14 @@ class MediaService implements CommandHandlerService {
 	 * @param MediaHandlerRegistry     $registry  Available MediaHandlers.
 	 * @param MediaRepo                $mediaRepo Check existing media.
 	 * @param SitePermissionsService   $perms     Check user permissions.
+	 * @param MediaExtensionRegistry $extensions Available MediaExtensions.
 	 */
 	public function __construct(
 		private EventDispatcherInterface $bus,
 		private MediaHandlerRegistry $registry,
 		private MediaRepo $mediaRepo,
 		private SitePermissionsService $perms,
+		private MediaExtensionRegistry $extensions,
 	) {}
 
 	/**
@@ -75,6 +78,9 @@ class MediaService implements CommandHandlerService {
 		$handler = $this->registry->get();
 		$media = $handler->handleUploadedFile(command: $command, mediaId: $mediaId);
 
+		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
+			$extServ->create($media);
+		}
 		$this->bus->dispatch(MediaCreated::createFromMediaObject($media));
 	}
 
@@ -94,6 +100,9 @@ class MediaService implements CommandHandlerService {
 		$handler = $this->registry->get();
 		$media = $handler->sideloadFile(command: $command, mediaId: $mediaId);
 
+		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
+			$extServ->create($media);
+		}
 		$this->bus->dispatch(MediaCreated::createFromMediaObject($media));
 	}
 
@@ -110,6 +119,9 @@ class MediaService implements CommandHandlerService {
 	public function onEditMediaAttributes(EditMediaAttributes $command) {
 		$media = $this->checkEditPermsAndId($command);
 
+		foreach ($this->getServicesForContentExtensions($command->extensions ?? []) as $extServ) {
+			$extServ->update($command);
+		}
 		$this->bus->dispatch(new MediaAttributesUpdated(
 			entityId: $command->mediaId,
 			userId: $command->userId,
@@ -135,6 +147,9 @@ class MediaService implements CommandHandlerService {
 		$handler = $this->registry->get($media->handler);
 		$handler->deleteFile(command: $command, media: $media);
 
+		foreach ($this->getServicesForContentExtensions($media->extensions) as $extServ) {
+			$extServ->delete($command, $media);
+		}
 		$this->bus->dispatch(new MediaDeleted(
 			entityId: $command->mediaId,
 			userId: $command->userId,
@@ -216,5 +231,15 @@ class MediaService implements CommandHandlerService {
 		}
 
 		return $media;
+	}
+
+	/**
+	 * Get extension services for the given MediaExtensions.
+	 *
+	 * @param MediaExtension[] $extensions Media being worked on.
+	 * @return MediaExtensionService[]
+	 */
+	private function getServicesForContentExtensions(array $extensions): array {
+		return array_map(fn($ext) => $this->extensions->serviceForExtensionObject($ext), $extensions);
 	}
 }

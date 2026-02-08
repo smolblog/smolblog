@@ -1,6 +1,6 @@
 <?php
 
-namespace Smolblog\Core\Content\Services;
+namespace Smolblog\Core\Media\Services;
 
 use Cavatappi\Foundation\Exceptions\ServiceNotRegistered;
 use Cavatappi\Foundation\Reflection\TypeRegistry;
@@ -8,27 +8,27 @@ use Cavatappi\Foundation\Registry\Registry;
 use Cavatappi\Foundation\Registry\ServiceRegistryKit;
 use Cavatappi\Foundation\Service;
 use Psr\Container\ContainerInterface;
-use Smolblog\Core\Content\Entities\ContentExtension;
+use Smolblog\Core\Media\Entities\MediaExtension;
 
 /**
- * Register available content extensions.
+ * Register available media extensions.
  *
  * I've avoided it as much as I can, but sometimes you just need to have things centrally registered.
  */
-class ContentExtensionRegistry implements Registry, Service, TypeRegistry {
+class MediaExtensionRegistry implements Registry, Service, TypeRegistry {
 	use ServiceRegistryKit;
 
 	/**
-	 * This registry handles ContentExtensionService classes.
+	 * This registry handles MediaExtensionService classes.
 	 *
 	 * @return string
 	 */
 	public static function getInterfaceToRegister(): string {
-		return ContentExtensionService::class;
+		return MediaExtensionService::class;
 	}
 
 	public static function getTypeToRegister(): string {
-		return ContentExtension::class;
+		return MediaExtension::class;
 	}
 
 	/**
@@ -41,24 +41,12 @@ class ContentExtensionRegistry implements Registry, Service, TypeRegistry {
 	}
 
 	/**
-	 * List all available content extensions as handle => displayName.
+	 * List all available media extensions as handle => displayName.
 	 *
 	 * @return string[]
 	 */
-	public function availableContentExtensions(): array {
+	public function availableMediaExtensions(): array {
 		return array_map(fn($ct) => $ct->displayName, $this->configs);
-	}
-
-	/**
-	 * Get the name of the given extension's Extension class.
-	 *
-	 * @deprecated 0.6 use findClass()
-	 *
-	 * @param string $extension Handle for the content extension.
-	 * @return string
-	 */
-	public function extensionClassFor(string $extension): string {
-		return $this->configs[$extension]->extensionClass;
 	}
 
 	public function keyField(): string {
@@ -73,7 +61,7 @@ class ContentExtensionRegistry implements Registry, Service, TypeRegistry {
 		return array_find_key($this->configs, fn($config) => $config->extensionClass === $class);
 	}
 
-	public function serviceForExtensionObject(ContentExtension $ext): ContentExtensionService {
+	public function serviceForExtensionObject(MediaExtension $ext): MediaExtensionService {
 		$id = $this->findIdentifier(get_class($ext));
 		if (!isset($id)) {
 			throw new ServiceNotRegistered(

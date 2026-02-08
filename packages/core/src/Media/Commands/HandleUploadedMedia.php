@@ -6,11 +6,13 @@ use Cavatappi\Foundation\Command\Authenticated;
 use Cavatappi\Foundation\Command\Command;
 use Cavatappi\Foundation\Command\ExpectedResponse;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Value\ValueKit;
 use Crell\Serde\Attributes\ClassNameTypeMap;
 use Psr\Http\Message\UploadedFileInterface;
 use Ramsey\Uuid\UuidInterface;
+use Smolblog\Core\Media\Entities\MediaExtension;
 
 /**
  * Save an uploaded file to the media library
@@ -30,6 +32,7 @@ readonly class HandleUploadedMedia implements Command, Authenticated, Validated 
 	 * @param string                $accessibilityText Alt text.
 	 * @param string|null           $title             Title of the media.
 	 * @param UuidInterface|null    $mediaId           ID for the new media; will auto-generate if not given.
+	 * @param MediaExtension[] $extensions Any extensions added to this media.
 	 */
 	public function __construct(
 		#[ClassNameTypeMap(key: 'implementationType')] public UploadedFileInterface $file,
@@ -38,6 +41,7 @@ readonly class HandleUploadedMedia implements Command, Authenticated, Validated 
 		public string $accessibilityText,
 		public ?string $title = null,
 		public ?UuidInterface $mediaId = null,
+		#[ListType(MediaExtension::class)] public array $extensions = [],
 	) {
 		$this->validate();
 	}
