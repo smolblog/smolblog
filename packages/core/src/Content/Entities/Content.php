@@ -20,6 +20,8 @@ use Smolblog\Core\Channel\Entities\ContentChannelEntry;
  *
  * 1) Content types can store and handle their data as they see fit. It just needs to be serializable.
  * 2) Content extensions can attach extra data to the content.
+ *
+ * @template T of ContentType
  */
 readonly class Content implements Value, Entity {
 	use ValueKit;
@@ -27,7 +29,7 @@ readonly class Content implements Value, Entity {
 	/**
 	 * Create the Content.
 	 *
-	 * @param ContentType            $body             The ContentType for this content.
+	 * @param T                      $body             The ContentType for this content.
 	 * @param UuidInterface          $siteId           ID for the Site this belongs to.
 	 * @param UuidInterface          $userId           ID of the user responsible for this content.
 	 * @param UuidInterface          $id               ID for the content.
