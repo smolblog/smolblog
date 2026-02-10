@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Test;
 
+use Cavatappi\Infrastructure\Serialization\SerializationService;
 use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -57,7 +58,12 @@ abstract class ContentExtensionTest extends ModelTest {
 		$this->assertTrue($reg->has(static::EXTENSION_KEY));
 		$this->assertInstanceOf(static::SERVICE_CLASS, $reg->getService(static::EXTENSION_KEY));
 		$this->assertArrayHasKey(static::EXTENSION_KEY, $reg->availableContentExtensions());
-		$this->assertEquals(static::EXTENSION_CLASS, $reg->extensionClassFor(static::EXTENSION_KEY));
+		$this->assertEquals(static::EXTENSION_CLASS, $reg->findClass(static::EXTENSION_KEY));
+
+		$this->assertFalse(
+			property_exists(static::EXTENSION_CLASS, 'type'),
+			'Extension class cannot have property \'type\' as it conflicts with (de)serialization.'
+		);
 	}
 
 	public function testItCanBeCreated() {

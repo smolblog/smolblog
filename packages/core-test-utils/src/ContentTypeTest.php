@@ -54,7 +54,12 @@ abstract class ContentTypeTest extends ModelTest {
 		$this->assertTrue($reg->has(static::TYPE_KEY));
 		$this->assertInstanceOf(static::SERVICE_CLASS, $reg->getService(static::TYPE_KEY));
 		$this->assertArrayHasKey(static::TYPE_KEY, $reg->availableContentTypes());
-		$this->assertEquals(static::TYPE_CLASS, $reg->typeClassFor(static::TYPE_KEY));
+		$this->assertEquals(static::TYPE_CLASS, $reg->findClass(static::TYPE_KEY));
+
+		$this->assertFalse(
+			property_exists(static::TYPE_CLASS, 'type'),
+			'Type class cannot have property \'type\' as it conflicts with (de)serialization.'
+		);
 	}
 
 	public function testItCanBeCreated() {

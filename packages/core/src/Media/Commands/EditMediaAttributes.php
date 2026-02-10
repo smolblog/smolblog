@@ -5,8 +5,10 @@ namespace Smolblog\Core\Media\Commands;
 use Cavatappi\Foundation\Command\Authenticated;
 use Cavatappi\Foundation\Command\Command;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Value\ValueKit;
+use Crell\Serde\Attributes\Field;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Entities\MediaExtension;
 
@@ -32,7 +34,7 @@ readonly class EditMediaAttributes implements Command, Authenticated, Validated 
 		public readonly UuidInterface $userId,
 		public readonly ?string $title = null,
 		public readonly ?string $accessibilityText = null,
-		public readonly ?array $extensions = null,
+		#[ListType(MediaExtension::class), Field(omitIfNull: true)] public readonly ?array $extensions = null,
 	) {
 		$this->validate();
 	}

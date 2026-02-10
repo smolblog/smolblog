@@ -13,6 +13,12 @@ enum LicenseType: string {
 	case Zero = 'cc0';
 	case PublicDomain = 'pd';
 
+	/**
+	 * Get a display name for a LicenseType
+	 *
+	 * @codeCoverageIgnore
+	 * @return string
+	 */
 	public function displayName(): string {
 		return match ($this) {
 			self::FullCopyright => 'Full Copyright',

@@ -12,25 +12,7 @@ use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Core\Media\Events\MediaCreated;
 use Smolblog\Core\Test\MediaTestBase;
-
-final class TestUploadedFileInterface implements UploadedFileInterface {
-	public function getStream(): StreamInterface {
-		return new Stream('');
-	}
-	public function moveTo(string $targetPath): void {}
-	public function getSize(): ?int {
-		return null;
-	}
-	public function getError(): int {
-		return \UPLOAD_ERR_OK;
-	}
-	public function getClientFilename(): ?string {
-		return null;
-	}
-	public function getClientMediaType(): ?string {
-		return null;
-	}
-}
+use Smolblog\Core\Test\Stubs\TestUploadedFileInterface;
 
 #[AllowMockObjectsWithoutExpectations]
 final class HandleUploadedMediaTest extends MediaTestBase {

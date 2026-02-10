@@ -128,6 +128,7 @@ class MediaService implements CommandHandlerService {
 			aggregateId: $media->siteId,
 			title: $command->title,
 			accessibilityText: $command->accessibilityText,
+			extensions: $command->extensions,
 		));
 	}
 

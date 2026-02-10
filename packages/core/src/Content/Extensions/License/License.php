@@ -28,7 +28,7 @@ class License implements ContentExtension, MediaExtension, Validated {
 	 */
 	public function __construct(
 		public readonly bool $originalWork = true,
-		public readonly LicenseType $type = LicenseType::FullCopyright,
+		public readonly LicenseType $baseType = LicenseType::FullCopyright,
 		public readonly ?string $creator = null,
 		public readonly ?UriInterface $attributionUrl = null,
 		public readonly ?string $requiredAttributionOverride = null,

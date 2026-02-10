@@ -64,10 +64,12 @@ class MediaExtensionRegistry implements Registry, Service, TypeRegistry {
 	public function serviceForExtensionObject(MediaExtension $ext): MediaExtensionService {
 		$id = $this->findIdentifier(get_class($ext));
 		if (!isset($id)) {
+			// @codeCoverageIgnoreStart
 			throw new ServiceNotRegistered(
 				service: get_class($ext),
 				registry: self::class,
 			);
+			// @codeCoverageIgnoreEnd
 		}
 		return $this->getService($id);
 	}

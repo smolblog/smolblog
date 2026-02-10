@@ -7,6 +7,7 @@ use Cavatappi\Foundation\DomainEvent\DomainEventKit;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
+use Crell\Serde\Attributes\Field;
 use DateTimeInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Entities\MediaExtension;
@@ -41,7 +42,7 @@ class MediaAttributesUpdated implements DomainEvent, Validated {
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 		public readonly ?UuidInterface $processId = null,
-		#[ListType(MediaExtension::class)] public readonly ?array $extensions = null,
+		#[ListType(MediaExtension::class), Field(omitIfNull: true)] public readonly ?array $extensions = null,
 	) {
 		$this->setIdAndTime($id, $timestamp);
 		$this->validate();
