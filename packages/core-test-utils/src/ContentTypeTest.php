@@ -58,7 +58,7 @@ abstract class ContentTypeTest extends ModelTest {
 
 		$this->assertFalse(
 			property_exists(static::TYPE_CLASS, 'type'),
-			'Type class cannot have property \'type\' as it conflicts with (de)serialization.'
+			'Type class cannot have property \'type\' as it conflicts with (de)serialization.',
 		);
 	}
 
