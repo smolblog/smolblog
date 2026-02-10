@@ -54,8 +54,8 @@
         "monorepo": "./vendor/bin/monorepo-builder"
     },
     "replace": {
-        "smolblog/core": "0.6.1",
-        "smolblog/core-data-sql": "0.6.1",
-        "smolblog/core-test-utils": "0.6.1"
+        "smolblog/core": "0.6.2",
+        "smolblog/core-data-sql": "0.6.2",
+        "smolblog/core-test-utils": "0.6.2"
     }
 }

@@ -25,7 +25,7 @@
     ],
     "require-dev": {
         "cavatappi/testing": "^0.2",
-        "smolblog/core-test-utils": "^0.7"
+        "smolblog/core-test-utils": "^0.6.2"
     },
     "scripts": {
         "test": "phpunit --testsuite core --no-coverage",
