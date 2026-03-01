@@ -2,6 +2,7 @@
     "name": "smolblog/smolblog",
     "description": "Blogging for the Social Web",
     "license": "AGPL-3.0-only",
+    "type": "project",
     "authors": [
         {
             "name": "Smolblog",
@@ -12,23 +13,30 @@
             "email": "me@eph.me"
         }
     ],
-    "type": "project",
     "require": {
         "cavatappi/foundation": "^0.2",
+        "cavatappi/infrastructure": "^0.2",
         "cavatappi/testing": "^0.2",
+        "crell/serde": "dev-master",
         "doctrine/dbal": "^4.2",
         "elephox/mimey": "^4.0",
         "php": "^8.4",
         "psr/container": "^2.0",
-        "psr/event-dispatcher": "^1.0",
-        "crell/serde": "dev-master"
+        "psr/event-dispatcher": "^1.0"
     },
     "require-dev": {
-        "symplify/monorepo-builder": "^11.2",
-        "friendsofphp/php-cs-fixer": "^3.93"
+        "friendsofphp/php-cs-fixer": "^3.93",
+        "symplify/monorepo-builder": "^11.2"
+    },
+    "replace": {
+        "smolblog/core": "0.6.2",
+        "smolblog/core-data-files": "self.version",
+        "smolblog/core-data-sql": "0.6.2",
+        "smolblog/core-test-utils": "0.6.2"
     },
     "autoload": {
         "psr-4": {
+            "Smolblog\\CoreDataFiles\\": "packages/core-data-files/src/",
             "Smolblog\\CoreDataSql\\": "packages/core-data-sql/src/",
             "Smolblog\\Core\\": "packages/core/src/",
             "Smolblog\\Core\\Test\\": "packages/core-test-utils/src/"
@@ -36,6 +44,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Smolblog\\CoreDataFiles\\Test\\": "packages/core-data-files/src-test/",
             "Smolblog\\CoreDataSql\\Test\\": "packages/core-data-sql/src-test/",
             "Smolblog\\Core\\Test\\": "packages/core/src-test/"
         }
@@ -52,10 +61,5 @@
         "lintfix": "./vendor/bin/php-cs-fixer fix",
         "linter": "./vendor/bin/php-cs-fixer",
         "monorepo": "./vendor/bin/monorepo-builder"
-    },
-    "replace": {
-        "smolblog/core": "0.6.2",
-        "smolblog/core-data-sql": "0.6.2",
-        "smolblog/core-test-utils": "0.6.2"
     }
 }
