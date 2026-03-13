@@ -20,7 +20,7 @@ final class SetUserSitePermissionsTest extends SiteTestBase {
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(true);
-		$this->sitePerms->method('canManagePermissions')->willReturn(true);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Admin);
 
 		$this->expectEvent(new UserSitePermissionsSet(
 			userId: $command->userId,
@@ -41,7 +41,7 @@ final class SetUserSitePermissionsTest extends SiteTestBase {
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(true);
-		$this->sitePerms->method('canManagePermissions')->willReturn(false);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Author);
 
 		$this->expectException(CommandNotAuthorized::class);
 
@@ -57,7 +57,7 @@ final class SetUserSitePermissionsTest extends SiteTestBase {
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(false);
-		$this->sitePerms->method('canManagePermissions')->willReturn(true);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Admin);
 
 		$this->expectException(EntityNotFound::class);
 

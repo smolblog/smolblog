@@ -6,6 +6,7 @@ use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
 use Cavatappi\Foundation\Exceptions\EntityNotFound;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Smolblog\Core\Site\Entities\SitePermissionLevel;
 use Smolblog\Core\Site\Events\SiteDetailsUpdated;
 use Smolblog\Core\Test\SiteTestBase;
 
@@ -21,7 +22,7 @@ final class UpdateSiteDetailsTest extends SiteTestBase {
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(true);
-		$this->sitePerms->method('canManageSettings')->willReturn(true);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Admin);
 
 		$this->expectEvent(new SiteDetailsUpdated(
 			userId: $command->userId,
@@ -41,7 +42,7 @@ final class UpdateSiteDetailsTest extends SiteTestBase {
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(true);
-		$this->sitePerms->method('canManageSettings')->willReturn(true);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Admin);
 
 		$this->expectEvent(new SiteDetailsUpdated(
 			userId: $command->userId,
@@ -62,7 +63,7 @@ final class UpdateSiteDetailsTest extends SiteTestBase {
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(true);
-		$this->sitePerms->method('canManageSettings')->willReturn(false);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Author);
 
 		$this->expectException(CommandNotAuthorized::class);
 
@@ -79,7 +80,7 @@ final class UpdateSiteDetailsTest extends SiteTestBase {
 		);
 
 		$this->repo->method('hasSiteWithId')->willReturn(false);
-		$this->sitePerms->method('canManageSettings')->willReturn(true);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Admin);
 
 		$this->expectException(EntityNotFound::class);
 

@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Site\Services;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use Smolblog\Core\Site\Entities\SitePermissionLevel;
 use Smolblog\Core\Test\SiteTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -16,7 +17,7 @@ final class SiteDataServiceTest extends SiteTestBase {
 	}
 
 	public function testSiteByIdWillReturnNullIfNotPermissioned() {
-		$this->sitePerms->method('canManageSettings')->willReturn(false);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Author);
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
@@ -26,7 +27,7 @@ final class SiteDataServiceTest extends SiteTestBase {
 	}
 
 	public function testContentListWillReturnAllContentIfPermissioned() {
-		$this->sitePerms->method('canManageSettings')->willReturn(true);
+		$this->siteUserRepo->method('permissionsForUser')->willReturn(SitePermissionLevel::Admin);
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
