@@ -74,7 +74,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 
 		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(false);
 		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(null);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::None);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
@@ -101,7 +104,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 				sudo: true,
 			),
 		);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::None);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
@@ -113,7 +119,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 	#[DataProvider('superAdminActions')]
 	#[TestDox('A site admin can NOT $_dataName')]
 	public function testSiteAdminCannot($function, $isSiteAction) {
-		$userId = UuidFactory::fromString(InternalSystemUser::ID);
+		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
 		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
@@ -125,7 +131,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 				sudo: false,
 			),
 		);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::Admin);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::Admin);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
@@ -139,7 +148,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 	#[DataProvider('anyUserActions')]
 	#[TestDox('A site admin can $_dataName')]
 	public function testSiteAdminCan($function, $isSiteAction) {
-		$userId = UuidFactory::fromString(InternalSystemUser::ID);
+		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
 		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
@@ -151,7 +160,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 				sudo: false,
 			),
 		);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::Admin);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::Admin);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
@@ -164,7 +176,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 	#[DataProvider('siteAdminActions')]
 	#[TestDox('A site author can NOT $_dataName')]
 	public function testSiteAuthorCannot($function, $isSiteAction) {
-		$userId = UuidFactory::fromString(InternalSystemUser::ID);
+		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
 		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
@@ -176,7 +188,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 				sudo: false,
 			),
 		);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::Author);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::Author);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
@@ -189,7 +204,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 	#[DataProvider('anyUserActions')]
 	#[TestDox('A site author can $_dataName')]
 	public function testSiteAuthorCan($function, $isSiteAction) {
-		$userId = UuidFactory::fromString(InternalSystemUser::ID);
+		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
 		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
@@ -201,7 +216,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 				sudo: false,
 			),
 		);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::Author);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::Author);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
@@ -215,7 +233,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 	#[DataProvider('siteAuthorActions')]
 	#[TestDox('An unassigned user can NOT $_dataName')]
 	public function testUnassignedUserCannot($function, $isSiteAction) {
-		$userId = UuidFactory::fromString(InternalSystemUser::ID);
+		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
 		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
@@ -227,7 +245,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 				sudo: false,
 			),
 		);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::None);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
@@ -239,7 +260,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 	#[DataProvider('anyUserActions')]
 	#[TestDox('An unassigned user can $_dataName')]
 	public function testUnassignedUserCan($function, $isSiteAction) {
-		$userId = UuidFactory::fromString(InternalSystemUser::ID);
+		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
 		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
@@ -251,11 +272,37 @@ final class DefaultPermissionsServiceTest extends AppTest {
 				sudo: false,
 			),
 		);
-		$this->siteUserRepo->method('permissionsForUser')->with($this->uuidEquals($userId), $this->uuidEquals($siteId))->willReturn(SitePermissionLevel::None);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertTrue(
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
+		);
+	}
+
+	#[DataProvider('superAdminActions')]
+	#[DataProvider('siteAdminActions')]
+	#[DataProvider('siteAuthorActions')]
+	#[DataProvider('anyUserActions')]
+	#[TestDox('An unassigned user can NOT $_dataName')]
+	public function testUnknownUserCannot($function, $isSiteAction) {
+		$userId = $this->randomId();
+		$siteId = $this->randomId();
+
+		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(false);
+		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(null);
+		$this->siteUserRepo
+			->method('permissionsForUser')
+			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
+			->willReturn(SitePermissionLevel::None);
+
+		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
+
+		$this->assertFalse(
 			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}

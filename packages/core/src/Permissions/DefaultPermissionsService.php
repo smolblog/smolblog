@@ -11,7 +11,7 @@ use Smolblog\Core\User\InternalSystemUser;
 use Smolblog\Core\User\UserRepo;
 
 /**
- * You should not type hint against this.
+ * You should not type hint against this. Use GlobalPermissionsService and SitePermissionsService.
  *
  * A simple service that translates the broad strokes of "Author" and "Administrator" into the fine-grained permissions
  * defined in the permissions service interfaces.
@@ -22,20 +22,21 @@ class DefaultPermissionsService implements SitePermissionsService, GlobalPermiss
 		private UserRepo $userRepo,
 	) {}
 
+	private function isSuperAdmin(UuidInterface $userId): bool {
+		if ($userId->toString() === InternalSystemUser::ID) {
+			return true;
+		}
+
+		$user = $this->userRepo->userById($userId);
+		return isset($user) ? $user->sudo : false;
+	}
+
 	private function sitePermissions(UuidInterface $userId, UuidInterface $siteId): SitePermissionLevel {
 		if ($this->isSuperAdmin($userId)) {
 			return SitePermissionLevel::Admin;
 		}
 
 		return $this->siteUserRepo->permissionsForUser($userId, $siteId);
-	}
-
-	private function isSuperAdmin(UuidInterface $userId): bool {
-		if ($userId->toString() === InternalSystemUser::ID) {
-			return true;
-		}
-
-		return $this->userRepo->userById($userId)?->isSuperAdmin ?? false;
 	}
 
 	/**
