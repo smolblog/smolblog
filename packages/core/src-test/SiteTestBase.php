@@ -8,24 +8,23 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteRepo;
-use Smolblog\Core\Site\Data\SiteUserRepo;
 
 #[AllowMockObjectsWithoutExpectations]
 abstract class SiteTestBase extends ModelTest {
 	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
 	protected GlobalPermissionsService&MockObject $globalPerms;
-	protected SiteUserRepo&MockObject $siteUserRepo;
+	protected SitePermissionsService&MockObject $sitePerms;
 	protected SiteRepo&MockObject $repo;
 
 	protected function createMockServices(): array {
 		$this->globalPerms = $this->createMock(GlobalPermissionsService::class);
-		$this->siteUserRepo = $this->createMock(SiteUserRepo::class);
+		$this->sitePerms = $this->createMock(SitePermissionsService::class);
 		$this->repo = $this->createMock(SiteRepo::class);
 
 		return [
 			GlobalPermissionsService::class => fn() => $this->globalPerms,
-			SiteUserRepo::class => fn() => $this->siteUserRepo,
+			SitePermissionsService::class => fn() => $this->sitePerms,
 			SiteRepo::class => fn() => $this->repo,
 			...parent::createMockServices(),
 		];
