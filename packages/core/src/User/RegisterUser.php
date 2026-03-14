@@ -20,7 +20,5 @@ class RegisterUser implements Command, Authenticated {
 		public string $key,
 		public string $displayName,
 		public ?UuidInterface $newUserId = null,
-	)
-	{
-	}
+	) {}
 }

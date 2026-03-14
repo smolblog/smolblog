@@ -19,9 +19,7 @@ class UserService implements Service, CommandHandlerService {
 		private UserRepo $repo,
 		private GlobalPermissionsService $perms,
 		private EventDispatcherInterface $eventBus,
-	)
-	{
-	}
+	) {}
 
 	#[CommandHandler]
 	public function onRegisterUser(RegisterUser $command): UuidInterface {
@@ -71,7 +69,7 @@ class UserService implements Service, CommandHandlerService {
 		if (!$this->repo->hasUserWithId($command->userIdToEscalate)) {
 			throw new EntityNotFound(
 				entityId: $command->userIdToEscalate,
-				entityName: User::class
+				entityName: User::class,
 			);
 		}
 

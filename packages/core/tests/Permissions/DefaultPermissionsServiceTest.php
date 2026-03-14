@@ -15,7 +15,7 @@ use Smolblog\Core\User\User;
 use Smolblog\Core\User\UserRepo;
 
 final class DefaultPermissionsServiceTest extends AppTest {
-	const INCLUDED_MODELS = [Model::class];
+	public const INCLUDED_MODELS = [Model::class];
 
 	private UserRepo&Stub $userRepo;
 	private SiteUserRepo&Stub $siteUserRepo;
@@ -27,7 +27,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		return [
 			UserRepo::class => fn() => $this->userRepo,
 			SiteUserRepo::class => fn() => $this->siteUserRepo,
-			...parent::createMockServices()
+			...parent::createMockServices(),
 		];
 	}
 
@@ -79,7 +79,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertTrue(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 
@@ -106,7 +106,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertTrue(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 
@@ -130,7 +130,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertFalse(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 
@@ -156,7 +156,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertTrue(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 
@@ -181,7 +181,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertFalse(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 
@@ -206,7 +206,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertTrue(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 
@@ -232,7 +232,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertFalse(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 
@@ -256,7 +256,7 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
 
 		$this->assertTrue(
-			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params)
+			$this->app->container->get(DefaultPermissionsService::class)->{$function}(...$params),
 		);
 	}
 }

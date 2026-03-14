@@ -17,8 +17,7 @@ class UserGrantedSudo implements DomainEvent {
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
 		public readonly ?UuidInterface $processId = null,
-	)
-	{
+	) {
 		$this->setIdAndTime($id, $timestamp);
 	}
 

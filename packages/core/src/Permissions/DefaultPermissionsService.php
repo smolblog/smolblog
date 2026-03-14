@@ -20,9 +20,7 @@ class DefaultPermissionsService implements SitePermissionsService, GlobalPermiss
 	public function __construct(
 		private SiteUserRepo $siteUserRepo,
 		private UserRepo $userRepo,
-	)
-	{
-	}
+	) {}
 
 	private function sitePermissions(UuidInterface $userId, UuidInterface $siteId): SitePermissionLevel {
 		if ($this->isSuperAdmin($userId)) {

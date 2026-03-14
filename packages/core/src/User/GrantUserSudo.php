@@ -16,7 +16,5 @@ class GrantUserSudo implements Command, Authenticated {
 	public function __construct(
 		public UuidInterface $userId,
 		public UuidInterface $userIdToEscalate,
-	)
-	{
-	}
+	) {}
 }
