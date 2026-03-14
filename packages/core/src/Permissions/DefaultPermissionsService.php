@@ -7,6 +7,8 @@ use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Data\SiteUserRepo;
 use Smolblog\Core\Site\Entities\SitePermissionLevel;
+use Smolblog\Core\User\InternalSystemUser;
+use Smolblog\Core\User\UserRepo;
 
 /**
  * You should not type hint against this.
@@ -14,15 +16,28 @@ use Smolblog\Core\Site\Entities\SitePermissionLevel;
  * A simple service that translates the broad strokes of "Author" and "Administrator" into the fine-grained permissions
  * defined in the permissions service interfaces.
  */
-class DefaultPermissionsService implements SitePermissionsService, Service {
+class DefaultPermissionsService implements SitePermissionsService, GlobalPermissionsService, Service {
 	public function __construct(
-		private SiteUserRepo $siteUserRepo
+		private SiteUserRepo $siteUserRepo,
+		private UserRepo $userRepo,
 	)
 	{
 	}
 
-	private function permissions(UuidInterface $userId, UuidInterface $siteId): SitePermissionLevel {
+	private function sitePermissions(UuidInterface $userId, UuidInterface $siteId): SitePermissionLevel {
+		if ($this->isSuperAdmin($userId)) {
+			return SitePermissionLevel::Admin;
+		}
+
 		return $this->siteUserRepo->permissionsForUser($userId, $siteId);
+	}
+
+	private function isSuperAdmin(UuidInterface $userId): bool {
+		if ($userId->toString() === InternalSystemUser::ID) {
+			return true;
+		}
+
+		return $this->userRepo->userById($userId)?->isSuperAdmin ?? false;
 	}
 
 	/**
@@ -33,7 +48,7 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canCreateContent(UuidInterface $userId, UuidInterface $siteId): bool {
-		return in_array($this->permissions($userId, $siteId), [SitePermissionLevel::Author, SitePermissionLevel::Admin]);
+		return in_array($this->sitePermissions($userId, $siteId), [SitePermissionLevel::Author, SitePermissionLevel::Admin]);
 	}
 
 	/**
@@ -44,7 +59,7 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canEditAllContent(UuidInterface $userId, UuidInterface $siteId): bool {
-		return $this->permissions($userId, $siteId) === SitePermissionLevel::Admin;
+		return $this->sitePermissions($userId, $siteId) === SitePermissionLevel::Admin;
 	}
 
 	/**
@@ -55,7 +70,7 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canManageChannels(UuidInterface $userId, UuidInterface $siteId): bool {
-		return $this->permissions($userId, $siteId) === SitePermissionLevel::Admin;
+		return $this->sitePermissions($userId, $siteId) === SitePermissionLevel::Admin;
 	}
 
 	/**
@@ -66,7 +81,7 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canUploadMedia(UuidInterface $userId, UuidInterface $siteId): bool {
-		return in_array($this->permissions($userId, $siteId), [SitePermissionLevel::Author, SitePermissionLevel::Admin]);
+		return in_array($this->sitePermissions($userId, $siteId), [SitePermissionLevel::Author, SitePermissionLevel::Admin]);
 	}
 
 	/**
@@ -77,7 +92,7 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canEditAllMedia(UuidInterface $userId, UuidInterface $siteId): bool {
-		return $this->permissions($userId, $siteId) === SitePermissionLevel::Admin;
+		return $this->sitePermissions($userId, $siteId) === SitePermissionLevel::Admin;
 	}
 
 	/**
@@ -88,7 +103,7 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canPushContent(UuidInterface $userId, UuidInterface $siteId): bool {
-		return in_array($this->permissions($userId, $siteId), [SitePermissionLevel::Author, SitePermissionLevel::Admin]);
+		return in_array($this->sitePermissions($userId, $siteId), [SitePermissionLevel::Author, SitePermissionLevel::Admin]);
 	}
 
 	/**
@@ -99,7 +114,7 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canManagePermissions(UuidInterface $userId, UuidInterface $siteId): bool {
-		return $this->permissions($userId, $siteId) === SitePermissionLevel::Admin;
+		return $this->sitePermissions($userId, $siteId) === SitePermissionLevel::Admin;
 	}
 
 	/**
@@ -110,6 +125,46 @@ class DefaultPermissionsService implements SitePermissionsService, Service {
 	 * @return boolean
 	 */
 	public function canManageSettings(UuidInterface $userId, UuidInterface $siteId): bool {
-		return $this->permissions($userId, $siteId) === SitePermissionLevel::Admin;
+		return $this->sitePermissions($userId, $siteId) === SitePermissionLevel::Admin;
+	}
+
+	/**
+	 * Can the given user create a new site?
+	 *
+	 * @param UuidInterface $userId User to check.
+	 * @return boolean
+	 */
+	public function canCreateSite(UuidInterface $userId): bool {
+		return $this->isSuperAdmin($userId);
+	}
+
+	/**
+	 * Can the given user register a new user?
+	 *
+	 * @param UuidInterface $userId User to check.
+	 * @return boolean
+	 */
+	public function canRegisterUser(UuidInterface $userId): bool {
+		return $this->isSuperAdmin($userId) || $this->userRepo->hasUserWithId($userId);
+	}
+
+	/**
+	 * Can the given user give another user super admin?
+	 *
+	 * @param UuidInterface $userId User to check.
+	 * @return boolean
+	 */
+	public function canGrantUserSudo(UuidInterface $userId): bool {
+		return $this->isSuperAdmin($userId);
+	}
+
+	/**
+	 * Can the given user manage other users' Connections?
+	 *
+	 * @param UuidInterface $userId User to check.
+	 * @return boolean
+	 */
+	public function canManageOtherConnections(UuidInterface $userId): bool {
+		return $this->isSuperAdmin($userId);
 	}
 }

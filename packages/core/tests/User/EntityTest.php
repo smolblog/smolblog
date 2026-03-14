@@ -10,7 +10,6 @@ final class EntityTest extends TestCase {
 			id: $this->randomId(),
 			key: 'test',
 			displayName: 'Test User',
-			handler: 'phpunit',
 		);
 
 		$this->assertInstanceOf(User::class, $user);
