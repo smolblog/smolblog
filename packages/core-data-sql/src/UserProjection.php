@@ -40,8 +40,8 @@ class UserProjection implements UserRepo, EventListenerService, DatabaseTableHan
 		$table->addPrimaryKeyConstraint(
 			PrimaryKeyConstraint::editor()->setUnquotedColumnNames('dbid')->create(),
 		);
-		$table->addUniqueIndex(['connection_uuid']);
-		$table->addIndex(['user_uuid']);
+		$table->addUniqueIndex(['user_uuid']);
+		$table->addUniqueIndex(['key']);
 
 		return $schema;
 	}
@@ -67,7 +67,7 @@ class UserProjection implements UserRepo, EventListenerService, DatabaseTableHan
 		$query = $this->db->createQueryBuilder();
 		$query
 			->select('1')
-			->from('user')
+			->from('users')
 			->where('user_uuid = ?')
 			->setParameter(0, $userId);
 		$result = $query->fetchOne();
@@ -85,7 +85,7 @@ class UserProjection implements UserRepo, EventListenerService, DatabaseTableHan
 		$query = $this->db->createQueryBuilder();
 		$query
 			->select('1')
-			->from('user')
+			->from('users')
 			->where('key = ?')
 			->setParameter(0, $key);
 		$result = $query->fetchOne();

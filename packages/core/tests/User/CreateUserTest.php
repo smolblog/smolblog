@@ -25,7 +25,7 @@ final class CreateUserTest extends UserTestBase {
 				displayName: $expectedUser->displayName,
 			),
 		);
-		$this->app->execute(
+		$result = $this->app->execute(
 			new RegisterUser(
 				userId: $processUser,
 				key: $expectedUser->key,
@@ -33,6 +33,8 @@ final class CreateUserTest extends UserTestBase {
 				newUserId: $expectedUser->id,
 			),
 		);
+
+		$this->assertUuidEquals($expectedUser->id, $result);
 	}
 
 	public function testItFailsIfTheIdAlreadyExists() {
