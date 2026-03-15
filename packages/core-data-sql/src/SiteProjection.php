@@ -58,7 +58,7 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$siteUserTable->addColumn('user_uuid', 'guid');
 		$siteUserTable->addColumn('level', 'string');
 
-		$siteTable->addPrimaryKeyConstraint(
+		$siteUserTable->addPrimaryKeyConstraint(
 			PrimaryKeyConstraint::editor()->setUnquotedColumnNames('dbid')->create(),
 		);
 		$siteUserTable->addUniqueIndex(['user_uuid', 'site_uuid']);
@@ -89,8 +89,8 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$query
 			->select('1')
 			->from('sites')
-			->where('site_uuid = ?')
-			->setParameter(0, $siteId);
+			->where('site_uuid = :site')
+			->setParameter('site', $siteId);
 		$result = $query->fetchOne();
 
 		return $result ? true : false;
@@ -125,8 +125,8 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$query
 			->select('site_obj')
 			->from('sites')
-			->where('site_uuid = ?')
-			->setParameter(0, $siteId);
+			->where('site_uuid = :site')
+			->setParameter('site', $siteId);
 		$result = $query->fetchOne();
 
 		if ($result === false) {
@@ -150,8 +150,8 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$query
 			->select('site_obj')
 			->from('sites')
-			->where('user_uuid = ?')
-			->setParameter(0, $userId)
+			->where('user_uuid = :user')
+			->setParameter('user', $userId)
 			->orderBy('dbid', 'DESC');
 		$results = $query->fetchFirstColumn();
 
@@ -177,10 +177,10 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$query
 			->select('1')
 			->from('sites_users')
-			->where('site_uuid = ?')
-			->where('user_uuid = ?')
-			->setParameter(0, $siteId)
-			->setParameter(1, $userId);
+			->where('site_uuid = :site')
+			->where('user_uuid = :user')
+			->setParameter('site', $siteId)
+			->setParameter('user', $userId);
 		$result = $query->fetchOne();
 
 		return $result ? true : false;
@@ -200,10 +200,10 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$query
 			->select('level')
 			->from('sites_users')
-			->where('site_uuid = ?')
-			->where('user_uuid = ?')
-			->setParameter(0, $siteId)
-			->setParameter(1, $userId);
+			->where('site_uuid = :site')
+			->where('user_uuid = :user')
+			->setParameter('site', $siteId)
+			->setParameter('user', $userId);
 
 		$result = $query->fetchOne();
 		if ($result === false) {
@@ -224,8 +224,8 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$query
 			->select('user_uuid')
 			->from('sites_users')
-			->where('site_uuid = ?')
-			->setParameter(0, $siteId)
+			->where('site_uuid = :site')
+			->setParameter('site', $siteId)
 			->orderBy('dbid', 'DESC');
 		$results = $query->fetchFirstColumn();
 
@@ -279,10 +279,10 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 		$checkQuery
 			->select('dbid')
 			->from('sites_users')
-			->where('user_uuid = ?')
-			->where('site_uuid = ?')
-			->setParameter(0, $event->entityId)
-			->setParameter(1, $event->aggregateId);
+			->where('user_uuid = :user')
+			->where('site_uuid = :site')
+			->setParameter('user', $event->entityId)
+			->setParameter('site', $event->aggregateId);
 		$dbid = $checkQuery->fetchOne();
 
 		$data = [
