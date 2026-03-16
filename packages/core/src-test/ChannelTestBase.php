@@ -17,18 +17,7 @@ use Smolblog\Core\Channel\Services\ProjectionChannelHandler;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
 use Smolblog\Core\Permissions\SitePermissionsService;
-
-/**
- * Provices a ChannelHandler with key 'testmock'
- */
-abstract class ChannelHandlerTestBase implements ChannelHandler {
-	public static function getConfiguration(): ChannelHandlerConfiguration {
-		return new ChannelHandlerConfiguration(
-			key: 'testmock',
-			displayName: 'Test',
-		);
-	}
-}
+use Smolblog\Core\Test\Stubs\ChannelHandlerTestBase;
 
 /**
  * Provices a ChannelHandler with key 'asyncmock'

@@ -8,15 +8,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Smolblog\Core\Media\Data\MediaRepo;
 use Smolblog\Core\Media\Services\MediaHandler;
 use Smolblog\Core\Permissions\SitePermissionsService;
-
-/**
- * Provices a MediaHandler with key 'testmock'
- */
-abstract class MediaHandlerTestBase implements MediaHandler {
-	public static function getKey(): string {
-		return 'testmock';
-	}
-}
+use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 abstract class MediaTestBase extends ModelTest {

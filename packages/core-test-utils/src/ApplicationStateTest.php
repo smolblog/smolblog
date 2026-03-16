@@ -1,0 +1,119 @@
+<?php
+
+namespace Smolblog\Core\Test;
+
+use Cavatappi\Test\AppTest;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Stub;
+use Smolblog\Core\Channel\Services\ChannelHandler;
+use Smolblog\Core\Connection\Services\ConnectionHandler;
+use Smolblog\Core\Media\Services\MediaHandler;
+use Smolblog\Core\Test\Stubs\ChannelHandlerTestBase;
+use Smolblog\Core\Test\Stubs\ConnectionHandlerTestBase;
+use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
+use Smolblog\Core\User\GrantUserSudo;
+use Smolblog\Core\User\InternalSystemUser;
+use Smolblog\Core\User\RegisterUser;
+use Smolblog\Core\User\User;
+use Smolblog\Core\User\UserRepo;
+use Smolblog\CoreDataSql\UserProjection;
+
+abstract class ApplicationStateTest extends AppTest {
+	protected ChannelHandler&Stub $channelHandler;
+	protected ConnectionHandler&Stub $connectionHandler;
+	protected MediaHandler&Stub $mediaHandler;
+
+	protected function createMockServices(): array {
+		$this->channelHandler = $this->createStub(ChannelHandlerTestBase::class);
+		$this->connectionHandler = $this->createStub(ConnectionHandlerTestBase::class);
+		$this->mediaHandler = $this->createStub(MediaHandlerTestBase::class);
+
+		return [
+			...parent::createMockServices(),
+			ChannelHandlerTestBase::class => fn() => $this->channelHandler,
+			ConnectionHandlerTestBase::class => fn() => $this->connectionHandler,
+			MediaHandlerTestBase::class => fn() => $this->mediaHandler,
+		];
+	}
+
+	#[TestDox('All dependencies are met or stubbed.')]
+	final public function testCompleteApp() {
+		$this->assertCompleteDependencyMap();
+	}
+
+	#[TestDox('Users can be created and retrieved.')]
+	final public function testUserCreation() {
+		$repo = $this->app->container->get(UserRepo::class);
+
+		$windId = $this->app->execute(
+			new RegisterUser(
+				userId: InternalSystemUser::object()->id,
+				key: 'windfox',
+				displayName: 'Ronyo Gwaeron',
+			),
+		);
+		$this->app->execute(
+			new GrantUserSudo(
+				userId: InternalSystemUser::object()->id,
+				userIdToEscalate: $windId,
+			),
+		);
+		$this->assertTrue($repo->hasUserWithId($windId));
+		$this->assertTrue($repo->hasUserWithkey('windfox'));
+
+		$redId = $this->app->execute(
+			new RegisterUser(
+				userId: $windId,
+				key: 'red',
+				displayName: 'Eutychia of Mesone',
+			),
+		);
+		$greenId = $this->app->execute(
+			new RegisterUser(
+				userId: $windId,
+				key: 'green',
+				displayName: 'Alec Squallchaser',
+			),
+		);
+		$blueId = $this->app->execute(
+			new RegisterUser(
+				userId: $windId,
+				key: 'blue',
+				displayName: 'Jordan Hendrick',
+			),
+		);
+
+		$users = [
+			'windfox' => new User(
+				id: $windId,
+				key: 'windfox',
+				displayName: 'Ronyo Gwaeron',
+				sudo: true,
+			),
+			'red' => new User(
+				id: $redId,
+				key: 'red',
+				displayName: 'Eutychia of Mesone',
+				sudo: false,
+			),
+			'green' => new User(
+				id: $greenId,
+				key: 'green',
+				displayName: 'Alec Squallchaser',
+				sudo: false,
+			),
+			'blue' => new User(
+				id: $blueId,
+				key: 'blue',
+				displayName: 'Jordan Hendrick',
+				sudo: false,
+			),
+		];
+
+		foreach ($users as $userObject) {
+			$this->assertValueObjectEquals($userObject, $repo->userById($userObject->id));
+		}
+
+		// return $users;
+	}
+}

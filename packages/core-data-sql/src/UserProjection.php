@@ -4,13 +4,10 @@ namespace Smolblog\CoreDataSql;
 
 use Cavatappi\Foundation\DomainEvent\EventListenerService;
 use Cavatappi\Foundation\DomainEvent\ProjectionListener;
-use Cavatappi\Foundation\Factories\UuidFactory;
 use Cavatappi\Infrastructure\Serialization\SerializationService;
 use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
 use Ramsey\Uuid\UuidInterface;
-use Smolblog\Core\Connection\Entities\Connection;
-use Smolblog\Core\Connection\Events\{ConnectionDeleted, ConnectionEstablished, ConnectionRefreshed};
 use Smolblog\Core\User\User;
 use Smolblog\Core\User\UserGrantedSudo;
 use Smolblog\Core\User\UserRegistered;
