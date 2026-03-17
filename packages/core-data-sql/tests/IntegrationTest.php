@@ -11,24 +11,35 @@ final class IntegrationTest extends ApplicationStateTest {
 		\Smolblog\CoreDataSql\Model::class,
 	];
 
-	protected function createMockServices(): array {
-		//via https://stackoverflow.com/a/13212994/1284374
-		$randomPrefix = substr(
-			str_shuffle(
-				str_repeat(
-					$x = 'abcdefghijklmnopqrstuvwxyz',
-					ceil(8 / strlen($x)),
-				),
-			),
-			1,
-			8,
+	private static DatabaseEnvironment $testDb;
+
+	public static function setUpBeforeClass(): void
+	{
+		echo 'How do I work this? ';
+		parent::setUpBeforeClass();
+		self::$testDb = new DatabaseEnvironment(
+			props: ['driver' => 'pdo_sqlite', 'memory' => true],
+			tablePrefix: 'sb_',
 		);
+	}
+
+	protected function setUp(): void
+	{
+		echo 'Under the water, carry the water. ';
+		parent::setUp();
+	}
+
+	protected function createMockServices(): array {
+		echo 'Where does that highway go to? ';
 		return [
 			...parent::createMockServices(),
-			DatabaseEnvironment::class => [
-				'props' => fn() => ['driver' => 'pdo_sqlite', 'memory' => true],
-				'tablePrefix' => fn() => $randomPrefix . '_',
-			],
+			DatabaseEnvironment::class => fn() => self::$testDb,
 		];
+	}
+
+	public static function tearDownAfterClass(): void
+	{
+		echo 'How did I get here? ';
+		unset(self::$testDb);
 	}
 }
