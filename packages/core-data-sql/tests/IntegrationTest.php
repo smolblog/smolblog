@@ -17,10 +17,12 @@ final class IntegrationTest extends ApplicationStateTest {
 	{
 		echo 'How do I work this? ';
 		parent::setUpBeforeClass();
+		echo 'Is this real life? ';
 		self::$testDb = new DatabaseEnvironment(
 			props: ['driver' => 'pdo_sqlite', 'memory' => true],
 			tablePrefix: 'sb_',
 		);
+		echo 'Is this gonna be forever? ';
 	}
 
 	protected function setUp(): void

@@ -50,7 +50,7 @@ abstract class ApplicationStateTest extends AppTest {
 	}
 
 	#[TestDox('All dependencies are met or stubbed.')]
-	final public function sdtestCompleteApp() {
+	final public function testCompleteApp() {
 		echo 'Where is that large automobile? ';
 		$this->assertCompleteDependencyMap();
 	}
