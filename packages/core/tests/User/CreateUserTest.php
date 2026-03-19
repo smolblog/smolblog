@@ -87,6 +87,22 @@ final class CreateUserTest extends UserTestBase {
 			),
 		);
 	}
+
+	public function testItWillGenerateAnIdIfNoneGiven() {
+		$this->globalPerms->method('canRegisterUser')->willReturn(true);
+		$this->repo->method('hasUserWithId')->willReturn(false);
+		$processUser = $this->randomId();
+
+		$this->expectEventOfType(UserRegistered::class);
+		$this->app->execute(
+			new RegisterUser(
+				userId: $processUser,
+				key: 'key',
+				displayName: 'Display',
+			),
+		);
+	}
+
 	public function testItWillGenerateAnUnusedIdIfNoneGiven() {
 		$this->globalPerms->method('canRegisterUser')->willReturn(true);
 		$this->repo->method('hasUserWithId')->willReturn(true, true, false);

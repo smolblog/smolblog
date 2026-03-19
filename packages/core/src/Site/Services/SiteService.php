@@ -73,7 +73,7 @@ class SiteService implements CommandHandlerService {
 		if (!isset($siteId)) {
 			do {
 				$siteId = UuidFactory::random();
-			} while (!$this->repo->hasSiteWithId($siteId));
+			} while ($this->repo->hasSiteWithId($siteId));
 		}
 
 		$event = new SiteCreated(

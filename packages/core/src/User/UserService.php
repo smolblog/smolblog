@@ -45,7 +45,7 @@ class UserService implements Service, CommandHandlerService {
 		if (!isset($newUserId)) {
 			do {
 				$newUserId = UuidFactory::random();
-			} while (!$this->repo->hasUserWithId($newUserId));
+			} while ($this->repo->hasUserWithId($newUserId));
 		}
 
 		$event = new UserRegistered(
