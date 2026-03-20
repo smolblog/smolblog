@@ -2,9 +2,11 @@
 
 namespace Smolblog\CoreDataSql;
 
+use Cavatappi\Foundation\Service;
 use Cavatappi\Infrastructure\Serialization\SerializationService;
 use DateInterval;
 use DateTimeImmutable;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
 use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
@@ -13,7 +15,7 @@ use Smolblog\Core\Connection\Entities\AuthRequestState;
 /**
  * Short-term object storage. Think WordPress transients or session variables.
  */
-class ScratchPad implements AuthRequestStateRepo, DatabaseTableHandler {
+class ScratchPad implements AuthRequestStateRepo, DatabaseTableHandler, Service {
 	/**
 	 * Create the content table.
 	 *
@@ -57,12 +59,12 @@ class ScratchPad implements AuthRequestStateRepo, DatabaseTableHandler {
 	public function saveAuthRequestState(AuthRequestState $state): void {
 		$this->db->delete('scratch_pad', ['key' => 'AuthRequestState__' . $state->key]);
 
-		$exp = new DateTimeImmutable()->add(new DateInterval('1 hour'));
+		$exp = new DateTimeImmutable('now +1 hour');
 
 		$this->db->insert('scratch_pad', [
 			'key' => 'AuthRequestState__' . $state->key,
 			'value' => $this->serde->toJson($state),
-			'delete_after' => $exp,
+			'delete_after' => $exp->format('Y-m-d H:i:s.u'),
 		]);
 
 		$this->deleteExpired();
@@ -79,7 +81,7 @@ class ScratchPad implements AuthRequestStateRepo, DatabaseTableHandler {
 		$query->select('value')
 			->from('scratch_pad')
 			->where('key = ?')
-			->setParameter(0, $key);
+			->setParameter(0, "AuthRequestState__{$key}");
 		$result = $query->fetchOne();
 
 		$this->deleteExpired();
@@ -98,7 +100,7 @@ class ScratchPad implements AuthRequestStateRepo, DatabaseTableHandler {
 		$query = $this->db->createQueryBuilder();
 		$query->delete('scratch_pad')
 			->where('delete_after < ?')
-			->setParameter(0, new DateTimeImmutable());
+			->setParameter(0, new DateTimeImmutable(), 'datetime_immutable');
 		$query->executeStatement();
 	}
 }
