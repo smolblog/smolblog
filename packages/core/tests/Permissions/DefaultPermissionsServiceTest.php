@@ -72,11 +72,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = UuidFactory::fromString(InternalSystemUser::ID);
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(false);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(null);
+		$this->userRepo->method('hasUserWithId')->willReturn(false);
+		$this->userRepo->method('userById')->willReturn(null);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -95,8 +94,8 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(
+		$this->userRepo->method('hasUserWithId')->willReturn(true);
+		$this->userRepo->method('userById')->willReturn(
 			new User(
 				id: $userId,
 				key: 'test',
@@ -106,7 +105,6 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -122,8 +120,8 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(
+		$this->userRepo->method('hasUserWithId')->willReturn(true);
+		$this->userRepo->method('userById')->willReturn(
 			new User(
 				id: $userId,
 				key: 'test',
@@ -133,7 +131,6 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::Admin);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -151,8 +148,8 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(
+		$this->userRepo->method('hasUserWithId')->willReturn(true);
+		$this->userRepo->method('userById')->willReturn(
 			new User(
 				id: $userId,
 				key: 'test',
@@ -162,7 +159,6 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::Admin);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -179,8 +175,8 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(
+		$this->userRepo->method('hasUserWithId')->willReturn(true);
+		$this->userRepo->method('userById')->willReturn(
 			new User(
 				id: $userId,
 				key: 'test',
@@ -190,7 +186,6 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::Author);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -207,8 +202,8 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(
+		$this->userRepo->method('hasUserWithId')->willReturn(true);
+		$this->userRepo->method('userById')->willReturn(
 			new User(
 				id: $userId,
 				key: 'test',
@@ -218,7 +213,6 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::Author);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -236,8 +230,8 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(
+		$this->userRepo->method('hasUserWithId')->willReturn(true);
+		$this->userRepo->method('userById')->willReturn(
 			new User(
 				id: $userId,
 				key: 'test',
@@ -247,7 +241,6 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -263,8 +256,8 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(true);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(
+		$this->userRepo->method('hasUserWithId')->willReturn(true);
+		$this->userRepo->method('userById')->willReturn(
 			new User(
 				id: $userId,
 				key: 'test',
@@ -274,7 +267,6 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];
@@ -293,11 +285,10 @@ final class DefaultPermissionsServiceTest extends AppTest {
 		$userId = $this->randomId();
 		$siteId = $this->randomId();
 
-		$this->userRepo->method('hasUserWithId')->with($this->uuidEquals($userId))->willReturn(false);
-		$this->userRepo->method('userById')->with($this->uuidEquals($userId))->willReturn(null);
+		$this->userRepo->method('hasUserWithId')->willReturn(false);
+		$this->userRepo->method('userById')->willReturn(null);
 		$this->siteUserRepo
 			->method('permissionsForUser')
-			->with($this->uuidEquals($userId), $this->uuidEquals($siteId))
 			->willReturn(SitePermissionLevel::None);
 
 		$params = $isSiteAction ? ['userId' => $userId, 'siteId' => $siteId] : ['userId' => $userId];

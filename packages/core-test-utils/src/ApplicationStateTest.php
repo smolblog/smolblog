@@ -25,18 +25,15 @@ abstract class ApplicationStateTest extends AppTest {
 
 	public static function setUpBeforeClass(): void
 	{
-		echo 'This is not my beautiful house! ';
 		parent::setUpBeforeClass();
 	}
 
 	protected function setUp(): void
 	{
-		echo 'This is not my beautiful wife! ';
 		parent::setUp();
 	}
 
 	protected function createMockServices(): array {
-		echo 'Am i right, am I wrong? ';
 		$this->channelHandler = $this->createStub(ChannelHandlerTestBase::class);
 		$this->connectionHandler = $this->createStub(ConnectionHandlerTestBase::class);
 		$this->mediaHandler = $this->createStub(MediaHandlerTestBase::class);
@@ -51,13 +48,11 @@ abstract class ApplicationStateTest extends AppTest {
 
 	#[TestDox('All dependencies are met or stubbed.')]
 	final public function testCompleteApp() {
-		echo 'Where is that large automobile? ';
 		$this->assertCompleteDependencyMap();
 	}
 
 	#[TestDox('Users can be created and retrieved.')]
 	final public function testUserCreation() {
-		echo 'What is that beautiful house? ';
 		$repo = $this->app->container->get(UserRepo::class);
 
 		$windId = $this->app->execute(

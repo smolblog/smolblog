@@ -6,6 +6,7 @@ use Cavatappi\Foundation\Module;
 use Cavatappi\Foundation\Module\FileDiscoveryKit;
 use Cavatappi\Foundation\Module\ModuleKit;
 use Smolblog\Core\Channel\Data\ChannelRepo;
+use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Data\ContentStateManager;
@@ -23,6 +24,7 @@ class Model implements Module {
 
 	private static function serviceMapOverrides(): array {
 		return [
+			AuthRequestStateRepo::class => ScratchPad::class,
 			ChannelRepo::class => ChannelProjection::class,
 			ConnectionRepo::class => ConnectionProjection::class,
 			ContentRepo::class => ContentProjection::class,
