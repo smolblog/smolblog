@@ -15,6 +15,9 @@ use Smolblog\Core\Connection\Entities\ConnectionInitData;
 use Smolblog\Core\Connection\Services\ConnectionDataService;
 use Smolblog\Core\Connection\Services\ConnectionHandler;
 use Smolblog\Core\Media\Services\MediaHandler;
+use Smolblog\Core\Site\Commands\CreateSite;
+use Smolblog\Core\Site\Data\SiteRepo;
+use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Core\Test\Stubs\ChannelHandlerTestBase;
 use Smolblog\Core\Test\Stubs\ConnectionHandlerTestBase;
 use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
@@ -222,5 +225,81 @@ abstract class ApplicationStateTest extends AppTest {
 		// Test read permissions
 		$this->assertEmpty($connections->connectionsForUser($windfox->id, $blue->id));
 		$this->assertValueObjectEquals($blueConnectionFinal, $connections->connectionsForUser($blue->id, $windfox->id)[0]);
+	}
+
+	#[Depends('testUserCreation')]
+	#[TestDox('Users can create and manage sites.')]
+	final public function testSites($users) {
+		extract($users);
+		$repo = $this->app->container->get(SiteRepo::class);
+
+		$windId = $this->app->execute(new CreateSite(
+			userId: $windfox->id,
+			key: 'windfox',
+			displayName: 'Ronyo the Windfox',
+			description: 'Climbing mountains and running through fields.',
+			siteUser: $windfox->id,
+		));
+		$redId = $this->app->execute(new CreateSite(
+			userId: $windfox->id,
+			key: 'red',
+			displayName: 'Euty got dat booty',
+			siteUser: $red->id,
+			description: 'Play nice or you\'ll meet the hooves.',
+		));
+		$greenId = $this->app->execute(new CreateSite(
+			userId: $windfox->id,
+			key: 'green',
+			displayName: 'Call Me Al(ec)',
+			siteUser: $green->id,
+			description: 'You can\'t pronounce my name, so call me Alec.',
+		));
+		$blueId = $this->app->execute(new CreateSite(
+			userId: $windfox->id,
+			key: 'blue',
+			displayName: 'Jordan\'s stormy banks',
+			siteUser: $blue->id,
+			description: 'DFTBA, I\'ll see you on Thursday.',
+		));
+
+		$sites = [
+			'windfox' => new Site(
+				id: $windId,
+				key: 'windfox',
+				displayName: 'Ronyo the Windfox',
+				userId: $windfox->id,
+				description: 'Climbing mountains and running through fields.',
+			),
+			'red' => new Site(
+				id: $redId,
+				key: 'red',
+				displayName: 'Euty got dat booty',
+				userId: $red->id,
+				description: 'Play nice or you\'ll meet the hooves.',
+			),
+			'green' => new Site(
+				id: $greenId,
+				key: 'green',
+				displayName: 'Call Me Al(ec)',
+				userId: $green->id,
+				description: 'You can\'t pronounce my name, so call me Alec.',
+			),
+			'blue' => new Site(
+				id: $blueId,
+				key: 'blue',
+				displayName: 'Jordan\'s stormy banks',
+				userId: $blue->id,
+				description: 'DFTBA, I\'ll see you on Thursday.',
+			),
+		];
+
+		foreach ($sites as $siteObject) {
+			$this->assertValueObjectEquals($siteObject, $repo->siteById($siteObject->id));
+		}
+
+		return [
+			'users' => $users,
+			'sites' => $sites,
+		];
 	}
 }
