@@ -132,7 +132,9 @@ class UserProjection implements UserRepo, EventListenerService, DatabaseTableHan
 
 	public function onUserGrantedSudo(UserGrantedSudo $event): void {
 		$existing = $this->userById($event->entityId);
-		if (!isset($existing)) { return; }
+		if (!isset($existing)) {
+			return;
+		}
 		$updated = $existing->with(sudo: true);
 
 		$this->db->update(

@@ -9,7 +9,6 @@ use PHPUnit\Framework\MockObject\Stub;
 use Smolblog\Core\Channel\Services\ChannelHandler;
 use Smolblog\Core\Connection\Commands\BeginAuthRequest;
 use Smolblog\Core\Connection\Commands\FinishAuthRequest;
-use Smolblog\Core\Connection\Entities\AuthRequestState;
 use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Entities\ConnectionInitData;
 use Smolblog\Core\Connection\Services\ConnectionDataService;
@@ -26,20 +25,17 @@ use Smolblog\Core\User\InternalSystemUser;
 use Smolblog\Core\User\RegisterUser;
 use Smolblog\Core\User\User;
 use Smolblog\Core\User\UserRepo;
-use Smolblog\CoreDataSql\UserProjection;
 
 abstract class ApplicationStateTest extends AppTest {
 	protected ChannelHandler&Stub $channelHandler;
 	protected ConnectionHandler&Stub $connectionHandler;
 	protected MediaHandler&Stub $mediaHandler;
 
-	public static function setUpBeforeClass(): void
-	{
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 	}
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
 	}
 

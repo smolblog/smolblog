@@ -254,7 +254,9 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 
 	public function onSiteDetailsUpdated(SiteDetailsUpdated $event): void {
 		$existing = $this->siteById($event->aggregateId);
-		if (!isset($existing)) { return; }
+		if (!isset($existing)) {
+			return;
+		}
 
 		$updated = $existing;
 		if (isset($event->displayName)) {

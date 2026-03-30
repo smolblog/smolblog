@@ -15,8 +15,7 @@ final class IntegrationTest extends ApplicationStateTest {
 
 	private static DatabaseEnvironment $testDb;
 
-	public static function setUpBeforeClass(): void
-	{
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		self::$testDb = new DatabaseEnvironment(
 			props: ['driver' => 'pdo_sqlite', 'memory' => true],
@@ -24,8 +23,7 @@ final class IntegrationTest extends ApplicationStateTest {
 		);
 	}
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
 	}
 
