@@ -329,7 +329,7 @@ abstract class ApplicationStateTest extends AppTest {
 				"Incorrect users for site {$siteObject->key}",
 			);
 
-			$expectedUserPerms = array_map(fn($u) => match($u->key) {
+			$expectedUserPerms = array_map(fn($u) => match ($u->key) {
 				'windfox' => true,
 				$siteObject->key => true,
 				default => false,
