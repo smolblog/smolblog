@@ -74,6 +74,9 @@ final class SiteProjectionTest extends DataTestBase {
 		$this->assertTrue($projection->hasUserForSite($site->userId, $site->id));
 		$this->assertEquals(SitePermissionLevel::Admin, $projection->permissionsForUser($site->userId, $site->id));
 		$this->assertNotEmpty($projection->userIdsForSite($site->id));
+
+		// Random user should not be set up.
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($this->randomId(), $site->id));
 	}
 
 	public function testSiteDetailsUpdated() {
@@ -132,40 +135,78 @@ final class SiteProjectionTest extends DataTestBase {
 	}
 
 	public function testUserSitePermissionsSet() {
-		$userId = $this->randomId();
-		$siteId = $this->randomId();
+		$userIdOne = $this->randomId();
+		$siteIdOne = $this->randomId();
+		$userIdTwo = $this->randomId();
+		$siteIdTwo = $this->randomId();
 		$projection = $this->app->container->get(SiteProjection::class);
 
-		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userId, $siteId));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdOne, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdOne, $siteIdTwo));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdTwo, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdTwo, $siteIdTwo));
 
 		$this->app->dispatch(
 			new UserSitePermissionsSet(
 				userId: $this->randomId(),
-				aggregateId: $siteId,
-				entityId: $userId,
+				aggregateId: $siteIdOne,
+				entityId: $userIdOne,
 				level: SitePermissionLevel::Author,
 			),
 		);
-		$this->assertEquals(SitePermissionLevel::Author, $projection->permissionsForUser($userId, $siteId));
+		$this->app->dispatch(
+			new UserSitePermissionsSet(
+				userId: $this->randomId(),
+				aggregateId: $siteIdTwo,
+				entityId: $userIdTwo,
+				level: SitePermissionLevel::Author,
+			),
+		);
+		$this->assertEquals(SitePermissionLevel::Author, $projection->permissionsForUser($userIdOne, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdOne, $siteIdTwo));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdTwo, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::Author, $projection->permissionsForUser($userIdTwo, $siteIdTwo));
 
 		$this->app->dispatch(
 			new UserSitePermissionsSet(
 				userId: $this->randomId(),
-				aggregateId: $siteId,
-				entityId: $userId,
+				aggregateId: $siteIdOne,
+				entityId: $userIdOne,
 				level: SitePermissionLevel::None,
 			),
 		);
-		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userId, $siteId));
+		$this->app->dispatch(
+			new UserSitePermissionsSet(
+				userId: $this->randomId(),
+				aggregateId: $siteIdTwo,
+				entityId: $userIdTwo,
+				level: SitePermissionLevel::None,
+			),
+		);
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdOne, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdOne, $siteIdTwo));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdTwo, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdTwo, $siteIdTwo));
 
 		$this->app->dispatch(
 			new UserSitePermissionsSet(
 				userId: $this->randomId(),
-				aggregateId: $siteId,
-				entityId: $userId,
+				aggregateId: $siteIdOne,
+				entityId: $userIdOne,
 				level: SitePermissionLevel::Admin,
 			),
 		);
-		$this->assertEquals(SitePermissionLevel::Admin, $projection->permissionsForUser($userId, $siteId));
+		$this->app->dispatch(
+			new UserSitePermissionsSet(
+				userId: $this->randomId(),
+				aggregateId: $siteIdTwo,
+				entityId: $userIdTwo,
+				level: SitePermissionLevel::Admin,
+			),
+		);
+		$this->assertEquals(SitePermissionLevel::Admin, $projection->permissionsForUser($userIdOne, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdOne, $siteIdTwo));
+		$this->assertEquals(SitePermissionLevel::None, $projection->permissionsForUser($userIdTwo, $siteIdOne));
+		$this->assertEquals(SitePermissionLevel::Admin, $projection->permissionsForUser($userIdTwo, $siteIdTwo));
 	}
 }

@@ -201,7 +201,7 @@ class SiteProjection implements SiteRepo, SiteUserRepo, EventListenerService, Da
 			->select('level')
 			->from('sites_users')
 			->where('site_uuid = :site')
-			->where('user_uuid = :user')
+			->andWhere('user_uuid = :user')
 			->setParameter('site', $siteId)
 			->setParameter('user', $userId);
 

@@ -2,10 +2,13 @@
 
 namespace Smolblog\Core\Test;
 
+use Cavatappi\Foundation\Factories\HttpMessageFactory;
+use Cavatappi\Foundation\Fields\Markdown;
 use Cavatappi\Test\AppTest;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Stub;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Services\ChannelHandler;
 use Smolblog\Core\Connection\Commands\BeginAuthRequest;
 use Smolblog\Core\Connection\Commands\FinishAuthRequest;
@@ -13,10 +16,21 @@ use Smolblog\Core\Connection\Entities\Connection;
 use Smolblog\Core\Connection\Entities\ConnectionInitData;
 use Smolblog\Core\Connection\Services\ConnectionDataService;
 use Smolblog\Core\Connection\Services\ConnectionHandler;
+use Smolblog\Core\Content\Commands\CreateContent;
+use Smolblog\Core\Content\Data\ContentRepo;
+use Smolblog\Core\Content\Entities\Content;
+use Smolblog\Core\Content\Services\ContentDataService;
+use Smolblog\Core\Content\Types\Article\Article;
+use Smolblog\Core\Content\Types\Note\Note;
+use Smolblog\Core\Content\Types\Picture\Picture;
+use Smolblog\Core\Content\Types\Reblog\Reblog;
 use Smolblog\Core\Media\Services\MediaHandler;
+use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Commands\CreateSite;
 use Smolblog\Core\Site\Data\SiteRepo;
+use Smolblog\Core\Site\Data\SiteUserRepo;
 use Smolblog\Core\Site\Entities\Site;
+use Smolblog\Core\Site\Entities\SitePermissionLevel;
 use Smolblog\Core\Test\Stubs\ChannelHandlerTestBase;
 use Smolblog\Core\Test\Stubs\ConnectionHandlerTestBase;
 use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
@@ -30,6 +44,11 @@ abstract class ApplicationStateTest extends AppTest {
 	protected ChannelHandler&Stub $channelHandler;
 	protected ConnectionHandler&Stub $connectionHandler;
 	protected MediaHandler&Stub $mediaHandler;
+
+	// TODO: move this to the framework
+	public static function assertUuidNotEquals(UuidInterface $expected, UuidInterface $actual, string $message = ''): void {
+		self::assertThat($actual, self::logicalNot(self::uuidEquals($expected)), $message);
+	}
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -228,6 +247,7 @@ abstract class ApplicationStateTest extends AppTest {
 	final public function testSites($users) {
 		extract($users);
 		$repo = $this->app->container->get(SiteRepo::class);
+		$perms = $this->app->container->get(SitePermissionsService::class);
 
 		$windId = $this->app->execute(new CreateSite(
 			userId: $windfox->id,
@@ -290,12 +310,94 @@ abstract class ApplicationStateTest extends AppTest {
 		];
 
 		foreach ($sites as $siteObject) {
-			$this->assertValueObjectEquals($siteObject, $repo->siteById($siteObject->id));
+			$this->assertValueObjectEquals(
+				$siteObject,
+				$repo->siteById($siteObject->id),
+				"Could not retrieve site {$siteObject->key}",
+			);
+
+			$actualUsers = array_map('\\strval', $repo->userIdsForSite($siteObject->id));
+			$this->assertEquals(
+				[strval($siteObject->userId)],
+				$actualUsers,
+				"Incorrect users for site {$siteObject->key}",
+			);
+
+			$expectedUserPerms = array_map(fn($u) => match($u->key) {
+				'windfox' => true,
+				$siteObject->key => true,
+				default => false,
+			}, $users);
+			$actualUserPerms = array_map(fn($u) => $perms->canManageSettings($u->id, $siteObject->id), $users);
+			$this->assertEquals($expectedUserPerms, $actualUserPerms);
 		}
 
 		return [
 			'users' => $users,
 			'sites' => $sites,
 		];
+	}
+
+	#[Depends('testSites')]
+	#[TestDox('Users can create and manage content.')]
+	final public function testContent($fixtures) {
+		extract($fixtures);
+
+		$keys = ['windfox', 'red', 'green', 'blue'];
+		$bodies = [
+			'note' => new Note(new Markdown('This is a test note.')),
+			'reblog' => new Reblog(
+				url: HttpMessageFactory::uri('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),
+			),
+			'article' => new Article(
+				title: 'A longer article',
+				text: new Markdown("Just kidding, I can't write that much.\n\nButts."),
+			),
+		];
+
+		$repo = $this->app->container->get(ContentDataService::class);
+		$perms = $this->app->container->get(SitePermissionsService::class);
+
+		foreach ($keys as $key) {
+			$userId = $users[$key]->id;
+			$siteId = $sites[$key]->id;
+
+			$sudo = $users['windfox'];
+			$other = $key === 'blue' ? $users['red'] : $users['blue'];
+
+			foreach ($bodies as $type => $body) {
+				$contentId = $this->app->execute(
+					new CreateContent(
+						userId: $userId,
+						body: $body,
+						siteId: $siteId,
+					),
+				);
+				$content = new Content(
+					body: $body,
+					siteId: $siteId,
+					userId: $userId,
+					id: $contentId,
+				);
+
+				$this->assertUuidEquals($userId, $content->userId, 'TEST FAILURE: content user UUID not correct.');
+				$this->assertUuidNotEquals($other->id, $content->userId, 'TEST FAILURE: content user UUID matches other.');
+
+				$this->assertValueObjectEquals(
+					$content,
+					$repo->contentById($contentId, $userId),
+					"Failed to retrieve {$type} for {$key}",
+				);
+				$this->assertValueObjectEquals(
+					$content,
+					$repo->contentById($contentId, $sudo->id),
+					"Failed to retrieve {$key} {$type} for superuser {$sudo->key}",
+				);
+				$this->assertNull(
+					$repo->contentById($contentId, $other->id),
+					"Content {$type} for {$key} not null for {$other->key}",
+				);
+			}
+		}
 	}
 }
