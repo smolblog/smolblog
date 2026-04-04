@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Test;
 
+use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
 use Cavatappi\Foundation\Factories\HttpMessageFactory;
 use Cavatappi\Foundation\Fields\Markdown;
 use Cavatappi\Test\AppTest;
@@ -17,8 +18,13 @@ use Smolblog\Core\Connection\Entities\ConnectionInitData;
 use Smolblog\Core\Connection\Services\ConnectionDataService;
 use Smolblog\Core\Connection\Services\ConnectionHandler;
 use Smolblog\Core\Content\Commands\CreateContent;
+use Smolblog\Core\Content\Commands\DeleteContent;
+use Smolblog\Core\Content\Commands\UpdateContent;
 use Smolblog\Core\Content\Data\ContentRepo;
 use Smolblog\Core\Content\Entities\Content;
+use Smolblog\Core\Content\Extensions\License\License;
+use Smolblog\Core\Content\Extensions\License\LicenseType;
+use Smolblog\Core\Content\Extensions\Tags\Tags;
 use Smolblog\Core\Content\Services\ContentDataService;
 use Smolblog\Core\Content\Types\Article\Article;
 use Smolblog\Core\Content\Types\Note\Note;
@@ -356,7 +362,6 @@ abstract class ApplicationStateTest extends AppTest {
 		];
 
 		$repo = $this->app->container->get(ContentDataService::class);
-		$perms = $this->app->container->get(SitePermissionsService::class);
 
 		foreach ($keys as $key) {
 			$userId = $users[$key]->id;
@@ -380,9 +385,6 @@ abstract class ApplicationStateTest extends AppTest {
 					id: $contentId,
 				);
 
-				$this->assertUuidEquals($userId, $content->userId, 'TEST FAILURE: content user UUID not correct.');
-				$this->assertUuidNotEquals($other->id, $content->userId, 'TEST FAILURE: content user UUID matches other.');
-
 				$this->assertValueObjectEquals(
 					$content,
 					$repo->contentById($contentId, $userId),
@@ -397,6 +399,56 @@ abstract class ApplicationStateTest extends AppTest {
 					$repo->contentById($contentId, $other->id),
 					"Content {$type} for {$key} not null for {$other->key}",
 				);
+
+				$this->app->execute(
+					new UpdateContent(
+						contentId: $contentId,
+						userId: $sudo->id,
+						body: $content->body,
+						siteId: $siteId,
+						contentUserId: $userId,
+						extensions: [
+							new Tags(['test','usual']),
+						],
+					),
+				);
+				$this->app->execute(
+					new UpdateContent(
+						contentId: $contentId,
+						userId: $userId,
+						body: $content->body,
+						siteId: $siteId,
+						contentUserId: $userId,
+						extensions: [
+							new Tags(['test','usual']),
+							new License(originalWork: true, baseType: LicenseType::Attribution),
+						],
+					),
+				);
+
+				$content = $content->with(
+					extensions: [
+						new Tags(['test','usual']),
+						new License(originalWork: true, baseType: LicenseType::Attribution),
+					],
+				);
+				$this->assertValueObjectEquals(
+					$content,
+					$repo->contentById($contentId, $userId),
+					"Failed to retrieve edited {$type} for {$key}",
+				);
+
+				try {
+					$this->app->execute(
+						new DeleteContent(
+							userId: $other->id,
+							contentId: $contentId,
+						),
+					);
+					$this->assertTrue(false, "User {$other->key} deleted content in {$key}");
+				} catch (CommandNotAuthorized $e) {
+					// Do nothing; this is good!
+				}
 			}
 		}
 	}
