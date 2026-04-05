@@ -10,15 +10,7 @@ use Smolblog\Core\Connection\Data\AuthRequestStateRepo;
 use Smolblog\Core\Connection\Data\ConnectionRepo;
 use Smolblog\Core\Connection\Services\ConnectionHandler;
 use Smolblog\Core\Permissions\GlobalPermissionsService;
-
-/**
- * Provices a ConnectionHandler with key 'testmock'
- */
-abstract class ConnectionHandlerTestBase implements ConnectionHandler {
-	public static function getKey(): string {
-		return 'testmock';
-	}
-}
+use Smolblog\Core\Test\Stubs\ConnectionHandlerTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
 abstract class ConnectionTestBase extends ModelTest {

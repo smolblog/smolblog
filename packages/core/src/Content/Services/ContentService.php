@@ -47,7 +47,7 @@ class ContentService implements CommandHandlerService {
 	 * @return void
 	 */
 	#[CommandHandler]
-	public function createContent(CreateContent $command): void {
+	public function createContent(CreateContent $command): UuidInterface {
 		// Check for existing ID.
 		$contentId = $command->contentId;
 		if (isset($contentId) && $this->repo->hasContentWithId($contentId)) {
@@ -74,6 +74,8 @@ class ContentService implements CommandHandlerService {
 			$extServ->create($command, $contentId);
 		}
 		$this->getServiceForContentType($command->body)->create($command, $contentId);
+
+		return $contentId;
 	}
 
 	/**

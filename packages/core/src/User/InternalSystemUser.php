@@ -31,7 +31,7 @@ class InternalSystemUser {
 			id: UuidFactory::fromString(self::ID),
 			key: 'smolbot',
 			displayName: 'Smolblog Internal System',
-			handler: self::class,
+			sudo: true,
 		);
 		return self::$smolbot;
 	}

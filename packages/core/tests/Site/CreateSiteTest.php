@@ -88,6 +88,21 @@ final class CreateSiteTest extends SiteTestBase {
 		));
 	}
 
+	public function testItGeneratesANewIdIfNotProvided() {
+		$command = new CreateSite(
+			userId: $this->randomId(),
+			key: 'test',
+			displayName: 'Test Site',
+		);
+
+		$this->repo->method('hasSiteWithId')->willReturn(false);
+		$this->globalPerms->method('canCreateSite')->willReturn(true);
+
+		$this->expectEventOfType(SiteCreated::class);
+
+		$this->app->execute($command);
+	}
+
 	public function testItGeneratesANewIdThatDoesNotExist() {
 		$command = new CreateSite(
 			userId: $this->randomId(),

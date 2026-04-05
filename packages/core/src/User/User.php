@@ -19,12 +19,12 @@ readonly class User implements Value, Entity {
 	 * @param UuidInterface $id          Permanent ID of the User.
 	 * @param string        $key         Human readable handle for the user.
 	 * @param string        $displayName Full name to display.
-	 * @param string        $handler     Subsystem to handle authentication.
+	 * @param bool          $sudo True if user has all admin priveleges. Default false.
 	 */
 	public function __construct(
 		public UuidInterface $id,
 		public string $key,
 		public string $displayName,
-		public string $handler,
+		public bool $sudo = false,
 	) {}
 }

@@ -20,7 +20,6 @@
     </report>
   </coverage>
   <php>
-    <ini name="xdebug.mode" value="coverage"/>
     <ini name="memory_limit" value="1024M"/>
   </php>
   <source>

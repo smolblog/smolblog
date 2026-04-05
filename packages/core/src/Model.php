@@ -20,6 +20,9 @@ class Model implements Module {
 			Media\Services\MediaHandlerRegistry::class => [
 				'container' => ContainerInterface::class,
 			],
+			// Setting the default permissions service.
+			Permissions\SitePermissionsService::class => Permissions\DefaultPermissionsService::class,
+			Permissions\GlobalPermissionsService::class => Permissions\DefaultPermissionsService::class,
 		];
 	}
 }

@@ -35,7 +35,7 @@ class SiteCreated implements DomainEvent {
 		public readonly UuidInterface $aggregateId,
 		public readonly string $key,
 		public readonly string $displayName,
-		public readonly UuidInterface $siteUserId,
+		public readonly ?UuidInterface $siteUserId = null,
 		public readonly ?string $description = null,
 		public readonly ?UuidInterface $pictureId = null,
 		?UuidInterface $id = null,
