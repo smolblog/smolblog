@@ -8,6 +8,7 @@ use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
 use Cavatappi\Foundation\Exceptions\EntityNotFound;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Factories\UuidFactory;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Commands\DeleteMedia;
@@ -49,17 +50,18 @@ class MediaService implements CommandHandlerService {
 	 * Create the service.
 	 *
 	 * @param EventDispatcherInterface $bus       MessageBus to dispatch events.
-	 * @param MediaHandlerRegistry     $registry  Available MediaHandlers.
 	 * @param MediaRepo                $mediaRepo Check existing media.
+	 * @param MediaFileRepo     $handler  File repository.
 	 * @param SitePermissionsService   $perms     Check user permissions.
 	 * @param MediaExtensionRegistry $extensions Available MediaExtensions.
 	 */
 	public function __construct(
 		private EventDispatcherInterface $bus,
-		private MediaHandlerRegistry $registry,
 		private MediaRepo $mediaRepo,
+		private MediaFileRepo $handler,
 		private SitePermissionsService $perms,
 		private MediaExtensionRegistry $extensions,
+		private FinfoMimeTypeDetector $mime,
 	) {}
 
 	/**
@@ -73,15 +75,20 @@ class MediaService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function onHandleUploadedMedia(HandleUploadedMedia $command) {
+		// Check permissions.
 		$mediaId = $this->checkNewPermsAndId($command);
 
-		$handler = $this->registry->get();
-		$media = $handler->handleUploadedFile(command: $command, mediaId: $mediaId);
+		$basePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . UuidFactory::random();
+		mkdir($basePath);
+		$filePath = $basePath . DIRECTORY_SEPARATOR . $command->file->getClientFilename();
+		$command->file->moveTo($filePath);
 
-		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
-			$extServ->create($media);
-		}
-		$this->bus->dispatch(MediaCreated::createFromMediaObject($media));
+		$this->saveMedia($command, $mediaId, $filePath);
+
+		unlink($filePath);
+		rmdir($basePath);
+
+		return $mediaId;
 	}
 
 	/**
@@ -95,15 +102,52 @@ class MediaService implements CommandHandlerService {
 	 */
 	#[CommandHandler]
 	public function onSideloadMedia(SideloadMedia $command) {
+		// Check permissions.
 		$mediaId = $this->checkNewPermsAndId($command);
 
-		$handler = $this->registry->get();
-		$media = $handler->sideloadFile(command: $command, mediaId: $mediaId);
+		$basePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . UuidFactory::random();
+		mkdir($basePath);
+		$filePath = $basePath . DIRECTORY_SEPARATOR . basename($command->url->getPath());
+
+		file_put_contents($filePath, fopen($command->url->__toString(), 'r'));
+
+		$this->saveMedia($command, $mediaId, $filePath);
+
+		unlink($filePath);
+		rmdir($basePath);
+
+		return $mediaId;
+	}
+
+	/**
+	 * Create the media object and pass it and the file to the media file repo.
+	 *
+	 * @param HandleUploadedMedia|SideloadMedia $command Command being executed.
+	 * @param string $filePath Path to the uploaded/sideloaded media file.
+	 * @return UuidInterface Valid ID for the new Media object.
+	 */
+	private function saveMedia(HandleUploadedMedia|SideloadMedia $command, UuidInterface $mediaId, string $filePath): UuidInterface {
+		$media = new Media(
+			id: $mediaId,
+			userId: $command->userId,
+			siteId: $command->siteId,
+			title: $command->title ?? basename($filePath),
+			accessibilityText: $command->accessibilityText,
+			type: self::typeFromMimeType($this->mime->detectMimeTypeFromFile($filePath) ?? 'object/octet-stream'),
+			fileDetails: [],
+			extensions: $command->extensions,
+		);
+
+		$media = $media->with(
+			fileDetails: $this->handler->saveFile(filePath: $filePath, mediaObject: $media),
+		);
 
 		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
 			$extServ->create($media);
 		}
 		$this->bus->dispatch(MediaCreated::createFromMediaObject($media));
+
+		return $mediaId;
 	}
 
 	/**
@@ -145,8 +189,7 @@ class MediaService implements CommandHandlerService {
 	public function onDeleteMedia(DeleteMedia $command) {
 		$media = $this->checkEditPermsAndId($command);
 
-		$handler = $this->registry->get($media->handler);
-		$handler->deleteFile(command: $command, media: $media);
+		$this->handler->deleteFile(media: $media);
 
 		foreach ($this->getServicesForContentExtensions($media->extensions) as $extServ) {
 			$extServ->delete($command, $media);

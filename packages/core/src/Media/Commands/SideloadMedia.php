@@ -9,6 +9,7 @@ use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
 use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Value\ValueKit;
+use Psr\Http\Message\UriInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Entities\MediaExtension;
 
@@ -24,7 +25,7 @@ readonly class SideloadMedia implements Command, Authenticated, Validated {
 	 *
 	 * @throws InvalidValueProperties If title or accessibility text are given and empty.
 	 *
-	 * @param string             $url               File to sideload.
+	 * @param UriInterface             $url               File to sideload.
 	 * @param UuidInterface      $userId            User uploading the file.
 	 * @param UuidInterface      $siteId            Site file is being uploaded to.
 	 * @param string             $accessibilityText Alt text.
@@ -33,7 +34,7 @@ readonly class SideloadMedia implements Command, Authenticated, Validated {
 	 * @param MediaExtension[] $extensions Any extensions added to this media.
 	 */
 	public function __construct(
-		public readonly string $url,
+		public readonly UriInterface $url,
 		public readonly UuidInterface $userId,
 		public readonly UuidInterface $siteId,
 		public readonly string $accessibilityText,

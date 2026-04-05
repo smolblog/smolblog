@@ -39,7 +39,6 @@ readonly class Media implements Entity, Value, Validated {
 		public string $title,
 		public string $accessibilityText,
 		public MediaType $type,
-		public string $handler,
 		#[MapType('mixed')] public array $fileDetails,
 		#[ListType(MediaExtension::class)] public array $extensions = [],
 	) {
