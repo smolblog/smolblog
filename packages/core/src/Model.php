@@ -5,6 +5,7 @@ namespace Smolblog\Core;
 use Cavatappi\Foundation\Module;
 use Cavatappi\Foundation\Module\FileDiscoveryKit;
 use Cavatappi\Foundation\Module\ModuleKit;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -16,13 +17,10 @@ class Model implements Module {
 
 	private static function serviceMapOverrides(): array {
 		return [
-			// Defined here because there is an optional parameter.
-			Media\Services\MediaHandlerRegistry::class => [
-				'container' => ContainerInterface::class,
-			],
 			// Setting the default permissions service.
 			Permissions\SitePermissionsService::class => Permissions\DefaultPermissionsService::class,
 			Permissions\GlobalPermissionsService::class => Permissions\DefaultPermissionsService::class,
+			FinfoMimeTypeDetector::class => [],
 		];
 	}
 }

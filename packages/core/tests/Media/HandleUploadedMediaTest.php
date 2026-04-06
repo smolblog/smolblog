@@ -32,7 +32,6 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			title: 'testimage.jpg',
 			accessibilityText: 'Image for testing',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: [],
 		);
 
@@ -49,7 +48,6 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			title: $media->title,
 			accessibilityText: $command->accessibilityText,
 			mediaType: $media->type,
-			handler: $media->handler,
 			fileDetails: [],
 		);
 		$this->expectEvent($event);
@@ -132,7 +130,6 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 				title: 'testimage.jpg',
 				accessibilityText: 'Image for testing',
 				type: MediaType::Image,
-				handler: 'testmock',
 				fileDetails: [],
 			));
 

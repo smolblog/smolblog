@@ -40,7 +40,6 @@ class MediaCreated implements DomainEvent, Validated {
 	 * @param string                 $title             Title for the media (usually filename). Must not be empty.
 	 * @param string                 $accessibilityText Text description of the media. Must not be empty.
 	 * @param MediaType              $mediaType         Broad type of media (image, video, etc).
-	 * @param string                 $handler           Key for handler for this media.
 	 * @param array                  $fileDetails       Information needed by file handler.
 	 * @param UuidInterface|null     $id                ID of the event.
 	 * @param DateTimeInterface|null $timestamp         Timestamp of the event.
@@ -55,7 +54,6 @@ class MediaCreated implements DomainEvent, Validated {
 		public readonly string $title,
 		public readonly string $accessibilityText,
 		public readonly MediaType $mediaType,
-		public readonly string $handler,
 		#[MapType('mixed')] public readonly array $fileDetails,
 		?UuidInterface $id = null,
 		?DateTimeInterface $timestamp = null,
@@ -84,8 +82,8 @@ class MediaCreated implements DomainEvent, Validated {
 			title: $media->title,
 			accessibilityText: $media->accessibilityText,
 			mediaType: $media->type,
-			handler: $media->handler,
 			fileDetails: $media->fileDetails,
+			extensions: $media->extensions,
 		);
 	}
 
@@ -102,8 +100,8 @@ class MediaCreated implements DomainEvent, Validated {
 			title: $this->title,
 			accessibilityText: $this->accessibilityText,
 			type: $this->mediaType,
-			handler: $this->handler,
 			fileDetails: $this->fileDetails,
+			extensions: $this->extensions,
 		);
 	}
 

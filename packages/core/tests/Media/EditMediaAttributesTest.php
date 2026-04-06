@@ -28,7 +28,6 @@ final class EditMediaAttributesTest extends MediaTestBase {
 			title: 'testimage.jpg',
 			accessibilityText: 'Image for testing',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: [],
 		);
 
@@ -90,7 +89,6 @@ final class EditMediaAttributesTest extends MediaTestBase {
 			title: 'testimage.jpg',
 			accessibilityText: 'Image for testing',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: [],
 		);
 
@@ -123,7 +121,6 @@ final class EditMediaAttributesTest extends MediaTestBase {
 			title: 'testimage.jpg',
 			accessibilityText: 'Image for testing',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: [],
 		);
 

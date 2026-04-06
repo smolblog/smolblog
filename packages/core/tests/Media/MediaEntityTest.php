@@ -18,7 +18,6 @@ final class MediaEntityTest extends TestCase {
 			title: '',
 			accessibilityText: 'alt text',
 			type: MediaType::Audio,
-			handler: 'test',
 			fileDetails: [],
 		);
 	}
@@ -33,7 +32,6 @@ final class MediaEntityTest extends TestCase {
 			title: 'title',
 			accessibilityText: '',
 			type: MediaType::Audio,
-			handler: 'test',
 			fileDetails: [],
 		);
 	}
@@ -48,7 +46,6 @@ final class MediaEntityTest extends TestCase {
 			title: '',
 			accessibilityText: 'alt text',
 			mediaType: MediaType::Audio,
-			handler: 'test',
 			fileDetails: [],
 		);
 	}
@@ -63,7 +60,6 @@ final class MediaEntityTest extends TestCase {
 			title: 'title',
 			accessibilityText: '',
 			mediaType: MediaType::Audio,
-			handler: 'test',
 			fileDetails: [],
 		);
 	}

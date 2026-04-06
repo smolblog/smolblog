@@ -22,7 +22,6 @@ final class MediaProjectionTest extends DataTestBase {
 			title: 'hey',
 			accessibilityText: 'what is going on',
 			type: MediaType::Image,
-			handler: 'test',
 			fileDetails: ['one' => 2],
 		);
 		$event = MediaCreated::createFromMediaObject($media);
@@ -46,7 +45,6 @@ final class MediaProjectionTest extends DataTestBase {
 			title: 'hey',
 			accessibilityText: 'what is going on',
 			type: MediaType::Image,
-			handler: 'test',
 			fileDetails: ['one' => 2],
 		);
 		$newMedia = $oldMedia->with(
@@ -82,7 +80,6 @@ final class MediaProjectionTest extends DataTestBase {
 			title: 'hey',
 			accessibilityText: 'what is going on',
 			type: MediaType::Image,
-			handler: 'test',
 			fileDetails: ['one' => 2],
 		);
 		$db->insert($env->tableName('media'), [
@@ -111,7 +108,6 @@ final class MediaProjectionTest extends DataTestBase {
 			title: 'hey',
 			accessibilityText: 'what is going on',
 			type: MediaType::Image,
-			handler: 'test',
 			fileDetails: ['one' => 2],
 		);
 		$this->assertFalse($projection->hasMediaWithId($missingMedia->id));

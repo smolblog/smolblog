@@ -5,8 +5,9 @@ namespace Smolblog\Core\Test;
 use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Smolblog\Core\Media\Data\MediaRepo;
-use Smolblog\Core\Media\Services\MediaHandler;
+use Smolblog\Core\Media\Services\MediaFileRepo;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
 
@@ -14,17 +15,17 @@ use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
 abstract class MediaTestBase extends ModelTest {
 	public const INCLUDED_MODELS = [\Smolblog\Core\Model::class];
 
-	protected MediaHandler&MockObject $mockHandler;
+	protected MediaFileRepo&MockObject $fileRepo;
 	protected MediaRepo&MockObject $contentRepo;
 	protected SitePermissionsService&MockObject $perms;
 
 	protected function createMockServices(): array {
-		$this->mockHandler = $this->createMock(MediaHandlerTestBase::class);
+		$this->fileRepo = $this->createMock(MediaFileRepo::class);
 		$this->contentRepo = $this->createMock(MediaRepo::class);
 		$this->perms = $this->createMock(SitePermissionsService::class);
 
 		return [
-			MediaHandlerTestBase::class => fn() => $this->mockHandler,
+			MediaFileRepo::class => fn() => $this->fileRepo,
 			MediaRepo::class => fn() => $this->contentRepo,
 			SitePermissionsService::class => fn() => $this->perms,
 			...parent::createMockServices(),

@@ -28,7 +28,6 @@ final class PictureTest extends ContentTypeTest {
 			title: 'Title.jpg',
 			accessibilityText: 'Troy returning with several pizzas.',
 			type: MediaType::Image,
-			handler: 'test',
 			fileDetails: [],
 		);
 	}

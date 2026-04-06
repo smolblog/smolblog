@@ -62,5 +62,5 @@ interface MediaFileRepo {
 	 * @param Media        $media     Media object being shown.
 	 * @return array<string, UriInterface>
 	 */
-	public function getUrls(Media $media, ?int $maxWidth = null, ?int $maxHeight = null, mixed ...$props): array;
+	public function getUrls(Media $media): array;
 }

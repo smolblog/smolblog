@@ -23,17 +23,15 @@ final class DeleteMediaTest extends MediaTestBase {
 			title: 'testimage.jpg',
 			accessibilityText: 'Image for testing',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: [],
 		);
 
 		$this->contentRepo->method('mediaById')->willReturn($media);
 		$this->perms->method('canUploadMedia')->willReturn(true);
 
-		$this->mockHandler->expects($this->once())
+		$this->fileRepo->expects($this->once())
 			->method('deleteFile')
 			->with(
-				$this->valueObjectEquals($command),
 				$this->valueObjectEquals($media),
 			);
 
