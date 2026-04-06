@@ -2,6 +2,7 @@
 
 namespace Smolblog\Core\Test;
 
+use Cavatappi\Foundation\Factories\HttpMessageFactory;
 use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -11,7 +12,7 @@ use Smolblog\Core\Media\Commands\{CreateMedia, DeleteMedia, EditMediaAttributes,
 use Smolblog\Core\Media\Data\MediaRepo;
 use Smolblog\Core\Media\Entities\{Media, MediaExtension, MediaType};
 use Smolblog\Core\Media\Events\{MediaAttributesUpdated, MediaCreated, MediaDeleted, MediaUpdated};
-use Smolblog\Core\Media\Services\{MediaExtensionRegistry};
+use Smolblog\Core\Media\Services\{MediaExtensionRegistry, MediaFileRepo};
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Test\Setup\MediaExtensionTestMediaHandler;
 use Smolblog\Core\Test\Stubs\TestUploadedFileInterface;
@@ -24,17 +25,17 @@ abstract class MediaExtensionTest extends ModelTest {
 	public const string EXTENSION_CLASS = self::class;
 
 	protected MediaRepo&MockObject $mediaRepo;
-	protected MediaExtensionTestMediaHandler&Stub  $handler;
+	protected MediaFileRepo&Stub  $fileRepo;
 	protected SitePermissionsService&MockObject $perms;
 
 	protected function createMockServices(): array {
 		$this->mediaRepo = $this->createMock(MediaRepo::class);
-		$this->handler = $this->createStub(MediaExtensionTestMediaHandler::class);
+		$this->fileRepo = $this->createStub(MediaFileRepo::class);
 		$this->perms = $this->createMock(SitePermissionsService::class);
 
 		return [
 			MediaRepo::class => fn() => $this->mediaRepo,
-			MediaExtensionTestMediaHandler::class => fn() => $this->handler,
+			MediaFileRepo::class => fn() => $this->fileRepo,
 			SitePermissionsService::class => fn() => $this->perms,
 			...parent::createMockServices(),
 		];
@@ -85,14 +86,12 @@ abstract class MediaExtensionTest extends ModelTest {
 			title: $title,
 			accessibilityText: $command->accessibilityText,
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: ['one' => 'two'],
 			extensions: $command->extensions,
 		);
 
 		$this->mediaRepo->method('hasMediaWithId')->willReturn(false);
 		$this->perms->method('canUploadMedia')->willReturn(true);
-		$this->handler->method('handleUploadedFile')->willReturn($createdMedia);
 
 		$this->expectEvent(MediaCreated::createFromMediaObject($createdMedia));
 
@@ -103,7 +102,7 @@ abstract class MediaExtensionTest extends ModelTest {
 		$mediaId = $this->randomId();
 		$title = 'IMG_0543.jpg';
 		$command = new SideloadMedia(
-			url: 'https://smol.blog/img.jpg',
+			url: HttpMessageFactory::uri('https://smol.blog/img.jpg'),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: 'Alt Text',
@@ -118,14 +117,12 @@ abstract class MediaExtensionTest extends ModelTest {
 			title: $title,
 			accessibilityText: $command->accessibilityText,
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: ['one' => 'two'],
 			extensions: $command->extensions,
 		);
 
 		$this->mediaRepo->method('hasMediaWithId')->willReturn(false);
 		$this->perms->method('canUploadMedia')->willReturn(true);
-		$this->handler->method('sideloadFile')->willReturn($createdMedia);
 
 		$this->expectEvent(MediaCreated::createFromMediaObject($createdMedia));
 
@@ -151,7 +148,6 @@ abstract class MediaExtensionTest extends ModelTest {
 			title: 'No change',
 			accessibilityText: 'No change',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: ['one' => 'two'],
 			extensions: [$this->createExampleExtension()],
 		));
@@ -180,7 +176,6 @@ abstract class MediaExtensionTest extends ModelTest {
 			title: 'No change',
 			accessibilityText: 'No change',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: ['one' => 'two'],
 			extensions: [$this->createExampleExtension()],
 		);

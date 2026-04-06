@@ -67,13 +67,11 @@ abstract class ApplicationStateTest extends AppTest {
 	protected function createMockServices(): array {
 		$this->channelHandler = $this->createStub(ChannelHandlerTestBase::class);
 		$this->connectionHandler = $this->createStub(ConnectionHandlerTestBase::class);
-		$this->mediaHandler = $this->createStub(MediaHandlerTestBase::class);
 
 		return [
 			...parent::createMockServices(),
 			ChannelHandlerTestBase::class => fn() => $this->channelHandler,
 			ConnectionHandlerTestBase::class => fn() => $this->connectionHandler,
-			MediaHandlerTestBase::class => fn() => $this->mediaHandler,
 		];
 	}
 

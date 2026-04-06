@@ -35,10 +35,6 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			fileDetails: [],
 		);
 
-		$this->mockHandler->expects($this->once())
-			->method('handleUploadedFile')
-			->with($this->valueObjectEquals($command), $this->uuidEquals($mediaId))
-			->willReturn($media);
 		$this->perms->method('canUploadMedia')->willReturn(true);
 
 		$event = new MediaCreated(
@@ -120,18 +116,6 @@ final class HandleUploadedMediaTest extends MediaTestBase {
 			userId: $this->randomId(),
 			accessibilityText: 'alt text',
 		);
-
-		$this->mockHandler
-			->method('handleUploadedFile')
-			->willReturnCallback(fn($cmd, $id) => new Media(
-				id: $id,
-				userId: $cmd->userId,
-				siteId: $cmd->siteId,
-				title: 'testimage.jpg',
-				accessibilityText: 'Image for testing',
-				type: MediaType::Image,
-				fileDetails: [],
-			));
 
 		$this->contentRepo->method('hasMediaWithId')->willReturn(true, true, false);
 		$this->perms->method('canUploadMedia')->willReturn(true);
