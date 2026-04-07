@@ -2,7 +2,6 @@
 
 namespace Smolblog\Core\Media\Services;
 
-use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 use Smolblog\Core\Media\Entities\Media;
 
@@ -17,11 +16,11 @@ interface MediaFileRepo {
 	 *
 	 * @throws InvalidMediaException If the file cannot be processed.
 	 *
-	 * @param string $filePath Path to the new file.
+	 * @param resource $file Path to the new file.
 	 * @param Media $media System information about the file.
 	 * @return array File data
 	 */
-	public function saveFile(string $filePath, Media $mediaObject): array;
+	public function saveFile($file, Media $mediaObject): array;
 
 	/**
 	 * Delete the given Media file from the system.

@@ -7,9 +7,13 @@ use Cavatappi\Foundation\Command\CommandHandlerService;
 use Cavatappi\Foundation\Exceptions\CommandNotAuthorized;
 use Cavatappi\Foundation\Exceptions\EntityNotFound;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Factories\HttpMessageFactory;
 use Cavatappi\Foundation\Factories\UuidFactory;
+use Cavatappi\Foundation\Utilities\HttpVerb;
 use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\StreamInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Media\Commands\DeleteMedia;
 use Smolblog\Core\Media\Commands\EditMediaAttributes;
@@ -62,6 +66,7 @@ class MediaService implements CommandHandlerService {
 		private SitePermissionsService $perms,
 		private MediaExtensionRegistry $extensions,
 		private FinfoMimeTypeDetector $mime,
+		private ClientInterface $http,
 	) {}
 
 	/**
@@ -78,15 +83,33 @@ class MediaService implements CommandHandlerService {
 		// Check permissions.
 		$mediaId = $this->checkNewPermsAndId($command);
 
-		$basePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . UuidFactory::random();
-		mkdir($basePath);
-		$filePath = $basePath . DIRECTORY_SEPARATOR . $command->file->getClientFilename();
-		$command->file->moveTo($filePath);
+		$fileName = $command->file->getClientFilename();
+		$filePath = (string)$command->file->getStream()->getMetadata('uri') ?? '';
+		$fileStream = $command->file->getStream()->detach();
 
-		$this->saveMedia($command, $mediaId, $filePath);
+		if (!isset($fileStream)) {
+			throw new InvalidValueProperties('Could not process file.', field: 'file');
+		}
 
-		unlink($filePath);
-		rmdir($basePath);
+		$media = new Media(
+			id: $mediaId,
+			userId: $command->userId,
+			siteId: $command->siteId,
+			title: $command->title ?? $fileName ?? $mediaId->toString(),
+			accessibilityText: $command->accessibilityText,
+			type: self::typeFromMimeType($this->mime->detectMimeType($filePath, $fileStream) ?? 'object/octet-stream'),
+			fileDetails: [],
+			extensions: $command->extensions,
+		);
+
+		$media = $media->with(
+			fileDetails: $this->handler->saveFile(file: $fileStream, mediaObject: $media),
+		);
+
+		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
+			$extServ->create($media);
+		}
+		$this->bus->dispatch(MediaCreated::createFromMediaObject($media));
 
 		return $mediaId;
 	}
@@ -105,41 +128,36 @@ class MediaService implements CommandHandlerService {
 		// Check permissions.
 		$mediaId = $this->checkNewPermsAndId($command);
 
-		$basePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . UuidFactory::random();
-		mkdir($basePath);
-		$filePath = $basePath . DIRECTORY_SEPARATOR . basename($command->url->getPath());
+		$fileName = basename($command->url->getPath()) ?: $mediaId->toString();
 
-		file_put_contents($filePath, fopen($command->url->__toString(), 'r'));
+		$response = $this->http->sendRequest(
+			HttpMessageFactory::request(HttpVerb::GET, $command->url)
+		);
 
-		$this->saveMedia($command, $mediaId, $filePath);
+		if ($response->getStatusCode() >= 300) {
+			throw new InvalidValueProperties('Could not process download.', field: 'url');
+		}
 
-		unlink($filePath);
-		rmdir($basePath);
+		$filePath = (string)$response->getBody()->getMetadata('uri') ?? '';
+		$fileStream = $response->getBody()->detach();
 
-		return $mediaId;
-	}
+		if (!isset($fileStream)) {
+			throw new InvalidValueProperties('Could not process download.', field: 'url');
+		}
 
-	/**
-	 * Create the media object and pass it and the file to the media file repo.
-	 *
-	 * @param HandleUploadedMedia|SideloadMedia $command Command being executed.
-	 * @param string $filePath Path to the uploaded/sideloaded media file.
-	 * @return UuidInterface Valid ID for the new Media object.
-	 */
-	private function saveMedia(HandleUploadedMedia|SideloadMedia $command, UuidInterface $mediaId, string $filePath): UuidInterface {
 		$media = new Media(
 			id: $mediaId,
 			userId: $command->userId,
 			siteId: $command->siteId,
-			title: $command->title ?? basename($filePath),
+			title: $command->title ?? $fileName,
 			accessibilityText: $command->accessibilityText,
-			type: self::typeFromMimeType($this->mime->detectMimeTypeFromFile($filePath) ?? 'object/octet-stream'),
+			type: self::typeFromMimeType($this->mime->detectMimeType($filePath, $fileStream) ?? 'object/octet-stream'),
 			fileDetails: [],
 			extensions: $command->extensions,
 		);
 
 		$media = $media->with(
-			fileDetails: $this->handler->saveFile(filePath: $filePath, mediaObject: $media),
+			fileDetails: $this->handler->saveFile(file: $fileStream, mediaObject: $media),
 		);
 
 		foreach ($this->getServicesForContentExtensions($command->extensions) as $extServ) {
