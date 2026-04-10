@@ -21,11 +21,13 @@
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "crell/serde": "dev-master",
-        "league/mime-type-detection": "^1.16"
+        "league/mime-type-detection": "^1.16",
+        "psr/http-client": "^1.0"
     },
     "require-dev": {
         "symplify/monorepo-builder": "^11.2",
-        "friendsofphp/php-cs-fixer": "^3.93"
+        "friendsofphp/php-cs-fixer": "^3.93",
+        "symfony/http-client": "^8.0"
     },
     "autoload": {
         "psr-4": {

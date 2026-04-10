@@ -6,10 +6,13 @@ use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
+use Psr\Http\Client\ClientInterface;
 use Smolblog\Core\Media\Data\MediaRepo;
 use Smolblog\Core\Media\Services\MediaFileRepo;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
 
 #[AllowMockObjectsWithoutExpectations]
 abstract class MediaTestBase extends ModelTest {
@@ -28,6 +31,8 @@ abstract class MediaTestBase extends ModelTest {
 			MediaFileRepo::class => fn() => $this->fileRepo,
 			MediaRepo::class => fn() => $this->contentRepo,
 			SitePermissionsService::class => fn() => $this->perms,
+			ClientInterface::class => Psr18Client::class,
+			Psr18Client::class => [],
 			...parent::createMockServices(),
 		];
 	}

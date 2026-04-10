@@ -7,6 +7,7 @@ use Cavatappi\Test\ModelTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Smolblog\Core\Media\Commands\{CreateMedia, DeleteMedia, EditMediaAttributes, HandleUploadedMedia, SideloadMedia, UpdateMedia};
 use Smolblog\Core\Media\Data\MediaRepo;
@@ -15,6 +16,7 @@ use Smolblog\Core\Media\Events\{MediaAttributesUpdated, MediaCreated, MediaDelet
 use Smolblog\Core\Media\Services\{MediaExtensionRegistry, MediaFileRepo};
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Test\Setup\MediaExtensionTestMediaHandler;
+use Smolblog\Core\Test\Stubs\ExampleFiles;
 use Smolblog\Core\Test\Stubs\TestUploadedFileInterface;
 
 abstract class MediaExtensionTest extends ModelTest {
@@ -27,16 +29,19 @@ abstract class MediaExtensionTest extends ModelTest {
 	protected MediaRepo&MockObject $mediaRepo;
 	protected MediaFileRepo&Stub  $fileRepo;
 	protected SitePermissionsService&MockObject $perms;
+	protected ClientInterface&Stub $http;
 
 	protected function createMockServices(): array {
 		$this->mediaRepo = $this->createMock(MediaRepo::class);
 		$this->fileRepo = $this->createStub(MediaFileRepo::class);
 		$this->perms = $this->createMock(SitePermissionsService::class);
+		$this->http = $this->createStub(ClientInterface::class);
 
 		return [
 			MediaRepo::class => fn() => $this->mediaRepo,
 			MediaFileRepo::class => fn() => $this->fileRepo,
 			SitePermissionsService::class => fn() => $this->perms,
+			ClientInterface::class => fn() => $this->http,
 			...parent::createMockServices(),
 		];
 	}
@@ -69,9 +74,8 @@ abstract class MediaExtensionTest extends ModelTest {
 	public function testItCanBeCreatedByUpload() {
 		$mediaId = $this->randomId();
 		$title = 'IMG_0543.jpg';
-		$uploadedFile = new TestUploadedFileInterface();
 		$command = new HandleUploadedMedia(
-			file: $uploadedFile,
+			file: ExampleFiles::artemisTwoEarthsetPicture(),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: 'Alt Text',
