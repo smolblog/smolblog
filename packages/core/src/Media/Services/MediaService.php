@@ -88,7 +88,7 @@ class MediaService implements CommandHandlerService {
 		$fileStream = $command->file->getStream()->detach();
 
 		if (!isset($fileStream)) {
-			throw new InvalidValueProperties('Could not process file.', field: 'file');
+			throw new InvalidValueProperties('Could not process file.', field: 'file'); // @codeCoverageIgnore
 		}
 
 		$media = new Media(
@@ -142,7 +142,7 @@ class MediaService implements CommandHandlerService {
 		$fileStream = $response->getBody()->detach();
 
 		if (!isset($fileStream)) {
-			throw new InvalidValueProperties('Could not process download.', field: 'url');
+			throw new InvalidValueProperties('Could not process download.', field: 'url'); // @codeCoverageIgnore
 		}
 
 		$media = new Media(
@@ -267,7 +267,7 @@ class MediaService implements CommandHandlerService {
 		if (!isset($mediaId)) {
 			do {
 				$mediaId = UuidFactory::date();
-			} while (!$this->mediaRepo->hasMediaWithId($mediaId));
+			} while ($this->mediaRepo->hasMediaWithId($mediaId));
 		}
 
 		return $mediaId;

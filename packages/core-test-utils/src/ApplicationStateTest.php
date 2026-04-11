@@ -9,6 +9,7 @@ use Cavatappi\Test\AppTest;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Stub;
+use Psr\Http\Client\ClientInterface;
 use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Channel\Services\ChannelHandler;
 use Smolblog\Core\Connection\Commands\BeginAuthRequest;
@@ -30,6 +31,7 @@ use Smolblog\Core\Content\Types\Article\Article;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Core\Content\Types\Picture\Picture;
 use Smolblog\Core\Content\Types\Reblog\Reblog;
+use Smolblog\Core\Media\Services\MediaFileRepo;
 use Smolblog\Core\Media\Services\MediaHandler;
 use Smolblog\Core\Permissions\SitePermissionsService;
 use Smolblog\Core\Site\Commands\CreateSite;
@@ -49,7 +51,6 @@ use Smolblog\Core\User\UserRepo;
 abstract class ApplicationStateTest extends AppTest {
 	protected ChannelHandler&Stub $channelHandler;
 	protected ConnectionHandler&Stub $connectionHandler;
-	protected MediaHandler&Stub $mediaHandler;
 
 	// TODO: move this to the framework
 	public static function assertUuidNotEquals(UuidInterface $expected, UuidInterface $actual, string $message = ''): void {
@@ -72,6 +73,8 @@ abstract class ApplicationStateTest extends AppTest {
 			...parent::createMockServices(),
 			ChannelHandlerTestBase::class => fn() => $this->channelHandler,
 			ConnectionHandlerTestBase::class => fn() => $this->connectionHandler,
+			MediaFileRepo::class => fn() => $this->createStub(MediaFileRepo::class),
+			ClientInterface::class => fn() => $this->createStub(ClientInterface::class),
 		];
 	}
 

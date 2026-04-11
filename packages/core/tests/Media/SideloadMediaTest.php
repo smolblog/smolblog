@@ -86,4 +86,20 @@ final class SideloadMediaTest extends MediaTestBase {
 			title: '',
 		);
 	}
+
+	public function testItFailsIfTheRequestIsNotSuccessful() {
+		$this->expectException(InvalidValueProperties::class);
+
+		$command = new SideloadMedia(
+			url: HttpMessageFactory::uri('https://smol.blog/test.png'),
+			userId: $this->randomId(),
+			siteId: $this->randomId(),
+			accessibilityText: 'alt text',
+		);
+
+		$this->perms->method('canUploadMedia')->willReturn(true);
+		$this->http->method('sendRequest')->willReturn(HttpMessageFactory::response(code: 451));
+
+		$this->app->execute($command);
+	}
 }

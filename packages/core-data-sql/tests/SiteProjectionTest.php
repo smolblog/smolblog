@@ -2,29 +2,13 @@
 
 namespace Smolblog\CoreDataSql;
 
-use Cavatappi\Foundation\Factories\HttpMessageFactory;
-use Cavatappi\Foundation\Factories\UuidFactory;
-use Cavatappi\Foundation\Fields\Markdown;
-use Cavatappi\Foundation\Reflection\DisplayName;
 use Cavatappi\Infrastructure\Serialization\SerializationService;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
-use Smolblog\Core\Channel\Entities\ContentChannelEntry;
-use Smolblog\Core\Channel\Events\ContentPushSucceeded;
-use Smolblog\Core\Content\Entities\Content;
-use Smolblog\Core\Content\Events\ContentCanonicalUrlSet;
-use Smolblog\Core\Content\Events\ContentCreated;
-use Smolblog\Core\Content\Events\ContentDeleted;
-use Smolblog\Core\Content\Events\ContentUpdated;
-use Smolblog\Core\Content\Extensions\Tags\Tags;
-use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Core\Site\Entities\SitePermissionLevel;
 use Smolblog\Core\Site\Events\SiteCreated;
 use Smolblog\Core\Site\Events\SiteDetailsUpdated;
 use Smolblog\Core\Site\Events\UserSitePermissionsSet;
-use Smolblog\Core\User\User;
-use Smolblog\Core\User\UserGrantedSudo;
-use Smolblog\Core\User\UserRegistered;
 use Smolblog\CoreDataSql\Test\DataTestBase;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -125,6 +109,13 @@ final class SiteProjectionTest extends DataTestBase {
 			'site_obj' => $this->serde->toJson($oldSite),
 		]);
 		$this->assertValueObjectEquals($oldSite, $projection->siteById($oldSite->id));
+
+		// This should not throw an error.
+		$this->app->dispatch(new SiteDetailsUpdated(
+			userId: $oldSite->userId,
+			aggregateId: $this->randomId(),
+			displayName: 'Site That Does Not Exist',
+		));
 
 		$this->app->dispatch($eventOne);
 		$this->assertValueObjectEquals($newSiteOne, $projection->siteById($oldSite->id));
