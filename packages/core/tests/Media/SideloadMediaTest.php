@@ -7,14 +7,21 @@ use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Entities\MediaType;
 use Smolblog\Core\Media\Events\MediaCreated;
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Factories\HttpMessageFactory;
+use Cavatappi\Foundation\Utilities\HttpVerb;
+use Cavatappi\Test\Kits\HttpMessageComparisonTestKit;
+use Nyholm\Psr7\Response;
 use Smolblog\Core\Test\MediaTestBase;
+use Smolblog\Core\Test\Stubs\ExampleFiles;
 
 #[AllowMockObjectsWithoutExpectations]
 final class SideloadMediaTest extends MediaTestBase {
+	use HttpMessageComparisonTestKit;
+
 	public function testHappyPath() {
 		$mediaId = $this->randomId();
 		$command = new SideloadMedia(
-			url: 'https://cdn.smol.blog/site/image.png',
+			url: HttpMessageFactory::uri('https://cdn.smol.blog/site/image.png'),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: 'Image for testing',
@@ -27,14 +34,21 @@ final class SideloadMediaTest extends MediaTestBase {
 			title: 'image.png',
 			accessibilityText: 'Image for testing',
 			type: MediaType::Image,
-			handler: 'testmock',
 			fileDetails: [],
 		);
 
-		$this->mockHandler->expects($this->once())
-			->method('sideloadFile')
-			->with($this->valueObjectEquals($command), $this->uuidEquals($mediaId))
-			->willReturn($media);
+		$this->http->expects($this->once())
+			->method('sendRequest')
+			->with($this->httpMessageEqualTo(
+				HttpMessageFactory::request(
+					verb: HttpVerb::GET,
+					url: HttpMessageFactory::uri('https://cdn.smol.blog/site/image.png'),
+				),
+			))
+			->willReturn(new Response(body: ExampleFiles::artemisTwoEarthsetPicture()->getStream()));
+		$this->fileRepo
+			->method('saveFile')
+			->willReturn([]);
 		$this->perms->method('canUploadMedia')->willReturn(true);
 
 		$this->expectEvent(new MediaCreated(
@@ -44,7 +58,6 @@ final class SideloadMediaTest extends MediaTestBase {
 			title: $media->title,
 			accessibilityText: $command->accessibilityText,
 			mediaType: $media->type,
-			handler: $media->handler,
 			fileDetails: [],
 		));
 
@@ -55,7 +68,7 @@ final class SideloadMediaTest extends MediaTestBase {
 		$this->expectException(InvalidValueProperties::class);
 
 		new SideloadMedia(
-			url: '//smol.blog/test.png',
+			url: HttpMessageFactory::uri('https://smol.blog/test.png'),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: '',
@@ -66,7 +79,7 @@ final class SideloadMediaTest extends MediaTestBase {
 		$this->expectException(InvalidValueProperties::class);
 
 		new SideloadMedia(
-			url: '//smol.blog/test.png',
+			url: HttpMessageFactory::uri('https://smol.blog/test.png'),
 			userId: $this->randomId(),
 			siteId: $this->randomId(),
 			accessibilityText: 'alt text',

@@ -4,6 +4,7 @@ namespace Smolblog\Core\Test;
 
 use Cavatappi\Foundation\Factories\HttpMessageFactory;
 use Cavatappi\Test\ModelTest;
+use Nyholm\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -96,10 +97,11 @@ abstract class MediaExtensionTest extends ModelTest {
 
 		$this->mediaRepo->method('hasMediaWithId')->willReturn(false);
 		$this->perms->method('canUploadMedia')->willReturn(true);
+		$this->fileRepo->method('saveFile')->willReturn(['one' => 'two']);
 
 		$this->expectEvent(MediaCreated::createFromMediaObject($createdMedia));
 
-		$this->app->execute($command);
+		$this->app->execute($command, skipSerialization: true);
 	}
 
 	public function testItCanBeCreatedBySideload() {
@@ -125,8 +127,12 @@ abstract class MediaExtensionTest extends ModelTest {
 			extensions: $command->extensions,
 		);
 
+		$this->http->method('sendRequest')->willReturn(
+			new Response(body: ExampleFiles::artemisTwoEarthsetPicture()->getStream()),
+		);
 		$this->mediaRepo->method('hasMediaWithId')->willReturn(false);
 		$this->perms->method('canUploadMedia')->willReturn(true);
+		$this->fileRepo->method('saveFile')->willReturn(['one' => 'two']);
 
 		$this->expectEvent(MediaCreated::createFromMediaObject($createdMedia));
 
