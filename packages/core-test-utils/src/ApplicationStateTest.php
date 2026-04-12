@@ -377,9 +377,17 @@ abstract class ApplicationStateTest extends AppTest {
 					mediaId: $imageId,
 					userId: $userId,
 					title: 'Earthrise',
+					extensions: [
+						new License(originalWork: false, baseType: LicenseType::PublicDomain, creator: 'NASA'),
+					]
 				),
 			);
-			$imageObject = $imageObject?->with(title: 'Earthrise');
+			$imageObject = $imageObject?->with(
+				title: 'Earthrise',
+				extensions: [
+					new License(originalWork: false, baseType: LicenseType::PublicDomain, creator: 'NASA'),
+				]
+			);
 			$this->assertValueObjectEquals(
 				$imageObject,
 				$repo->mediaById($imageId),
@@ -409,9 +417,17 @@ abstract class ApplicationStateTest extends AppTest {
 					mediaId: $videoId,
 					userId: $userId,
 					title: 'Rockets',
+					extensions: [
+						new License(originalWork: false, baseType: LicenseType::PublicDomain, creator: 'NASA'),
+					]
 				),
 			);
-			$videoObject = $videoObject?->with(title: 'Rockets');
+			$videoObject = $videoObject?->with(
+				title: 'Rockets',
+				extensions: [
+					new License(originalWork: false, baseType: LicenseType::PublicDomain, creator: 'NASA'),
+				]
+			);
 			$this->assertValueObjectEquals(
 				$videoObject,
 				$repo->mediaById($videoId),

@@ -124,6 +124,7 @@ class MediaProjection implements DatabaseTableHandler, EventListenerService, Med
 		$updated = $existing->with(
 			title: $event->title ?? $existing->title,
 			accessibilityText: $event->accessibilityText ?? $existing->accessibilityText,
+			extensions: $event->extensions ?? $existing->extensions,
 		);
 		$this->db->update(
 			'media',
