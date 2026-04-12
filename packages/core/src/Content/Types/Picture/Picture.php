@@ -8,6 +8,7 @@ use Cavatappi\Foundation\Reflection\ListType;
 use Cavatappi\Foundation\Validation\Validated;
 use Cavatappi\Foundation\Value\ValueKit;
 use Crell\Serde\Attributes\Field;
+use Ramsey\Uuid\UuidInterface;
 use Smolblog\Core\Content\ContentUtilities;
 use Smolblog\Core\Content\Entities\ContentType;
 use Smolblog\Core\Media\Entities\Media;
@@ -28,11 +29,11 @@ class Picture implements ContentType, Validated {
 	 *
 	 * @throws InvalidValueProperties When $pictures contains anything other than Image or Video media.
 	 *
-	 * @param Media[]       $pictures Pictures being posted.
+	 * @param UuidInterface[]       $pictures Pictures being posted.
 	 * @param Markdown|null $caption  Optional caption for the Picture.
 	 */
 	public function __construct(
-		#[ListType(Media::class)] public readonly array $pictures,
+		#[ListType(UuidInterface::class)] public readonly array $pictures,
 		public readonly ?Markdown $caption = null,
 	) {
 		$this->validate();
@@ -47,7 +48,7 @@ class Picture implements ContentType, Validated {
 	public string $title {
 		get => isset($this->caption)
 			? ContentUtilities::truncateText(strval($this->caption))
-			: $this->pictures[0]->title;
+			: 'Picture';
 	}
 
 	public function validate(): void {
@@ -60,14 +61,11 @@ class Picture implements ContentType, Validated {
 
 		$rejects = array_filter(
 			$this->pictures,
-			fn($pic) => !(
-				is_a($pic, Media::class)
-				&& ($pic->type === MediaType::Image || $pic->type === MediaType::Video)
-			),
+			fn($pic) => !is_a($pic, UuidInterface::class),
 		);
 		if (!empty($rejects)) {
 			throw new InvalidValueProperties(
-				message: 'Pictures can only contain images or video',
+				message: 'Pictures can only contain IDs',
 				field: 'pictures',
 			);
 		}

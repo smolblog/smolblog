@@ -31,6 +31,10 @@ use Smolblog\Core\Content\Types\Article\Article;
 use Smolblog\Core\Content\Types\Note\Note;
 use Smolblog\Core\Content\Types\Picture\Picture;
 use Smolblog\Core\Content\Types\Reblog\Reblog;
+use Smolblog\Core\Media\Commands\EditMediaAttributes;
+use Smolblog\Core\Media\Commands\HandleUploadedMedia;
+use Smolblog\Core\Media\Data\MediaRepo;
+use Smolblog\Core\Media\Entities\Media;
 use Smolblog\Core\Media\Services\MediaFileRepo;
 use Smolblog\Core\Media\Services\MediaHandler;
 use Smolblog\Core\Permissions\SitePermissionsService;
@@ -41,6 +45,7 @@ use Smolblog\Core\Site\Entities\Site;
 use Smolblog\Core\Site\Entities\SitePermissionLevel;
 use Smolblog\Core\Test\Stubs\ChannelHandlerTestBase;
 use Smolblog\Core\Test\Stubs\ConnectionHandlerTestBase;
+use Smolblog\Core\Test\Stubs\ExampleFiles;
 use Smolblog\Core\Test\Stubs\MediaHandlerTestBase;
 use Smolblog\Core\User\GrantUserSudo;
 use Smolblog\Core\User\InternalSystemUser;
@@ -51,11 +56,6 @@ use Smolblog\Core\User\UserRepo;
 abstract class ApplicationStateTest extends AppTest {
 	protected ChannelHandler&Stub $channelHandler;
 	protected ConnectionHandler&Stub $connectionHandler;
-
-	// TODO: move this to the framework
-	public static function assertUuidNotEquals(UuidInterface $expected, UuidInterface $actual, string $message = ''): void {
-		self::assertThat($actual, self::logicalNot(self::uuidEquals($expected)), $message);
-	}
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -346,6 +346,88 @@ abstract class ApplicationStateTest extends AppTest {
 	}
 
 	#[Depends('testSites')]
+	#[TestDox('Users can upload and manage media')]
+	final public function testMedia($fixtures) {
+		extract($fixtures);
+		$keys = ['windfox', 'red', 'green', 'blue'];
+
+		$repo = $this->app->container->get(MediaRepo::class);
+
+		$media = [];
+		foreach ($keys as $key) {
+			$userId = $users[$key]->id;
+			$siteId = $sites[$key]->id;
+
+			$imageId = $this->app->execute(
+				new HandleUploadedMedia(
+					file: ExampleFiles::artemisTwoEarthsetPicture(),
+					userId: $userId,
+					siteId: $siteId,
+					accessibilityText: 'Earthrise as seen by Artemis II',
+				),
+				skipSerialization: true
+			);
+
+			/** @var Media */ // Make static analysis happy since we're checking for null on the next line.
+			$imageObject = $repo->mediaById($imageId);
+			$this->assertInstanceOf(Media::class, $imageObject, "Image upload failed for {$key}");
+
+			$this->app->execute(
+				new EditMediaAttributes(
+					mediaId: $imageId,
+					userId: $userId,
+					title: 'Earthrise',
+				),
+			);
+			$imageObject = $imageObject?->with(title: 'Earthrise');
+			$this->assertValueObjectEquals(
+				$imageObject,
+				$repo->mediaById($imageId),
+				"Image edit failed for {$key}"
+			);
+
+			$media[$key]['image'] = $imageObject;
+
+			///
+
+			$videoId = $this->app->execute(
+				new HandleUploadedMedia(
+					file: ExampleFiles::artemisOneRocketVideo(),
+					userId: $userId,
+					siteId: $siteId,
+					accessibilityText: 'Artemis I rocket stage separation',
+				),
+				skipSerialization: true
+			);
+
+			/** @var Media */ // Make static analysis happy since we're checking for null on the next line.
+			$videoObject = $repo->mediaById($videoId);
+			$this->assertInstanceOf(Media::class, $videoObject, "Video upload failed for {$key}");
+
+			$this->app->execute(
+				new EditMediaAttributes(
+					mediaId: $videoId,
+					userId: $userId,
+					title: 'Rockets',
+				),
+			);
+			$videoObject = $videoObject?->with(title: 'Rockets');
+			$this->assertValueObjectEquals(
+				$videoObject,
+				$repo->mediaById($videoId),
+				"Video edit failed for {$key}"
+			);
+
+			$media[$key]['video'] = $videoObject;
+		}
+
+		return [
+			...$fixtures,
+			'media' => $media,
+		];
+	}
+
+	#[Depends('testMedia')]
 	#[TestDox('Users can create and manage content.')]
 	final public function testContent($fixtures) {
 		extract($fixtures);
@@ -364,6 +446,7 @@ abstract class ApplicationStateTest extends AppTest {
 
 		$repo = $this->app->container->get(ContentDataService::class);
 
+		$content = [];
 		foreach ($keys as $key) {
 			$userId = $users[$key]->id;
 			$siteId = $sites[$key]->id;
@@ -371,6 +454,16 @@ abstract class ApplicationStateTest extends AppTest {
 			$sudo = $users['windfox'];
 			$other = $key === 'blue' ? $users['red'] : $users['blue'];
 
+			// Load the image body
+			$bodies['picture'] = new Picture(
+				pictures: [
+					$media[$key]['image']->id,
+					$media[$key]['video']->id,
+				],
+				caption: new Markdown('Cue Tim Curry...'),
+			);
+
+			$content[$key] = [];
 			foreach ($bodies as $type => $body) {
 				$contentId = $this->app->execute(
 					new CreateContent(
@@ -379,7 +472,7 @@ abstract class ApplicationStateTest extends AppTest {
 						siteId: $siteId,
 					),
 				);
-				$content = new Content(
+				$contentObject = new Content(
 					body: $body,
 					siteId: $siteId,
 					userId: $userId,
@@ -387,12 +480,12 @@ abstract class ApplicationStateTest extends AppTest {
 				);
 
 				$this->assertValueObjectEquals(
-					$content,
+					$contentObject,
 					$repo->contentById($contentId, $userId),
 					"Failed to retrieve {$type} for {$key}",
 				);
 				$this->assertValueObjectEquals(
-					$content,
+					$contentObject,
 					$repo->contentById($contentId, $sudo->id),
 					"Failed to retrieve {$key} {$type} for superuser {$sudo->key}",
 				);
@@ -405,7 +498,7 @@ abstract class ApplicationStateTest extends AppTest {
 					new UpdateContent(
 						contentId: $contentId,
 						userId: $sudo->id,
-						body: $content->body,
+						body: $contentObject->body,
 						siteId: $siteId,
 						contentUserId: $userId,
 						extensions: [
@@ -417,7 +510,7 @@ abstract class ApplicationStateTest extends AppTest {
 					new UpdateContent(
 						contentId: $contentId,
 						userId: $userId,
-						body: $content->body,
+						body: $contentObject->body,
 						siteId: $siteId,
 						contentUserId: $userId,
 						extensions: [
@@ -427,14 +520,14 @@ abstract class ApplicationStateTest extends AppTest {
 					),
 				);
 
-				$content = $content->with(
+				$contentObject = $contentObject->with(
 					extensions: [
 						new Tags(['test','usual']),
 						new License(originalWork: true, baseType: LicenseType::Attribution),
 					],
 				);
 				$this->assertValueObjectEquals(
-					$content,
+					$contentObject,
 					$repo->contentById($contentId, $userId),
 					"Failed to retrieve edited {$type} for {$key}",
 				);
@@ -450,7 +543,14 @@ abstract class ApplicationStateTest extends AppTest {
 				} catch (CommandNotAuthorized $e) {
 					// Do nothing; this is good!
 				}
+
+				$content[$key][$type] = $contentObject;
 			}
 		}
+
+		return [
+			...$fixtures,
+			'content' => $content,
+		];
 	}
 }

@@ -3,6 +3,7 @@
 namespace Smolblog\Core\Content\Types\Picture;
 
 use Cavatappi\Foundation\Exceptions\InvalidValueProperties;
+use Cavatappi\Foundation\Factories\UuidFactory;
 use Cavatappi\Foundation\Fields\Markdown;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Smolblog\Core\Content\Entities\ContentType;
@@ -20,29 +21,17 @@ final class PictureTest extends ContentTypeTest {
 	protected const UPDATE_EVENT = PictureUpdated::class;
 	protected const DELETE_EVENT = PictureDeleted::class;
 
-	private function makeMedia(): Media {
-		return new Media(
-			id: $this->randomId(),
-			userId: $this->randomId(),
-			siteId: $this->randomId(),
-			title: 'Title.jpg',
-			accessibilityText: 'Troy returning with several pizzas.',
-			type: MediaType::Image,
-			fileDetails: [],
-		);
-	}
-
 	protected function createExampleType(): ContentType {
 		return new Picture(pictures: [
-			$this->makeMedia(),
-			$this->makeMedia()->with(type: MediaType::Video),
+			UuidFactory::fromString('5203ceba-fbfd-45fb-8ee7-3b35a8ae991b'),
+			UuidFactory::fromString('beb0e745-3fca-4f36-8486-6241413db05a'),
 		], caption: new Markdown('This is _only_ a test.'));
 	}
 
 	protected function createModifiedType(): ContentType {
 		return new Picture(pictures: [
-			$this->makeMedia(),
-			$this->makeMedia()->with(type: MediaType::Video),
+			UuidFactory::fromString('5203ceba-fbfd-45fb-8ee7-3b35a8ae991b'),
+			UuidFactory::fromString('beb0e745-3fca-4f36-8486-6241413db05a'),
 		], caption: new Markdown('This is **only** a test.'));
 	}
 
@@ -51,9 +40,9 @@ final class PictureTest extends ContentTypeTest {
 		$this->assertEquals('Something wistful.', $actual->title);
 	}
 
-	public function testItUsesTheFirstImageTitleIfNoneGiven() {
+	public function testItUsesADefaultTitleIfNoneGiven() {
 		$actual = $this->createExampleType()->with(caption: null);
-		$this->assertEquals('Title.jpg', $actual->title);
+		$this->assertNotEmpty($actual->title);
 	}
 
 	public function testPicturesCannotBeEmpty() {
@@ -66,18 +55,8 @@ final class PictureTest extends ContentTypeTest {
 		$this->expectException(InvalidValueProperties::class);
 
 		new Picture(pictures: [
-			$this->makeMedia(),
+			$this->randomId(),
 			'something',
-		]);
-	}
-
-	public function testPicturesMustOnlyContainPictureOrVideoMedia() {
-		$this->expectException(InvalidValueProperties::class);
-
-		new Picture(pictures: [
-			$this->makeMedia(),
-			$this->makeMedia()->with(type: MediaType::File),
-			$this->makeMedia(),
 		]);
 	}
 }
